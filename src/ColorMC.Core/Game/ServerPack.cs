@@ -98,7 +98,7 @@ public static class ServerPack
                     list5.Add(new()
                     {
                         Name = item.File,
-                        Local = Path.GetFullPath(path + item.File),
+                        Local = Path.Combine(path, item.File),
                         Sha256 = item.Sha256,
                         Url = obj.Game.ServerUrl + item.Url
                     });
@@ -108,7 +108,7 @@ public static class ServerPack
                     list5.Add(new()
                     {
                         Name = item.File,
-                        Local = Path.GetFullPath(path + item.File),
+                        Local = Path.Combine(path, item.File),
                         Sha256 = item.Sha256,
                         Url = UrlHelper.MakeDownloadUrl(item.Source, item.Projcet!, item.FileId!, item.File),
                     });
@@ -139,7 +139,7 @@ public static class ServerPack
                 list5.Add(new()
                 {
                     Name = item.File,
-                    Local = Path.GetFullPath(path + item.File),
+                    Local = Path.Combine(path, item.File),
                     Sha256 = item.Sha256,
                     Url = obj.Game.ServerUrl + item.Url
                 });
@@ -159,7 +159,7 @@ public static class ServerPack
                     list5.Add(new()
                     {
                         Name = item.FileName,
-                        Local = Path.GetFullPath(path1 + "/" + item.FileName),
+                        Local = Path.Combine(path1, item.FileName),
                         Sha256 = item.Sha256,
                         Url = obj.Game.ServerUrl + item.Url,
                         Overwrite = true,
@@ -167,7 +167,7 @@ public static class ServerPack
                         {
                             if (item.IsZip)
                             {
-                                new ZipUtils().UnzipAsync(Path.GetFullPath(path + "/" + item.Group), "", stream).Wait();
+                                new ZipUtils().UnzipAsync(Path.Combine(path, item.Group), item.FileName, stream).Wait();
                             }
                         }
                     });
@@ -317,8 +317,8 @@ public static class ServerPack
                 {
                     if (item.Source == null)
                     {
-                        var name = Path.GetFullPath(arg.Local + item.Sha256);
-                        var name1 = Path.GetFullPath(local2 + item.File);
+                        var name = Path.Combine(arg.Local, item.Sha256);
+                        var name1 = Path.Combine(local2, item.File);
                         PathHelper.CopyFile(name1, name);
                         item.Url = $"files/{item.Sha256}";
                     }
@@ -342,8 +342,8 @@ public static class ServerPack
 
                 foreach (var item in obj.Resourcepack)
                 {
-                    var name = Path.GetFullPath(arg.Local + item.Sha256);
-                    var name1 = Path.GetFullPath(local2 + item.File);
+                    var name = Path.Combine(arg.Local, item.Sha256);
+                    var name1 = Path.Combine(local2, item.File);
                     PathHelper.CopyFile(name1, name);
                     item.Url = $"files/{item.Sha256}";
                     obj1.Resourcepack.Add(item);
@@ -368,7 +368,7 @@ public static class ServerPack
                     string path1 = Path.GetFullPath(local2 + "/" + item.Group);
                     if (item.IsDir)
                     {
-                        string path2 = Path.GetFullPath(arg.Local + item.Group);
+                        string path2 = Path.GetFullPath(arg.Local + "/" + item.Group);
                         if (item.IsZip)
                         {
                             //打包进压缩包
@@ -387,7 +387,7 @@ public static class ServerPack
 
                             stream.Dispose();
 
-                            PathHelper.MoveFile(file.FullName, Path.GetFullPath(arg.Local + item1.Sha256));
+                            PathHelper.MoveFile(file.FullName, Path.Combine(arg.Local, item1.Sha256));
 
                             obj1.Config.Add(item1);
                         }
@@ -398,7 +398,7 @@ public static class ServerPack
                             foreach (var item1 in files)
                             {
                                 var name = item1.FullName.Replace(path1, "").Replace("\\", "/");
-                                using var stream = PathHelper.OpenRead(item1.FullName)!;
+                                var stream = PathHelper.OpenRead(item1.FullName)!;
 
                                 var item2 = new ConfigPackObj()
                                 {
@@ -408,9 +408,11 @@ public static class ServerPack
                                     IsZip = false
                                 };
 
-                                PathHelper.CopyFile(item1.FullName, arg.Local + item2.Sha256);
+                                stream.Dispose();
 
                                 item2.Url = $"files/{item2.Sha256}";
+
+                                PathHelper.CopyFile(item1.FullName, Path.Combine(arg.Local, item2.Sha256));
 
                                 obj1.Config.Add(item2);
                             }
@@ -431,7 +433,7 @@ public static class ServerPack
 
                         item2.Url = $"files/{item2.Sha256}";
 
-                        PathHelper.CopyFile(path1, arg.Local + item2.Sha256);
+                        PathHelper.CopyFile(path1, Path.Combine(arg.Local, item2.Sha256));
 
                         obj1.Config.Add(item2);
                     }
@@ -452,7 +454,7 @@ public static class ServerPack
 
                     item2.Url = $"files/{item2.Sha256}";
 
-                    PathHelper.CopyFile(icon, arg.Local + item2.Sha256);
+                    PathHelper.CopyFile(icon, Path.Combine(arg.Local, item2.Sha256));
 
                     obj1.Config.Add(item2);
                 }
@@ -466,13 +468,12 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        PathHelper.WriteText(Path.GetFullPath(path + "server.json"),
-            JsonConvert.SerializeObject(obj1));
+        string local = Path.Combine(path, InstancesPath.Name19);
+        PathHelper.WriteText(local, JsonConvert.SerializeObject(obj1));
 
-        using var stream = PathHelper.OpenRead(path + "server.json")!;
+        using var stream = PathHelper.OpenRead(local)!;
 
-        PathHelper.WriteText(Path.GetFullPath(path + "sha1"),
-            await HashHelper.GenSha1Async(stream));
+        PathHelper.WriteText(Path.Combine(path, Names.NameShaFile), await HashHelper.GenSha1Async(stream));
 
         return !fail;
     }
@@ -486,14 +487,14 @@ public static class ServerPack
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg)
     {
         var obj2 = obj.GetServerPack();
-        var res = await CoreHttpClient.GetStringAsync(obj.ServerUrl + "sha1");
+        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}");
         if (!res.State)
         {
             return false;
         }
         if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
         {
-            var res1 = await CoreHttpClient.GetStringAsync(obj.ServerUrl + "server.json");
+            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{InstancesPath.Name19}");
             if (!res1.State)
             {
                 return false;

@@ -25,11 +25,10 @@ public partial class GameEditControl : MenuControl
     private Tab11Control _tab11;
     private Tab12Control _tab12;
 
-    public GameEditControl(GameSettingObj obj)
+    public GameEditControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameEditControl>(obj))
     {
         _obj = obj;
 
-        UseName = (ToString() ?? "GameEditControl") + ":" + obj.UUID;
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
     }
 

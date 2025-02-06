@@ -20,19 +20,20 @@ public class LanClient
 
     public LanClient()
     {
-        //Minecraft原版组播地址
+        //V4组播地址
         _socketV4 = new();
         _socketV4.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        _socketV4.Client.Bind(new IPEndPoint(IPAddress.Any, 4445));
-        _socketV4.JoinMulticastGroup(IPAddress.Parse("224.0.2.60"));
-        //neoforge组播地址
+        _socketV4.Client.Bind(new IPEndPoint(IPAddress.Any, LanGameHelper.Port));
+        _socketV4.JoinMulticastGroup(IPAddress.Parse(LanGameHelper.IPv4));
+        //V6组播地址
         _socketV6 = new(AddressFamily.InterNetworkV6);
         _socketV6.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        _socketV6.Client.Bind(new IPEndPoint(IPAddress.IPv6Any, 4445));
-        _socketV6.JoinMulticastGroup(IPAddress.Parse("FF75:230::60"));
+        _socketV6.Client.Bind(new IPEndPoint(IPAddress.IPv6Any, LanGameHelper.Port));
+        _socketV6.JoinMulticastGroup(IPAddress.Parse(LanGameHelper.IPv6));
 
         _isRun = true;
 
+        //开始监听
         new Thread(async () =>
         {
             while (_isRun)
@@ -61,7 +62,10 @@ public class LanClient
 
                 }
             }
-        }).Start();
+        })
+        {
+            Name = "ColorMC Lan Client V4"
+        }.Start();
 
         new Thread(async () =>
         {
@@ -91,7 +95,10 @@ public class LanClient
 
                 }
             }
-        }).Start();
+        })
+        {
+            Name = "ColorMC Lan Client V6"
+        }.Start();
     }
 
     /// <summary>

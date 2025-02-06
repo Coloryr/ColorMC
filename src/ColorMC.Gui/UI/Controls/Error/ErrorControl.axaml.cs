@@ -14,11 +14,9 @@ public partial class ErrorControl : BaseUserControl
     private readonly bool _close;
     private readonly bool _type = false;
 
-    public ErrorControl()
+    public ErrorControl() : base(WindowManager.GetUseName<ErrorControl>())
     {
         InitializeComponent();
-
-        UseName = ToString() ?? "ErrorControl";
     }
 
     public ErrorControl(string? data, Exception? e, bool close) : this()

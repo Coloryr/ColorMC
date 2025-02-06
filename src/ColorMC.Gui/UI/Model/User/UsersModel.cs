@@ -745,7 +745,7 @@ public partial class UsersControlModel : TopModel
             Model.Show(App.Lang("UserWindow.Error7"));
             return;
         }
-        else if (res.Text2.Length != 32 || !FuntionUtils.CheckIs(res.Text2))
+        else if (res.Text2.Length != 32 || !CheckHelpers.CheckIs(res.Text2))
         {
             Model.Show(App.Lang("UserWindow.Error8"));
             return;

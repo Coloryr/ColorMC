@@ -21,12 +21,11 @@ public static class Logs
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行的路径</param>
-    public static void Init(string dir)
+    internal static void Init()
     {
         ColorMCCore.Stop += Stop;
 
-        s_local = dir;
+        s_local = ColorMCCore.BaseDir;
         try
         {
             var stream = File.Open(s_local + "logs.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
@@ -142,9 +141,9 @@ public static class Logs
     public static string Crash(string data, Exception e)
     {
         var date = DateTime.Now;
-        string text = $"Version:{ColorMCCore.Version}{Environment.NewLine}" +
-            $"System:{SystemInfo.System}{Environment.NewLine}" +
-            $"SystemName:{SystemInfo.SystemName}{Environment.NewLine}" +
+        string text = $"ColorMC Version: {ColorMCCore.Version}{Environment.NewLine}" +
+            $"System: {SystemInfo.System}{Environment.NewLine}" +
+            $"SystemName: {SystemInfo.SystemName}{Environment.NewLine}" +
             $"{data}{Environment.NewLine}" +
             $"{e}";
 

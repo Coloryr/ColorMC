@@ -23,10 +23,9 @@ public partial class SettingControl : MenuControl
 
     private readonly int _needJava;
 
-    public SettingControl()
+    public SettingControl() : base(WindowManager.GetUseName<SettingControl>())
     {
         Title = App.Lang("SettingWindow.Title");
-        UseName = ToString() ?? "SettingControl";
     }
 
     public SettingControl(int mainversion) : this()

@@ -16,12 +16,11 @@ public partial class SkinControl : BaseUserControl
     private FpsTimer _renderTimer;
     private SkinSideControl _side = new();
 
-    public SkinControl()
+    public SkinControl() : base(WindowManager.GetUseName<SkinControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("SkinWindow.Title");
-        UseName = ToString() ?? "SkinControl";
 
         DataContextChanged += SkinControl_DataContextChanged;
         SidePanel3.PointerPressed += SidePanel3_PointerPressed;

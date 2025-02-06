@@ -17,19 +17,18 @@ public partial class GameLogControl : BaseUserControl
 {
     private readonly GameSettingObj _obj;
 
-    public GameLogControl()
+    public GameLogControl() : base(WindowManager.GetUseName<GameLogControl>())
+    {
+        InitializeComponent();
+    }
+
+    public GameLogControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameLogControl>(obj))
     {
         InitializeComponent();
 
-        UseName = ToString() ?? "GameLogControl";
-    }
-
-    public GameLogControl(GameSettingObj obj) : this()
-    {
         _obj = obj;
 
         Title = string.Format(App.Lang("GameLogWindow.Title"), obj.Name);
-        UseName += ":" + obj.UUID;
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 

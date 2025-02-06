@@ -12,12 +12,11 @@ public partial class AddJavaControl : BaseUserControl
 {
     public int NeedJava { get; set; }
 
-    public AddJavaControl()
+    public AddJavaControl() : base(WindowManager.GetUseName<AddJavaControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("AddJavaWindow.Title");
-        UseName = ToString() ?? "AddJavaControl";
 
         JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }

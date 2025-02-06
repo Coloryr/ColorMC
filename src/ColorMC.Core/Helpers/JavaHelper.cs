@@ -322,7 +322,7 @@ public static class JavaHelper
                 {
                     foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\Java Runtime Environment\"))
                     {
-                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);
@@ -330,7 +330,7 @@ public static class JavaHelper
                     }
                     foreach (var item in GetOracleJavaInstallPath(@"SOFTWARE\JavaSoft\JDK\"))
                     {
-                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);
@@ -338,7 +338,7 @@ public static class JavaHelper
                     }
                     foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
                     {
-                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);
@@ -346,7 +346,7 @@ public static class JavaHelper
                     }
                     foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
                     {
-                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);
@@ -354,7 +354,7 @@ public static class JavaHelper
                     }
                     foreach (var item in GetZuluJavaInstallPath(@"SOFTWARE\Azul Systems\Zulu\"))
                     {
-                        var info = GetJavaInfo(Path.GetFullPath(item + @"\bin\javaw.exe"));
+                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
                         if (info != null)
                         {
                             list.Add(info);

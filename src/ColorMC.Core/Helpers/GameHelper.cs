@@ -336,7 +336,7 @@ public static class GameHelper
             }
             else if (e.IsFile)
             {
-                var file = Path.GetFullPath(LibrariesPath.GetNativeDir(version) + "/" + e.Name);
+                var file = Path.Combine(LibrariesPath.GetNativeDir(version), e.Name);
                 if (File.Exists(file))
                 {
                     continue;
@@ -364,7 +364,7 @@ public static class GameHelper
             }
             else if (e.IsFile)
             {
-                var file = Path.GetFullPath(LibrariesPath.GetNativeDir(version) + "/" + e.Name);
+                var file = Path.Combine(LibrariesPath.GetNativeDir(version), e.Name);
                 if (File.Exists(file))
                 {
                     continue;
@@ -826,8 +826,8 @@ public static class GameHelper
     /// <returns>是否存在</returns>
     public static bool IsMMCVersion(string dir)
     {
-        var file1 = Path.GetFullPath(dir + "/mmc-pack.json");
-        var file2 = Path.GetFullPath(dir + "/instance.cfg");
+        var file1 = Path.Combine(dir, AddGameHelper.Name1);
+        var file2 = Path.Combine(dir, AddGameHelper.Name2);
         if (File.Exists(file1) && File.Exists(file2))
         {
             return true;

@@ -28,6 +28,14 @@ public static class Launch
     public const string GAME_BASE_DIR = "%GAME_BASE_DIR%";
 
     /// <summary>
+    /// V1版Jvm参数
+    /// </summary>
+    private static readonly string[] s_v1JvmArg =
+    [
+        "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
+    ];
+
+    /// <summary>
     /// 获取Forge安装参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -126,20 +134,25 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cmd">命令</param>
-    /// <param name="env"></param>
+    /// <param name="env">运行环境</param>
     /// <param name="runsame">是否不等待结束</param>
+    /// <param name="admin">管理员启动</param>
     private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame, bool admin)
     {
         var args = cmd.Split('\n');
         var name = args[0].Trim();
-        var file = Path.GetFullPath(obj.GetBasePath() + "/" + name);
 
-        if (!File.Exists(file))
+        if (!File.Exists(name))
         {
-            file = name;
+            name = Path.Combine(obj.GetBasePath(), name);
+        }
+        if (!File.Exists(name))
+        {
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Error14"), name));
+            return;
         }
 
-        var info = new ProcessStartInfo(file)
+        var info = new ProcessStartInfo(name)
         {
             WorkingDirectory = obj.GetGamePath(),
             RedirectStandardError = true,
@@ -174,6 +187,7 @@ public static class Launch
                 p.Dispose();
             };
         }
+
         ProcessUtils.Launch(p, admin);
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
@@ -219,15 +233,6 @@ public static class Launch
         return res2.ExitCode;
     }
 
-
-    /// <summary>
-    /// V1版Jvm参数
-    /// </summary>
-    private static readonly string[] V1JvmArg =
-    [
-        "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
-    ];
-
     /// <summary>
     /// 创建V2版Jvm参数
     /// </summary>
@@ -238,7 +243,7 @@ public static class Launch
         var game = VersionPath.GetVersion(obj.Version)!;
         if (game.Arguments == null)
         {
-            return [.. V1JvmArg];
+            return [.. s_v1JvmArg];
         }
 
         var arg = new List<string>();
@@ -541,7 +546,7 @@ public static class Launch
             {
                 jvm.Add($"-Dlibdir={LibrariesPath.BaseDir}");
                 jvm.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-                jvm.Add($"-Doptifine={Path.GetFullPath(LibrariesPath.GetOptiFineLib(obj))}");
+                jvm.Add($"-Doptifine={LibrariesPath.GetOptiFineLib(obj)}");
                 if (v2)
                 {
                     jvm.Add("--add-opens");
@@ -564,7 +569,7 @@ public static class Launch
             //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
             //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
 
-            jvm.AddRange(v2 ? obj.MakeV2JvmArg() : V1JvmArg);
+            jvm.AddRange(v2 ? obj.MakeV2JvmArg() : s_v1JvmArg);
         }
 
         //auth
@@ -988,6 +993,7 @@ public static class Launch
         var temp1 = objs.First();
         try
         {
+            //刷新账户token
             var res1 = await larg.Auth.RefreshTokenAsync();
             if (res1.LoginState != LoginState.Done)
             {
@@ -1036,6 +1042,7 @@ public static class Launch
             return list;
         }
 
+        //逐个实例启动
         foreach (var obj in objs)
         {
             try
@@ -1313,6 +1320,12 @@ public static class Launch
         return list;
     }
 
+    /// <summary>
+    /// 生成游戏启动参数
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="larg">请求参数</param>
+    /// <returns>启动参数</returns>
     public static async Task<CreateCmdRes> CreateGameCmd(this GameSettingObj obj, GameLaunchArg larg)
     {
         //版本号检测
@@ -1355,6 +1368,7 @@ public static class Launch
             larg.Auth.Save();
         }
 
+        //是否为服务器实例
         if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
         {
             var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
@@ -1445,6 +1459,7 @@ public static class Launch
             envstr = "";
         }
 
+        //需要处理环境变量
         if (!string.IsNullOrWhiteSpace(envstr))
         {
             var list1 = envstr.Split('\n');
@@ -1553,6 +1568,7 @@ public static class Launch
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
 
+        //处理服务器实例
         if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
         {
             stopwatch.Restart();
@@ -1881,30 +1897,9 @@ public static class Launch
                 process.Dispose();
             };
 
-            //if(obj.Encoding == 0)
-            //{
-            //    process.OutputDataReceived += (a, b) =>
-            //    {
-            //        ColorMCCore.OnGameLog(obj, b.Data);
-            //    };
-            //    process.ErrorDataReceived += (a, b) =>
-            //    {
-            //        ColorMCCore.OnGameLog(obj, b.Data);
-            //    };
-            //}
-
             if (!ProcessUtils.Launch(process, larg.Admin))
             {
-                //if (obj.Encoding == 1)
-                //{
-
-                //}
-                //else
-                //{
-                //    process.BeginOutputReadLine();
-                //    process.BeginErrorReadLine();
-                //}
-
+                //监听日志
                 Encoding? encoding = null;
                 if (obj.Encoding == 1)
                 {

@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -116,17 +117,17 @@ public partial class GameEditModel
         }
 
         var opt = _obj.GetOptions();
-        if (opt.TryGetValue(GameLang.Name2, out var value1))
+        if (opt.TryGetValue(Names.NameLangKey2, out var value1))
         {
             if (value1 == _langList[value])
             {
                 return;
             }
-            opt[GameLang.Name2] = _langList[value];
+            opt[Names.NameLangKey2] = _langList[value];
         }
         else
         {
-            opt.Add(GameLang.Name2, _langList[value]);
+            opt.Add(Names.NameLangKey2, _langList[value]);
         }
 
         _obj.SaveOptions(opt);

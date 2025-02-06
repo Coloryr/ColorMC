@@ -8,12 +8,11 @@ namespace ColorMC.Gui.UI.Controls.Collect;
 
 public partial class CollectControl : BaseUserControl
 {
-    public CollectControl()
+    public CollectControl() : base(WindowManager.GetUseName<CollectControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("CollectWindow.Title");
-        UseName = ToString() ?? "GameSettingObj";
     }
 
     public override void Closed()

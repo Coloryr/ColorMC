@@ -17,14 +17,13 @@ public static class Screenshots
     /// <returns>截图列表</returns>
     public static List<ScreenshotObj> GetScreenshots(this GameSettingObj game)
     {
-        var list = new List<ScreenshotObj>();
         var dir = game.GetScreenshotsPath();
         if (!Directory.Exists(dir))
         {
-            Directory.CreateDirectory(dir);
-            return list;
+            return [];
         }
 
+        var list = new List<ScreenshotObj>();
         foreach (var item in Directory.GetFiles(dir))
         {
             list.Add(new()

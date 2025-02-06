@@ -106,7 +106,7 @@ public static class OpenFrpApi
         return (new()
         {
             Name = $"OpenFrp {data1}",
-            Local = FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full, true) + data1,
+            Local = FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full, data1),
             Url = data.data.source[0].value + data.data.latest + data1,
             Later = (stream) =>
             {

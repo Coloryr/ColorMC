@@ -15,6 +15,8 @@ namespace ColorMC.Gui.Joystick;
 /// </summary>
 public static class JoystickConfig
 {
+    public const string Name1 = "inputs";
+
     /// <summary>
     /// 配置文件列表
     /// </summary>
@@ -28,10 +30,9 @@ public static class JoystickConfig
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = dir + "/inputs";
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
         Directory.CreateDirectory(s_local);
 
@@ -83,7 +84,7 @@ public static class JoystickConfig
         ConfigSave.AddItem(new()
         {
             Name = obj.UUID + ".json",
-            File = s_local + "/" + obj.UUID + ".json",
+            File = Path.Combine(s_local, $"{obj.UUID}.json"),
             Obj = obj
         });
     }
@@ -108,7 +109,7 @@ public static class JoystickConfig
     {
         return new()
         {
-            UUID = Guid.NewGuid().ToString().ToLower(),
+            UUID = FuntionUtils.NewUUID(),
             Keys = new()
             {
                 { 0, new() { Key = Key.Q } },
@@ -151,7 +152,7 @@ public static class JoystickConfig
 
     private static string GenUUID()
     {
-        return Guid.NewGuid().ToString().ToLower()[..8];
+        return FuntionUtils.NewUUID()[..8];
     }
 
     /// <summary>

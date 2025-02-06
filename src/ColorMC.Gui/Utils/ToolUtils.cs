@@ -1,31 +1,47 @@
 using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 
-namespace ColorMC.Core.LaunchPath;
+namespace ColorMC.Gui.Utils;
 
 /// <summary>
 /// 工具路径
 /// </summary>
-public static class ToolPath
+public static class ToolUtils
 {
-    public const string Name = "tools";
+    public const string Name1 = "tools";
 
     /// <summary>
     /// 基础路径
     /// </summary>
-    public static string BaseDir { get; private set; }
+    private static string s_baseDir;
+
+    /// <summary>
+    /// 存档编辑器下载项目
+    /// </summary>
+    /// <returns></returns>
+    public static DownloadItemObj BuildMcaselectorItem()
+    {
+        return new()
+        {
+            Name = "mcaselector-2.4.2",
+            Local = Path.Combine(s_baseDir, "mcaselector-2.4.2.jar"),
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.4.2/mcaselector-2.4.2.jar"
+        };
+    }
 
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行目录</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        BaseDir = dir + "/" + Name;
+        s_baseDir = Path.Combine(ColorMCGui.RunDir, Name1);
 
-        Directory.CreateDirectory(BaseDir);
+        Directory.CreateDirectory(s_baseDir);
     }
 
     /// <summary>
@@ -34,7 +50,7 @@ public static class ToolPath
     /// <returns></returns>
     public static async Task<MessageRes> OpenMapEditAsync()
     {
-        var item = DownloadItemHelper.BuildMcaselectorItem();
+        var item = BuildMcaselectorItem();
         if (!File.Exists(item.Local))
         {
             var res = await DownloadManager.StartAsync([item]);

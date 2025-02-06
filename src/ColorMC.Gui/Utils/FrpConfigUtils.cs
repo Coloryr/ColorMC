@@ -13,6 +13,8 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class FrpConfigUtils
 {
+    public const string Name1 = "frp.json";
+
     /// <summary>
     /// Frp映射相关配置文件
     /// </summary>
@@ -26,10 +28,9 @@ public static class FrpConfigUtils
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = dir + "frp.json";
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
         Load(s_local, false);
     }

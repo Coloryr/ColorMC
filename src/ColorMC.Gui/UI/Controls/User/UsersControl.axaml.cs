@@ -10,12 +10,11 @@ public partial class UsersControl : BaseUserControl
 {
     public const string DialogName = "UsersControl";
 
-    public UsersControl()
+    public UsersControl() : base(WindowManager.GetUseName<UsersControl>())
     {
         InitializeComponent();
 
         Title = App.Lang("UserWindow.Title");
-        UseName = ToString() ?? "UsersControl";
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

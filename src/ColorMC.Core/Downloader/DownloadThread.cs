@@ -3,6 +3,7 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Downloader;
 
@@ -61,7 +62,7 @@ internal class DownloadThread
             }
         })
         {
-            Name = $"ColorMC_DownloadThread{index}"
+            Name = "ColorMC Download Thread"
         };
         _thread.Start();
     }
@@ -276,7 +277,7 @@ internal class DownloadThread
                     buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
 
                     //创建临时文件
-                    var file = Path.GetFullPath(DownloadManager.DownloadDir + '/' + Guid.NewGuid().ToString());
+                    var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
                     var stream = PathHelper.OpenWrite(file, true);
 
                     int bytesRead;

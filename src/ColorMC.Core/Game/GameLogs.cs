@@ -20,32 +20,37 @@ public static class GameLogs
     public static List<string> GetLogFiles(this GameSettingObj obj)
     {
         var list = new List<string>();
-        var path = Path.GetFullPath(obj.GetLogPath() + "/");
+        var path = obj.GetLogPath();
         if (Directory.Exists(path))
         {
             var list1 = Directory.GetFiles(path);
             foreach (var item in list1)
             {
-                list.Add(item.Replace(path, "logs/"));
+                list.Add(item.Replace(path, Names.NameGameLogDir));
             }
         }
 
-        path = Path.GetFullPath(obj.GetGameCrashReports() + "/");
+        path = obj.GetGameCrashReports();
         if (Directory.Exists(path))
         {
             var list1 = Directory.GetFiles(path);
             foreach (var item in list1)
             {
-                list.Add(item.Replace(path, "crash-reports/"));
+                list.Add(item.Replace(path, Names.NameGameCrashLogDir));
             }
         }
 
         return list;
     }
 
+    /// <summary>
+    /// 获取上一个崩溃日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>日志位置</returns>
     public static string? GetLastCrash(this GameSettingObj obj)
     {
-        var path = Path.GetFullPath(obj.GetGameCrashReports() + "/");
+        var path = obj.GetGameCrashReports();
         if (!Directory.Exists(path))
         {
             return null;
@@ -59,7 +64,7 @@ public static class GameLogs
             var time = file.LastWriteTime - DateTime.Now;
             if (time.TotalSeconds < 5)
             {
-                return file.FullName.Replace(path, "crash-reports/");
+                return file.FullName.Replace(path, Names.NameGameCrashLogDir);
             }
         }
 
@@ -76,17 +81,17 @@ public static class GameLogs
     {
         try
         {
-            var path = Path.GetFullPath(obj.GetGamePath() + "/" + file);
+            var path = Path.Combine(obj.GetGamePath(), file);
             if (!File.Exists(path))
             {
                 return null;
             }
 
-            if (path.EndsWith(".log") || path.EndsWith(".txt"))
+            if (path.EndsWith(Names.NameLogExt) || path.EndsWith(Names.NameTxtExt))
             {
                 return PathHelper.ReadText(path);
             }
-            else if (path.EndsWith(".log.gz"))
+            else if (path.EndsWith(Names.NameLogGzExt))
             {
                 //解压日志
                 using var compressedFileStream = PathHelper.OpenRead(path)!;

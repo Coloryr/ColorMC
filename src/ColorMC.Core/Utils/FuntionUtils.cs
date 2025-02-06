@@ -6,36 +6,8 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 其他函数
 /// </summary>
-public static partial class FuntionUtils
+public static class FuntionUtils
 {
-    [GeneratedRegex("[^0-9]+")]
-    private static partial Regex Regex1();
-
-    [GeneratedRegex("^[a-zA-Z0-9]+$")]
-    private static partial Regex Regex2();
-
-    /// <summary>
-    /// 检查是否为数字
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    public static bool CheckNotNumber(string? input)
-    {
-        if (string.IsNullOrWhiteSpace(input))
-            return true;
-        return Regex1().IsMatch(input);
-    }
-
-    /// <summary>
-    /// 检查是否为英文数字
-    /// </summary>
-    /// <param name="input"></param>
-    /// <returns></returns>
-    public static bool CheckIs(string input)
-    {
-        return Regex2().IsMatch(input);
-    }
-
     /// <summary>
     /// Tick转时间
     /// </summary>
@@ -96,6 +68,32 @@ public static partial class FuntionUtils
             Name = arg[1],
             Verison = arg[2]
         };
+    }
+
+    /// <summary>
+    /// 获取名字
+    /// </summary>
+    /// <param name="input">名字</param>
+    /// <returns>路径</returns>
+    public static string VersionNameToPath(string input)
+    {
+        var arg = input.Split(':');
+        var arg1 = arg[0].Split('.');
+        string path = "";
+        for (int a = 0; a < arg1.Length; a++)
+        {
+            path += arg1[a] + '/';
+        }
+        if (arg.Length > 3)
+        {
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
+        }
+        else
+        {
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
+        }
+
+        return path;
     }
 
     /// <summary>

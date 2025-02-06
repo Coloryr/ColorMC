@@ -100,39 +100,11 @@ public static class PathHelper
     /// </summary>
     /// <param name="name">名字</param>
     /// <returns>是否合理</returns>
-    public static bool PathHasInvalidChars(string name)
-    {
-        return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidPathChars()) >= 0
-            || name.All('.'.Equals) || name.Length > 50;
-    }
-
-    /// <summary>
-    /// 获取名字
-    /// </summary>
-    /// <param name="input">名字</param>
-    /// <returns>路径</returns>
-    public static string NameToPath(string input)
-    {
-        var arg = input.Split(':');
-        var arg1 = arg[0].Split('.');
-        string path = "";
-        for (int a = 0; a < arg1.Length; a++)
-        {
-            path += arg1[a] + '/';
-        }
-        if (arg.Length > 3)
-        {
-            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
-            //name = $"{arg[1]}-{arg[2]}-{arg[3]}.jar";
-        }
-        else
-        {
-            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
-            //name = $"{arg[1]}-{arg[2]}.jar";
-        }
-
-        return path;
-    }
+    //public static bool PathHasInvalidChars(string name)
+    //{
+    //    return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+    //        || name.All('.'.Equals) || name.Length > 50;
+    //}
 
     /// <summary>
     /// 获取所有文件
@@ -220,12 +192,12 @@ public static class PathHelper
     /// <summary>
     /// 复制文件
     /// </summary>
-    /// <param name="file1">输入文件</param>
-    /// <param name="file2">输出文件</param>
-    public static void CopyFile(string file1, string file2)
+    /// <param name="input">输入文件</param>
+    /// <param name="output">输出文件</param>
+    public static void CopyFile(string input, string output)
     {
-        using var stream = OpenRead(file1);
-        using var stream1 = OpenWrite(file2, true);
+        using var stream = OpenRead(input);
+        using var stream1 = OpenWrite(output, true);
         if (stream == null)
         {
             return;
@@ -236,12 +208,12 @@ public static class PathHelper
     /// <summary>
     /// 搬运文件
     /// </summary>
-    /// <param name="file1">输入文件</param>
-    /// <param name="file2">输出文件</param>
-    public static void MoveFile(string file1, string file2)
+    /// <param name="input">输入文件</param>
+    /// <param name="output">输出文件</param>
+    public static void MoveFile(string input, string output)
     {
-        CopyFile(file1, file2);
-        Delete(file1);
+        CopyFile(input, output);
+        Delete(input);
     }
 
     /// <summary>
@@ -324,6 +296,7 @@ public static class PathHelper
         {
             return ColorMCCore.PhoneReadFile(local);
         }
+        local = Path.GetFullPath(local);
         if (File.Exists(local))
         {
             return File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -340,6 +313,7 @@ public static class PathHelper
     /// <returns>流</returns>
     public static Stream OpenWrite(string local, bool create)
     {
+        local = Path.GetFullPath(local);
         var info = new FileInfo(local);
         info.Directory?.Create();
         return File.Open(local, create ? FileMode.Create : FileMode.OpenOrCreate,
@@ -410,8 +384,6 @@ public static class PathHelper
     /// <param name="data">数据</param>
     public static void WriteBytes(string local, byte[] data)
     {
-        var info = new FileInfo(local);
-        info.Directory?.Create();
         using var stream = OpenWrite(local, true);
         stream.Write(data, 0, data.Length);
     }
@@ -423,8 +395,6 @@ public static class PathHelper
     /// <param name="data">数据</param>
     public static void WriteBytes(string local, Stream data)
     {
-        var info = new FileInfo(local);
-        info.Directory?.Create();
         using var stream = OpenWrite(local, true);
         data.CopyTo(stream);
     }
@@ -437,8 +407,6 @@ public static class PathHelper
     /// <returns></returns>
     public static async Task WriteBytesAsync(string local, Stream data)
     {
-        var info = new FileInfo(local);
-        info.Directory?.Create();
         using var stream = OpenWrite(local, true);
         await data.CopyToAsync(stream);
     }
@@ -467,6 +435,11 @@ public static class PathHelper
         return builder.ToString();
     }
 
+    /// <summary>
+    /// 读取byte数据
+    /// </summary>
+    /// <param name="local">文件路径</param>
+    /// <returns>数据</returns>
     public static byte[]? ReadByte(string local)
     {
         using var stream = OpenRead(local);

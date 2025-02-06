@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
@@ -502,8 +503,8 @@ public static class WebBinding
 
                 if (item.Old.Disable)
                 {
-                    item.Item.Local = Path.ChangeExtension(item.Item.Local, Mods.Name3);
-                    item.Info.File = Path.ChangeExtension(item.Info.File, Mods.Name3);
+                    item.Item.Local = Path.ChangeExtension(item.Item.Local, Names.NameDisableExt);
+                    item.Info.File = Path.ChangeExtension(item.Info.File, Names.NameDisableExt);
                 }
             }
 
@@ -1767,8 +1768,8 @@ public static class WebBinding
 
                     if (arg.Old.Disable)
                     {
-                        arg.Item.Local = Path.ChangeExtension(arg.Item.Local, Mods.Name3);
-                        arg.Info.File = Path.ChangeExtension(arg.Info.File, Mods.Name3);
+                        arg.Item.Local = Path.ChangeExtension(arg.Item.Local, Names.NameDisableExt);
+                        arg.Info.File = Path.ChangeExtension(arg.Info.File, Names.NameDisableExt);
                     }
                 }
 

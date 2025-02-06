@@ -17,6 +17,8 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UpdateUtils
 {
+    public const string Name1 = "dll";
+
     public static readonly string[] WebSha1s = ["", "", "", ""];
     public static readonly string[] Sha1s = ["", "", "", ""];
     public static readonly string[] LocalPath = ["", "", "", ""];
@@ -28,10 +30,10 @@ public static class UpdateUtils
             return;
         }
 
-        LocalPath[0] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.dll");
-        LocalPath[1] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb");
-        LocalPath[2] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll");
-        LocalPath[3] = Path.GetFullPath($"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb");
+        LocalPath[0] = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Core.dll");
+        LocalPath[1] = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Core.pdb");
+        LocalPath[2] = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Gui.dll");
+        LocalPath[3] = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Gui.pdb");
 
         for (int a = 0; a < 4; a++)
         {
@@ -95,7 +97,7 @@ public static class UpdateUtils
                 Name = "ColorMC.Core.dll",
                 Sha1 = WebSha1s[0],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.dll",
-                Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.dll",
+                Local = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Core.dll"),
                 Overwrite = true
             },
             new()
@@ -103,7 +105,7 @@ public static class UpdateUtils
                 Name = "ColorMC.Core.pdb",
                 Sha1 = WebSha1s[1],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.pdb",
-                Local = $"{ColorMCGui.RunDir}dll/ColorMC.Core.pdb",
+                Local = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Core.pdb"),
                 Overwrite = true
             },
             new()
@@ -111,7 +113,7 @@ public static class UpdateUtils
                 Name = "ColorMC.Gui.dll",
                 Sha1 = WebSha1s[2],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.dll",
-                Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.dll",
+                Local = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Gui.dll"),
                 Overwrite = true
             },
             new()
@@ -119,7 +121,7 @@ public static class UpdateUtils
                 Name = "ColorMC.Gui.pdb",
                 Sha1 = WebSha1s[3],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.pdb",
-                Local = $"{ColorMCGui.RunDir}dll/ColorMC.Gui.pdb",
+                Local = Path.Combine(ColorMCGui.RunDir, Name1, "ColorMC.Gui.pdb"),
                 Overwrite = true
             }
         };

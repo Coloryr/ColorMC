@@ -5,6 +5,9 @@ using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 广播服务器
+/// </summary>
 public class LanServer
 {
     private readonly string _motd;
@@ -14,22 +17,29 @@ public class LanServer
 
     private bool _isRun;
 
-    private readonly Socket _socket;
-    private readonly IPEndPoint _send;
-    public LanServer(string port, string? motd)
+    private readonly Socket _socketV4;
+    private readonly IPEndPoint _sendV4;
+
+    private readonly Socket _socketV6;
+    private readonly IPEndPoint _sendV6;
+
+    public LanServer(string port, string motd)
     {
-        _motd = motd ?? "ColorMC";
+        _motd = motd;
         _port = port;
 
         _data = Encoding.UTF8.GetBytes(LanGameHelper.MakeMotd(_motd, _port));
 
-        _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-        _send = new IPEndPoint(IPAddress.Parse("224.0.2.60"), 4445);
+        _socketV4 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        _socketV4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        _sendV4 = new IPEndPoint(IPAddress.Parse(LanGameHelper.IPv4), LanGameHelper.Port);
+        _socketV6 = new Socket(AddressFamily.InterNetworkV6, SocketType.Dgram, ProtocolType.Udp);
+        _socketV6.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        _sendV6 = new IPEndPoint(IPAddress.Parse(LanGameHelper.IPv6), LanGameHelper.Port);
         _isRun = true;
         new Thread(Run)
         {
-            Name = "ColorMC NetFrp"
+            Name = "ColorMC Lan Server"
         }.Start();
     }
 
@@ -42,8 +52,9 @@ public class LanServer
     {
         while (_isRun)
         {
-            _socket.SendTo(_data, _send);
-            Thread.Sleep(1500);
+            _socketV4.SendTo(_data, _sendV4);
+            _socketV6.SendTo(_data, _sendV6);
+            Thread.Sleep(3000);
         }
     }
 }

@@ -16,9 +16,9 @@ namespace ColorMC.Gui.Utils;
 /// <summary>
 /// 游戏统计
 /// </summary>
-public static class GameCount
+public static class GameCountUtils
 {
-    public const string Name = "count.dat";
+    public const string Name1 = "count.dat";
 
     private static string s_local;
     private static bool s_isSave;
@@ -36,10 +36,9 @@ public static class GameCount
     /// <summary>
     /// 初始化游戏统计
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = Path.GetFullPath(dir + Name);
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
         s_isRun = true;
 

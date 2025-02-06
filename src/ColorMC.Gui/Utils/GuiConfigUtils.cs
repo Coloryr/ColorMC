@@ -15,6 +15,8 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class GuiConfigUtils
 {
+    public const string Name1 = "gui.json";
+
     public static GuiConfigObj Config { get; set; }
 
     private static string s_local;
@@ -22,10 +24,9 @@ public static class GuiConfigUtils
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        s_local = dir + "gui.json";
+        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
 
         Load(s_local);
     }

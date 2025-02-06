@@ -16,32 +16,27 @@ namespace ColorMC.Gui.Utils;
 
 public static class FrpLaunchUtils
 {
-    public const string Name1 = "frp";
+    public const string Name1 = "frpc";
     public const string Name2 = "0.51.0-sakura-9.2";
+    public const string Name3 = "frpc.exe";
+    public const string Name4 = "SakuraFrp";
+    public const string Name5 = "OpenFrp";
 
     public static string BaseDir { get; private set; }
 
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    public static void Init()
     {
-        BaseDir = dir;
-
-        if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
-        {
-            BaseDir += "/";
-        }
-
-        BaseDir += Name1;
+        BaseDir = Path.Combine(ColorMCGui.RunDir, Name1);
 
         Directory.CreateDirectory(BaseDir);
     }
 
     private static string GetFrpcName()
     {
-        return SystemInfo.Os == OsType.Windows ? "frpc.exe" : "frpc";
+        return SystemInfo.Os == OsType.Windows ? Name3 : Name1;
     }
 
     /// <summary>
@@ -51,17 +46,17 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetSakuraFrpLocal(string ver)
     {
-        return $"{BaseDir}/SakuraFrp/{ver}/{GetFrpcName()}";
+        return Path.Combine(BaseDir, Name4, ver, GetFrpcName());
     }
 
     /// <summary>
-    /// 获取SakuraFrp文件路径
+    /// 获取OpenFrp文件路径
     /// </summary>
     /// <param name="ver"></param>
     /// <returns></returns>
-    public static string GetOpenFrpLocal(string ver, bool dir = false)
+    public static string GetOpenFrpLocal(string ver, string? filename = null)
     {
-        return dir ? $"{BaseDir}/OpenFrp/{ver}/" : $"{BaseDir}/OpenFrp/{ver}/{GetFrpcName()}";
+        return filename != null ? Path.Combine(BaseDir, Name5, ver, filename) : Path.Combine(BaseDir, Name5, ver, GetFrpcName());
     }
 
     /// <summary>

@@ -17,12 +17,11 @@ public partial class GameExportControl : MenuControl
     private Tab3Control _tab3;
     private Tab4Control _tab4;
 
-    public GameExportControl(GameSettingObj obj)
+    public GameExportControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameExportControl>(obj))
     {
         _obj = obj;
 
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
-        UseName = (ToString() ?? "GameExportControl") + ":" + obj.UUID;
     }
 
     public override async void Opened()

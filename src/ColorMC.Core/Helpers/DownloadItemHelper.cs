@@ -32,23 +32,10 @@ public static class DownloadItemHelper
     /// <returns></returns>
     public static SourceType TestSourceType(string? pid, string? fid)
     {
-        return FuntionUtils.CheckNotNumber(pid) || FuntionUtils.CheckNotNumber(fid)
+        return CheckHelpers.CheckNotNumber(pid) || CheckHelpers.CheckNotNumber(fid)
             ? SourceType.Modrinth : SourceType.CurseForge;
     }
 
-    /// <summary>
-    /// 存档编辑器下载项目
-    /// </summary>
-    /// <returns></returns>
-    public static DownloadItemObj BuildMcaselectorItem()
-    {
-        return new()
-        {
-            Name = "mcaselector-2.4.2",
-            Local = Path.GetFullPath($"{ToolPath.BaseDir}/mcaselector-2.4.2.jar"),
-            Url = "https://github.com/Querz/mcaselector/releases/download/2.4.2/mcaselector-2.4.2.jar"
-        };
-    }
     /// <summary>
     /// 安全Log4j文件
     /// </summary>
@@ -60,7 +47,7 @@ public static class DownloadItemHelper
         {
             Name = "log4j2-xml",
             Url = obj.Logging.Client.File.Url,
-            Local = Path.GetFullPath($"{VersionPath.BaseDir}/log4j2-xml"),
+            Local = Path.Combine(VersionPath.BaseDir, "log4j2-xml"),
             Sha1 = obj.Logging.Client.File.Sha1
         };
     }
@@ -77,7 +64,7 @@ public static class DownloadItemHelper
         {
             Name = name,
             Url = UrlHelper.DownloadAssets(hash, CoreHttpClient.Source),
-            Local = Path.GetFullPath($"{AssetsPath.ObjectsDir}/{hash[..2]}/{hash}"),
+            Local = Path.Combine(AssetsPath.ObjectsDir, hash[..2], hash),
             Sha1 = hash
         };
     }
@@ -118,7 +105,7 @@ public static class DownloadItemHelper
         {
             Url = url + name + ".jar",
             Name = $"net.minecraftforge:forge:{mc}-{version}-{type}",
-            Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/net/minecraftforge/forge/{mc}-{version}/{name}.jar"),
+            Local = Path.Combine(LibrariesPath.BaseDir, "net", "minecraftforge", "forge", $"{mc}-{version}/{name}.jar"),
         };
     }
 
@@ -697,7 +684,7 @@ public static class DownloadItemHelper
                     }
                     else if (!string.IsNullOrWhiteSpace(item.Url))
                     {
-                        var path = PathHelper.NameToPath(item.Name);
+                        var path = FuntionUtils.VersionNameToPath(item.Name);
                         info.Libraries.Add(new()
                         {
                             Name = item.Name,
@@ -786,7 +773,7 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.Libraries)
         {
-            var name = PathHelper.NameToPath(item.Name);
+            var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
@@ -856,7 +843,7 @@ public static class DownloadItemHelper
 
         foreach (var item in meta1.Libraries)
         {
-            var name = PathHelper.NameToPath(item.Name);
+            var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),

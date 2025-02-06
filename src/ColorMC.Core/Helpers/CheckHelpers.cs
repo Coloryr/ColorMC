@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -14,8 +15,36 @@ namespace ColorMC.Core.Helpers;
 /// <summary>
 /// 文件检查
 /// </summary>
-public static class CheckHelpers
+public static partial class CheckHelpers
 {
+    [GeneratedRegex("[^0-9]+")]
+    private static partial Regex Regex1();
+
+    [GeneratedRegex("^[a-zA-Z0-9]+$")]
+    private static partial Regex Regex2();
+
+    /// <summary>
+    /// 检查是否为数字
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static bool CheckNotNumber(string? input)
+    {
+        if (string.IsNullOrWhiteSpace(input))
+            return true;
+        return Regex1().IsMatch(input);
+    }
+
+    /// <summary>
+    /// 检查是否为英文数字
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static bool CheckIs(string input)
+    {
+        return Regex2().IsMatch(input);
+    }
+
     /// <summary>
     /// 检查是否允许
     /// </summary>
@@ -527,7 +556,7 @@ public static class CheckHelpers
                     {
                         return;
                     }
-                    var path = Path.GetFullPath($"{obj.GetGamePath()}/{item.Path}/{item.File}");
+                    var path = Path.Combine(obj.GetGamePath(), item.Path, item.File);
                     list.Add(new()
                     {
                         Url = item.Url,
@@ -745,7 +774,7 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 break;
 
-            var name = PathHelper.NameToPath(item.Name);
+            var name = FuntionUtils.VersionNameToPath(item.Name);
             string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {
@@ -781,7 +810,7 @@ public static class CheckHelpers
             if (cancel.IsCancellationRequested)
                 return null;
 
-            var name = PathHelper.NameToPath(item.Name);
+            var name = FuntionUtils.VersionNameToPath(item.Name);
             string file = $"{LibrariesPath.BaseDir}/{name}";
             if (!File.Exists(file))
             {

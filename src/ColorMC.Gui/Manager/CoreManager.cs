@@ -65,7 +65,7 @@ public static class CoreManager
     private static void GameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
         GameManager.GameExit(obj);
-        GameCount.GameClose(obj);
+        GameCountUtils.GameClose(obj);
         UserBinding.UnLockUser(obj1);
         Dispatcher.UIThread.Post(() =>
         {

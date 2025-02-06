@@ -19,16 +19,20 @@ public partial class GameConfigEditControl : BaseUserControl
     //private readonly TextMate.Installation textMateInstallation;
     //private readonly RegistryOptions registryOptions;
 
-    public GameConfigEditControl()
+    public GameConfigEditControl() : base(WindowManager.GetUseName<GameConfigEditControl>())
     {
         InitializeComponent();
 
+        Hook();
+    }
+
+    private void Hook()
+    {
         NbtViewer.PointerPressed += NbtViewer_PointerPressed;
         NbtViewer.KeyDown += NbtViewer_KeyDown;
 
         TextEditor1.KeyDown += NbtViewer_KeyDown;
         TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
-
 
         //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
         //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
@@ -42,26 +46,28 @@ public partial class GameConfigEditControl : BaseUserControl
         }
     }
 
-    public GameConfigEditControl(WorldObj world) : this()
+    public GameConfigEditControl(WorldObj world) : base(WindowManager.GetUseName<GameConfigEditControl>(world.Game) + ":" + world.LevelName)
     {
+        InitializeComponent();
+
         _world = world;
         _obj = world.Game;
 
         Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
                 world.Game.Name, world.LevelName);
 
-        UseName = (ToString() ?? "GameConfigEditControl")
-            + ":" + world.Game.UUID + ":" + world.LevelName;
+        Hook();
     }
 
-    public GameConfigEditControl(GameSettingObj obj) : this()
+    public GameConfigEditControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameConfigEditControl>(obj))
     {
+        InitializeComponent();
+
         _obj = obj;
 
-        UseName = (ToString() ?? "GameConfigEditControl") + ":" + obj.UUID;
+        Title = string.Format(App.Lang("ConfigEditWindow.Title"), obj.Name);
 
-        Title = string.Format(App.Lang("ConfigEditWindow.Title"),
-                obj.Name);
+        Hook();
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)

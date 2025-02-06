@@ -22,10 +22,9 @@ public static class ConfigUtils
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行的路径</param>
-    public static void Init(string dir)
+    internal static void Init()
     {
-        s_local = dir + "config.json";
+        s_local = Path.Combine(ColorMCCore.BaseDir, Names.NameConfigFile);
 
         Load(s_local);
     }
@@ -107,7 +106,7 @@ public static class ConfigUtils
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
         ConfigSave.AddItem(new()
         {
-            Name = "config.json",
+            Name = Names.NameConfigFile,
             File = s_local,
             Obj = Config
         });

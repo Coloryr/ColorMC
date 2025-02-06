@@ -45,12 +45,12 @@ public static class DownloadManager
     /// <summary>
     /// 初始化
     /// </summary>
-    /// <param name="dir">运行路径</param>
-    public static void Init(string dir)
+    internal static void Init()
     {
         ColorMCCore.Stop += Close;
 
-        DownloadDir = dir + "download";
+        DownloadDir = Path.Combine(ColorMCCore.BaseDir, Names.NameDownloadDir);
+
         Directory.CreateDirectory(DownloadDir);
 
         InitThread();
@@ -59,7 +59,7 @@ public static class DownloadManager
     /// <summary>
     /// 停止下载
     /// </summary>
-    public static void DownloadStop()
+    public static void Stop()
     {
         if (s_stop)
         {
@@ -74,7 +74,7 @@ public static class DownloadManager
     /// <summary>
     /// 暂停下载
     /// </summary>
-    public static void DownloadPause()
+    public static void Pause()
     {
         if (s_stop)
         {
@@ -89,7 +89,7 @@ public static class DownloadManager
     /// <summary>
     /// 继续下载
     /// </summary>
-    public static void DownloadResume()
+    public static void Resume()
     {
         if (s_stop)
         {
@@ -211,7 +211,7 @@ public static class DownloadManager
     /// </summary>
     private static void InitThread()
     {
-        DownloadStop();
+        Stop();
         Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
             ConfigUtils.Config.Http.DownloadThread));
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)

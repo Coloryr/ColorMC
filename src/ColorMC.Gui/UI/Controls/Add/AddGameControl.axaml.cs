@@ -19,12 +19,11 @@ public partial class AddGameControl : BaseUserControl
     private AddGameTab3Control _tab3;
     private AddGameTab4Control _tab4;
 
-    public AddGameControl()
+    public AddGameControl() : base(nameof(AddGameControl))
     {
         InitializeComponent();
 
         Title = App.Lang("AddGameWindow.Title");
-        UseName = ToString() ?? "AddGameControl";
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

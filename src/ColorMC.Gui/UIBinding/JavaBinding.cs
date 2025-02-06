@@ -157,12 +157,7 @@ public static class JavaBinding
                 break;
         }
 
-        if (Directory.Exists(JvmPath.BaseDir))
-        {
-            return new DirectoryInfo(JvmPath.BaseDir);
-        }
-
-        return null;
+        return new DirectoryInfo(JvmPath.JavaDir);
     }
 
     /// <summary>

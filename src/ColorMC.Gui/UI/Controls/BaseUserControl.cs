@@ -11,8 +11,10 @@ namespace ColorMC.Gui.UI.Controls;
 
 public abstract class BaseUserControl : UserControl, ITopWindow
 {
-    public BaseUserControl()
+    public BaseUserControl(string usename)
     {
+        UseName = usename;
+
         SizeChanged += BaseUserControl_SizeChanged;
     }
 
@@ -26,7 +28,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
 
     public IBaseWindow Window => WindowManager.FindRoot(VisualRoot);
     public string Title { get; protected set; }
-    public string UseName { get; init; }
+    public string UseName { get; private init; }
     public abstract Bitmap GetIcon();
     public void SetBaseModel(BaseModel model)
     {

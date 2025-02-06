@@ -165,7 +165,7 @@ public static class BaseBinding
     /// </summary>
     public static void DownloadStop()
     {
-        DownloadManager.DownloadStop();
+        DownloadManager.Stop();
     }
 
     /// <summary>
@@ -173,7 +173,7 @@ public static class BaseBinding
     /// </summary>
     public static void DownloadPause()
     {
-        DownloadManager.DownloadPause();
+        DownloadManager.Pause();
     }
 
     /// <summary>
@@ -181,7 +181,7 @@ public static class BaseBinding
     /// </summary>
     public static void DownloadResume()
     {
-        DownloadManager.DownloadResume();
+        DownloadManager.Resume();
     }
 
     /// <summary>
@@ -284,7 +284,7 @@ public static class BaseBinding
             {
                 var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
                 dynamic shell = Activator.CreateInstance(shellType)!;
-                var file = $"{ColorMCGui.RunDir}{obj.Name}.lnk";
+                var file = Path.Combine(ColorMCGui.RunDir, $"{obj.Name}.lnk");
                 var shortcut = shell.CreateShortcut(file);
                 var path = Environment.ProcessPath;
                 shortcut.TargetPath = path;

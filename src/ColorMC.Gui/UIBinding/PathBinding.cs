@@ -139,7 +139,7 @@ public static class PathBinding
         switch (type)
         {
             case PathType.BasePath:
-                OpenPathWithExplorer(ColorMCCore.BaseDir);
+                OpenPathWithExplorer(ColorMCGui.RunDir);
                 break;
             case PathType.RunPath:
                 OpenPathWithExplorer(AppContext.BaseDirectory);
@@ -148,10 +148,10 @@ public static class PathBinding
                 OpenPathWithExplorer(DownloadManager.DownloadDir);
                 break;
             case PathType.JavaPath:
-                OpenPathWithExplorer(JvmPath.BaseDir + JvmPath.Name1);
+                OpenPathWithExplorer(JvmPath.JavaDir);
                 break;
             case PathType.PicPath:
-                OpenPathWithExplorer(ImageManager.Local);
+                OpenPathWithExplorer(ImageManager.GetImagePath());
                 break;
         }
     }
@@ -600,7 +600,7 @@ public static class PathBinding
             case FileType.Schematic:
                 var res = await SelectFile(top,
                       App.Lang("GameEditWindow.Tab12.Text1"),
-                      ["*" + Schematic.Name1, "*" + Schematic.Name2],
+                      [$"*{Names.NameLitematicExt}", $"*{Names.NameSchematicExt}"],
                       App.Lang("PathBinding.Text23"), true);
                 if (res?.Any() == true)
                 {
@@ -973,22 +973,26 @@ public static class PathBinding
         return true;
     }
 
-    public static async Task CopyBG(string pic)
+    public static async Task<string> CopyBG(string pic)
     {
         try
         {
             using var stream = PathHelper.OpenRead(pic);
             if (stream == null)
-                return;
-            string file = ColorMCGui.RunDir + "BG";
+                return pic;
+            string file = Path.Combine(ColorMCGui.RunDir, "BG");
             PathHelper.Delete(file);
-            using var temp = File.Create(file);
+            using var temp = PathHelper.OpenWrite(file, true);
             await stream.CopyToAsync(temp);
+
+            return file;
         }
         catch (Exception e)
         {
             Logs.Error(App.Lang("PathBinding.Error1"), e);
         }
+
+        return pic;
     }
 
     public static void OpenPicFile(string screenshot)

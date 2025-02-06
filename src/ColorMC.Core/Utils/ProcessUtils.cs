@@ -4,8 +4,15 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Utils;
 
+/// <summary>
+/// 进程相关函数
+/// </summary>
 public static class ProcessUtils
 {
+    /// <summary>
+    /// 是否是管理员启动
+    /// </summary>
+    /// <returns></returns>
     public static bool IsRunAsAdmin()
     {
         if (SystemInfo.Os == OsType.Windows)
@@ -45,6 +52,12 @@ public static class ProcessUtils
         }
     }
 
+    /// <summary>
+    /// 启动进程
+    /// </summary>
+    /// <param name="process">进程</param>
+    /// <param name="admin">是否是管理员启动</param>
+    /// <returns>是否启动</returns>
     public static bool Launch(Process process, bool admin)
     {
         if (admin && !IsRunAsAdmin())
@@ -79,6 +92,10 @@ public static class ProcessUtils
         return false;
     }
 
+    /// <summary>
+    /// 以管理员方式启动ColorMC
+    /// </summary>
+    /// <param name="args">启动参数</param>
     public static void LaunchAdmin(string[] args)
     {
         var file = Environment.ProcessPath!;

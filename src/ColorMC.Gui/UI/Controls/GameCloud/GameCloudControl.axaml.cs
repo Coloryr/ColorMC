@@ -16,12 +16,11 @@ public partial class GameCloudControl : MenuControl
 
     public GameSettingObj Obj { get; }
 
-    public GameCloudControl(GameSettingObj obj)
+    public GameCloudControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameCloudControl>(obj))
     {
         Obj = obj;
 
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
-        UseName = (ToString() ?? "GameCloudControl") + ":" + obj.UUID;
     }
 
     public override async void Opened()

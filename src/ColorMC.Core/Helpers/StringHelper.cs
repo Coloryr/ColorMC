@@ -297,7 +297,7 @@ public static partial class StringHelper
             return input;
         }
 
-        return input.Substring(0, index) + newValue + input.Substring(index + oldValue.Length);
+        return string.Concat(input.AsSpan(0, index), newValue, input.AsSpan(index + oldValue.Length));
     }
 
     /// <summary>
