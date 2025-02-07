@@ -63,9 +63,9 @@ namespace ColorMC.Core {
         /// <summary>
         ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        internal static byte[] ColorMCASM_1_0_all {
+        internal static byte[] ColorMCASM_1_1_all {
             get {
-                object obj = ResourceManager.GetObject("ColorMCASM_1_0_all", resourceCulture);
+                object obj = ResourceManager.GetObject("ColorMCASM-1.1-all", resourceCulture);
                 return ((byte[])(obj));
             }
         }

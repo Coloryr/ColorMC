@@ -52,7 +52,7 @@ public partial class MainModel : TopModel, IMutTop
     private string _helloText;
 
     [ObservableProperty]
-    private string _audioIcon = _icons[1];
+    private string _audioIcon = ImageManager.MusicIcons[1];
 
     private bool _isGetNewInfo;
     private int _helloClick;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -243,11 +244,6 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     public void SetIcon(Bitmap icon)
     {
         Model.SetIcon(icon);
-    }
-
-    public void Hide()
-    {
-        (VisualRoot as Window)?.Hide();
     }
 
     public void WindowStateChange(WindowState windowState)

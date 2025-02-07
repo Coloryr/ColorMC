@@ -3,6 +3,7 @@ using System.IO;
 using Avalonia.Animation;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -13,12 +14,6 @@ namespace ColorMC.Gui.UI.Model.Main;
 
 public partial class MainModel
 {
-    private static readonly string[] _icons =
-    [
-        "/Resource/Icon/play.svg",
-        "/Resource/Icon/pause.svg"
-    ];
-
     private bool _isplay = true;
 
     [ObservableProperty]
@@ -48,7 +43,7 @@ public partial class MainModel
         if (_isplay)
         {
             BaseBinding.MusicPause();
-            AudioIcon = _icons[0];
+            AudioIcon = ImageManager.MusicIcons[0];
             Model.Title = "ColorMC";
         }
         else
@@ -61,7 +56,7 @@ public partial class MainModel
             {
                 BaseBinding.MusicPlay();
             }
-            AudioIcon = _icons[1];
+            AudioIcon = ImageManager.MusicIcons[1];
             Model.Title = "ColorMC " + App.Lang("MainWindow.Info33");
         }
 
@@ -78,7 +73,7 @@ public partial class MainModel
             if (temp.Item1 == PlayState.Stop)
             {
                 _musicLoop = false;
-                AudioIcon = _icons[0];
+                AudioIcon = ImageManager.MusicIcons[0];
                 Model.Title = "ColorMC";
                 _isplay = false;
             }

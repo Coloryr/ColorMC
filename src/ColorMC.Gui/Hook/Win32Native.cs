@@ -94,7 +94,7 @@ public class Win32Native : INative
         int key1 = 0;
         if (key.KeyModifiers == KeyModifiers.Alt)
         {
-            KeyInterop.VirtualKeyFromKey(Key.LeftAlt);
+            key1 = KeyInterop.VirtualKeyFromKey(Key.LeftAlt);
         }
         else if (key.KeyModifiers == KeyModifiers.Control)
         {

@@ -76,6 +76,9 @@ public static class ImageManager
     /// </summary>
     public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
 
+
+    public static readonly string[] MusicIcons = [ "/Resource/Icon/play.svg", "/Resource/Icon/pause.svg" ];
+
     /// <summary>
     /// 运行路径
     /// </summary>

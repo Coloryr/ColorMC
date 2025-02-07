@@ -259,7 +259,7 @@ public static class GameHelper
     /// </summary>
     public static void ReadyColorMCASM()
     {
-        ColorMCASM = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "colormc", "ColorMCASM", "1.0", "ColorMCASM-1.0-all.jar");
+        ColorMCASM = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "colormc", "ColorMCASM", "1.1", "ColorMCASM-1.1-all.jar");
         var file = new FileInfo(ColorMCASM);
         if (!file.Exists)
         {
@@ -267,7 +267,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            PathHelper.WriteBytes(file.FullName, Resource1.ColorMCASM_1_0_all);
+            PathHelper.WriteBytes(file.FullName, Resource1.ColorMCASM_1_1_all);
         }
     }
 

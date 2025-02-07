@@ -179,7 +179,6 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
         try
         {
-            // Cubism SDK の初期化
             var cubismAllocator = new LAppAllocator();
             var cubismOption = new CubismOption()
             {
@@ -228,23 +227,16 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         }
 
         if (!_init)
+        {
             return;
+        }
         var model = (DataContext as MainModel)!;
         if (_change)
         {
             _change = false;
             ChangeModel();
             model.ChangeModelDone();
-            var random = new Random();
-            var index = random.Next(1000);
-            if (index == 666)
-            {
-                model.ShowMessage("Ciallo～(∠·ω< )⌒★");
-            }
-            else
-            {
-                model.ShowMessage(App.Lang("Live2dControl.Text1"));
-            }
+            model.ModelShowHello();
         }
         if (_delete)
         {

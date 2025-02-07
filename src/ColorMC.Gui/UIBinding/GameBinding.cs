@@ -2633,7 +2633,7 @@ public static class GameBinding
             try
             {
                 var conf = obj.Window;
-                HookUtils.WaitWindowDisplay(pr);
+                //HookUtils.WaitWindowDisplay(pr);
 
                 if (pr.HasExited)
                 {
@@ -2658,8 +2658,7 @@ public static class GameBinding
 
                 //修改窗口标题
 
-                if (SystemInfo.Os == OsType.MacOS
-                || string.IsNullOrWhiteSpace(conf?.GameTitle))
+                if (string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
                     return;
                 }
@@ -2703,7 +2702,7 @@ public static class GameBinding
                         title1 = list[i];
                     }
 
-                    HookUtils.SetTitle(pr, title1);
+                    LaunchSocketUtils.SetTitle(obj, title1);
 
                     if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
                     {

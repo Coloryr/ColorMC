@@ -418,4 +418,20 @@ public partial class MainControl : BaseUserControl
             model.IconChange(uuid);
         }
     }
+
+    public void Hide()
+    {
+        if (DataContext is MainModel model)
+        {
+            model.Render = false;
+        }
+    }
+
+    public void Show()
+    {
+        if (DataContext is MainModel model)
+        {
+            model.Render = true;
+        }
+    }
 }
