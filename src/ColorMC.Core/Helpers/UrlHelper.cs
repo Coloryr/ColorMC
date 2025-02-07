@@ -310,7 +310,9 @@ public static class UrlHelper
         };
 
         if (replace == null)
+        {
             return url;
+        }
 
         return url.Replace(Fabric, replace);
     }
@@ -330,7 +332,9 @@ public static class UrlHelper
         };
 
         if (replace == null)
+        {
             return url;
+        }
 
         return url.Replace($"{Quilt}repository/release/", replace);
     }

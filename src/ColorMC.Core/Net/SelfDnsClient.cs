@@ -4,6 +4,9 @@ using Ae.Dns.Protocol;
 
 namespace ColorMC.Core.Net;
 
+/// <summary>
+/// DNS over https客户端
+/// </summary>
 public class SelfHttpDnsClient : IDnsClient
 {
     private readonly DnsHttpClient _client;

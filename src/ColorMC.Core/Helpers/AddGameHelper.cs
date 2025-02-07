@@ -155,7 +155,7 @@ public static class AddGameHelper
                 bool find = false;
                 foreach (ZipEntry e in zFile)
                 {
-                    if (e.IsFile && e.Name == InstancesPath.Name1)
+                    if (e.IsFile && e.Name == Names.NameGameFile)
                     {
                         using var stream = zFile.GetInputStream(e);
                         await stream.CopyToAsync(stream1);
@@ -375,7 +375,7 @@ public static class AddGameHelper
                     if (e.IsFile && e.Name.StartsWith(overrides))
                     {
                         string file = Path.Combine(game.GetGamePath(), e.Name[overrides.Length..]);
-                        if (e.Name.EndsWith(InstancesPath.Name10))
+                        if (e.Name.EndsWith(Names.NameIconFile))
                         {
                             file = game.GetIconFile();
                         }

@@ -7,7 +7,7 @@
   "Core.Config.Error1": "配置文件读取错误",
   "Core.Config.Error2": "配置文件保存错误",
   "Core.Config.Warn1": "配置为空，旧版配置文件会被覆盖",
-  "Core.Auth.Info1": "登录数据库初始化",
+  "Core.Auth.Info1": "登录数据库初始化，位于 {0}",
   "Core.Maven.Error1": "本地缓存错误",
   "Core.Http.Info1": "下载器初始化，线程数{0}",
   "Core.Http.Info2": "下载器清空",

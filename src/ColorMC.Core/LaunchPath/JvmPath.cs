@@ -217,7 +217,7 @@ public static class JvmPath
         if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS
             || SystemInfo.Os == OsType.Android)
         {
-            JavaHelper.Per(java);
+            JavaHelper.PerChmod(java);
         }
 
         return AddItem(arg.Name, java);

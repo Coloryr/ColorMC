@@ -42,7 +42,7 @@ public static class GameLang
             Parallel.ForEach(obj.Objects, (item) =>
 #endif
             {
-                if (!item.Key.StartsWith(Names.NameLangKey1) || AssetsPath.ReadAsset(item.Value.Hash) is not { } str)
+                if (!item.Key.StartsWith(Names.NameLangKey1) || AssetsPath.ReadAssetsText(item.Value.Hash) is not { } str)
                 {
                     return;
                 }
@@ -112,7 +112,7 @@ public static class GameLang
                 try
                 {
                     if (item.Key.StartsWith(Names.NameLangKey1) && item.Key.Contains(key)
-                        && AssetsPath.ReadAsset(item.Value.Hash) is { } str)
+                        && AssetsPath.ReadAssetsText(item.Value.Hash) is { } str)
                     {
                         var data = JsonConvert.DeserializeObject<LangObj>(str)!;
                         return new LangRes

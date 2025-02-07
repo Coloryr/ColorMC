@@ -8,7 +8,6 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class MinecraftPath
 {
-    public const string Name = "minecraft";
     public static string BaseDir { get; private set; }
 
     /// <summary>
@@ -17,7 +16,7 @@ public static class MinecraftPath
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        BaseDir = $"{dir}{Name}";
+        BaseDir = Path.Combine(dir, Names.NameMinecraftKey);
 
         Logs.Info(string.Format(LanguageHelper.Get("Core.Path.Info1"), BaseDir));
 

@@ -10,7 +10,6 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class LibrariesPath
 {
-    public const string Name = "libraries";
     public static string BaseDir { get; private set; }
     public static string NativeDir { get; private set; }
 
@@ -20,8 +19,8 @@ public static class LibrariesPath
     /// <param name="dir">运行路径</param>
     public static void Init(string dir)
     {
-        BaseDir = Path.GetFullPath(dir + "/" + Name);
-        NativeDir = Path.GetFullPath($"{BaseDir}" + $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower());
+        BaseDir = Path.Combine(dir, Names.NameLibDir);
+        NativeDir = Path.Combine(BaseDir, $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower());
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);
@@ -46,7 +45,7 @@ public static class LibrariesPath
     /// <returns>游戏路径</returns>
     public static string GetGameFile(string version)
     {
-        return Path.GetFullPath($"{BaseDir}/net/minecraft/client/{version}/client-{version}.jar");
+        return Path.Combine(BaseDir, "net", "minecraft", "client", version, $"client-{version}.jar");
     }
 
     /// <summary>
@@ -84,7 +83,6 @@ public static class LibrariesPath
                 var list = new List<(string, string)>();
                 foreach (var item in obj2.Libraries)
                 {
-
                     list.Add((item.Name, Path.GetFullPath($"{BaseDir}/{item.Downloads.Artifact.Path}")));
                 }
 

@@ -14,7 +14,7 @@ public static class Logs
     private static StreamWriter s_writer;
     private static readonly Thread t_log = new(Run)
     {
-        Name = "ColorMC-Log"
+        Name = "ColorMC Log"
     };
     private static bool s_run = false;
 
@@ -28,7 +28,7 @@ public static class Logs
         s_local = ColorMCCore.BaseDir;
         try
         {
-            var stream = File.Open(s_local + "logs.log", FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
+            var stream = File.Open(Path.Combine(s_local, Names.NameLogFile), FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
             s_writer = new(stream)
             {
@@ -147,10 +147,10 @@ public static class Logs
             $"{data}{Environment.NewLine}" +
             $"{e}";
 
-        var file = $"{s_local}{date.Year}_{date.Month}_{date.Day}_" +
+        var file = $"{date.Year}_{date.Month}_{date.Day}_" +
             $"{date.Hour}_{date.Minute}_{date.Second}_crash.log";
 
-        PathHelper.WriteText(file, text);
+        PathHelper.WriteText(Path.Combine(s_local, file), text);
         Console.WriteLine(text);
 
         return file;

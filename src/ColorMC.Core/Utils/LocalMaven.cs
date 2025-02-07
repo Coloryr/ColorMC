@@ -13,16 +13,15 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class LocalMaven
 {
-    public const string Name1 = "maven.json";
-
     private static readonly ConcurrentDictionary<string, MavenItemObj> s_items = [];
+
     private static string s_local;
     /// <summary>
     /// 初始化本地缓存
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCCore.BaseDir, Name1);
+        s_local = Path.Combine(ColorMCCore.BaseDir, Names.NameMavenFile);
 
         if (File.Exists(s_local))
         {
@@ -80,7 +79,7 @@ public static class LocalMaven
 
         ConfigSave.AddItem(new()
         {
-            Name = Name1,
+            Name = Names.NameMavenFile,
             File = s_local,
             Obj = s_items
         });
@@ -121,7 +120,7 @@ public static class LocalMaven
                     UrlHelper.MavenUrl[0] :
                     UrlHelper.MavenUrl[1]) + dir;
                 var res = await CoreHttpClient.DownloadClient
-                    .GetAsync(url + ".sha1",
+                    .GetAsync(url + Names.NameSha1Ext,
                     HttpCompletionOption.ResponseHeadersRead);
                 if (res.IsSuccessStatusCode)
                 {

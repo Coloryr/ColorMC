@@ -3,7 +3,7 @@
 namespace ColorMC.Core.Utils;
 
 /// <summary>
-/// 文件流处理
+/// Zip文件流处理
 /// </summary>
 public class ZipFileStream : IStaticDataSource, IDisposable
 {

@@ -71,26 +71,25 @@ public static class FuntionUtils
     }
 
     /// <summary>
-    /// 获取名字
+    /// 通过MavenId获取文件路径
     /// </summary>
-    /// <param name="input">名字</param>
+    /// <param name="input">MavenId</param>
     /// <returns>路径</returns>
-    public static string VersionNameToPath(string dir, string input)
+    public static string VersionNameToPath(string input)
     {
         var arg = input.Split(':');
-        var arg1 = arg[0].Split('.');
         string path = "";
-        for (int a = 0; a < arg1.Length; a++)
+        foreach (var item in arg[0].Split('.'))
         {
-            path += arg1[a] + '/';
+            path += item + '/';
         }
         if (arg.Length > 3)
         {
-            path += $"{dir}/{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}-{arg[3]}.jar";
         }
         else
         {
-            path += $"{dir}/{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
+            path += $"{arg[1]}/{arg[2]}/{arg[1]}-{arg[2]}.jar";
         }
 
         return path;

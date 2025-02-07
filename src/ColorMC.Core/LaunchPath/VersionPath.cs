@@ -14,13 +14,6 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class VersionPath
 {
-    public const string Name = "versions";
-
-    public const string Name1 = "forge";
-    public const string Name2 = "fabric";
-    public const string Name3 = "quilt";
-    public const string Name4 = "neoforged";
-
     //版本缓存
     private static readonly Dictionary<string, GameArgObj> s_gameArgs = [];
     private static readonly Dictionary<string, ForgeInstallObj> s_forgeInstalls = [];
@@ -35,10 +28,10 @@ public static class VersionPath
 
     public static string BaseDir { get; private set; }
 
-    private static string ForgeDir => BaseDir + "/" + Name1;
-    private static string FabricDir => BaseDir + "/" + Name2;
-    private static string QuiltDir => BaseDir + "/" + Name3;
-    private static string NeoForgeDir => BaseDir + "/" + Name4;
+    public static string ForgeDir { get; private set; }
+    public static string FabricDir { get; private set; }
+    public static string QuiltDir { get; private set; }
+    public static string NeoForgeDir { get; private set; }
 
     /// <summary>
     /// 获取游戏版本列表
@@ -72,7 +65,11 @@ public static class VersionPath
     /// <param name="dir">运行的路径</param>
     public static void Init(string dir)
     {
-        BaseDir = $"{dir}/{Name}";
+        BaseDir = Path.Combine(dir, Names.NameVersionDir);
+        ForgeDir = Path.Combine(BaseDir, Names.NameForgeKey);
+        NeoForgeDir = Path.Combine(BaseDir, Names.NameNeoForgedKey);
+        FabricDir = Path.Combine(BaseDir, Names.NameFabricKey);
+        QuiltDir = Path.Combine(BaseDir, Names.NameQuiltKey);
 
         Directory.CreateDirectory(BaseDir);
 
@@ -121,7 +118,7 @@ public static class VersionPath
     /// </summary>
     private static async Task ReadVersionsAsync()
     {
-        string file = BaseDir + "/version.json";
+        string file = Path.Combine(BaseDir, Names.NameVersionFile);
         if (File.Exists(file))
         {
             string data = PathHelper.ReadText(file)!;
@@ -138,7 +135,7 @@ public static class VersionPath
     /// </summary>
     public static void SaveVersions(string data)
     {
-        string file = BaseDir + "/version.json";
+        string file = Path.Combine(BaseDir, Names.NameVersionFile);
         File.WriteAllText(file, data);
     }
 
@@ -154,7 +151,7 @@ public static class VersionPath
         {
             return null;
         }
-        PathHelper.WriteBytes($"{BaseDir}/{obj.Id}.json", data!);
+        PathHelper.WriteBytes(Path.Combine(BaseDir, $"{obj.Id}.json"), data!);
         return obj1;
     }
 
@@ -166,7 +163,7 @@ public static class VersionPath
     /// <param name="version">加载器版本</param>
     public static void AddGame(FabricLoaderObj obj, string array, string mc, string version)
     {
-        PathHelper.WriteText(Path.GetFullPath($"{FabricDir}/{obj.Id}.json"), array);
+        PathHelper.WriteText(Path.Combine(FabricDir, $"{obj.Id}.json"), array);
 
         var key = $"{mc}-{version}";
         if (!s_fabricLoaders.TryAdd(key, obj))
@@ -195,7 +192,7 @@ public static class VersionPath
         {
             name = $"forge-{mc}-{version}";
         }
-        PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+        PathHelper.WriteBytes(Path.Combine(neo ? NeoForgeDir : ForgeDir, $"{name}.json"), array);
 
         var key = $"{mc}-{version}";
         if (neo)
@@ -235,7 +232,7 @@ public static class VersionPath
             name = $"forge-{mc}-{version}-install";
         }
 
-        PathHelper.WriteBytes($"{(neo ? NeoForgeDir : ForgeDir)}/{name}.json", array);
+        PathHelper.WriteBytes(Path.Combine(neo ? NeoForgeDir : ForgeDir, $"{name}.json"), array);
 
         var key = $"{mc}-{version}";
         if (neo)
@@ -263,7 +260,7 @@ public static class VersionPath
     /// <param name="version">加载器版本</param>
     public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
     {
-        PathHelper.WriteText(Path.GetFullPath($"{QuiltDir}/{obj.Id}.json"), data);
+        PathHelper.WriteText(Path.Combine(QuiltDir, $"{obj.Id}.json"), data);
 
         var key = $"{mc}-{version}";
         if (!s_quiltLoaders.TryAdd(key, obj))
@@ -296,7 +293,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = $"{BaseDir}/{version}.json";
+        string file = Path.Combine(BaseDir, $"{version}.json");
 
         if (!File.Exists(file))
         {
@@ -322,7 +319,7 @@ public static class VersionPath
         var data = ver.Versions.Where(a => a.Id == version).FirstOrDefault();
         if (data != null)
         {
-            var file = $"{BaseDir}/{version}.json";
+            var file = Path.Combine(BaseDir, $"{version}.json");
             var temp = PathHelper.OpenRead(file);
             if (temp == null)
             {
@@ -357,8 +354,8 @@ public static class VersionPath
 
         var v2222 = CheckHelpers.IsGameVersion1202(mc);
         string file = v2222
-            ? $"{BaseDir}/{Name4}/neoforge-{version}-install.json"
-            : $"{BaseDir}/{Name4}/forge-{mc}-{version}-install.json";
+            ? Path.Combine(NeoForgeDir, $"neoforge-{version}-install.json")
+            : Path.Combine(NeoForgeDir, $"forge-{mc}-{version}-install.json");
 
         if (!File.Exists(file))
         {
@@ -395,8 +392,8 @@ public static class VersionPath
         }
 
         string file = CheckHelpers.IsGameVersion1202(mc)
-            ? Path.GetFullPath($"{BaseDir}/{Name4}/neoforge-{version}.json")
-            : Path.GetFullPath($"{BaseDir}/{Name4}/forge-{mc}-{version}.json");
+            ? Path.Combine(NeoForgeDir, $"neoforge-{version}.json")
+            : Path.Combine(NeoForgeDir, $"forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
         {
@@ -417,7 +414,7 @@ public static class VersionPath
     public static ForgeInstallObj? GetForgeInstallObj(string mc, string version)
     {
         var key = $"{mc}-{version}";
-        string file = $"{BaseDir}/{Name1}/forge-{mc}-{version}-install.json";
+        string file = Path.Combine(ForgeDir, $"forge-{mc}-{version}-install.json");
         if (s_neoForgeInstalls.TryGetValue(key, out var temp))
         {
             return temp;
@@ -456,7 +453,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = Path.GetFullPath($"{BaseDir}/{Name1}/forge-{mc}-{version}.json");
+        string file = Path.Combine(ForgeDir, $"forge-{mc}-{version}.json");
 
         if (!File.Exists(file))
         {
@@ -491,7 +488,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = $"{BaseDir}/{Name2}/fabric-loader-{version}-{mc}.json";
+        string file = Path.Combine(FabricDir, $"fabric-loader-{version}-{mc}.json");
 
         if (!File.Exists(file))
         {
@@ -526,7 +523,7 @@ public static class VersionPath
         {
             return temp;
         }
-        string file = $"{BaseDir}/{Name3}/quilt-loader-{version}-{mc}.json";
+        string file = Path.Combine(QuiltDir, $"quilt-loader-{version}-{mc}.json");
 
         if (!File.Exists(file))
         {

@@ -224,8 +224,8 @@ public static class GameHelper
     /// </summary>
     public static void ReadyForgeWrapper()
     {
-        ForgeWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/io/github/zekerzhayard/ForgeWrapper/colormc-1.6.0/ForgeWrapper-colormc-1.6.0.jar");
+        ForgeWrapper = Path.Combine(LibrariesPath.BaseDir, "io", "github", "zekerzhayard", "ForgeWrapper",
+            "colormc-1.6.0", "ForgeWrapper-colormc-1.6.0.jar");
         var file = new FileInfo(ForgeWrapper);
         if (!file.Exists)
         {
@@ -242,8 +242,7 @@ public static class GameHelper
     /// </summary>
     public static void ReadyOptifineWrapper()
     {
-        OptifineWrapper = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/com/coloryr/OptifineWrapper/1.1/OptifineWrapper-1.1.jar");
+        OptifineWrapper = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "OptifineWrapper", "1.1", "OptifineWrapper-1.1.jar");
         var file = new FileInfo(OptifineWrapper);
         if (!file.Exists)
         {
@@ -260,8 +259,7 @@ public static class GameHelper
     /// </summary>
     public static void ReadyColorMCASM()
     {
-        ColorMCASM = Path.GetFullPath(LibrariesPath.BaseDir +
-            "/com/coloryr/colormc/ColorMCASM/1.0/ColorMCASM-1.0-all.jar");
+        ColorMCASM = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "colormc", "ColorMCASM", "1.0", "ColorMCASM-1.0-all.jar");
         var file = new FileInfo(ColorMCASM);
         if (!file.Exists)
         {
@@ -674,10 +672,10 @@ public static class GameHelper
 
             foreach (var item in obj.Libraries)
             {
-                if (item.Name.Contains("minecraftforge"))
+                if (item.Name.Contains(Names.NameMinecraftForgeKey))
                 {
                     var names = item.Name.Split(':');
-                    if (names.Length >= 3 && (names[1] is "forge" or "fmlloader"))
+                    if (names.Length >= 3 && (names[1] is Names.NameForgeKey or Names.NameFmlKey))
                     {
                         var args = names[2].Split('-');
                         if (args.Length >= 2 && versions.Versions.Any(item => item.Id == args[0]))
@@ -688,7 +686,7 @@ public static class GameHelper
                         break;
                     }
                 }
-                else if (item.Name.Contains("neoforged"))
+                else if (item.Name.Contains(Names.NameNeoForgedKey))
                 {
                     if (obj.Arguments?.Game is { } list)
                     {
@@ -703,20 +701,20 @@ public static class GameHelper
                         }
                     }
                 }
-                else if (item.Name.Contains("fabricmc"))
+                else if (item.Name.Contains(Names.NameFabricMcKey))
                 {
                     var names = item.Name.Split(':');
-                    if (names.Length >= 3 && names[1] == "fabric-loader")
+                    if (names.Length >= 3 && names[1] == Names.NameFabricLoaderKey)
                     {
                         game.Loader = Loaders.Fabric;
                         game.LoaderVersion = names[2];
                         break;
                     }
                 }
-                else if (item.Name.Contains("quiltmc"))
+                else if (item.Name.Contains(Names.NameQuiltMcKey))
                 {
                     var names = item.Name.Split(':');
-                    if (names.Length >= 3 && names[1] == "quilt-loader")
+                    if (names.Length >= 3 && names[1] == Names.NameQuiltLoaderKey)
                     {
                         game.Loader = Loaders.Quilt;
                         game.LoaderVersion = names[2];
@@ -796,7 +794,7 @@ public static class GameHelper
             {
                 break;
             }
-            if (item3.Name.EndsWith(".json"))
+            if (item3.Name.EndsWith(Names.NameJsonExt))
             {
                 try
                 {

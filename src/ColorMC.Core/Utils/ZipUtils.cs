@@ -66,7 +66,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                 ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
                 var buffer = PathHelper.ReadByte(file)!;
 
-                string tempfile = file[(staticFile.LastIndexOf("\\") + 1)..];
+                string tempfile = file[(staticFile.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
                 var entry = new ZipEntry(tempfile)
                 {
                     DateTime = DateTime.Now,
@@ -134,7 +134,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// <param name="local">文件名</param>
     public async Task<bool> UnzipAsync(string path, string local, Stream stream)
     {
-        if (local.EndsWith("tar.gz"))
+        if (local.EndsWith(Names.NameTarGzExt))
         {
             using var gzipStream = new GZipInputStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
@@ -152,7 +152,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                 _now++;
                 ZipUpdate?.Invoke(theEntry.Name, _now, _size);
 
-                var file = $"{path}/{theEntry.Name}";
+                var file = Path.GetFullPath($"{path}/{theEntry.Name}");
                 var info = new FileInfo(file);
 
                 info.Directory?.Create();
@@ -171,7 +171,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                         {
                             return false;
                         }
-                        file = $"{info.Directory!.FullName}/{PathHelper.ReplaceFileName(info.Name)}";
+                        file = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
                     }
                     using var stream2 = s.GetInputStream(theEntry);
                     await PathHelper.WriteBytesAsync(file, stream2);

@@ -708,7 +708,7 @@ public static class TestItem
 
         try
         {
-            var response = await client.GetStringAsync("https://mc1.coloryr.com:8081/");
+            var response = await client.GetByteArrayAsync("https://maven.fabricmc.net/org\\ow2\\asm\\asm\\9.7.1\\asm-9.7.1.jar");
             Console.WriteLine(response);
         }
         catch (HttpRequestException e)

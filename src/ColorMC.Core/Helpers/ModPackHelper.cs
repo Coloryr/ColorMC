@@ -105,7 +105,7 @@ public static class ModPackHelper
         //获取主信息
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "manifest.json")
+            if (e.IsFile && e.Name == Names.NameManifestFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
@@ -138,25 +138,25 @@ public static class ModPackHelper
         //获取版本数据
         foreach (var item in info.Minecraft.ModLoaders)
         {
-            if (item.Id.StartsWith("forge"))
+            if (item.Id.StartsWith(Names.NameForgeKey))
             {
                 arg.Game.Loader = Loaders.Forge;
-                arg.Game.LoaderVersion = item.Id.Replace("forge-", "");
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameForgeKey + "-", "");
             }
-            else if (item.Id.StartsWith("neoforge"))
+            else if (item.Id.StartsWith(Names.NameNeoForgeKey))
             {
                 arg.Game.Loader = Loaders.NeoForge;
-                arg.Game.LoaderVersion = item.Id.Replace("neoforge-", "");
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameNeoForgeKey + "-", "");
             }
-            else if (item.Id.StartsWith("fabric"))
+            else if (item.Id.StartsWith(Names.NameFabricKey))
             {
                 arg.Game.Loader = Loaders.Fabric;
-                arg.Game.LoaderVersion = item.Id.Replace("fabric-", "");
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameFabricKey + "-", "");
             }
-            else if (item.Id.StartsWith("quilt"))
+            else if (item.Id.StartsWith(Names.NameQuiltKey))
             {
                 arg.Game.Loader = Loaders.Quilt;
-                arg.Game.LoaderVersion = item.Id.Replace("quilt-", "");
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameQuiltKey + "-", "");
             }
         }
 
@@ -363,7 +363,7 @@ public static class ModPackHelper
         //获取主信息
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "manifest.json")
+            if (e.IsFile && e.Name == Names.NameManifestFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
@@ -400,25 +400,25 @@ public static class ModPackHelper
         string loaderversion = "";
         foreach (var item in info.Minecraft.ModLoaders)
         {
-            if (item.Id.StartsWith("forge"))
+            if (item.Id.StartsWith(Names.NameForgeKey))
             {
                 loaders = Loaders.Forge;
-                loaderversion = item.Id.Replace("forge-", "");
+                loaderversion = item.Id.Replace(Names.NameForgeKey + "-", "");
             }
-            else if (item.Id.StartsWith("neoforge"))
+            else if (item.Id.StartsWith(Names.NameNeoForgeKey))
             {
                 loaders = Loaders.NeoForge;
-                loaderversion = item.Id.Replace("neoforge-", "");
+                loaderversion = item.Id.Replace(Names.NameNeoForgeKey + "-", "");
             }
-            else if (item.Id.StartsWith("fabric"))
+            else if (item.Id.StartsWith(Names.NameFabricKey))
             {
                 loaders = Loaders.Fabric;
-                loaderversion = item.Id.Replace("fabric-", "");
+                loaderversion = item.Id.Replace(Names.NameFabricKey + "-", "");
             }
-            else if (item.Id.StartsWith("quilt"))
+            else if (item.Id.StartsWith(Names.NameQuiltKey))
             {
                 loaders = Loaders.Quilt;
-                loaderversion = item.Id.Replace("quilt-", "");
+                loaderversion = item.Id.Replace(Names.NameQuiltKey + "-", "");
             }
         }
 
@@ -467,10 +467,12 @@ public static class ModPackHelper
             return new();
         }
 
+        string dir = info.Overrides + "/";
+
         //解压文件
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name.StartsWith(info.Overrides + "/"))
+            if (e.IsFile && e.Name.StartsWith(dir))
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.Combine(game.GetGamePath(), e.Name[info.Overrides.Length..]);
@@ -522,7 +524,7 @@ public static class ModPackHelper
         //获取主信息
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "modrinth.index.json")
+            if (e.IsFile && e.Name == Names.NameModrinthFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
@@ -556,33 +558,34 @@ public static class ModPackHelper
 
         //获取版本数据
 
-        if (info.Dependencies.TryGetValue("forge", out var version))
+        if (info.Dependencies.TryGetValue(Names.NameForgeKey, out var version))
         {
             arg.Game.Loader = Loaders.Forge;
             arg.Game.LoaderVersion = version;
         }
-        else if (info.Dependencies.TryGetValue("neoforge", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameNeoForgeKey, out version))
         {
             arg.Game.Loader = Loaders.NeoForge;
             arg.Game.LoaderVersion = version;
         }
-        else if (info.Dependencies.TryGetValue("fabric-loader", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameFabricLoaderKey, out version))
         {
             arg.Game.Loader = Loaders.Fabric;
             arg.Game.LoaderVersion = version;
         }
-        else if (info.Dependencies.TryGetValue("quilt-loader", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameQuiltLoaderKey, out version))
         {
             arg.Game.Loader = Loaders.Quilt;
             arg.Game.LoaderVersion = version;
         }
 
-        int length = "overrides".Length;
+        int length = Names.NameOverrideDir.Length;
+        string dir = Names.NameOverrideDir + "/";
 
         //解压文件
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name.StartsWith("overrides/"))
+            if (e.IsFile && e.Name.StartsWith(dir))
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.Combine(arg.Game.GetGamePath(), e.Name[length..]);
@@ -774,7 +777,7 @@ public static class ModPackHelper
         //获取主信息
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "modrinth.index.json")
+            if (e.IsFile && e.Name == Names.NameModrinthFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
@@ -809,22 +812,22 @@ public static class ModPackHelper
         //获取版本数据
         Loaders loaders = Loaders.Normal;
         string loaderversion = "";
-        if (info.Dependencies.TryGetValue("forge", out var version))
+        if (info.Dependencies.TryGetValue(Names.NameForgeKey, out var version))
         {
             loaders = Loaders.Forge;
             loaderversion = version;
         }
-        else if (info.Dependencies.TryGetValue("neoforge", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameNeoForgeKey, out version))
         {
             loaders = Loaders.NeoForge;
             loaderversion = version;
         }
-        else if (info.Dependencies.TryGetValue("fabric-loader", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameFabricLoaderKey, out version))
         {
             loaders = Loaders.Fabric;
             loaderversion = version;
         }
-        else if (info.Dependencies.TryGetValue("quilt-loader", out version))
+        else if (info.Dependencies.TryGetValue(Names.NameQuiltLoaderKey, out version))
         {
             loaders = Loaders.Quilt;
             loaderversion = version;
@@ -834,7 +837,7 @@ public static class ModPackHelper
             arg.Name = $"{info.Name}-{info.VersionId}";
         }
 
-        var gameversion = info.Dependencies["minecraft"];
+        var gameversion = info.Dependencies[Names.NameMinecraftKey];
         if (VersionPath.CheckUpdateAsync(gameversion) == null)
         {
             await VersionPath.GetFromWebAsync();
@@ -866,12 +869,13 @@ public static class ModPackHelper
             return new GameRes { Game = game };
         }
 
-        int length = "overrides".Length;
+        int length = Names.NameOverrideDir.Length;
+        string dir = Names.NameOverrideDir + "/";
 
         //解压文件
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name.StartsWith("overrides/"))
+            if (e.IsFile && e.Name.StartsWith(dir))
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.GetFullPath(game.GetGamePath() +

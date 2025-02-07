@@ -93,7 +93,7 @@ public static class ModrinthHelper
         {
             Name = data.Name,
             Url = file.Url,
-            Local = Path.GetFullPath(obj.GetModsPath() + "/" + file.Filename),
+            Local = Path.Combine(obj.GetModsPath(), file.Filename),
             Sha1 = file.Hashes.Sha1
         };
     }
@@ -110,7 +110,7 @@ public static class ModrinthHelper
         {
             Url = data.Downloads[0],
             Name = data.Path,
-            Local = obj.GetGamePath() + "/" + data.Path,
+            Local = Path.Combine(obj.GetGamePath(), data.Path),
             Sha1 = data.Hashes.Sha1
         };
     }
@@ -198,7 +198,7 @@ public static class ModrinthHelper
     }
 
     /// <summary>
-    /// 获取Modrinth整合包Mod信息
+    /// 获取Modrinth整合包模组信息
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>下载列表</returns>
@@ -246,7 +246,7 @@ public static class ModrinthHelper
     }
 
     /// <summary>
-    /// 自动标记mod
+    /// 自动标记模组
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cov">是否覆盖之前的标记</param>
@@ -276,7 +276,7 @@ public static class ModrinthHelper
             }
             res.Add(new()
             {
-                Path = "mods",
+                Path = Names.NameGameModDir,
                 Name = data.Files[0].Filename,
                 File = Path.GetFileName(item.Local),
                 Sha1 = item.Sha1,
@@ -304,9 +304,9 @@ public static class ModrinthHelper
     }
 
     /// <summary>
-    /// 获取Mod依赖
+    /// 获取模组依赖
     /// </summary>
-    /// <param name="data">mod数据</param>
+    /// <param name="data">模组数据</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器</param>
     /// <returns>模组列表</returns>
@@ -318,9 +318,9 @@ public static class ModrinthHelper
     }
 
     /// <summary>
-    /// 获取Mod依赖
+    /// 获取模组依赖
     /// </summary>
-    /// <param name="data">mod数据</param>
+    /// <param name="data">模组数据</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器</param>
     /// <param name="ids">已经标记的列表</param>
@@ -333,11 +333,14 @@ public static class ModrinthHelper
             return [];
         }
         var list = new ConcurrentBag<GetModrinthModDependenciesRes>();
-        //await Parallel.ForEachAsync(data.dependencies, new ParallelOptions()
-        //{
-        //    MaxDegreeOfParallelism = 1
-        //}, async (item, cancel) =>
+#if false
+        await Parallel.ForEachAsync(data.Dependencies, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+#else
         await Parallel.ForEachAsync(data.Dependencies, async (item, cancel) =>
+#endif
         {
             if (ids.Contains(item.ProjectId))
             {
