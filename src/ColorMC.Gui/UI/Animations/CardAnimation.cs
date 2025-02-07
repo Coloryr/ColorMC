@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Animations;
 public static class CardAnimation
 {
     private static Animation Make()
-    { 
+    {
         return new Animation()
         {
             FillMode = FillMode.Forward,

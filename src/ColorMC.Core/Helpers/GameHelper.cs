@@ -824,7 +824,7 @@ public static class GameHelper
     /// <returns>是否存在</returns>
     public static bool IsMMCVersion(string dir)
     {
-        if (File.Exists(Path.Combine(dir, Names.NameMMCJsonFile)) 
+        if (File.Exists(Path.Combine(dir, Names.NameMMCJsonFile))
             && File.Exists(Path.Combine(dir, Names.NameMMCCfgFile)))
         {
             return true;

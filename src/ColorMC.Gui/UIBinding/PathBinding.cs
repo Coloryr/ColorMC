@@ -10,7 +10,6 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
