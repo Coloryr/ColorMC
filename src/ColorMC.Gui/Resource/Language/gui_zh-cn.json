@@ -1082,7 +1082,7 @@
 	"CollectWindow.Info2": "是否删除所有收藏",
 	"CollectWindow.Info3": "是否删除该分组的所有收藏",
 	"CollectWindow.Info4": "是否删除该分组",
-	"CollectWindow.Info5": "没有收藏的资源，请在给游戏实例添加资源或者下载整合包时，点击左侧的星星图标即可添加收藏",
+	"CollectWindow.Info5": "没有收藏的资源，请在给游戏实例添加资源时，点击左侧的星星图标即可添加收藏",
 	"CollectWindow.Info6": "选择需要安装的实例",
 	"CollectWindow.Info8": "选择需要下载的版本",
 	"CollectWindow.Info9": "正在获取版本信息",

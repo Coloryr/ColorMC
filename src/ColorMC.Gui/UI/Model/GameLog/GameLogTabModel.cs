@@ -69,6 +69,7 @@ public partial class GameLogModel : GameModel
     private List<GameLogItemObj> _logs;
     private readonly Thread _timer;
     private bool _run;
+    private bool _isKill;
     private bool _load;
 
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
@@ -232,6 +233,7 @@ public partial class GameLogModel : GameModel
     [RelayCommand]
     public void Stop()
     {
+        _isKill = true;
         GameManager.KillGame(Obj);
         GameBinding.CancelLaunch();
         IsGameRun = false;
@@ -241,20 +243,22 @@ public partial class GameLogModel : GameModel
     public async Task Launch()
     {
         if (IsGameRun)
+        {
             return;
+        }
 
+        _isKill = false;
         IsGameRun = true;
 
         var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             Model.Show(res.Message!);
+            return;
         }
         Load();
-        if (File == null)
-        {
-            IsAuto = true;
-        }
+        File = null;
+        IsAuto = true;
     }
 
     [RelayCommand]
@@ -457,7 +461,7 @@ public partial class GameLogModel : GameModel
 
     public void GameCrash(int code)
     {
-        if (code == 0)
+        if (code == 0 || _isKill)
         {
             return;
         }

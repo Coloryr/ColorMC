@@ -42,13 +42,28 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// 退出时
+    /// </summary>
     public static event Action? OnClose;
 
+    /// <summary>
+    /// App
+    /// </summary>
     public static Application ThisApp { get; private set; }
+    /// <summary>
+    /// 生命周期
+    /// </summary>
     public static IApplicationLifetime? Life { get; private set; }
 
+    /// <summary>
+    /// 是否隐藏
+    /// </summary>
     public static bool IsHide { get; private set; }
 
+    /// <summary>
+    /// 本地化
+    /// </summary>
     private static readonly Language s_language = new();
 
     public override void Initialize()
@@ -65,6 +80,11 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
+    /// <summary>
+    /// 获取本地化语言
+    /// </summary>
+    /// <param name="input">语言键</param>
+    /// <returns>语言</returns>
     public static string Lang(string input)
     {
         var data = s_language.GetLanguage(input, out bool have);
@@ -84,6 +104,7 @@ public partial class App : Application
 
         if (PlatformSettings is { } setting)
         {
+            //初始化样式
             setting.ColorValuesChanged += (object? sender, PlatformColorValues e) =>
             {
                 if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
@@ -93,6 +114,7 @@ public partial class App : Application
             };
         }
 
+        //初始化
         CoreManager.Init();
         ThemeManager.Init();
         ImageManager.Init();
@@ -118,6 +140,7 @@ public partial class App : Application
             singleViewPlatform.MainView = WindowManager.AllWindow;
         }
 
+        //核心第二阶段初始化
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {
             Task.Run(() =>
@@ -131,6 +154,9 @@ public partial class App : Application
         DataContext = new AppModel();
     }
 
+    /// <summary>
+    /// 清理UI绑定
+    /// </summary>
     public static void Clear()
     {
         ThemeManager.Remove();
@@ -138,6 +164,10 @@ public partial class App : Application
         FuntionUtils.RunGC();
     }
 
+    /// <summary>
+    /// 加载语言文件
+    /// </summary>
+    /// <param name="type">语言类型</param>
     public static void LoadLanguage(LanguageType type)
     {
         var assm = Assembly.GetExecutingAssembly();
@@ -155,12 +185,18 @@ public partial class App : Application
         s_language.Load(reader.ReadToEnd());
     }
 
+    /// <summary>
+    /// 退出程序
+    /// </summary>
     public static void Exit()
     {
         Close();
         Environment.Exit(0);
     }
 
+    /// <summary>
+    /// 关闭程序
+    /// </summary>
     public static void Close()
     {
         OnClose?.Invoke();
@@ -169,12 +205,18 @@ public partial class App : Application
         (Life as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
     }
 
+    /// <summary>
+    /// 显示窗口
+    /// </summary>
     public static void Show()
     {
         IsHide = false;
         Dispatcher.UIThread.Post(WindowManager.Show);
     }
 
+    /// <summary>
+    /// 隐藏窗口
+    /// </summary>
     public static void Hide()
     {
         IsHide = true;
@@ -182,6 +224,9 @@ public partial class App : Application
         WindowManager.Hide();
     }
 
+    /// <summary>
+    /// 测试是否需要关闭程序
+    /// </summary>
     public static void TestClose()
     {
         if (IsHide && !GameManager.IsGameRuning())

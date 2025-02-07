@@ -61,8 +61,8 @@ public static class GameLogs
         var file = list.OrderByDescending(f => f.LastWriteTime).FirstOrDefault();
         if (file != null)
         {
-            var time = file.LastWriteTime - DateTime.Now;
-            if (time.TotalSeconds < 5)
+            var time = DateTime.Now - file.LastWriteTime;
+            if (time.TotalSeconds is > 0 and < 5)
             {
                 return file.FullName.Replace(path, Names.NameGameCrashLogDir);
             }

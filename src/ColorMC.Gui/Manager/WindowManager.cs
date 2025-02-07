@@ -866,6 +866,7 @@ public static class WindowManager
     {
         if (ConfigBinding.WindowMode())
         {
+            MainWindow?.Show();
             if (AllWindow?.GetVisualRoot() is Window window)
             {
                 window.Show();
@@ -875,6 +876,7 @@ public static class WindowManager
         }
         else
         {
+            MainWindow?.Show();
             if (MainWindow?.GetVisualRoot() is Window window)
             {
                 window.Show();
@@ -894,6 +896,7 @@ public static class WindowManager
     {
         if (ConfigBinding.WindowMode())
         {
+            MainWindow?.Hide();
             if (AllWindow?.GetVisualRoot() is Window window)
             {
                 window.Hide();
@@ -901,6 +904,7 @@ public static class WindowManager
         }
         else
         {
+            MainWindow?.Hide();
             if (MainWindow?.GetVisualRoot() is Window window)
             {
                 window.Hide();

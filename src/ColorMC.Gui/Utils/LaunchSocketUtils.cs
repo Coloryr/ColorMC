@@ -6,9 +6,14 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Input;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
@@ -28,6 +33,13 @@ public static class LaunchSocketUtils
     private const int TypeGameMotd = 2;
     private const int TypeLaunchShow = 3;
     private const int TypeLaunchStart = 4;
+    private const int TypeMouseXY = 5;
+    private const int TypeMouseClick = 6;
+    private const int TypeKeybordClick = 7;
+    private const int TypeMouseScoll = 8;
+    private const int TypeGameChannel = 9;
+    private const int TypeSetTitle = 10;
+    private const int TypeGameWindowSize = 11;
 
     private static bool s_isRun;
 
@@ -41,6 +53,8 @@ public static class LaunchSocketUtils
     /// 客户端信道
     /// </summary>
     private static readonly List<IChannel> _channels = [];
+
+    private static readonly Dictionary<string, IChannel> _gameChannels = [];
 
     /// <summary>
     /// 获取所有正在使用的端口
@@ -132,6 +146,8 @@ public static class LaunchSocketUtils
             int port = GetFirstAvailablePort();
             _channel = await _bootstrap.BindAsync(IPAddress.Any, port);
 
+            ColorMCCore.GameExit += ColorMCCore_GameExit;
+
             return port;
         }
         catch (Exception e)
@@ -141,11 +157,17 @@ public static class LaunchSocketUtils
         }
     }
 
+    private static void ColorMCCore_GameExit(GameSettingObj arg1, LoginObj arg2, int arg3)
+    {
+        _gameChannels.Remove(arg1.UUID);
+    }
+
     /// <summary>
     /// 停止游戏端口服务器
     /// </summary>
     private static async void Stop()
     {
+        ColorMCCore.GameExit -= ColorMCCore_GameExit;
         await _channel.CloseAsync();
         await Task.WhenAll(
                 _bossGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)),
@@ -165,6 +187,29 @@ public static class LaunchSocketUtils
                 if (item.IsWritable)
                 {
                     item.WriteAndFlushAsync(byteBuffer.RetainedDuplicate());
+                }
+            }
+            catch
+            {
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 发送消息到指定客户端
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="byteBuffer"></param>
+    private static void SendMessage(GameSettingObj obj, IByteBuffer byteBuffer)
+    {
+        if (_gameChannels.TryGetValue(obj.UUID, out var channel))
+        {
+            try
+            {
+                if (channel.IsWritable)
+                {
+                    channel.WriteAndFlushAsync(byteBuffer.RetainedDuplicate());
                 }
             }
             catch
@@ -306,6 +351,20 @@ public static class LaunchSocketUtils
                     {
                         BaseBinding.Launch(buffer.ReadStringList());
                     }
+                    //游戏实例绑定
+                    else if (type == TypeGameChannel)
+                    {
+                        string uuid = buffer.ReadString();
+                        _gameChannels[uuid] = context.Channel;
+                    }
+                    else if (type == TypeGameWindowSize)
+                    {
+                        string uuid = buffer.ReadString();
+                        int width = buffer.ReadInt();
+                        int height = buffer.ReadInt();
+
+
+                    }
                 }
                 catch
                 {
@@ -365,5 +424,62 @@ public static class LaunchSocketUtils
         buf.WriteString(temp[1]);
         buf.WriteString(LanGameHelper.MakeMotd("[ColorMC]" + model.Name, temp[1]));
         SendMessage(buf);
+    }
+
+    public static void SendMousePos(GameSettingObj obj, double x, double y)
+    {
+        var buf = Unpooled.Buffer();
+        buf.WriteInt(TypeMouseXY)
+            .WriteDouble(x)
+            .WriteDouble(y);
+        SendMessage(obj, buf);
+    }
+
+    private static void SendMouseClick(GameSettingObj obj, MouseButton button, bool down)
+    {
+        var buf = Unpooled.Buffer();
+        buf.WriteInt(TypeMouseClick)
+            .WriteInt((int)button)
+            .WriteBoolean(down);
+        SendMessage(obj, buf);
+    }
+
+    private static void SendKeybordClick(GameSettingObj obj, KeyModifiers modifiers, Key key, bool down)
+    {
+        var buf = Unpooled.Buffer();
+        buf.WriteInt(TypeKeybordClick)
+            .WriteInt((int)modifiers)
+            .WriteInt((int)key)
+            .WriteBoolean(down);
+        SendMessage(obj, buf);
+    }
+
+    public static void SendMouseScoll(GameSettingObj obj, bool up)
+    {
+        var buf = Unpooled.Buffer();
+        buf.WriteInt(TypeMouseScoll)
+            .WriteBoolean(up);
+        SendMessage(obj, buf);
+    }
+
+
+    public static void SendKey(GameSettingObj obj, InputKeyObj key, bool down)
+    {
+        if (key.MouseButton != MouseButton.None)
+        {
+            SendMouseClick(obj, key.MouseButton, down);
+        }
+        else
+        {
+            SendKeybordClick(obj, key.KeyModifiers, key.Key, down);
+        }
+    }
+
+    public static void SetTitle(GameSettingObj obj, string title)
+    {
+        var buf = Unpooled.Buffer();
+        buf.WriteInt(TypeSetTitle)
+            .WriteString(title);
+        SendMessage(obj, buf);
     }
 }

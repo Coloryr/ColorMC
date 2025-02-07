@@ -73,7 +73,7 @@
                             </WrapPanel>
                             <Panel
                                 Name="Buttons"
-                                Margin="0,-5,0,0"
+                                Margin="0,0,0,0"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom">
                                 <StackPanel
@@ -82,7 +82,7 @@
                                     IsVisible="{Binding MenuDisplay}"
                                     Orientation="Horizontal">
                                     <Button
-                                        Height="35"
+                                        Height="30"
                                         Margin="0,0,5,0"
                                         VerticalAlignment="Top"
                                         Command="{Binding OpenCollect}"
@@ -98,7 +98,7 @@
                                         </StackPanel>
                                     </Button>
                                     <Button
-                                        Height="35"
+                                        Height="30"
                                         Margin="0,0,5,0"
                                         VerticalAlignment="Top"
                                         Command="{Binding OpenGuide}"
@@ -114,7 +114,7 @@
                                         </StackPanel>
                                     </Button>
                                     <Button
-                                        Height="35"
+                                        Height="30"
                                         Margin="0,0,5,0"
                                         Command="{Binding ShowCount}"
                                         CornerRadius="5"
@@ -130,7 +130,7 @@
                                         </StackPanel>
                                     </Button>
                                     <Button
-                                        Height="35"
+                                        Height="30"
                                         Command="{Binding ShowSetting}"
                                         CornerRadius="5"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text13}">

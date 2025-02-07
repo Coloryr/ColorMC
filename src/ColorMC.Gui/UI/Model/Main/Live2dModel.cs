@@ -1,4 +1,5 @@
-﻿using Avalonia.Layout;
+﻿using System;
+using Avalonia.Layout;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Main;
@@ -39,6 +40,23 @@ public partial class MainModel
     public void ChangeModelDone()
     {
         OnPropertyChanged(ModelChangeDoneName);
+    }
+
+    /// <summary>
+    /// 显示欢迎消息
+    /// </summary>
+    public void ModelShowHello()
+    {
+        var random = new Random();
+        var index = random.Next(1000);
+        if (index == 666)
+        {
+            ShowMessage("Ciallo～(∠·ω< )⌒★");
+        }
+        else
+        {
+            ShowMessage(App.Lang("Live2dControl.Text1"));
+        }
     }
 
     /// <summary>

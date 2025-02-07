@@ -469,15 +469,9 @@ public partial class MainModel
             HaveLast = false;
         }
 
-        if (Game != null)
-        {
-            Game.Unselect();
-        }
+        Game?.Unselect();
         Game = obj;
-        if (Game != null)
-        {
-            Game.Select();
-        }
+        Game?.Select();
     }
 
     /// <summary>
