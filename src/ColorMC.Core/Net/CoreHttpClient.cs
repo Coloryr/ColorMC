@@ -74,6 +74,7 @@ public static class CoreHttpClient
             //Dns
             if (dns.Enable)
             {
+                //有GC问题
                 //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
                 //{
                 //foreach (var item in dns.Dns)

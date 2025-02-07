@@ -447,7 +447,7 @@ public static class ServerPack
                     var item2 = new ConfigPackObj()
                     {
                         Group = "../",
-                        FileName = InstancesPath.Name10,
+                        FileName = Names.NameIconFile,
                         Sha256 = HashHelper.GenSha256(stream),
                         IsZip = false
                     };
@@ -468,7 +468,7 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        string local = Path.Combine(path, InstancesPath.Name19);
+        string local = Path.Combine(path, Names.NameServerFile);
         PathHelper.WriteText(local, JsonConvert.SerializeObject(obj1));
 
         using var stream = PathHelper.OpenRead(local)!;
@@ -494,7 +494,7 @@ public static class ServerPack
         }
         if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
         {
-            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{InstancesPath.Name19}");
+            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameServerFile}");
             if (!res1.State)
             {
                 return false;

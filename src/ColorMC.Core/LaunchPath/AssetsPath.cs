@@ -10,14 +10,6 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class AssetsPath
 {
-    public const string Name = "assets";
-
-    public const string Name1 = "indexes";
-    public const string Name2 = "objects";
-    public const string Name3 = "skins";
-
-    private static readonly Dictionary<string, AssetsObj> s_assets = [];
-
     /// <summary>
     /// 基础路径
     /// </summary>
@@ -27,6 +19,14 @@ public static class AssetsPath
     /// 资源文件路径
     /// </summary>
     public static string ObjectsDir { get; private set; }
+    /// <summary>
+    /// 索引文件路径
+    /// </summary>
+    public static string IndexDir { get; private set; }
+    /// <summary>
+    /// 皮肤文件路径
+    /// </summary>
+    public static string SkinDir { get; private set; }
 
     /// <summary>
     /// 初始化
@@ -34,14 +34,15 @@ public static class AssetsPath
     /// <param name="dir">运行目录</param>
     public static void Init(string dir)
     {
-        BaseDir = Path.GetFullPath(dir + "/" + Name);
-        ObjectsDir = Path.GetFullPath(BaseDir + "/" + Name2);
+        BaseDir = Path.Combine(dir, Names.NameGameAssetsDir);
+        IndexDir = Path.Combine(BaseDir, Names.NameGameIndexDir);
+        ObjectsDir = Path.Combine(BaseDir, Names.NameGameObjectDir);
+        SkinDir = Path.Combine(BaseDir, Names.NameGameSkinDir);
 
         Directory.CreateDirectory(BaseDir);
-
-        Directory.CreateDirectory($"{BaseDir}/{Name1}");
-        Directory.CreateDirectory($"{BaseDir}/{Name2}");
-        Directory.CreateDirectory($"{BaseDir}/{Name3}");
+        Directory.CreateDirectory(IndexDir);
+        Directory.CreateDirectory(ObjectsDir);
+        Directory.CreateDirectory(SkinDir);
     }
 
     /// <summary>
@@ -51,7 +52,7 @@ public static class AssetsPath
     /// <param name="game">游戏数据</param>
     public static void AddIndex(this GameArgObj game, string data)
     {
-        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.Assets}.json");
+        string file = Path.Combine(IndexDir, $"{game.Assets}.json");
         PathHelper.WriteText(file, data);
     }
 
@@ -62,18 +63,13 @@ public static class AssetsPath
     /// <returns>资源数据</returns>
     public static AssetsObj? GetIndex(this GameArgObj game)
     {
-        if (s_assets.TryGetValue(game.Assets, out var temp))
-        {
-            return temp;
-        }
-        string file = Path.GetFullPath($"{BaseDir}/{Name1}/{game.Assets}.json");
+        string file = Path.Combine(IndexDir, $"{game.Assets}.json");
         if (!File.Exists(file))
         {
             return null;
         }
 
         var obj = JsonConvert.DeserializeObject<AssetsObj>(PathHelper.ReadText(file)!)!;
-        s_assets.Add(game.Assets, obj);
         return obj;
     }
 
@@ -85,13 +81,10 @@ public static class AssetsPath
     public static void SaveSkin(this LoginObj obj, string? file)
     {
         if (file == null)
+        {
             return;
+        }
         var path = obj.GetSkinFile();
-
-        if (File.Exists(path))
-            PathHelper.Delete(path);
-        var info = new FileInfo(path);
-        info.Directory?.Create();
         PathHelper.CopyFile(file, path);
     }
 
@@ -102,7 +95,7 @@ public static class AssetsPath
     /// <returns>皮肤路径</returns>
     public static string GetSkinFile(this LoginObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}_skin.png");
+        return Path.Combine(SkinDir, $"{obj.UUID}_skin.png");
     }
 
     /// <summary>
@@ -112,7 +105,7 @@ public static class AssetsPath
     /// <returns>披风路径</returns>
     public static string GetCapeFile(this LoginObj obj)
     {
-        return Path.GetFullPath($"{BaseDir}/{Name3}/{obj.UUID}_cape.png");
+        return Path.Combine(SkinDir, $"{obj.UUID}_cape.png");
     }
 
     /// <summary>
@@ -120,8 +113,8 @@ public static class AssetsPath
     /// </summary>
     /// <param name="hash">资源名</param>
     /// <returns>数据</returns>
-    public static string? ReadAsset(string hash)
+    public static string? ReadAssetsText(string hash)
     {
-        return PathHelper.ReadText($"{BaseDir}/{Name2}/{hash[0..2]}/{hash}");
+        return PathHelper.ReadText(Path.Combine(ObjectsDir, $"{hash[0..2]}", hash));
     }
 }

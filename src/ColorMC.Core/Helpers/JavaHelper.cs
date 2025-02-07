@@ -14,7 +14,7 @@ public static class JavaHelper
     /// 提升权限
     /// </summary>
     /// <param name="path">文件</param>
-    public static void Per(string path)
+    public static void PerChmod(string path)
     {
         try
         {

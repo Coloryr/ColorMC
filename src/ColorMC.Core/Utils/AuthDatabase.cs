@@ -16,7 +16,6 @@ public static class AuthDatabase
 
     public static Dictionary<UserKeyObj, LoginObj> Auths => new(s_auths);
 
-    public const string Name = "auth.json";
     private static string s_local;
 
     /// <summary>
@@ -24,18 +23,16 @@ public static class AuthDatabase
     /// </summary>
     public static void Init()
     {
-        Logs.Info(LanguageHelper.Get("Core.Auth.Info1"));
-
         //存在用户文件夹
-        var path = (SystemInfo.Os == OsType.MacOS ?
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "/.ColorMC/" :
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)) + "/ColorMC/";
-
-        Logs.Info(path);
+        var path = SystemInfo.Os == OsType.MacOS ?
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ColorMC") :
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC");
 
         Directory.CreateDirectory(path);
 
-        s_local = Path.GetFullPath(path + Name);
+        s_local = Path.Combine(path, Names.NameAuthFile);
+
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Auth.Info1"), s_local));
 
         if (File.Exists(s_local))
         {
@@ -77,7 +74,7 @@ public static class AuthDatabase
     {
         ConfigSave.AddItem(new()
         {
-            Name = "auth.json",
+            Name = Names.NameAuthFile,
             Obj = s_auths.Values,
             File = s_local
         });

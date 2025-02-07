@@ -19,11 +19,6 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class DownloadItemHelper
 {
-    public const string Name1 = "installer";
-    public const string Name2 = "universal";
-    public const string Name3 = "client";
-    public const string Name4 = "launcher";
-
     /// <summary>
     /// 检测下载源
     /// </summary>
@@ -47,7 +42,7 @@ public static class DownloadItemHelper
         {
             Name = "log4j2-xml",
             Url = obj.Logging.Client.File.Url,
-            Local = Path.Combine(VersionPath.BaseDir, "log4j2-xml"),
+            Local = Path.Combine(VersionPath.BaseDir, "log4j2", obj.Id, "log4j2-xml"),
             Sha1 = obj.Logging.Client.File.Sha1
         };
     }
@@ -124,12 +119,31 @@ public static class DownloadItemHelper
             : $"forge-{mc}-{version}-{type}";
         var url = UrlHelper.DownloadNeoForgeJar(mc, version, CoreHttpClient.Source);
 
+        var list = new List<string>()
+        {
+            LibrariesPath.BaseDir,
+            "net",
+            "neoforged"
+        };
+
+        if (v2222)
+        {
+            list.Add("neoforge");
+            list.Add(version);
+        }
+        else
+        {
+            list.Add("forge");
+            list.Add($"{mc}-{version}");
+        }
+
+        list.Add($"{name}.jar");
+
         return new()
         {
             Url = url + name + ".jar",
             Name = $"net.neoforged:{name}",
-            Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/net/neoforged/" +
-            $"{(v2222 ? $"neoforge/{version}" : $"forge/{mc}-{version}")}/{name}.jar"),
+            Local = Path.Combine([.. list]),
         };
     }
 
@@ -141,7 +155,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeInstaller(string mc, string version)
     {
-        return BuildForgeItem(mc, version, Name1);
+        return BuildForgeItem(mc, version, Names.NameForgeFile1);
     }
 
     /// <summary>
@@ -152,7 +166,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeInstaller(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, Name1);
+        return BuildNeoForgeItem(mc, version, Names.NameForgeFile1);
     }
 
     /// <summary>
@@ -163,7 +177,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeUniversal(string mc, string version)
     {
-        return BuildForgeItem(mc, version, Name2);
+        return BuildForgeItem(mc, version, Names.NameForgeFile2);
     }
 
     /// <summary>
@@ -174,7 +188,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeClient(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, Name3);
+        return BuildNeoForgeItem(mc, version, Names.NameForgeFile3);
     }
 
     /// <summary>
@@ -185,7 +199,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeClient(string mc, string version)
     {
-        return BuildForgeItem(mc, version, Name3);
+        return BuildForgeItem(mc, version, Names.NameForgeFile3);
     }
 
     /// <summary>
@@ -196,7 +210,7 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildNeoForgeUniversal(string mc, string version)
     {
-        return BuildNeoForgeItem(mc, version, Name2);
+        return BuildNeoForgeItem(mc, version, Names.NameForgeFile2);
     }
     /// <summary>
     /// 创建NeoForge下载项目
@@ -206,8 +220,8 @@ public static class DownloadItemHelper
     /// <returns>下载项目</returns>
     public static DownloadItemObj BuildForgeLauncher(string mc, string version)
     {
-        var item = BuildForgeItem(mc, version, Name4);
-        var name = $"forge-{mc}-{version}-{Name4}";
+        var item = BuildForgeItem(mc, version, Names.NameForgeFile4);
+        var name = $"forge-{mc}-{version}-{Names.NameForgeFile4}";
         item.Url = UrlHelper.DownloadForgeJar(mc, version, SourceLocal.Offical) + name + ".jar";
 
         return item;
@@ -284,15 +298,15 @@ public static class DownloadItemHelper
                 }
             }
 
-            if (item1.Name.EndsWith(Name2))
+            if (item1.Name.EndsWith(Names.NameForgeFile2))
             {
                 universal = true;
             }
-            else if (item1.Name.EndsWith(Name1))
+            else if (item1.Name.EndsWith(Names.NameForgeFile1))
             {
                 installer = true;
             }
-            else if (item1.Name.EndsWith(Name4))
+            else if (item1.Name.EndsWith(Names.NameForgeFile4))
             {
                 launcher = true;
             }
@@ -300,7 +314,7 @@ public static class DownloadItemHelper
 
         if (!installer && install)
         {
-            list.Add(Name1, neo ?
+            list.Add(Names.NameForgeFile1, neo ?
                 BuildNeoForgeInstaller(mc, version) :
                 BuildForgeInstaller(mc, version));
         }
@@ -308,18 +322,18 @@ public static class DownloadItemHelper
         {
             if (!neo || !CheckHelpers.IsGameVersion1202(mc))
             {
-                list.Add(Name2, neo ?
+                list.Add(Names.NameForgeFile2, neo ?
                     BuildNeoForgeUniversal(mc, version) :
                     BuildForgeUniversal(mc, version));
             }
         }
         if (v2 && !CheckHelpers.IsGameVersion117(mc) && !launcher)
         {
-            //list.Add(Name4, neo ?
+            //list.Add(Names.NameForgeFile4, neo ?
             //    BuildNeoForgeLauncher(mc, version) :
             //    BuildForgeLauncher(mc, version));
 
-            list.Add(Name4, BuildForgeLauncher(mc, version));
+            list.Add(Names.NameForgeFile4, BuildForgeLauncher(mc, version));
         }
 
         return list.Values;
@@ -364,7 +378,14 @@ public static class DownloadItemHelper
         //待补全的native
         var natives = new ConcurrentDictionary<string, bool>();
         var nativesarm = new ConcurrentBag<string>();
+#if false
+        Parallel.ForEach(obj.Libraries, new ParallelOptions()
+        { 
+            MaxDegreeOfParallelism = 1
+        }, (item1) =>
+#else
         Parallel.ForEach(obj.Libraries, (item1) =>
+#endif
         {
             bool download = CheckHelpers.CheckAllow(item1.Rules);
             if (!download)
@@ -609,13 +630,13 @@ public static class DownloadItemHelper
         var find2 = false;
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "version.json")
+            if (e.IsFile && e.Name == Names.NameVersionFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1);
                 find1 = true;
             }
-            else if (e.IsFile && e.Name == "install_profile.json")
+            else if (e.IsFile && e.Name == Names.NameForgeInstallFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream2);
@@ -776,11 +797,10 @@ public static class DownloadItemHelper
             var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
                 Name = item.Name,
-                Local = $"{LibrariesPath.BaseDir}/{name}"
+                Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
             });
-
         }
 
         return list;
@@ -846,9 +866,9 @@ public static class DownloadItemHelper
             var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
-                Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
+                Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
                 Name = item.Name,
-                Local = $"{LibrariesPath.BaseDir}/{name}"
+                Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
             });
         }
 
@@ -938,13 +958,13 @@ public static class DownloadItemHelper
         var find2 = false;
         foreach (ZipEntry e in zFile)
         {
-            if (e.IsFile && e.Name == "version.json")
+            if (e.IsFile && e.Name == Names.NameVersionFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream1, cancel);
                 find1 = true;
             }
-            else if (e.IsFile && e.Name == "install_profile.json")
+            else if (e.IsFile && e.Name == Names.NameForgeInstallFile)
             {
                 using var stream = zFile.GetInputStream(e);
                 await stream.CopyToAsync(stream2, cancel);

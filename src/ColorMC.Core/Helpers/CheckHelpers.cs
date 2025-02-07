@@ -701,7 +701,9 @@ public static partial class CheckHelpers
             VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
             VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
         if (forge == null)
+        {
             return null;
+        }
 
         //forge本体
         var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
@@ -765,27 +767,32 @@ public static partial class CheckHelpers
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
         if (fabric == null)
+        {
             return null;
+        }
 
         var list = new List<DownloadItemObj>();
 
         foreach (var item in fabric.Libraries)
         {
             if (cancel.IsCancellationRequested)
+            {
                 break;
+            }
 
             var name = FuntionUtils.VersionNameToPath(item.Name);
-            string file = $"{LibrariesPath.BaseDir}/{name}";
-            if (!File.Exists(file))
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+            if (File.Exists(file))
             {
-                list.Add(new()
-                {
-                    Url = UrlHelper.DownloadFabric(item.Url + name, CoreHttpClient.Source),
-                    Name = item.Name,
-                    Local = Path.Combine(LibrariesPath.BaseDir, name)
-                });
                 continue;
             }
+
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadFabric(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
         }
 
         return list;
@@ -801,27 +808,32 @@ public static partial class CheckHelpers
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
         if (quilt == null)
+        {
             return null;
+        }
 
         var list = new List<DownloadItemObj>();
 
         foreach (var item in quilt.Libraries)
         {
             if (cancel.IsCancellationRequested)
+            {
                 return null;
+            }
 
             var name = FuntionUtils.VersionNameToPath(item.Name);
-            string file = $"{LibrariesPath.BaseDir}/{name}";
-            if (!File.Exists(file))
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+            if (File.Exists(file))
             {
-                list.Add(new()
-                {
-                    Url = UrlHelper.DownloadQuilt(item.Url + name, CoreHttpClient.Source),
-                    Name = item.Name,
-                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}")
-                });
                 continue;
             }
+
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
         }
 
         return list;

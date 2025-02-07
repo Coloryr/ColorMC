@@ -180,7 +180,7 @@ public static class CurseForgeHelper
     }
 
     /// <summary>
-    /// 获取CurseForge整合包Mod信息
+    /// 获取CurseForge整合包模组信息
     /// </summary>
     /// <param name="arg">获取信息</param>
     /// <returns>项目信息</returns>
@@ -190,7 +190,9 @@ public static class CurseForgeHelper
         var now = 0;
         var list = new ConcurrentBag<DownloadItemObj>();
 
-        //获取Mod信息
+        //获取模组下载信息
+        
+        //一次性获取
         var res = await CurseForgeAPI.GetMods(arg.Info.Files);
         if (res != null)
         {
@@ -230,7 +232,7 @@ public static class CurseForgeHelper
         }
         else
         {
-            //一个个获取
+            //逐一获取
             bool done = true;
             await Parallel.ForEachAsync(arg.Info.Files, async (item, token) =>
             {
@@ -271,14 +273,15 @@ public static class CurseForgeHelper
         var item1 = new ItemPathRes()
         {
             File = game.GetModsPath(),
-            Name = InstancesPath.Name11,
+            Name = Names.NameGameModDir,
             FileType = FileType.Mod
         };
-        if (item.FileName.EndsWith(".jar"))
+        if (item.FileName.EndsWith(Names.NameJarExt))
         {
             return item1;
         }
 
+        //将各类文件放在正确的文件夹
         var info1 = await CurseForgeAPI.GetModInfo(item.ModId);
         if (info1 != null)
         {
@@ -286,21 +289,21 @@ public static class CurseForgeHelper
                 || info1.Data.ClassId == CurseForgeAPI.ClassResourcepack)
             {
                 item1.File = game.GetResourcepacksPath();
-                item1.Name = InstancesPath.Name8;
+                item1.Name = Names.NameGameResourcepackDir;
                 item1.FileType = FileType.Resourcepack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassShaderpack)
                 || info1.Data.ClassId == CurseForgeAPI.ClassShaderpack)
             {
                 item1.File = game.GetShaderpacksPath();
-                item1.Name = InstancesPath.Name9;
+                item1.Name = Names.NameGameShaderpackDir;
                 item1.FileType = FileType.Shaderpack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassWorld)
                 || info1.Data.ClassId == CurseForgeAPI.ClassWorld)
             {
                 item1.File = game.GetSavesPath();
-                item1.Name = InstancesPath.Name12;
+                item1.Name = Names.NameGameSavesDir;
                 item1.FileType = FileType.World;
             }
         }

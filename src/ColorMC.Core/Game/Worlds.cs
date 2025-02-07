@@ -272,7 +272,7 @@ public static class Worlds
 
             obj.Local = dir.FullName;
 
-            var icon = dir.GetFiles().Where(a => a.Name == InstancesPath.Name10).FirstOrDefault();
+            var icon = dir.GetFiles().Where(a => a.Name == Names.NameIconFile).FirstOrDefault();
             if (icon != null)
             {
                 obj.Icon = icon.FullName;

@@ -405,7 +405,7 @@ public static class WebBinding
                     items.Add(new()
                     {
                         Item = item2.MakeModDownloadObj(obj),
-                        Info = item2.MakeModInfo(InstancesPath.Name11)
+                        Info = item2.MakeModInfo(Names.NameGameModDir)
                     });
                 }
                 res.Add(modid, new(item1.Name, version, items, item1.Opt));
@@ -415,7 +415,7 @@ public static class WebBinding
         return new()
         {
             Item = data.MakeModDownloadObj(obj),
-            Info = data.MakeModInfo(InstancesPath.Name11),
+            Info = data.MakeModInfo(Names.NameGameModDir),
             List = [.. res.Values]
         };
     }
@@ -452,7 +452,7 @@ public static class WebBinding
                     items.Add(new()
                     {
                         Item = item2.MakeModDownloadObj(obj),
-                        Info = item2.MakeModInfo(InstancesPath.Name11)
+                        Info = item2.MakeModInfo(Names.NameGameModDir)
                     });
                 }
                 res.Add(item1.ModId, new(item1.Name, version, items, false));
@@ -462,7 +462,7 @@ public static class WebBinding
         return new()
         {
             Item = data.MakeModDownloadObj(obj),
-            Info = data.MakeModInfo(InstancesPath.Name11),
+            Info = data.MakeModInfo(Names.NameGameModDir),
             List = [.. res.Values]
         };
     }
@@ -764,7 +764,7 @@ public static class WebBinding
                         items.Add(new()
                         {
                             Item = data.MakeModDownloadObj(game),
-                            Info = data.MakeModInfo(InstancesPath.Name11)
+                            Info = data.MakeModInfo(Names.NameGameModDir)
                         });
                     }
                     else if (item1.Data is ModrinthVersionObj data1)
@@ -773,7 +773,7 @@ public static class WebBinding
                         items.Add(new()
                         {
                             Item = data1.MakeModDownloadObj(game),
-                            Info = data1.MakeModInfo(InstancesPath.Name11)
+                            Info = data1.MakeModInfo(Names.NameGameModDir)
                         });
                     }
                 }
@@ -1734,7 +1734,7 @@ public static class WebBinding
                     arg = new DownloadModArg()
                     {
                         Item = data.MakeModDownloadObj(obj),
-                        Info = data.MakeModInfo(InstancesPath.Name11),
+                        Info = data.MakeModInfo(Names.NameGameModDir),
                         Old = await obj.ReadMod(mod)
                     };
                 }
@@ -1744,7 +1744,7 @@ public static class WebBinding
                     arg = new DownloadModArg()
                     {
                         Item = data.MakeModDownloadObj(obj),
-                        Info = data.MakeModInfo(InstancesPath.Name11),
+                        Info = data.MakeModInfo(Names.NameGameModDir),
                         Old = await obj.ReadMod(mod)
                     };
                 }

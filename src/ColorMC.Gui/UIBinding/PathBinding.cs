@@ -693,7 +693,7 @@ public static class PathBinding
                 var data1 = Encoding.UTF8.GetBytes(data);
                 using var stream = new ZipFileStream(data1);
                 s.BeginUpdate();
-                s.Add(stream, InstancesPath.Name14);
+                s.Add(stream, Names.NameModInfoFile);
                 s.CommitUpdate();
 
                 OpenFileWithExplorer(name);
