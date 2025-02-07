@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;

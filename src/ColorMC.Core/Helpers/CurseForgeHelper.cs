@@ -191,7 +191,7 @@ public static class CurseForgeHelper
         var list = new ConcurrentBag<DownloadItemObj>();
 
         //获取模组下载信息
-        
+
         //一次性获取
         var res = await CurseForgeAPI.GetMods(arg.Info.Files);
         if (res != null)

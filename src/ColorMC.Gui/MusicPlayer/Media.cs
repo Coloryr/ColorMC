@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using ColorMC.Core.Net;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer.Decoder;
 using ColorMC.Gui.MusicPlayer.Decoder.Flac;
@@ -104,14 +103,14 @@ public static class Media
         {
             // if (SystemInfo.Os != OsType.MacOS)
             // {
-                if (SdlUtils.SdlInit)
-                {
-                    s_player = new SdlPlayer(SdlUtils.Sdl);
-                }
-                // else
-                // {
-                //     s_player = new OpenALPlayer();
-                // }
+            if (SdlUtils.SdlInit)
+            {
+                s_player = new SdlPlayer(SdlUtils.Sdl);
+            }
+            // else
+            // {
+            //     s_player = new OpenALPlayer();
+            // }
             // }
             // else
             // {
