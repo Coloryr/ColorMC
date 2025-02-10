@@ -356,14 +356,14 @@ public static class LaunchSocketUtils
                     {
                         string uuid = buffer.ReadString();
                         _gameChannels[uuid] = context.Channel;
+
+                        GameBinding.GameConnect(uuid);
                     }
                     else if (type == TypeGameWindowSize)
                     {
                         string uuid = buffer.ReadString();
                         int width = buffer.ReadInt();
                         int height = buffer.ReadInt();
-
-
                     }
                 }
                 catch

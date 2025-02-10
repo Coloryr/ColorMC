@@ -11,7 +11,7 @@ public class FlacFile : IDecoder
     public SeekTableBlock SeekTable { get; protected set; }
     public PictureBlock Picture { get; protected set; }
 
-    public bool IsFile { get; init; }
+    public bool IsChek { get; init; }
 
     private readonly FlacStream _flacStream;
 
@@ -25,7 +25,7 @@ public class FlacFile : IDecoder
         if (_flacStream.CheckHead())
         {
             DecodeInfo();
-            IsFile = true;
+            IsChek = true;
         }
     }
 

@@ -845,6 +845,7 @@ public static class GameHelper
         dirs.Insert(0, new DirectoryInfo(dir));
         foreach (var item in dirs)
         {
+            //官器格式
             if (item.Name == "versions")
             {
                 var dirs1 = PathHelper.GetDirs(item.FullName);
@@ -860,6 +861,7 @@ public static class GameHelper
                     return list;
                 }
             }
+            //MMC格式
             if (item.Name == "instances")
             {
                 var dirs1 = PathHelper.GetDirs(item.FullName);
@@ -876,12 +878,14 @@ public static class GameHelper
                 }
             }
 
+            //是否只有一个官器版本
             if (IsMinecraftVersion(item.FullName))
             {
                 list.Add(item.FullName);
                 continue;
             }
 
+            //是否只有一个MMC版本
             if (IsMMCVersion(item.FullName))
             {
                 list.Add(item.FullName);

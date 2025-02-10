@@ -19,57 +19,99 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
     public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
-    public ObservableCollection<FileVersionItemModel> FileList { get; init; } = [];
+
+    /// <summary>
+    /// 游戏版本列表
+    /// </summary>
     public ObservableCollection<string> GameVersionList { get; init; } = [];
+    /// <summary>
+    /// 分类列表
+    /// </summary>
     public ObservableCollection<string> CategorieList { get; init; } = [];
+    /// <summary>
+    /// 排序列表
+    /// </summary>
     public ObservableCollection<string> SortTypeList { get; init; } = [];
+    /// <summary>
+    /// 项目列表
+    /// </summary>
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
 
+    /// <summary>
+    /// 分类
+    /// </summary>
     private readonly Dictionary<int, string> _categories = [];
+    /// <summary>
+    /// 选中的项目
+    /// </summary>
     private FileItemModel? _last;
+    /// <summary>
+    /// 是否在加载
+    /// </summary>
     private bool _load = false;
 
-    [ObservableProperty]
-    private FileVersionItemModel _item;
-
+    /// <summary>
+    /// 下载源
+    /// </summary>
     [ObservableProperty]
     private int _source = -1;
+    /// <summary>
+    /// 分类
+    /// </summary>
     [ObservableProperty]
     private int _categorie;
+    /// <summary>
+    /// 排序
+    /// </summary>
     [ObservableProperty]
     private int _sortType;
+    /// <summary>
+    /// 当前页数
+    /// </summary>
     [ObservableProperty]
     private int? _page = 0;
-    [ObservableProperty]
-    private int? _page1 = 0;
+    /// <summary>
+    /// 最大页数
+    /// </summary>
     [ObservableProperty]
     private int _maxPage;
-    [ObservableProperty]
-    private int _maxPage1;
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
     [ObservableProperty]
     private string? _gameVersion;
-    [ObservableProperty]
-    private string? _gameVersion1;
+    /// <summary>
+    /// 搜索文本
+    /// </summary>
     [ObservableProperty]
     private string? _text;
-    [ObservableProperty]
-    private bool _enable1 = true;
+    /// <summary>
+    /// 是否选中了项目
+    /// </summary>
     [ObservableProperty]
     private bool _isSelect = false;
-    [ObservableProperty]
-    private bool _display = false;
+    /// <summary>
+    /// 是否没有项目
+    /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay = true;
+    /// <summary>
+    /// 是否下载源加载数据
+    /// </summary>
     [ObservableProperty]
     private bool _sourceLoad;
-    [ObservableProperty]
-    private bool _emptyVersionDisplay;
+    /// <summary>
+    /// 是否允许下一页
+    /// </summary>
     [ObservableProperty]
     private bool _enableNextPage;
-    [ObservableProperty]
-    private bool _enableNextPage1;
-
+    /// <summary>
+    /// 是否继续添加
+    /// </summary>
     private bool _keep = false;
 
     private readonly string _useName;
@@ -79,35 +121,22 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         _useName = ToString() ?? "AddModPackControlModel";
     }
 
-    partial void OnDisplayChanged(bool value)
+    partial void OnPageDownloadChanged(int? value)
     {
-        if (value)
+        if (_load)
         {
-            Model.PushBack(back: () =>
-            {
-                Display = false;
-            });
+            return;
         }
-        else
-        {
-            Model.PopBack();
-        }
-    }
 
-    partial void OnGameVersion1Changed(string? value)
-    {
-        Load1();
-    }
-
-    partial void OnPage1Changed(int? value)
-    {
-        Load1();
+        LoadVersion();
     }
 
     partial void OnCategorieChanged(int value)
     {
         if (_load)
+        {
             return;
+        }
 
         Load();
     }
@@ -115,7 +144,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     partial void OnSortTypeChanged(int value)
     {
         if (_load)
+        {
             return;
+        }
 
         Load();
     }
@@ -123,10 +154,11 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     partial void OnGameVersionChanged(string? value)
     {
         if (_load)
+        {
             return;
+        }
 
-
-        GameVersion1 = value;
+        GameVersionDownload = value;
 
         Load();
     }
@@ -144,6 +176,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         LoadSourceData();
     }
 
+    /// <summary>
+    /// 选中项目
+    /// </summary>
     [RelayCommand]
     public void Select()
     {
@@ -156,6 +191,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Install();
     }
 
+    /// <summary>
+    /// 刷新项目列表
+    /// </summary>
     [RelayCommand]
     public void Reload()
     {
@@ -168,12 +206,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
-    [RelayCommand]
-    public void Search()
-    {
-        Load1();
-    }
-
+    /// <summary>
+    /// 下载所选项目
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Download()
     {
@@ -188,6 +224,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 加载搜索源数据
+    /// </summary>
     public async void LoadSourceData()
     {
         if (_load)
@@ -260,6 +299,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         _load = false;
     }
 
+    /// <summary>
+    /// 选中项目
+    /// </summary>
+    /// <param name="last"></param>
     public void SetSelect(FileItemModel last)
     {
         IsSelect = true;
@@ -271,12 +314,21 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         _last.IsSelect = true;
     }
 
+    /// <summary>
+    /// 开始安装项目
+    /// </summary>
     public void Install()
     {
-        Display = true;
-        Load1();
+        DisplayVersion = true;
+        LoadVersion();
     }
 
+    /// <summary>
+    /// 安装包解压
+    /// </summary>
+    /// <param name="text"></param>
+    /// <param name="size"></param>
+    /// <param name="all"></param>
     private void ZipUpdate(string text, int size, int all)
     {
         string temp = App.Lang("AddGameWindow.Tab1.Info21");
@@ -284,9 +336,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     }
 
     /// <summary>
-    /// 请求
+    /// 请求显示内容，并确定返回值
     /// </summary>
-    /// <param name="text"></param>
+    /// <param name="text">内容</param>
     /// <returns></returns>
     private async Task<bool> GameRequest(string text)
     {
@@ -297,9 +349,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     }
 
     /// <summary>
-    /// 请求
+    /// 请求游戏实例覆盖
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">需要覆盖的游戏实例</param>
     /// <returns></returns>
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
@@ -349,55 +401,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 进度条
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="now"></param>
     private void UpdateProcess(int size, int now)
     {
         Model.ProgressUpdate((double)now / size);
-    }
-
-    public async void Install(FileVersionItemModel data)
-    {
-        if (data.IsDownload)
-        {
-            return;
-        }
-
-        var select = _last;
-        string? group = WindowManager.AddGameWindow?.GetGroup();
-        if (data.SourceType == SourceType.CurseForge)
-        {
-            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-
-            var res = await GameBinding.InstallCurseForge((data.Data as CurseForgeModObj.DataObj)!,
-                (select!.Data as CurseForgeObjList.DataObj)!, group,
-                ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
-            Model.ProgressClose();
-
-            if (!res.State)
-            {
-                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
-            }
-            else
-            {
-                Done(res.Game!.UUID);
-            }
-        }
-        else if (data.SourceType == SourceType.Modrinth)
-        {
-            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-            var res = await GameBinding.InstallModrinth((data.Data as ModrinthVersionObj)!,
-                (select!.Data as ModrinthSearchObj.HitObj)!, group,
-                ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
-            Model.ProgressClose();
-
-            if (!res.State)
-            {
-                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
-            }
-            else
-            {
-                Done(res.Game!.UUID);
-            }
-        }
     }
 
     /// <summary>
@@ -407,7 +418,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     {
         Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
 
-        Display = false;
+        DisplayVersion = false;
 
         if (_keep)
         {
@@ -428,6 +439,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 加载搜索源信息失败
+    /// </summary>
     private async void LoadFail()
     {
         var res = await Model.ShowWait(App.Lang("AddModPackWindow.Error4"));
@@ -447,8 +461,12 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
     }
 
+    /// <summary>
+    /// 加载项目列表
+    /// </summary>
     private async void Load()
     {
+        //MO不允许少文字搜索
         if (Source == 2 && Categorie == 4 && Text?.Length < 3)
         {
             Model.Show(App.Lang("AddModPackWindow.Error6"));
@@ -460,6 +478,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
+        //制作分页
         MaxPage = res.Count / 20;
         var page = 0;
         if (Source == 1)
@@ -480,10 +499,11 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         DisplayList.Clear();
 
+        //一页20
         int b = 0;
-        for (int a = page * 50; a < data.Count; a++, b++)
+        for (int a = page * 20; a < data.Count; a++, b++)
         {
-            if (b >= 50)
+            if (b >= 20)
             {
                 break;
             }
@@ -502,72 +522,19 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Model.Notify(App.Lang("AddWindow.Info16"));
     }
 
-    private async void Load1()
-    {
-        if (Display == false)
-            return;
-
-        FileList.Clear();
-        Model.Progress(App.Lang("AddModPackWindow.Info3"));
-        List<FileVersionItemModel>? list = null;
-        var page = 0;
-        if (Source == 0)
-        {
-            var res = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), Page1 ?? 0,
-                GameVersion1, Loaders.Normal);
-            list = res.List;
-            MaxPage1 = res.Count / 50;
-        }
-        else if (Source == 1)
-        {
-            var res = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, Page1 ?? 0,
-                GameVersion1, Loaders.Normal);
-            list = res.List;
-            MaxPage1 = res.Count / 50;
-            page = Page1 ?? 0;
-        }
-
-        EnableNextPage1 = (MaxPage1 - Page1) > 0;
-
-        if (list == null)
-        {
-            Model.Show(App.Lang("AddModPackWindow.Error3"));
-            Model.ProgressClose();
-            return;
-        }
-
-        int b = 0;
-        for (int a = page * 50; a < list.Count; a++, b++)
-        {
-            if (b >= 50)
-            {
-                break;
-            }
-            var item = list[a];
-            item.Add = this;
-            var games = GameBinding.GetGames();
-            if (games.Any(item1 => item1.ModPack && item1.ModPackType == (SourceType)Source
-            && item1.PID == item.ID && item1.FID == item.ID1))
-            {
-                item.IsDownload = true;
-            }
-            FileList.Add(item);
-        }
-
-        EmptyVersionDisplay = FileList.Count == 0;
-
-        Model.ProgressClose();
-        Model.Notify(App.Lang("AddWindow.Info16"));
-    }
-
+    /// <summary>
+    /// 安装所选项目
+    /// </summary>
+    /// <param name="item"></param>
     public void Install(FileItemModel item)
     {
         SetSelect(item);
         Install();
     }
 
+    /// <summary>
+    /// 清理项目列表
+    /// </summary>
     private void ClearList()
     {
         foreach (var item in DisplayList)
@@ -577,6 +544,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         DisplayList.Clear();
     }
 
+    /// <summary>
+    /// 上一页
+    /// </summary>
     public void Back()
     {
         if (_load || Page <= 0)
@@ -587,6 +557,9 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Page -= 1;
     }
 
+    /// <summary>
+    /// 下一页
+    /// </summary>
     public void Next()
     {
         if (_load)
@@ -597,11 +570,14 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Page += 1;
     }
 
-    public void Reload1()
+    /// <summary>
+    /// F5重载版本列表
+    /// </summary>
+    public void ReloadF5()
     {
-        if (Display)
+        if (DisplayVersion)
         {
-            Load1();
+            LoadVersion();
         }
         else
         {
@@ -611,7 +587,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
     public override void Close()
     {
-        if (Display)
+        if (DisplayVersion)
         {
             Model.PopBack();
         }
@@ -625,35 +601,5 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         }
         DisplayList.Clear();
         _last = null;
-    }
-
-    public void SetSelect(FileVersionItemModel item)
-    {
-        if (Item != null)
-        {
-            Item.IsSelect = false;
-        }
-        Item = item;
-        item.IsSelect = true;
-    }
-
-    public void BackVersion()
-    {
-        if (_load || Page1 <= 0)
-        {
-            return;
-        }
-
-        Page1 -= 1;
-    }
-
-    public void NextVersion()
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        Page1 += 1;
     }
 }

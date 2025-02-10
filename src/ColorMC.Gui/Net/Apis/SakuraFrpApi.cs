@@ -12,26 +12,39 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Net.Apis;
 
+/// <summary>
+/// SakuraFrp请求
+/// </summary>
 public static class SakuraFrpApi
 {
     public const string Url = "https://api.natfrp.com/v4/";
 
-    public static async Task<SakuraFrpUserObj?> GetUserInfo(string key)
-    {
-        try
-        {
-            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}user/info?token={key}");
+    ///// <summary>
+    ///// 获取用户信息
+    ///// </summary>
+    ///// <param name="key">API KEY</param>
+    ///// <returns>用户信息</returns>
+    //public static async Task<SakuraFrpUserObj?> GetUserInfo(string key)
+    //{
+    //    try
+    //    {
+    //        var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}user/info?token={key}");
 
-            return JsonConvert.DeserializeObject<SakuraFrpUserObj>(data);
-        }
-        catch (Exception e)
-        {
-            Logs.Error("frp", e);
-        }
+    //        return JsonConvert.DeserializeObject<SakuraFrpUserObj>(data);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Logs.Error("frp", e);
+    //    }
 
-        return null;
-    }
+    //    return null;
+    //}
 
+    /// <summary>
+    /// 获取通道列表
+    /// </summary>
+    /// <param name="key">API KEY</param>
+    /// <returns></returns>
     public static async Task<List<SakuraFrpChannelObj>?> GetChannel(string key)
     {
         try
@@ -48,6 +61,13 @@ public static class SakuraFrpApi
         return null;
     }
 
+    /// <summary>
+    /// 获取通道配置
+    /// </summary>
+    /// <param name="key">API KEY</param>
+    /// <param name="id">通道ID</param>
+    /// <param name="version">版本号</param>
+    /// <returns>通道配置</returns>
     public static async Task<string?> GetChannelConfig(string key, int id, string version)
     {
         try
@@ -127,6 +147,10 @@ public static class SakuraFrpApi
         };
     }
 
+    /// <summary>
+    /// 获取下载列表
+    /// </summary>
+    /// <returns></returns>
     public static async Task<SakuraFrpDownloadObj?> GetDownload()
     {
         try

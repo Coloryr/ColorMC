@@ -12,10 +12,21 @@ namespace ColorMC.Gui.Joystick;
 /// </summary>
 public static class JoystickInput
 {
+    /// <summary>
+    /// 是否在从SDL读取事件
+    /// </summary>
     private static bool _isRun;
+    /// <summary>
+    /// SDL句柄
+    /// </summary>
     private static Sdl _sdl;
+    /// <summary>
+    /// 是否在编辑模式
+    /// </summary>
     public static bool IsEditMode { get; set; }
-
+    /// <summary>
+    /// 发生SDL事件时
+    /// </summary>
     public static event Action<Event>? OnEvent;
 
     /// <summary>
@@ -34,7 +45,10 @@ public static class JoystickInput
                 _sdl.WaitEvent(ref sdlEvent);
                 OnEvent?.Invoke(sdlEvent);
             }
-        }).Start();
+        })
+        { 
+            Name = "ColorMC Joystick Read"
+        }.Start();
     }
 
     private static void App_OnClose()
@@ -73,6 +87,11 @@ public static class JoystickInput
         return list;
     }
 
+    /// <summary>
+    /// 指针转字符串 
+    /// </summary>
+    /// <param name="bytePointer"></param>
+    /// <returns></returns>
     private static unsafe string BytePointerToString(byte* bytePointer)
     {
         byte* tempPointer = bytePointer;
@@ -118,7 +137,7 @@ public static class JoystickInput
     /// </summary>
     /// <param name="ptr">手柄</param>
     /// <returns>编号</returns>
-    public static unsafe int GetJoystickID(nint ptr)
+    public static unsafe int GetJoystickInstanceID(nint ptr)
     {
         var instanceID = _sdl.GameControllerGetJoystick((GameController*)ptr);
         return _sdl.JoystickInstanceID(instanceID);

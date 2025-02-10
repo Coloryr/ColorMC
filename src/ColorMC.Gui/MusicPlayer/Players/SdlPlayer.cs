@@ -9,12 +9,13 @@ namespace ColorMC.Gui.MusicPlayer.Players;
 /// <summary>
 /// SDL输出
 /// </summary>
-public class SdlPlayer : IPlayer
+public class SdlPlayer
 {
     private readonly uint _deviceId;
     private readonly AudioSpec audioSpec;
     private readonly Sdl _sdl;
     private readonly bool deviceOpen;
+
     private AudioCVT cvt;
 
     private int _lastChannel;

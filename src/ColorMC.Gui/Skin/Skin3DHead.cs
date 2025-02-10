@@ -5,6 +5,9 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.Skin;
 
+/// <summary>
+/// 3D头像生成
+/// </summary>
 public static class Skin3DHeadA
 {
     private static readonly SKPoint3[] s_cubeVertices =
@@ -213,7 +216,7 @@ public static class Skin3DHeadA
     private static SKPoint Project(SKMatrix44 mat, SKPoint3 v)
     {
         // 创建一个4D向量
-        float[] vec = { v.X, v.Y, v.Z, 1 };
+        float[] vec = [v.X, v.Y, v.Z, 1];
         float[] result = new float[4];
 
         // 执行矩阵乘法
@@ -257,6 +260,9 @@ public static class Skin3DHeadA
     }
 }
 
+/// <summary>
+/// 3D头像生成
+/// </summary>
 public static class Skin3DHeadB
 {
     private const int s_size = 220;
@@ -480,22 +486,20 @@ public static class Skin3DHeadB
             };
 
             // Define the ellipse
-            SKRect ellipseRect = new SKRect(20, 140, 200, 180);
+            var ellipseRect = new SKRect(20, 140, 200, 180);
 
             // Create the paint for the shadow
-            using (var shadowPaint = new SKPaint())
-            {
-                shadowPaint.IsAntialias = true;
-                shadowPaint.Color = new SKColor(0, 0, 0, 128); // Semi-transparent black for shadow
-                shadowPaint.ImageFilter = SKImageFilter.CreateBlur(blurRadius, blurRadius);
+            using var shadowPaint = new SKPaint();
+            shadowPaint.IsAntialias = true;
+            shadowPaint.Color = new SKColor(0, 0, 0, 128); // Semi-transparent black for shadow
+            shadowPaint.ImageFilter = SKImageFilter.CreateBlur(blurRadius, blurRadius);
 
-                // Create a shadow ellipse rect
-                SKRect shadowRect = ellipseRect;
-                shadowRect.Offset(offsetX, offsetY);
+            // Create a shadow ellipse rect
+            SKRect shadowRect = ellipseRect;
+            shadowRect.Offset(offsetX, offsetY);
 
-                // Draw the shadow (an ellipse)
-                canvas.DrawOval(shadowRect, shadowPaint);
-            }
+            // Draw the shadow (an ellipse)
+            canvas.DrawOval(shadowRect, shadowPaint);
         }
 
         for (int index = 0; index < s_faces.Length; index++)

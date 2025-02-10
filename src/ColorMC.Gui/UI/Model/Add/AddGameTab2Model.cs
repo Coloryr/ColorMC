@@ -36,6 +36,7 @@ public partial class AddGameModel
     {
         if (value != null && Type == null)
         {
+            //测试获取压缩包类型
             Model.Progress(App.Lang("AddGameWindow.Tab2.Info8"));
             var res = await GameBinding.CheckType(value);
             Model.ProgressClose();
@@ -63,7 +64,7 @@ public partial class AddGameModel
             return;
         }
 
-        AddPack((PackType)Type);
+        AddPack(Type.Value);
     }
 
     /// <summary>
@@ -99,6 +100,7 @@ public partial class AddGameModel
             return;
         }
         Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
+        //开始导入压缩包
         var res = await GameBinding.AddPack(ZipLocal, type, Name, Group,
         (a, b, c) =>
         {

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 
 namespace ColorMC.Gui.Hook;
 
@@ -194,39 +192,39 @@ internal unsafe class Win32
         public IntPtr hwnd;
     }
 
-    /// <summary>
-    /// 等待窗口启动
-    /// </summary>
-    /// <param name="process"></param>
-    internal static void WaitWindowDisplay(Process process)
-    {
-        try
-        {
-            while (!process.HasExited)
-            {
-                process.WaitForInputIdle();
-                Thread.Sleep(500);
-                if (process.MainWindowHandle != IntPtr.Zero)
-                {
-                    break;
-                }
-            }
-        }
-        catch
-        {
+    ///// <summary>
+    ///// 等待窗口启动
+    ///// </summary>
+    ///// <param name="process"></param>
+    //internal static void WaitWindowDisplay(Process process)
+    //{
+    //    try
+    //    {
+    //        while (!process.HasExited)
+    //        {
+    //            process.WaitForInputIdle();
+    //            Thread.Sleep(500);
+    //            if (process.MainWindowHandle != IntPtr.Zero)
+    //            {
+    //                break;
+    //            }
+    //        }
+    //    }
+    //    catch
+    //    {
 
-        }
-    }
+    //    }
+    //}
 
-    /// <summary>
-    /// 设置进程标题
-    /// </summary>
-    /// <param name="process"></param>
-    /// <param name="title"></param>
-    internal static void SetTitle(Process process, string title)
-    {
-        SetWindowText(process.MainWindowHandle, title);
-    }
+    ///// <summary>
+    ///// 设置进程标题
+    ///// </summary>
+    ///// <param name="process"></param>
+    ///// <param name="title"></param>
+    //internal static void SetTitle(Process process, string title)
+    //{
+    //    SetWindowText(process.MainWindowHandle, title);
+    //}
 
     public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
     public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);

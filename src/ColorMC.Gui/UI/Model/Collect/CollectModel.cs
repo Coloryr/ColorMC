@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -16,7 +18,13 @@ namespace ColorMC.Gui.UI.Model.Collect;
 
 public partial class CollectModel : TopModel, ICollectWindow
 {
+    /// <summary>
+    /// 收藏项目
+    /// </summary>
     public ObservableCollection<CollectItemModel> CollectList { get; init; } = [];
+    /// <summary>
+    /// 收藏分组
+    /// </summary>
     public ObservableCollection<string> Groups { get; init; } = [];
 
     /// <summary>
@@ -24,33 +32,68 @@ public partial class CollectModel : TopModel, ICollectWindow
     /// </summary>
     public ObservableCollection<FileModVersionModel> DownloadList { get; init; } = [];
 
+    /// <summary>
+    /// 收藏列表
+    /// </summary>
     private readonly Dictionary<string, CollectItemModel> _list = [];
 
+    /// <summary>
+    /// 是否显示模组
+    /// </summary>
     [ObservableProperty]
     private bool _mod;
+    /// <summary>
+    /// 是否显示资源包
+    /// </summary>
     [ObservableProperty]
     private bool _resourcepack;
+    /// <summary>
+    /// 是否显示光影包
+    /// </summary>
     [ObservableProperty]
     private bool _shaderpack;
 
+    /// <summary>
+    /// 是否允许删除分组
+    /// </summary>
     [ObservableProperty]
     private bool _groupDelete;
+    /// <summary>
+    /// 是否没有收藏内容
+    /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay;
+    /// <summary>
+    /// 是否在下载中
+    /// </summary>
     [ObservableProperty]
     private bool _isDownload;
+    /// <summary>
+    /// 是否选中项目
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveChoise;
 
+    /// <summary>
+    /// 选中的收藏分组
+    /// </summary>
     [ObservableProperty]
     private string _group;
 
+    /// <summary>
+    /// 选中的收藏
+    /// </summary>
     private CollectItemModel? _select;
+    /// <summary>
+    /// 选中的游戏实例
+    /// </summary>
     private GameSettingObj? _choise;
 
-    private readonly string _useName;
+   // private readonly string _useName;
 
     public CollectModel(BaseModel model) : base(model)
     {
-        _useName = ToString() ?? "CollectModel";
+        //_useName = ToString() ?? "CollectModel";
 
         var conf = CollectUtils.Collect;
 
@@ -97,6 +140,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 下载所有选中的收藏
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DownloadAll()
     {
@@ -105,7 +152,6 @@ public partial class CollectModel : TopModel, ICollectWindow
             return;
         }
 
-        var list = new List<DownloadItemObj>();
         if (GameBinding.GetGame(_choise.UUID) == null)
         {
             Model.Show(App.Lang("CollectWindow.Error2"));
@@ -113,24 +159,28 @@ public partial class CollectModel : TopModel, ICollectWindow
             return;
         }
 
-        foreach (var item in DownloadList)
+        var list = new ConcurrentBag<DownloadItemObj>();
+
+        //获取下载项目
+        await Parallel.ForEachAsync(DownloadList, async (item, cancel) =>
         {
             if (item.Download == false)
             {
-                continue;
+                return;
             }
 
             var download = item.FileItems[item.SelectVersion];
             var item2 = await WebBinding.MakeDownload(_choise, download, Model);
             if (item2 == null)
             {
-                continue;
+                return;
             }
             list.Add(item2);
-        }
+        });
 
+        //开始下载
         Model.Progress(App.Lang("CollectWindow.Info10"));
-        var res = await DownloadManager.StartAsync(list);
+        var res = await DownloadManager.StartAsync([.. list]);
         Model.ProgressClose();
         if (!res)
         {
@@ -142,6 +192,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
     }
 
+    /// <summary>
+    /// 添加收藏分组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddGroup()
     {
@@ -160,6 +214,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Group = Text;
     }
 
+    /// <summary>
+    /// 删除收藏分组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DeleteGroup()
     {
@@ -172,6 +230,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Groups.Remove(Group);
     }
 
+    /// <summary>
+    /// 清空收藏分组内容
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ClearGroup()
     {
@@ -183,6 +245,7 @@ public partial class CollectModel : TopModel, ICollectWindow
                 CollectUtils.Clear();
                 Close();
                 EmptyDisplay = true;
+                HaveChoise = false;
             }
         }
         else
@@ -192,10 +255,15 @@ public partial class CollectModel : TopModel, ICollectWindow
             {
                 CollectUtils.Clear(Group);
                 Load();
+                HaveChoise = false;
             }
         }
     }
 
+    /// <summary>
+    /// 安装所选
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task InstallSelect()
     {
@@ -204,6 +272,7 @@ public partial class CollectModel : TopModel, ICollectWindow
             return;
         }
 
+        //获取游戏实例
         var items = new List<string>();
         var items1 = new List<GameSettingObj>();
 
@@ -216,32 +285,37 @@ public partial class CollectModel : TopModel, ICollectWindow
             }
         }
 
-        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
-        if (res.Cancel)
+        //选择一个游戏实例
+        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
+        if (Cancel)
         {
             return;
         }
 
-        _choise = items1[res.Index];
+        _choise = items1[Index];
 
         Model.Progress(App.Lang("CollectWindow.Info9"));
 
+        var list = new ConcurrentBag<FileModVersionModel>();
+
         DownloadList.Clear();
 
-        foreach (var item in CollectList)
+        await Parallel.ForEachAsync(CollectList, async (item, cancel) =>
         {
             if (item.IsCheck)
             {
                 var item1 = await WebBinding.GetFileList(item.Obj.Source, item.Obj.Pid, 0, _choise.Version, _choise.Loader, item.Obj.FileType);
                 if (item1.Count == 0)
                 {
-                    continue;
+                    return;
                 }
                 var model1 = new FileModVersionModel(item.Name, item1.List!);
 
-                DownloadList.Add(model1);
+                list.Add(model1);
             }
-        }
+        });
+
+        DownloadList.AddRange(list);
 
         Model.ProgressClose();
         Model.PushBack(() =>
@@ -253,8 +327,19 @@ public partial class CollectModel : TopModel, ICollectWindow
         IsDownload = true;
     }
 
+    /// <summary>
+    /// 显示收藏列表
+    /// </summary>
     private void Load()
     {
+        HaveChoise = false;
+        _select = null;
+
+        foreach (var item in CollectList)
+        {
+            item.Uncheck();
+        }
+
         CollectList.Clear();
 
         if (string.IsNullOrWhiteSpace(Group))
@@ -301,6 +386,9 @@ public partial class CollectModel : TopModel, ICollectWindow
         EmptyDisplay = CollectList.Count == 0;
     }
 
+    /// <summary>
+    /// 加载收藏列表
+    /// </summary>
     private void LoadItems()
     {
         foreach (var item in CollectUtils.Collect.Items)
@@ -331,6 +419,9 @@ public partial class CollectModel : TopModel, ICollectWindow
         _list.Clear();
     }
 
+    /// <summary>
+    /// 更新收藏列表
+    /// </summary>
     public void Update()
     {
         CollectList.Clear();
@@ -371,6 +462,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 选中一个收藏
+    /// </summary>
+    /// <param name="item"></param>
     public void SetSelect(CollectItemModel item)
     {
         if (_select != null)
@@ -381,6 +476,18 @@ public partial class CollectModel : TopModel, ICollectWindow
         item.IsSelect = true;
     }
 
+    /// <summary>
+    /// 勾选收藏
+    /// </summary>
+    public void ChoiseChange()
+    {
+        HaveChoise = CollectList.Any(item => item.IsCheck);
+    }
+
+    /// <summary>
+    /// 安装指定收藏
+    /// </summary>
+    /// <param name="model"></param>
     public async void Install(CollectItemModel model)
     {
         foreach (var item in CollectList)
@@ -392,16 +499,28 @@ public partial class CollectModel : TopModel, ICollectWindow
         await InstallSelect();
     }
 
+    /// <summary>
+    /// 是否有选择收藏
+    /// </summary>
+    /// <returns></returns>
     public bool HaveSelect()
     {
-        return CollectList.Any(item => item.IsCheck);
+        HaveChoise = CollectList.Any(item => item.IsCheck);
+        return HaveChoise;
     }
 
+    /// <summary>
+    /// 是否选择收藏分组
+    /// </summary>
+    /// <returns></returns>
     public bool HaveGroup()
     {
         return !string.IsNullOrWhiteSpace(Group);
     }
 
+    /// <summary>
+    /// 删除选择的收藏
+    /// </summary>
     public async void DeleteSelect()
     {
         if (!HaveSelect())
@@ -428,6 +547,9 @@ public partial class CollectModel : TopModel, ICollectWindow
         CollectUtils.RemoveItem(Group, list);
     }
 
+    /// <summary>
+    /// 将手册添加到其他收藏分组
+    /// </summary>
     public async void GroupSelect()
     {
         if (!HaveSelect())
@@ -438,8 +560,8 @@ public partial class CollectModel : TopModel, ICollectWindow
         var list = new List<string>(CollectUtils.Collect.Groups.Keys);
         list.Remove(Group);
 
-        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
-        if (res.Cancel)
+        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
+        if (Cancel)
         {
             return;
         }
@@ -457,6 +579,9 @@ public partial class CollectModel : TopModel, ICollectWindow
         CollectUtils.AddItem(Group, list);
     }
 
+    /// <summary>
+    /// 安装所选的收藏
+    /// </summary>
     public async void Install()
     {
         await InstallSelect();

@@ -23,7 +23,7 @@ public partial class AddModPackControl : BaseUserControl
     {
         if (e.Key == Key.F5)
         {
-            (DataContext as AddModPackControlModel)!.Reload1();
+            (DataContext as AddModPackControlModel)!.ReloadF5();
 
             return Task.FromResult(true);
         }
@@ -61,7 +61,7 @@ public partial class AddModPackControl : BaseUserControl
         }
         else if (e.PropertyName == "Display")
         {
-            if ((DataContext as AddModPackControlModel)!.Display)
+            if ((DataContext as AddModPackControlModel)!.DisplayVersion)
             {
                 ThemeManager.CrossFade.Start(null, ModPackFiles);
                 ThemeManager.CrossFade.Start(ScrollViewer1, null);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -15,6 +16,9 @@ using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 
 namespace ColorMC.Gui.Joystick;
 
+/// <summary>
+/// 游戏实例与手柄绑定
+/// </summary>
 public class GameJoystick
 {
     /// <summary>
@@ -25,7 +29,7 @@ public class GameJoystick
     /// <summary>
     /// 底层操作接口
     /// </summary>
-    private readonly INative _implementation;
+    private readonly BaseNative _implementation;
     /// <summary>
     /// 最大的遥感值
     /// </summary>
@@ -97,10 +101,13 @@ public class GameJoystick
     /// <param name="handel">游戏操作句柄</param>
     private GameJoystick(GameSettingObj obj, IGameHandel handel)
     {
-        //目前只支持windows
         if (SystemInfo.Os == OsType.Windows)
         {
-            _implementation = new Win32Native();
+            _implementation = new Win32Native(handel.Handel);
+        }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            _implementation = new X11Native();
         }
         else
         {
@@ -108,20 +115,13 @@ public class GameJoystick
         }
 
         ColorMCCore.GameExit += GameExit;
-
-        _implementation!.AddHook(handel.Handel);
+        JoystickInput.OnEvent += Event;
 
         _obj = obj;
         _controlIndex = 0;
         _configUUID = GuiConfigUtils.Config.Input.NowConfig;
 
-        _gameController = JoystickInput.Open(_controlIndex);
-
-        if (_gameController != nint.Zero)
-        {
-            JoystickInput.OnEvent += Event;
-            _joystickID = JoystickInput.GetJoystickID(_gameController);
-        }
+        OpenJoyDevice();
 
         //开始发送鼠标指针
         new Thread(() =>
@@ -130,12 +130,15 @@ public class GameJoystick
             {
                 if (_cursorNowX != 0 || _cursorNowY != 0)
                 {
-                    _implementation.SendMouse(_cursorNowX, _cursorNowY, false);
+                    _implementation.SendMouse(_cursorNowX, _cursorNowY);
                 }
 
                 Thread.Sleep(10);
             }
-        }).Start();
+        })
+        { 
+            Name = "ColorMC JoyDevice Mouse"
+        }.Start();
     }
 
     /// <summary>
@@ -157,12 +160,11 @@ public class GameJoystick
     /// </summary>
     private void Stop()
     {
-        if (_implementation != null)
-        {
-            _isExit = true;
-            ColorMCCore.GameExit -= GameExit;
-            _implementation.Stop();
-        }
+        ColorMCCore.GameExit -= GameExit;
+        _isExit = true;
+
+        _implementation?.Stop();
+        CloseJoyDevice();
     }
 
     /// <summary>
@@ -177,13 +179,13 @@ public class GameJoystick
             if (state != down)
             {
                 _lastKeyState[obj] = down;
-                _implementation.SendKey(obj, down, _mouseMode);
+                _implementation.SendKey(obj, down);
             }
         }
         else
         {
             _lastKeyState.Add(obj, down);
-            _implementation.SendKey(obj, down, _mouseMode);
+            _implementation.SendKey(obj, down);
         }
     }
 
@@ -206,6 +208,11 @@ public class GameJoystick
         if (type == EventType.Controlleraxismotion)
         {
             var axisEvent = sdlEvent.Caxis;
+            if (axisEvent.Which != _joystickID)
+            {
+                return;
+            }
+
             var axisValue = axisEvent.Value;
 
             var axis = (GameControllerAxis)axisEvent.Axis;
@@ -266,6 +273,7 @@ public class GameJoystick
                 }
             }
 
+            //鼠标状态下只启用鼠标摇杆
             bool skip = false;
             if (_mouseMode)
             {
@@ -331,7 +339,13 @@ public class GameJoystick
         //手柄按键按下
         else if (type == EventType.Controllerbuttondown)
         {
+            if (sdlEvent.Cbutton.Which != _joystickID)
+            {
+                return;
+            }
+
             var button = sdlEvent.Cbutton.Button;
+
             foreach (var item in config.Keys)
             {
                 if (item.Key == button)
@@ -354,7 +368,13 @@ public class GameJoystick
         //手柄按键松开
         else if (type == EventType.Controllerbuttonup)
         {
+            if (sdlEvent.Cbutton.Which != _joystickID)
+            {
+                return;
+            }
+
             var button = sdlEvent.Cbutton.Button;
+
             foreach (var item in config.Keys)
             {
                 if (item.Key == button)
@@ -362,6 +382,66 @@ public class GameJoystick
                     CheckKeyAndSend(item.Value, false);
                 }
             }
+        }
+        //手柄移除
+        else if (type == EventType.Joydeviceremoved)
+        {
+            if (sdlEvent.Jdevice.Which == _joystickID)
+            {
+                CloseJoyDevice();
+            }
+        }
+        //手柄加入
+        else if (type == EventType.Joydeviceadded)
+        {
+            if (sdlEvent.Jdevice.Which == _controlIndex)
+            {
+                _gameController = JoystickInput.Open(_controlIndex);
+
+                if (_gameController != nint.Zero)
+                {
+                    _joystickID = JoystickInput.GetJoystickInstanceID(_gameController);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 关闭手柄
+    /// </summary>
+    private void CloseJoyDevice()
+    {
+        foreach (var item in _lastKeyState.ToArray())
+        {
+            if (item.Value != false)
+            {
+                CheckKeyAndSend(item.Key, false);
+            }
+        }
+
+        _cursorNowX = 0;
+        _cursorNowY = 0;
+
+        if (_gameController != nint.Zero)
+        {
+            JoystickInput.Close(_gameController);
+        }
+
+        _gameController = nint.Zero;
+        _joystickID = 0;
+    }
+
+    /// <summary>
+    /// 启用手柄
+    /// </summary>
+    private void OpenJoyDevice()
+    {
+        _joystickID = 0;
+        _gameController = JoystickInput.Open(_controlIndex);
+
+        if (_gameController != nint.Zero)
+        {
+            _joystickID = JoystickInput.GetJoystickInstanceID(_gameController);
         }
     }
 
@@ -381,24 +461,12 @@ public class GameJoystick
         //切换手柄
         if (_controlIndex != model.ControlIndex)
         {
-            //关闭旧的手柄
-            if (_gameController != nint.Zero)
-            {
-                JoystickInput.Close(_gameController);
-                _gameController = nint.Zero;
-                _joystickID = 0;
-            }
-
+            CloseJoyDevice();
 
             _controlIndex = model.ControlIndex;
 
             //切换新的手柄
-            _gameController = JoystickInput.Open(_controlIndex);
-
-            if (_gameController != nint.Zero)
-            {
-                _joystickID = JoystickInput.GetJoystickID(_gameController);
-            }
+            OpenJoyDevice();
         }
     }
 

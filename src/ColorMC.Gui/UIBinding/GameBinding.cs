@@ -32,7 +32,6 @@ using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Hook;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -57,6 +56,8 @@ public static class GameBinding
     /// 停止启动游戏
     /// </summary>
     private static CancellationTokenSource s_launchCancel = new();
+
+    private static Dictionary<string, bool> s_gameConnect = [];
 
     /// <summary>
     /// 获取游戏实例列表
@@ -360,6 +361,7 @@ public static class GameBinding
         UserBinding.AddLockUser(user);
         foreach (var item in list)
         {
+            s_gameConnect[item.UUID] = false;
             GameManager.ClearGameLog(item);
             GameManager.StartGame(item);
         }
@@ -567,6 +569,7 @@ public static class GameBinding
 
         s_launchCancel = new();
 
+        s_gameConnect[obj.UUID] = false;
         GameManager.ClearGameLog(obj);
         GameManager.StartGame(obj);
 
@@ -2620,6 +2623,15 @@ public static class GameBinding
     }
 
     /// <summary>
+    /// 游戏进程已通过netty连接启动器
+    /// </summary>
+    /// <param name="uuid"></param>
+    public static void GameConnect(string uuid)
+    {
+        s_gameConnect[uuid] = true;
+    }
+
+    /// <summary>
     /// 游戏进程启动后
     /// </summary>
     /// <param name="model"></param>
@@ -2633,7 +2645,17 @@ public static class GameBinding
             try
             {
                 var conf = obj.Window;
-                //HookUtils.WaitWindowDisplay(pr);
+
+                do
+                {
+                    if (pr.HasExited ||
+                    (s_gameConnect.TryGetValue(obj.UUID, out var temp) && temp))
+                    {
+                        break;
+                    }
+                    Thread.Sleep(500);
+                }
+                while (true);
 
                 if (pr.HasExited)
                 {
@@ -2641,7 +2663,7 @@ public static class GameBinding
                 }
 
                 //启用手柄支持
-                if (SystemInfo.Os == OsType.Windows && GuiConfigUtils.Config.Input.Enable)
+                if (GuiConfigUtils.Config.Input.Enable)
                 {
                     var run = true;
                     var uuid = GuiConfigUtils.Config.Input.NowConfig;

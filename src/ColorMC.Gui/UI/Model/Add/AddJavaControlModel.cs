@@ -20,37 +20,73 @@ public partial class AddJavaControlModel : TopModel
     /// <summary>
     /// JAVA列表
     /// </summary>
-    private readonly List<JavaDownloadModel> _list1 = [];
-
+    private readonly List<JavaDownloadModel> _javaList = [];
     /// <summary>
     /// 显示的JAVA列表
     /// </summary>
     public ObservableCollection<JavaDownloadModel> JavaList { get; init; } = [];
+    /// <summary>
+    /// 系统支持列表
+    /// </summary>
     public ObservableCollection<string> SystemList { get; init; } = [];
+    /// <summary>
+    /// 主版本列表
+    /// </summary>
     public ObservableCollection<string> VersionList { get; init; } = [];
+    /// <summary>
+    /// 进制列表
+    /// </summary>
     public ObservableCollection<string> ArchList { get; init; } = [];
+    /// <summary>
+    /// Java类型
+    /// </summary>
     public List<string> JavaTypeList { get; init; } = WebBinding.GetJavaType();
 
+    /// <summary>
+    /// 选中的Java类型
+    /// </summary>
     [ObservableProperty]
     private string _javaType;
+    /// <summary>
+    /// 选中的操作系统
+    /// </summary>
     [ObservableProperty]
     private string _system;
+    /// <summary>
+    /// 选中的主版本
+    /// </summary>
     [ObservableProperty]
     private string _version;
+    /// <summary>
+    /// 选中的进制
+    /// </summary>
     [ObservableProperty]
     private string _arch;
+    /// <summary>
+    /// Java类型
+    /// </summary>
     [ObservableProperty]
     private int _typeIndex = -1;
+    /// <summary>
+    /// 进制类型
+    /// </summary>
     [ObservableProperty]
     private int _archIndex = -1;
+    /// <summary>
+    /// 是否有文件可以显示
+    /// </summary>
     [ObservableProperty]
     private bool _display = false;
-
+    /// <summary>
+    /// 是否正在加载
+    /// </summary>
     private bool _load = true;
 
     private readonly string _useName;
-
-    private int _needJava;
+    /// <summary>
+    /// 需要下载的Java版本
+    /// </summary>
+    private readonly int _needJava;
 
     public AddJavaControlModel(BaseModel model, int version) : base(model)
     {
@@ -70,7 +106,9 @@ public partial class AddJavaControlModel : TopModel
     partial void OnArchChanged(string value)
     {
         if (_load)
+        {
             return;
+        }
 
         Select();
     }
@@ -78,7 +116,9 @@ public partial class AddJavaControlModel : TopModel
     partial void OnSystemChanged(string value)
     {
         if (_load)
+        {
             return;
+        }
 
         if (TypeIndex == 0)
         {
@@ -93,7 +133,9 @@ public partial class AddJavaControlModel : TopModel
     partial void OnVersionChanged(string value)
     {
         if (_load)
+        {
             return;
+        }
 
         if (TypeIndex == 0)
         {
@@ -105,6 +147,9 @@ public partial class AddJavaControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 加载Java列表
+    /// </summary>
     public async void Load()
     {
         _load = true;
@@ -112,7 +157,7 @@ public partial class AddJavaControlModel : TopModel
         Model.Progress(App.Lang("AddJavaWindow.Info4"));
         Model.ChoiseEnable = false;
 
-        _list1.Clear();
+        _javaList.Clear();
         JavaList.Clear();
 
         var res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
@@ -122,6 +167,7 @@ public partial class AddJavaControlModel : TopModel
             if (res.Os != null && SystemList.Count == 0)
             {
                 SystemList.AddRange(res.Os);
+                //根据系统自动选中
                 if (SystemInfo.Os == OsType.Windows)
                 {
                     var item = res.Os.FirstOrDefault(item => item.Equals("windows", StringComparison.CurrentCultureIgnoreCase));
@@ -149,6 +195,7 @@ public partial class AddJavaControlModel : TopModel
             }
             if (res.MainVersion != null && VersionList.Count == 0)
             {
+                //根据需要自动选中
                 VersionList.AddRange(res.MainVersion);
 
                 if (_needJava != 0
@@ -163,6 +210,7 @@ public partial class AddJavaControlModel : TopModel
             }
             if (res.Arch != null && ArchList.Count == 0)
             {
+                //根据进制自动选中
                 ArchList.AddRange(res.Arch);
                 if (SystemInfo.IsArm)
                 {
@@ -214,7 +262,7 @@ public partial class AddJavaControlModel : TopModel
                     VersionList.IndexOf(Version!));
             }
 
-            _list1.AddRange(res.Download!);
+            _javaList.AddRange(res.Download!);
 
             Select();
 
@@ -231,7 +279,11 @@ public partial class AddJavaControlModel : TopModel
 
         _load = false;
     }
-
+    
+    /// <summary>
+    /// 安装所选Java
+    /// </summary>
+    /// <param name="obj"></param>
     public async void Install(JavaDownloadModel obj)
     {
         var res = await Model.ShowWait(string.Format(
@@ -246,15 +298,13 @@ public partial class AddJavaControlModel : TopModel
             Model.Progress(App.Lang("AddJavaWindow.Info2"));
         }
         string temp = App.Lang("AddGameWindow.Tab1.Info21");
+        //开始下载Java
         var res1 = await JavaBinding.DownloadJava(obj, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         }, () =>
         {
-            Dispatcher.UIThread.Post(() =>
-            {
-                Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5"));
-            });
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5")));
         });
         Model.ProgressClose();
         if (!res1.State)
@@ -267,6 +317,9 @@ public partial class AddJavaControlModel : TopModel
         (WindowManager.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 
+    /// <summary>
+    /// 切换Java类型
+    /// </summary>
     private void Switch()
     {
         SystemList.Clear();
@@ -277,6 +330,9 @@ public partial class AddJavaControlModel : TopModel
         ArchIndex = 0;
     }
 
+    /// <summary>
+    /// 筛选Java
+    /// </summary>
     private void Select()
     {
         JavaList.Clear();
@@ -285,7 +341,7 @@ public partial class AddJavaControlModel : TopModel
         bool version1 = !string.IsNullOrWhiteSpace(Version);
         bool os1 = !string.IsNullOrWhiteSpace(System);
 
-        var list1 = from item in _list1
+        var list1 = from item in _javaList
                     where (!arch1 || (item.Arch == Arch))
                     && (!version1 || (item.MainVersion == Version))
                     && (TypeIndex == 0 || !os1 || (item.Os == System))
@@ -305,7 +361,7 @@ public partial class AddJavaControlModel : TopModel
     public override void Close()
     {
         _load = true;
-        _list1.Clear();
+        _javaList.Clear();
         JavaList.Clear();
     }
 }

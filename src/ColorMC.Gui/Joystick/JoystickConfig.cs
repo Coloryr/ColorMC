@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Avalonia.Input;
+using ColorMC.Core;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
@@ -15,8 +16,6 @@ namespace ColorMC.Gui.Joystick;
 /// </summary>
 public static class JoystickConfig
 {
-    public const string Name1 = "inputs";
-
     /// <summary>
     /// 配置文件列表
     /// </summary>
@@ -32,7 +31,7 @@ public static class JoystickConfig
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameJoyDir);
 
         Directory.CreateDirectory(s_local);
 
@@ -83,8 +82,8 @@ public static class JoystickConfig
     {
         ConfigSave.AddItem(new()
         {
-            Name = obj.UUID + ".json",
-            File = Path.Combine(s_local, $"{obj.UUID}.json"),
+            Name = obj.UUID + Names.NameJsonExt,
+            File = Path.Combine(s_local, $"{obj.UUID}{Names.NameJsonExt}"),
             Obj = obj
         });
     }
@@ -150,6 +149,10 @@ public static class JoystickConfig
         };
     }
 
+    /// <summary>
+    /// 生成一个UUID
+    /// </summary>
+    /// <returns></returns>
     private static string GenUUID()
     {
         return FuntionUtils.NewUUID()[..8];
@@ -163,6 +166,6 @@ public static class JoystickConfig
     {
         Configs.Remove(obj.UUID);
 
-        PathHelper.Delete(Path.GetFullPath(s_local + "/" + obj.UUID + ".json"));
+        PathHelper.Delete(Path.Combine(s_local, $"{obj.UUID}{Names.NameJsonExt}"));
     }
 }

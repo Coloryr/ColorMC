@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// Mod项目
+/// 模组项目
 /// </summary>
 public partial class ModDisplayModel : ObservableObject
 {

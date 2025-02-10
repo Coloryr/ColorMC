@@ -15,7 +15,7 @@ public class WavFile : IDecoder
 
     private readonly Stream _stream;
 
-    public bool IsFile { get; init; }
+    public bool IsChek { get; init; }
 
     public WavFile(Stream stream)
     {
@@ -34,7 +34,7 @@ public class WavFile : IDecoder
             return;
         }
 
-        IsFile = true;
+        IsChek = true;
 
         _stream = stream;
 

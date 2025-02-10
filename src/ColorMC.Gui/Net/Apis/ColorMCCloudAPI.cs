@@ -12,10 +12,20 @@ using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.Net.Apis;
 
+/// <summary>
+/// ColorMC相关API
+/// </summary>
 public static class ColorMCCloudAPI
 {
+    /// <summary>
+    /// 更新检查网址
+    /// </summary>
     public const string CheckUrl = $"{ColorMCAPI.BaseUrl}update/{ColorMCCore.TopVersion}/";
 
+    /// <summary>
+    /// 获取更新日志
+    /// </summary>
+    /// <returns>日志内容</returns>
     public static async Task<string?> GetNewLog()
     {
         try
@@ -32,6 +42,10 @@ public static class ColorMCCloudAPI
         }
     }
 
+    /// <summary>
+    /// 获取主版本号
+    /// </summary>
+    /// <returns></returns>
     public static async Task<JObject> GetUpdateIndex()
     {
         var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "update/index.json");
@@ -40,6 +54,10 @@ public static class ColorMCCloudAPI
         return JObject.Parse(await data.Content.ReadAsStringAsync());
     }
 
+    /// <summary>
+    /// 获取文件Sha1
+    /// </summary>
+    /// <returns></returns>
     public static async Task<JObject> GetUpdateSha1()
     {
         var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
@@ -49,6 +67,11 @@ public static class ColorMCCloudAPI
         return JObject.Parse(text);
     }
 
+    /// <summary>
+    /// 获取在线服务器
+    /// </summary>
+    /// <param name="version">游戏版本</param>
+    /// <returns></returns>
     public static async Task<JObject?> GetCloudServer(string version)
     {
         try
@@ -65,26 +88,33 @@ public static class ColorMCCloudAPI
         }
     }
 
+    /// <summary>
+    /// 上传在线服务器
+    /// </summary>
+    /// <param name="token">Minecraft token</param>
+    /// <param name="ip">IP地址</param>
+    /// <param name="model">显示内容</param>
+    /// <returns>是否上传成功</returns>
     public static async Task<bool> PutCloudServer(string token, string ip, FrpShareModel model)
     {
-        HttpRequestMessage httpRequest = new()
+        var httpRequest = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(ColorMCAPI.BaseUrl + "frp"),
+            Content = new StringContent(JsonConvert.SerializeObject(new
+            {
+                token,
+                ip,
+                custom = new
+                {
+                    model.Version,
+                    model.Loader,
+                    model.IsLoader,
+                    model.Text
+                }
+            }))
         };
         httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
-        httpRequest.Content = new StringContent(JsonConvert.SerializeObject(new
-        {
-            token,
-            ip,
-            custom = new
-            {
-                model.Version,
-                model.Loader,
-                model.IsLoader,
-                model.Text
-            }
-        }));
 
         try
         {

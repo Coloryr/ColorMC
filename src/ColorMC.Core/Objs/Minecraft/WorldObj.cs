@@ -3,7 +3,7 @@
 namespace ColorMC.Core.Objs.Minecraft;
 
 /// <summary>
-/// 世界储存
+/// 游戏存档
 /// </summary>
 public record WorldObj
 {

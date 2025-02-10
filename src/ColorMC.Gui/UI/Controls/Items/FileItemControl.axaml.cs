@@ -74,6 +74,7 @@ public partial class FileItemControl : UserControl
         {
             return;
         }
+        Focus();
         model.SetSelect();
 
         void OpenFlyout()
