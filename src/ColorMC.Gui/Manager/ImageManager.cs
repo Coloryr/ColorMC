@@ -25,8 +25,6 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class ImageManager
 {
-    public const string Name1 = "image";
-
     /// <summary>
     /// 游戏图标图片
     /// </summary>
@@ -77,7 +75,7 @@ public static class ImageManager
     public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
 
 
-    public static readonly string[] MusicIcons = [ "/Resource/Icon/play.svg", "/Resource/Icon/pause.svg" ];
+    public static readonly string[] MusicIcons = ["/Resource/Icon/play.svg", "/Resource/Icon/pause.svg"];
 
     /// <summary>
     /// 运行路径
@@ -92,20 +90,23 @@ public static class ImageManager
     public static void Init()
     {
         {
+            //加载游戏图标
             using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
             GameIcon = new Bitmap(asset);
         }
         {
+            //加载程序图标
             using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
                 ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
             WindowIcon = new(asset1!);
         }
         {
+            //加载图片
             using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
             LoadIcon = new(asset1!);
         }
 
-        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameImageDir);
 
         Directory.CreateDirectory(s_local);
     }
@@ -129,6 +130,7 @@ public static class ImageManager
                 var old1 = HeadBitmap;
                 var config = GuiConfigUtils.Config.Head;
                 SkinBitmap = SKBitmap.Decode(file);
+                //根据模式生成
                 using var data = config.Type switch
                 {
                     HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
@@ -170,6 +172,7 @@ public static class ImageManager
         }
         var old = HeadBitmap;
         var config = GuiConfigUtils.Config.Head;
+        //根据模式生成
         using var data = config.Type switch
         {
             HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
@@ -211,11 +214,12 @@ public static class ImageManager
         var config = GuiConfigUtils.Config;
         RemoveImage();
         var file = config.BackImage;
+        //bing壁纸
         if (string.IsNullOrWhiteSpace(file))
         {
             file = "https://api.dujin.org/bing/1920.php";
         }
-
+        //自定义壁纸
         if (config.EnableBG)
         {
             BackBitmap = await MakeBackImage(file, config.BackEffect,
@@ -308,9 +312,10 @@ public static class ImageManager
         }
         //存在缓存
         var sha1 = HashHelper.GenSha256(url);
-        if (File.Exists(s_local + sha1))
+        string file = Path.Combine(s_local, sha1);
+        if (File.Exists(file))
         {
-            return new Bitmap(s_local + sha1);
+            return new Bitmap(file);
         }
         else
         {
@@ -326,13 +331,13 @@ public static class ImageManager
                         using var image1 = SKBitmap.Decode(data1.Stream!);
                         using var image2 = ImageUtils.Resize(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
-                        PathHelper.WriteBytes(s_local + sha1, data.AsStream());
-                        return new Bitmap(s_local + sha1);
+                        PathHelper.WriteBytes(file, data.AsStream());
+                        return new Bitmap(file);
                     }
                     else
                     {
-                        PathHelper.WriteBytes(s_local + sha1, data1.Stream!);
-                        return new Bitmap(s_local + sha1);
+                        PathHelper.WriteBytes(file, data1.Stream!);
+                        return new Bitmap(file);
                     }
                 }
 

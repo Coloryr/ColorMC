@@ -39,6 +39,7 @@ public partial class AddGameModel
         var obj = list[res.Index];
         while (true)
         {
+            //替换冲突的名字
             if (GameBinding.GetGameByName(obj.Name) != null)
             {
                 var res1 = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info12"));
@@ -60,6 +61,7 @@ public partial class AddGameModel
                 break;
             }
         }
+        //下载游戏实例
         var res3 = await GameBinding.DownloadCloud(obj, Group, Model.ShowWait,
             Tab1GameOverwirte);
         Model.ProgressClose();
@@ -94,7 +96,7 @@ public partial class AddGameModel
         {
             Text += '/';
         }
-
+        //下载服务器包
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
         var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, Text,
             Tab1GameOverwirte);

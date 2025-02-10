@@ -51,6 +51,7 @@ public partial class AddControl : BaseUserControl
 
         return Task.FromResult(false);
     }
+
     public override Bitmap GetIcon()
     {
         var icon = ImageManager.GetGameIcon(_obj);
@@ -85,7 +86,7 @@ public partial class AddControl : BaseUserControl
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         var model = (DataContext as AddControlModel)!;
-        if (e.PropertyName == "OptifineDisplay")
+        if (e.PropertyName == nameof(AddControlModel.OptifineDisplay))
         {
             if (model.OptifineDisplay == true)
             {
@@ -98,7 +99,7 @@ public partial class AddControl : BaseUserControl
                 ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
-        else if (e.PropertyName == "ModDownloadDisplay")
+        else if (e.PropertyName == nameof(AddControlModel.ModDownloadDisplay))
         {
             if (model.ModDownloadDisplay == true)
             {
@@ -111,7 +112,7 @@ public partial class AddControl : BaseUserControl
                 ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
-        else if (e.PropertyName == "VersionDisplay")
+        else if (e.PropertyName == nameof(AddControlModel.VersionDisplay))
         {
             if (model.VersionDisplay == true)
             {
@@ -124,7 +125,7 @@ public partial class AddControl : BaseUserControl
                 ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
-        else if (e.PropertyName == "ScrollToHome")
+        else if (e.PropertyName == AddControlModel.NameScrollToHome)
         {
             ScrollViewer1.ScrollToHome();
         }

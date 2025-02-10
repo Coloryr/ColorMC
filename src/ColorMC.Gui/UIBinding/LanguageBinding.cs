@@ -235,7 +235,7 @@ public static class LanguageBinding
             FileType.Shaderpack.GetName(),
             FileType.Resourcepack.GetName(),
             FileType.DataPacks.GetName(),
-            FileType.Optifne.GetName()
+            FileType.Optifine.GetName()
         ];
     }
 

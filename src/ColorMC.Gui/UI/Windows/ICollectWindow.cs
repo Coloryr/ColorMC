@@ -11,4 +11,5 @@ public interface ICollectWindow
     void DeleteSelect();
     void GroupSelect();
     bool HaveGroup();
+    void ChoiseChange();
 }

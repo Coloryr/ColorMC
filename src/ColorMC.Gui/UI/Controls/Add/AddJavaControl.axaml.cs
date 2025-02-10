@@ -10,6 +10,9 @@ namespace ColorMC.Gui.UI.Controls.Add;
 
 public partial class AddJavaControl : BaseUserControl
 {
+    /// <summary>
+    /// 需要下载的JAVA主版本
+    /// </summary>
     public int NeedJava { get; set; }
 
     public AddJavaControl() : base(WindowManager.GetUseName<AddJavaControl>())

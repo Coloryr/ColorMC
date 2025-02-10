@@ -17,6 +17,12 @@ public partial class AddGameModel
     /// <summary>
     /// 文件列表
     /// </summary>
+    [ObservableProperty]
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _files;
+
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     private FilesPageModel? _fileModel;
 
     /// <summary>
@@ -24,12 +30,6 @@ public partial class AddGameModel
     /// </summary>
     [ObservableProperty]
     private string? _selectPath;
-
-    /// <summary>
-    /// 文件列表
-    /// </summary>
-    [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _files;
 
     /// <summary>
     /// 可以导入
@@ -52,7 +52,7 @@ public partial class AddGameModel
                 return;
             }
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
-
+            //测试是否是其他启动器的游戏版本
             var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
             {

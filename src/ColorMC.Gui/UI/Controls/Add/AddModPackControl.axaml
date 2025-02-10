@@ -156,7 +156,7 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 ItemsSource="{Binding GameVersionList}"
-                                SelectedItem="{Binding GameVersion1}" />
+                                SelectedItem="{Binding GameVersionDownload}" />
                         </DockPanel>
                         <DockPanel MinWidth="140" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
@@ -165,9 +165,9 @@
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Center"
                                 FormatString="N0"
-                                Maximum="{Binding MaxPage1}"
+                                Maximum="{Binding MaxPageDownload}"
                                 Minimum="0"
-                                Value="{Binding Page1}" />
+                                Value="{Binding PageDownload}" />
                         </DockPanel>
                         <StackPanel
                             Margin="0,1,10,10"
@@ -211,7 +211,7 @@
                             Classes="top"
                             Command="{Binding NextVersion}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
-                            IsVisible="{Binding EnableNextPage1}" />
+                            IsVisible="{Binding EnableNextPageDownload}" />
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"

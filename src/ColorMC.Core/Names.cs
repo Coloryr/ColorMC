@@ -87,4 +87,5 @@ public static class Names
     public const string NameSchematicExt = ".schematic";
     public const string NameSha1Ext = ".sha1";
     public const string NameTarGzExt = ".tar.gz";
+    public const string NameMrpackExt = ".mrpack";
 }

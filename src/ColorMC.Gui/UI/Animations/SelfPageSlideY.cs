@@ -12,6 +12,10 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
+/// <summary>
+/// “≥√Ê«–ªª∂Øª≠
+/// </summary>
+/// <param name="duration"></param>
 public class SelfPageSlideY(TimeSpan duration) : IPageTransition
 {
     /// <summary>

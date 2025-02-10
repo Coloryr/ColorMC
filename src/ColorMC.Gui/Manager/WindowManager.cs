@@ -47,8 +47,6 @@ namespace ColorMC.Gui.Manager;
 /// </summary>
 public static class WindowManager
 {
-    public const string Name1 = "window.json";
-
     /// <summary>
     /// 上一个窗口
     /// </summary>
@@ -164,7 +162,7 @@ public static class WindowManager
     /// </summary>
     public static void Init()
     {
-        s_file = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameWindowFile);
         LoadState();
         if (s_WindowState == null)
         {
@@ -270,6 +268,11 @@ public static class WindowManager
         return null;
     }
 
+    /// <summary>
+    /// 设置窗口状态
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="state"></param>
     public static void SaveWindowState(string name, WindowStateObj state)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -284,6 +287,11 @@ public static class WindowManager
         SaveState();
     }
 
+    /// <summary>
+    /// 找到基础窗口
+    /// </summary>
+    /// <param name="con"></param>
+    /// <returns></returns>
     public static IBaseWindow FindRoot(object? con)
     {
         if (con is SingleControl all)
@@ -298,6 +306,10 @@ public static class WindowManager
         return AllWindow!;
     }
 
+    /// <summary>
+    /// 显示窗口
+    /// </summary>
+    /// <param name="con">窗口</param>
     private static void ShowWindow(BaseUserControl con)
     {
         AMultiWindow win;
@@ -313,6 +325,11 @@ public static class WindowManager
         win.Show();
     }
 
+    /// <summary>
+    /// 显示窗口
+    /// </summary>
+    /// <param name="con">窗口</param>
+    /// <param name="newwindow">是否独立打开</param>
     public static void AWindow(BaseUserControl con, bool newwindow = false)
     {
         if (ConfigBinding.WindowMode())
@@ -338,6 +355,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示自定义窗口
+    /// </summary>
+    /// <param name="test">是否为测试模式</param>
+    /// <returns>是否启动成功</returns>
     public static bool ShowCustom(bool test = false)
     {
         if (CustomWindow != null)
@@ -357,7 +379,8 @@ public static class WindowManager
 
         try
         {
-            string file = BaseBinding.GetRunDir() + "ColorMC.CustomGui.dll";
+            //加载dll
+            string file = Path.Combine(ColorMCGui.RunDir, "ColorMC.CustomGui.dll");
             if (!File.Exists(file))
             {
                 return false;
@@ -372,13 +395,17 @@ public static class WindowManager
                     CustomWindow = dll;
                 }
                 AWindow(dll.Window, test);
-                var path = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/ColorMC/custom";
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC", "custom");
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
                     CustomWindow?.Window.Window.Model.Show(App.Lang("WindowManager.Info1"));
                 }
                 return true;
+            }
+            else
+            {
+                dll.Unload();
             }
         }
         catch (Exception e)
@@ -391,6 +418,12 @@ public static class WindowManager
         return false;
     }
 
+    /// <summary>
+    /// 显示添加游戏实例窗口
+    /// </summary>
+    /// <param name="group">添加的游戏分组</param>
+    /// <param name="isDir">是否为目录</param>
+    /// <param name="file">位置</param>
     public static void ShowAddGame(string? group, bool isDir = false, string? file = null)
     {
         if (AddGameWindow != null)
@@ -409,6 +442,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示下载窗口
+    /// </summary>
+    /// <returns>Gui调用参数</returns>
     public static DownloadArg ShowDownload()
     {
         return Dispatcher.UIThread.Invoke(() =>
@@ -427,6 +464,12 @@ public static class WindowManager
         });
     }
 
+    /// <summary>
+    /// 显示用户窗口
+    /// </summary>
+    /// <param name="add">是否跳转到添加</param>
+    /// <param name="relogin">是否为重新登录</param>
+    /// <param name="url">添加的自定义验证地址</param>
     public static void ShowUser(bool add = false, bool relogin = false, string? url = null)
     {
         if (UserWindow != null)
@@ -453,6 +496,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示主窗口
+    /// </summary>
     public static void ShowMain()
     {
         if (MainWindow != null)
@@ -466,6 +512,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示添加整合包窗口
+    /// </summary>
     public static void ShowAddModPack()
     {
         if (AddModPackWindow != null)
@@ -479,6 +528,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示启动器设置窗口
+    /// </summary>
+    /// <param name="type">设置项目</param>
+    /// <param name="value">传入值</param>
     public static void ShowSetting(SettingType type, int value = 0)
     {
         if (SettingWindow != null)
@@ -494,6 +548,9 @@ public static class WindowManager
         SettingWindow?.GoTo(type);
     }
 
+    /// <summary>
+    /// 显示皮肤窗口
+    /// </summary>
     public static void ShowSkin()
     {
         if (SkinWindow != null)
@@ -507,6 +564,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏实例编辑窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">需要编辑的项目</param>
     public static void ShowGameEdit(GameSettingObj obj, GameEditWindowType type
         = GameEditWindowType.Normal)
     {
@@ -524,6 +586,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示添加Java窗口
+    /// </summary>
+    /// <param name="version">Java主版本</param>
     public static void ShowAddJava(int version)
     {
         if (AddJavaWindow != null)
@@ -540,6 +606,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示添加游戏资源窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="obj1">模组项目</param>
     public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
         var type1 = DownloadItemHelper.TestSourceType(obj1.PID, obj1.FID);
@@ -557,7 +628,11 @@ public static class WindowManager
             con.GoFile(type1, obj1.PID!);
         }
     }
-
+    /// <summary>
+    /// 显示添加资源窗口，并进入标记模式
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
     public static Task ShowAddSet(GameSettingObj obj)
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
@@ -573,7 +648,11 @@ public static class WindowManager
             return con.GoSet();
         }
     }
-
+    /// <summary>
+    /// 显示添加资源窗口，并跳转到模组升级
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="list">需要升级的模组</param>
     public static void ShowAddUpgade(GameSettingObj obj, ICollection<ModUpgradeModel> list)
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
@@ -589,7 +668,11 @@ public static class WindowManager
             con.GoUpgrade(list);
         }
     }
-
+    /// <summary>
+    /// 显示添加资源窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">添加的类型</param>
     public static void ShowAdd(GameSettingObj obj, FileType type)
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
@@ -606,6 +689,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示生成服务器包窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void ShowServerPack(GameSettingObj obj)
     {
         if (ServerPackWindows.TryGetValue(obj.UUID, out var value))
@@ -620,6 +707,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示收藏窗口
+    /// </summary>
     public static void ShowCollect()
     {
         if (CollectWindow != null)
@@ -633,6 +723,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏日志窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="code">游戏退出码</param>
     public static void ShowGameLog(GameSettingObj obj, int code = 0)
     {
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
@@ -649,6 +744,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏实例配置文件修改窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void ShowConfigEdit(GameSettingObj obj)
     {
         if (GameConfigEditWindows.TryGetValue(obj.UUID, out var win1))
@@ -662,7 +761,10 @@ public static class WindowManager
             AWindow(con);
         }
     }
-
+    /// <summary>
+    /// 显示游戏实例配置修改窗口
+    /// </summary>
+    /// <param name="obj">存档</param>
     public static void ShowConfigEdit(WorldObj obj)
     {
         string key = obj.Game.UUID + ":" + obj.LevelName;
@@ -678,6 +780,11 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏实例云储存窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="world">是否为保存</param>
     public static void ShowGameCloud(GameSettingObj obj, bool world = false)
     {
         string key = obj.UUID;
@@ -701,6 +808,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏统计窗口
+    /// </summary>
     public static void ShowCount()
     {
         if (CountWindow != null)
@@ -714,6 +824,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示游戏导出窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void ShowGameExport(GameSettingObj obj)
     {
         if (GameExportWindows.TryGetValue(obj.UUID, out var value))
@@ -728,6 +842,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示映射联机窗口
+    /// </summary>
     public static void ShowNetFrp()
     {
         if (NetFrpWindow != null)
@@ -741,6 +858,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 显示Minecraft News窗口
+    /// </summary>
     public static void ShowNews()
     {
         if (NewsWindow != null)
@@ -754,7 +874,12 @@ public static class WindowManager
         }
     }
 
-
+    /// <summary>
+    /// 显示错误
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="e"></param>
+    /// <param name="close"></param>
     public static void ShowError(string? data, Exception? e, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
@@ -763,7 +888,12 @@ public static class WindowManager
             AWindow(con);
         });
     }
-
+    /// <summary>
+    /// 显示错误
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="e"></param>
+    /// <param name="close"></param>
     public static void ShowError(string data, string e, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
@@ -773,6 +903,10 @@ public static class WindowManager
         });
     }
 
+    /// <summary>
+    /// 关闭该游戏实例的所有窗口
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public static void CloseGameWindow(GameSettingObj obj)
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
@@ -808,6 +942,10 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 获取当前主窗口
+    /// </summary>
+    /// <returns>窗口</returns>
     public static IBaseWindow? GetMainWindow()
     {
         if (ConfigBinding.WindowMode())
@@ -829,9 +967,14 @@ public static class WindowManager
         return MainWindow.Window;
     }
 
+    /// <summary>
+    /// 更新窗口信息
+    /// </summary>
+    /// <param name="model">窗口模型</param>
     public static void UpdateWindow(BaseModel model)
     {
         model.Back = ImageManager.BackBitmap;
+        //更新背景图
         if (ImageManager.BackBitmap != null)
         {
             if (GuiConfigUtils.Config.BackTran != 0)
@@ -848,7 +991,8 @@ public static class WindowManager
         {
             model.BgVisible = false;
         }
-
+        
+        //更新透明度
         if (GuiConfigUtils.Config.WindowTran)
         {
             model.Hints = [WindowTran[GuiConfigUtils.Config.WindowTranType]];
@@ -862,6 +1006,9 @@ public static class WindowManager
             PlatformThemeVariant.Light ? ThemeVariant.Light : ThemeVariant.Dark;
     }
 
+    /// <summary>
+    /// 还原显示主窗口
+    /// </summary>
     public static void Show()
     {
         if (ConfigBinding.WindowMode())
@@ -892,6 +1039,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 隐藏主窗口
+    /// </summary>
     public static void Hide()
     {
         if (ConfigBinding.WindowMode())
@@ -918,6 +1068,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 关闭所有窗口
+    /// </summary>
     public static void CloseAllWindow()
     {
         (NetFrpWindow?.GetVisualRoot() as Window)?.Close();
@@ -959,6 +1112,9 @@ public static class WindowManager
         }
     }
 
+    /// <summary>
+    /// 清理窗口状态
+    /// </summary>
     public static void Reset()
     {
         s_WindowState.Clear();

@@ -9,6 +9,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
+/// <summary>
+/// 卡片动画 
+/// </summary>
 public static class CardAnimation
 {
     private static Animation Make()

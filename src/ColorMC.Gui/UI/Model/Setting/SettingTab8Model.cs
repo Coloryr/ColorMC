@@ -264,7 +264,7 @@ public partial class SettingModel
             }
             else
             {
-                _joystickID = JoystickInput.GetJoystickID(_controlPtr);
+                _joystickID = JoystickInput.GetJoystickInstanceID(_controlPtr);
             }
         }
     }

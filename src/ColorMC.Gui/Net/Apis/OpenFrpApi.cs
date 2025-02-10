@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -15,10 +16,18 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Net.Apis;
 
+/// <summary>
+/// Openfrp相关API
+/// </summary>
 public static class OpenFrpApi
 {
     public const string Url = "https://of-dev-api.bfsea.xyz/api";
 
+    /// <summary>
+    /// 获取通道列表
+    /// </summary>
+    /// <param name="key">API KEY</param>
+    /// <returns>通道列表</returns>
     public static async Task<OpenFrpChannelObj?> GetChannel(string key)
     {
         try
@@ -35,6 +44,12 @@ public static class OpenFrpApi
         return null;
     }
 
+    /// <summary>
+    /// 获取通道配置
+    /// </summary>
+    /// <param name="key">API KEY</param>
+    /// <param name="id">通道ID</param>
+    /// <returns>通道配置</returns>
     public static async Task<OpenFrpChannelInfoObj?> GetChannelConfig(string key, int id)
     {
         try
@@ -115,9 +130,15 @@ public static class OpenFrpApi
         }, FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full));
     }
 
+    /// <summary>
+    /// 解压Frp
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="version"></param>
+    /// <param name="file"></param>
     private static void Unzip(Stream stream, string version, string file)
     {
-        if (file.EndsWith("tar.gz"))
+        if (file.EndsWith(Names.NameTarGzExt))
         {
             using var gzipStream = new GZipInputStream(stream);
             var tarArchive = new TarInputStream(gzipStream, TarBuffer.DefaultBlockFactor, Encoding.UTF8);
@@ -154,6 +175,10 @@ public static class OpenFrpApi
         }
     }
 
+    /// <summary>
+    /// 获取下载列表
+    /// </summary>
+    /// <returns></returns>
     private static async Task<OpenFrpDownloadObj?> GetDownload()
     {
         try

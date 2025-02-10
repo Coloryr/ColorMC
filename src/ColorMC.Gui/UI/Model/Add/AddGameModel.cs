@@ -14,6 +14,12 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddGameModel : TopModel
 {
+    public const string NameTab1 = ":1";
+    public const string NameTab2 = ":2";
+    public const string NameTab3 = ":3";
+    public const string NameTab4 = ":4";
+    public const string NameBack = "Back";
+
     /// <summary>
     /// 游戏分组
     /// </summary>
@@ -98,7 +104,7 @@ public partial class AddGameModel : TopModel
     {
         Main = false;
         Model.PushBack(Back);
-        OnPropertyChanged("Go" + arg);
+        OnPropertyChanged(arg as string);
     }
 
     [RelayCommand]
@@ -106,7 +112,7 @@ public partial class AddGameModel : TopModel
     {
         Main = false;
         Model.PushBack(BackDownload);
-        OnPropertyChanged("GoTab1");
+        OnPropertyChanged(NameTab1);
         if (!ConfigBinding.WindowMode())
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Info20"));
@@ -136,20 +142,20 @@ public partial class AddGameModel : TopModel
     {
         Model.PushBack(BackMain);
         Main = false;
-        OnPropertyChanged("GoDownload");
+        OnPropertyChanged(NameTab4);
     }
 
     public void BackMain()
     {
         Model.PopBack();
-        OnPropertyChanged("Back");
+        OnPropertyChanged(NameBack);
         Main = true;
     }
 
     public void BackDownload()
     {
         Model.PopBack();
-        OnPropertyChanged("GoDownload");
+        OnPropertyChanged(NameTab4);
     }
 
     private void Back()

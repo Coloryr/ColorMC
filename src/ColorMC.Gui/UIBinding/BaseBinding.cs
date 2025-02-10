@@ -197,15 +197,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 获取基础运行路径
-    /// </summary>
-    /// <returns>路径</returns>
-    public static string GetRunDir()
-    {
-        return ColorMCCore.BaseDir;
-    }
-
-    /// <summary>
     /// 设置音量
     /// </summary>
     /// <param name="value">音量</param>

@@ -5,6 +5,7 @@ using System.Linq;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
+using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
@@ -47,22 +48,30 @@ public partial class AddGameControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
-    public void AddFile(string file, bool isDir)
+    /// <summary>
+    /// 设置添加的文件
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <param name="isDir">是否是目录</param>
+    public void AddFile(string path, bool isDir)
     {
+        var model = (DataContext as AddGameModel)!;
         if (isDir)
         {
-            var model = (DataContext as AddGameModel)!;
-            model.GoTab("Tab3");
-            model.SetPath(file);
+            model.GoTab(AddGameModel.NameTab3);
+            model.SetPath(path);
         }
         else
         {
-            var model = (DataContext as AddGameModel)!;
-            model.GoTab("Tab2");
-            model.SetFile(file);
+            model.GoTab(AddGameModel.NameTab2);
+            model.SetFile(path);
         }
     }
 
+    /// <summary>
+    /// 预设游戏分组
+    /// </summary>
+    /// <param name="group"></param>
     public void SetGroup(string? group)
     {
         if (DataContext is AddGameModel model)
@@ -74,23 +83,23 @@ public partial class AddGameControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "GoTab1")
+        if (e.PropertyName == AddGameModel.NameTab1)
         {
             Content1.Child = _tab1 ??= new();
         }
-        else if (e.PropertyName == "GoTab2")
+        else if (e.PropertyName == AddGameModel.NameTab2)
         {
             Content1.Child = _tab2 ??= new();
         }
-        else if (e.PropertyName == "GoTab3")
+        else if (e.PropertyName == AddGameModel.NameTab3)
         {
             Content1.Child = _tab3 ??= new();
         }
-        else if (e.PropertyName == "GoDownload")
+        else if (e.PropertyName == AddGameModel.NameTab4)
         {
             Content1.Child = _tab4 ??= new();
         }
-        else if (e.PropertyName == "Back")
+        else if (e.PropertyName == AddGameModel.NameBack)
         {
             Content1.Child = null;
         }
@@ -98,21 +107,29 @@ public partial class AddGameControl : BaseUserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
+        //是否是文件拖拽
         if (e.Data.Contains(DataFormats.Files))
         {
+            //取出文件信息
             var files = e.Data.GetFiles();
             if (files == null || files.Count() > 1)
+            {
                 return;
+            }
 
             var item = files.ToList()[0];
             if (item == null)
+            {
                 return;
+            }
+
+            //判断路径还是文件显示文字
             if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
                 Grid2.IsVisible = true;
                 Label1.Text = App.Lang("AddGameWindow.Text2");
             }
-            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
             {
                 Grid2.IsVisible = true;
                 Label1.Text = App.Lang("MainWindow.Text25");
@@ -130,23 +147,30 @@ public partial class AddGameControl : BaseUserControl
         Grid2.IsVisible = false;
         if (e.Data.Contains(DataFormats.Files))
         {
+            //取出文件信息
             var files = e.Data.GetFiles();
             if (files == null || files.Count() > 1)
+            {
                 return;
+            }
 
             var item = files.ToList()[0];
             if (item == null)
+            {
                 return;
+            }
+
+            //只导入支持的类型
+            var model = (DataContext as AddGameModel)!;
+
             if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
             {
-                var model = (DataContext as AddGameModel)!;
-                model.GoTab("Tab3");
+                model.GoTab(AddGameModel.NameTab3);
                 model.SetPath(item.GetPath()!);
             }
-            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
             {
-                var model = (DataContext as AddGameModel)!;
-                model.GoTab("Tab2");
+                model.GoTab(AddGameModel.NameTab2);
                 model.SetFile(item.GetPath()!);
             }
         }

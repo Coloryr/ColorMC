@@ -33,6 +33,11 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 
     public readonly CollectItemObj Obj = obj;
 
+    partial void OnIsCheckChanged(bool value)
+    {
+        Add.ChoiseChange();
+    }
+
     [RelayCommand]
     public void OpenWeb()
     {
@@ -87,5 +92,11 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     public void SetSelect()
     {
         Add?.SetSelect(this);
+    }
+
+    public void Uncheck()
+    {
+        IsSelect = false;
+        IsCheck = false;
     }
 }

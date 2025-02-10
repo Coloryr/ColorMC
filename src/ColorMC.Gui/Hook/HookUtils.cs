@@ -1,9 +1,11 @@
-﻿using System.Diagnostics;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Hook;
 
+/// <summary>
+/// 系统平台相关
+/// </summary>
 public static class HookUtils
 {
     /// <summary>
@@ -50,36 +52,36 @@ public static class HookUtils
         return 0;
     }
 
-    /// <summary>
-    /// 等待窗口就绪
-    /// </summary>
-    /// <param name="pr">游戏进程</param>
-    public static void WaitWindowDisplay(Process pr)
-    {
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            Win32.WaitWindowDisplay(pr);
-        }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            X11Hook.WaitWindowDisplay(pr);
-        }
-    }
+    ///// <summary>
+    ///// 等待窗口就绪
+    ///// </summary>
+    ///// <param name="pr">游戏进程</param>
+    //public static void WaitWindowDisplay(Process pr)
+    //{
+    //    if (SystemInfo.Os == OsType.Windows)
+    //    {
+    //        Win32.WaitWindowDisplay(pr);
+    //    }
+    //    else if (SystemInfo.Os == OsType.Linux)
+    //    {
+    //        X11Hook.WaitWindowDisplay(pr);
+    //    }
+    //}
 
-    /// <summary>
-    /// 设置窗口标题
-    /// </summary>
-    /// <param name="pr">游戏进程</param>
-    /// <param name="title">需要设置的标题</param>
-    public static void SetTitle(Process pr, string title)
-    {
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            Win32.SetTitle(pr, title);
-        }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            X11Hook.SetTitle(pr, title);
-        }
-    }
+    ///// <summary>
+    ///// 设置窗口标题
+    ///// </summary>
+    ///// <param name="pr">游戏进程</param>
+    ///// <param name="title">需要设置的标题</param>
+    //public static void SetTitle(Process pr, string title)
+    //{
+    //    if (SystemInfo.Os == OsType.Windows)
+    //    {
+    //        Win32.SetTitle(pr, title);
+    //    }
+    //    else if (SystemInfo.Os == OsType.Linux)
+    //    {
+    //        X11Hook.SetTitle(pr, title);
+    //    }
+    //}
 }

@@ -32,14 +32,14 @@ public class Mp3File : IDecoder
     public int OutputChannels { get; private set; }
     public int Bitrate { get; private set; }
 
-    public bool IsFile { get; init; }
+    public bool IsChek { get; init; }
 
     public Mp3File(Stream stream)
     {
         _bitstream = new BitStream(stream);
         if (LoadInfo())
         {
-            IsFile = true;
+            IsChek = true;
         }
     }
 

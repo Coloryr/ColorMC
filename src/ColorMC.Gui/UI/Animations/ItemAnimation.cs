@@ -8,6 +8,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
+/// <summary>
+/// UI项目动画
+/// </summary>
 public static class ItemAnimation
 {
     public static Animation Make()

@@ -334,7 +334,7 @@ public static class LanguageHelper
             FileType.Shaderpack => Get("Type.FileType.Shaderpack"),
             FileType.Resourcepack => Get("Type.FileType.Resourcepack"),
             FileType.DataPacks => Get("Type.FileType.DataPacks"),
-            FileType.Optifne => Get("Type.FileType.Optifne"),
+            FileType.Optifine => Get("Type.FileType.Optifne"),
             _ => Get("Type.FileType.Other")
         };
     }

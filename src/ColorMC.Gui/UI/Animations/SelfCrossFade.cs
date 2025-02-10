@@ -10,6 +10,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Animations;
 
+/// <summary>
+/// ÇÐ»»¶¯»­
+/// </summary>
 public class SelfCrossFade : IPageTransition
 {
     private readonly Animation _fadeOutAnimation;

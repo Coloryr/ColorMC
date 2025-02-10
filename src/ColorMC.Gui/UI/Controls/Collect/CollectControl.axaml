@@ -51,13 +51,15 @@
                                 Height="35"
                                 Classes="top"
                                 Command="{Binding ClearGroup}"
-                                Content="{setting:Localize CollectWindow.Text4}" />
+                                Content="{setting:Localize CollectWindow.Text4}"
+                                IsEnabled="{Binding !EmptyDisplay}" />
                             <Button
                                 Width="100"
                                 Height="35"
                                 Classes="top"
                                 Command="{Binding InstallSelect}"
-                                Content="{setting:Localize CollectWindow.Text6}" />
+                                Content="{setting:Localize CollectWindow.Text6}"
+                                IsEnabled="{Binding HaveChoise}" />
                         </panel:WrapPanelWithStretch>
                         <WrapPanel Margin="0,0,0,-5">
                             <CheckBox
