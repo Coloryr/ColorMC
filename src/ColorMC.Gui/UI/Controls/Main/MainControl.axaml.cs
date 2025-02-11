@@ -290,7 +290,7 @@ public partial class MainControl : BaseUserControl
             (DataContext as MainModel)?.LoadMotd();
         });
     }
-    
+
     /// <summary>
     /// ¸ü»»L2DÄ£ÐÍ
     /// </summary>

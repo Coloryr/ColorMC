@@ -279,7 +279,7 @@ public partial class AddJavaControlModel : TopModel
 
         _load = false;
     }
-    
+
     /// <summary>
     /// 安装所选Java
     /// </summary>

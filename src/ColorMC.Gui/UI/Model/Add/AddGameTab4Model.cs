@@ -2,7 +2,6 @@
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Add;
 

@@ -1,12 +1,7 @@
-using System;
-using Avalonia.Animation;
-using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
-using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;

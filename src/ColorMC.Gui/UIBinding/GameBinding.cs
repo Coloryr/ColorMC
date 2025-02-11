@@ -2881,7 +2881,7 @@ public static class GameBinding
                 State = true
             };
         }
-        else if(res == 101)
+        else if (res == 101)
         {
             return new()
             {

@@ -218,7 +218,7 @@ public partial class GameLogControl : BaseUserControl
         Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
     }
-    
+
     /// <summary>
     /// ÓÎÏ·ÍË³ö´¥·¢
     /// </summary>

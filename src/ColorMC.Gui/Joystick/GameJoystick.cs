@@ -136,7 +136,7 @@ public class GameJoystick
                 Thread.Sleep(10);
             }
         })
-        { 
+        {
             Name = "ColorMC JoyDevice Mouse"
         }.Start();
     }
