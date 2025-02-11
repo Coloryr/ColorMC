@@ -12,7 +12,7 @@
 //{
 //    public void AddHook(nint id)
 //    {
-        
+
 //    }
 
 //    public void SendKey(InputKeyObj key, bool down)
@@ -116,11 +116,11 @@
 
 //    public void SendScoll(bool up)
 //    {
-        
+
 //    }
 
 //    public void Stop()
 //    {
-        
+
 //    }
 //}

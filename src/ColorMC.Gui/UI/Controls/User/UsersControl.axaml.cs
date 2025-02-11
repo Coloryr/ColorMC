@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
@@ -93,7 +92,7 @@ public partial class UsersControl : BaseUserControl
     {
         (DataContext as UsersControlModel)?.ReLogin();
     }
-    
+
     /// <summary>
     /// 刷新账户列表
     /// </summary>

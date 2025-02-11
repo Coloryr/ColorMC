@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
-using ColorMC.Core;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
@@ -177,7 +172,7 @@ public partial class GameCloudModel : MenuModel
         var files = _files.GetSelectItems(true);
         Model.Progress();
         var res = await GameBinding.UploadConfig(Obj, files, new()
-        { 
+        {
             Update = ProgressUpdate
         });
         Model.ProgressClose();

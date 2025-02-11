@@ -12,7 +12,6 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.NetFrp;
 using Newtonsoft.Json;

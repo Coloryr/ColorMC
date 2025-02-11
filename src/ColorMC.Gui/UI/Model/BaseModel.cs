@@ -485,10 +485,10 @@ public partial class BaseModel : ObservableObject
 
         Unlock();
 
-        return new InputRes 
-        { 
-            Cancel = _info3.IsCancel, 
-            Text1 =_info3.Text1 
+        return new InputRes
+        {
+            Cancel = _info3.IsCancel,
+            Text1 = _info3.Text1
         };
     }
 
@@ -528,7 +528,7 @@ public partial class BaseModel : ObservableObject
 
         Unlock();
 
-        return new InputRes 
+        return new InputRes
         {
             Cancel = _info3.IsCancel,
             Text1 = _info3.Text1,
@@ -582,7 +582,7 @@ public partial class BaseModel : ObservableObject
         Unlock();
 
         return new InputRes
-        { 
+        {
             Cancel = _info3.IsCancel,
             Text1 = _info3.Text1
         };
@@ -862,7 +862,7 @@ public partial class BaseModel : ObservableObject
         Unlock();
 
         return new ComboRes
-        { 
+        {
             Cancel = _info5.IsCancel,
             Index = _info5.Index,
             Item = _info5.Select

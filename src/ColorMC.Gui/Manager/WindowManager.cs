@@ -991,7 +991,7 @@ public static class WindowManager
         {
             model.BgVisible = false;
         }
-        
+
         //更新透明度
         if (GuiConfigUtils.Config.WindowTran)
         {

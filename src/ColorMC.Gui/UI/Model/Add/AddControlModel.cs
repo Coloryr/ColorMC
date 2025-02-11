@@ -1,17 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.McMod;
-using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -189,13 +183,13 @@ public partial class AddControlModel : GameModel
     /// <summary>
     /// 可以下载的文件类型
     /// </summary>
-    private static readonly List<FileType> s_types = 
+    private static readonly List<FileType> s_types =
     [
-        FileType.Mod, 
-        FileType.World, 
-        FileType.Shaderpack, 
-        FileType.Resourcepack, 
-        FileType.DataPacks, 
+        FileType.Mod,
+        FileType.World,
+        FileType.Shaderpack,
+        FileType.Resourcepack,
+        FileType.DataPacks,
         FileType.Optifine
     ];
 
@@ -514,12 +508,12 @@ public partial class AddControlModel : GameModel
 
         if (type is SourceType.CurseForge or SourceType.Modrinth)
         {
-            SortTypeList.AddRange(type is SourceType.CurseForge 
+            SortTypeList.AddRange(type is SourceType.CurseForge
                 ? LanguageBinding.GetCurseForgeSortTypes()
                 : LanguageBinding.GetModrinthSortTypes());
             //获取支持的游戏版本和分类
             Model.Progress(App.Lang("AddModPackWindow.Info4"));
-            var list = type is SourceType.CurseForge 
+            var list = type is SourceType.CurseForge
                 ? await GameBinding.GetCurseForgeGameVersions()
                 : await GameBinding.GetModrinthGameVersions();
             var list1 = type is SourceType.CurseForge

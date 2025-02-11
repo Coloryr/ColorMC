@@ -7,7 +7,6 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

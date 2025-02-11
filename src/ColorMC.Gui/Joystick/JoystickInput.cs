@@ -46,7 +46,7 @@ public static class JoystickInput
                 OnEvent?.Invoke(sdlEvent);
             }
         })
-        { 
+        {
             Name = "ColorMC Joystick Read"
         }.Start();
     }

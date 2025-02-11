@@ -63,7 +63,7 @@ public partial class GameConfigEditModel : GameModel
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
-        UseName = (ToString() ?? "GameConfigEditModel") + ":" 
+        UseName = (ToString() ?? "GameConfigEditModel") + ":"
             + obj?.UUID + ":" + world?.LevelName;
         World = world;
 
