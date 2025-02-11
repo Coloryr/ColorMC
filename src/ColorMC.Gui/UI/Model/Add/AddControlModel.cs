@@ -435,7 +435,7 @@ public partial class AddControlModel : GameModel
             return;
         }
 
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(Set ? App.Lang("AddWindow.Info8") : App.Lang("AddWindow.Info1"),
             item.Name));
         if (res)
@@ -651,7 +651,7 @@ public partial class AddControlModel : GameModel
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowWait(App.Lang("AddModPackWindow.Error4"));
+        var res = await Model.ShowAsync(App.Lang("AddModPackWindow.Error4"));
         if (res)
         {
             LoadSourceData();
@@ -660,7 +660,7 @@ public partial class AddControlModel : GameModel
 
         if (DownloadSource < _sourceTypeList.Count)
         {
-            res = await Model.ShowWait(App.Lang("AddModPackWindow.Info5"));
+            res = await Model.ShowAsync(App.Lang("AddModPackWindow.Info5"));
             if (res)
             {
                 DownloadSource++;

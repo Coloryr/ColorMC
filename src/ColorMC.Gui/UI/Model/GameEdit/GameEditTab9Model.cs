@@ -38,7 +38,7 @@ public partial class GameEditModel
 
     private async void ClearScreenshot()
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab9.Info2"), _obj.Name));
         if (!res)
         {
@@ -52,7 +52,7 @@ public partial class GameEditModel
 
     public async void DeleteScreenshot(ScreenshotModel obj)
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab9.Info1"), obj.Screenshot));
         if (!res)
         {

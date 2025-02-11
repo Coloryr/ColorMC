@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
@@ -6,6 +7,9 @@ using ColorMC.Gui.UI.Model.User;
 
 namespace ColorMC.Gui.UI.Controls.User;
 
+/// <summary>
+/// 用户列表窗口
+/// </summary>
 public partial class UsersControl : BaseUserControl
 {
     public const string DialogName = "UsersControl";
@@ -55,17 +59,24 @@ public partial class UsersControl : BaseUserControl
         (DataContext as UsersControlModel)!.Drop(e.Data);
     }
 
+    /// <summary>
+    /// 添加一个自定义验证服务器
+    /// </summary>
+    /// <param name="url">服务器地址</param>
     public void AddUrl(string url)
     {
-        (DataContext as UsersControlModel)!.AddUrl(url);
+        (DataContext as UsersControlModel)?.AddUrl(url);
     }
 
+    /// <summary>
+    /// 添加一个账户
+    /// </summary>
     public void Add()
     {
-        (DataContext as UsersControlModel)!.SetAdd();
+        (DataContext as UsersControlModel)?.SetAdd();
     }
 
-    public override UsersControlModel GenModel(BaseModel model)
+    protected override UsersControlModel GenModel(BaseModel model)
     {
         return new UsersControlModel(model);
     }
@@ -75,8 +86,19 @@ public partial class UsersControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 重新登陆
+    /// </summary>
     public void Relogin()
     {
-        (DataContext as UsersControlModel)!.ReLogin();
+        (DataContext as UsersControlModel)?.ReLogin();
+    }
+    
+    /// <summary>
+    /// 刷新账户列表
+    /// </summary>
+    public void LoadUsers()
+    {
+        (DataContext as UsersControlModel)?.LoadUsers();
     }
 }

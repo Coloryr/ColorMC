@@ -56,15 +56,15 @@ public partial class GameConfigEditModel : GameModel
 
     private string _lastName;
 
-    public int TurnTo;
+    public int TurnTo { get; private set; }
 
     public ChunkDataObj? ChunkData;
 
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
         : base(model, obj)
     {
-        UseName = (ToString() ?? "GameConfigEditModel")
-            + " game:" + obj?.UUID + " world:" + world?.LevelName;
+        UseName = (ToString() ?? "GameConfigEditModel") + ":" 
+            + obj?.UUID + ":" + world?.LevelName;
         World = world;
 
         _isWorld = World != null;
@@ -85,7 +85,7 @@ public partial class GameConfigEditModel : GameModel
         }
         if (IsEdit)
         {
-            var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info8"));
+            var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info8"));
             if (!res)
             {
                 File = _lastName;
@@ -276,7 +276,7 @@ public partial class GameConfigEditModel : GameModel
         {
             if (_lastName != File && IsEdit)
             {
-                var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info8"));
+                var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info8"));
                 if (!res)
                 {
                     return;
@@ -394,7 +394,7 @@ public partial class GameConfigEditModel : GameModel
         if (model.Top == null)
             return;
 
-        var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info1"));
+        var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
@@ -407,7 +407,7 @@ public partial class GameConfigEditModel : GameModel
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var res = await Model.ShowWait(App.Lang("ConfigEditWindow.Info1"));
+        var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info1"));
         if (!res)
         {
             return;
@@ -579,18 +579,18 @@ public partial class GameConfigEditModel : GameModel
 
     public async void Find()
     {
-        var data = await Model.ShowInputOne(App.Lang("ConfigEditWindow.Info3"), false);
-        if (data.Cancel)
+        var res = await Model.InputWithEditAsync(App.Lang("ConfigEditWindow.Info3"), false);
+        if (res.Cancel)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(data.Text))
+        if (string.IsNullOrWhiteSpace(res.Text1))
         {
             return;
         }
 
-        NbtView.Find(data.Text);
+        NbtView.Find(res.Text1);
     }
 
     private void Load1()

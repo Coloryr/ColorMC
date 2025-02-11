@@ -6,11 +6,23 @@ using ColorMC.Gui.UI.Model.Error;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 
+/// <summary>
+/// 错误窗口
+/// </summary>
 public partial class ErrorControl : BaseUserControl
 {
+    /// <summary>
+    /// 错误信息
+    /// </summary>
     private readonly string? _data;
+    /// <summary>
+    /// 异常
+    /// </summary>
     private readonly Exception? _e;
     private readonly string _e1;
+    /// <summary>
+    /// 是否同时关闭启动器
+    /// </summary>
     private readonly bool _close;
     private readonly bool _type = false;
 
@@ -47,7 +59,7 @@ public partial class ErrorControl : BaseUserControl
         }
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         ErrorModel amodel;
         if (_type)

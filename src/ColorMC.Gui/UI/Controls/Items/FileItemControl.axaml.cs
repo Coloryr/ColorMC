@@ -11,6 +11,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// 项目列表子项目
+/// </summary>
 public partial class FileItemControl : UserControl
 {
     public FileItemControl()

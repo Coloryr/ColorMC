@@ -13,6 +13,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
+/// <summary>
+/// 添加游戏实例窗口
+/// </summary>
 public partial class AddGameControl : BaseUserControl
 {
     private AddGameTab1Control _tab1;
@@ -31,7 +34,7 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new AddGameModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -176,6 +179,10 @@ public partial class AddGameControl : BaseUserControl
         }
     }
 
+    /// <summary>
+    /// 设置添加的游戏分组
+    /// </summary>
+    /// <returns></returns>
     public string? GetGroup()
     {
         return (DataContext as AddGameModel)?.Group;

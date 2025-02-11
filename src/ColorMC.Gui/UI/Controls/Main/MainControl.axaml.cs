@@ -10,6 +10,7 @@ using Avalonia.Layout;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
@@ -18,12 +19,24 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
+/// <summary>
+/// 主窗口
+/// </summary>
 public partial class MainControl : BaseUserControl
 {
     public const string DialogName = "MainCon";
 
+    /// <summary>
+    /// 单游戏实例
+    /// </summary>
     private MainOneGameControl? _oneGame;
+    /// <summary>
+    /// 没有游戏实例
+    /// </summary>
     private MainEmptyControl? _emptyGame;
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     private MainGamesControl? _games;
 
     public MainControl() : base(WindowManager.GetUseName<MainControl>())
@@ -103,7 +116,7 @@ public partial class MainControl : BaseUserControl
                 Grid2.IsVisible = true;
                 Label1.Text = App.Lang("AddGameWindow.Text2");
             }
-            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
             {
                 Grid2.IsVisible = true;
                 Label1.Text = App.Lang("MainWindow.Text25");
@@ -130,11 +143,11 @@ public partial class MainControl : BaseUserControl
             {
                 return;
             }
-            if (str.StartsWith("authlib-injector:yggdrasil-server:"))
+            if (str.StartsWith(GuiNames.NameAuthlibKey))
             {
                 WindowManager.ShowUser(false, url: str);
             }
-            else if (str.StartsWith("cloudkey:") || str.StartsWith("cloudKey:"))
+            else if (str.StartsWith(GuiNames.NameColorMCCloudKey, StringComparison.CurrentCultureIgnoreCase))
             {
                 BaseBinding.SetCloudKey(str);
             }
@@ -152,7 +165,7 @@ public partial class MainControl : BaseUserControl
             {
                 WindowManager.ShowAddGame(null, true, forder.GetPath());
             }
-            else if (item.Name.EndsWith(".zip") || item.Name.EndsWith(".mrpack"))
+            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
             {
                 WindowManager.ShowAddGame(null, false, item.GetPath());
             }
@@ -195,7 +208,7 @@ public partial class MainControl : BaseUserControl
         App.Exit();
     }
 
-    public override async void Opened()
+    protected override async void Opened()
     {
         ChangeLive2DSize();
 
@@ -222,7 +235,7 @@ public partial class MainControl : BaseUserControl
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowWait(App.Lang("MainWindow.Info34"));
+            var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info34"));
             if (res)
             {
                 return false;
@@ -239,11 +252,18 @@ public partial class MainControl : BaseUserControl
         return false;
     }
 
+    /// <summary>
+    /// 游戏实例退出
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
     public void GameClose(string uuid)
     {
         (DataContext as MainModel)!.GameClose(uuid);
     }
 
+    /// <summary>
+    /// 初始化完成
+    /// </summary>
     public void LoadDone()
     {
         Dispatcher.UIThread.Post(() =>
@@ -260,6 +280,9 @@ public partial class MainControl : BaseUserControl
         });
     }
 
+    /// <summary>
+    /// Motd加载
+    /// </summary>
     public void MotdLoad()
     {
         Dispatcher.UIThread.Post(() =>
@@ -267,25 +290,26 @@ public partial class MainControl : BaseUserControl
             (DataContext as MainModel)?.LoadMotd();
         });
     }
-
-    public void IsDelete()
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            (DataContext as MainModel)?.IsDelete();
-        });
-    }
-
+    
+    /// <summary>
+    /// 更换L2D模型
+    /// </summary>
     public void ChangeModel()
     {
         (DataContext as MainModel)!.ChangeModel();
     }
 
+    /// <summary>
+    /// 删除L2D模型
+    /// </summary>
     public void DeleteModel()
     {
         (DataContext as MainModel)!.DeleteModel();
     }
 
+    /// <summary>
+    /// 修改L2D渲染大小
+    /// </summary>
     public void ChangeLive2DSize()
     {
         var config = GuiConfigUtils.Config.Live2D;
@@ -296,6 +320,9 @@ public partial class MainControl : BaseUserControl
         model.L2dPos1 = (VerticalAlignment)((config.Pos / 3) + 1);
     }
 
+    /// <summary>
+    /// 切换L2D模型
+    /// </summary>
     public void ChangeLive2DMode()
     {
         var config = GuiConfigUtils.Config.Live2D;
@@ -304,12 +331,16 @@ public partial class MainControl : BaseUserControl
         model.LowFps = config.LowFps;
     }
 
+    /// <summary>
+    /// L2D模型显示文字
+    /// </summary>
+    /// <param name="message">文本</param>
     public void ShowMessage(string message)
     {
-        (DataContext as MainModel)!.ShowMessage(message);
+        (DataContext as MainModel)!.L2dShowMessage(message);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
@@ -411,6 +442,10 @@ public partial class MainControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 游戏实例图标修改
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
     public void IconChange(string uuid)
     {
         if (DataContext is MainModel model)
@@ -419,6 +454,9 @@ public partial class MainControl : BaseUserControl
         }
     }
 
+    /// <summary>
+    /// 主界面隐藏
+    /// </summary>
     public void Hide()
     {
         if (DataContext is MainModel model)
@@ -427,6 +465,9 @@ public partial class MainControl : BaseUserControl
         }
     }
 
+    /// <summary>
+    /// 主界面还原
+    /// </summary>
     public void Show()
     {
         if (DataContext is MainModel model)

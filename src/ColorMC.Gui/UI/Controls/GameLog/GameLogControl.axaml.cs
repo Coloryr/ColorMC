@@ -13,8 +13,14 @@ using ColorMC.Gui.UI.Model.GameLog;
 
 namespace ColorMC.Gui.UI.Controls.GameLog;
 
+/// <summary>
+/// 游戏实例日志
+/// </summary>
 public partial class GameLogControl : BaseUserControl
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     public GameLogControl() : base(WindowManager.GetUseName<GameLogControl>())
@@ -44,6 +50,9 @@ public partial class GameLogControl : BaseUserControl
         TextEditor1.TextArea.TextView.LineTransformers.Add(new LogTransformer());
     }
 
+    /// <summary>
+    /// 日志着色用
+    /// </summary>
     private class LogTransformer : DocumentColorizingTransformer
     {
         private LogLevel FindLast(DocumentLine line, int max)
@@ -115,6 +124,9 @@ public partial class GameLogControl : BaseUserControl
         }
     }
 
+    /// <summary>
+    /// 更新日志
+    /// </summary>
     public override void Update()
     {
         Dispatcher.UIThread.Post(() =>
@@ -123,13 +135,13 @@ public partial class GameLogControl : BaseUserControl
         });
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as GameLogModel)!.Load();
         (DataContext as GameLogModel)!.Load1();
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new GameLogModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -147,6 +159,9 @@ public partial class GameLogControl : BaseUserControl
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 清理当前日志
+    /// </summary>
     public void ClearLog()
     {
         Dispatcher.UIThread.Post(() =>
@@ -155,6 +170,10 @@ public partial class GameLogControl : BaseUserControl
         });
     }
 
+    /// <summary>
+    /// 添加新的日志
+    /// </summary>
+    /// <param name="data">日志内容</param>
     public void Log(GameLogItemObj? data)
     {
         if (data == null)
@@ -191,14 +210,21 @@ public partial class GameLogControl : BaseUserControl
         (DataContext as GameLogModel)?.SetNotAuto();
     }
 
+    /// <summary>
+    /// 重载标题
+    /// </summary>
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
     }
-
-    public void GameCrash(int code)
+    
+    /// <summary>
+    /// 游戏退出触发
+    /// </summary>
+    /// <param name="code">错误码</param>
+    public void GameExit(int code)
     {
-        (DataContext as GameLogModel)?.GameCrash(code);
+        (DataContext as GameLogModel)?.GameExit(code);
     }
 }

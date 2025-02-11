@@ -4,6 +4,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -64,7 +65,7 @@ public partial class AddGameModel : TopModel
 
         GameVersionUpdate();
 
-        CloudEnable = GameCloudUtils.Connect;
+        CloudEnable = ColorMCCloudAPI.Connect;
     }
 
     /// <summary>
@@ -74,19 +75,19 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("Text.Group"), false);
-        if (Cancel)
+        var res = await Model.InputWithEditAsync(App.Lang("Text.Group"), false);
+        if (res.Cancel)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Text))
+        if (string.IsNullOrWhiteSpace(res.Text1))
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error2"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(Text))
+        if (!GameBinding.AddGameGroup(res.Text1))
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error3"));
             return;
@@ -96,7 +97,7 @@ public partial class AddGameModel : TopModel
 
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-        Group = Text;
+        Group = res.Text1;
     }
 
     [RelayCommand]
@@ -198,7 +199,7 @@ public partial class AddGameModel : TopModel
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
         Model.ProgressClose();
-        var test = await Model.ShowWait(
+        var test = await Model.ShowAsync(
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
         Model.Progress();
         return test;
@@ -212,7 +213,7 @@ public partial class AddGameModel : TopModel
     private async Task<bool> GameRequest(string text)
     {
         Model.ProgressClose();
-        var test = await Model.ShowWait(text);
+        var test = await Model.ShowAsync(text);
         Model.Progress();
         return test;
     }
@@ -278,7 +279,7 @@ public partial class AddGameModel : TopModel
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info25"));
+        var res = await Model.ShowAsync(App.Lang("AddGameWindow.Tab1.Info25"));
         if (res != true)
         {
             WindowClose();

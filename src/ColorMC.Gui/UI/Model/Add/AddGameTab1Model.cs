@@ -75,11 +75,11 @@ public partial class AddGameModel
     {
         if (value)
         {
-            Model.Work();
+            Model.Lock();
         }
         else
         {
-            Model.NoWork();
+            Model.Unlock();
         }
     }
 
@@ -155,10 +155,10 @@ public partial class AddGameModel
                 break;
             case Loaders.Forge:
                 IsLoad = true;
-                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info1");
+                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info1");
                 var list = await WebBinding.GetForgeVersion(Version);
                 IsLoad = false;
-                Model.Title1 = "";
+                Model.SubTitle = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -171,10 +171,10 @@ public partial class AddGameModel
                 break;
             case Loaders.NeoForge:
                 IsLoad = true;
-                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info19");
+                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info19");
                 list = await WebBinding.GetNeoForgeVersion(Version);
                 IsLoad = false;
-                Model.Title1 = "";
+                Model.SubTitle = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -187,10 +187,10 @@ public partial class AddGameModel
                 break;
             case Loaders.Fabric:
                 IsLoad = true;
-                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info2");
+                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info2");
                 list = await WebBinding.GetFabricVersion(Version);
                 IsLoad = false;
-                Model.Title1 = "";
+                Model.SubTitle = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -203,10 +203,10 @@ public partial class AddGameModel
                 break;
             case Loaders.Quilt:
                 IsLoad = true;
-                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info3");
+                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info3");
                 list = await WebBinding.GetQuiltVersion(Version);
                 IsLoad = false;
-                Model.Title1 = "";
+                Model.SubTitle = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -219,10 +219,10 @@ public partial class AddGameModel
                 break;
             case Loaders.OptiFine:
                 IsLoad = true;
-                Model.Title1 = App.Lang("AddGameWindow.Tab1.Info16");
+                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info16");
                 list = await WebBinding.GetOptifineVersion(Version);
                 IsLoad = false;
-                Model.Title1 = "";
+                Model.SubTitle = "";
                 if (list == null)
                 {
                     Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
@@ -295,7 +295,7 @@ public partial class AddGameModel
                 var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
                 if (!res1.State)
                 {
-                    Model.ShowOk(App.Lang("AddGameWindow.Tab1.Error18"), () =>
+                    Model.ShowWithOk(App.Lang("AddGameWindow.Tab1.Error18"), () =>
                     {
                         Done(game.UUID);
                     });
@@ -335,7 +335,7 @@ public partial class AddGameModel
         }
 
         IsLoad = true;
-        Model.Title1 = App.Lang("AddGameWindow.Tab1.Info4");
+        Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
         var loaders = await GameBinding.GetSupportLoader(Version);
         foreach (var item in loaders)
@@ -348,7 +348,7 @@ public partial class AddGameModel
         LoaderTypeList.Add(Loaders.Custom.GetName());
 
         IsLoad = false;
-        Model.Title1 = "";
+        Model.SubTitle = "";
 
         LoaderType = 0;
         _load = false;
@@ -368,10 +368,10 @@ public partial class AddGameModel
         EnableLoader = false;
         LoaderVersion = null;
         IsLoad = true;
-        Model.Title1 = App.Lang("GameEditWindow.Tab1.Info12");
+        Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info12");
         var res = await GameBinding.ReloadVersion();
         IsLoad = false;
-        Model.Title1 = "";
+        Model.SubTitle = "";
         if (!res)
         {
             Model.Show(App.Lang("GameEditWindow.Tab1.Error4"));
@@ -411,7 +411,7 @@ public partial class AddGameModel
     private async Task<bool> Tab1GameOverwirte(GameSettingObj obj)
     {
         Model.ProgressClose();
-        var test = await Model.ShowWait(
+        var test = await Model.ShowAsync(
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
         return test;
     }
@@ -424,7 +424,7 @@ public partial class AddGameModel
     private Task<bool> Tab1GameRequest(string state)
     {
         Model.ProgressClose();
-        return Model.ShowWait(state);
+        return Model.ShowAsync(state);
     }
 
 

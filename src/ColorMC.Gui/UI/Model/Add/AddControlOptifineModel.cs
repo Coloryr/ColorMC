@@ -169,7 +169,7 @@ public partial class AddControlModel : IAddOptifineWindow
     /// <param name="item"></param>
     public async void Install(OptifineVersionItemModel item)
     {
-        var res = await Model.ShowWait(string.Format(
+        var res = await Model.ShowAsync(string.Format(
             App.Lang("AddWindow.Info10"), item.Version));
         if (!res)
         {

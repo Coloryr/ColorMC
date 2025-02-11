@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Model.News;
 
 namespace ColorMC.Gui.UI.Controls.News;
 
+/// <summary>
+/// Minecraft News´°¿Ú
+/// </summary>
 public partial class MinecraftNewsControl : BaseUserControl
 {
     public MinecraftNewsControl() : base(WindowManager.GetUseName<MinecraftNewsControl>())
@@ -14,7 +17,7 @@ public partial class MinecraftNewsControl : BaseUserControl
         Title = App.Lang("NewsWindow.Title");
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         if (DataContext is MinecraftNewsModel model)
         {
@@ -27,7 +30,7 @@ public partial class MinecraftNewsControl : BaseUserControl
         WindowManager.NewsWindow = null;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new MinecraftNewsModel(model);
     }

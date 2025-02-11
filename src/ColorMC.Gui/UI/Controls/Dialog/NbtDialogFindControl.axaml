@@ -7,7 +7,6 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     x:DataType="vm:NbtDialogFindModel"
-    Design.Width="300"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <StackPanel DockPanel.Dock="Top">

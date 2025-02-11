@@ -13,6 +13,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls;
 
+/// <summary>
+/// 服务器Motd显示
+/// </summary>
 public partial class ServerMotdControl : UserControl
 {
     public static readonly StyledProperty<(string, ushort)> IPPortProperty =
@@ -80,6 +83,9 @@ public partial class ServerMotdControl : UserControl
         Update();
     }
 
+    /// <summary>
+    /// 刷新Motd显示内容
+    /// </summary>
     private async void Update()
     {
         Button2.IsVisible = false;
@@ -130,7 +136,11 @@ public partial class ServerMotdControl : UserControl
         Button2.IsVisible = true;
     }
 
-    public void MakeText(Chat chat)
+    /// <summary>
+    /// 生成文字显示
+    /// </summary>
+    /// <param name="chat">文本</param>
+    private void MakeText(Chat chat)
     {
         if (chat.Text == "\n")
         {
@@ -194,7 +204,11 @@ public partial class ServerMotdControl : UserControl
         }
     }
 
-    public void AddText(Inline text)
+    /// <summary>
+    /// 添加文本到显示
+    /// </summary>
+    /// <param name="text"></param>
+    private void AddText(Inline text)
     {
         if (_firstLine)
         {

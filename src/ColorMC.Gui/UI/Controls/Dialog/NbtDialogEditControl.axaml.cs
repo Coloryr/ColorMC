@@ -4,6 +4,9 @@ using ColorMC.Gui.UI.Model.Dialog;
 
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
+/// <summary>
+/// NBT±Í«©…Ë÷√
+/// </summary>
 public partial class NbtDialogEditControl : UserControl
 {
     public NbtDialogEditControl()

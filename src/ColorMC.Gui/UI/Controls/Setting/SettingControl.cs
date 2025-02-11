@@ -10,6 +10,9 @@ using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
+/// <summary>
+/// 启动器设置窗口
+/// </summary>
 public partial class SettingControl : MenuControl
 {
     private Tab1Control _tab1;
@@ -21,6 +24,9 @@ public partial class SettingControl : MenuControl
     private Tab7Control _tab7;
     private Tab8Control _tab8;
 
+    /// <summary>
+    /// 需要的Java主版本
+    /// </summary>
     private readonly int _needJava;
 
     public SettingControl() : base(WindowManager.GetUseName<SettingControl>())
@@ -76,12 +82,12 @@ public partial class SettingControl : MenuControl
         }
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as SettingModel)?.Load();
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new SettingModel(model);
     }

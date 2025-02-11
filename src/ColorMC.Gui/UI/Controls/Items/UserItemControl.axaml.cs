@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// 用户子项目
+/// </summary>
 public partial class UserItemControl : UserControl
 {
     public UserItemControl()

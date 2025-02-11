@@ -25,7 +25,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeBackRunDir()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info16"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info16"));
         if (!res)
         {
             return;
@@ -40,7 +40,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeRunDir()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info13"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info13"));
         if (!res)
         {
             return;
@@ -253,7 +253,7 @@ public partial class SettingModel
 
     private async void Reset()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info1"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info1"));
         if (!res)
             return;
 
@@ -263,7 +263,7 @@ public partial class SettingModel
 
     private async void ClearUser()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info3"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info3"));
         if (!res)
             return;
 
@@ -273,7 +273,7 @@ public partial class SettingModel
 
     private async void ClearWindow()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab1.Info18"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info18"));
         if (!res)
             return;
 

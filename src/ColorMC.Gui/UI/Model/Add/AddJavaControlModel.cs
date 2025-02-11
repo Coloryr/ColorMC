@@ -286,7 +286,7 @@ public partial class AddJavaControlModel : TopModel
     /// <param name="obj"></param>
     public async void Install(JavaDownloadModel obj)
     {
-        var res = await Model.ShowWait(string.Format(
+        var res = await Model.ShowAsync(string.Format(
             App.Lang("AddJavaWindow.Info1"), obj.Name));
         if (!res)
         {

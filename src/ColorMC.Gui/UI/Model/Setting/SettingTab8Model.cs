@@ -343,7 +343,7 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.ShowWait(string.Format(App.Lang("SettingWindow.Tab8.Info1"), _controlObj.Name));
+        var res = await Model.ShowAsync(string.Format(App.Lang("SettingWindow.Tab8.Info1"), _controlObj.Name));
         if (!res)
         {
             return;
@@ -368,16 +368,16 @@ public partial class SettingModel
             return;
         }
 
-        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("SettingWindow.Tab8.Info2"), _controlObj.Name);
-        if (Cancel || string.IsNullOrWhiteSpace(Text1))
+        var res = await Model.Input(App.Lang("SettingWindow.Tab8.Info2"), _controlObj.Name);
+        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
         {
             return;
         }
 
-        _controlObj.Name = Text1;
+        _controlObj.Name = res.Text1;
         var last = SelectConfig;
         var now = NowConfig == last;
-        Configs[SelectConfig] = Text1;
+        Configs[SelectConfig] = res.Text1;
         SelectConfig = last;
         if (now)
         {
@@ -390,13 +390,13 @@ public partial class SettingModel
     [RelayCommand]
     public async Task NewInputConfig()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("SettingWindow.Tab8.Info2"), false);
-        if (Cancel || string.IsNullOrWhiteSpace(Text))
+        var res = await Model.InputWithEditAsync(App.Lang("SettingWindow.Tab8.Info2"), false);
+        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
         {
             return;
         }
 
-        var obj = ConfigBinding.NewInput(Text);
+        var obj = ConfigBinding.NewInput(res.Text1);
         _controlUUIDs.Add(obj.UUID);
         Configs.Add(obj.Name);
 
@@ -411,7 +411,7 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info3"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info3"), () =>
         {
             cannel.Cancel();
         });
@@ -422,7 +422,7 @@ public partial class SettingModel
             return;
         }
         var key1 = ((byte, bool))key;
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });
@@ -454,7 +454,7 @@ public partial class SettingModel
         }
 
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
         {
             cannel.Cancel();
         });
@@ -465,7 +465,7 @@ public partial class SettingModel
             return;
         }
         var key1 = (byte)key;
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });
@@ -497,7 +497,7 @@ public partial class SettingModel
     public async Task SetItemButton(object? right)
     {
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info6"), () =>
         {
             cannel.Cancel();
         });
@@ -665,7 +665,7 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
+        Model.ShowWithCancel(App.Lang("SettingWindow.Tab8.Info4"), () =>
         {
             cannel.Cancel();
         });

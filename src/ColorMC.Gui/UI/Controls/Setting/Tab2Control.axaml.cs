@@ -4,6 +4,9 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
+/// <summary>
+/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// </summary>
 public partial class Tab2Control : UserControl
 {
     public Tab2Control()

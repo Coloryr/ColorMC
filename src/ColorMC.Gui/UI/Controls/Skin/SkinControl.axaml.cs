@@ -11,10 +11,17 @@ using ColorMC.Gui.UI.Model.Skin;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
+/// <summary>
+/// Æ¤·ôÏÔÊ¾´°¿Ú
+/// </summary>
 public partial class SkinControl : BaseUserControl
 {
+    /// <summary>
+    /// äÖÈ¾¶¨Ê±Æ÷
+    /// </summary>
     private FpsTimer _renderTimer;
-    private SkinSideControl _side = new();
+
+    private readonly SkinSideControl _side = new();
 
     public SkinControl() : base(WindowManager.GetUseName<SkinControl>())
     {
@@ -42,8 +49,8 @@ public partial class SkinControl : BaseUserControl
                 Decorator1.IsVisible = false;
                 Decorator1.Child = null;
                 Decorator2.Child = _side;
-                model.Model.SetChoiseCall(UseName, DisplaySide);
-                model.Model.SetChoiseContent(UseName, App.Lang("SkinWindow.Text10"));
+                model.Model.SetChoiseCall(WindowId, DisplaySide);
+                model.Model.SetChoiseContent(WindowId, App.Lang("SkinWindow.Text10"));
             }
             else
             {
@@ -51,7 +58,7 @@ public partial class SkinControl : BaseUserControl
                 Decorator1.IsVisible = true;
                 Decorator2.Child = null;
                 Decorator1.Child = _side;
-                model.Model.RemoveChoiseData(UseName);
+                model.Model.RemoveChoiseData(WindowId);
             }
         }
     }
@@ -98,7 +105,7 @@ public partial class SkinControl : BaseUserControl
         _renderTimer.Pause = state != WindowState.Minimized;
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         _renderTimer = new(Skin)
         {
@@ -126,7 +133,7 @@ public partial class SkinControl : BaseUserControl
         WindowManager.SkinWindow = null;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new SkinModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

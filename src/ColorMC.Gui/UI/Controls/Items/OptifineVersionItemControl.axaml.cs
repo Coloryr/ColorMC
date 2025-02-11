@@ -9,6 +9,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// Optifine光影文件版本子项目
+/// </summary>
 public partial class OptifineVersionItemControl : UserControl
 {
     public OptifineVersionItemControl()

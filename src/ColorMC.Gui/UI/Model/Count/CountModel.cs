@@ -4,50 +4,107 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Count;
 
+/// <summary>
+/// 游戏统计
+/// </summary>
 public partial class CountModel : TopModel
 {
+    /// <summary>
+    /// 累计启动次数
+    /// </summary>
     [ObservableProperty]
     private long _count;
+    /// <summary>
+    /// 累计启动成功次数
+    /// </summary>
     [ObservableProperty]
     private long _countDone;
+    /// <summary>
+    /// 累计启动失败次数
+    /// </summary>
     [ObservableProperty]
     private long _countError;
+    /// <summary>
+    /// 今日统计
+    /// </summary>
     [ObservableProperty]
     private int _countToday;
+    /// <summary>
+    /// 选中的时间
+    /// </summary>
     [ObservableProperty]
     private DateTime _date;
+    /// <summary>
+    /// 今日统计时间
+    /// </summary>
     [ObservableProperty]
     private int _dateCount;
 
+    /// <summary>
+    /// 累计游玩时长
+    /// </summary>
     [ObservableProperty]
     private string _time;
+    /// <summary>
+    /// 今日游玩时长
+    /// </summary>
     [ObservableProperty]
     private string _timeToday;
+    /// <summary>
+    /// 选中的时间
+    /// </summary>
     [ObservableProperty]
     private DateTime _date1;
+    /// <summary>
+    /// 选中时间的游玩时常
+    /// </summary>
     [ObservableProperty]
     private string _timeDate;
 
+    /// <summary>
+    /// 选中的游戏实例
+    /// </summary>
     [ObservableProperty]
     private int _gameIndex = -1;
-
+    /// <summary>
+    /// 游戏实例启动累计
+    /// </summary>
     [ObservableProperty]
     private int _gameCount;
+    /// <summary>
+    /// 游戏实例启动成功累计
+    /// </summary>
     [ObservableProperty]
     private int _gameCountDone;
+    /// <summary>
+    /// 游戏实例启动失败累计
+    /// </summary>
     [ObservableProperty]
     private int _gameCountError;
+    /// <summary>
+    /// 游戏实例启动今日累计
+    /// </summary>
     [ObservableProperty]
     private int _gameCountToday;
+    /// <summary>
+    /// 游戏实例游戏时间
+    /// </summary>
     [ObservableProperty]
     private string _gameTime;
+    /// <summary>
+    /// 游戏实例上次游戏时间
+    /// </summary>
     [ObservableProperty]
     private string _gameTime1;
 
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     private readonly List<GameSettingObj> _list = [];
 
     public ObservableCollection<string> Game { get; init; } = [];
@@ -55,7 +112,7 @@ public partial class CountModel : TopModel
     public CountModel(BaseModel model) : base(model)
     {
         _date1 = _date = DateTime.Now;
-        var data = Utils.GameCountUtils.Count;
+        var data = GameCountUtils.Count;
         if (data == null)
         {
             _count = 0;

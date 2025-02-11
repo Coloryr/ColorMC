@@ -598,11 +598,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         UserBinding.OnUserEdit();
-        if (WindowManager.UserWindow != null)
-        {
-            WindowManager.UserWindow.Close();
-            WindowManager.ShowUser();
-        }
+        WindowManager.UserWindow?.LoadUsers();
     }
 
     /// <summary>

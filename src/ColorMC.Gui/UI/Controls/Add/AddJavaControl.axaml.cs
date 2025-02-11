@@ -8,6 +8,9 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
+/// <summary>
+/// JavaÏÂÔØ´°¿Ú
+/// </summary>
 public partial class AddJavaControl : BaseUserControl
 {
     /// <summary>
@@ -36,7 +39,7 @@ public partial class AddJavaControl : BaseUserControl
         return Task.FromResult(false);
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as AddJavaControlModel)!.TypeIndex = 0;
     }
@@ -46,7 +49,7 @@ public partial class AddJavaControl : BaseUserControl
         WindowManager.AddJavaWindow = null;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new AddJavaControlModel(model, NeedJava);
     }

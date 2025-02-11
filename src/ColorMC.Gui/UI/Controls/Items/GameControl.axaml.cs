@@ -15,9 +15,19 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// 游戏实例子项目
+/// </summary>
 public partial class GameControl : UserControl
 {
+    /// <summary>
+    /// 是否处于按下状态
+    /// </summary>
     private bool press;
+    /// <summary>
+    /// 按下的位置
+    /// </summary>
+    private Point point;
 
     public GameControl()
     {
@@ -84,8 +94,6 @@ public partial class GameControl : UserControl
             model.SetTips();
         }
     }
-
-    private Point point;
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {

@@ -49,13 +49,13 @@ public partial class NetFrpModel
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
         }
 
-        var (Cancel, Index, _) = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
-        if (Cancel)
+        var res = await Model.Combo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
+        if (res.Cancel)
         {
             return;
         }
 
-        var item1 = list1[Index];
+        var item1 = list1[res.Index];
         local.IsStart = true;
         var res1 = await BaseBinding.StartFrp(item1, local);
         if (!res1.Res)

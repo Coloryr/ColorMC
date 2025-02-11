@@ -11,8 +11,14 @@ using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditControl : MenuControl
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     private Tab1Control _tab1;
@@ -73,12 +79,12 @@ public partial class GameEditControl : MenuControl
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as GameEditModel)?.Load();
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new GameEditModel(model, _obj);
     }
@@ -128,6 +134,10 @@ public partial class GameEditControl : MenuControl
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 设置当前修改页面
+    /// </summary>
+    /// <param name="type">修改类型</param>
     public void SetType(GameEditWindowType type)
     {
         var model = (DataContext as GameEditModel)!;
@@ -148,6 +158,9 @@ public partial class GameEditControl : MenuControl
         }
     }
 
+    /// <summary>
+    /// 重载标题
+    /// </summary>
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);

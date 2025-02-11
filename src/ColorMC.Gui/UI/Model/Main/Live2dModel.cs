@@ -51,11 +51,11 @@ public partial class MainModel
         var index = random.Next(1000);
         if (index == 666)
         {
-            ShowMessage("Ciallo～(∠·ω< )⌒★");
+            L2dShowMessage("Ciallo～(∠·ω< )⌒★");
         }
         else
         {
-            ShowMessage(App.Lang("Live2dControl.Text1"));
+            L2dShowMessage(App.Lang("Live2dControl.Text1"));
         }
     }
 
@@ -71,7 +71,7 @@ public partial class MainModel
     /// 展示模型消息
     /// </summary>
     /// <param name="message"></param>
-    public void ShowMessage(string message)
+    public void L2dShowMessage(string message)
     {
         Message = message;
         OnPropertyChanged(ModelTextName);

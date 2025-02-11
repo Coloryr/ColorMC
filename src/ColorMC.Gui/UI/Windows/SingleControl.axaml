@@ -26,7 +26,7 @@
             <Image
                 IsVisible="{Binding BgVisible}"
                 Opacity="{Binding BgOpacity}"
-                Source="{Binding Back}"
+                Source="{Binding BackImage}"
                 Stretch="UniformToFill" />
             <DockPanel Background="{setting:Theme WindowBG}">
                 <view:HeadControl
@@ -36,7 +36,7 @@
                 <dialog:DialogHost
                     Background="{setting:Theme ButtonBG}"
                     DisableOpeningAnimation="True"
-                    Identifier="{Binding Name}"
+                    Identifier="{Binding WindowId}"
                     OverlayBackground="Transparent">
                     <dialog:DialogHost.DataTemplates>
                         <DataTemplate DataType="dialogmodel:Info1Model">

@@ -6,6 +6,9 @@ using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
+/// <summary>
+/// ÓÎÏ··Ö×é
+/// </summary>
 public partial class GameGroupControl : UserControl
 {
     public GameGroupControl()

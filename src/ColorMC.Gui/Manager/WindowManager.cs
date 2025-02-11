@@ -733,14 +733,14 @@ public static class WindowManager
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window.TopActivate();
-            value.GameCrash(code);
+            value.GameExit(code);
         }
         else
         {
             var con = new GameLogControl(obj);
             GameLogWindows.Add(obj.UUID, con);
             AWindow(con);
-            con.GameCrash(code);
+            con.GameExit(code);
         }
     }
 
@@ -973,7 +973,7 @@ public static class WindowManager
     /// <param name="model">窗口模型</param>
     public static void UpdateWindow(BaseModel model)
     {
-        model.Back = ImageManager.BackBitmap;
+        model.BackImage = ImageManager.BackBitmap;
         //更新背景图
         if (ImageManager.BackBitmap != null)
         {

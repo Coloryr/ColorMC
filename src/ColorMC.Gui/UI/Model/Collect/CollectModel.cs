@@ -89,12 +89,8 @@ public partial class CollectModel : TopModel, ICollectWindow
     /// </summary>
     private GameSettingObj? _choise;
 
-   // private readonly string _useName;
-
     public CollectModel(BaseModel model) : base(model)
     {
-        //_useName = ToString() ?? "CollectModel";
-
         var conf = CollectUtils.Collect;
 
         _mod = conf.Mod;
@@ -199,19 +195,19 @@ public partial class CollectModel : TopModel, ICollectWindow
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("CollectWindow.Info1"), false);
-        if (Cancel || string.IsNullOrWhiteSpace(Text))
+        var res = await Model.InputWithEditAsync(App.Lang("CollectWindow.Info1"), false);
+        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
         {
             return;
         }
-        if (CollectUtils.Collect.Groups.ContainsKey(Text))
+        if (CollectUtils.Collect.Groups.ContainsKey(res.Text1))
         {
             Model.Show(App.Lang("CollectWindow.Error1"));
             return;
         }
-        CollectUtils.AddGroup(Text);
-        Groups.Add(Text);
-        Group = Text;
+        CollectUtils.AddGroup(res.Text1);
+        Groups.Add(res.Text1);
+        Group = res.Text1;
     }
 
     /// <summary>
@@ -221,7 +217,7 @@ public partial class CollectModel : TopModel, ICollectWindow
     [RelayCommand]
     public async Task DeleteGroup()
     {
-        var res = await Model.ShowWait(App.Lang("CollectWindow.Info4"));
+        var res = await Model.ShowAsync(App.Lang("CollectWindow.Info4"));
         if (!res)
         {
             return;
@@ -239,7 +235,7 @@ public partial class CollectModel : TopModel, ICollectWindow
     {
         if (string.IsNullOrWhiteSpace(Group))
         {
-            var res = await Model.ShowWait(App.Lang("CollectWindow.Info2"));
+            var res = await Model.ShowAsync(App.Lang("CollectWindow.Info2"));
             if (res == true)
             {
                 CollectUtils.Clear();
@@ -250,7 +246,7 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
         else
         {
-            var res = await Model.ShowWait(App.Lang("CollectWindow.Info3"));
+            var res = await Model.ShowAsync(App.Lang("CollectWindow.Info3"));
             if (res == true)
             {
                 CollectUtils.Clear(Group);
@@ -286,13 +282,13 @@ public partial class CollectModel : TopModel, ICollectWindow
         }
 
         //选择一个游戏实例
-        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
-        if (Cancel)
+        var res = await Model.Combo(App.Lang("CollectWindow.Info6"), items);
+        if (res.Cancel)
         {
             return;
         }
 
-        _choise = items1[Index];
+        _choise = items1[res.Index];
 
         Model.Progress(App.Lang("CollectWindow.Info9"));
 
@@ -528,7 +524,7 @@ public partial class CollectModel : TopModel, ICollectWindow
             return;
         }
 
-        var res = await Model.ShowWait(App.Lang("CollectWindow.Info12"));
+        var res = await Model.ShowAsync(App.Lang("CollectWindow.Info12"));
         if (!res)
         {
             return;
@@ -560,8 +556,8 @@ public partial class CollectModel : TopModel, ICollectWindow
         var list = new List<string>(CollectUtils.Collect.Groups.Keys);
         list.Remove(Group);
 
-        var (Cancel, Index, Item) = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
-        if (Cancel)
+        var res = await Model.Combo(App.Lang("CollectWindow.Info13"), list);
+        if (res.Cancel)
         {
             return;
         }

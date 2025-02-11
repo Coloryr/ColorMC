@@ -5,27 +5,56 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
+/// <summary>
+/// Nbt查找
+/// </summary>
 public partial class NbtDialogFindModel : ObservableObject
 {
+    /// <summary>
+    /// 查找名字
+    /// </summary>
     [ObservableProperty]
     private string _posName;
+    /// <summary>
+    /// 区块
+    /// </summary>
     [ObservableProperty]
     private string _chunk;
+    /// <summary>
+    /// 区块文件
+    /// </summary>
     [ObservableProperty]
     private string _chunkFile;
+    /// <summary>
+    /// 方块X坐标
+    /// </summary>
     [ObservableProperty]
     private int? _posX = 0;
+    /// <summary>
+    /// 方块Y坐标
+    /// </summary>
     [ObservableProperty]
     private int? _posY = 0;
     [ObservableProperty]
     private int? _posZ = 0;
-
+    /// <summary>
+    /// 显示文本1
+    /// </summary>
     [ObservableProperty]
     private string _findText1;
+    /// <summary>
+    /// 显示文本2
+    /// </summary>
     [ObservableProperty]
     private string _findText2;
 
+    /// <summary>
+    /// 是否为实体
+    /// </summary>
     public bool IsEntity;
+    /// <summary>
+    /// 是否取消
+    /// </summary>
     public bool Cancel;
 
     private readonly string _useName;
@@ -67,6 +96,9 @@ public partial class NbtDialogFindModel : ObservableObject
         DialogHost.Close(_useName);
     }
 
+    /// <summary>
+    /// 清理坐标
+    /// </summary>
     private void PosClear()
     {
         PosName = "";

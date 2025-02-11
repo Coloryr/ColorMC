@@ -7,6 +7,9 @@ using ColorMC.Gui.UI.Model.Download;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 
+/// <summary>
+/// 下载窗口
+/// </summary>
 public partial class DownloadControl : BaseUserControl
 {
     public DownloadControl() : base(WindowManager.GetUseName<DownloadControl>())
@@ -26,7 +29,7 @@ public partial class DownloadControl : BaseUserControl
         return DataContext is DownloadModel model && !await model.Stop();
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new DownloadModel(model);
     }
@@ -36,6 +39,10 @@ public partial class DownloadControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 开始下载更新
+    /// </summary>
+    /// <returns></returns>
     public DownloadArg Start()
     {
         return (DataContext as DownloadModel)!.Start();

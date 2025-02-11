@@ -33,7 +33,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         InitBaseWindow();
 
-        var model = new BaseModel(con.UseName);
+        var model = new BaseModel(con.WindowId);
         model.PropertyChanged += Model_PropertyChanged;
         DataContext = model;
         _con = con;
@@ -84,7 +84,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             return;
         }
-        if (e.PropertyName == BaseModel.InfoShow)
+        if (e.PropertyName == BaseModel.NameInfoShow)
         {
             windowNotification.Show(new TextBlock()
             {
@@ -93,7 +93,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
                 Text = Model.NotifyText
             });
         }
-        else if (e.PropertyName == BaseModel.GetTopLevelName
+        else if (e.PropertyName == BaseModel.NameGetTopLevel
             && DataContext is BaseModel model)
         {
             model.SetTopLevel(GetTopLevel(this));

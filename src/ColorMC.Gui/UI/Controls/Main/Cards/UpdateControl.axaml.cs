@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Animations;
 
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
+/// <summary>
+/// Æô¶¯Æ÷¸üÐÂ¿¨Æ¬
+/// </summary>
 public partial class UpdateControl : UserControl
 {
     public UpdateControl()

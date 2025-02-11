@@ -6,6 +6,9 @@ using ColorMC.Gui.UI.Model.Collect;
 
 namespace ColorMC.Gui.UI.Controls.Collect;
 
+/// <summary>
+/// 资源收藏窗口
+/// </summary>
 public partial class CollectControl : BaseUserControl
 {
     public CollectControl() : base(WindowManager.GetUseName<CollectControl>())
@@ -20,7 +23,7 @@ public partial class CollectControl : BaseUserControl
         WindowManager.CollectWindow = null;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var model1 = new CollectModel(model);
         model1.PropertyChanged += Model1_PropertyChanged;

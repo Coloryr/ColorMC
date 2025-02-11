@@ -20,12 +20,12 @@ public partial class UIControl : BaseUserControl
         return ImageManager.GameIcon;
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as UIModel)?.Load();
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new UIModel(model);
     }

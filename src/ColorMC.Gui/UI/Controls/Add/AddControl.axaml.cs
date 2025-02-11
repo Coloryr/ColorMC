@@ -11,8 +11,14 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
+/// <summary>
+/// 添加资源窗口
+/// </summary>
 public partial class AddControl : BaseUserControl
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     public AddControl() : base(WindowManager.GetUseName<AddControl>())
@@ -33,7 +39,7 @@ public partial class AddControl : BaseUserControl
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new AddControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -63,7 +69,7 @@ public partial class AddControl : BaseUserControl
         WindowManager.GameAddWindows.Remove(_obj.UUID);
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as AddControlModel)!.Display = true;
     }
@@ -159,11 +165,18 @@ public partial class AddControl : BaseUserControl
         }
     }
 
+    /// <summary>
+    /// 转到模组升级
+    /// </summary>
+    /// <param name="list"></param>
     public void GoUpgrade(ICollection<ModUpgradeModel> list)
     {
         (DataContext as AddControlModel)!.Upgrade(list);
     }
 
+    /// <summary>
+    /// 重新加载标题
+    /// </summary>
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);

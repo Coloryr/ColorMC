@@ -14,6 +14,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// 文件版本子项目
+/// </summary>
 public partial class FileVersionItemControl : UserControl
 {
     public FileVersionItemControl()
@@ -90,66 +93,5 @@ public partial class FileVersionItemControl : UserControl
             model.Next();
             e.Handled = true;
         }
-    }
-
-    private void FadeIn()
-    {
-        var animation = new Animation
-        {
-            FillMode = FillMode.Forward,
-            Easing = new CircularEaseInOut(),
-            Children =
-            {
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = OpacityProperty,
-                            Value = 0.0d
-                        },
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = 10d
-                        }
-                    },
-                    Cue = new Cue(0d)
-                },
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = OpacityProperty,
-                            Value = 1.0d
-                        },
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = 10d
-                        }
-                    },
-                    Cue = new Cue(0.5d)
-                },
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = 0d
-                        }
-                    },
-                    Cue = new Cue(1d)
-                }
-            },
-            Duration = TimeSpan.FromMilliseconds(500)
-        };
-
-        animation.RunAsync(this);
     }
 }

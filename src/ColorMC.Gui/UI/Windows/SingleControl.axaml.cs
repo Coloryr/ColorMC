@@ -31,7 +31,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
 
     public BaseModel Model => (DataContext as BaseModel)!;
 
-    public string UseName { get; init; }
+    public string WindowId { get; init; }
 
     private WindowNotificationManager windowNotification;
 
@@ -39,7 +39,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         InitializeComponent();
 
-        UseName = ToString() ?? "SingleControl";
+        WindowId = ToString() ?? "SingleControl";
 
         var model = new BaseModel("AllControl");
         model.PropertyChanged += Model_PropertyChanged;
@@ -78,7 +78,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == BaseModel.InfoShow)
+        if (e.PropertyName == BaseModel.NameInfoShow)
         {
             windowNotification.Show(new TextBlock()
             {
@@ -87,7 +87,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
                 Text = Model.NotifyText
             });
         }
-        else if (e.PropertyName == BaseModel.GetTopLevelName
+        else if (e.PropertyName == BaseModel.NameGetTopLevel
             && DataContext is BaseModel model)
         {
             model.SetTopLevel(TopLevel.GetTopLevel(this));

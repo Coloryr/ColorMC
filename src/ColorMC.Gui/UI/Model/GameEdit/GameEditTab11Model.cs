@@ -73,7 +73,7 @@ public partial class GameEditModel
 
     public async void DeleteShaderpack(ShaderpackObj obj)
     {
-        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab11.Info2"));
+        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab11.Info2"));
         if (!res)
         {
             return;

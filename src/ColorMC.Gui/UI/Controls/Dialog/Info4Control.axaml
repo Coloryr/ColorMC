@@ -36,8 +36,8 @@
                 Classes="top"
                 Command="{Binding Confirm}"
                 Content="{setting:Localize Button.Confirm}"
-                IsEnabled="{Binding Enable}"
-                IsVisible="{Binding EnableVisable}" />
+                IsEnabled="{Binding EnableButton}"
+                IsVisible="{Binding ConfirmVisable}" />
             <Button
                 Width="100"
                 Height="35"
@@ -45,7 +45,7 @@
                 Classes="top"
                 Command="{Binding Cancel}"
                 Content="{setting:Localize Button.Cancel}"
-                IsEnabled="{Binding Enable}"
+                IsEnabled="{Binding EnableButton}"
                 IsVisible="{Binding CancelVisable}" />
         </StackPanel>
     </StackPanel>

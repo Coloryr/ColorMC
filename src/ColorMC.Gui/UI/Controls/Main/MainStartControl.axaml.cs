@@ -8,6 +8,9 @@ using Avalonia.Styling;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
+/// <summary>
+/// 开始欢迎界面
+/// </summary>
 public partial class MainStartControl : UserControl
 {
     public Easing SlideEasing = new CircularEaseInOut();
@@ -105,8 +108,8 @@ public partial class MainStartControl : UserControl
             },
             Duration = TimeSpan.FromMilliseconds(1500)
         };
-        var task = animation.RunAsync(Image1);
-        var task1 = animation1.RunAsync(Grid1);
+        _ = animation.RunAsync(Image1);
+        _ = animation1.RunAsync(Grid1);
         await Task.Delay(2000);
     }
 }

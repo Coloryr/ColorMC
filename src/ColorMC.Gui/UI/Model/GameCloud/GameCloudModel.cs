@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -17,8 +21,14 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.UI.Model.GameCloud;
 
+/// <summary>
+/// 游戏云同步窗口
+/// </summary>
 public partial class GameCloudModel : MenuModel
 {
+    /// <summary>
+    /// 显示过滤
+    /// </summary>
     [ObservableProperty]
     private bool _displayFilter = true;
 
@@ -27,24 +37,46 @@ public partial class GameCloudModel : MenuModel
     /// </summary>
     private FilesPageModel _files;
 
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
+    /// <summary>
+    /// 是否开启了云同步
+    /// </summary>
     [ObservableProperty]
     private bool _enable;
+    /// <summary>
+    /// 上次配置文件同步时间
+    /// </summary>
     [ObservableProperty]
     private string _configTime;
+    /// <summary>
+    /// 本地配置文件同步时间
+    /// </summary>
     [ObservableProperty]
     private string _localConfigTime;
 
-    private bool _configHave;
-
+    /// <summary>
+    /// 选择的存档
+    /// </summary>
     private WorldCloudModel? _selectWorld;
 
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     public GameSettingObj Obj { get; init; }
 
-    public ObservableCollection<WorldCloudModel> WorldCloudList { get; } = [];
+    /// <summary>
+    /// 云存档列表
+    /// </summary>
+    public ObservableCollection<WorldCloudModel> WorldCloudList { get; init; } = [];
 
+    /// <summary>
+    /// 游戏实例UUID
+    /// </summary>
     public string UUID => Obj.UUID;
 
     private readonly string _useName;
@@ -79,6 +111,10 @@ public partial class GameCloudModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 开启云同步
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task MakeEnable()
     {
@@ -88,16 +124,11 @@ public partial class GameCloudModel : MenuModel
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info3"));
-        var res = await GameCloudUtils.StartCloud(Obj);
+        var res = await GameBinding.StartCloud(Obj);
         Model.ProgressClose();
-        if (res == 101)
+        if (res.State == false)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
+            Model.Show(res.Message!);
             return;
         }
 
@@ -105,6 +136,10 @@ public partial class GameCloudModel : MenuModel
         Enable = true;
     }
 
+    /// <summary>
+    /// 关闭云同步
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task MakeDisable()
     {
@@ -113,28 +148,18 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-        var ok = await Model.ShowWait(App.Lang("GameCloudWindow.Info7"));
-        if (!ok)
+        var res = await Model.ShowAsync(App.Lang("GameCloudWindow.Info7"));
+        if (!res)
         {
             return;
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info5"));
-        var res = await GameCloudUtils.StopCloud(Obj);
+        var res1 = await GameBinding.StopCloud(Obj);
         Model.ProgressClose();
-        if (res == 101)
+        if (!res1.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
-        else if (res == 102)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error4"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
+            Model.Show(res1.Message!);
             return;
         }
 
@@ -142,83 +167,46 @@ public partial class GameCloudModel : MenuModel
         Enable = false;
     }
 
+    /// <summary>
+    /// 上传配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task UploadConfig()
     {
-        Model.Progress(App.Lang("GameCloudWindow.Info8"));
         var files = _files.GetSelectItems(true);
-        var data = GameCloudUtils.GetCloudData(Obj);
-        string dir = Obj.GetBasePath();
-        data.Config ??= [];
-        data.Config.Clear();
-        foreach (var item in files)
-        {
-            data.Config.Add(item[(dir.Length + 1)..]);
-        }
-        string name = Path.GetFullPath(dir + "/config.zip");
-        files.Remove(name);
-        await new ZipUtils().ZipFileAsync(name, files, dir);
-        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info9"));
-        var res = await GameCloudUtils.UploadConfig(Obj, name);
-        PathHelper.Delete(name);
+        Model.Progress();
+        var res = await GameBinding.UploadConfig(Obj, files, new()
+        { 
+            Update = ProgressUpdate
+        });
         Model.ProgressClose();
-        if (res == 104)
+        if (!res.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error5"));
-            return;
-        }
-        else if (res == 101)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
+            Model.Show(res.Message!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info14"));
         await LoadCloud();
-        if (_configHave)
-        {
-            data.ConfigTime = DateTime.Parse(ConfigTime);
-        }
         LocalConfigTime = ConfigTime;
-        GameCloudUtils.Save();
     }
 
     [RelayCommand]
     public async Task DownloadConfig()
     {
-        Model.Progress(App.Lang("GameCloudWindow.Info10"));
-        var data = GameCloudUtils.GetCloudData(Obj);
-        string local = Path.GetFullPath(Obj.GetBasePath() + "/config.zip");
-        var res = await GameCloudUtils.DownloadConfig(Obj, local);
-        if (res == 101)
+        Model.Progress();
+        var res = await GameBinding.DownloadConfig(Obj, new()
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
-            return;
-        }
-
-        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info11"));
-        var res1 = await GameBinding.UnZipCloudConfig(Obj, data, local);
+            Update = ProgressUpdate
+        });
         Model.ProgressClose();
-        if (!res1)
+        if (!res.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error6"));
+            Model.Show(res.Message!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info15"));
         await LoadCloud();
-        if (_configHave)
-        {
-            data.ConfigTime = DateTime.Parse(ConfigTime);
-        }
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
     }
@@ -229,18 +217,26 @@ public partial class GameCloudModel : MenuModel
     public async Task LoadCloud()
     {
         Model.Progress(App.Lang("GameCloudWindow.Info1"));
-        var res = await GameCloudUtils.HaveCloud(Obj);
+        var res = await GameBinding.HaveCloud(Obj);
         Model.ProgressClose();
-        Enable = res.Item2;
-        _configHave = res.Item3 != null;
-        ConfigTime = res.Item3 ?? App.Lang("GameCloudWindow.Info2");
+        if (!res.State)
+        {
+            Model.Show(res.Message!);
+            return;
+        }
+        Enable = res.Data1;
+        ConfigTime = res.Data2 ?? App.Lang("GameCloudWindow.Info2");
     }
 
+    /// <summary>
+    /// 读取云同步信息
+    /// </summary>
+    /// <returns></returns>
     public async Task<bool> Init()
     {
-        if (!GameCloudUtils.Connect)
+        if (!ColorMCCloudAPI.Connect)
         {
-            Model.ShowOk(App.Lang("GameCloudWindow.Erro1"), WindowClose);
+            Model.ShowWithOk(App.Lang("GameCloudWindow.Erro1"), WindowClose);
             return false;
         }
         await LoadCloud();
@@ -281,9 +277,9 @@ public partial class GameCloudModel : MenuModel
         {
             list.Add(Obj.GetConfigPath());
             list.Add(Obj.GetOptionsFile());
-            foreach (var mod in await GameBinding.GetGameMods(Obj, null))
+            foreach (var mod in await GameBinding.GetModFastAsync(Obj))
             {
-                if (mod.Obj1 == null)
+                if (!Obj.Mods.Values.Any(a => a.Sha1 == mod.Sha1))
                 {
                     list.Add(mod.Local);
                 }
@@ -295,6 +291,10 @@ public partial class GameCloudModel : MenuModel
         Model.Notify(App.Lang("GameCloudWindow.Info19"));
     }
 
+    /// <summary>
+    /// 选择存档
+    /// </summary>
+    /// <param name="item">存档</param>
     public void SetSelectWorld(WorldCloudModel item)
     {
         if (_selectWorld != null)
@@ -305,27 +305,32 @@ public partial class GameCloudModel : MenuModel
         _selectWorld.IsSelect = true;
     }
 
+    /// <summary>
+    /// 加载存档列表
+    /// </summary>
     public async void LoadWorld()
     {
         WorldCloudList.Clear();
         Model.Progress(App.Lang("GameCloudWindow.Info20"));
-        var res = await GameCloudUtils.GetWorldList(Obj);
-        var worlds = await GameBinding.GetWorlds(Obj);
+        var res = await GameBinding.GetCloudWorldListAsync(Obj);
+        var worlds = await GameBinding.GetWorldsAsync(Obj);
         Model.ProgressClose();
-        if (res != null)
+        if (!res.State || res.Data == null)
         {
-            foreach (var item in res)
+            Model.Show(res.Message!);
+            return;
+        }
+        foreach (var item in res.Data)
+        {
+            var obj = worlds.Find(a => a.LevelName == item.Name);
+            if (obj != null)
             {
-                var obj = worlds.Find(a => a.LevelName == item.Name);
-                if (obj != null)
-                {
-                    worlds.Remove(obj);
-                    WorldCloudList.Add(new(this, item, obj));
-                }
-                else
-                {
-                    WorldCloudList.Add(new(this, item));
-                }
+                worlds.Remove(obj);
+                WorldCloudList.Add(new(this, item, obj));
+            }
+            else
+            {
+                WorldCloudList.Add(new(this, item));
             }
         }
         foreach (var item in worlds)
@@ -343,187 +348,66 @@ public partial class GameCloudModel : MenuModel
         Source = null!;
     }
 
+    /// <summary>
+    /// 上传存档
+    /// </summary>
+    /// <param name="world">云存档</param>
     public async void UploadWorld(WorldCloudModel world)
     {
-        string dir = world.World.Local;
-        string local = Path.GetFullPath(world.World.Game.GetSavesPath() + "/" + world.World.LevelName + ".zip");
-        if (!world.HaveCloud)
+        Model.Progress();
+        var res = await GameBinding.UploadCloudWorldAsync(Obj, world, new()
         {
-            Model.Progress(App.Lang("GameCloudWindow.Info8"));
-            await new ZipUtils().ZipFileAsync(dir, local);
-        }
-        else
-        {
-            Model.Progress(App.Lang("GameCloudWindow.Info12"));
-            //云端文件
-            var list = await GameCloudUtils.GetWorldFiles(Obj, world.World);
-            if (list == null)
-            {
-                Model.ProgressClose();
-                Model.Show(App.Lang("GameCloudWindow.Error7"));
-                return;
-            }
-            //本地文件
-            var files = PathHelper.GetAllFile(dir);
-            var pack = new List<string>();
-
-            string dir1 = Path.GetFullPath(dir + "/");
-            foreach (var item in files)
-            {
-                var name = item.FullName.Replace(dir1, "").Replace("\\", "/");
-                using var file = PathHelper.OpenRead(item.FullName)!;
-                var sha1 = await HashHelper.GenSha1Async(file);
-                if (list.TryGetValue(name, out var sha11))
-                {
-                    list.Remove(name);
-                    if (sha1 != sha11)
-                    {
-                        pack.Add(item.FullName);
-                    }
-                }
-                else
-                {
-                    pack.Add(item.FullName);
-                }
-            }
-
-            bool have = false;
-            var delete = Path.GetFullPath(dir + "/delete.json");
-            if (list.Count > 0)
-            {
-                have = true;
-                await File.WriteAllTextAsync(delete, JsonConvert.SerializeObject(list.Keys));
-                pack.Add(delete);
-            }
-            if (pack.Count == 0)
-            {
-                Model.ProgressClose();
-                Model.Show(App.Lang("GameCloudWindow.Info13"));
-                return;
-            }
-            Model.ProgressUpdate(App.Lang("GameCloudWindow.Info8"));
-            await new ZipUtils().ZipFileAsync(local, pack, dir);
-            if (have)
-            {
-                PathHelper.Delete(delete);
-            }
-        }
-
-        Model.ProgressUpdate(App.Lang("GameCloudWindow.Info9"));
-        var res = await GameCloudUtils.UploadWorld(Obj, world.World, local);
-        PathHelper.Delete(local);
+            Update = ProgressUpdate
+        });
         Model.ProgressClose();
-        if (res == 101)
+        if (!res.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
+            Model.Show(res.Message!);
             return;
         }
-        else if (res == 104)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error5"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
-            return;
-        }
-        else
-        {
-            Model.Notify(App.Lang("GameCloudWindow.Info14"));
-        }
+        Model.Notify(App.Lang("GameCloudWindow.Info14"));
         LoadWorld();
     }
 
+    /// <summary>
+    /// 下载存档
+    /// </summary>
+    /// <param name="world">云存档</param>
     public async void DownloadWorld(WorldCloudModel world)
     {
-        Model.Progress(App.Lang("GameCloudWindow.Info10"));
-        string dir = Obj.GetSavesPath() + "/" + world.Cloud.Name;
-        string local = Path.GetFullPath(Obj.GetSavesPath() + "/" + world.Cloud.Name + ".zip");
-        var list = new Dictionary<string, string>();
-        if (world.HaveLocal)
+        Model.Progress();
+        var res = await GameBinding.DownloadCloudWorldAsync(Obj, world, new()
         {
-            var files = PathHelper.GetAllFile(dir);
-            string dir1 = Path.GetFullPath(dir + "/");
-            foreach (var item in files)
-            {
-                var name = item.FullName.Replace(dir1, "").Replace("\\", "/");
-                using var file = PathHelper.OpenRead(item.FullName)!;
-                var sha1 = await HashHelper.GenSha1Async(file);
-                list.Add(name, sha1);
-            }
-        }
-
-        var res = await GameCloudUtils.DownloadWorld(Obj, world.Cloud, local, list);
-        if (res == 101)
+            Update = ProgressUpdate
+        });
+        Model.ProgressClose();
+        if (!res.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
+            Model.Show(res.Message!);
             return;
         }
-        else if (res == 102)
-        {
-            Model.ProgressClose();
-            Model.Show(App.Lang("GameCloudWindow.Error8"));
-            return;
-        }
-        else if (res == 103)
-        {
-            Model.ProgressClose();
-            Model.Show(App.Lang("GameCloudWindow.Info13"));
-            return;
-        }
-        else if (res != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
-        }
-        else
-        {
-            Model.ProgressUpdate(App.Lang("GameCloudWindow.Info11"));
-            try
-            {
-                using var file = PathHelper.OpenRead(local)!;
-                await new ZipUtils().UnzipAsync(dir, local, file);
-                Model.Notify(App.Lang("GameCloudWindow.Info15"));
-            }
-            catch (Exception e)
-            {
-                string temp = App.Lang("GameCloudWindow.Error9");
-                Logs.Error(temp, e);
-                Model.Show(temp);
-            }
-            Model.ProgressClose();
-        }
-        Model.Notify(App.Lang("GameCloudWindow.Info22"));
-        PathHelper.Delete(local);
+        Model.Notify(App.Lang("GameCloudWindow.Info15"));
         LoadWorld();
     }
 
+    /// <summary>
+    /// 删除云存档
+    /// </summary>
+    /// <param name="world">云存档</param>
     public async void DeleteCloud(WorldCloudModel world)
     {
-        var res = await Model.ShowWait(App.Lang("GameCloudWindow.Info16"));
+        var res = await Model.ShowAsync(App.Lang("GameCloudWindow.Info16"));
         if (!res)
         {
             return;
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info18"));
-        var res1 = await GameCloudUtils.DeleteWorld(Obj, world.Cloud.Name);
+        var res1 = await GameBinding.DeleteCloudWorld(Obj, world.Cloud.Name);
         Model.ProgressClose();
-        if (res1 == 101)
+        if (!res1.State)
         {
-            Model.Show(App.Lang("GameCloudWindow.Error2"));
-            return;
-        }
-        else if (res1 == 102)
-        {
-
-            Model.Show(App.Lang("GameCloudWindow.Error8"));
-            return;
-        }
-        else if (res1 != 100)
-        {
-            Model.Show(App.Lang("GameCloudWindow.Error3"));
-            return;
+            Model.Show(res1.Message!);
         }
         else
         {
@@ -531,6 +415,9 @@ public partial class GameCloudModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 重载内容
+    /// </summary>
     private async void Reload()
     {
         switch (NowView)
@@ -547,12 +434,26 @@ public partial class GameCloudModel : MenuModel
         }
     }
 
+    private void ProgressUpdate(string data)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            Model.ProgressUpdate(data);
+        });
+    }
+
+    /// <summary>
+    /// 设置标题栏
+    /// </summary>
     public void SetHeadBack()
     {
         Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
         Model.SetChoiseCall(_useName, Reload);
     }
 
+    /// <summary>
+    /// 清理标题栏
+    /// </summary>
     public void RemoveHeadBack()
     {
         Model.RemoveChoiseData(_useName);

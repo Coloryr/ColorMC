@@ -4,6 +4,9 @@ using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
+/// <summary>
+/// ÓÎÏ·ÊµÀý±à¼­
+/// </summary>
 public partial class Tab10Control : UserControl
 {
     public Tab10Control()

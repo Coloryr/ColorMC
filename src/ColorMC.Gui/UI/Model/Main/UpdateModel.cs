@@ -35,7 +35,7 @@ public partial class MainModel
         }
         else
         {
-            Model.ShowText(App.Lang("MainWindow.Info40"), data);
+            Model.Text(App.Lang("MainWindow.Info40"), data);
         }
 
         _isGetNewInfo = false;

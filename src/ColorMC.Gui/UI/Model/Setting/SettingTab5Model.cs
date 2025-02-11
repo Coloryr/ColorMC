@@ -129,16 +129,16 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), file));
+        var res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), file));
         if (!res)
         {
             return;
         }
 
         JavaFinding = true;
-        Model.Title1 = App.Lang("SettingWindow.Tab5.Info8");
+        Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
         var list = await JavaBinding.FindJava(file);
-        Model.Title1 = null;
+        Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)
         {
@@ -158,9 +158,9 @@ public partial class SettingModel
             return;
         }
         JavaFinding = true;
-        Model.Title1 = App.Lang("SettingWindow.Tab5.Info8");
+        Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
         var list = await JavaBinding.FindJava();
-        Model.Title1 = null;
+        Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)
         {
@@ -181,7 +181,7 @@ public partial class SettingModel
 
     private async void DeleteJava()
     {
-        var res = await Model.ShowWait(App.Lang("SettingWindow.Tab5.Info3"));
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab5.Info3"));
         if (!res)
             return;
 

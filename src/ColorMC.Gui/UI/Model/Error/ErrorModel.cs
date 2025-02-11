@@ -6,11 +6,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Error;
 
+/// <summary>
+/// 错误窗口
+/// </summary>
 public partial class ErrorModel : TopModel
 {
+    /// <summary>
+    /// 显示的文本
+    /// </summary>
     [ObservableProperty]
     private TextDocument _text;
 
+    /// <summary>
+    /// 是否需要同时关闭启动器
+    /// </summary>
     public bool NeedClose { get; }
 
     private readonly string _useName;
@@ -38,6 +47,9 @@ public partial class ErrorModel : TopModel
         Model.SetChoiseCall(_useName, Save, Push);
     }
 
+    /// <summary>
+    /// 保存报错到文件
+    /// </summary>
     public async void Save()
     {
         var top = Model.GetTopLevel();
@@ -52,6 +64,9 @@ public partial class ErrorModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 上传报错
+    /// </summary>
     public async void Push()
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
@@ -59,7 +74,7 @@ public partial class ErrorModel : TopModel
             Model.Show(App.Lang("GameLogWindow.Error2"));
             return;
         }
-        var res = await Model.ShowWait(App.Lang("GameLogWindow.Info4"));
+        var res = await Model.ShowAsync(App.Lang("GameLogWindow.Info4"));
         if (!res)
         {
             return;
@@ -80,7 +95,7 @@ public partial class ErrorModel : TopModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+            Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
                 await BaseBinding.CopyTextClipboard(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));

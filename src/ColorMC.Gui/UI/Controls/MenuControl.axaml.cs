@@ -9,6 +9,9 @@ using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Controls;
 
+/// <summary>
+/// 带有左侧菜单的窗口
+/// </summary>
 public abstract partial class MenuControl : BaseUserControl
 {
     private CancellationTokenSource _cancel = new();
