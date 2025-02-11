@@ -77,7 +77,6 @@
                             IsEnabled="{Binding SourceLoad}"
                             LeftMax="True">
                             <TextBox
-                                Name="TextInput"
                                 Height="30"
                                 MinWidth="190"
                                 Margin="0,0,10,10"

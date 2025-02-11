@@ -1715,7 +1715,7 @@ public static class WebBinding
         ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
         {
-            var res1 = await model1.ShowWait(App.Lang("AddWindow.Info15"));
+            var res1 = await model1.ShowAsync(App.Lang("AddWindow.Info15"));
             if (!res1)
             {
                 return null;

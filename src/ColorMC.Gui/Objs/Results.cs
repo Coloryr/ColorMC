@@ -76,3 +76,34 @@ public record ModPackListRes
     public List<FileItemModel>? List;
     public int Count;
 }
+
+public record InputRes
+{
+    public bool Cancel;
+    public string? Text1;
+    public string? Text2;
+}
+
+public record ComboRes
+{
+    public bool Cancel;
+    public int Index;
+    public string? Item;
+}
+
+public record CloudRes : MessageRes
+{
+    public bool Data1;
+    public string? Data2;
+}
+
+public record CloudWorldRes : MessageRes
+{
+    public List<CloudWorldObj>? Data;
+}
+
+public record CloudUploadRes : MessageRes
+{
+    public int Data1;
+    public string? Data2;
+}

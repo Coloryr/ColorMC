@@ -346,18 +346,18 @@ public partial class GameItemModel : GameModel
 
     public async void Rename()
     {
-        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("MainWindow.Info23"), Obj.Name);
-        if (Cancel)
+        var res = await Model.Input(App.Lang("MainWindow.Info23"), Obj.Name);
+        if (res.Cancel)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(Text1))
+        if (string.IsNullOrWhiteSpace(res.Text1))
         {
             Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
-        GameBinding.SetGameName(Obj, Text1);
+        GameBinding.SetGameName(Obj, res.Text1);
     }
 
     public void SetJoystick()
@@ -378,20 +378,20 @@ public partial class GameItemModel : GameModel
 
     public async void Copy()
     {
-        var (Cancel, Text1) = await Model.ShowEdit(App.Lang("MainWindow.Info23"),
+        var res = await Model.Input(App.Lang("MainWindow.Info23"),
             Obj.Name + App.Lang("MainWindow.Info24"));
-        if (Cancel)
+        if (res.Cancel)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(Text1))
+        if (string.IsNullOrWhiteSpace(res.Text1))
         {
             Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
-        var res = await GameBinding.CopyGame(Obj, Text1, Model.ShowWait, GameOverwirte);
-        if (!res)
+        var res1 = await GameBinding.CopyGame(Obj, res.Text1, Model.ShowAsync, GameOverwirte);
+        if (!res1)
         {
             Model.Show(App.Lang("MainWindow.Error5"));
             return;
@@ -404,7 +404,7 @@ public partial class GameItemModel : GameModel
 
     public async void DeleteGame()
     {
-        var res = await Model.ShowWait(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
+        var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
         if (!res)
         {
             return;
@@ -432,7 +432,7 @@ public partial class GameItemModel : GameModel
     /// <returns></returns>
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        return await Model.ShowWait(
+        return await Model.ShowAsync(
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
     }
 

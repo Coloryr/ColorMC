@@ -4,6 +4,9 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// Minecraft News×ÓÏîÄ¿
+/// </summary>
 public partial class NewsItemControl : UserControl
 {
     public NewsItemControl()

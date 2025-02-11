@@ -35,7 +35,7 @@ public abstract class ABaseWindow : Window
             WindowState = WindowState.Normal;
         }
 
-        WindowManager.SaveWindowState(ICon.UseName, new()
+        WindowManager.SaveWindowState(ICon.WindowId, new()
         {
             X = Position.X,
             Y = Position.Y,
@@ -103,7 +103,7 @@ public abstract class ABaseWindow : Window
         {
             return true;
         }
-        var state = WindowManager.GetWindowState(ICon.UseName);
+        var state = WindowManager.GetWindowState(ICon.WindowId);
         if (state != null)
         {
             WindowState = state.WindowState;

@@ -22,11 +22,11 @@ namespace ColorMC.Gui.UI.Model.User;
 
 public partial class UsersControlModel : TopModel
 {
-    public ObservableCollection<string> UserTypeList { get; } = [];
-    public ObservableCollection<string> DisplayUserTypeList { get; } = [];
+    public ObservableCollection<string> UserTypeList { get; init; } = [];
+    public ObservableCollection<string> DisplayUserTypeList { get; init; } = [];
     public ObservableCollection<UserDisplayModel> UserList { get; init; } = [];
 
-    public bool LockLogin { get; init; }
+    public bool LockLogin { get; private set; }
 
     public bool HaveLogin
     {
@@ -70,40 +70,14 @@ public partial class UsersControlModel : TopModel
     [ObservableProperty]
     private string? _password;
 
-    private readonly LockLoginSetting[] _locks;
+    private LockLoginSetting[] _locks;
 
     private bool _cancel;
     private bool _isOAuth;
 
     public UsersControlModel(BaseModel model) : base(model)
     {
-        var config = GuiConfigUtils.Config.ServerCustom;
-        LockLogin = config.LockLogin;
-        if (LockLogin)
-        {
-            _locks = [.. config.LockLogins];
-            DisplayUserTypeList.Add("");
-            foreach (var item in _locks)
-            {
-                if (item.Type == AuthType.OAuth)
-                {
-                    UserTypeList.Add(AuthType.OAuth.GetName());
-                    DisplayUserTypeList.Add(AuthType.OAuth.GetName());
-                }
-                else
-                {
-                    UserTypeList.Add(item.Name);
-                    DisplayUserTypeList.Add(item.Name);
-                }
-            }
-        }
-        else
-        {
-            UserTypeList.AddRange(LanguageBinding.GetLoginUserType());
-            DisplayUserTypeList.AddRange(LanguageBinding.GetDisplayUserTypes());
-        }
-
-        Load();
+        LoadUsers();
     }
 
     partial void OnDisplayTypeChanged(int value)
@@ -465,7 +439,7 @@ public partial class UsersControlModel : TopModel
 
     private async Task<int> LoginSelect(string title, List<string> items)
     {
-        var res = await Model.ShowCombo(title, items);
+        var res = await Model.Combo(title, items);
         if (res.Cancel)
         {
             return -1;
@@ -628,6 +602,41 @@ public partial class UsersControlModel : TopModel
         IsAdding = false;
     }
 
+    public void LoadUsers()
+    {
+        var config = GuiConfigUtils.Config.ServerCustom;
+        LockLogin = config.LockLogin;
+        UserTypeList.Clear();
+        DisplayUserTypeList.Clear();
+        UserList.Clear();
+        if (LockLogin)
+        {
+            _locks = [.. config.LockLogins];
+            DisplayUserTypeList.Add("");
+            foreach (var item in _locks)
+            {
+                if (item.Type == AuthType.OAuth)
+                {
+                    UserTypeList.Add(AuthType.OAuth.GetName());
+                    DisplayUserTypeList.Add(AuthType.OAuth.GetName());
+                }
+                else
+                {
+                    UserTypeList.Add(item.Name);
+                    DisplayUserTypeList.Add(item.Name);
+                }
+            }
+        }
+        else
+        {
+            UserTypeList.AddRange(LanguageBinding.GetLoginUserType());
+            DisplayUserTypeList.AddRange(LanguageBinding.GetDisplayUserTypes());
+        }
+
+        Load();
+        OnPropertyChanged(nameof(HaveLogin));
+    }
+
     public void Load()
     {
         var item1 = UserBinding.GetLastUser();
@@ -686,7 +695,7 @@ public partial class UsersControlModel : TopModel
     private async void LoginOAuthCode(string url, string code)
     {
         Model.ProgressClose();
-        Model.ShowReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
+        Model.InputWithReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
             string.Format(App.Lang("UserWindow.Info7"), code), () =>
             {
                 _cancel = true;
@@ -733,7 +742,7 @@ public partial class UsersControlModel : TopModel
             return;
         }
 
-        var res = await Model.ShowEditInput(obj.Name, obj.UUID,
+        var res = await Model.InputWithEdit(obj.Name, obj.UUID,
             App.Lang("UserWindow.Text10"), App.Lang("UserWindow.Info13"));
         if (res.Cancel)
         {

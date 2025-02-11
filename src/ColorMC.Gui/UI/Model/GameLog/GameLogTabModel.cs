@@ -191,7 +191,7 @@ public partial class GameLogModel : GameModel
             Model.Show(App.Lang("GameLogWindow.Error2"));
             return;
         }
-        var res = await Model.ShowWait(App.Lang("GameLogWindow.Info4"));
+        var res = await Model.ShowAsync(App.Lang("GameLogWindow.Info4"));
         if (!res)
         {
             return;
@@ -212,7 +212,7 @@ public partial class GameLogModel : GameModel
             {
                 return;
             }
-            Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+            Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
                 await BaseBinding.CopyTextClipboard(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
@@ -273,11 +273,11 @@ public partial class GameLogModel : GameModel
 
         if (IsGameRun)
         {
-            Model.Title1 = App.Lang("GameLogWindow.Info3");
+            Model.SubTitle = App.Lang("GameLogWindow.Info3");
         }
         else
         {
-            Model.Title1 = "";
+            Model.SubTitle = "";
         }
 
         LoadLast();
@@ -459,7 +459,7 @@ public partial class GameLogModel : GameModel
         return level;
     }
 
-    public void GameCrash(int code)
+    public void GameExit(int code)
     {
         if (code == 0 || _isKill)
         {
@@ -469,7 +469,7 @@ public partial class GameLogModel : GameModel
         {
             Dispatcher.UIThread.Post(() =>
             {
-                Model.ShowChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
+                Model.ShowWithChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
                 {
                     Model.ShowClose();
                     Model.Progress(App.Lang("GameLogWindow.Info6"));
@@ -487,7 +487,7 @@ public partial class GameLogModel : GameModel
                         {
                             return;
                         }
-                        Model.ShowReadInfoOne(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+                        Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
                         {
                             await BaseBinding.CopyTextClipboard(top, url);
                             Model.Notify(App.Lang("GameLogWindow.Info7"));

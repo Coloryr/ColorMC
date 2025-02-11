@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
@@ -83,7 +84,7 @@ public static class CoreManager
         else
         {
             //检查云同步
-            if (GameCloudUtils.Connect && !ColorMCGui.IsClose)
+            if (ColorMCCloudAPI.Connect && !ColorMCGui.IsClose)
             {
                 Task.Run(() =>
                 {

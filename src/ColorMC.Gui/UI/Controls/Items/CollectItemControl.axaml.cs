@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
+/// <summary>
+/// 资源收藏子项目
+/// </summary>
 public partial class CollectItemControl : UserControl
 {
     public CollectItemControl()

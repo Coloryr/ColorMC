@@ -6,17 +6,37 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
+/// <summary>
+/// Nbt标签修改
+/// </summary>
+/// <param name="model">窗口</param>
+/// <param name="usename">窗口Id</param>
 public partial class NbtDialogEditModel(BaseModel model, string usename) : ObservableObject
 {
+    /// <summary>
+    /// 是否显示修改
+    /// </summary>
     [ObservableProperty]
     private bool _displayEdit;
+    /// <summary>
+    /// 数据类型
+    /// </summary>
     [ObservableProperty]
     private string _dataType;
+    /// <summary>
+    /// Nbt项目
+    /// </summary>
     [ObservableProperty]
     private NbtDataItemModel _dataItem;
+    /// <summary>
+    /// 是否为Hex修改
+    /// </summary>
     [ObservableProperty]
     private bool _hexEdit;
 
+    /// <summary>
+    /// 数据列表
+    /// </summary>
     public ObservableCollection<NbtDataItemModel> DataList { get; init; } = [];
 
     partial void OnHexEditChanged(bool value)
@@ -33,6 +53,10 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         DialogHost.Close(usename);
     }
 
+    /// <summary>
+    /// 删除一个Nbt项目
+    /// </summary>
+    /// <param name="item">Nbt项目</param>
     public void DeleteItem(NbtDataItemModel item)
     {
         if (item.Key == 0)
@@ -52,6 +76,9 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         }
     }
 
+    /// <summary>
+    /// 数据修改
+    /// </summary>
     public void DataEdit()
     {
         try

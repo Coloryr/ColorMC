@@ -8,6 +8,9 @@ using Avalonia.Styling;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
+/// <summary>
+/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// </summary>
 public partial class Tab7Control : UserControl
 {
     public Easing SlideEasing = new CircularEaseInOut();

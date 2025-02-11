@@ -97,7 +97,7 @@ public partial class GameEditModel
 
     public async void DeleteResource(ResourcepackObj obj)
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab8.Info1"), obj.Local));
         if (!res)
         {

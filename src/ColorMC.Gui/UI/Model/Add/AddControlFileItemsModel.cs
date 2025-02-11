@@ -247,7 +247,7 @@ public partial class AddControlModel
                 var obj1 = (_last!.Data as McModSearchItemObj)!;
                 if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
                 {
-                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
+                    var res = await Model.Combo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
                     if (res.Cancel)
                     {
                         return;
@@ -374,7 +374,7 @@ public partial class AddControlModel
         ModInfoObj? mod = null;
         if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
         {
-            var res1 = await Model.ShowWait(App.Lang("AddWindow.Info15"));
+            var res1 = await Model.ShowAsync(App.Lang("AddWindow.Info15"));
             if (!res1)
             {
                 return;
@@ -395,7 +395,7 @@ public partial class AddControlModel
         if (_now == FileType.DataPacks)
         {
             //选择存档
-            var list = await GameBinding.GetWorlds(Obj);
+            var list = await GameBinding.GetWorldsAsync(Obj);
             if (list.Count == 0)
             {
                 Model.Show(App.Lang("AddWindow.Error6"));
@@ -405,7 +405,7 @@ public partial class AddControlModel
 
             var world = new List<string>();
             list.ForEach(item => world.Add(item.LevelName));
-            var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
+            var res1 = await Model.Combo(App.Lang("AddWindow.Info7"), world);
             if (res1.Cancel)
             {
                 IsDownload = false;

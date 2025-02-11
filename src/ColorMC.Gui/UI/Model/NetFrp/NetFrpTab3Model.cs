@@ -111,7 +111,7 @@ public partial class NetFrpModel
             Dispatcher.UIThread.Post(() =>
             {
                 IsOk = true;
-                Model.ShowReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, null);
+                Model.InputWithReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, null);
             });
         }
     }
@@ -146,7 +146,7 @@ public partial class NetFrpModel
             return;
         }
 
-        var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info3"));
+        var res = await Model.ShowAsync(App.Lang("NetFrpWindow.Tab3.Info3"));
         if (!res)
         {
             return;
@@ -155,7 +155,7 @@ public partial class NetFrpModel
         var user = UserBinding.GetLastUser();
         if (user?.AuthType != AuthType.OAuth)
         {
-            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error1"), WindowClose);
+            Model.ShowWithOk(App.Lang("NetFrpWindow.Tab4.Error1"), WindowClose);
             return;
         }
         Model.Progress(App.Lang("NetFrpWindow.Tab4.Info2"));
@@ -163,7 +163,7 @@ public partial class NetFrpModel
         Model.ProgressClose();
         if (!res)
         {
-            Model.ShowOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
+            Model.ShowWithOk(App.Lang("NetFrpWindow.Tab4.Error2"), WindowClose);
             return;
         }
 
@@ -222,7 +222,7 @@ public partial class NetFrpModel
     {
         if (_process != null)
         {
-            var res = await Model.ShowWait(App.Lang("NetFrpWindow.Tab3.Info2"));
+            var res = await Model.ShowAsync(App.Lang("NetFrpWindow.Tab3.Info2"));
             if (res)
             {
                 Stop();

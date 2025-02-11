@@ -8,12 +8,18 @@ using ColorMC.Gui.UI.Model.GameCloud;
 
 namespace ColorMC.Gui.UI.Controls.GameCloud;
 
+/// <summary>
+/// 游戏云存储
+/// </summary>
 public partial class GameCloudControl : MenuControl
 {
     private Tab1Control _tab1;
     private Tab2Control _tab2;
     private Tab3Control _tab3;
 
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     public GameSettingObj Obj { get; }
 
     public GameCloudControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameCloudControl>(obj))
@@ -23,7 +29,7 @@ public partial class GameCloudControl : MenuControl
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
     }
 
-    public override async void Opened()
+    protected override async void Opened()
     {
         if (DataContext is GameCloudModel model && await model.Init())
         {
@@ -36,7 +42,7 @@ public partial class GameCloudControl : MenuControl
         WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new GameCloudModel(model, Obj);
     }
@@ -58,6 +64,9 @@ public partial class GameCloudControl : MenuControl
         };
     }
 
+    /// <summary>
+    /// 转到存档
+    /// </summary>
     public void GoWorld()
     {
         if (DataContext is GameCloudModel model)
@@ -66,6 +75,9 @@ public partial class GameCloudControl : MenuControl
         }
     }
 
+    /// <summary>
+    /// 刷新窗口标题
+    /// </summary>
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);

@@ -10,6 +10,7 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignWidth="500"
     x:DataType="model:FileItemModel"
+    Focusable="True"
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     mc:Ignorable="d">
     <Border

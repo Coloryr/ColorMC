@@ -70,12 +70,17 @@ public static class ImageManager
     public static event Action? SkinChange;
 
     /// <summary>
-    /// 星标SVG
+    /// 星标图标
     /// </summary>
     public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
-
-
+    /// <summary>
+    /// 音乐播放暂停图标
+    /// </summary>
     public static readonly string[] MusicIcons = ["/Resource/Icon/play.svg", "/Resource/Icon/pause.svg"];
+    /// <summary>
+    /// 最大化最小化图标
+    /// </summary>
+    public static readonly string[] MaxIcon = [ "/Resource/Icon/Head/max1.svg", "/Resource/Icon/Head/max.svg" ];
 
     /// <summary>
     /// 运行路径

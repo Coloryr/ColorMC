@@ -8,8 +8,14 @@ using ColorMC.Gui.UI.Model.GameExport;
 
 namespace ColorMC.Gui.UI.Controls.GameExport;
 
+/// <summary>
+/// 游戏实例导出
+/// </summary>
 public partial class GameExportControl : MenuControl
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     private Tab1Control _tab1;
@@ -24,7 +30,7 @@ public partial class GameExportControl : MenuControl
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
     }
 
-    public override async void Opened()
+    protected override async void Opened()
     {
         var model = (DataContext as GameExportModel)!;
         model.Model.Progress(App.Lang("GameExportWindow.Info7"));
@@ -41,7 +47,7 @@ public partial class GameExportControl : MenuControl
         WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new GameExportModel(model, _obj);
     }
@@ -79,6 +85,9 @@ public partial class GameExportControl : MenuControl
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 重载标题
+    /// </summary>
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);

@@ -28,22 +28,22 @@ public partial class GameEditModel
 
     private async void AddServer()
     {
-        var (Cancel, Text1, Text2) = await Model.ShowInput(
+        var res = await Model.InputAsync(
             App.Lang("GameEditWindow.Tab10.Info1"),
             App.Lang("GameEditWindow.Tab10.Info2"), false);
-        if (Cancel)
+        if (res.Cancel)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Text1) || string.IsNullOrWhiteSpace(Text2))
+        if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
         {
             Model.Show(App.Lang("GameEditWindow.Tab10.Error1"));
             return;
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
-        await GameBinding.AddServer(_obj, Text1, Text2);
+        await GameBinding.AddServer(_obj, res.Text1, res.Text2);
         Model.ProgressClose();
         Model.Notify(App.Lang("UserWindow.Info12"));
         LoadServer();
@@ -61,7 +61,7 @@ public partial class GameEditModel
 
     public async void DeleteServer(ServerInfoObj obj)
     {
-        var res = await Model.ShowWait("GameEditWindow.Tab10.Info9");
+        var res = await Model.ShowAsync("GameEditWindow.Tab10.Info9");
         if (!res)
         {
             return;

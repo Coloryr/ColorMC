@@ -20,11 +20,23 @@ using Live2DCSharpSDK.OpenGL;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
+/// <summary>
+/// L2D渲染器
+/// </summary>
 public class Live2dRender : OpenGlControlBase, ICustomHitTest
 {
+    /// <summary>
+    /// 
+    /// </summary>
     private LAppDelegate _lapp;
+    /// <summary>
+    /// 模型
+    /// </summary>
     private LAppModel _model;
 
+    /// <summary>
+    /// 上一个时间
+    /// </summary>
     private DateTime _time;
     private bool _change;
     private bool _delete;
@@ -171,10 +183,14 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
         }
 
         if (_first)
+        {
             return;
+        }
         _first = true;
         if (_init)
+        {
             return;
+        }
         CheckError(gl);
 
         try

@@ -35,6 +35,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
@@ -292,7 +293,7 @@ public static class GameBinding
             var file = await PathBinding.SelectFile(top, FileType.Icon);
             if (file.Item1 != null)
             {
-                bool resize = await model.ShowWait(App.Lang("GameBinding.Info14"));
+                bool resize = await model.ShowAsync(App.Lang("GameBinding.Info14"));
 
                 model.Progress(App.Lang("GameBinding.Info4"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Item1)!);
@@ -389,7 +390,7 @@ public static class GameBinding
             return await objs.StartGameAsync(arg, s_launchCancel.Token);
         });
 
-        model.Title1 = "";
+        model.SubTitle = "";
         FuntionUtils.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
@@ -505,13 +506,13 @@ public static class GameBinding
         {
             if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
             {
-                var res2 = await model.ShowWait(string.Format(App.Lang("GameBinding.Info19"), obj.Name));
+                var res2 = await model.ShowAsync(string.Format(App.Lang("GameBinding.Info19"), obj.Name));
                 if (!res2)
                 {
                     return new() { };
                 }
 
-                res2 = await model.ShowWait(App.Lang("GameBinding.Info23"));
+                res2 = await model.ShowAsync(App.Lang("GameBinding.Info23"));
                 if (res2 == true)
                 {
                     GuiConfigUtils.Config.LaunchCheck.CheckLoader = false;
@@ -546,7 +547,7 @@ public static class GameBinding
                         return new();
                     }
 
-                    var res3 = await model.ShowWait(App.Lang("GameBinding.Info22"));
+                    var res3 = await model.ShowAsync(App.Lang("GameBinding.Info22"));
                     if (res3 == true)
                     {
                         GuiConfigUtils.Config.LaunchCheck.CheckMemory = false;
@@ -630,7 +631,7 @@ public static class GameBinding
         arg.Update2?.Invoke(obj, LaunchState.End);
 
         model.ProgressClose();
-        model.Title1 = "";
+        model.SubTitle = "";
         FuntionUtils.RunGC();
 
         if (s_launchCancel.IsCancellationRequested)
@@ -696,13 +697,13 @@ public static class GameBinding
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    return model.ShowWait(a);
+                    return model.ShowAsync(a);
                 });
             },
             Pre = (pre) =>
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
-                    model.ShowWait(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
+                    model.ShowAsync(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
             },
             State = (text) =>
             {
@@ -722,7 +723,7 @@ public static class GameBinding
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    return model.ShowTextWait(App.Lang("BaseBinding.Info2"), text ?? "");
+                    return model.TextAsync(App.Lang("BaseBinding.Info2"), text ?? "");
                 });
             },
             Nojava = (version) =>
@@ -736,7 +737,7 @@ public static class GameBinding
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    return model.ShowWait(string.Format(
+                    return model.ShowAsync(string.Format(
                         App.Lang("MainWindow.Info21"), login.UserName));
                 });
             },
@@ -770,7 +771,7 @@ public static class GameBinding
                     }
                     else
                     {
-                        model.Title1 = App.Lang(state switch
+                        model.SubTitle = App.Lang(state switch
                         {
                             LaunchState.Login => "MainWindow.Info8",
                             LaunchState.Check => "MainWindow.Info9",
@@ -906,6 +907,11 @@ public static class GameBinding
             list.Add(new ModDisplayModel(item, obj1, edit));
         });
         return list;
+    }
+
+    public static Task<List<ModObj>> GetModFastAsync(GameSettingObj obj)
+    {
+        return obj.GetModFastAsync();
     }
 
     /// <summary>
@@ -1218,7 +1224,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static Task<List<WorldObj>> GetWorlds(GameSettingObj obj)
+    public static Task<List<WorldObj>> GetWorldsAsync(GameSettingObj obj)
     {
         return obj.GetWorldsAsync();
     }
@@ -2191,16 +2197,16 @@ public static class GameBinding
 
         GameCloudUtils.SetCloudData(game, cloud);
         string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
-        var res = await GameCloudUtils.DownloadConfig(obj, local);
+        var res = await ColorMCCloudAPI.DownloadConfig(obj.UUID, local);
         if (res == 100)
         {
             await UnZipCloudConfig(game, cloud, local);
         }
 
-        var temp = await GameCloudUtils.HaveCloud(game);
+        var temp = await ColorMCCloudAPI.HaveCloud(game);
         try
         {
-            cloud.ConfigTime = DateTime.Parse(temp.Item3!);
+            cloud.ConfigTime = DateTime.Parse(temp.Data2!);
         }
         catch
         {
@@ -2253,8 +2259,8 @@ public static class GameBinding
     /// <param name="obj"></param>
     public static async void CheckCloudAndOpen(GameSettingObj obj)
     {
-        var res = await GameCloudUtils.HaveCloud(obj);
-        if (res.Item1 == 100 && res.Item2)
+        var res = await ColorMCCloudAPI.HaveCloud(obj);
+        if (res.State && res.Data1)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -2321,7 +2327,7 @@ public static class GameBinding
             game = await InstancesPath.CreateGame(new CreateGameArg
             {
                 Game = game,
-                Request = model.ShowWait,
+                Request = model.ShowAsync,
                 Overwirte = overwirte
             });
 
@@ -2346,7 +2352,7 @@ public static class GameBinding
             if (!res1)
             {
                 model.ProgressClose();
-                model.ShowOk(App.Lang("GameBinding.Error10"), async () =>
+                model.ShowWithOk(App.Lang("GameBinding.Error10"), async () =>
                 {
                     await game.Remove();
                 });
@@ -2670,7 +2676,7 @@ public static class GameBinding
 
                     if (string.IsNullOrWhiteSpace(uuid) || !JoystickConfig.Configs.ContainsKey(uuid))
                     {
-                        run = await model.ShowWait(App.Lang("BaseBinding.Error7"));
+                        run = await model.ShowAsync(App.Lang("BaseBinding.Error7"));
                     }
                     if (run)
                     {
@@ -2855,5 +2861,447 @@ public static class GameBinding
     public static string? GetLastCrash(GameSettingObj obj)
     {
         return obj.GetLastCrash();
+    }
+
+    public static async Task<MessageRes> StartCloud(GameSettingObj obj)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        var res = await ColorMCCloudAPI.StartCloud(obj);
+        if (res == 100)
+        {
+            return new()
+            {
+                State = true
+            };
+        }
+        else if(res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
+    }
+
+    public static async Task<MessageRes> StopCloud(GameSettingObj obj)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        var res = await ColorMCCloudAPI.StopCloud(obj);
+
+        if (res == 100)
+        {
+            return new() { State = true };
+        }
+        else if (res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+        else if (res == 102)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error4")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
+    }
+
+    /// <summary>
+    /// 上传配置
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="files">选中的配置</param>
+    /// <param name="model">Gui回调</param>
+    /// <returns></returns>
+    public static async Task<MessageRes> UploadConfig(GameSettingObj obj, List<string> files, ProcessUpdateArg model)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
+
+        var data = GameCloudUtils.GetCloudData(obj);
+        string dir = obj.GetBasePath();
+        data.Config ??= [];
+        data.Config.Clear();
+        foreach (var item in files)
+        {
+            data.Config.Add(item[(dir.Length + 1)..]);
+        }
+        string name = Path.Combine(dir, GuiNames.NameCloudConfigFile);
+        files.Remove(name);
+        await new ZipUtils().ZipFileAsync(name, files, dir);
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info9"));
+        var res = await ColorMCCloudAPI.UploadConfig(obj, name);
+        PathHelper.Delete(name);
+        if (res.Data1 == 100)
+        {
+            if (res.Data2 != null)
+            {
+                data.ConfigTime = DateTime.Parse(res.Data2);
+                GameCloudUtils.Save();
+            }
+            return new() { State = true };
+        }
+        if (res.Data1 == 104)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error5")
+            };
+        }
+        else if (res.Data1 == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
+    }
+
+    /// <summary>
+    /// 下载配置压缩包
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="local">压缩包位置</param>
+    /// <returns></returns>
+    public static async Task<MessageRes> DownloadConfig(GameSettingObj game, ProcessUpdateArg model)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info10"));
+        var data = GameCloudUtils.GetCloudData(game);
+        string local = Path.Combine(game.GetBasePath(), GuiNames.NameCloudConfigFile);
+        var res = await ColorMCCloudAPI.DownloadConfig(game.UUID, local);
+        if (res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+        else if (res != 100)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error3")
+            };
+        }
+
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info11"));
+        var res1 = await UnZipCloudConfig(game, data, local);
+        if (!res1)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error6")
+            };
+        }
+
+        return new() { State = true };
+    }
+
+    public static async Task<CloudRes> HaveCloud(GameSettingObj obj)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        return await ColorMCCloudAPI.HaveCloud(obj);
+    }
+
+    public static async Task<CloudWorldRes> GetCloudWorldListAsync(GameSettingObj game)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        return await ColorMCCloudAPI.GetWorldList(game);
+    }
+
+    /// <summary>
+    /// 上传存档
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="world">存档</param>
+    /// <param name="model">Gui回调</param>
+    /// <returns></returns>
+    public static async Task<MessageRes> UploadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info9"));
+        string dir = world.World.Local;
+        string local = Path.Combine(world.World.Game.GetSavesPath(), $"{world.World.LevelName}{Names.NameZipExt}");
+        if (!world.HaveCloud)
+        {
+            model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
+            await new ZipUtils().ZipFileAsync(dir, local);
+        }
+        else
+        {
+            model.Update?.Invoke(App.Lang("GameCloudWindow.Info12"));
+            //云端文件
+            var list = await ColorMCCloudAPI.GetWorldFiles(game, world.World);
+            if (list == null)
+            {
+                return new()
+                {
+                    Message = App.Lang("GameCloudWindow.Error7")
+                };
+            }
+            //本地文件
+            var files = PathHelper.GetAllFile(dir);
+            var pack = new List<string>();
+
+            string dir1 = Path.GetFullPath(dir + "/");
+            foreach (var item in files)
+            {
+                var name = item.FullName.Replace(dir1, "").Replace("\\", "/");
+                using var file = PathHelper.OpenRead(item.FullName)!;
+                var sha1 = await HashHelper.GenSha1Async(file);
+                if (list.TryGetValue(name, out var sha11))
+                {
+                    list.Remove(name);
+                    if (sha1 != sha11)
+                    {
+                        pack.Add(item.FullName);
+                    }
+                }
+                else
+                {
+                    pack.Add(item.FullName);
+                }
+            }
+
+            bool have = false;
+            var delete = Path.Combine(dir, GuiNames.NameCloudDeleteFile);
+            if (list.Count > 0)
+            {
+                have = true;
+                await File.WriteAllTextAsync(delete, JsonConvert.SerializeObject(list.Keys));
+                pack.Add(delete);
+            }
+            if (pack.Count == 0)
+            {
+                return new()
+                {
+                    Message = App.Lang("GameCloudWindow.Info13")
+                };
+            }
+            model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
+            await new ZipUtils().ZipFileAsync(local, pack, dir);
+            if (have)
+            {
+                PathHelper.Delete(delete);
+            }
+        }
+
+        var res = await ColorMCCloudAPI.UploadWorld(game, world.World, local);
+        PathHelper.Delete(local);
+        if (res == 100)
+        {
+            return new() { State = true };
+        }
+        else if (res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+        else if (res == 104)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error5")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
+    }
+
+    /// <summary>
+    /// 下载存档
+    /// </summary>
+    /// <param name="game"></param>
+    /// <param name="world"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public static async Task<MessageRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+
+        model.Update?.Invoke(App.Lang("GameCloudWindow.Info10"));
+        string dir = Path.Combine(game.GetSavesPath(), world.Cloud.Name);
+        string local = Path.Combine(game.GetSavesPath(), $"{world.Cloud.Name}{Names.NameZipExt}");
+        var list = new Dictionary<string, string>();
+        if (world.HaveLocal)
+        {
+            var files = PathHelper.GetAllFile(dir);
+            string dir1 = Path.GetFullPath(dir + "/");
+            foreach (var item in files)
+            {
+                var name = item.FullName.Replace(dir1, "").Replace("\\", "/");
+                using var file = PathHelper.OpenRead(item.FullName)!;
+                var sha1 = await HashHelper.GenSha1Async(file);
+                list.Add(name, sha1);
+            }
+        }
+
+        var res = await ColorMCCloudAPI.DownloadWorld(game, world.Cloud, local, list);
+        if (res == 100)
+        {
+            model.Update?.Invoke(App.Lang("GameCloudWindow.Info11"));
+            try
+            {
+                using var file = PathHelper.OpenRead(local)!;
+                await new ZipUtils().UnzipAsync(dir, local, file);
+                return new() { State = true };
+            }
+            catch (Exception e)
+            {
+                string temp = App.Lang("GameCloudWindow.Error9");
+                Logs.Error(temp, e);
+                return new() { Message = temp };
+            }
+            finally
+            {
+                PathHelper.Delete(local);
+            }
+        }
+        if (res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+        else if (res == 102)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error8")
+            };
+        }
+        else if (res == 103)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Info13")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
+    }
+
+    /// <summary>
+    /// 删除云存档
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="name">存档名字</param>
+    /// <returns></returns>
+    public static async Task<MessageRes> DeleteCloudWorld(GameSettingObj game, string name)
+    {
+        if (!ColorMCCloudAPI.Connect)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error11")
+            };
+        }
+        var res = await ColorMCCloudAPI.DeleteWorld(game, name);
+
+        if (res == 100)
+        {
+            return new() { State = true };
+        }
+        else if (res == 101)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error2")
+            };
+        }
+        else if (res == 102)
+        {
+            return new()
+            {
+                Message = App.Lang("GameCloudWindow.Error8")
+            };
+        }
+
+        return new()
+        {
+            Message = App.Lang("GameCloudWindow.Error3")
+        };
     }
 }

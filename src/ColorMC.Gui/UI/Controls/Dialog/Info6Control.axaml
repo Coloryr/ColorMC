@@ -32,7 +32,7 @@
                     Classes="top"
                     Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}"
-                    IsVisible="{Binding NeedCancel}" />
+                    IsVisible="{Binding CancelEnable}" />
             </StackPanel>
         </StackPanel>
         <TextBox

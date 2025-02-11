@@ -68,7 +68,7 @@ public partial class GameEditModel
 
     public async void DeleteSchematic(SchematicObj obj)
     {
-        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab12.Info2"));
+        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab12.Info2"));
         if (!res)
         {
             return;

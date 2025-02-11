@@ -11,11 +11,23 @@ using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
+/// <summary>
+/// L2D显示
+/// </summary>
 public partial class Live2dControl : UserControl
 {
+    /// <summary>
+    /// 渲染定时器
+    /// </summary>
     private readonly FpsTimer _renderTimer;
+    /// <summary>
+    /// 渲染器
+    /// </summary>
     private readonly Live2dRender _render;
 
+    /// <summary>
+    /// 提示文字动画取消
+    /// </summary>
     private CancellationTokenSource _cancel = new();
 
     public Live2dControl()

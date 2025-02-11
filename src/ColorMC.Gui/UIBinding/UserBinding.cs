@@ -374,13 +374,13 @@ public static class UserBinding
 
         if (IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
-            var res = await model.ShowWait(App.Lang("GameBinding.Error1"));
+            var res = await model.ShowAsync(App.Lang("GameBinding.Error1"));
             if (!res)
             {
                 return new() { Message = App.Lang("GameBinding.Error5") };
             }
 
-            res = await model.ShowWait(App.Lang("GameBinding.Info18"));
+            res = await model.ShowAsync(App.Lang("GameBinding.Info18"));
             if (res)
             {
                 GuiConfigUtils.Config.LaunchCheck.CheckUser = false;

@@ -101,14 +101,14 @@ public partial class WorldModel : SelectItemModel
 
     public async void Delete(DataPackModel item)
     {
-        var res = await TopModel.Model.ShowWait(
+        var res = await TopModel.Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab5.Info15"), item.Name));
         if (!res)
         {
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(item, TopModel.Model.ShowWait);
+        res = await GameBinding.DeleteDataPack(item, TopModel.Model.ShowAsync);
         if (res)
         {
             Load1();
@@ -117,14 +117,14 @@ public partial class WorldModel : SelectItemModel
 
     public async void Delete(IEnumerable<DataPackModel> items)
     {
-        var res = await TopModel.Model.ShowWait(
+        var res = await TopModel.Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab5.Info14"), items.Count()));
         if (!res)
         {
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(items, TopModel.Model.ShowWait);
+        res = await GameBinding.DeleteDataPack(items, TopModel.Model.ShowAsync);
         if (res)
         {
             Load1();

@@ -8,6 +8,9 @@ using ColorMC.Gui.UI.Model.NetFrp;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 
+/// <summary>
+/// Ó³ÉäÁª»ú´°¿Ú
+/// </summary>
 public partial class NetFrpControl : MenuControl
 {
     private NetFrpTab1Control _tab1;
@@ -29,7 +32,7 @@ public partial class NetFrpControl : MenuControl
         model.RemoveClick();
     }
 
-    public override async void Opened()
+    protected override async void Opened()
     {
         var model = (DataContext as NetFrpModel)!;
         if (await model.Open())
@@ -38,7 +41,7 @@ public partial class NetFrpControl : MenuControl
         }
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new NetFrpModel(model);
     }

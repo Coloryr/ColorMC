@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -147,8 +148,8 @@ public partial class SettingModel
     public async Task GameCloudConnect()
     {
         await GameCloudUtils.StartConnect();
-        ServerInfo = GameCloudUtils.Info;
-        if (GameCloudUtils.Connect)
+        ServerInfo = ColorMCCloudAPI.Info;
+        if (ColorMCCloudAPI.Connect)
         {
             Model.Notify(App.Lang("SettingWindow.Tab3.Info4"));
         }
@@ -177,7 +178,7 @@ public partial class SettingModel
         }
         else if (res.Item1 == true)
         {
-            var res1 = await Model.ShowTextWait(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await Model.TextAsync(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
             if (res1)
             {
                 UpdateUtils.StartUpdate();
@@ -273,8 +274,8 @@ public partial class SettingModel
     public async void TestGameCloudConnect()
     {
         await GameCloudUtils.StartConnect();
-        ServerInfo = GameCloudUtils.Info;
-        if (GameCloudUtils.Connect)
+        ServerInfo = ColorMCCloudAPI.Info;
+        if (ColorMCCloudAPI.Connect)
         {
             Model.Notify(App.Lang("SettingWindow.Tab3.Info4"));
         }
@@ -320,7 +321,7 @@ public partial class SettingModel
         if (config1 is { } con1)
         {
             ServerKey = con1.ServerKey;
-            ServerInfo = GameCloudUtils.Info;
+            ServerInfo = ColorMCCloudAPI.Info;
             CheckUpdate = con1.CheckUpdate;
         }
         _httpLoad = false;

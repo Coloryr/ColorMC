@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -60,7 +61,7 @@ public class MainFlyout
                     {
                         BaseBinding.CreateLaunch(obj.Obj);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text14"), GameCloudUtils.Connect, ()=>
+                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text14"), ColorMCCloudAPI.Connect, ()=>
                     {
                         WindowManager.ShowGameCloud(obj.Obj);
                     }),

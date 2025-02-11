@@ -41,7 +41,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info5"));
         _worldItems.Clear();
 
-        var res = await GameBinding.GetWorlds(_obj!);
+        var res = await GameBinding.GetWorldsAsync(_obj!);
         foreach (var item in res)
         {
             var item1 = new WorldModel(this, item);
@@ -78,16 +78,16 @@ public partial class GameEditModel
             Model.Show(App.Lang("GameEditWindow.Tab5.Error5"));
             return;
         }
-        var (cancel, index, _) = await Model.ShowCombo(App.Lang("GameEditWindow.Tab5.Info9"), names);
-        if (cancel)
+        var res = await Model.Combo(App.Lang("GameEditWindow.Tab5.Info9"), names);
+        if (res.Cancel)
             return;
-        var item1 = list[index];
-        var res1 = await Model.ShowWait(App.Lang("GameEditWindow.Tab5.Info10"));
+        var item1 = list[res.Index];
+        var res1 = await Model.ShowAsync(App.Lang("GameEditWindow.Tab5.Info10"));
         if (!res1)
             return;
 
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info11"));
-        res1 = await GameBinding.BackupWorld(_obj, item1, Model.ShowWait);
+        res1 = await GameBinding.BackupWorld(_obj, item1, Model.ShowAsync);
         Model.ProgressClose();
         if (!res1)
         {
@@ -179,7 +179,7 @@ public partial class GameEditModel
 
     public async void DeleteWorld(WorldModel obj)
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab5.Info1"), obj.Name));
         if (!res)
         {

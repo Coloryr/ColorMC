@@ -46,7 +46,7 @@ public partial class AddGameModel
     {
         if (Directory.Exists(SelectPath))
         {
-            var res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), SelectPath));
+            var res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), SelectPath));
             if (!res)
             {
                 return;
@@ -56,7 +56,7 @@ public partial class AddGameModel
             var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
             {
-                res = await Model.ShowWait(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
+                res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
                 if (res)
                 {
                     await Import(list);
@@ -179,7 +179,7 @@ public partial class AddGameModel
 
             if (!res.State)
             {
-                var res1 = await Model.ShowWait(App.Lang("AddGameWindow.Tab3.Error5"));
+                var res1 = await Model.ShowAsync(App.Lang("AddGameWindow.Tab3.Error5"));
                 if (!res1)
                 {
                     return;

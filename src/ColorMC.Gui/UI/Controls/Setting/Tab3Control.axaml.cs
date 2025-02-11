@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 
+/// <summary>
+/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// </summary>
 public partial class Tab3Control : UserControl
 {
     public Tab3Control()

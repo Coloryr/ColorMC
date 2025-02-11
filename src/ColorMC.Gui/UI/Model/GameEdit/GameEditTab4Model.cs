@@ -157,7 +157,7 @@ public partial class GameEditModel : IModEdit
         if (_isModSet)
             return;
 
-        var res = await Model.ShowWait(App.Lang("GameEditWindow.Tab4.Info18"));
+        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab4.Info18"));
 
         _isModSet = true;
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
@@ -184,7 +184,7 @@ public partial class GameEditModel : IModEdit
         Model.ProgressClose();
         if (res.Count > 0)
         {
-            var res1 = await Model.ShowWait(string.Format(
+            var res1 = await Model.ShowAsync(string.Format(
                 App.Lang("GameEditWindow.Tab4.Info11"), res.Count));
             if (res1)
             {
@@ -244,7 +244,7 @@ public partial class GameEditModel : IModEdit
 
     public async void DeleteMod(IEnumerable<ModDisplayModel> items)
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab4.Info9"), items.Count()));
         if (!res)
         {
@@ -277,7 +277,7 @@ public partial class GameEditModel : IModEdit
 
     public async void DeleteMod(ModDisplayModel item)
     {
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("GameEditWindow.Tab4.Info4"), item.Name));
         if (!res)
         {
@@ -343,7 +343,7 @@ public partial class GameEditModel : IModEdit
                 return;
             }
 
-            if (await Model.ShowWait(
+            if (await Model.ShowAsync(
                 string.Format(App.Lang("GameEditWindow.Tab4.Info17"), list.Count)))
             {
                 foreach (var item1 in list)
@@ -402,7 +402,7 @@ public partial class GameEditModel : IModEdit
         }
         if (list1.Count != 0)
         {
-            var res1 = await Model.ShowWait(string.Format(App
+            var res1 = await Model.ShowAsync(string.Format(App
                      .Lang("GameEditWindow.Tab4.Info14"), count));
             if (res1)
             {

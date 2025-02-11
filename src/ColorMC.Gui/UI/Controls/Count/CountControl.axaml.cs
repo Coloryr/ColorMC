@@ -5,6 +5,9 @@ using ColorMC.Gui.UI.Model.Count;
 
 namespace ColorMC.Gui.UI.Controls.Count;
 
+/// <summary>
+/// 游戏统计窗口
+/// </summary>
 public partial class CountControl : BaseUserControl
 {
     public CountControl() : base(WindowManager.GetUseName<CountControl>())
@@ -19,7 +22,7 @@ public partial class CountControl : BaseUserControl
         WindowManager.CountWindow = null;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         return new CountModel(model);
     }

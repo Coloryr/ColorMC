@@ -11,39 +11,28 @@ using ColorMC.Gui.UI.Model.GameConfigEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 
+/// <summary>
+/// 游戏实例配置修改窗口
+/// </summary>
 public partial class GameConfigEditControl : BaseUserControl
 {
+    /// <summary>
+    /// 存档
+    /// </summary>
     private readonly WorldObj _world;
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     //private readonly TextMate.Installation textMateInstallation;
     //private readonly RegistryOptions registryOptions;
 
+    //显示用
+
     public GameConfigEditControl() : base(WindowManager.GetUseName<GameConfigEditControl>())
     {
         InitializeComponent();
-
-        Hook();
-    }
-
-    private void Hook()
-    {
-        NbtViewer.PointerPressed += NbtViewer_PointerPressed;
-        NbtViewer.KeyDown += NbtViewer_KeyDown;
-
-        TextEditor1.KeyDown += NbtViewer_KeyDown;
-        TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
-
-        //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
-        //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
-    }
-
-    private void TextEditor1_TextInput(object? sender, TextInputEventArgs e)
-    {
-        if (DataContext is GameConfigEditModel model)
-        {
-            model.Edit();
-        }
     }
 
     public GameConfigEditControl(WorldObj world) : base(WindowManager.GetUseName<GameConfigEditControl>(world.Game) + ":" + world.LevelName)
@@ -70,9 +59,29 @@ public partial class GameConfigEditControl : BaseUserControl
         Hook();
     }
 
+    private void Hook()
+    {
+        NbtViewer.PointerPressed += NbtViewer_PointerPressed;
+        NbtViewer.KeyDown += NbtViewer_KeyDown;
+
+        TextEditor1.KeyDown += NbtViewer_KeyDown;
+        TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
+
+        //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
+        //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+    }
+
+    private void TextEditor1_TextInput(object? sender, TextInputEventArgs e)
+    {
+        if (DataContext is GameConfigEditModel model)
+        {
+            model.Edit();
+        }
+    }
+
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "TurnTo")
+        if (e.PropertyName == nameof(GameConfigEditModel.TurnTo))
         {
             NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
         }
@@ -123,7 +132,7 @@ public partial class GameConfigEditControl : BaseUserControl
         }
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
@@ -144,7 +153,7 @@ public partial class GameConfigEditControl : BaseUserControl
         WindowManager.GameConfigEditWindows.Remove(key);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;
@@ -164,6 +173,9 @@ public partial class GameConfigEditControl : BaseUserControl
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 重载标题
+    /// </summary>
     public void ReloadTitle()
     {
         if (_world == null)

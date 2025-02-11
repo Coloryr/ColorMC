@@ -79,7 +79,7 @@ public partial class NetFrpModel
                 list2.Add(item);
             }
         }
-        var select = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab4.Info3"), list1);
+        var select = await Model.Combo(App.Lang("NetFrpWindow.Tab4.Info3"), list1);
         if (select.Cancel)
         {
             return;

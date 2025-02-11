@@ -9,8 +9,14 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 
+/// <summary>
+/// 服务器实例生成窗口
+/// </summary>
 public partial class ServerPackControl : MenuControl
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
     private Tab1Control _tab1;
@@ -30,7 +36,7 @@ public partial class ServerPackControl : MenuControl
            _obj.Name);
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         if (DataContext is ServerPackModel model)
         {
@@ -43,7 +49,7 @@ public partial class ServerPackControl : MenuControl
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var pack = GameBinding.GetServerPack(_obj);
         if (pack == null)

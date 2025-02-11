@@ -5,13 +5,14 @@ using ColorMC.Gui.UI.Animations;
 
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
+/// <summary>
+/// Minecraft News¿¨Æ¬
+/// </summary>
 public partial class NewsControl : UserControl
 {
     public NewsControl()
     {
         InitializeComponent();
-
-        //PropertyChanged += NewsControl_PropertyChanged;
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -22,18 +23,4 @@ public partial class NewsControl : UserControl
             CardAnimation.Start(this);
         });
     }
-
-    //private void NewsControl_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
-    //{
-    //    if (e.Property == IsVisibleProperty)
-    //    {
-    //        if (IsVisible == true)
-    //        {
-    //            Dispatcher.UIThread.Post(() =>
-    //            {
-    //                CardAnimation.Make().RunAsync(this);
-    //            });
-    //        }
-    //    }
-    //}
 }

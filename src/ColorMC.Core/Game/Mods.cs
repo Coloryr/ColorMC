@@ -19,6 +19,44 @@ public static class Mods
 {
     private static readonly char[] s_separator = ['\n'];
 
+    public static async Task<List<ModObj>> GetModFastAsync(this GameSettingObj obj)
+    {
+        var dir = obj.GetModsPath();
+        var info = new DirectoryInfo(dir);
+        if (!info.Exists)
+        {
+            info.Create();
+            return [];
+        }
+
+        var list = new List<ModObj>();
+        var files = info.GetFiles();
+#if false
+        await Parallel.ForEachAsync(files, new ParallelOptions()
+        {
+            MaxDegreeOfParallelism = 1
+        }, async (item, cancel) =>
+#else
+        await Parallel.ForEachAsync(files, async (item, cancel) =>
+#endif
+        {
+            if (item.Extension is not (Names.NameZipExt or Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
+            {
+                using var filestream = PathHelper.OpenRead(item.FullName)!;
+                var sha1 = await HashHelper.GenSha1Async(filestream);
+                filestream.Seek(0, SeekOrigin.Begin);
+
+                list.Add(new() 
+                {
+                    Local = item.FullName,
+                    Sha1 = sha1
+                });
+            }
+        });
+
+        return list;
+    }
+
     /// <summary>
     /// 获取Mod列表
     /// </summary>

@@ -4,6 +4,9 @@ using ColorMC.Gui.UI.Animations;
 
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
+/// <summary>
+/// “Ù¿÷øÿ÷∆ø®∆¨
+/// </summary>
 public partial class MusicControl : UserControl
 {
     public MusicControl()

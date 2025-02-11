@@ -47,17 +47,12 @@ public partial class HeadControl : UserControl
             }
         }
     }
+
     private readonly Button _buttonClose;
     private readonly Button _buttonMax;
     private readonly Button _buttonMin;
 
     private readonly SelfPublisher<string> MaxObservale = new();
-
-    private readonly string[] MaxIcon =
-    [
-        "/Resource/Icon/Head/max1.svg",
-        "/Resource/Icon/Head/max.svg"
-    ];
 
     private bool _isLost;
 
@@ -103,7 +98,7 @@ public partial class HeadControl : UserControl
                 IsVisible = false
             };
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
-            MaxObservale.Notify(MaxIcon[0]);
+            MaxObservale.Notify(ImageManager.MaxIcon[0]);
             _buttonMax = new Button()
             {
                 Width = 13,
@@ -222,7 +217,7 @@ public partial class HeadControl : UserControl
             };
             var max = new HeadImg();
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
-            MaxObservale.Notify(MaxIcon[0]);
+            MaxObservale.Notify(ImageManager.MaxIcon[0]);
             _buttonMax.Content = max;
             _buttonClose = new Button()
             {
@@ -307,11 +302,11 @@ public partial class HeadControl : UserControl
     {
         if (state == WindowState.Maximized)
         {
-            MaxObservale.Notify(MaxIcon[1]);
+            MaxObservale.Notify(ImageManager.MaxIcon[1]);
         }
         else
         {
-            MaxObservale.Notify(MaxIcon[0]);
+            MaxObservale.Notify(ImageManager.MaxIcon[0]);
         }
     }
 }

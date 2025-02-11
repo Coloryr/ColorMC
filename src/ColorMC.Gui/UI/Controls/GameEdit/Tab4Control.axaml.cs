@@ -7,6 +7,9 @@ using ColorMC.Gui.UI.Model.GameEdit;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
+/// <summary>
+/// ÓÎÏ·ÊµÀý±à¼­
+/// </summary>
 public partial class Tab4Control : UserControl
 {
     public Tab4Control()

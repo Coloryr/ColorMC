@@ -83,19 +83,19 @@ public partial class MainModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var (Cancel, Text) = await Model.ShowInputOne(App.Lang("Text.Group"), false);
-        if (Cancel)
+        var res = await Model.InputWithEditAsync(App.Lang("Text.Group"), false);
+        if (res.Cancel)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Text))
+        if (string.IsNullOrWhiteSpace(res.Text1))
         {
             Model.Show(App.Lang("MainWindow.Error3"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(Text))
+        if (!GameBinding.AddGameGroup(res.Text1))
         {
             Model.Show(App.Lang("MainWindow.Error4"));
             return;
@@ -214,7 +214,7 @@ public partial class MainModel
             return;
         }
 
-        var res = await Model.ShowWait(string.Format(App.Lang("MainWindow.Info42"), list.Count));
+        var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info42"), list.Count));
         if (!res)
         {
             return;
@@ -308,12 +308,6 @@ public partial class MainModel
         }
 
         GameBinding.MoveGameGroup(obj.Obj, GroupItem);
-    }
-
-    public void IsDelete()
-    {
-        Game = null;
-        LoadGameItem();
     }
 
     public void LoadGameItem()
@@ -510,7 +504,7 @@ public partial class MainModel
         {
             if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
             {
-                var res1 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res.Message!));
+                var res1 = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Error8"), res.Message!));
                 if (res1)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -579,7 +573,7 @@ public partial class MainModel
         if (res1.Fail?.ContainsValue(LaunchState.LoginFail) == true
             && res1.User!.AuthType != AuthType.OAuth)
         {
-            var res2 = await Model.ShowWait(string.Format(App.Lang("MainWindow.Error8"), res1.Message!));
+            var res2 = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Error8"), res1.Message!));
             if (res2)
             {
                 WindowManager.ShowUser(relogin: true);
@@ -589,7 +583,7 @@ public partial class MainModel
         IsLaunch = false;
     }
 
-    public void Launch(string[] list)
+    public void Launch(ICollection<string> list)
     {
         var list1 = new List<GameItemModel>();
         foreach (var item in list)

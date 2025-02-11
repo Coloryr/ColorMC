@@ -216,7 +216,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         if (Item == null)
             return;
 
-        var res = await Model.ShowWait(
+        var res = await Model.ShowAsync(
             string.Format(App.Lang("AddModPackWindow.Info1"), Item.Name));
         if (res)
         {
@@ -343,7 +343,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private async Task<bool> GameRequest(string text)
     {
         Model.ProgressClose();
-        var test = await Model.ShowWait(text);
+        var test = await Model.ShowAsync(text);
         Model.Progress();
         return test;
     }
@@ -356,7 +356,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
         Model.ProgressClose();
-        var test = await Model.ShowWait(
+        var test = await Model.ShowAsync(
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
         Model.Progress();
         return test;
@@ -428,7 +428,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Model.ShowWait(App.Lang("AddGameWindow.Tab1.Info25"));
+        var res = await Model.ShowAsync(App.Lang("AddGameWindow.Tab1.Info25"));
         if (res != true)
         {
             Dispatcher.UIThread.Post(WindowClose);
@@ -444,7 +444,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowWait(App.Lang("AddModPackWindow.Error4"));
+        var res = await Model.ShowAsync(App.Lang("AddModPackWindow.Error4"));
         if (res)
         {
             LoadSourceData();
@@ -453,7 +453,7 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
 
         if (Source < SourceList.Length)
         {
-            res = await Model.ShowWait(App.Lang("AddModPackWindow.Info5"));
+            res = await Model.ShowAsync(App.Lang("AddModPackWindow.Info5"));
             if (res)
             {
                 Source++;

@@ -8,6 +8,9 @@ using ColorMC.Gui.UI.Model.Add;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 
+/// <summary>
+/// 下载整合包窗口
+/// </summary>
 public partial class AddModPackControl : BaseUserControl
 {
     public AddModPackControl() : base(WindowManager.GetUseName<AddModPackControl>())
@@ -36,12 +39,12 @@ public partial class AddModPackControl : BaseUserControl
         WindowManager.AddModPackWindow = null;
     }
 
-    public override void Opened()
+    protected override void Opened()
     {
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
 
-    public override TopModel GenModel(BaseModel model)
+    protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new AddModPackControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

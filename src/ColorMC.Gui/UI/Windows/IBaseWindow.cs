@@ -7,12 +7,32 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 实际窗口
+/// </summary>
 public interface IBaseWindow
 {
+    /// <summary>
+    /// 窗口基础模型
+    /// </summary>
     public BaseModel Model { get; }
+    /// <summary>
+    /// 基础窗口
+    /// </summary>
     public BaseUserControl ICon { get; }
+    /// <summary>
+    /// 设置窗口标题
+    /// </summary>
+    /// <param name="data"></param>
     public void SetTitle(string data);
+    /// <summary>
+    /// 设置图标
+    /// </summary>
+    /// <param name="icon"></param>
     public void SetIcon(Bitmap icon);
+    /// <summary>
+    /// 关闭窗口
+    /// </summary>
     public void Close()
     {
         if (ConfigBinding.WindowMode())
@@ -24,7 +44,9 @@ public interface IBaseWindow
             window.Close();
         }
     }
-
+    /// <summary>
+    /// 显示窗口
+    /// </summary>
     virtual public void Show()
     {
         if (ConfigBinding.WindowMode())
@@ -36,7 +58,9 @@ public interface IBaseWindow
             window.Show();
         }
     }
-
+    /// <summary>
+    /// 转到最顶层
+    /// </summary>
     virtual public void TopActivate()
     {
         if (ConfigBinding.WindowMode())

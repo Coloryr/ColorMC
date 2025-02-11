@@ -14,28 +14,61 @@ using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI.Model.Download;
 
+/// <summary>
+/// 下载窗口
+/// </summary>
 public partial class DownloadModel : TopModel
 {
+    /// <summary>
+    /// 显示项目
+    /// </summary>
     public ObservableCollection<DownloadItemModel> DisplayList { get; init; } = [];
 
+    /// <summary>
+    /// 下载列表
+    /// </summary>
     private readonly Dictionary<int, DownloadItemModel> _downloadList = [];
 
+    /// <summary>
+    /// 下载数量统计
+    /// </summary>
     private long _count;
+    /// <summary>
+    /// 更新速度定时器
+    /// </summary>
     private readonly Timer _timer;
 
+    /// <summary>
+    /// 当前下载速度
+    /// </summary>
     [ObservableProperty]
     private string _speed;
+    /// <summary>
+    /// 下载完成数量
+    /// </summary>
     [ObservableProperty]
     private string _now;
+    /// <summary>
+    /// 下载进度
+    /// </summary>
     [ObservableProperty]
     private double _value;
+    /// <summary>
+    /// 总计下载数量
+    /// </summary>
     [ObservableProperty]
     private int _size;
+    /// <summary>
+    /// 是否暂停下载
+    /// </summary>
     [ObservableProperty]
     private bool _isPause;
 
     private readonly string _useName;
 
+    /// <summary>
+    /// 是否开始运行
+    /// </summary>
     private bool _needRun;
 
     public DownloadModel(BaseModel model) : base(model)
@@ -72,6 +105,9 @@ public partial class DownloadModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 暂停下载
+    /// </summary>
     private void Pause()
     {
         IsPause = !IsPause;
@@ -91,7 +127,7 @@ public partial class DownloadModel : TopModel
         Model.HeadChoise1Display = false;
         Model.HeadChoiseDisplay = false;
 
-        var res = await Model.ShowWait(App.Lang("DownloadWindow.Info1"));
+        var res = await Model.ShowAsync(App.Lang("DownloadWindow.Info1"));
         if (res)
         {
             DisplayList.Clear();
@@ -116,6 +152,11 @@ public partial class DownloadModel : TopModel
         Speed = UIUtils.MakeSpeedSize(now);
     }
 
+    /// <summary>
+    /// 下载项目更新
+    /// </summary>
+    /// <param name="thread">下载线程</param>
+    /// <param name="item">项目</param>
     public void DownloadItemUpdate(int thread, DownloadItemObj item)
     {
         if (!_downloadList.TryGetValue(thread, out DownloadItemModel? value))
@@ -156,7 +197,13 @@ public partial class DownloadModel : TopModel
         _downloadList.Clear();
     }
 
-    public void DownloadUpdate(int thread, bool state, int count)
+    /// <summary>
+    /// 下载更新
+    /// </summary>
+    /// <param name="thread">线程</param>
+    /// <param name="state">状态</param>
+    /// <param name="count">累计下载量</param>
+    private void DownloadUpdate(int thread, bool state, int count)
     {
         if (state == true)
         {
@@ -181,6 +228,11 @@ public partial class DownloadModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 下载任务更新
+    /// </summary>
+    /// <param name="all">总计任务</param>
+    /// <param name="now">当前任务</param>
     private void DownloadTaskUpdate(int all, int now)
     {
         Dispatcher.UIThread.Post(() =>
@@ -190,6 +242,10 @@ public partial class DownloadModel : TopModel
         });
     }
 
+    /// <summary>
+    /// 开始下载
+    /// </summary>
+    /// <returns>Gui</returns>
     public DownloadArg Start()
     {
         _needRun = true;
@@ -203,6 +259,10 @@ public partial class DownloadModel : TopModel
         };
     }
 
+    /// <summary>
+    /// 开始更新界面
+    /// </summary>
+    /// <returns>是否需要继续更新</returns>
     private bool Run()
     {
         foreach (var item in DisplayList)
