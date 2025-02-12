@@ -45,7 +45,7 @@ public partial class MainModel
     public async Task Upgrade()
     {
 #if !DEBUG
-        var res = await Model.ShowTextWait(App.Lang("BaseBinding.Info2"), _updateStr);
+        var res = await Model.TextAsync(App.Lang("BaseBinding.Info2"), _updateStr);
         if (res)
         {
             if (_isNewUpdate)
