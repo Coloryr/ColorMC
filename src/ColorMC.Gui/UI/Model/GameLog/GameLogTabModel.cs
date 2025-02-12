@@ -18,39 +18,79 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameLog;
 
+/// <summary>
+/// 游戏实例日志窗口
+/// </summary>
 public partial class GameLogModel : GameModel
 {
     public const string NameEnd = "End";
     public const string NameInsert = "Insert";
     public const string NameTop = "Top";
     public const string NameSearch = "Search";
-
+    
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     public ObservableCollection<string> FileList { get; init; } = [];
 
+    /// <summary>
+    /// 线程列表
+    /// </summary>
     public ObservableCollection<string> Threads { get; init; } = [""];
+    /// <summary>
+    /// 分类列表
+    /// </summary>
     public ObservableCollection<string> Categorys { get; init; } = [""];
 
+    /// <summary>
+    /// 文本
+    /// </summary>
     [ObservableProperty]
     private TextDocument _text;
 
+    /// <summary>
+    /// 游戏是否在运行
+    /// </summary>
     [ObservableProperty]
     private bool _isGameRun;
+    /// <summary>
+    /// 是否自动换行
+    /// </summary>
     [ObservableProperty]
     private bool _isWordWrap;
+    /// <summary>
+    /// 是否自动下拉
+    /// </summary>
     [ObservableProperty]
     private bool _isAuto;
+    /// <summary>
+    /// 选择的文件名
+    /// </summary>
     [ObservableProperty]
     private string? _file;
-
+    /// <summary>
+    /// 选择的线程
+    /// </summary>
     [ObservableProperty]
     private string? _selectThread;
+    /// <summary>
+    /// 选择的分类
+    /// </summary>
     [ObservableProperty]
     private string? _selectCategory;
-
+    /// <summary>
+    /// 是否启用其他日志
+    /// </summary>
     [ObservableProperty]
     private bool _enableNone;
+    /// <summary>
+    /// 是否启用信息日志
+    /// </summary>
     [ObservableProperty]
     private bool _enableInfo;
+    /// <summary>
+    /// 是否启用警告日志
+    /// </summary>
     [ObservableProperty]
     private bool _enableWarn;
     [ObservableProperty]

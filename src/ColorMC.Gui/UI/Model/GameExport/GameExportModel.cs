@@ -399,6 +399,7 @@ public partial class GameExportModel : MenuModel
             }
         }
 
+        //除去可以自己下载的文件
         Files.SetSelectItems(list1);
     }
 
@@ -483,7 +484,7 @@ public partial class GameExportModel : MenuModel
             PackType.CurseForge => new FilesPageModel(Obj.GetGamePath(), true),
             _ => new FilesPageModel(Obj.GetBasePath(), true)
         };
-
+        //除去可以自己下载的模组
         var list = new List<string>();
         foreach (var item in Items)
         {
