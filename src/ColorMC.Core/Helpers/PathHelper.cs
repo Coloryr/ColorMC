@@ -452,8 +452,12 @@ public static class PathHelper
     /// </summary>
     /// <param name="name">输入名字</param>
     /// <returns>替换结果</returns>
-    public static string ReplaceFileName(string name)
+    public static string ReplaceFileName(string? name)
     {
+        if (name == null)
+        {
+            return "";
+        }
         var chars = Path.GetInvalidFileNameChars().ToList();
         var builder = new StringBuilder();
         foreach (var item in name)

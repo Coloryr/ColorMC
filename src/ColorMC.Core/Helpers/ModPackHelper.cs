@@ -467,7 +467,7 @@ public static class ModPackHelper
             return new();
         }
 
-        string dir = info.Overrides + "/";
+        string dir = info.Overrides;
 
         //解压文件
         foreach (ZipEntry e in zFile)
@@ -475,7 +475,7 @@ public static class ModPackHelper
             if (e.IsFile && e.Name.StartsWith(dir))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.Combine(game.GetGamePath(), e.Name[info.Overrides.Length..]);
+                string file = Path.GetFullPath(game.GetGamePath() + e.Name[info.Overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -870,7 +870,7 @@ public static class ModPackHelper
         }
 
         int length = Names.NameOverrideDir.Length;
-        string dir = Names.NameOverrideDir + "/";
+        string dir = Names.NameOverrideDir;
 
         //解压文件
         foreach (ZipEntry e in zFile)

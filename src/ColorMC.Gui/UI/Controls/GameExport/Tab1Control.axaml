@@ -18,8 +18,8 @@
             <DockPanel Margin="15">
                 <panel:WrapPanelWithStretch
                     Margin="0,0,0,10"
-                    RightMax="{Binding MinMode}"
-                    DockPanel.Dock="Top">
+                    DockPanel.Dock="Top"
+                    RightMax="{Binding MinMode}">
                     <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -46,19 +46,18 @@
                         Command="{Binding Export}"
                         Content="{setting:Localize GameExportWindow.Tab1.Text2}"
                         DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text112}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text112}" />
                     <TextBlock Text="{setting:Localize GameExportWindow.Tabs.Text5}" />
                 </DockPanel>
                 <StackPanel>
                     <TextBox
                         Margin="0,0,0,10"
-                        IsEnabled="{Binding EnableInput1}"
+                        IsEnabled="{Binding EnableInputText}"
                         Text="{Binding Name}"
                         Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
                     <TextBox
                         Margin="0,0,0,10"
-                        IsEnabled="{Binding EnableInput1}"
+                        IsEnabled="{Binding EnableInputText}"
                         Text="{Binding Version}"
                         Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
                     <TextBox

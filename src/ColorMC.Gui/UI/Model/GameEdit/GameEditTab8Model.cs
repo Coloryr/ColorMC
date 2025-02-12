@@ -14,24 +14,44 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 资源包列表
+    /// </summary>
     public ObservableCollection<ResourcePackModel> ResourcePackList { get; init; } = [];
-
+    /// <summary>
+    /// 资源包
+    /// </summary>
     private readonly List<ResourcePackModel> _resourceItems = [];
-
+    /// <summary>
+    /// 选中的资源包
+    /// </summary>
     private ResourcePackModel? _lastResource;
 
+    /// <summary>
+    /// 资源筛选
+    /// </summary>
     [ObservableProperty]
     private string _resourceText;
+    /// <summary>
+    /// 是否没有资源文件
+    /// </summary>
     [ObservableProperty]
     private bool _resourceEmptyDisplay;
 
     partial void OnResourceTextChanged(string value)
     {
-        LoadResource1();
+        LoadResourceDisplay();
     }
 
+    /// <summary>
+    /// 加载资源列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoadResource()
     {
@@ -45,11 +65,14 @@ public partial class GameEditModel
             _resourceItems.Add(new(this, item));
         }
 
-        LoadResource1();
+        LoadResourceDisplay();
         Model.Notify(App.Lang("GameEditWindow.Tab8.Info5"));
     }
 
-    private void LoadResource1()
+    /// <summary>
+    /// 加载资源列表
+    /// </summary>
+    private void LoadResourceDisplay()
     {
         ResourcePackList.Clear();
         if (string.IsNullOrWhiteSpace(ResourceText))
@@ -64,11 +87,17 @@ public partial class GameEditModel
         ResourceEmptyDisplay = ResourcePackList.Count == 0;
     }
 
+    /// <summary>
+    /// 下载资源包
+    /// </summary>
     private void AddResource()
     {
         WindowManager.ShowAdd(_obj, FileType.Resourcepack);
     }
 
+    /// <summary>
+    /// 导入资源
+    /// </summary>
     private async void ImportResource()
     {
         var top = Model.GetTopLevel();
@@ -90,11 +119,18 @@ public partial class GameEditModel
         await LoadResource();
     }
 
+    /// <summary>
+    /// 打开资源列表
+    /// </summary>
     private void OpenResource()
     {
         PathBinding.OpenPath(_obj, PathType.ResourcepackPath);
     }
 
+    /// <summary>
+    /// 删除资源
+    /// </summary>
+    /// <param name="obj">资源包</param>
     public async void DeleteResource(ResourcepackObj obj)
     {
         var res = await Model.ShowAsync(
@@ -109,6 +145,10 @@ public partial class GameEditModel
         await LoadResource();
     }
 
+    /// <summary>
+    /// 拖拽导入资源包
+    /// </summary>
+    /// <param name="data">资源包</param>
     public async void DropResource(IDataObject data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Resourcepack);
@@ -118,6 +158,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 选中资源包
+    /// </summary>
+    /// <param name="item">资源包</param>
     public void SetSelectResource(ResourcePackModel item)
     {
         if (_lastResource != null)

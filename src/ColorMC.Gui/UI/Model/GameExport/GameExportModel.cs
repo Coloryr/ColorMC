@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -17,6 +17,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
+/// <summary>
+/// 实例导出
+/// </summary>
 public partial class GameExportModel : MenuModel
 {
     /// <summary>
@@ -24,9 +27,15 @@ public partial class GameExportModel : MenuModel
     /// </summary>
     public FilesPageModel Files { get; private set; }
 
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
 
+    /// <summary>
+    /// 导出类型列表
+    /// </summary>
     public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
 
     /// <summary>
@@ -43,50 +52,88 @@ public partial class GameExportModel : MenuModel
     /// </summary>
     public ObservableCollection<string> FileList { get; init; } = [];
 
+    /// <summary>
+    /// 导出类型
+    /// </summary>
     [ObservableProperty]
     private PackType _type;
 
+    /// <summary>
+    /// 选中的模组
+    /// </summary>
     [ObservableProperty]
     private ModExportModel? _selectMod;
+    /// <summary>
+    /// 选中的文件
+    /// </summary>
     [ObservableProperty]
     private ModExport1Model? _selectFile;
 
+    /// <summary>
+    /// 文本
+    /// </summary>
     [ObservableProperty]
     private string _text;
+    /// <summary>
+    /// 名字
+    /// </summary>
     [ObservableProperty]
     private string _name;
+    /// <summary>
+    /// 版本
+    /// </summary>
     [ObservableProperty]
     private string _version;
+    /// <summary>
+    /// 作者
+    /// </summary>
     [ObservableProperty]
     private string _author;
+    /// <summary>
+    /// 描述
+    /// </summary>
     [ObservableProperty]
     private string _summary;
+    /// <summary>
+    /// 自定义导出文件
+    /// </summary>
     [ObservableProperty]
     private string _fileName;
 
+    /// <summary>
+    /// 是否有额外文件
+    /// </summary>
     [ObservableProperty]
     private bool _cfEx;
+    /// <summary>
+    /// 是否有额外文件
+    /// </summary>
     [ObservableProperty]
     private bool _moEx;
 
+    /// <summary>
+    /// 导出选择
+    /// </summary>
     [ObservableProperty]
-    private bool _enableInput1;
-    [ObservableProperty]
-    private bool _enableInput2;
-    [ObservableProperty]
-    private bool _enableInput3;
+    private bool _enableInputText;
 
+    /// <summary>
+    /// 导出模组列表
+    /// </summary>
     public readonly List<ModExportModel> Items = [];
 
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     public GameSettingObj Obj { get; init; }
 
-    private readonly string _use;
+    private readonly string _useName;
 
     public GameExportModel(BaseModel model, GameSettingObj obj) : base(model)
     {
         Obj = obj;
 
-        _use = ToString() ?? "GameExportModel";
+        _useName = ToString() ?? "GameExportModel";
 
         SetMenu(
         [
@@ -113,6 +160,10 @@ public partial class GameExportModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 导出格式切换
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnTypeChanged(PackType value)
     {
         Model.Progress(App.Lang("GameExportWindow.Info6"));
@@ -120,7 +171,7 @@ public partial class GameExportModel : MenuModel
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
 
-        EnableInput1 = value switch
+        EnableInputText = value switch
         {
             PackType.CurseForge => true,
             PackType.Modrinth => true,
@@ -130,7 +181,7 @@ public partial class GameExportModel : MenuModel
         LoadFile();
         if (MoEx)
         {
-            await Load2();
+            await LoadFiles();
         }
 
         Model.ProgressClose();
@@ -138,9 +189,12 @@ public partial class GameExportModel : MenuModel
 
     partial void OnTextChanged(string value)
     {
-        Load1();
+        LoadMods();
     }
 
+    /// <summary>
+    /// 打开模组目录
+    /// </summary>
     [RelayCommand]
     public void OpenMod()
     {
@@ -152,6 +206,10 @@ public partial class GameExportModel : MenuModel
         PathBinding.OpenFileWithExplorer(SelectMod.Obj.Local);
     }
 
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoadMod()
     {
@@ -202,9 +260,13 @@ public partial class GameExportModel : MenuModel
 
         Model.Notify(App.Lang("GameExportWindow.Info8"));
 
-        Load1();
+        LoadMods();
     }
 
+    /// <summary>
+    /// 开始导出
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Export()
     {
@@ -240,6 +302,10 @@ public partial class GameExportModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 添加自定义文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddFile()
     {
@@ -248,7 +314,7 @@ public partial class GameExportModel : MenuModel
             return;
         }
 
-        var info = new FileInfo(Obj.GetGamePath() + "/" + FileName);
+        var info = new FileInfo(Path.GetFullPath(Obj.GetGamePath() + "/" + FileName));
         using var stream = PathHelper.OpenRead(info.FullName)!;
 
         var sha1 = await HashHelper.GenSha1Async(stream)!;
@@ -266,7 +332,10 @@ public partial class GameExportModel : MenuModel
         FileList.Remove(FileName);
     }
 
-    public void Load1()
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
+    public void LoadMods()
     {
         if (string.IsNullOrWhiteSpace(Text))
         {
@@ -284,7 +353,11 @@ public partial class GameExportModel : MenuModel
         }
     }
 
-    public async Task Load2()
+    /// <summary>
+    /// 加载文件列表
+    /// </summary>
+    /// <returns></returns>
+    public async Task LoadFiles()
     {
         FileList.Clear();
         OtherFiles.Clear();
@@ -292,6 +365,7 @@ public partial class GameExportModel : MenuModel
         var path = Obj.GetGamePath();
 
         var list = PathHelper.GetAllFile(path);
+        var list1 = new List<string>();
         foreach (var item in list)
         {
             var path1 = item.FullName[(path.Length + 1)..].Replace("\\", "/");
@@ -320,38 +394,59 @@ public partial class GameExportModel : MenuModel
             }
             else
             {
+                list1.Add(item.FullName);
                 FileList.Add(path1);
             }
         }
+
+        Files.SetSelectItems(list1);
     }
 
+    /// <summary>
+    /// 设置标题选择项目
+    /// </summary>
     public void SetTab3Choise()
     {
-        Model.SetChoiseCall(_use, SelectAllFile, UnSelectAllFile);
-        Model.SetChoiseContent(_use, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+        Model.SetChoiseCall(_useName, SelectAllFile, UnSelectAllFile);
+        Model.SetChoiseContent(_useName, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
     }
 
+    /// <summary>
+    /// 设置标题选择项目
+    /// </summary>
     public void SetTab2Choise()
     {
-        Model.SetChoiseCall(_use, SelectAllMod, UnSelectAllMod);
-        Model.SetChoiseContent(_use, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+        Model.SetChoiseCall(_useName, SelectAllMod, UnSelectAllMod);
+        Model.SetChoiseContent(_useName, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
     }
 
+    /// <summary>
+    /// 删除标题选择项目
+    /// </summary>
     public void RemoveChoise()
     {
-        Model.RemoveChoiseData(_use);
+        Model.RemoveChoiseData(_useName);
     }
 
+    /// <summary>
+    /// 选择所有文件
+    /// </summary>
     private void SelectAllFile()
     {
         Files.SetSelectItems();
     }
 
+    /// <summary>
+    /// 取消选择所有文件
+    /// </summary>
     private void UnSelectAllFile()
     {
         Files.SetUnSelectItems();
     }
 
+    /// <summary>
+    /// 选择所有模组
+    /// </summary>
     private void SelectAllMod()
     {
         foreach (var item in Mods)
@@ -363,6 +458,9 @@ public partial class GameExportModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 取消选择所有模组
+    /// </summary>
     private void UnSelectAllMod()
     {
         foreach (var item in Mods)
@@ -374,26 +472,35 @@ public partial class GameExportModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 加载文件列表
+    /// </summary>
     public void LoadFile()
     {
-        if (Type == PackType.CurseForge || Type == PackType.Modrinth)
+        Files = Type switch
         {
-            Files = new FilesPageModel(Obj.GetGamePath(), false);
-        }
-        else
+            PackType.Modrinth => new FilesPageModel(Obj.GetGamePath(), false),
+            PackType.CurseForge => new FilesPageModel(Obj.GetGamePath(), true),
+            _ => new FilesPageModel(Obj.GetBasePath(), true)
+        };
+
+        var list = new List<string>();
+        foreach (var item in Items)
         {
-            var list = new List<string>();
-            foreach (var item in Items)
+            if (item.Obj1 == null)
             {
-                if (item.Obj1 != null)
-                {
-                    item.Export = true;
-                    list.Add(item.Obj.Local);
-                }
+                continue;
             }
-            Files = new FilesPageModel(Obj.GetBasePath(), true);
-            Files.SetUnSelectItems(list);
+
+            var type = DownloadItemHelper.TestSourceType(item.Obj1.ModId, item.Obj1.FileId);
+            if ((type == SourceType.CurseForge && Type == PackType.CurseForge) 
+                || (type == SourceType.Modrinth && Type == PackType.Modrinth))
+            {
+                item.Export = true;
+                list.Add(item.Obj.Local);
+            }
         }
+        Files.SetUnSelectItems(list);
 
         Source = Files.Source;
     }
