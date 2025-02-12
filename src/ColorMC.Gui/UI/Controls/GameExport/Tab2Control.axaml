@@ -34,8 +34,7 @@
                             Classes="top"
                             Command="{Binding OpenMod}"
                             Content="{setting:Localize Button.OpFile}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text113}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text113}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -43,8 +42,7 @@
                             Classes="top"
                             Command="{Binding LoadMod}"
                             Content="{setting:Localize Button.Refash}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text55}" />
                     </StackPanel>
                 </panel:WrapPanelWithStretch>
                 <DataGrid
@@ -58,7 +56,7 @@
                     SelectedItem="{Binding SelectMod}"
                     VerticalScrollBarVisibility="Visible">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding Export}" Header="{setting:Localize GameExportWindow.Tab2.Text1}" />
+                        <DataGridCheckBoxColumn MinWidth="40" Binding="{Binding Export}" />
                         <DataGridTextColumn
                             Binding="{Binding Name}"
                             Header="{setting:Localize Text.Name}"

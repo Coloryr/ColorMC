@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
@@ -202,7 +202,7 @@ public partial class GameEditModel
         {
             return;
         }
-
+        //获取语言列表
         var opt = _obj.GetOptions();
         if (opt.TryGetValue(Names.NameLangKey2, out var value1))
         {
@@ -413,6 +413,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info2"));
+        //尝试通过ID获取版本号
         if (DownloadItemHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);

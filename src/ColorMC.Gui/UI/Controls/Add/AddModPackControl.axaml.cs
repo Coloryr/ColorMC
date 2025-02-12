@@ -58,11 +58,11 @@ public partial class AddModPackControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == "DisplayList")
+        if (e.PropertyName == nameof(AddModPackControlModel.DisplayList))
         {
             ScrollViewer1.ScrollToHome();
         }
-        else if (e.PropertyName == "Display")
+        else if (e.PropertyName == nameof(AddModPackControlModel.DisplayVersion))
         {
             if ((DataContext as AddModPackControlModel)!.DisplayVersion)
             {

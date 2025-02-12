@@ -38,14 +38,38 @@ public partial class WorldModel : SelectItemModel
     [ObservableProperty]
     private DataPackModel _dataPack;
 
+    /// <summary>
+    /// 存档名字
+    /// </summary>
     public string Name => World.LevelName;
+    /// <summary>
+    /// 生存模式
+    /// </summary>
     public string Mode => LanguageHelper.GetNameWithGameType(World.GameType);
+    /// <summary>
+    /// 上次游玩时间
+    /// </summary>
     public string Time => FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString();
+    /// <summary>
+    /// 存档位置
+    /// </summary>
     public string Local => World.Local;
+    /// <summary>
+    /// 难度
+    /// </summary>
     public string Difficulty => LanguageHelper.GetNameWithDifficulty(World.Difficulty);
+    /// <summary>
+    /// 是否为极限模式
+    /// </summary>
     public string Hardcore => World.Hardcore == 1 ? "True" : "False";
+    /// <summary>
+    /// 存档图标
+    /// </summary>
     public Bitmap Pic { get; }
 
+    /// <summary>
+    /// 数据包列表
+    /// </summary>
     public ObservableCollection<DataPackModel> DataPackList { get; init; } = [];
 
     public WorldModel(GameEditModel top, WorldObj world)
@@ -55,6 +79,9 @@ public partial class WorldModel : SelectItemModel
         Pic = World.Icon != null ? new Bitmap(World.Icon) : ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 清理图标
+    /// </summary>
     public void Close()
     {
         if (Pic != ImageManager.GameIcon)
@@ -63,6 +90,10 @@ public partial class WorldModel : SelectItemModel
         }
     }
 
+    /// <summary>
+    /// 加载数据包列表
+    /// </summary>
+    /// <returns></returns>
     public async Task Load()
     {
         DataPackList.Clear();
@@ -74,7 +105,10 @@ public partial class WorldModel : SelectItemModel
         Empty = DataPackList.Count == 0;
     }
 
-    private async void Load1()
+    /// <summary>
+    /// 加载
+    /// </summary>
+    private async void LoadList()
     {
         TopModel.Model.Progress(App.Lang("GameEditWindow.Tab5.Info16"));
         IsSelect = false;
@@ -83,11 +117,17 @@ public partial class WorldModel : SelectItemModel
         TopModel.Model.ProgressClose();
     }
 
+    /// <summary>
+    /// 选中这个存档
+    /// </summary>
     public void Select()
     {
         TopModel.SetSelectWorld(this);
     }
 
+    /// <summary>
+    /// 禁用/启用选中的数据包
+    /// </summary>
     public void DisE()
     {
         if (DataPack != null)
@@ -96,24 +136,36 @@ public partial class WorldModel : SelectItemModel
         }
     }
 
+    /// <summary>
+    /// 禁用/启用选中的数据包
+    /// </summary>
+    /// <param name="pack"></param>
     public async void DisE(DataPackModel pack)
     {
         var res = await Task.Run(() => GameBinding.DataPackDisableOrEnable(pack.Pack));
         if (res)
         {
-            Load1();
+            LoadList();
         }
     }
 
+    /// <summary>
+    /// 禁用/启用选中的数据包
+    /// </summary>
+    /// <param name="pack"></param>
     public async void DisE(IEnumerable<DataPackModel> pack)
     {
         var res = await Task.Run(() => GameBinding.DataPackDisE(pack));
         if (res)
         {
-            Load1();
+            LoadList();
         }
     }
 
+    /// <summary>
+    /// 删除选中的数据包
+    /// </summary>
+    /// <param name="item"></param>
     public async void Delete(DataPackModel item)
     {
         var res = await TopModel.Model.ShowAsync(
@@ -126,10 +178,14 @@ public partial class WorldModel : SelectItemModel
         res = await GameBinding.DeleteDataPack(item, TopModel.Model.ShowAsync);
         if (res)
         {
-            Load1();
+            LoadList();
         }
     }
 
+    /// <summary>
+    /// 删除选中的数据包
+    /// </summary>
+    /// <param name="items"></param>
     public async void Delete(IEnumerable<DataPackModel> items)
     {
         var res = await TopModel.Model.ShowAsync(
@@ -142,7 +198,7 @@ public partial class WorldModel : SelectItemModel
         res = await GameBinding.DeleteDataPack(items, TopModel.Model.ShowAsync);
         if (res)
         {
-            Load1();
+            LoadList();
         }
     }
 }

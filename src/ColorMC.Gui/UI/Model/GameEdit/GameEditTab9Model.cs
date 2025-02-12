@@ -6,15 +6,30 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 截图列表
+    /// </summary>
     public ObservableCollection<ScreenshotModel> ScreenshotList { get; init; } = [];
 
+    /// <summary>
+    /// 选中的截图
+    /// </summary>
     private ScreenshotModel _lastScreenshot;
 
+    /// <summary>
+    /// 是否没有截图
+    /// </summary>
     [ObservableProperty]
     private bool _screenshotEmptyDisplay;
 
+    /// <summary>
+    /// 加载截图列表
+    /// </summary>
     public void LoadScreenshot()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab9.Info3"));
@@ -31,11 +46,17 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab9.Info4"));
     }
 
+    /// <summary>
+    /// 打开截图目录
+    /// </summary>
     private void OpenScreenshot()
     {
         PathBinding.OpenPath(_obj, PathType.ScreenshotsPath);
     }
 
+    /// <summary>
+    /// 清理所有截图
+    /// </summary>
     private async void ClearScreenshot()
     {
         var res = await Model.ShowAsync(
@@ -50,6 +71,10 @@ public partial class GameEditModel
         LoadScreenshot();
     }
 
+    /// <summary>
+    /// 删除截图
+    /// </summary>
+    /// <param name="obj"></param>
     public async void DeleteScreenshot(ScreenshotModel obj)
     {
         var res = await Model.ShowAsync(
@@ -64,6 +89,10 @@ public partial class GameEditModel
         LoadScreenshot();
     }
 
+    /// <summary>
+    /// 选中截图
+    /// </summary>
+    /// <param name="item"></param>
     public void SetSelectScreenshot(ScreenshotModel item)
     {
         if (_lastScreenshot != null)

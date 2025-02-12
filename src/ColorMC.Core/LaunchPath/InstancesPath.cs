@@ -614,7 +614,7 @@ public static class InstancesPath
                 return null;
             }
 
-            game.DirName = game.Name;
+            game.DirName = PathHelper.ReplaceFileName(game.Name);
 
             var dir = game.GetBasePath();
             await PathHelper.MoveToTrash(dir);

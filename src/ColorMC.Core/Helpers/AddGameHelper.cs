@@ -374,7 +374,7 @@ public static class AddGameHelper
                 {
                     if (e.IsFile && e.Name.StartsWith(overrides))
                     {
-                        string file = Path.Combine(game.GetGamePath(), e.Name[overrides.Length..]);
+                        string file = Path.GetFullPath(game.GetGamePath() + e.Name[overrides.Length..]);
                         if (e.Name.EndsWith(Names.NameIconFile))
                         {
                             file = game.GetIconFile();

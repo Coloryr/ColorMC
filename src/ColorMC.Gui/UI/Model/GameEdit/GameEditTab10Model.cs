@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UIBinding;

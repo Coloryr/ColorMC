@@ -1,4 +1,4 @@
-﻿using System.Timers;
+using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
