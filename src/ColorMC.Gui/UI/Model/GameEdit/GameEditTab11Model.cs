@@ -9,22 +9,39 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 光影包列表
+    /// </summary>
     public ObservableCollection<ShaderpackObj> ShaderpackList { get; init; } = [];
 
+    /// <summary>
+    /// 选中的光影包
+    /// </summary>
     [ObservableProperty]
     private ShaderpackObj? _shaderpackItem;
 
+    /// <summary>
+    /// 是否没有光影包
+    /// </summary>
     [ObservableProperty]
     private bool _shaderpackEmptyDisplay;
 
-
+    /// <summary>
+    /// 打开光影包路径
+    /// </summary>
     private void OpenShaderpack()
     {
         PathBinding.OpenPath(_obj, PathType.ShaderpacksPath);
     }
 
+    /// <summary>
+    /// 加载光影包列表
+    /// </summary>
     public async void LoadShaderpack()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab11.Info4"));
@@ -36,6 +53,9 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
     }
 
+    /// <summary>
+    /// 导入光影包
+    /// </summary>
     private async void ImportShaderpack()
     {
         var top = Model.GetTopLevel();
@@ -57,11 +77,18 @@ public partial class GameEditModel
         LoadShaderpack();
     }
 
+    /// <summary>
+    /// 下载光影包
+    /// </summary>
     private void AddShaderpack()
     {
         WindowManager.ShowAdd(_obj, FileType.Shaderpack);
     }
 
+    /// <summary>
+    /// 拖拽添加光影包
+    /// </summary>
+    /// <param name="data"></param>
     public async void DropShaderpack(IDataObject data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Shaderpack);
@@ -71,6 +98,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 删除光影包
+    /// </summary>
+    /// <param name="obj"></param>
     public async void DeleteShaderpack(ShaderpackObj obj)
     {
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab11.Info2"));

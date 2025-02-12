@@ -29,8 +29,7 @@
                                 Command="{Binding ChangeRunDir}"
                                 Content="{setting:Localize SettingWindow.Tab1.Text15}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text131}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text131}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -39,8 +38,7 @@
                                 Command="{Binding ChangeBackRunDir}"
                                 Content="{setting:Localize SettingWindow.Tab1.Text17}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text131}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text131}" />
                         </StackPanel>
                         <TextBlock
                             Margin="0,5,0,5"
@@ -62,8 +60,7 @@
                                 Command="{Binding Open1}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -72,8 +69,7 @@
                                 Command="{Binding Import1}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}" />
                         </StackPanel>
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab1.Text6}" />
@@ -91,8 +87,7 @@
                                 Command="{Binding Open2}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -101,8 +96,7 @@
                                 Command="{Binding Import2}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}" />
                         </StackPanel>
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab1.Text8}" />
@@ -120,8 +114,7 @@
                                 Command="{Binding Open3}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -130,8 +123,7 @@
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}" />
                         </StackPanel>
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab1.Text10}" />
@@ -149,8 +141,7 @@
                                 Command="{Binding Open4}"
                                 Content="{setting:Localize Button.Select}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text120}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text120}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -159,10 +150,21 @@
                                 Command="{Binding Import3}"
                                 Content="{setting:Localize Button.Input}"
                                 DockPanel.Dock="Right"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text121}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text121}" />
                         </StackPanel>
+
                     </StackPanel>
+                    <DockPanel Margin="0,5,0,0">
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding ClearTemp}"
+                            Content="{setting:Localize SettingWindow.Tab1.Text20}"
+                            DockPanel.Dock="Right" />
+                        <TextBlock Text="{Binding TempSize}" />
+                    </DockPanel>
                 </StackPanel>
             </Border>
         </StackPanel>

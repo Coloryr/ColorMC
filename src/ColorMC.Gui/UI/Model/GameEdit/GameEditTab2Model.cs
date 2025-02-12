@@ -10,93 +10,215 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// GC类型列表
+    /// </summary>
     public string[] GCTypeList { get; init; } = LanguageBinding.GetGCTypes();
+    /// <summary>
+    /// Java列表
+    /// </summary>
     public ObservableCollection<string> JvmList { get; init; } = [];
 
+    /// <summary>
+    /// 标题
+    /// </summary>
     [ObservableProperty]
     private string _titleText;
+    /// <summary>
+    /// Java路径
+    /// </summary>
     [ObservableProperty]
     private string? _jvmLocal;
+    /// <summary>
+    /// 选择的Java
+    /// </summary>
     [ObservableProperty]
     private string? _jvmName;
+    /// <summary>
+    /// Java GC内容
+    /// </summary>
     [ObservableProperty]
     private string? _jvmGc;
+    /// <summary>
+    /// 启动前执行
+    /// </summary>
     [ObservableProperty]
     private string? _perRunCmd;
+    /// <summary>
+    /// 启动后执行
+    /// </summary>
     [ObservableProperty]
     private string? _postRunCmd;
+    /// <summary>
+    /// Java启动参数
+    /// </summary>
     [ObservableProperty]
     private string? _javaAgent;
+    /// <summary>
+    /// Java启动参数
+    /// </summary>
     [ObservableProperty]
     private string? _jvmArg;
+    /// <summary>
+    /// 游戏启动参数
+    /// </summary>
     [ObservableProperty]
     private string? _gameArg;
+    /// <summary>
+    /// 自定义Classpath
+    /// </summary>
     [ObservableProperty]
     private string? _classPath;
+    /// <summary>
+    /// 自定义主类
+    /// </summary>
     [ObservableProperty]
     private string? _mainClass;
+    /// <summary>
+    /// 加入服务器地址
+    /// </summary>
     [ObservableProperty]
     private string? _iP;
+    /// <summary>
+    /// 代理地址
+    /// </summary>
     [ObservableProperty]
     private string? _proxyIP;
+    /// <summary>
+    /// 代理用户
+    /// </summary>
     [ObservableProperty]
     private string? _proxyUser;
+    /// <summary>
+    /// 代理密码
+    /// </summary>
     [ObservableProperty]
     private string? _proxyPassword;
+    /// <summary>
+    /// 自定义环境变量
+    /// </summary>
     [ObservableProperty]
     private string? _jvmEnv;
+    /// <summary>
+    /// 自定义游戏标题
+    /// </summary>
     [ObservableProperty]
     private string? _gameTitle;
 
+    /// <summary>
+    /// 代理端口
+    /// </summary>
     [ObservableProperty]
     private ushort? _proxyPort;
+    /// <summary>
+    /// 服务器端口
+    /// </summary>
     [ObservableProperty]
     private ushort? _port;
+    /// <summary>
+    /// GC类型
+    /// </summary>
     [ObservableProperty]
     private int? _gc;
+    /// <summary>
+    /// 最小内存
+    /// </summary>
     [ObservableProperty]
     private uint? _minMem;
+    /// <summary>
+    /// 最大内存
+    /// </summary>
     [ObservableProperty]
     private uint? _maxMem;
+    /// <summary>
+    /// 游戏窗口宽度
+    /// </summary>
     [ObservableProperty]
     private uint? _width;
+    /// <summary>
+    /// 游戏窗口高度
+    /// </summary>
     [ObservableProperty]
     private uint? _height;
+    /// <summary>
+    /// 自定义标题变换间隔
+    /// </summary>
     [ObservableProperty]
     private int _titleDelay;
 
+    /// <summary>
+    /// 是否启用自定义GC
+    /// </summary>
     [ObservableProperty]
     private bool _enableGc;
+    /// <summary>
+    /// 是否启用自定义Java
+    /// </summary>
     [ObservableProperty]
     private bool _enableJvmName;
+    /// <summary>
+    /// 是否启用启动前运行
+    /// </summary>
     [ObservableProperty]
     private bool _perRun;
+    /// <summary>
+    /// 是否启用启动后运行
+    /// </summary>
     [ObservableProperty]
     private bool _postRun;
+    /// <summary>
+    /// 是否最大化游戏窗口
+    /// </summary>
     [ObservableProperty]
     private bool? _maxWindow;
+    /// <summary>
+    /// 是否删除原来的Java参数
+    /// </summary>
     [ObservableProperty]
     private bool _removeJvmArg;
+    /// <summary>
+    /// 是否删除游戏启动参数
+    /// </summary>
     [ObservableProperty]
     private bool _removeGameArg;
+    /// <summary>
+    /// 是否启用随机标题
+    /// </summary>
     [ObservableProperty]
     private bool _randomTitle;
+    /// <summary>
+    /// 是否启用标题循环
+    /// </summary>
     [ObservableProperty]
     private bool _cycTitle;
+    /// <summary>
+    /// 是否在游戏启动时同时执行启动前
+    /// </summary>
     [ObservableProperty]
     private bool _preRunSame;
 
+    /// <summary>
+    /// 当前内存大小
+    /// </summary>
     [ObservableProperty]
     private string _memory;
 
+    /// <summary>
+    /// 是否在加载配置文件
+    /// </summary>
     private bool _configLoad;
 
     partial void OnCycTitleChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.CycTitle = value;
@@ -106,7 +228,9 @@ public partial class GameEditModel
     partial void OnRandomTitleChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.RandomTitle = value;
@@ -116,7 +240,9 @@ public partial class GameEditModel
     partial void OnTitleDelayChanged(int value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.TitleDelay = value;
@@ -126,7 +252,9 @@ public partial class GameEditModel
     partial void OnGameTitleChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.GameTitle = value;
@@ -136,7 +264,9 @@ public partial class GameEditModel
     partial void OnRemoveJvmArgChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.RemoveJvmArg = value;
@@ -146,7 +276,9 @@ public partial class GameEditModel
     partial void OnRemoveGameArgChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.RemoveGameArg = value;
@@ -156,7 +288,9 @@ public partial class GameEditModel
     partial void OnJvmEnvChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.JvmEnv = value;
@@ -166,7 +300,9 @@ public partial class GameEditModel
     partial void OnProxyPasswordChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.ProxyHost ??= new();
         _obj.ProxyHost.Password = value;
@@ -176,7 +312,9 @@ public partial class GameEditModel
     partial void OnProxyUserChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.ProxyHost ??= new();
         _obj.ProxyHost.User = value;
@@ -186,7 +324,9 @@ public partial class GameEditModel
     partial void OnProxyPortChanged(ushort? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.ProxyHost ??= new();
         _obj.ProxyHost.Port = value;
@@ -196,7 +336,9 @@ public partial class GameEditModel
     partial void OnProxyIPChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.ProxyHost ??= new();
         _obj.ProxyHost.IP = value;
@@ -206,7 +348,9 @@ public partial class GameEditModel
     partial void OnPortChanged(ushort? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.StartServer ??= new();
         _obj.StartServer.Port = value;
@@ -216,7 +360,9 @@ public partial class GameEditModel
     partial void OnIPChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.StartServer ??= new();
         _obj.StartServer.IP = value;
@@ -226,7 +372,9 @@ public partial class GameEditModel
     partial void OnHeightChanged(uint? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.Height = value;
@@ -236,7 +384,9 @@ public partial class GameEditModel
     partial void OnWidthChanged(uint? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.Width = value;
@@ -246,7 +396,9 @@ public partial class GameEditModel
     partial void OnMaxWindowChanged(bool? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.Window ??= new();
         _obj.Window.FullScreen = value;
@@ -256,7 +408,9 @@ public partial class GameEditModel
     partial void OnMainClassChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.AdvanceJvm ??= new();
         _obj.AdvanceJvm.MainClass = value;
@@ -266,7 +420,9 @@ public partial class GameEditModel
     partial void OnClassPathChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.AdvanceJvm ??= new();
         _obj.AdvanceJvm.ClassPath = value;
@@ -276,7 +432,9 @@ public partial class GameEditModel
     partial void OnGameArgChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.GameArgs = value;
@@ -286,7 +444,9 @@ public partial class GameEditModel
     partial void OnJvmArgChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.JvmArgs = value;
@@ -296,7 +456,9 @@ public partial class GameEditModel
     partial void OnJavaAgentChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.JavaAgent = value;
@@ -306,7 +468,9 @@ public partial class GameEditModel
     partial void OnMinMemChanged(uint? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.MinMemory = value;
@@ -316,7 +480,9 @@ public partial class GameEditModel
     partial void OnMaxMemChanged(uint? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.MaxMemory = value;
@@ -326,7 +492,9 @@ public partial class GameEditModel
     partial void OnPerRunChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.LaunchPre = value;
@@ -336,7 +504,9 @@ public partial class GameEditModel
     partial void OnPerRunCmdChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.LaunchPreData = value;
@@ -346,7 +516,9 @@ public partial class GameEditModel
     partial void OnPostRunChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.LaunchPost = value;
@@ -356,7 +528,9 @@ public partial class GameEditModel
     partial void OnPostRunCmdChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.LaunchPostData = value;
@@ -366,7 +540,9 @@ public partial class GameEditModel
     partial void OnPreRunSameChanged(bool value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.PreRunSame = value;
@@ -385,7 +561,9 @@ public partial class GameEditModel
         }
 
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmName = JvmName;
         _obj.JvmLocal = JvmLocal;
@@ -395,7 +573,9 @@ public partial class GameEditModel
     partial void OnJvmNameChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmName = JvmName;
         _obj.Save();
@@ -404,7 +584,9 @@ public partial class GameEditModel
     partial void OnJvmGcChanged(string? value)
     {
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.GCArgument = JvmGc;
@@ -416,13 +598,19 @@ public partial class GameEditModel
         EnableGc = Gc == 5;
 
         if (_configLoad)
+        {
             return;
+        }
 
         _obj.JvmArg ??= new();
         _obj.JvmArg.GC = Gc == 0 ? null : (GCType?)(Gc - 1);
         _obj.Save();
     }
 
+    /// <summary>
+    /// 选择自定义Java
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task OpenJava()
     {
@@ -438,6 +626,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 删除所有配置
+    /// </summary>
     private async void DeleteConfig()
     {
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab2.Info1"));
@@ -449,6 +640,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 加载配置
+    /// </summary>
     public void ConfigLoad()
     {
         _configLoad = true;

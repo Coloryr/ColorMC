@@ -16,25 +16,46 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 存档列表
+    /// </summary>
     public ObservableCollection<WorldModel> WorldList { get; init; } = [];
 
+    /// <summary>
+    /// 存档项目
+    /// </summary>
     private readonly List<WorldModel> _worldItems = [];
 
+    /// <summary>
+    /// 选择的存档
+    /// </summary>
     private WorldModel? _selectWorld;
 
+    /// <summary>
+    /// 是否没有存档
+    /// </summary>
     [ObservableProperty]
     private bool _worldEmptyDisplay;
-
+    /// <summary>
+    /// 存档筛选
+    /// </summary>
     [ObservableProperty]
     private string _worldText;
 
     partial void OnWorldTextChanged(string value)
     {
-        LoadWorld1();
+        LoadWorldDisplay();
     }
 
+    /// <summary>
+    /// 加载存档列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoadWorld()
     {
@@ -48,17 +69,23 @@ public partial class GameEditModel
             await item1.Load();
             _worldItems.Add(item1);
         }
-        LoadWorld1();
+        LoadWorldDisplay();
 
         Model.ProgressClose();
         Model.Notify(App.Lang("GameEditWindow.Tab5.Info17"));
     }
 
+    /// <summary>
+    /// 打开存档目录
+    /// </summary>
     private void OpenBackupWorld()
     {
         PathBinding.OpenPath(_obj, PathType.WorldBackPath);
     }
 
+    /// <summary>
+    /// 还原备份存档
+    /// </summary>
     private async void BackupWorld()
     {
         var info = new DirectoryInfo(_obj.GetWorldBackupPath());
@@ -67,6 +94,7 @@ public partial class GameEditModel
             info.Create();
         }
 
+        //选存档
         var list = info.GetFiles();
         var names = new List<string>();
         foreach (var item in list)
@@ -80,12 +108,17 @@ public partial class GameEditModel
         }
         var res = await Model.Combo(App.Lang("GameEditWindow.Tab5.Info9"), names);
         if (res.Cancel)
+        {
             return;
+        }
         var item1 = list[res.Index];
         var res1 = await Model.ShowAsync(App.Lang("GameEditWindow.Tab5.Info10"));
         if (!res1)
+        {
             return;
+        }
 
+        //开始备份
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info11"));
         res1 = await GameBinding.BackupWorld(_obj, item1, Model.ShowAsync);
         Model.ProgressClose();
@@ -100,6 +133,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 编辑存档
+    /// </summary>
     private async void EditWorld()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info13"));
@@ -111,16 +147,25 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 打开存档路径
+    /// </summary>
     private void OpenWorld()
     {
         PathBinding.OpenPath(_obj, PathType.SavePath);
     }
 
+    /// <summary>
+    /// 下载存档
+    /// </summary>
     private void AddWorld()
     {
         WindowManager.ShowAdd(_obj, FileType.World);
     }
 
+    /// <summary>
+    /// 导入存档
+    /// </summary>
     private async void ImportWorld()
     {
         var top = Model.GetTopLevel();
@@ -131,7 +176,9 @@ public partial class GameEditModel
 
         var file = await PathBinding.AddFile(top, _obj, FileType.World);
         if (file == null)
+        {
             return;
+        }
 
         if (file == false)
         {
@@ -143,7 +190,10 @@ public partial class GameEditModel
         await LoadWorld();
     }
 
-    public void LoadWorld1()
+    /// <summary>
+    /// 加载存档显示列表
+    /// </summary>
+    public void LoadWorldDisplay()
     {
         WorldList.Clear();
         if (string.IsNullOrWhiteSpace(WorldText))
@@ -158,6 +208,10 @@ public partial class GameEditModel
         WorldEmptyDisplay = WorldList.Count == 0;
     }
 
+    /// <summary>
+    /// 拖拽导入存档
+    /// </summary>
+    /// <param name="data"></param>
     public async void DropWorld(IDataObject data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.World);
@@ -167,6 +221,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 选择存档
+    /// </summary>
+    /// <param name="item"></param>
     public void SetSelectWorld(WorldModel item)
     {
         if (_selectWorld != null)
@@ -177,6 +235,10 @@ public partial class GameEditModel
         _selectWorld.IsSelect = true;
     }
 
+    /// <summary>
+    /// 删除存档
+    /// </summary>
+    /// <param name="obj"></param>
     public async void DeleteWorld(WorldModel obj)
     {
         var res = await Model.ShowAsync(
@@ -191,6 +253,10 @@ public partial class GameEditModel
         await LoadWorld();
     }
 
+    /// <summary>
+    /// 导出存档
+    /// </summary>
+    /// <param name="obj"></param>
     public async void Export(WorldModel obj)
     {
         var top = Model.GetTopLevel();
@@ -203,7 +269,9 @@ public partial class GameEditModel
         var file = await PathBinding.SaveFile(top, FileType.World, [obj]);
         Model.ProgressClose();
         if (file == null)
+        {
             return;
+        }
 
         if (file == false)
         {
@@ -215,6 +283,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 备份存档
+    /// </summary>
+    /// <param name="obj"></param>
     public async void BackupWorld(WorldModel obj)
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info7"));
@@ -230,6 +302,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 启动存档
+    /// </summary>
+    /// <param name="world">存档</param>
     public async void LaunchWorld(WorldModel world)
     {
         if (GameManager.IsGameRun(world.World.Game))

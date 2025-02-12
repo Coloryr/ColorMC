@@ -433,4 +433,28 @@ public static class BaseBinding
     {
         return CollectUtils.IsCollect(type, pid);
     }
+
+    public static string GetFolderSize(string folderPath)
+    {
+        return GetSizeReadable(PathHelper.GetFolderSize(folderPath));
+    }
+
+    private static string GetSizeReadable(long bytes)
+    {
+        string[] sizes = ["B", "KB", "MB", "GB", "TB"];
+        int order = 0;
+        while (bytes >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            bytes /= 1024;
+        }
+        return $"{bytes:0.##} {sizes[order]}";
+    }
+
+    public static void DeleteTemp()
+    {
+        var temp = DownloadManager.DownloadDir;
+        PathHelper.MoveToTrash(temp);
+        Directory.CreateDirectory(temp);
+    }
 }

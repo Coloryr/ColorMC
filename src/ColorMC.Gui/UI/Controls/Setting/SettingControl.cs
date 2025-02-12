@@ -118,6 +118,7 @@ public partial class SettingControl : MenuControl
                 _tab6 ??= new();
                 return _tab6;
             case 5:
+                model.LoadTempSize();
                 return _tab1 ??= new();
             case 6:
                 model.LoadInput();

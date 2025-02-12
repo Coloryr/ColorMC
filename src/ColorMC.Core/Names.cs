@@ -88,4 +88,8 @@ public static class Names
     public const string NameSha1Ext = ".sha1";
     public const string NameTarGzExt = ".tar.gz";
     public const string NameMrpackExt = ".mrpack";
+    public const string NameDatExt = ".dat";
+    public const string NameDatOldExt = ".dat_old";
+    public const string NameRioExt = ".rio";
+    public const string NameMcaExt = ".mca";
 }

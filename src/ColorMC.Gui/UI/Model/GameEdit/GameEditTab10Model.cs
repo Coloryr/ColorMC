@@ -6,15 +6,30 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 服务器列表
+    /// </summary>
     public ObservableCollection<ServerInfoObj> ServerList { get; init; } = [];
 
+    /// <summary>
+    /// 服务器项目
+    /// </summary>
     [ObservableProperty]
     private ServerInfoObj? _serverItem;
+    /// <summary>
+    /// 查看Motd的地址
+    /// </summary>
     [ObservableProperty]
     private (string?, ushort) _iPPort;
 
+    /// <summary>
+    /// 是否没有服务器地址
+    /// </summary>
     [ObservableProperty]
     private bool _serverEmptyDisplay;
 
@@ -26,6 +41,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 添加服务器地址
+    /// </summary>
     private async void AddServer()
     {
         var res = await Model.InputAsync(
@@ -49,6 +67,9 @@ public partial class GameEditModel
         LoadServer();
     }
 
+    /// <summary>
+    /// 加载服务器地址
+    /// </summary>
     public async void LoadServer()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
@@ -59,6 +80,10 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info7"));
     }
 
+    /// <summary>
+    /// 删除服务器地址
+    /// </summary>
+    /// <param name="obj"></param>
     public async void DeleteServer(ServerInfoObj obj)
     {
         var res = await Model.ShowAsync("GameEditWindow.Tab10.Info9");
