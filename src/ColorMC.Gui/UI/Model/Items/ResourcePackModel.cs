@@ -51,6 +51,10 @@ public partial class ResourcePackModel : SelectItemModel
         Pic = Pack.Icon == null ? ImageManager.GameIcon : GetImage();
     }
 
+    /// <summary>
+    /// 获取图片
+    /// </summary>
+    /// <returns></returns>
     public Bitmap GetImage()
     {
         using var stream = new MemoryStream(Pack.Icon);

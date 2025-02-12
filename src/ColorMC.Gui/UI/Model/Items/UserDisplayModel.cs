@@ -42,14 +42,29 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
     /// </summary>
     public string Text2 => Obj.Text2;
 
+    /// <summary>
+    /// 宽度
+    /// </summary>
     [ObservableProperty]
     private double _width = DefaultWidth;
 
+    /// <summary>
+    /// 账户类型
+    /// </summary>
     public AuthType AuthType => Obj.AuthType;
 
+    /// <summary>
+    /// 头像
+    /// </summary>
     public Task<Bitmap?> Image => GetImage();
-
+    /// <summary>
+    /// 头像
+    /// </summary>
     private Bitmap? _img;
+    /// <summary>
+    /// 获取头像
+    /// </summary>
+    /// <returns></returns>
     private async Task<Bitmap?> GetImage()
     {
         if (_img != null)
@@ -80,6 +95,10 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
         return null;
     }
 
+    /// <summary>
+    /// 设置小模式
+    /// </summary>
+    /// <param name="mode"></param>
     public void SetMin(bool mode)
     {
         if (mode)
@@ -92,26 +111,41 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
         }
     }
 
+    /// <summary>
+    /// 选中
+    /// </summary>
     public void Select()
     {
         top.Select(this);
     }
 
+    /// <summary>
+    /// 刷新
+    /// </summary>
     public void Refresh()
     {
         top.Refresh(this);
     }
 
-    public void ReLogin()
+    /// <summary>
+    /// 重新登录
+    /// </summary>
+    public void Relogin()
     {
-        top.ReLogin(this);
+        top.Relogin(this);
     }
 
+    /// <summary>
+    /// 删除
+    /// </summary>
     public void Remove()
     {
         top.Remove(this);
     }
 
+    /// <summary>
+    /// 编辑
+    /// </summary>
     public void Edit()
     {
         top.Edit(this);

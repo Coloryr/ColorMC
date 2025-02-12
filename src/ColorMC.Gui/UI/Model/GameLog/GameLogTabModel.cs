@@ -201,12 +201,12 @@ public partial class GameLogModel : GameModel
 
     partial void OnSelectThreadChanged(string? value)
     {
-        LoadLast1();
+        LoadLogWithSelect();
     }
 
     partial void OnSelectCategoryChanged(string? value)
     {
-        LoadLast1();
+        LoadLogWithSelect();
     }
 
     partial void OnIsAutoChanged(bool value)
@@ -315,6 +315,9 @@ public partial class GameLogModel : GameModel
         FileList.AddRange(GameBinding.GetLogList(Obj));
     }
 
+    /// <summary>
+    /// 强制停止游戏
+    /// </summary>
     [RelayCommand]
     public void Stop()
     {
@@ -324,6 +327,10 @@ public partial class GameLogModel : GameModel
         IsGameRun = false;
     }
 
+    /// <summary>
+    /// 启动游戏实例
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Launch()
     {
@@ -346,12 +353,18 @@ public partial class GameLogModel : GameModel
         IsAuto = true;
     }
 
+    /// <summary>
+    /// 打开搜索
+    /// </summary>
     [RelayCommand]
     public void Search()
     {
         OnPropertyChanged(NameSearch);
     }
 
+    /// <summary>
+    /// 加载游戏实例信息
+    /// </summary>
     public void Load()
     {
         IsGameRun = GameManager.IsGameRun(Obj);
@@ -368,11 +381,18 @@ public partial class GameLogModel : GameModel
         LoadLast();
     }
 
+    /// <summary>
+    /// 设置不自动下拉
+    /// </summary>
     public void SetNotAuto()
     {
         IsAuto = false;
     }
 
+    /// <summary>
+    /// 添加日志
+    /// </summary>
+    /// <param name="data"></param>
     public void Log(GameLogItemObj data)
     {
         if (!EnableNone && data.Level == LogLevel.None)
@@ -410,6 +430,9 @@ public partial class GameLogModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 清理日志
+    /// </summary>
     public void Clear()
     {
         if (string.IsNullOrWhiteSpace(File))
@@ -418,6 +441,9 @@ public partial class GameLogModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 日志处理
+    /// </summary>
     private void Run()
     {
         var temp = new StringBuilder();
@@ -453,6 +479,9 @@ public partial class GameLogModel : GameModel
         _run = false;
     }
 
+    /// <summary>
+    /// 加载当前运行日志
+    /// </summary>
     private void LoadLast()
     {
         if (IsFile)
@@ -493,7 +522,10 @@ public partial class GameLogModel : GameModel
         _load = false;
     }
 
-    private void LoadLast1()
+    /// <summary>
+    /// 筛选日志
+    /// </summary>
+    private void LoadLogWithSelect()
     {
         if (_load || IsFile)
         {
@@ -518,9 +550,13 @@ public partial class GameLogModel : GameModel
         Text = new(builder.ToString());
     }
 
+    /// <summary>
+    /// 获取等级
+    /// </summary>
+    /// <returns></returns>
     private LogLevel BuildLevel()
     {
-        LogLevel level = LogLevel.Base;
+        var level = LogLevel.Base;
         if (EnableNone)
         {
             level |= LogLevel.None;
@@ -544,6 +580,10 @@ public partial class GameLogModel : GameModel
         return level;
     }
 
+    /// <summary>
+    /// 游戏退出
+    /// </summary>
+    /// <param name="code">退出码</param>
     public void GameExit(int code)
     {
         if (code == 0 || _isKill)

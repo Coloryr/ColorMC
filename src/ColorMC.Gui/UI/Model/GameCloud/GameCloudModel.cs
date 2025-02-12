@@ -338,6 +338,10 @@ public partial class GameCloudModel : MenuModel
     public override void Close()
     {
         _files = null!;
+        foreach (var item in WorldCloudList)
+        {
+            item.Close();
+        }
         WorldCloudList.Clear();
         RemoveHeadBack();
         Source = null!;

@@ -25,7 +25,7 @@ public class UserFlyout
             new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text3"), _obj.AuthType is not AuthType.Offline
                 or AuthType.OAuth, ()=>
                 {
-                    _obj.ReLogin();
+                    _obj.Relogin();
                 }),
             new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text4"), true, ()=>
             {

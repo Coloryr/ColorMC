@@ -235,8 +235,7 @@ public partial class NbtNodeModel : ObservableObject
                 Children.Add(new NbtNodeModel(null, item, this));
             }
         }
-
-        if (Nbt is NbtCompound list1)
+        else if (Nbt is NbtCompound list1)
         {
             foreach (var item in list1)
             {

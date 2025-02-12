@@ -10,6 +10,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Main;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -19,47 +20,82 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel
 {
-    public ObservableCollection<string> GroupList { get; init; } = [];
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     public ObservableCollection<GameGroupModel> GameGroups { get; init; } = [];
+    /// <summary>
+    /// 启动项目列表
+    /// </summary>
     private readonly Dictionary<string, GameItemModel> Launchs = [];
 
+    /// <summary>
+    /// 用于
+    /// </summary>
     private readonly Semaphore _semaphore = new(0, 2);
 
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     [ObservableProperty]
     private GameItemModel? _game;
+    /// <summary>
+    /// 锁定游戏实例
+    /// </summary>
     [ObservableProperty]
     private GameItemModel? _oneGame;
 
-    [ObservableProperty]
-    private bool _isOneGame;
-    [ObservableProperty]
-    private bool _isNotGame;
-    [ObservableProperty]
-    private bool _gameSearch;
-
-    [ObservableProperty]
-    private string? _groupItem;
-    [ObservableProperty]
-    private string _gameSearchText;
-
     /// <summary>
-    /// 上次运行的游戏实例名字
+    /// 是否锁定游戏实例
     /// </summary>
     [ObservableProperty]
-    private string _lastGameName;
+    private bool _isOneGame;
+    /// <summary>
+    /// 是否没有游戏实例
+    /// </summary>
+    [ObservableProperty]
+    private bool _isNotGame;
+    /// <summary>
+    /// 是否在搜索
+    /// </summary>
+    [ObservableProperty]
+    private bool _gameSearch;
     /// <summary>
     /// 是否有上次运行的游戏实例
     /// </summary>
     [ObservableProperty]
     private bool _haveLast;
-
+    /// <summary>
+    /// 是否有上次运行图标
+    /// </summary>
     [ObservableProperty]
     private bool _haveGameImage;
+
+    /// <summary>
+    /// 实例搜索名字
+    /// </summary>
+    [ObservableProperty]
+    private string _gameSearchText;
+    /// <summary>
+    /// 上次运行的游戏实例名字
+    /// </summary>
+    [ObservableProperty]
+    private string _lastGameName;
+
+    /// <summary>
+    /// 上次运行游戏图标
+    /// </summary>
     [ObservableProperty]
     private Bitmap? _gameImage;
 
+    /// <summary>
+    /// 是否多选
+    /// </summary>
     public bool IsMut { get; private set; }
 
     partial void OnGameSearchTextChanged(string value)
@@ -80,45 +116,9 @@ public partial class MainModel
         }
     }
 
-    [RelayCommand]
-    public async Task AddGroup()
-    {
-        var res = await Model.InputWithEditAsync(App.Lang("Text.Group"), false);
-        if (res.Cancel)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(res.Text1))
-        {
-            Model.Show(App.Lang("MainWindow.Error3"));
-            return;
-        }
-
-        if (!GameBinding.AddGameGroup(res.Text1))
-        {
-            Model.Show(App.Lang("MainWindow.Error4"));
-            return;
-        }
-
-        GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-    }
-
-    [RelayCommand]
-    public void Confirm()
-    {
-        _isCancel = false;
-        _semaphore.Release();
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        _isCancel = true;
-        _semaphore.Release();
-    }
-
+    /// <summary>
+    /// 运行上次游戏实例
+    /// </summary>
     [RelayCommand]
     public void LaunchLast()
     {
@@ -134,6 +134,9 @@ public partial class MainModel
         HaveLast = false;
     }
 
+    /// <summary>
+    /// 开始多选
+    /// </summary>
     public void StartMut()
     {
         if (IsMut)
@@ -151,6 +154,10 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 开始多选
+    /// </summary>
+    /// <param name="model"></param>
     public void StartMut(GameGroupModel model)
     {
         StartMut();
@@ -160,6 +167,10 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 获取多选
+    /// </summary>
+    /// <returns></returns>
     public List<GameItemModel> GetMut()
     {
         var list = new List<GameItemModel>();
@@ -175,6 +186,11 @@ public partial class MainModel
         }
         return list;
     }
+    
+    /// <summary>
+    /// 结束多选
+    /// </summary>
+    /// <returns></returns>
     public List<GameItemModel> EndMut()
     {
         if (!IsMut)
@@ -197,6 +213,9 @@ public partial class MainModel
         return list;
     }
 
+    /// <summary>
+    /// 多选编辑实例
+    /// </summary>
     public void MutEdit()
     {
         var list = EndMut();
@@ -206,6 +225,9 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 多选删除实例
+    /// </summary>
     public async void MutDelete()
     {
         var list = EndMut();
@@ -228,6 +250,9 @@ public partial class MainModel
         Model.InputClose();
     }
 
+    /// <summary>
+    /// 多选启动
+    /// </summary>
     public void MutLaunch()
     {
         var list = EndMut();
@@ -239,6 +264,9 @@ public partial class MainModel
         Launch(list);
     }
 
+    /// <summary>
+    /// 多选修改游戏分组
+    /// </summary>
     public async void MutEditGroup()
     {
         var list = EndMut();
@@ -247,20 +275,23 @@ public partial class MainModel
             return;
         }
 
-        await SetGroup(null);
-        DialogHost.Close(MainControl.DialogName);
-
-        if (_isCancel)
+        var model = new AddGroupModel(Model, null);
+        await DialogHost.Show(model, MainControl.DialogName);
+        if (model.IsCancel)
         {
             return;
         }
 
         foreach (var item in list)
         {
-            GameBinding.MoveGameGroup(item.Obj, GroupItem);
+            GameBinding.MoveGameGroup(item.Obj, model.GroupItem);
         }
     }
 
+    /// <summary>
+    /// 游戏图标修改
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
     public void IconChange(string uuid)
     {
         foreach (var item in GameGroups)
@@ -269,47 +300,43 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 搜索游戏实例
+    /// </summary>
     public void Search()
     {
         GameSearch = true;
         GameSearchText = "";
     }
 
+    /// <summary>
+    /// 关闭搜索实例
+    /// </summary>
     public void SearchClose()
     {
         GameSearch = false;
         GameSearchText = "";
     }
 
-    private Task<(bool, string?)> SetGroup(GameItemModel? obj)
-    {
-        GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-
-        DialogHost.Show(this, MainControl.DialogName);
-
-        GroupItem = obj?.Obj.GroupName;
-
-        return Task.Run(() =>
-        {
-            _semaphore.WaitOne();
-            return (_isCancel, GroupItem);
-        });
-    }
-
+    /// <summary>
+    /// 编辑游戏分组
+    /// </summary>
+    /// <param name="obj"></param>
     public async void EditGroup(GameItemModel obj)
     {
-        await SetGroup(obj);
-        DialogHost.Close(MainControl.DialogName);
-
-        if (_isCancel)
+        var model = new AddGroupModel(Model, obj.Obj.GroupName);
+        await DialogHost.Show(model, MainControl.DialogName);
+        if (model.IsCancel)
         {
             return;
         }
 
-        GameBinding.MoveGameGroup(obj.Obj, GroupItem);
+        GameBinding.MoveGameGroup(obj.Obj, model.GroupItem);
     }
 
+    /// <summary>
+    /// 加载游戏项目
+    /// </summary>
     public void LoadGameItem()
     {
         IsNotGame = GameBinding.IsNotGame;
@@ -319,7 +346,6 @@ public partial class MainModel
         if (config?.LockGame == true)
         {
             GameGroups.Clear();
-            GroupList.Clear();
             IsFirst = true;
             var game = GameBinding.GetGame(config?.GameName);
             if (game == null)
@@ -346,6 +372,7 @@ public partial class MainModel
             GameItemModel? last = null;
             if (IsFirst)
             {
+                //第一次加载项目
                 IsFirst = false;
                 GameGroupModel? DefaultGroup = null;
 
@@ -380,6 +407,7 @@ public partial class MainModel
             }
             else
             {
+                //过滤新旧项目
                 var list1 = new List<GameGroupModel>(GameGroups);
                 foreach (var item in list1)
                 {
@@ -411,6 +439,7 @@ public partial class MainModel
 
                 Select(last);
             }
+            //是否有上次运行项目
             if (last != null && LastGameName == null)
             {
                 if (GuiConfigUtils.Config.Card.Last)
@@ -438,6 +467,10 @@ public partial class MainModel
         MinModeChange();
     }
 
+    /// <summary>
+    /// 选择项目
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
     public void Select(string? uuid)
     {
         if (uuid == null)
@@ -456,6 +489,10 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 选择游戏项目
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public void Select(GameItemModel? obj)
     {
         if (HaveLast == true && obj?.UUID != ConfigBinding.GetLastLaunch())
@@ -471,7 +508,7 @@ public partial class MainModel
     /// <summary>
     /// 游戏退出
     /// </summary>
-    /// <param name="uuid"></param>
+    /// <param name="uuid">游戏实例UUID</param>
     public void GameClose(string uuid)
     {
         if (Launchs.Remove(uuid, out var con))
@@ -480,6 +517,10 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 启动游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
     public async void Launch(GameItemModel obj)
     {
         Select(obj);
@@ -530,6 +571,10 @@ public partial class MainModel
         IsLaunch = false;
     }
 
+    /// <summary>
+    /// 启动游戏实例
+    /// </summary>
+    /// <param name="list">游戏实例列表</param>
     public async void Launch(ICollection<GameItemModel> list)
     {
         if (IsLaunch)
@@ -560,6 +605,7 @@ public partial class MainModel
             Model.Show(res1.Message);
         }
 
+        //游戏实例列表
         foreach (var item in list)
         {
             item.IsLoad = false;
@@ -583,6 +629,10 @@ public partial class MainModel
         IsLaunch = false;
     }
 
+    /// <summary>
+    /// 启动游戏实例
+    /// </summary>
+    /// <param name="list">游戏实例列表</param>
     public void Launch(ICollection<string> list)
     {
         var list1 = new List<GameItemModel>();
@@ -599,6 +649,11 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 获取游戏实例
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
+    /// <returns></returns>
     public GameItemModel? GetGame(string uuid)
     {
         foreach (var item in GameGroups)
@@ -612,6 +667,10 @@ public partial class MainModel
         return null;
     }
 
+    /// <summary>
+    /// 标星游戏实例
+    /// </summary>
+    /// <param name="model">游戏实例</param>
     public void DoStar(GameItemModel model)
     {
         model.IsStar = !model.IsStar;

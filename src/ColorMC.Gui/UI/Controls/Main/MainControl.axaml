@@ -5,6 +5,7 @@
     xmlns:cards="clr-namespace:ColorMC.Gui.UI.Controls.Main.Cards"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
@@ -23,10 +24,10 @@
         Identifier="MainCon"
         OverlayBackground="Transparent">
         <dialog:DialogHost.DataTemplates>
-            <DataTemplate DataType="model:MainModel">
+            <DataTemplate DataType="dialogmodel:AddGroupModel">
                 <views3:GroupEditControl DataContext="{Binding}" />
             </DataTemplate>
-            <DataTemplate DataType="model:JoystickSettingModel">
+            <DataTemplate DataType="dialogmodel:JoystickSettingModel">
                 <views3:JoystickSettingControl DataContext="{Binding}" />
             </DataTemplate>
         </dialog:DialogHost.DataTemplates>

@@ -4,26 +4,51 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class InputAxisButtonModel(SettingModel setting)
-        : InputButtonModel(setting)
+/// <summary>
+/// 手柄按钮
+/// </summary>
+/// <param name="setting"></param>
+public partial class InputAxisButtonModel(SettingModel setting) : InputButtonModel(setting)
 {
+    /// <summary>
+    /// 死区开始
+    /// </summary>
     [ObservableProperty]
     private short? _start;
+    /// <summary>
+    /// 死区结束
+    /// </summary>
     [ObservableProperty]
     private short? _end;
-
+    /// <summary>
+    /// 当前数值
+    /// </summary>
     [ObservableProperty]
     private short _nowValue;
-
+    /// <summary>
+    /// 是否启用回弹取消
+    /// </summary>
     [ObservableProperty]
     private bool _backCancel;
 
+    /// <summary>
+    /// 图标
+    /// </summary>
     public new string Icon => IconConverter.GetInputAxisIcon(InputKey);
 
+    /// <summary>
+    /// 配置UUID
+    /// </summary>
     public string UUID;
 
+    /// <summary>
+    /// 开始设置
+    /// </summary>
     private bool _changeStart;
 
+    /// <summary>
+    /// 设置
+    /// </summary>
     private readonly SettingModel _setting = setting;
 
     partial void OnBackCancelChanged(bool value)
@@ -67,6 +92,10 @@ public partial class InputAxisButtonModel(SettingModel setting)
         _setting.InputSave(this);
     }
 
+    /// <summary>
+    /// 生成回配置文件
+    /// </summary>
+    /// <returns></returns>
     public InputAxisObj GenObj()
     {
         return new(Obj)

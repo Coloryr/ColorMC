@@ -575,7 +575,7 @@ public partial class UsersControlModel : TopModel
         return -1;
     }
 
-    public void ReLogin(UserDisplayModel obj)
+    public void Relogin(UserDisplayModel obj)
     {
         if (LockLogin)
         {
@@ -732,7 +732,7 @@ public partial class UsersControlModel : TopModel
         {
             return;
         }
-        ReLogin(obj);
+        Relogin(obj);
     }
 
     public async void Edit(UserDisplayModel obj)

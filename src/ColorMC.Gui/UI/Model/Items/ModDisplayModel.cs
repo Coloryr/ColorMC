@@ -12,23 +12,65 @@ public partial class ModDisplayModel : ObservableObject
 {
     public const string ModTextName = "ModText";
 
+    /// <summary>
+    /// 是否启用
+    /// </summary>
     [ObservableProperty]
     private bool _enable;
+    /// <summary>
+    /// 文本
+    /// </summary>
     [ObservableProperty]
     private string? _text;
 
+    /// <summary>
+    /// 加载测
+    /// </summary>
     public string Side => Obj.Side.GetName();
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name { get; init; }
+    /// <summary>
+    /// 模组ID
+    /// </summary>
     public string Modid => Obj.ModId;
+    /// <summary>
+    /// 版本号
+    /// </summary>
     public string Version => Obj.Version + (IsNew ? " " + App.Lang("GameEditWindow.Tab4.Info21") : "");
+    /// <summary>
+    /// 文件位置
+    /// </summary>
     public string Local => Obj.Local;
+    /// <summary>
+    /// 作者
+    /// </summary>
     public string Author => StringHelper.MakeString(Obj.Author);
+    /// <summary>
+    /// 链接
+    /// </summary>
     public string? Url => Obj.Url;
+    /// <summary>
+    /// 加载器
+    /// </summary>
     public string Loader => StringHelper.MakeString(Obj.Loaders);
+    /// <summary>
+    /// 下载源
+    /// </summary>
     public string Source { get; init; }
+    /// <summary>
+    /// 项目ID
+    /// </summary>
     public string? PID => Obj1?.ModId;
+    /// <summary>
+    /// 文件ID
+    /// </summary>
     public string? FID => Obj1?.FileId;
 
+    /// <summary>
+    /// 是否有新版本
+    /// </summary>
     public bool IsNew;
     /// <summary>
     /// Mod信息
@@ -38,7 +80,9 @@ public partial class ModDisplayModel : ObservableObject
     /// Mod内容
     /// </summary>
     public ModObj Obj;
-
+    /// <summary>
+    /// 顶层
+    /// </summary>
     private readonly IModEdit? _top;
 
     public ModDisplayModel(ModObj obj, ModInfoObj? obj1, IModEdit? top)
@@ -64,6 +108,9 @@ public partial class ModDisplayModel : ObservableObject
         _top?.EditModText(this);
     }
 
+    /// <summary>
+    /// 文件位置修改后
+    /// </summary>
     public void LocalChange()
     {
         OnPropertyChanged(nameof(Local));

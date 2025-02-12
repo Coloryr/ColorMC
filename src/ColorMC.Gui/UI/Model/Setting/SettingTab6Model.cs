@@ -374,7 +374,7 @@ public partial class SettingModel
         var list = new List<LockLoginSetting>();
         foreach (var item in Locks)
         {
-            list.Add(item.login);
+            list.Add(item.Login);
         }
 
         ConfigBinding.SetLoginLock(EnableOneLogin, list);

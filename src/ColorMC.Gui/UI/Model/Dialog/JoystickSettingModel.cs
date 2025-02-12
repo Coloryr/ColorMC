@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 
-namespace ColorMC.Gui.UI.Model.Main;
+namespace ColorMC.Gui.UI.Model.Dialog;
 
 public partial class JoystickSettingModel : ObservableObject
 {

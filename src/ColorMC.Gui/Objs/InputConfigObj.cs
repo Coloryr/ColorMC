@@ -3,18 +3,45 @@ using Avalonia.Input;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// 按钮设置
+/// </summary>
 public record InputKeyObj
 {
+    /// <summary>
+    /// 绑定的按钮
+    /// </summary>
     public Key Key { get; set; }
+    /// <summary>
+    /// 绑定的按钮
+    /// </summary>
     public KeyModifiers KeyModifiers { get; set; }
+    /// <summary>
+    /// 绑定的按钮
+    /// </summary>
     public MouseButton MouseButton { get; set; }
 }
 
+/// <summary>
+/// 摇杆设置
+/// </summary>
 public record InputAxisObj : InputKeyObj
 {
+    /// <summary>
+    /// 输入的摇杆
+    /// </summary>
     public byte InputKey { get; set; }
+    /// <summary>
+    /// 死区开始
+    /// </summary>
     public short Start { get; set; }
+    /// <summary>
+    /// 死区结束
+    /// </summary>
     public short End { get; set; }
+    /// <summary>
+    /// 回弹取消
+    /// </summary>
     public bool BackCancel { get; set; }
 
     public InputAxisObj() { }

@@ -13,6 +13,9 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class FileVersionItemModel : SelectItemModel
 {
+    /// <summary>
+    /// 添加
+    /// </summary>
     public IAddWindow? Add { get; set; }
 
     /// <summary>
@@ -88,21 +91,33 @@ public partial class FileVersionItemModel : SelectItemModel
         SourceType = SourceType.Modrinth;
     }
 
+    /// <summary>
+    /// 选中
+    /// </summary>
     public void SetSelect()
     {
         Add?.SetSelect(this);
     }
 
+    /// <summary>
+    /// 上一页
+    /// </summary>
     public void Back()
     {
         Add?.BackVersion();
     }
 
+    /// <summary>
+    /// 下一页
+    /// </summary>
     public void Next()
     {
         Add?.NextVersion();
     }
 
+    /// <summary>
+    /// 安装
+    /// </summary>
     public void Install()
     {
         Add?.Install(this);

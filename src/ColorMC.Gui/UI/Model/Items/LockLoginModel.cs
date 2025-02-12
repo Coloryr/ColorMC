@@ -5,16 +5,35 @@ using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public record LockLoginModel(SettingModel top, LockLoginSetting login)
+/// <summary>
+/// 锁定登录
+/// </summary>
+/// <param name="Top"></param>
+/// <param name="Login"></param>
+public record LockLoginModel(SettingModel Top, LockLoginSetting Login)
 {
-    public string Name => login.Name;
-    public string Data => login.Data;
-    public string Type => login.Type.GetName();
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name => Login.Name;
+    /// <summary>
+    /// 附加数据
+    /// </summary>
+    public string Data => Login.Data;
+    /// <summary>
+    /// 类型
+    /// </summary>
+    public string Type => Login.Type.GetName();
+    /// <summary>
+    /// 类型
+    /// </summary>
+    public AuthType AuthType => Login.Type;
 
-    public AuthType AuthType => login.Type;
-
+    /// <summary>
+    /// 删除
+    /// </summary>
     public void Delete()
     {
-        top.Delete(this);
+        Top.Delete(this);
     }
 }

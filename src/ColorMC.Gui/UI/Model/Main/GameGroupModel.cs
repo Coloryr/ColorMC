@@ -17,24 +17,50 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 游戏分组
+/// </summary>
 public partial class GameGroupModel : TopModel
 {
+    /// <summary>
+    /// 游戏列表
+    /// </summary>
     public ObservableCollection<GameItemModel> GameList { get; init; } = [];
 
+    /// <summary>
+    /// 是否为手机
+    /// </summary>
     public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
+    /// <summary>
+    /// 标题
+    /// </summary>
     public string Header { get; }
+    /// <summary>
+    /// 键
+    /// </summary>
     public string Key { get; }
 
+    /// <summary>
+    /// 是否展开
+    /// </summary>
     [ObservableProperty]
     private bool _expander = true;
 
+    /// <summary>
+    /// 游戏分组操作
+    /// </summary>
     public readonly IMutTop Top;
 
+    /// <summary>
+    /// 游戏项目列表
+    /// </summary>
     private readonly Dictionary<string, GameItemModel> _items = [];
+    /// <summary>
+    /// 添加项目用
+    /// </summary>
     private readonly GameItemModel _addItem;
 
-    public GameGroupModel(BaseModel model, IMutTop top, string key, string name,
-        List<GameSettingObj> list) : base(model)
+    public GameGroupModel(BaseModel model, IMutTop top, string key, string name, List<GameSettingObj> list) : base(model)
     {
         Top = top;
         Header = name;
@@ -62,6 +88,7 @@ public partial class GameGroupModel : TopModel
 
             var list1 = new List<GameItemModel>();
 
+            //检查是否星标
             foreach (var item in _items)
             {
                 if (!GameManager.IsStar(item.Value.Obj))
@@ -100,6 +127,10 @@ public partial class GameGroupModel : TopModel
         });
     }
 
+    /// <summary>
+    /// 启动所有
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LaunchAll()
     {
@@ -111,12 +142,21 @@ public partial class GameGroupModel : TopModel
         Top.Launch(_items.Values);
     }
 
+    /// <summary>
+    /// 拖拽
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public bool DropIn(IDataObject data)
     {
         return data.Get(BaseBinding.DrapType) is not string c
             || !_items.ContainsKey(c);
     }
 
+    /// <summary>
+    /// 拖拽
+    /// </summary>
+    /// <param name="data"></param>
     public void Drop(IDataObject data)
     {
         if (data.Get(BaseBinding.DrapType) is not string c)
@@ -140,6 +180,11 @@ public partial class GameGroupModel : TopModel
         GameBinding.MoveGameGroup(game.Obj, Key);
     }
 
+    /// <summary>
+    /// 查找游戏实例
+    /// </summary>
+    /// <param name="uuid"></param>
+    /// <returns></returns>
     public GameItemModel? Find(string? uuid)
     {
         if (string.IsNullOrWhiteSpace(uuid))
@@ -155,6 +200,10 @@ public partial class GameGroupModel : TopModel
         return null;
     }
 
+    /// <summary>
+    /// 设置游戏实例项目
+    /// </summary>
+    /// <param name="list"></param>
     public void SetItems(List<GameSettingObj> list)
     {
         var remove = new List<string>();
@@ -169,6 +218,7 @@ public partial class GameGroupModel : TopModel
             ins.Add(item);
         }
 
+        //筛选删除的内容
         foreach (var item in _items.Keys)
         {
             if (list.Any(item1 => item1.UUID == item))
@@ -195,6 +245,7 @@ public partial class GameGroupModel : TopModel
             }
         }
 
+        //筛选添加的内容
         foreach (var item in ins)
         {
             var model1 = new GameItemModel(Model, Top, item);
@@ -229,6 +280,9 @@ public partial class GameGroupModel : TopModel
         _items.Clear();
     }
 
+    /// <summary>
+    /// 显示所有项目
+    /// </summary>
     public void DisplayAll()
     {
         foreach (var item in GameList)
@@ -237,6 +291,10 @@ public partial class GameGroupModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 显示指定名字的项目
+    /// </summary>
+    /// <param name="value">名字</param>
     public void Display(string value)
     {
         foreach (var item in GameList)
@@ -252,6 +310,10 @@ public partial class GameGroupModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 图标刷新
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
     public void IconChange(string uuid)
     {
         foreach (var item in GameList)
@@ -267,6 +329,11 @@ public partial class GameGroupModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 星标
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
+    /// <returns></returns>
     public bool Star(string uuid)
     {
         foreach (var item in GameList)
@@ -285,6 +352,11 @@ public partial class GameGroupModel : TopModel
         return false;
     }
 
+    /// <summary>
+    /// 取消星标
+    /// </summary>
+    /// <param name="uuid">游戏实例UUID</param>
+    /// <returns></returns>
     public bool UnStar(string uuid)
     {
         foreach (var item in GameList)
@@ -303,6 +375,9 @@ public partial class GameGroupModel : TopModel
         return false;
     }
 
+    /// <summary>
+    /// 全选所有
+    /// </summary>
     public void MutAll()
     {
         foreach (var item in GameList)
@@ -311,6 +386,10 @@ public partial class GameGroupModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 设置小模式
+    /// </summary>
+    /// <param name="minMode"></param>
     public void SetMinMode(bool minMode)
     {
         MinMode = minMode;

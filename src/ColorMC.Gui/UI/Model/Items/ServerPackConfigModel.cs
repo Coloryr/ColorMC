@@ -15,7 +15,9 @@ public record ServerPackConfigModel
     /// 类型
     /// </summary>
     public string Type => GetType(Obj);
-
+    /// <summary>
+    /// 下载配置
+    /// </summary>
     public readonly ConfigPackObj Obj;
 
     public ServerPackConfigModel(ConfigPackObj obj)
@@ -23,10 +25,14 @@ public record ServerPackConfigModel
         Obj = obj;
     }
 
+    /// <summary>
+    /// 获取类型名字
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     private static string GetType(ConfigPackObj obj)
     {
-        return App.Lang(
-            obj.IsZip ? "ServerPackWindow.Tab4.Text5"
+        return App.Lang(obj.IsZip ? "ServerPackWindow.Tab4.Text5"
             : "ServerPackWindow.Tab4.Text6");
     }
 }

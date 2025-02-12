@@ -53,6 +53,12 @@ public record WorldObj
     /// </summary>
     public bool Broken { get; set; }
 
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     public GameSettingObj Game;
+    /// <summary>
+    /// 存档NBT
+    /// </summary>
     public NbtCompound Nbt;
 }
