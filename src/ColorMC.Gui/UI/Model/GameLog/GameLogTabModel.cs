@@ -93,23 +93,56 @@ public partial class GameLogModel : GameModel
     /// </summary>
     [ObservableProperty]
     private bool _enableWarn;
+    /// <summary>
+    /// 是否启用错误日志
+    /// </summary>
     [ObservableProperty]
     private bool _enableError;
+    /// <summary>
+    /// 是否启启用调试日志
+    /// </summary>
     [ObservableProperty]
     private bool _enableDebug;
+    /// <summary>
+    /// 是否为历史文件
+    /// </summary>
     [ObservableProperty]
     private bool _isFile;
 
+    /// <summary>
+    /// 日志
+    /// </summary>
     public string Temp { get; private set; } = "";
 
+    /// <summary>
+    /// 日志队列
+    /// </summary>
     private readonly ConcurrentQueue<string> _queue = new();
 
+    /// <summary>
+    /// 实例设置
+    /// </summary>
     private readonly GameGuiSettingObj _setting;
 
+    /// <summary>
+    /// 日志列表
+    /// </summary>
     private List<GameLogItemObj> _logs;
+    /// <summary>
+    /// 更新定时器
+    /// </summary>
     private readonly Thread _timer;
+    /// <summary>
+    /// 是否在运行中
+    /// </summary>
     private bool _run;
+    /// <summary>
+    /// 是否强制结束
+    /// </summary>
     private bool _isKill;
+    /// <summary>
+    /// 是否在加载中
+    /// </summary>
     private bool _load;
 
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
@@ -127,6 +160,7 @@ public partial class GameLogModel : GameModel
         _run = true;
         _timer.Start();
 
+        //读取设置
         _setting = GameGuiSetting.ReadConfig(obj);
         _enableDebug = _setting.Log.EnableDebug;
         _enableError = _setting.Log.EnableError;
@@ -137,6 +171,10 @@ public partial class GameLogModel : GameModel
         _isWordWrap = _setting.Log.WordWrap;
     }
 
+    /// <summary>
+    /// 切换文件
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnFileChanged(string? value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -223,6 +261,10 @@ public partial class GameLogModel : GameModel
         GameGuiSetting.WriteConfig(Obj, _setting);
     }
 
+    /// <summary>
+    /// 上传日志
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Push()
     {
@@ -262,8 +304,11 @@ public partial class GameLogModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 加载日志文件列表
+    /// </summary>
     [RelayCommand]
-    public void Load1()
+    public void LoadFileList()
     {
         FileList.Clear();
         FileList.Add("");
@@ -538,7 +583,7 @@ public partial class GameLogModel : GameModel
                 });
             });
         });
-        Load1();
+        LoadFileList();
         var item = GameBinding.GetLastCrash(Obj);
         File = item;
         if (File != null)

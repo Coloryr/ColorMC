@@ -27,7 +27,7 @@ build_deb()
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
         "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
-        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir
@@ -100,7 +100,7 @@ build_deb_min()
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
         "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
-        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb")
 
     cp -r ./build/info/linux/* $base_dir
     cp -r ./build/info/$1/* $base_dir

@@ -67,7 +67,7 @@
                         Margin="-2,-3,3,7"
                         VerticalAlignment="Center"
                         Classes="top"
-                        Command="{Binding Load1}"
+                        Command="{Binding LoadFileList}"
                         Content="{setting:Localize GameLogWindow.Text6}" />
                     <Button
                         Width="100"
