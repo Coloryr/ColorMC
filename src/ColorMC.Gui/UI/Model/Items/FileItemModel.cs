@@ -16,44 +16,119 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 下载文件项目
+/// </summary>
 public partial class FileItemModel : SelectItemModel
 {
+    /// <summary>
+    /// 下载
+    /// </summary>
     public IAddWindow Add { get; set; }
 
+    /// <summary>
+    /// 图标
+    /// </summary>
     public Task<Bitmap?> Image => GetImage();
-
+    /// <summary>
+    /// 图标
+    /// </summary>
     private Bitmap? _img;
 
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name { get; init; }
+    /// <summary>
+    /// 简介
+    /// </summary>
     public string Summary { get; init; }
+    /// <summary>
+    /// 作者
+    /// </summary>
     public string Author { get; init; }
+    /// <summary>
+    /// 下载次数
+    /// </summary>
     public long DownloadCount { get; init; }
+    /// <summary>
+    /// 更新时间
+    /// </summary>
     public DateTime ModifiedDate { get; init; }
+
+    /// <summary>
+    /// 是否为整合包
+    /// </summary>
     public bool IsModPack { get; init; }
+    /// <summary>
+    /// 是否已经下载
+    /// </summary>
     public bool HaveDownload { get; init; }
+    /// <summary>
+    /// 是否显示标星
+    /// </summary>
     public bool ShowStar { get; init; }
 
+    /// <summary>
+    /// 星的图标
+    /// </summary>
     [ObservableProperty]
     private string _star = ImageManager.Stars[1];
+    /// <summary>
+    /// 是否标星
+    /// </summary>
     [ObservableProperty]
     private bool _isStar;
+    /// <summary>
+    /// 是否显示星
+    /// </summary>
     [ObservableProperty]
     private bool _starVis;
 
+    /// <summary>
+    /// 是否已下载
+    /// </summary>
     [ObservableProperty]
     private bool _isDownload = false;
+    /// <summary>
+    /// 是否正在下载
+    /// </summary>
     [ObservableProperty]
     private bool _nowDownload = false;
+    /// <summary>
+    /// 是否鼠标在上面
+    /// </summary>
     [ObservableProperty]
     private bool _top;
+    /// <summary>
+    /// 是否启用按钮
+    /// </summary>
     [ObservableProperty]
     private bool _enableButton;
 
+    /// <summary>
+    /// 文件类型
+    /// </summary>
     public FileType FileType;
+    /// <summary>
+    /// 下载源
+    /// </summary>
     public SourceType SourceType;
+    /// <summary>
+    /// 网址
+    /// </summary>
     public string Url;
+    /// <summary>
+    /// Mcmod信息
+    /// </summary>
     public McModSearchItemObj? McMod;
+    /// <summary>
+    /// 图标地址
+    /// </summary>
     public string? Logo;
+    /// <summary>
+    /// 文件ID
+    /// </summary>
     public string ID;
 
     /// <summary>
@@ -61,7 +136,10 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public object Data;
 
-    private bool close;
+    /// <summary>
+    /// 是否已经关闭
+    /// </summary>
+    private bool _close;
 
     public FileItemModel(CurseForgeObjList.DataObj data, FileType type)
     {
@@ -152,6 +230,9 @@ public partial class FileItemModel : SelectItemModel
         EnableButton = Top || IsSelect;
     }
 
+    /// <summary>
+    /// 标星
+    /// </summary>
     [RelayCommand]
     public void DoStar()
     {
@@ -162,6 +243,9 @@ public partial class FileItemModel : SelectItemModel
         IsStar = BaseBinding.SetStart(this);
     }
 
+    /// <summary>
+    /// 打开网页
+    /// </summary>
     [RelayCommand]
     public void OpenWeb()
     {
@@ -171,19 +255,19 @@ public partial class FileItemModel : SelectItemModel
         }
     }
 
+    /// <summary>
+    /// 获取图标
+    /// </summary>
+    /// <returns></returns>
     private async Task<Bitmap?> GetImage()
     {
-        if (close)
+        if (_close || Logo == null)
         {
             return null;
         }
         if (_img != null)
         {
             return _img;
-        }
-        if (Logo == null)
-        {
-            return null;
         }
         try
         {
@@ -201,6 +285,9 @@ public partial class FileItemModel : SelectItemModel
         return null;
     }
 
+    /// <summary>
+    /// 安装
+    /// </summary>
     public void Install()
     {
         if (!HaveDownload)
@@ -210,24 +297,36 @@ public partial class FileItemModel : SelectItemModel
         Add?.Install(this);
     }
 
+    /// <summary>
+    /// 选择
+    /// </summary>
     public void SetSelect()
     {
         Add?.SetSelect(this);
     }
 
+    /// <summary>
+    /// 上一页
+    /// </summary>
     public void Back()
     {
         Add?.Back();
     }
 
+    /// <summary>
+    /// 下一页
+    /// </summary>
     public void Next()
     {
         Add?.Next();
     }
 
+    /// <summary>
+    /// 清理图标
+    /// </summary>
     public void Close()
     {
-        close = true;
+        _close = true;
         if (_img != ImageManager.GameIcon)
         {
             _img?.Dispose();

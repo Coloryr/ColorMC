@@ -21,61 +21,132 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 游戏项目
+/// </summary>
 public partial class GameItemModel : GameModel
 {
+    /// <summary>
+    /// 是否选中
+    /// </summary>
     [ObservableProperty]
     private bool _isSelect;
+    /// <summary>
+    /// 是否已启动
+    /// </summary>
     [ObservableProperty]
     private bool _isLaunch;
+    /// <summary>
+    /// 是否在启动中
+    /// </summary>
     [ObservableProperty]
     private bool _isLaunching;
+    /// <summary>
+    /// 是否已经加载
+    /// </summary>
     [ObservableProperty]
     private bool _isLoad;
+    /// <summary>
+    /// 是否拖拽
+    /// </summary>
     [ObservableProperty]
     private bool _isDrop;
+    /// <summary>
+    /// 是否鼠标在上面
+    /// </summary>
     [ObservableProperty]
     private bool _isOver;
+    /// <summary>
+    /// 是否为新建实例
+    /// </summary>
     [ObservableProperty]
     private bool _isNew;
+    /// <summary>
+    /// 是否勾选
+    /// </summary>
     [ObservableProperty]
     private bool _isCheck;
-
+    /// <summary>
+    /// 是否显示按钮
+    /// </summary>
     [ObservableProperty]
     private bool _buttonShow;
+    /// <summary>
+    /// 是否显示勾选
+    /// </summary>
     [ObservableProperty]
     private bool _showCheck;
-
+    /// <summary>
+    /// 是否显示
+    /// </summary>
     [ObservableProperty]
     private bool _isDisplay = true;
-
-    [ObservableProperty]
-    private string _tips;
-
-    [ObservableProperty]
-    private TextWrapping _wrap = TextWrapping.NoWrap;
-    [ObservableProperty]
-    private TextTrimming _trim = TextTrimming.CharacterEllipsis;
-
-    private readonly IMainTop? _top;
-
-    public string Name => Obj.Name;
-    public string UUID => Obj.UUID;
-
-    [ObservableProperty]
-    private string _star = ImageManager.Stars[1];
+    /// <summary>
+    /// 是否星标
+    /// </summary>
     [ObservableProperty]
     private bool _isStar;
+    /// <summary>
+    /// 是否显示星标
+    /// </summary>
     [ObservableProperty]
     private bool _starVis;
-
+    /// <summary>
+    /// 是否为锁定模式
+    /// </summary>
     [ObservableProperty]
     private bool _oneGame;
 
+    /// <summary>
+    /// 悬浮提示
+    /// </summary>
+    [ObservableProperty]
+    private string _tips;
+    /// <summary>
+    /// 星标
+    /// </summary>
+    [ObservableProperty]
+    private string _star = ImageManager.Stars[1];
+
+    /// <summary>
+    /// 字体换行
+    /// </summary>
+    [ObservableProperty]
+    private TextWrapping _wrap = TextWrapping.NoWrap;
+    /// <summary>
+    /// 字体裁剪
+    /// </summary>
+    [ObservableProperty]
+    private TextTrimming _trim = TextTrimming.CharacterEllipsis;
+
+    /// <summary>
+    /// 主窗口
+    /// </summary>
+    private readonly IMainTop? _top;
+
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name => Obj.Name;
+    /// <summary>
+    /// UUID
+    /// </summary>
+    public string UUID => Obj.UUID;
+
+    /// <summary>
+    /// 图标
+    /// </summary>
     [ObservableProperty]
     private Bitmap _pic;
 
+    /// <summary>
+    /// 游戏分组
+    /// </summary>
     private readonly string? _group;
 
+    /// <summary>
+    /// 标号
+    /// </summary>
     public int Index
     {
         set
@@ -167,6 +238,10 @@ public partial class GameItemModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 是否选中
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsSelectChanged(bool value)
     {
         if (value == false && OneGame)
@@ -184,6 +259,9 @@ public partial class GameItemModel : GameModel
         ButtonShow = value || IsOver;
     }
 
+    /// <summary>
+    /// 标星
+    /// </summary>
     [RelayCommand]
     public void DoStar()
     {
@@ -195,6 +273,9 @@ public partial class GameItemModel : GameModel
         IsOver = false;
     }
 
+    /// <summary>
+    /// 添加游戏实例
+    /// </summary>
     [RelayCommand]
     public void AddGame()
     {
@@ -205,6 +286,9 @@ public partial class GameItemModel : GameModel
         WindowManager.ShowAddGame(_group);
     }
 
+    /// <summary>
+    /// 启动
+    /// </summary>
     [RelayCommand]
     public void Launch()
     {
@@ -220,12 +304,18 @@ public partial class GameItemModel : GameModel
         _top?.Launch(this);
     }
 
+    /// <summary>
+    /// 编辑
+    /// </summary>
     [RelayCommand]
     public void EditGame()
     {
         WindowManager.ShowGameEdit(Obj);
     }
 
+    /// <summary>
+    /// 开始多选
+    /// </summary>
     public void StartCheck()
     {
         IsSelect = false;
@@ -233,11 +323,17 @@ public partial class GameItemModel : GameModel
         ShowCheck = true;
     }
 
+    /// <summary>
+    /// 结束多选
+    /// </summary>
     public void StopCheck()
     {
         ShowCheck = false;
     }
 
+    /// <summary>
+    /// 选中
+    /// </summary>
     public void Select()
     {
         if (OneGame)
@@ -248,6 +344,9 @@ public partial class GameItemModel : GameModel
         IsSelect = true;
     }
 
+    /// <summary>
+    /// 取消选中
+    /// </summary>
     public void Unselect()
     {
         if (OneGame)
@@ -258,23 +357,25 @@ public partial class GameItemModel : GameModel
         IsSelect = false;
     }
 
+    /// <summary>
+    /// 加载图标
+    /// </summary>
     public void LoadIcon()
     {
         Pic = GetImage();
     }
 
+    /// <summary>
+    /// 重载图标
+    /// </summary>
     public void ReloadIcon()
     {
         Pic = ReloadImage();
     }
 
-    public void Reload()
-    {
-        IsLaunch = GameManager.IsGameRun(Obj);
-
-        SetTips();
-    }
-
+    /// <summary>
+    /// 更新悬浮
+    /// </summary>
     public void SetTips()
     {
         if (IsNew)
@@ -293,7 +394,12 @@ public partial class GameItemModel : GameModel
             time4.Ticks == 0 ? "" :
             $"{time4.TotalHours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
     }
-
+    
+    /// <summary>
+    /// 移动游戏实例
+    /// </summary>
+    /// <param name="top"></param>
+    /// <param name="e"></param>
     public async void Move(TopLevel? top, PointerEventArgs e)
     {
         if (ShowCheck)
@@ -311,8 +417,7 @@ public partial class GameItemModel : GameModel
             {
                 return;
             }
-            var item = await top.StorageProvider
-                   .TryGetFolderFromPathAsync(Obj.GetBasePath());
+            var item = await top.StorageProvider.TryGetFolderFromPathAsync(Obj.GetBasePath());
             files.Add(item!);
             dragData.Set(DataFormats.Files, files);
         }
@@ -322,28 +427,46 @@ public partial class GameItemModel : GameModel
         });
     }
 
+    /// <summary>
+    /// 选中
+    /// </summary>
     public void SetSelect()
     {
         _top?.Select(this);
     }
 
+    /// <summary>
+    /// 右键弹窗
+    /// </summary>
+    /// <param name="con"></param>
     public void Flyout(Control con)
     {
         _ = new MainFlyout(con, this);
     }
 
+    /// <summary>
+    /// 获取图标
+    /// </summary>
+    /// <returns></returns>
     private Bitmap GetImage()
     {
         var icon = ImageManager.GetGameIcon(Obj);
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    /// <returns></returns>
     private Bitmap ReloadImage()
     {
         var icon = ImageManager.ReloadImage(Obj);
         return icon ?? ImageManager.GameIcon;
     }
 
+    /// <summary>
+    /// 重命名
+    /// </summary>
     public async void Rename()
     {
         var res = await Model.Input(App.Lang("MainWindow.Info23"), Obj.Name);
@@ -360,6 +483,9 @@ public partial class GameItemModel : GameModel
         GameBinding.SetGameName(Obj, res.Text1);
     }
 
+    /// <summary>
+    /// 设置手柄
+    /// </summary>
     public void SetJoystick()
     {
         if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
@@ -376,6 +502,9 @@ public partial class GameItemModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 复制副本
+    /// </summary>
     public async void Copy()
     {
         var res = await Model.Input(App.Lang("MainWindow.Info23"),
@@ -402,6 +531,9 @@ public partial class GameItemModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 删除游戏实例
+    /// </summary>
     public async void DeleteGame()
     {
         var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
@@ -420,13 +552,16 @@ public partial class GameItemModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 编辑游戏分组
+    /// </summary>
     public void EditGroup()
     {
         _top?.EditGroup(this);
     }
 
     /// <summary>
-    /// 请求
+    /// 请求覆盖
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
@@ -436,6 +571,9 @@ public partial class GameItemModel : GameModel
             string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
     }
 
+    /// <summary>
+    /// 导出启动参数
+    /// </summary>
     public void ExportCmd()
     {
         _top?.ExportCmd(Obj);

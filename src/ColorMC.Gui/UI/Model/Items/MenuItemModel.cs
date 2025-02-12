@@ -18,6 +18,9 @@ public partial class MenuItemModel : ObservableObject
     /// </summary>
     public string Text { get; init; }
 
+    /// <summary>
+    /// 项目编号
+    /// </summary>
     public int Index;
 
     /// <summary>
@@ -25,6 +28,9 @@ public partial class MenuItemModel : ObservableObject
     /// </summary>
     public SubMenuItemModel[] SubMenu { get; init; }
 
+    /// <summary>
+    /// 是否选中
+    /// </summary>
     [ObservableProperty]
     private bool _isCheck;
 
@@ -35,12 +41,27 @@ public partial class MenuItemModel : ObservableObject
     }
 }
 
+/// <summary>
+/// 子编号
+/// </summary>
 public partial class SubMenuItemModel : ObservableObject
 {
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name { get; init; }
+    /// <summary>
+    /// 调用方法
+    /// </summary>
     public Action Func { get; init; }
+    /// <summary>
+    /// 是否隐藏
+    /// </summary>
     public bool Hide { get; init; }
 
+    /// <summary>
+    /// 选中后
+    /// </summary>
     [RelayCommand]
     public void Select()
     {

@@ -8,6 +8,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using Event = Silk.NET.SDL.Event;

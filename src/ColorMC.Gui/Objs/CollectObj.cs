@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// 收藏项目
+/// </summary>
 public record CollectItemObj
 {
     [JsonIgnore]
@@ -34,12 +37,30 @@ public record CollectItemObj
     public string Url { get; set; }
 }
 
+/// <summary>
+/// 资源收藏
+/// </summary>
 public record CollectObj
 {
+    /// <summary>
+    /// 收藏项目列表
+    /// </summary>
     public Dictionary<string, CollectItemObj> Items { get; set; }
+    /// <summary>
+    /// 收藏分组列表
+    /// </summary>
     public Dictionary<string, List<string>> Groups { get; set; }
 
+    /// <summary>
+    /// 显示模组
+    /// </summary>
     public bool Mod { get; set; }
+    /// <summary>
+    /// 显示资源包
+    /// </summary>
     public bool ResourcePack { get; set; }
+    /// <summary>
+    /// 显示光影包
+    /// </summary>
     public bool Shaderpack { get; set; }
 }

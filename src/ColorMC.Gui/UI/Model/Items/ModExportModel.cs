@@ -7,17 +7,29 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// Mod项目
+/// 模组项目
 /// </summary>
 public partial class ModExportModel : ObservableObject
 {
+    /// <summary>
+    /// 导出
+    /// </summary>
     [ObservableProperty]
     private bool _export;
+    /// <summary>
+    /// 项目ID
+    /// </summary>
     [ObservableProperty]
     private string? _pID;
+    /// <summary>
+    /// 文件ID
+    /// </summary>
     [ObservableProperty]
     private string? _fID;
 
+    /// <summary>
+    /// 操作
+    /// </summary>
     private readonly BaseModel _model;
 
     public ModExportModel(BaseModel model, string? pid, string? fid)
@@ -38,9 +50,21 @@ public partial class ModExportModel : ObservableObject
         Reload();
     }
 
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name => Obj.Name;
+    /// <summary>
+    /// modid
+    /// </summary>
     public string Modid => Obj.ModId;
+    /// <summary>
+    /// 加载器
+    /// </summary>
     public string Loader => StringHelper.MakeString(Obj.Loaders);
+    /// <summary>
+    /// 下载源
+    /// </summary>
     public SourceType? Source { get; init; }
 
     partial void OnPIDChanged(string? value)
@@ -67,6 +91,9 @@ public partial class ModExportModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// 重载数据
+    /// </summary>
     public void Reload()
     {
         if (Type == PackType.CurseForge)
@@ -79,12 +106,33 @@ public partial class ModExportModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// 校验
+    /// </summary>
     public string Sha1;
+    /// <summary>
+    /// 校验
+    /// </summary>
     public string Sha512;
+    /// <summary>
+    /// 下载地址
+    /// </summary>
     public string Url;
+    /// <summary>
+    /// 文件大小
+    /// </summary>
     public long FileSize;
 
+    /// <summary>
+    /// 打包类型
+    /// </summary>
     public PackType Type;
+    /// <summary>
+    /// 模组数据
+    /// </summary>
     public ModInfoObj? Obj1;
+    /// <summary>
+    /// 模组数据
+    /// </summary>
     public ModObj Obj;
 }

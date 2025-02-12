@@ -3,6 +3,9 @@ using ColorMC.Gui.Objs.Frp;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 映射远程项目
+/// </summary>
 public partial class NetFrpRemoteModel : SelectItemModel
 {
     public NetFrpRemoteModel(string key, SakuraFrpChannelObj obj)
@@ -27,12 +30,32 @@ public partial class NetFrpRemoteModel : SelectItemModel
         FrpType = FrpType.OpenFrp;
     }
 
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name { get; }
+    /// <summary>
+    /// 端口ID
+    /// </summary>
     public int ID { get; }
+    /// <summary>
+    /// 是否被占用
+    /// </summary>
     public bool Use { get; }
+    /// <summary>
+    /// 类型
+    /// </summary>
     public string Type { get; }
+    /// <summary>
+    /// 远程地址
+    /// </summary>
     public string Remote { get; }
-
+    /// <summary>
+    /// 映射类型
+    /// </summary>
     public FrpType FrpType;
+    /// <summary>
+    /// API KEY
+    /// </summary>
     public string Key;
 }

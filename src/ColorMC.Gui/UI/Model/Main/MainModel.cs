@@ -10,51 +10,100 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel : TopModel, IMutTop
 {
     public const string SwitchView = "SwitchView";
 
+    /// <summary>
+    /// 是否在启动状态
+    /// </summary>
     public bool IsLaunch;
+    /// <summary>
+    /// 是否为首次启动
+    /// </summary>
     public bool IsFirst = true;
 
+    /// <summary>
+    /// 是否为手机模式
+    /// </summary>
     public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
 
-    private bool _isCancel;
-
+    /// <summary>
+    /// Motd地址
+    /// </summary>
     [ObservableProperty]
     private (string, ushort) _server;
 
+    /// <summary>
+    /// 是否显示服务器信息
+    /// </summary>
     [ObservableProperty]
     private bool _motdDisplay;
+    /// <summary>
+    /// 是否有游戏错误
+    /// </summary>
     [ObservableProperty]
     private bool _isGameError;
-
+    /// <summary>
+    /// 是否显示侧边栏
+    /// </summary>
     [ObservableProperty]
     private bool _sideDisplay = true;
+    /// <summary>
+    /// 是否显示音乐
+    /// </summary>
     [ObservableProperty]
     private bool _musicDisplay;
+    /// <summary>
+    /// 是否显示背景图
+    /// </summary>
     [ObservableProperty]
     private bool _backDisplay;
+    /// <summary>
+    /// 是否显示玩家
+    /// </summary>
     [ObservableProperty]
     private bool _playerDisplay = true;
+    /// <summary>
+    /// 是否显示项目列表
+    /// </summary>
     [ObservableProperty]
     private bool _menuDisplay = true;
-
+    /// <summary>
+    /// 是否渲染
+    /// </summary>
     [ObservableProperty]
     private bool _render = true;
-
+    /// <summary>
+    /// 是否显示新闻卡片
+    /// </summary>
     [ObservableProperty]
     private bool _cardNews;
+    /// <summary>
+    /// 是否有卡片
+    /// </summary>
     [ObservableProperty]
     private bool _haveCard = true;
-
+    /// <summary>
+    /// 欢迎消息
+    /// </summary>
     [ObservableProperty]
     private string _helloText;
-
+    /// <summary>
+    /// 音频按钮
+    /// </summary>
     [ObservableProperty]
     private string _audioIcon = ImageManager.MusicIcons[1];
-
+    /// <summary>
+    /// 是否获取新的数据
+    /// </summary>
     private bool _isGetNewInfo;
+    /// <summary>
+    /// 
+    /// </summary>
     private int _helloClick;
 
     public MainModel(BaseModel model) : base(model)
@@ -67,36 +116,55 @@ public partial class MainModel : TopModel, IMutTop
         ShowHello();
     }
 
+    /// <summary>
+    /// 打开收藏
+    /// </summary>
     [RelayCommand]
     public void OpenCollect()
     {
         WindowManager.ShowCollect();
     }
 
+    /// <summary>
+    /// 打开统计
+    /// </summary>
     [RelayCommand]
     public void ShowCount()
     {
         WindowManager.ShowCount();
     }
 
+    /// <summary>
+    /// 显示皮肤
+    /// </summary>
     [RelayCommand]
     public void ShowSkin()
     {
         WindowManager.ShowSkin();
     }
 
+    /// <summary>
+    /// 显示用户列表
+    /// </summary>
     [RelayCommand]
     public void ShowUser()
     {
         WindowManager.ShowUser();
     }
 
+    /// <summary>
+    /// 显示启动器设置
+    /// </summary>
     [RelayCommand]
     public void ShowSetting()
     {
         WindowManager.ShowSetting(SettingType.Normal);
     }
 
+    /// <summary>
+    /// 打开指南手册
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task OpenGuide()
     {
@@ -109,6 +177,9 @@ public partial class MainModel : TopModel, IMutTop
         WebBinding.OpenWeb(res.Index == 0 ? WebType.Guide1 : WebType.Guide);
     }
 
+    /// <summary>
+    /// 打开映射大厅
+    /// </summary>
     [RelayCommand]
     public void OpenNetFrp()
     {
@@ -122,6 +193,9 @@ public partial class MainModel : TopModel, IMutTop
         }
     }
 
+    /// <summary>
+    /// 打开新闻列表
+    /// </summary>
     [RelayCommand]
     public void OpenNews()
     {
@@ -228,7 +302,6 @@ public partial class MainModel : TopModel, IMutTop
 
     public override void Close()
     {
-        GroupList.Clear();
         foreach (var item in GameGroups)
         {
             item.Close();

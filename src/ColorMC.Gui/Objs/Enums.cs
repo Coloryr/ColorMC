@@ -139,11 +139,17 @@ public enum WebType
     UIGuide1
 }
 
+/// <summary>
+/// 映射类型
+/// </summary>
 public enum FrpType
 {
     SakuraFrp, OpenFrp
 }
 
+/// <summary>
+/// 头像类型
+/// </summary>
 public enum HeadType
 {
     Head2D, Head3D_A, Head3D_B

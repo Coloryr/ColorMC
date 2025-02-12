@@ -428,6 +428,9 @@ public enum CoreRunState
     Error,
 }
 
+/// <summary>
+/// Dns类型
+/// </summary>
 public enum DnsType
 {
     DnsOver, DnsOverHttps, DnsOverHttpsWithUdp

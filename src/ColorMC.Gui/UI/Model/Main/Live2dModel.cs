@@ -4,6 +4,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel
 {
     public const string ModelChangeName = "ModelChange";
@@ -11,18 +14,35 @@ public partial class MainModel
     public const string ModelDeleteName = "ModelDelete";
     public const string ModelTextName = "ModelText";
 
+    /// <summary>
+    /// Live2d宽度
+    /// </summary>
     [ObservableProperty]
     private int _live2dWidth = 300;
+    /// <summary>
+    /// Live2d高度
+    /// </summary>
     [ObservableProperty]
     private int _live2dHeight = 300;
+    /// <summary>
+    /// Live2d对其方式
+    /// </summary>
     [ObservableProperty]
     private HorizontalAlignment _l2dPos = HorizontalAlignment.Right;
+    /// <summary>
+    /// Live2d对其方式
+    /// </summary>
     [ObservableProperty]
     private VerticalAlignment _l2dPos1 = VerticalAlignment.Top;
 
+    /// <summary>
+    /// Live2d显示消息
+    /// </summary>
     [ObservableProperty]
     private string _message;
-
+    /// <summary>
+    /// 是否低fps
+    /// </summary>
     [ObservableProperty]
     private bool _lowFps;
 

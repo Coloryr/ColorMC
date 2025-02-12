@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Gui.Objs.Frp;
 
+/// <summary>
+/// 映射云端数据
+/// </summary>
 public record FrpCloudObj
 {
     /// <summary>
