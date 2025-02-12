@@ -16,48 +16,91 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel : IModEdit
 {
+    /// <summary>
+    /// 显示的模组列表
+    /// </summary>
     public ObservableCollection<ModDisplayModel> ModList { get; init; } = [];
+    /// <summary>
+    /// 过滤器列表
+    /// </summary>
     public string[] ModFilterList { get; init; } = LanguageBinding.GetFilterName();
 
+    /// <summary>
+    /// 模组列表
+    /// </summary>
     private readonly List<ModDisplayModel> _modItems = [];
 
+    /// <summary>
+    /// 选中的模组
+    /// </summary>
     [ObservableProperty]
     private ModDisplayModel _modItem;
 
+    /// <summary>
+    /// 模组筛选
+    /// </summary>
     [ObservableProperty]
     private string _modText;
 
+    /// <summary>
+    /// 选中的模组过滤器
+    /// </summary>
     [ObservableProperty]
     private int _modFilter;
-
-    [ObservableProperty]
-    private bool _displayModFilter = true;
-
+    /// <summary>
+    /// 是否显示modid列
+    /// </summary>
     [ObservableProperty]
     private bool _displayModId = true;
+    /// <summary>
+    /// 是否显示模组名列
+    /// </summary>
     [ObservableProperty]
     private bool _displayModName = true;
+    /// <summary>
+    /// 是否显示模组版本列
+    /// </summary>
     [ObservableProperty]
     private bool _displayModVersion = true;
+    /// <summary>
+    /// 是否显示模组加载器列
+    /// </summary>
     [ObservableProperty]
     private bool _displayModLoader = true;
+    /// <summary>
+    /// 是否显示模组支持侧
+    /// </summary>
     [ObservableProperty]
     private bool _displayModSide = true;
+    /// <summary>
+    /// 是否显示模组备注
+    /// </summary>
     [ObservableProperty]
     private bool _displayModText = true;
-
+    /// <summary>
+    /// 是否显示模组筛选
+    /// </summary>
     [ObservableProperty]
     private bool _enableModText = true;
-
+    
+    /// <summary>
+    /// 是否在模组标记模式中
+    /// </summary>
     private bool _isModSet;
 
-    private GameGuiSettingObj _setting;
+    /// <summary>
+    /// Gui设置
+    /// </summary>
+    private readonly GameGuiSettingObj _setting;
 
     partial void OnModTextChanged(string value)
     {
-        LoadMod1();
+        LoadModDisplay();
     }
 
     partial void OnDisplayModTextChanged(bool value)
@@ -104,33 +147,39 @@ public partial class GameEditModel : IModEdit
             _ => false
         };
 
-        LoadMod1();
+        LoadModDisplay();
     }
 
-    [RelayCommand]
-    public void ShowModFilter()
-    {
-        DisplayModFilter = !DisplayModFilter;
-    }
-
+    /// <summary>
+    /// 下载模组
+    /// </summary>
     [RelayCommand]
     public void AddMod()
     {
         WindowManager.ShowAdd(_obj, FileType.Mod);
     }
 
+    /// <summary>
+    /// 打开模组路径
+    /// </summary>
     [RelayCommand]
     public void OpenMod()
     {
         PathBinding.OpenPath(_obj, PathType.ModPath);
     }
 
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
     [RelayCommand]
     public void LoadMod()
     {
         LoadMods();
     }
 
+    /// <summary>
+    /// 测试模组依赖
+    /// </summary>
     private async void DependTestMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info15"));
@@ -142,20 +191,30 @@ public partial class GameEditModel : IModEdit
         }
     }
 
+    /// <summary>
+    /// 开始标记模组
+    /// </summary>
     public async void StartSetMod()
     {
         if (_isModSet)
+        {
             return;
+        }
 
         _isModSet = true;
         await WindowManager.ShowAddSet(_obj);
         _isModSet = false;
     }
 
+    /// <summary>
+    /// 自动标记模组
+    /// </summary>
     private async void StartAutoSetMod()
     {
         if (_isModSet)
+        {
             return;
+        }
 
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab4.Info18"));
 
@@ -198,6 +257,9 @@ public partial class GameEditModel : IModEdit
         }
     }
 
+    /// <summary>
+    /// 导入模组
+    /// </summary>
     private async void ImportMod()
     {
         var top = Model.GetTopLevel();
@@ -233,6 +295,10 @@ public partial class GameEditModel : IModEdit
         LoadMods();
     }
 
+    /// <summary>
+    /// 拖拽导入模组
+    /// </summary>
+    /// <param name="data"></param>
     public async void DropMod(IDataObject data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Mod);
@@ -242,6 +308,10 @@ public partial class GameEditModel : IModEdit
         }
     }
 
+    /// <summary>
+    /// 删除模组
+    /// </summary>
+    /// <param name="items">一些模组</param>
     public async void DeleteMod(IEnumerable<ModDisplayModel> items)
     {
         var res = await Model.ShowAsync(
@@ -275,6 +345,10 @@ public partial class GameEditModel : IModEdit
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
     }
 
+    /// <summary>
+    /// 删除模组
+    /// </summary>
+    /// <param name="item">模组</param>
     public async void DeleteMod(ModDisplayModel item)
     {
         var res = await Model.ShowAsync(
@@ -298,11 +372,18 @@ public partial class GameEditModel : IModEdit
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
     }
 
+    /// <summary>
+    /// 禁用/启用模组
+    /// </summary>
     public void DisEMod()
     {
         DisEMod(ModItem);
     }
 
+    /// <summary>
+    /// 禁用/启用模组
+    /// </summary>
+    /// <param name="item">模组</param>
     public async void DisEMod(ModDisplayModel item)
     {
         if (item == null)
@@ -330,6 +411,7 @@ public partial class GameEditModel : IModEdit
 
             var list = GameBinding.ModDisable(item, _modItems);
 
+            //自动禁用依赖的模组
             foreach (var item1 in list.ToArray())
             {
                 if (item1.Enable == false)
@@ -360,6 +442,10 @@ public partial class GameEditModel : IModEdit
         }
     }
 
+    /// <summary>
+    /// 显示模组信息
+    /// </summary>
+    /// <param name="list"></param>
     private void DisplayMod(List<string> list)
     {
         ModList.Clear();
@@ -372,6 +458,9 @@ public partial class GameEditModel : IModEdit
         ModText = builder.ToString();
     }
 
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
     public async void LoadMods()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
@@ -388,6 +477,7 @@ public partial class GameEditModel : IModEdit
 
         _modItems.AddRange(res);
 
+        //自动处理modid冲突
         var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable
             && !string.IsNullOrWhiteSpace(a.Obj.ModId)).GroupBy(a => a.Obj.ModId);
         var list1 = new List<string>();
@@ -400,6 +490,7 @@ public partial class GameEditModel : IModEdit
                 list1.Add(item.Key);
             }
         }
+
         if (list1.Count != 0)
         {
             var res1 = await Model.ShowAsync(string.Format(App
@@ -421,9 +512,13 @@ public partial class GameEditModel : IModEdit
 
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info23"));
 
-        LoadMod1();
+        LoadModDisplay();
     }
 
+    /// <summary>
+    /// 编辑模组注释
+    /// </summary>
+    /// <param name="item"></param>
     public void EditModText(ModDisplayModel item)
     {
         if (!_setting.ModName.TryAdd(item.Obj.Sha1, item.Text))
@@ -434,7 +529,10 @@ public partial class GameEditModel : IModEdit
         GameGuiSetting.WriteConfig(_obj, _setting);
     }
 
-    private void LoadMod1()
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
+    private void LoadModDisplay()
     {
         ModList.Clear();
         switch (ModFilter)

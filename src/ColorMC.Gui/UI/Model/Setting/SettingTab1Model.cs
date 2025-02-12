@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -19,6 +21,8 @@ public partial class SettingModel
     private string? _local3;
     [ObservableProperty]
     private string? _local4;
+    [ObservableProperty]
+    private string _tempSize;
 
     public string RunDir => ColorMCGui.RunDir;
 
@@ -249,6 +253,24 @@ public partial class SettingModel
         {
             Model.ProgressClose();
         }
+    }
+
+    [RelayCommand]
+    public async Task ClearTemp()
+    {
+        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Text21"));
+        if (res)
+        {
+            BaseBinding.DeleteTemp();
+            LoadTempSize();
+        }
+    }
+
+    public void LoadTempSize()
+    {
+        var temp = DownloadManager.DownloadDir;
+
+        TempSize = string.Format(App.Lang("SettingWindow.Tab1.Info20"), BaseBinding.GetFolderSize(temp));
     }
 
     private async void Reset()

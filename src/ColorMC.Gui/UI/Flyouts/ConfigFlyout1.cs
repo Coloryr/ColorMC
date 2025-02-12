@@ -35,7 +35,7 @@ public class ConfigFlyout1
                 _ => false
             };
 
-            if (_item.Top != null)
+            if (_item.Parent != null)
             {
                 delete = true;
                 editValue = _item.NbtType switch
@@ -54,7 +54,7 @@ public class ConfigFlyout1
                 };
             }
 
-            if (_item.Top?.Nbt is ChunkNbt
+            if (_item.Parent?.Nbt is ChunkNbt
                 && _item.Key is "xPos" or "yPos" or "zPos")
             {
                 editKey = false;
@@ -72,7 +72,7 @@ public class ConfigFlyout1
             editKey = false;
             foreach (var item in _list.SelectedItems)
             {
-                if (item?.Top != null)
+                if (item?.Parent != null)
                 {
                     delete = true;
                     break;

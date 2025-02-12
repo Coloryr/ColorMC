@@ -13,13 +13,28 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 存档显示
+/// </summary>
 public partial class WorldModel : SelectItemModel
 {
+    /// <summary>
+    /// 存档
+    /// </summary>
     public readonly WorldObj World;
+    /// <summary>
+    /// 游戏设置
+    /// </summary>
     public readonly GameEditModel TopModel;
 
+    /// <summary>
+    /// 数据包是否为空
+    /// </summary>
     [ObservableProperty]
     private bool _empty;
+    /// <summary>
+    /// 选择的数据包
+    /// </summary>
     [ObservableProperty]
     private DataPackModel _dataPack;
 

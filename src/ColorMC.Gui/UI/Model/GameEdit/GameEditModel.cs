@@ -8,20 +8,28 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel : MenuModel
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     private readonly GameSettingObj _obj;
 
+    /// <summary>
+    /// 是否为手机界面
+    /// </summary>
     public bool Phone { get; } = false;
 
-    private readonly string _useName;
-
+    /// <summary>
+    /// 更新内存用
+    /// </summary>
     private readonly Timer _timer;
 
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
-        _useName = ToString() + ":" + obj.UUID;
-
         _obj = obj;
         if (SystemInfo.Os == OsType.Android)
         {
@@ -32,6 +40,7 @@ public partial class GameEditModel : MenuModel
         _timer.Elapsed += Timer_Elapsed;
         _timer.AutoReset = true;
 
+        //加载设置
         _setting = GameGuiSetting.ReadConfig(_obj);
         _displayModText = _setting.Mod.EnableText;
         _displayModId = _setting.Mod.EnableModId;
@@ -317,11 +326,18 @@ public partial class GameEditModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 开始读取内存大小
+    /// </summary>
     public void Load()
     {
         _timer.Start();
     }
 
+    /// <summary>
+    /// 状态
+    /// </summary>
+    /// <param name="state">状态</param>
     private void PackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
@@ -351,7 +367,8 @@ public partial class GameEditModel : MenuModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
+            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), 
+                HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
         });
     }
 

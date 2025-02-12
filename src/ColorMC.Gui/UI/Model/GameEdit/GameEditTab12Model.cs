@@ -9,22 +9,40 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 结构文件列表
+    /// </summary>
     public ObservableCollection<SchematicObj> SchematicList { get; set; } = [];
 
+    /// <summary>
+    /// 选中的结构文件
+    /// </summary>
     [ObservableProperty]
     private SchematicObj? _schematicItem;
 
+    /// <summary>
+    /// 是否没有结构文件
+    /// </summary>
     [ObservableProperty]
     private bool _schematicEmptyDisplay;
 
+    /// <summary>
+    /// 打开结构文件文件夹
+    /// </summary>
     [RelayCommand]
     public void OpenSchematic()
     {
         PathBinding.OpenPath(_obj, PathType.SchematicsPath);
     }
 
+    /// <summary>
+    /// 加载结构文件列表
+    /// </summary>
     public async void LoadSchematic()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab12.Info3"));
@@ -35,6 +53,9 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab12.Info1"));
     }
 
+    /// <summary>
+    /// 下载结构文件
+    /// </summary>
     private async void AddSchematic()
     {
         var top = Model.GetTopLevel();
@@ -57,6 +78,10 @@ public partial class GameEditModel
         LoadSchematic();
     }
 
+    /// <summary>
+    /// 拖拽加入结构文件
+    /// </summary>
+    /// <param name="data"></param>
     public async void DropSchematic(IDataObject data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Schematic);
@@ -66,6 +91,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 删除结构文件
+    /// </summary>
+    /// <param name="obj"></param>
     public async void DeleteSchematic(SchematicObj obj)
     {
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab12.Info2"));

@@ -148,6 +148,42 @@ public static class PathHelper
     }
 
     /// <summary>
+    /// 获取目录占用大小
+    /// </summary>
+    /// <param name="folderPath">目录</param>
+    /// <returns></returns>
+    public static long GetFolderSize(string folderPath)
+    {
+        var dirInfo = new DirectoryInfo(folderPath);
+        if (!dirInfo.Exists)
+        {
+            return 0;
+        }
+
+        long size = 0;
+
+        foreach (FileInfo file in dirInfo.EnumerateFiles())
+        {
+            try
+            {
+                size += file.Length;
+            }
+            catch (UnauthorizedAccessException) { }
+        }
+
+        foreach (DirectoryInfo dir in dirInfo.EnumerateDirectories())
+        {
+            try
+            {
+                size += GetFolderSize(dir.FullName);
+            }
+            catch (UnauthorizedAccessException) { }
+        }
+
+        return size;
+    }
+
+    /// <summary>
     /// 获取当前目录所有目录
     /// </summary>
     /// <param name="local">路径</param>

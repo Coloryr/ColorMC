@@ -16,58 +16,145 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
+/// <summary>
+/// 游戏实例编辑
+/// </summary>
 public partial class GameEditModel
 {
+    /// <summary>
+    /// 编码列表
+    /// </summary>
     public string[] EncodingList { get; init; } = BaseBinding.GetEncoding();
+    /// <summary>
+    /// 游戏版本列表
+    /// </summary>
     public ObservableCollection<string> GameVersionList { get; init; } = [];
+    /// <summary>
+    /// 加载器版本列表
+    /// </summary>
     public ObservableCollection<string> LoaderVersionList { get; init; } = [];
+    /// <summary>
+    /// 游戏分组列表
+    /// </summary>
     public ObservableCollection<string> GroupList { get; init; } = [];
+    /// <summary>
+    /// 版本类型列表
+    /// </summary>
     public string[] VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
+    /// <summary>
+    /// 加载器类型列表
+    /// </summary>
     public ObservableCollection<string> LoaderTypeList { get; init; } = [];
+    /// <summary>
+    /// 语言列表
+    /// </summary>
     public ObservableCollection<string> LangList { get; init; } = [];
 
+    /// <summary>
+    /// 加载器类型
+    /// </summary>
     private readonly List<Loaders> _loaderTypeList = [];
+    /// <summary>
+    /// 语言类型
+    /// </summary>
     private readonly List<string> _langList = [];
 
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
     [ObservableProperty]
     private string _gameVersion;
+    /// <summary>
+    /// 加载器版本
+    /// </summary>
     [ObservableProperty]
     private string? _loaderVersion;
+    /// <summary>
+    /// 游戏分组
+    /// </summary>
     [ObservableProperty]
     private string? _group;
+    /// <summary>
+    /// 整合包PID
+    /// </summary>
     [ObservableProperty]
     private string? _pID;
+    /// <summary>
+    /// 整合包FID
+    /// </summary>
     [ObservableProperty]
     private string? _fID;
+    /// <summary>
+    /// 自定义加载器信息
+    /// </summary>
     [ObservableProperty]
     private string? _loaderInfo;
 
+    /// <summary>
+    /// 版本类型
+    /// </summary>
     [ObservableProperty]
     private int _versionType = -1;
+    /// <summary>
+    /// 加载器类型
+    /// </summary>
     [ObservableProperty]
     private int _loaderType = -1;
+    /// <summary>
+    /// 语言
+    /// </summary>
     [ObservableProperty]
     private int _lang = -1;
+    /// <summary>
+    /// 编码类型
+    /// </summary>
     [ObservableProperty]
     private int _encoding = 0;
 
+    /// <summary>
+    /// 是否为整合包
+    /// </summary>
     [ObservableProperty]
     private bool _modPack;
+    /// <summary>
+    /// 游戏是否在运行中
+    /// </summary>
     [ObservableProperty]
     private bool _gameRun;
+    /// <summary>
+    /// 是否启用加载器
+    /// </summary>
     [ObservableProperty]
     private bool _enableLoader;
+    /// <summary>
+    /// 是否是自定义加载器
+    /// </summary>
     [ObservableProperty]
     private bool _customLoader;
+    /// <summary>
+    /// 是否后加入运行库
+    /// </summary>
     [ObservableProperty]
     private bool _offLib;
+    /// <summary>
+    /// 是否在加载信息中
+    /// </summary>
     [ObservableProperty]
     private bool _isLoad;
+    /// <summary>
+    /// 是否没有游戏版本
+    /// </summary>
     [ObservableProperty]
     private bool _gameVersionEmpty;
+    /// <summary>
+    /// 是否让日志窗口自动显示
+    /// </summary>
     [ObservableProperty]
     private bool _logAutoShow;
 
+    /// <summary>
+    /// 游戏配置是否在加载
+    /// </summary>
     private bool _gameLoad;
 
     partial void OnLogAutoShowChanged(bool value)
@@ -195,7 +282,9 @@ public partial class GameEditModel
     partial void OnLoaderVersionChanged(string? value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         _obj.LoaderVersion = value;
         _obj.Save();
@@ -204,7 +293,9 @@ public partial class GameEditModel
     partial void OnGroupChanged(string? value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         GameBinding.MoveGameGroup(_obj, value);
     }
@@ -212,7 +303,9 @@ public partial class GameEditModel
     partial void OnModPackChanged(bool value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         _obj.ModPack = value;
         _obj.Save();
@@ -221,7 +314,9 @@ public partial class GameEditModel
     partial void OnPIDChanged(string? value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         _obj.PID = value;
         _obj.Save();
@@ -230,7 +325,9 @@ public partial class GameEditModel
     partial void OnFIDChanged(string? value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         _obj.FID = value;
         _obj.Save();
@@ -239,13 +336,19 @@ public partial class GameEditModel
     partial void OnOffLibChanged(bool value)
     {
         if (_gameLoad)
+        {
             return;
+        }
 
         _obj.CustomLoader ??= new();
         _obj.CustomLoader.OffLib = value;
         _obj.Save();
     }
 
+    /// <summary>
+    /// 重新获取语言列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LangReload()
     {
@@ -276,6 +379,7 @@ public partial class GameEditModel
         var opt = _obj.GetOptions();
         int a = 0;
 
+        //尝试读取现在的语言
         opt.TryGetValue("lang", out string? lang);
 
         foreach (var item in list)
@@ -295,6 +399,10 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info16"));
     }
 
+    /// <summary>
+    /// 检查模组更新
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task CheckModPackUpdate()
     {
@@ -390,6 +498,10 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 添加游戏分组
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddGroup()
     {
@@ -417,6 +529,10 @@ public partial class GameEditModel
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
+    /// <summary>
+    /// 获取加载器版本
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoaderVersionLoad()
     {
@@ -512,6 +628,10 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info15"));
     }
 
+    /// <summary>
+    /// 加载器支持重新获取
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task LoaderReload()
     {
@@ -563,6 +683,10 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info14"));
     }
 
+    /// <summary>
+    /// 游戏版本重新获取
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task GameVersionReload()
     {
@@ -587,6 +711,10 @@ public partial class GameEditModel
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info13"));
     }
 
+    /// <summary>
+    /// 选择自定义加载器
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SelectLoader()
     {
@@ -612,31 +740,49 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 导出游戏实例
+    /// </summary>
     private void ExportGame()
     {
         WindowManager.ShowGameExport(_obj);
     }
 
+    /// <summary>
+    /// 打开游戏实例日志
+    /// </summary>
     private void OpenGameLog()
     {
         WindowManager.ShowGameLog(_obj);
     }
 
+    /// <summary>
+    /// 打开配置编辑
+    /// </summary>
     private void OpenConfigEdit()
     {
         WindowManager.ShowConfigEdit(_obj);
     }
 
+    /// <summary>
+    /// 打开实例路径
+    /// </summary>
     private void OpPath()
     {
         PathBinding.OpenPath(_obj, PathType.BasePath);
     }
 
+    /// <summary>
+    /// 打开服务器包生成
+    /// </summary>
     private void OpenServerPack()
     {
         WindowManager.ShowServerPack(_obj);
     }
 
+    /// <summary>
+    /// 删除该游戏实例
+    /// </summary>
     private async void Delete()
     {
         if (GameManager.IsGameRun(_obj))
@@ -648,7 +794,9 @@ public partial class GameEditModel
         var res = await Model.ShowAsync(string.Format(
             App.Lang("GameEditWindow.Tab1.Info1"), _obj.Name));
         if (!res)
+        {
             return;
+        }
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
         var res1 = await GameBinding.DeleteGame(_obj);
@@ -659,6 +807,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 生成游戏实例信息
+    /// </summary>
     private async void GenGameInfo()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info10"));
@@ -666,11 +817,17 @@ public partial class GameEditModel
         Model.ProgressClose();
     }
 
+    /// <summary>
+    /// 读取自定义加载器
+    /// </summary>
     private async void ReadCustomLoader()
     {
         LoaderInfo = await GameBinding.GetGameLoader(_obj);
     }
 
+    /// <summary>
+    /// 获取游戏版本列表
+    /// </summary>
     private async void GameVersionLoad()
     {
         var version = GameVersion;
@@ -695,6 +852,9 @@ public partial class GameEditModel
         }
     }
 
+    /// <summary>
+    /// 重命名游戏实例
+    /// </summary>
     private async void Rename()
     {
         var res = await Model.Input(App.Lang("MainWindow.Info23"), _obj.Name);
@@ -711,17 +871,28 @@ public partial class GameEditModel
         GameBinding.SetGameName(_obj, res.Text1);
     }
 
+    /// <summary>
+    /// 游戏实例分组加载
+    /// </summary>
     private void GroupLoad()
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
     }
 
+    /// <summary>
+    /// 进度条更新
+    /// </summary>
+    /// <param name="size"></param>
+    /// <param name="now"></param>
     private void ProgressUpdate(int size, int now)
     {
         Model.ProgressUpdate((double)now / size * 100);
     }
-
+    
+    /// <summary>
+    /// 游戏实例配置加载
+    /// </summary>
     public async void GameLoad()
     {
         _gameLoad = true;
@@ -747,6 +918,7 @@ public partial class GameEditModel
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
 
+        //自定义加载器处理
         if (_obj.Loader == Loaders.Custom)
         {
             LoaderType = 1;
@@ -796,6 +968,7 @@ public partial class GameEditModel
 
         var opt = _obj.GetOptions();
 
+        //加载语言
         opt.TryGetValue("lang", out string? lang);
 
         if (lang != null && !string.IsNullOrWhiteSpace(_obj.Version))

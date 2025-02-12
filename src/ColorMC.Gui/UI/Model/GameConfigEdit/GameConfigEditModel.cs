@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
+using ColorMC.Core;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
@@ -22,42 +23,91 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
+/// <summary>
+/// 配置文件编辑
+/// </summary>
 public partial class GameConfigEditModel : GameModel
 {
+    /// <summary>
+    /// 配置文本列表
+    /// </summary>
     private readonly List<string> _items = [];
 
+    /// <summary>
+    /// 存档
+    /// </summary>
     public WorldObj? World { get; init; }
 
+    /// <summary>
+    /// 显示的配置文件
+    /// </summary>
     public ObservableCollection<string> FileList { get; init; } = [];
 
+    /// <summary>
+    /// NBT编辑器
+    /// </summary>
     public NbtPageModel NbtView;
 
+    /// <summary>
+    /// NBT列表
+    /// </summary>
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<NbtNodeModel> _source;
 
+    /// <summary>
+    /// 选择的文件
+    /// </summary>
     [ObservableProperty]
     private int _select = -1;
+    /// <summary>
+    /// 选择的文件
+    /// </summary>
     [ObservableProperty]
     private string _file;
+    /// <summary>
+    /// 是否是NBT
+    /// </summary>
     [ObservableProperty]
     private bool _nbtEnable;
+    /// <summary>
+    /// 筛选内容
+    /// </summary>
     [ObservableProperty]
     private string? _name;
+    /// <summary>
+    /// 文本编辑器
+    /// </summary>
     [ObservableProperty]
     private TextDocument _text;
 
+    /// <summary>
+    /// 是否为存档
+    /// </summary>
     [ObservableProperty]
     private bool _isWorld;
+    /// <summary>
+    /// 文件是否被修改了
+    /// </summary>
     [ObservableProperty]
     private bool _isEdit;
 
-    [ObservableProperty]
-    private string _useName;
-
+    /// <summary>
+    /// 上一个选中的文件
+    /// </summary>
     private string _lastName;
 
+    /// <summary>
+    /// 窗口Id
+    /// </summary>
+    public string UseName { get; private set; }
+    /// <summary>
+    /// 跳转到第几行
+    /// </summary>
     public int TurnTo { get; private set; }
 
+    /// <summary>
+    /// 区块数据
+    /// </summary>
     public ChunkDataObj? ChunkData;
 
     public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
@@ -83,6 +133,7 @@ public partial class GameConfigEditModel : GameModel
         {
             return;
         }
+
         if (IsEdit)
         {
             var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info8"));
@@ -97,7 +148,9 @@ public partial class GameConfigEditModel : GameModel
         Model.Progress(App.Lang("ConfigEditWindow.Info7"));
         ChunkData = null;
         var info = new FileInfo(value);
-        if (info.Extension is ".dat" or ".dat_old" or ".rio")
+        //是不是NBT文件
+        if (info.Extension is Names.NameDatExt or Names.
+            NameDatOldExt or Names.NameRioExt)
         {
             NbtEnable = true;
 
@@ -122,7 +175,8 @@ public partial class GameConfigEditModel : GameModel
             NbtView = new(nbt1, Turn);
             Source = NbtView.Source;
         }
-        else if (info.Extension is ".mca")
+        //是不是区块文件
+        else if (info.Extension is Names.NameMcaExt)
         {
             NbtEnable = true;
 
@@ -146,6 +200,7 @@ public partial class GameConfigEditModel : GameModel
             NbtView = new(nbt1, Turn);
             Source = NbtView.Source;
         }
+        //其他文件
         else
         {
             NbtEnable = false;
@@ -168,6 +223,10 @@ public partial class GameConfigEditModel : GameModel
         Model.Notify(App.Lang("ConfigEditWindow.Info10"));
     }
 
+    /// <summary>
+    /// 查找实体
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task FindEntity()
     {
@@ -185,6 +244,10 @@ public partial class GameConfigEditModel : GameModel
         FindStart(model);
     }
 
+    /// <summary>
+    /// 查找方块
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task FindBlock()
     {
@@ -202,6 +265,9 @@ public partial class GameConfigEditModel : GameModel
         FindStart(model);
     }
 
+    /// <summary>
+    /// 打开路径
+    /// </summary>
     [RelayCommand]
     public void Open()
     {
@@ -209,11 +275,15 @@ public partial class GameConfigEditModel : GameModel
         PathBinding.OpenFileWithExplorer(Path.GetFullPath(dir + "/" + File));
     }
 
+    /// <summary>
+    /// 保存文件
+    /// </summary>
     [RelayCommand]
     public void Save()
     {
         var info = new FileInfo(File);
-        if (info.Extension is ".dat" or ".dat_old")
+        if (info.Extension is Names.NameDatExt or Names.
+            NameDatOldExt or Names.NameRioExt)
         {
             if (World != null)
             {
@@ -224,7 +294,7 @@ public partial class GameConfigEditModel : GameModel
                 GameBinding.SaveNbtFile(Obj, File, NbtView.Nbt);
             }
         }
-        else if (info.Extension is ".mca")
+        else if (info.Extension is Names.NameMcaExt)
         {
             if (World != null)
             {
@@ -251,6 +321,9 @@ public partial class GameConfigEditModel : GameModel
         IsEdit = false;
     }
 
+    /// <summary>
+    /// 加载文件列表
+    /// </summary>
     [RelayCommand]
     public void Load()
     {
@@ -269,6 +342,10 @@ public partial class GameConfigEditModel : GameModel
         Load1();
     }
 
+    /// <summary>
+    /// 开始查找
+    /// </summary>
+    /// <param name="fmodel"></param>
     public async void FindStart(NbtDialogFindModel fmodel)
     {
         var chunkflie = (fmodel.IsEntity ? "entities/" : "region/") + fmodel.ChunkFile;
@@ -292,6 +369,7 @@ public partial class GameConfigEditModel : GameModel
                     Thread.Sleep(200);
                 }
             });
+            //区块位置
             ChunkNbt? nbt = null;
             foreach (ChunkNbt item in ChunkData!.Nbt.Cast<ChunkNbt>())
             {
@@ -310,6 +388,7 @@ public partial class GameConfigEditModel : GameModel
             var model = NbtView.Select(nbt);
             if (model != null)
             {
+                //找到实体或者方块
                 if (!string.IsNullOrWhiteSpace(fmodel.PosName))
                 {
                     NbtBase? nbt2 = null;
@@ -350,6 +429,10 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 添加一个Nbt标签
+    /// </summary>
+    /// <param name="model"></param>
     public async void AddItem(NbtNodeModel model)
     {
         if (model.NbtType == NbtType.NbtCompound)
@@ -389,20 +472,28 @@ public partial class GameConfigEditModel : GameModel
         Edit();
     }
 
+    /// <summary>
+    /// 删除一个Nbt标签
+    /// </summary>
+    /// <param name="model"></param>
     public async void Delete(NbtNodeModel model)
     {
-        if (model.Top == null)
+        if (model.Parent == null)
             return;
 
         var res = await Model.ShowAsync(App.Lang("ConfigEditWindow.Info1"));
         if (!res)
             return;
 
-        model.Top.Remove(model);
+        model.Parent.Remove(model);
 
         IsEdit = true;
     }
 
+    /// <summary>
+    /// 删除一些Nbt标签
+    /// </summary>
+    /// <param name="list"></param>
     public async void Delete(IReadOnlyList<NbtNodeModel?> list)
     {
         var list1 = new List<NbtNodeModel?>(list);
@@ -415,20 +506,24 @@ public partial class GameConfigEditModel : GameModel
 
         foreach (var item in list1)
         {
-            item?.Top?.Remove(item);
+            item?.Parent?.Remove(item);
         }
         Model.Notify(App.Lang("onfigEditWindow.Info13"));
         Edit();
     }
 
+    /// <summary>
+    /// 设置Nbt标签键
+    /// </summary>
+    /// <param name="model"></param>
     public async void SetKey(NbtNodeModel model)
     {
-        if (model.Top == null)
+        if (model.Parent == null)
         {
             return;
         }
 
-        var list = (model.Top.Nbt as NbtCompound)!;
+        var list = (model.Parent.Nbt as NbtCompound)!;
         var model1 = new NbtDialogAddModel(UseName)
         {
             Key = model.Key!,
@@ -461,6 +556,10 @@ public partial class GameConfigEditModel : GameModel
         Edit();
     }
 
+    /// <summary>
+    /// 设置Nbt标签值
+    /// </summary>
+    /// <param name="model"></param>
     public async void SetValue(NbtNodeModel model)
     {
         if (model.NbtType == NbtType.NbtByteArray)
@@ -572,11 +671,17 @@ public partial class GameConfigEditModel : GameModel
         Edit();
     }
 
+    /// <summary>
+    /// 文件编辑
+    /// </summary>
     public void Edit()
     {
         IsEdit = true;
     }
 
+    /// <summary>
+    /// 打开Nbt搜索
+    /// </summary>
     public async void Find()
     {
         var res = await Model.InputWithEditAsync(App.Lang("ConfigEditWindow.Info3"), false);
@@ -593,6 +698,9 @@ public partial class GameConfigEditModel : GameModel
         NbtView.Find(res.Text1);
     }
 
+    /// <summary>
+    /// 筛选配置文件
+    /// </summary>
     private void Load1()
     {
         FileList.Clear();
@@ -618,10 +726,14 @@ public partial class GameConfigEditModel : GameModel
         }
     }
 
+    /// <summary>
+    /// 转到第几行
+    /// </summary>
+    /// <param name="value"></param>
     private void Turn(int value)
     {
         TurnTo = value;
-        OnPropertyChanged("TurnTo");
+        OnPropertyChanged(nameof(TurnTo));
     }
 
     public override void Close()

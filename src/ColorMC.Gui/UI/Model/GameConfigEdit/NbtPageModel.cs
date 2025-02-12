@@ -12,9 +12,21 @@ namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
 public class NbtPageModel
 {
+    /// <summary>
+    /// Nbt根标签
+    /// </summary>
     private readonly NbtNodeModel _root;
+    /// <summary>
+    /// 转到第几行
+    /// </summary>
     private readonly Action<int> _turn;
+    /// <summary>
+    /// Nbt标签
+    /// </summary>
     public NbtBase Nbt { get; }
+    /// <summary>
+    /// Nbt标签列表
+    /// </summary>
     public HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; init; }
 
     public NbtPageModel(NbtBase nbt, Action<int> turn)
@@ -51,6 +63,10 @@ public class NbtPageModel
         Source.RowSelection!.SingleSelect = false;
     }
 
+    /// <summary>
+    /// 查找Nbt标签
+    /// </summary>
+    /// <param name="name">查找的键</param>
     public void Find(string name)
     {
         NbtNodeModel? data = _root.Find(name);
@@ -60,6 +76,12 @@ public class NbtPageModel
         Select(data);
     }
 
+    /// <summary>
+    /// 查找Nbt标签
+    /// </summary>
+    /// <param name="from">从那个Nbt标签</param>
+    /// <param name="nbt">查找的标签</param>
+    /// <returns></returns>
     public static NbtNodeModel? Find(NbtNodeModel from, NbtBase nbt)
     {
         NbtNodeModel? model = null;
@@ -87,6 +109,11 @@ public class NbtPageModel
         return model;
     }
 
+    /// <summary>
+    /// 选中区块
+    /// </summary>
+    /// <param name="nbt">区块</param>
+    /// <returns></returns>
     public NbtNodeModel? Select(ChunkNbt nbt)
     {
         NbtNodeModel? data = _root.Find(nbt);
@@ -98,17 +125,21 @@ public class NbtPageModel
         return data;
     }
 
+    /// <summary>
+    /// 选中Nbt标签
+    /// </summary>
+    /// <param name="data">Nbt标签</param>
     public void Select(NbtNodeModel data)
     {
         var list = new List<int>();
-        NbtNodeModel? top = data.Top;
+        NbtNodeModel? top = data.Parent;
         NbtNodeModel? down = data;
         while (top != null)
         {
             list.Add(top.Children.IndexOf(down));
             top.Expand();
             down = top;
-            top = top.Top;
+            top = top.Parent;
         }
         list.Add(0);
         list.Reverse();
