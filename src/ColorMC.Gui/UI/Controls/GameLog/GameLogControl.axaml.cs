@@ -138,7 +138,7 @@ public partial class GameLogControl : BaseUserControl
     protected override void Opened()
     {
         (DataContext as GameLogModel)!.Load();
-        (DataContext as GameLogModel)!.Load1();
+        (DataContext as GameLogModel)!.LoadFileList();
     }
 
     protected override TopModel GenModel(BaseModel model)

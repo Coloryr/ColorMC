@@ -29,7 +29,7 @@ build_rpm()
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
         "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
-        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb")
 
     bindir=$base_dir/BUILDROOT/colormc-$version-1.$2/usr/share
 
@@ -114,7 +114,7 @@ build_rpm_min()
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so"
         "Live2DCSharpSDK.App.pdb" "Live2DCSharpSDK.Framework.pdb" "Live2DCSharpSDK.OpenGL.pdb" 
-        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb" "X11.pdb")
+        "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb")
 
     bindir=$base_dir/BUILDROOT/colormc-$version-1.$2/usr/share
 

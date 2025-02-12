@@ -31,7 +31,7 @@ dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1
 
 mkdir .\src\build_out\%1-dotnet\colormc
 
-set "files=av_libglesv2.dll ColorMC.Core.pdb ColorMC.Gui.pdb ColorMC.Launcher.exe ColorMC.Launcher.pdb libHarfBuzzSharp.dll libSkiaSharp.dll Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb Live2DCSharpSDK.OpenGL.pdb MinecraftSkinRender.OpenGL.pdb MinecraftSkinRender.pdb SDL2.dll X11.pdb"
+set "files=av_libglesv2.dll ColorMC.Core.pdb ColorMC.Gui.pdb ColorMC.Launcher.exe ColorMC.Launcher.pdb libHarfBuzzSharp.dll libSkiaSharp.dll Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb Live2DCSharpSDK.OpenGL.pdb MinecraftSkinRender.OpenGL.pdb MinecraftSkinRender.pdb SDL2.dll"
 
 for %%f in (%files%) do (
     copy .\src\build_out\%1-dotnet\%%f .\src\build_out\%1-dotnet\colormc\%%f
@@ -63,7 +63,7 @@ dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1-min
 
 mkdir .\src\build_out\%1-min\colormc
 
-set "files=av_libglesv2.dll ColorMC.Core.pdb ColorMC.Gui.pdb ColorMC.Launcher.exe ColorMC.Launcher.pdb libHarfBuzzSharp.dll libSkiaSharp.dll Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb Live2DCSharpSDK.OpenGL.pdb MinecraftSkinRender.OpenGL.pdb MinecraftSkinRender.pdb SDL2.dll X11.pdb"
+set "files=av_libglesv2.dll ColorMC.Core.pdb ColorMC.Gui.pdb ColorMC.Launcher.exe ColorMC.Launcher.pdb libHarfBuzzSharp.dll libSkiaSharp.dll Live2DCSharpSDK.App.pdb Live2DCSharpSDK.Framework.pdb Live2DCSharpSDK.OpenGL.pdb MinecraftSkinRender.OpenGL.pdb MinecraftSkinRender.pdb SDL2.dll"
 
 for %%f in (%files%) do (
     copy .\src\build_out\%1-min\%%f .\src\build_out\%1-min\colormc\%%f
