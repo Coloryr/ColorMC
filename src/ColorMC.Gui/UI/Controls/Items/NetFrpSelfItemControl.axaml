@@ -1,0 +1,69 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.NetFrpSelfItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:NetFrpSelfItemModel"
+    mc:Ignorable="d">
+    <Border
+        Margin="10,5,10,5"
+        Background="{setting:Theme ItemBG}"
+        BoxShadow="{Binding Border}"
+        CornerRadius="5">
+        <DockPanel Margin="15">
+            <TextBlock
+                Margin="0,0,5,5"
+                DockPanel.Dock="Top"
+                FontSize="16"
+                Foreground="{setting:Theme MainColor}"
+                Text="{Binding Name, FallbackValue=Name}" />
+            <Button
+                Width="35"
+                Height="35"
+                Margin="5,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderThickness="0"
+                ClipToBounds="False"
+                Command="{Binding Delete}"
+                DockPanel.Dock="Right">
+                <svg:SvgControl Path="/Resource/Icon/delete.svg" />
+            </Button>
+            <Button
+                Width="35"
+                Height="35"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                BorderThickness="0"
+                ClipToBounds="False"
+                Command="{Binding Edit}"
+                DockPanel.Dock="Right">
+                <svg:SvgControl Path="/Resource/Icon/edit.svg" />
+            </Button>
+            <WrapPanel Margin="0,0,0,-5" VerticalAlignment="Center">
+                <StackPanel Margin="0,0,5,5" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text10}" />
+                    <TextBlock Text="{Binding IP}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,5,5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab6.Text4}" />
+                    <TextBlock Text="{Binding Key}" />
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,5,5"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
+                    <TextBlock Text="{Binding NetPort}" />
+                </StackPanel>
+            </WrapPanel>
+        </DockPanel>
+    </Border>
+</UserControl>

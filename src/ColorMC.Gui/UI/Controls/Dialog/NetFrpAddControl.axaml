@@ -1,0 +1,71 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.NetFrpAddControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    x:DataType="model:NetFrpAddModel"
+    mc:Ignorable="d">
+    <StackPanel>
+        <TextBlock
+            Margin="0,0,0,5"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="{setting:Localize NetFrpWindow.Tab6.Text2}" />
+        <TextBox
+            Margin="0,0,0,5"
+            IsEnabled="{Binding LockName}"
+            Text="{Binding Name}"
+            Watermark="{setting:Localize Text.Name}" />
+        <TextBox
+            Margin="0,0,0,5"
+            Text="{Binding Ip}"
+            Watermark="{setting:Localize NetFrpWindow.Tab6.Text3}" />
+        <DockPanel>
+            <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text3}" />
+            <NumericUpDown
+                Margin="5,0,0,0"
+                Maximum="65535"
+                Minimum="0"
+                Value="{Binding Port}" />
+        </DockPanel>
+        <TextBox
+            Margin="0,0,0,5"
+            Text="{Binding RName}"
+            Watermark="{setting:Localize NetFrpWindow.Tab6.Text6}" />
+        <TextBox
+            Margin="0,0,0,5"
+            Text="{Binding User}"
+            Watermark="{setting:Localize NetFrpWindow.Tab6.Text5}" />
+        <TextBox
+            Margin="0,0,0,5"
+            Text="{Binding Key}"
+            Watermark="{setting:Localize NetFrpWindow.Tab6.Text4}" />
+        <DockPanel>
+            <TextBlock Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
+            <NumericUpDown
+                Margin="5,0,0,0"
+                Maximum="65535"
+                Minimum="0"
+                Value="{Binding NetPort}" />
+        </DockPanel>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+            <Button
+                Width="100"
+                Height="35"
+                Margin="0,0,20,0"
+                Classes="top"
+                Command="{Binding Confirm}"
+                Content="{setting:Localize Button.Confirm}" />
+            <Button
+                Width="100"
+                Height="35"
+                Classes="top"
+                Command="{Binding Cancel}"
+                Content="{setting:Localize Button.Cancel}" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

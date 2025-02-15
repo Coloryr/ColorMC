@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
@@ -84,6 +85,28 @@ public static class FrpConfigUtils
                 save = true;
             }
 
+            if (Config.OpenFrp == null)
+            {
+                if (exit)
+                {
+                    return false;
+                }
+
+                Config.OpenFrp = new();
+                save = true;
+            }
+
+            if (Config.SelfFrp == null)
+            {
+                if (exit)
+                {
+                    return false;
+                }
+
+                Config.SelfFrp = [];
+                save = true;
+            }
+
             if (save)
             {
                 Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
@@ -130,7 +153,48 @@ public static class FrpConfigUtils
     {
         return new()
         {
-            SakuraFrp = new()
+            SakuraFrp = new(),
+            OpenFrp = new(),
+            SelfFrp = []
         };
+    }
+
+    /// <summary>
+    /// 添加一个自定义Frp
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void AddSelfFrp(FrpSelfObj obj)
+    {
+        Config.SelfFrp.Add(obj);
+        Save();
+    }
+
+    /// <summary>
+    /// 删除一个自定义Frp
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void RemoveSelfFrp(FrpSelfObj obj)
+    {
+        if (Config.SelfFrp.Remove(obj) || Config.SelfFrp.RemoveAll(item => item.IsSame(obj)) > 0)
+        {
+            Save();
+        }
+    }
+
+    /// <summary>
+    /// 修改一个自定义Frp
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void EditSelfFrp(FrpSelfObj obj)
+    {
+        var item = Config.SelfFrp.FirstOrDefault(item => item.Name == obj.Name);
+        if (item != null)
+        {
+            item.IP = obj.IP;
+            item.Key = obj.Key;
+            item.NetPort = obj.NetPort;
+
+            Save();
+        }
     }
 }

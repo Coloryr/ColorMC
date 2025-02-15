@@ -9,19 +9,38 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel
 {
+    /// <summary>
+    /// 显示的Minecraft news
+    /// </summary>
     [ObservableProperty]
     private string? _displayNews;
 
+    /// <summary>
+    /// 是否加载news
+    /// </summary>
     [ObservableProperty]
     private bool _isLoadNews;
+    /// <summary>
+    /// 是否有news
+    /// </summary>
     [ObservableProperty]
     private bool _isHaveNews;
 
+    /// <summary>
+    /// news图片
+    /// </summary>
     [ObservableProperty]
     private Bitmap? _newsImage;
 
+    /// <summary>
+    /// 获取news
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task GetNews()
     {
@@ -54,11 +73,19 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 加载news
+    /// </summary>
     private async void LoadNews()
     {
         await GetNews();
     }
 
+    /// <summary>
+    /// 获取图片
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     private async Task<Bitmap?> GetImage(string url)
     {
         Bitmap? _img = null;

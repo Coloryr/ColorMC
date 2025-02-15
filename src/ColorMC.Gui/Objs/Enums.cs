@@ -144,7 +144,7 @@ public enum WebType
 /// </summary>
 public enum FrpType
 {
-    SakuraFrp, OpenFrp
+    SakuraFrp, OpenFrp, SelfFrp
 }
 
 /// <summary>

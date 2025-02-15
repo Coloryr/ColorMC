@@ -12,24 +12,48 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel
 {
+    /// <summary>
+    /// 音乐是否在播放
+    /// </summary>
     private bool _isplay = true;
 
+    /// <summary>
+    /// 音乐音量
+    /// </summary>
     [ObservableProperty]
     private int _musicVolume;
 
+    /// <summary>
+    /// 音乐名字
+    /// </summary>
     [ObservableProperty]
     private string _musicName;
+    /// <summary>
+    /// 当前播放进度
+    /// </summary>
     [ObservableProperty]
     private string _musicNow;
 
+    /// <summary>
+    /// 音乐背景图
+    /// </summary>
     [ObservableProperty]
     private Bitmap? _musicImage;
 
+    /// <summary>
+    /// 是否有音乐背景图
+    /// </summary>
     [ObservableProperty]
     private bool _haveMusicImage;
 
+    /// <summary>
+    /// 是否循环播放
+    /// </summary>
     private bool _musicLoop;
 
     partial void OnMusicVolumeChanged(int value)
@@ -37,6 +61,9 @@ public partial class MainModel
         BaseBinding.SetVolume(value);
     }
 
+    /// <summary>
+    /// 音乐暂停
+    /// </summary>
     [RelayCommand]
     public void MusicPause()
     {
@@ -63,6 +90,9 @@ public partial class MainModel
         _isplay = !_isplay;
     }
 
+    /// <summary>
+    /// 音乐信息更新
+    /// </summary>
     private void MusicLoopStart()
     {
         _musicLoop = true;
@@ -81,6 +111,9 @@ public partial class MainModel
         }, TimeSpan.FromMilliseconds(500));
     }
 
+    /// <summary>
+    /// 加载音乐
+    /// </summary>
     private async void LoadMusic()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
@@ -110,6 +143,11 @@ public partial class MainModel
         }
     }
 
+    /// <summary>
+    /// 设置音乐信息
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="info"></param>
     private void SetMusicInfo(string? name, MusicInfo? info)
     {
         if (info == null)

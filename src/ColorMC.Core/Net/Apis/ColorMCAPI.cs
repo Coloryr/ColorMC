@@ -15,6 +15,7 @@ public static class ColorMCAPI
 {
     //public const string BaseUrl = $"http://localhost:8080/";
     public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
+    public const string BaseWebUrl = $"https://www.coloryr.com/";
 
     /// <summary>
     /// 获取Mod列表

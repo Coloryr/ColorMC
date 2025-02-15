@@ -6,5 +6,5 @@ public record SakuraFrpChannelObj
     public string name { get; set; }
     public bool online { get; set; }
     public string type { get; set; }
-    public int remote { get; set; }
+    public string remote { get; set; }
 }

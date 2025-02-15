@@ -8,6 +8,7 @@ using AvaloniaEdit.Document;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -73,13 +74,20 @@ public partial class NetFrpModel
         _process.Exited += Process_Exited;
         _process.OutputDataReceived += Process_OutputDataReceived;
         _process.ErrorDataReceived += Process_ErrorDataReceived;
-        _process.Start();
-        _process.BeginErrorReadLine();
-        _process.BeginOutputReadLine();
+        try
+        {
+            _process.Start();
+            _process.BeginErrorReadLine();
+            _process.BeginOutputReadLine();
+            IsRuning = true;
+        }
+        catch
+        {
+            IsRuning = false;
+            Model.Show(App.Lang("NetFrpWindow.Tab3.Error2"));
+        }
 
         Text = new();
-
-        IsRuning = true;
     }
 
     private void Process_Exited(object? sender, EventArgs e)
@@ -104,7 +112,8 @@ public partial class NetFrpModel
         if (e.Data?.Contains("TCP 隧道启动成功") == true
             || e.Data?.Contains("Your TCP proxy is available now") == true
             || e.Data?.Contains("来连接服务, 或使用IP地址(不推荐)") == true
-            || e.Data?.Contains("或使用 IP 地址连接") == true)
+            || e.Data?.Contains("或使用 IP 地址连接") == true
+            || e.Data?.Contains(" start proxy success") == true)
         {
             _isOut.Add(_localIP);
             _isSend = true;
@@ -180,7 +189,7 @@ public partial class NetFrpModel
         }
     }
 
-    public void Stop()
+    public async void Stop()
     {
         if (_isStoping)
         {
@@ -195,7 +204,10 @@ public partial class NetFrpModel
             return;
         }
 
-        Task.Run(() =>
+        _now.IsStart = false;
+
+        Model.Progress(App.Lang("NetFrpWindow.Tab3.Info6"));
+        await Task.Run(() =>
         {
             _process.Kill(true);
             _process.Close();
@@ -203,6 +215,7 @@ public partial class NetFrpModel
             _process = null;
             _isStoping = false;
         });
+        Model.ProgressClose();
     }
 
     public void Log(string? data)

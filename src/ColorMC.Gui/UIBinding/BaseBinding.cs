@@ -360,9 +360,17 @@ public static class BaseBinding
     /// <param name="item1"></param>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static Task<FrpLaunchRes> StartFrp(NetFrpRemoteModel item1, NetFrpLocalModel model)
+    public static Task<FrpLaunchRes> StartFrp(object item1, NetFrpLocalModel model)
     {
-        return FrpLaunchUtils.StartFrp(item1, model);
+        if (item1 is NetFrpRemoteModel model1)
+        {
+            return FrpLaunchUtils.StartFrp(model1, model);
+        }
+        else if (item1 is NetFrpSelfItemModel model2)
+        {
+            return FrpLaunchUtils.StartFrp(model2, model);
+        }
+        return Task.FromResult(new FrpLaunchRes());
     }
 
     public static (PlayState, string) GetMusicNow()

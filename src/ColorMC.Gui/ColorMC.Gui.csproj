@@ -46,6 +46,7 @@
     <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\collection.svg" />
     <None Remove="Resource\Icon\count.svg" />
+    <None Remove="Resource\Icon\delete.svg" />
     <None Remove="Resource\Icon\down.svg" />
     <None Remove="Resource\Icon\edit.svg" />
     <None Remove="Resource\Icon\filter.svg" />
@@ -114,6 +115,7 @@
     <None Remove="Resource\Icon\NetFrp\item3.svg" />
     <None Remove="Resource\Icon\NetFrp\item4.svg" />
     <None Remove="Resource\Icon\NetFrp\item5.svg" />
+    <None Remove="Resource\Icon\NetFrp\item6.svg" />
     <None Remove="Resource\Icon\NetFrp\join.svg" />
     <None Remove="Resource\Icon\new.svg" />
     <None Remove="Resource\Icon\pause.svg" />
@@ -195,6 +197,7 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item7.svg" />
     <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\count.svg" />
+    <AvaloniaResource Include="Resource\Icon\delete.svg" />
     <AvaloniaResource Include="Resource\Icon\down.svg" />
     <AvaloniaResource Include="Resource\Icon\edit.svg" />
     <AvaloniaResource Include="Resource\Icon\filter.svg" />
@@ -264,6 +267,7 @@
     <AvaloniaResource Include="Resource\Icon\NetFrp\item4.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item5.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\join.svg" />
+    <AvaloniaResource Include="Resource\Icon\NetFrp\item6.svg" />
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\reload.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
@@ -364,14 +368,23 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\Dialog\NetFrpAddControl.axaml.cs">
+      <DependentUpon>NetFrpAddControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\Items\FileVersionItemControl.axaml.cs">
       <DependentUpon>FileVersionItemControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Items\NetFrpSelfItemControl.axaml.cs">
+      <DependentUpon>NetFrpSelfItemControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Items\OptifineVersionItemControl.axaml.cs">
       <DependentUpon>OptifineVersionItemControl.axaml</DependentUpon>
     </Compile>
     <Compile Update="UI\Controls\Dialog\AddDnsControl.axaml.cs">
       <DependentUpon>AddDnsControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\NetFrp\NetFrpTab6Control.axaml.cs">
+      <DependentUpon>NetFrpTab6Control.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>
