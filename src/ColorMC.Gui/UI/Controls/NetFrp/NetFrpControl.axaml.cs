@@ -18,6 +18,7 @@ public partial class NetFrpControl : MenuControl
     private NetFrpTab3Control _tab3;
     private NetFrpTab4Control _tab4;
     private NetFrpTab5Control _tab5;
+    private NetFrpTab6Control _tab6;
 
     public NetFrpControl() : base(WindowManager.GetUseName<NetFrpControl>())
     {
@@ -67,9 +68,12 @@ public partial class NetFrpControl : MenuControl
                 model.LoadOpenFrp();
                 return _tab5 ??= new();
             case 3:
+                model.LoadSelfFrp();
+                return _tab6 ??= new();
+            case 4:
                 model.LoadLocal();
                 return _tab2 ??= new();
-            case 4:
+            case 5:
                 model.SetTab3Click();
                 return _tab3 ??= new();
             default:

@@ -5,6 +5,7 @@
     xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
@@ -18,7 +19,7 @@
         Identifier="ShareCon"
         OverlayBackground="Transparent">
         <dialog:DialogHost.DataTemplates>
-            <DataTemplate DataType="model:FrpShareModel">
+            <DataTemplate DataType="dialogmodel:FrpShareModel">
                 <view2:FrpShareControl DataContext="{Binding}" />
             </DataTemplate>
         </dialog:DialogHost.DataTemplates>

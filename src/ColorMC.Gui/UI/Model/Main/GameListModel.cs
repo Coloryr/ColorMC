@@ -697,4 +697,13 @@ public partial class MainModel
             }
         }
     }
+
+    /// <summary>
+    /// 导出启动指令
+    /// </summary>
+    /// <param name="obj"></param>
+    public void ExportCmd(GameSettingObj obj)
+    {
+        GameBinding.ExportCmd(obj, Model);
+    }
 }

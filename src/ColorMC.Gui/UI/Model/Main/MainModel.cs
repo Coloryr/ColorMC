@@ -210,6 +210,9 @@ public partial class MainModel : TopModel, IMutTop
         }
     }
 
+    /// <summary>
+    /// 显示欢迎信息
+    /// </summary>
     public void HelloClick()
     {
         _helloClick++;
@@ -223,18 +226,17 @@ public partial class MainModel : TopModel, IMutTop
         }
     }
 
+    /// <summary>
+    /// 显示欢迎信息
+    /// </summary>
     private void ShowHello()
     {
         HelloText = App.Lang("Hello.Text1");
     }
 
-    private void SkinChange()
-    {
-        Head = ImageManager.HeadBitmap!;
-
-        IsHeadLoad = false;
-    }
-
+    /// <summary>
+    /// 加载服务器motd
+    /// </summary>
     public void LoadMotd()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
@@ -251,6 +253,9 @@ public partial class MainModel : TopModel, IMutTop
         }
     }
 
+    /// <summary>
+    /// 加载信息
+    /// </summary>
     public void LoadDone()
     {
         LoadGameItem();
@@ -272,6 +277,9 @@ public partial class MainModel : TopModel, IMutTop
         LoadCard();
     }
 
+    /// <summary>
+    /// 加载卡片
+    /// </summary>
     private void LoadCard()
     {
         var config = GuiConfigUtils.Config.Card;
@@ -293,11 +301,6 @@ public partial class MainModel : TopModel, IMutTop
         {
             HaveCard = true;
         }
-    }
-
-    public void ExportCmd(GameSettingObj obj)
-    {
-        GameBinding.ExportCmd(obj, Model);
     }
 
     public override void Close()

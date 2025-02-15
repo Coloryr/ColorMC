@@ -10,8 +10,14 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
+/// <summary>
+/// 主界面
+/// </summary>
 public partial class MainModel
 {
+    /// <summary>
+    /// 是否有启动器更新
+    /// </summary>
     [ObservableProperty]
     private bool _haveUpdate;
 #if !DEBUG
@@ -19,6 +25,10 @@ public partial class MainModel
     private string _updateStr;
 #endif
 
+    /// <summary>
+    /// 获取更信息
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task NewInfo()
     {
@@ -41,6 +51,10 @@ public partial class MainModel
         _isGetNewInfo = false;
     }
 
+    /// <summary>
+    /// 升级
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Upgrade()
     {
@@ -60,6 +74,9 @@ public partial class MainModel
 #endif
     }
 
+    /// <summary>
+    /// 检查更新
+    /// </summary>
     private async void CheckUpdate()
     {
 #if DEBUG

@@ -25,6 +25,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.Utils;

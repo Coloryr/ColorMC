@@ -33,6 +33,11 @@ public partial class NetFrpModel : MenuModel
             },
             new()
             {
+                Icon = "/Resource/Icon/NetFrp/item6.svg",
+                Text = App.Lang("NetFrpWindow.Tabs.Text6")
+            },
+            new()
+            {
                 Icon = "/Resource/Icon/NetFrp/item2.svg",
                 Text = App.Lang("NetFrpWindow.Tabs.Text2"),
                 SubMenu =
@@ -74,12 +79,14 @@ public partial class NetFrpModel : MenuModel
 
         if (!string.IsNullOrWhiteSpace(KeySakura))
         {
-            await GetChannelSakura();
+            GetChannelSakura();
         }
         if (!string.IsNullOrWhiteSpace(KeyOpenFrp))
         {
-            await GetChannelOpenFrp();
+            GetChannelOpenFrp();
         }
+
+        LoadSelfFrp();
 
         var list = await GameBinding.GetGameVersions(GameType.All);
         Versions.Add("");

@@ -1,5 +1,6 @@
 ﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.UI.Model.NetFrp;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -8,26 +9,29 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class NetFrpRemoteModel : SelectItemModel
 {
-    public NetFrpRemoteModel(string key, SakuraFrpChannelObj obj)
+    private readonly NetFrpModel _model;
+    private readonly bool _isSakura;
+
+    public NetFrpRemoteModel(NetFrpModel model, string key, SakuraFrpChannelObj obj)
     {
         Key = key;
         Name = obj.name;
         ID = obj.id;
-        Use = obj.online == false && obj.type == "tcp";
-        Type = obj.type;
         Remote = obj.remote.ToString();
         FrpType = FrpType.SakuraFrp;
+        _model = model;
+        _isSakura = true;
     }
 
-    public NetFrpRemoteModel(string key, OpenFrpChannelObj.Data data, OpenFrpChannelObj.Proxie obj)
+    public NetFrpRemoteModel(NetFrpModel model, string key, OpenFrpChannelObj.Data data, OpenFrpChannelObj.Proxie obj)
     {
         Key = key;
         Name = data.name + obj.name;
         ID = obj.id;
-        Use = obj.type == "tcp";
-        Type = obj.type;
         Remote = obj.remote;
         FrpType = FrpType.OpenFrp;
+        _model = model;
+        _isSakura = false;
     }
 
     /// <summary>
@@ -38,14 +42,6 @@ public partial class NetFrpRemoteModel : SelectItemModel
     /// 端口ID
     /// </summary>
     public int ID { get; }
-    /// <summary>
-    /// 是否被占用
-    /// </summary>
-    public bool Use { get; }
-    /// <summary>
-    /// 类型
-    /// </summary>
-    public string Type { get; }
     /// <summary>
     /// 远程地址
     /// </summary>
@@ -58,4 +54,16 @@ public partial class NetFrpRemoteModel : SelectItemModel
     /// API KEY
     /// </summary>
     public string Key;
+
+    public void Select()
+    {
+        if (_isSakura)
+        {
+            _model.SelectSakura(this);
+        }
+        else
+        {
+            _model.SelectOpenFrp(this);
+        }
+    }
 }

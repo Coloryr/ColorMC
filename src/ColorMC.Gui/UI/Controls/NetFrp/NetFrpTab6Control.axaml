@@ -1,0 +1,78 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.NetFrp.NetFrpTab6Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.NetFrp"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    xmlns:view2="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:NetFrpModel"
+    mc:Ignorable="d">
+    <dialog:DialogHost
+        DisableOpeningAnimation="True"
+        Identifier="ShareCon1"
+        OverlayBackground="Transparent">
+        <dialog:DialogHost.DataTemplates>
+            <DataTemplate DataType="dialogmodel:NetFrpAddModel">
+                <view2:NetFrpAddControl DataContext="{Binding}" />
+            </DataTemplate>
+        </dialog:DialogHost.DataTemplates>
+        <DockPanel Margin="0,0,10,15">
+            <Border
+                Margin="10,5,10,3"
+                Classes="t2"
+                DockPanel.Dock="Top">
+                <panel:WrapPanelWithStretch Margin="15,15,5,5" LeftMax="True">
+                    <StackPanel
+                        Margin="0,0,10,10"
+                        DockPanel.Dock="Right"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="120"
+                            Height="35"
+                            Margin="-2,-2,3,-2"
+                            Classes="top"
+                            Command="{Binding LoadSelfFrp}"
+                            Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
+                            DockPanel.Dock="Right" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-2,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding AddSelfFrp}"
+                            Content="{setting:Localize NetFrpWindow.Tab6.Text1}" />
+                    </StackPanel>
+                </panel:WrapPanelWithStretch>
+            </Border>
+            <Panel>
+                <ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding RemoteSelfFrp}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <view:NetFrpSelfItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Border
+                    Margin="10,5,10,3"
+                    Classes="t1"
+                    IsVisible="{Binding IsSelfFrpEmpty}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
+                </Border>
+            </Panel>
+        </DockPanel>
+    </dialog:DialogHost>
+</UserControl>

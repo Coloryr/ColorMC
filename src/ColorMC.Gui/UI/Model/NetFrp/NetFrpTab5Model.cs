@@ -22,16 +22,20 @@ public partial class NetFrpModel
 
     public ObservableCollection<NetFrpRemoteModel> RemotesOpenFrp { get; set; } = [];
 
+    private NetFrpRemoteModel _itemOpenFrp;
+
     partial void OnKeyOpenFrpChanged(string value)
     {
         if (_isLoadOpenFrp)
+        {
             return;
+        }
 
         ConfigBinding.SetFrpKeyOpenFrp(KeyOpenFrp);
     }
 
     [RelayCommand]
-    public async Task GetChannelOpenFrp()
+    public void GetChannelOpenFrp()
     {
         IsOpenFrpEmpty = true;
 
@@ -40,25 +44,8 @@ public partial class NetFrpModel
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
-        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res = await OpenFrpApi.GetChannel(KeyOpenFrp);
-        Model.ProgressClose();
-        if (res == null || res.data == null)
-        {
-            Model.Show(App.Lang("NetFrpWindow.Tab1.Error2"));
-            return;
-        }
 
-        RemotesOpenFrp.Clear();
-        foreach (var item in res.data)
-        {
-            foreach (var item1 in item.proxies)
-            {
-                RemotesOpenFrp.Add(new(KeyOpenFrp, item, item1));
-            }
-        }
-
-        IsOpenFrpEmpty = RemotesOpenFrp.Count == 0;
+        LoadOpenFrpList();
     }
 
     [RelayCommand]
@@ -67,7 +54,7 @@ public partial class NetFrpModel
         WebBinding.OpenWeb(WebType.OpenFrp);
     }
 
-    public async void LoadOpenFrp()
+    public void LoadOpenFrp()
     {
         _isLoadOpenFrp = true;
 
@@ -83,7 +70,12 @@ public partial class NetFrpModel
             return;
         }
 
-        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info1"));
+        LoadOpenFrpList();
+    }
+
+    private async void LoadOpenFrpList()
+    {
+        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res1 = await OpenFrpApi.GetChannel(KeyOpenFrp);
         Model.ProgressClose();
         if (res1 == null || res1.data == null)
@@ -96,10 +88,24 @@ public partial class NetFrpModel
         {
             foreach (var item1 in item.proxies)
             {
-                RemotesOpenFrp.Add(new(KeyOpenFrp, item, item1));
+                if (item1.type == "tcp")
+                {
+                    RemotesOpenFrp.Add(new(this, KeyOpenFrp, item, item1));
+                }
             }
         }
 
         IsOpenFrpEmpty = RemotesOpenFrp.Count == 0;
+    }
+
+    public void SelectOpenFrp(NetFrpRemoteModel model)
+    {
+        if (_itemOpenFrp != null)
+        {
+            _itemOpenFrp.IsSelect = false;
+        }
+
+        _itemOpenFrp = model;
+        model.IsSelect = true;
     }
 }

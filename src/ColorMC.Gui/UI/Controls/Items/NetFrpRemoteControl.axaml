@@ -28,22 +28,8 @@
                     Margin="0,0,5,5"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text11}" />
-                    <TextBlock Text="{Binding Type}" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,0,5,5"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
                     <TextBlock Text="{Binding Remote}" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,0,5,5"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize NetFrpWindow.Tab1.Text13}" />
-                    <TextBlock Text="{Binding Use}" />
                 </StackPanel>
             </WrapPanel>
         </StackPanel>

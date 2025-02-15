@@ -36,7 +36,7 @@ public partial class NetFrpModel
             return;
         }
         var list = new List<string>();
-        var list1 = new List<NetFrpRemoteModel>();
+        var list1 = new List<object>();
         foreach (var item in RemotesSakura)
         {
             list1.Add(item);
@@ -49,6 +49,12 @@ public partial class NetFrpModel
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
         }
 
+        foreach (var item in RemoteSelfFrp)
+        {
+            list1.Add(item);
+            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
+        }
+
         var res = await Model.Combo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
         if (res.Cancel)
         {
@@ -56,7 +62,6 @@ public partial class NetFrpModel
         }
 
         var item1 = list1[res.Index];
-        local.IsStart = true;
         var res1 = await BaseBinding.StartFrp(item1, local);
         if (!res1.Res)
         {
@@ -64,10 +69,10 @@ public partial class NetFrpModel
         }
         else
         {
-            local.IsStart = false;
+            local.IsStart = true;
             SetProcess(res1.Process!, local, res1.IP!);
             Model.Notify(App.Lang("NetFrpWindow.Tab2.Info2"));
-            NowView = 4;
+            NowView = 5;
         }
     }
 

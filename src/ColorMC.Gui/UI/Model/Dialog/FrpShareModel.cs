@@ -6,8 +6,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
 
-namespace ColorMC.Gui.UI.Model.NetFrp;
+namespace ColorMC.Gui.UI.Model.Dialog;
 
+/// <summary>
+/// 映射联机大厅选择
+/// </summary>
 public partial class FrpShareModel : ObservableObject
 {
     [ObservableProperty]

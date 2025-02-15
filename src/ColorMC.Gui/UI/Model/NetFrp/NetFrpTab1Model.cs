@@ -22,16 +22,20 @@ public partial class NetFrpModel
 
     public ObservableCollection<NetFrpRemoteModel> RemotesSakura { get; set; } = [];
 
+    private NetFrpRemoteModel? _itemSakura;
+
     partial void OnKeySakuraChanged(string value)
     {
         if (_isLoadSakura)
+        {
             return;
+        }
 
         ConfigBinding.SetFrpKeySakura(KeySakura);
     }
 
     [RelayCommand]
-    public async Task GetChannelSakura()
+    public void GetChannelSakura()
     {
         IsSakuraEmpty = true;
 
@@ -40,22 +44,8 @@ public partial class NetFrpModel
             Model.Show(App.Lang("NetFrpWindow.Tab1.Error3"));
             return;
         }
-        Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res = await SakuraFrpApi.GetChannel(KeySakura);
-        Model.ProgressClose();
-        if (res == null)
-        {
-            Model.Show(App.Lang("NetFrpWindow.Tab1.Error2"));
-            return;
-        }
 
-        RemotesSakura.Clear();
-        foreach (var item in res)
-        {
-            RemotesSakura.Add(new(KeySakura, item));
-        }
-
-        IsSakuraEmpty = RemotesSakura.Count == 0;
+        LoadSakuraList();
     }
 
     [RelayCommand]
@@ -64,7 +54,7 @@ public partial class NetFrpModel
         WebBinding.OpenWeb(WebType.SakuraFrp);
     }
 
-    public async void LoadSakura()
+    public void LoadSakura()
     {
         _isLoadSakura = true;
 
@@ -80,20 +70,40 @@ public partial class NetFrpModel
             return;
         }
 
+        LoadSakuraList();
+    }
+
+    private async void LoadSakuraList()
+    {
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res1 = await SakuraFrpApi.GetChannel(KeySakura);
+        var res = await SakuraFrpApi.GetChannel(KeySakura);
         Model.ProgressClose();
-        if (res1 == null)
+        if (res == null)
         {
+            Model.Show(App.Lang("NetFrpWindow.Tab1.Error2"));
             return;
         }
 
         RemotesSakura.Clear();
-        foreach (var item in res1)
+        foreach (var item in res)
         {
-            RemotesSakura.Add(new(KeySakura, item));
+            if (item.type == "tcp")
+            {
+                RemotesSakura.Add(new(this, KeySakura, item));
+            }
         }
 
         IsSakuraEmpty = RemotesSakura.Count == 0;
+    }
+
+    public void SelectSakura(NetFrpRemoteModel model)
+    {
+        if (_itemSakura != null)
+        {
+            _itemSakura.IsSelect = false;
+        }
+
+        _itemSakura = model;
+        model.IsSelect = true;
     }
 }

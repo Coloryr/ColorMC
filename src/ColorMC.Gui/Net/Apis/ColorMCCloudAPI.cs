@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +15,13 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.NetFrp;
+using ColorMC.Gui.Utils;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -40,6 +48,23 @@ public static class ColorMCCloudAPI
     /// 更新检查网址
     /// </summary>
     public const string CheckUrl = $"{ColorMCAPI.BaseUrl}update/{ColorMCCore.TopVersion}/";
+
+    public static async Task<Dictionary<string, FrpDownloadObj>?> GetFrpList()
+    {
+        try
+        {
+            var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseWebUrl + "frp/version.json");
+            req.Headers.Add("ColorMC", ColorMCCore.Version);
+            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
+            var data1 = await data.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<Dictionary<string, FrpDownloadObj>>(data1);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error2"), e);
+            return null;
+        }
+    }
 
     /// <summary>
     /// 获取更新日志
@@ -694,5 +719,111 @@ public static class ColorMCCloudAPI
         }
 
         return -1;
+    }
+
+    public static (string?, DownloadItemObj?) BuildFrpItem(string key, FrpDownloadObj value)
+    {
+        string data1;
+        string sha1;
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            if (SystemInfo.IsArm)
+            {
+                data1 = $"frp_{key}_windows_arm64.zip";
+                sha1 = value.windows_arm64;
+            }
+            else
+            {
+                data1 = $"frp_{key}_windows_amd64.zip";
+                sha1 = value.windows_amd64;
+            }
+        }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            if (SystemInfo.IsArm)
+            {
+                data1 = $"frp_{key}_linux_arm64.tar.gz";
+                sha1 = value.linux_arm64;
+            }
+            else
+            {
+                data1 = $"frp_{key}_linux_amd64.tar.gz";
+                sha1 = value.linux_amd64;
+            }
+        }
+        else if (SystemInfo.Os == OsType.MacOS)
+        {
+            if (SystemInfo.IsArm)
+            {
+                data1 = $"frp_{key}_darwin_arm64.tar.gz";
+                sha1 = value.darwin_arm64;
+            }
+            else
+            {
+                data1 = $"frp_{key}_darwin_amd64.tar.gz";
+                sha1 = value.darwin_amd64;
+            }
+        }
+        else
+        {
+            return (null, null);
+        }
+
+        return (FrpLaunchUtils.GetFrpLocal(key), new()
+        {
+            Name = $"Frp {data1}",
+            Local = FrpLaunchUtils.GetFrpLocal(key, data1),
+            Url = $"{ColorMCAPI.BaseWebUrl}frp/{key}/{data1}",
+            Sha1 = sha1,
+            Later = (stream) =>
+            {
+                Unzip(stream, key, data1);
+            }
+        });
+    }
+
+    /// <summary>
+    /// 解压Frp
+    /// </summary>
+    /// <param name="stream"></param>
+    /// <param name="version"></param>
+    /// <param name="file"></param>
+    private static void Unzip(Stream stream, string version, string file)
+    {
+        if (file.EndsWith(Names.NameTarGzExt))
+        {
+            using var gzipStream = new GZipInputStream(stream);
+            var tarArchive = new TarInputStream(gzipStream, TarBuffer.DefaultBlockFactor, Encoding.UTF8);
+            do
+            {
+                TarEntry entry1 = tarArchive.GetNextEntry();
+                if (entry1.IsDirectory || !entry1.Name.EndsWith("frpc"))
+                {
+                    continue;
+                }
+
+                using var filestream = PathHelper.OpenWrite(FrpLaunchUtils.GetFrpLocal(version), true);
+                tarArchive.CopyEntryContents(filestream);
+
+                break;
+            }
+            while (true);
+
+            tarArchive.Close();
+        }
+        else
+        {
+            using var s = new ZipFile(stream);
+            foreach (ZipEntry item in s)
+            {
+                if (item.IsDirectory || !item.Name.EndsWith("frpc.exe"))
+                {
+                    continue;
+                }
+
+                PathHelper.WriteBytes(FrpLaunchUtils.GetFrpLocal(version), s.GetInputStream(item));
+                break;
+            }
+        }
     }
 }

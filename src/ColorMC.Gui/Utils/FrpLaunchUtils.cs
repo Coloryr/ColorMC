@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
@@ -21,6 +22,7 @@ public static class FrpLaunchUtils
     public const string Name3 = "frpc.exe";
     public const string Name4 = "SakuraFrp";
     public const string Name5 = "OpenFrp";
+    public const string Name6 = "Frp";
 
     public static string BaseDir { get; private set; }
 
@@ -57,6 +59,105 @@ public static class FrpLaunchUtils
     public static string GetOpenFrpLocal(string ver, string? filename = null)
     {
         return filename != null ? Path.Combine(BaseDir, Name5, ver, filename) : Path.Combine(BaseDir, Name5, ver, GetFrpcName());
+    }
+
+    /// <summary>
+    /// 获取OpenFrp文件路径
+    /// </summary>
+    /// <param name="ver"></param>
+    /// <returns></returns>
+    public static string GetFrpLocal(string ver, string? filename = null)
+    {
+        return filename != null ? Path.Combine(BaseDir, Name6, ver, filename) : Path.Combine(BaseDir, Name6, ver, GetFrpcName());
+    }
+
+    /// <summary>
+    /// 启动Frp
+    /// </summary>
+    /// <param name="item1"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public static async Task<FrpLaunchRes> StartFrp(NetFrpSelfItemModel item1, NetFrpLocalModel model)
+    {
+        var obj1 = await ColorMCCloudAPI.GetFrpList();
+        if (obj1 == null)
+        {
+            return new();
+        }
+        var item = obj1.FirstOrDefault();
+        var obj = ColorMCCloudAPI.BuildFrpItem(item.Key, item.Value);
+
+        if (obj.Item1 == null)
+        {
+            return new();
+        }
+        if (!File.Exists(obj.Item1))
+        {
+            var res = await DownloadManager.StartAsync([obj.Item2!]);
+            if (!res)
+            {
+                return new();
+            }
+        }
+        var file = obj.Item1;
+        var info2 = new FileInfo(file);
+        var dir = info2.DirectoryName!;
+
+        var builder = new StringBuilder();
+        builder.AppendLine($"serverAddr = \"{item1.Obj.IP}\"")
+            .AppendLine($"serverPort = {item1.Obj.Port}")
+            .AppendLine();
+        if (!string.IsNullOrWhiteSpace(item1.Obj.User))
+        {
+            builder.AppendLine($"user = \"{item1.Obj.User}\"");
+        }
+        if (!string.IsNullOrWhiteSpace(item1.Obj.Key))
+        {
+            builder.AppendLine($"auth.token = \"{item1.Obj.Key}\"");
+        }
+        builder.AppendLine()
+            .AppendLine("[[proxies]]")
+            .AppendLine($"name = \"{(string.IsNullOrWhiteSpace(item1.Obj.RName) ? "minecraft" : item1.Obj.RName)}\"")
+            .AppendLine("type = \"tcp\"")
+            .AppendLine("localIP = \"127.0.0.1\"")
+            .AppendLine($"localPort = {model.Port}")
+            .AppendLine($"remotePort = {item1.Obj.NetPort}");
+
+        PathHelper.WriteText(Path.Combine(dir, "server.toml"), builder.ToString());
+
+        try
+        {
+            if (SystemInfo.Os != OsType.Windows)
+            {
+                PathBinding.Chmod(file);
+            }
+
+            var p = new Process
+            {
+                StartInfo = new ProcessStartInfo()
+                {
+                    FileName = file,
+                    WorkingDirectory = dir,
+                    Arguments = "-c server.toml",
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                }
+            };
+
+            return new()
+            {
+                Res = true,
+                Process = p,
+                IP = item1.Obj.IP + ":" + item1.NetPort
+            };
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.Lang("BaseBinding.Error6"), e);
+        }
+
+        return new();
     }
 
     /// <summary>
@@ -156,9 +257,6 @@ public static class FrpLaunchUtils
                     builder.AppendLine(item3);
                 }
             }
-
-            File.WriteAllText(dir + "/server.ini", builder.ToString());
-
             outip = ip + ":" + item1.Remote;
         }
         else if (item1.FrpType == FrpType.OpenFrp)
@@ -175,11 +273,10 @@ public static class FrpLaunchUtils
                     builder.AppendLine(item3);
                 }
             }
-
-            File.WriteAllText(dir + "/server.ini", builder.ToString());
-
             outip = item1.Remote;
         }
+
+        PathHelper.WriteText(Path.Combine(dir, "server.ini"), builder.ToString());
 
         try
         {
