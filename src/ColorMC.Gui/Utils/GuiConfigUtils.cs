@@ -15,8 +15,6 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class GuiConfigUtils
 {
-    public const string Name1 = "gui.json";
-
     public static GuiConfigObj Config { get; set; }
 
     private static string s_local;
@@ -26,7 +24,7 @@ public static class GuiConfigUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameGuiConfigFile);
 
         Load(s_local);
     }

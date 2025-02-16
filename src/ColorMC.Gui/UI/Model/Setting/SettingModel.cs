@@ -8,19 +8,27 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置窗口
+/// </summary>
 public partial class SettingModel : MenuModel
 {
+    /// <summary>
+    /// 是否为手机模式
+    /// </summary>
     public bool Phone { get; } = false;
+    /// <summary>
+    /// 是否启用手柄
+    /// </summary>
     public bool IsInputEnable { get; }
 
-    private readonly string _name;
-
+    /// <summary>
+    /// 更新定制器
+    /// </summary>
     private readonly Timer _timer;
 
     public SettingModel(BaseModel model) : base(model)
     {
-        _name = ToString() ?? "SettingModel";
-
         if (SystemInfo.Os == OsType.Android)
         {
             Phone = true;
@@ -31,6 +39,7 @@ public partial class SettingModel : MenuModel
             IsInputEnable = true;
         }
 
+        //更新定制器用于内存
         _timer = new Timer(1000);
         _timer.Elapsed += Timer_Elapsed;
         _timer.AutoReset = true;
@@ -184,6 +193,9 @@ public partial class SettingModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 加载基础设置
+    /// </summary>
     public void Load()
     {
         _timer.Start();

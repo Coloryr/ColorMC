@@ -467,7 +467,9 @@ public static class Launch
                 MaxMemory = obj.JvmArg.MaxMemory
                     ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
                 MinMemory = obj.JvmArg.MinMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg.MinMemory
+                    ?? ConfigUtils.Config.DefaultJvmArg.MinMemory,
+                ColorASM = obj.JvmArg != null ? obj.JvmArg.ColorASM
+                    : ConfigUtils.Config.DefaultJvmArg.ColorASM
             };
         }
 
@@ -479,7 +481,7 @@ public static class Launch
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
 
-        if (mixinport > 0 && jvm1.MajorVersion >= 8)
+        if (args.ColorASM == false && mixinport > 0 && jvm1.MajorVersion >= 8)
         {
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);

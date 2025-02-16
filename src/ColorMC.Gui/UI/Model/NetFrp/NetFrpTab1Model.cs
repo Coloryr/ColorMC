@@ -12,16 +12,31 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    /// <summary>
+    /// Sakura映射Key
+    /// </summary>
     [ObservableProperty]
     private string _keySakura;
 
+    /// <summary>
+    /// 是否不存在Sakura映射项目
+    /// </summary>
     [ObservableProperty]
     private bool _isSakuraEmpty = true;
 
+    /// <summary>
+    /// 是否在加载Sakura映射列表
+    /// </summary>
     private bool _isLoadSakura;
 
+    /// <summary>
+    /// Sakura列表
+    /// </summary>
     public ObservableCollection<NetFrpRemoteModel> RemotesSakura { get; set; } = [];
 
+    /// <summary>
+    /// 选中的Sakura项目
+    /// </summary>
     private NetFrpRemoteModel? _itemSakura;
 
     partial void OnKeySakuraChanged(string value)
@@ -34,6 +49,9 @@ public partial class NetFrpModel
         ConfigBinding.SetFrpKeySakura(KeySakura);
     }
 
+    /// <summary>
+    /// 获取Sakura通道列表
+    /// </summary>
     [RelayCommand]
     public void GetChannelSakura()
     {
@@ -48,12 +66,18 @@ public partial class NetFrpModel
         LoadSakuraList();
     }
 
+    /// <summary>
+    /// 打开Sakura网址
+    /// </summary>
     [RelayCommand]
     public void OpenUrlSakura()
     {
         WebBinding.OpenWeb(WebType.SakuraFrp);
     }
 
+    /// <summary>
+    /// 加载Sakura列表
+    /// </summary>
     public void LoadSakura()
     {
         _isLoadSakura = true;
@@ -73,6 +97,9 @@ public partial class NetFrpModel
         LoadSakuraList();
     }
 
+    /// <summary>
+    /// 加载Sakura列表
+    /// </summary>
     private async void LoadSakuraList()
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
@@ -85,6 +112,7 @@ public partial class NetFrpModel
         }
 
         RemotesSakura.Clear();
+        _itemSakura = null;
         foreach (var item in res)
         {
             if (item.type == "tcp")
@@ -96,6 +124,10 @@ public partial class NetFrpModel
         IsSakuraEmpty = RemotesSakura.Count == 0;
     }
 
+    /// <summary>
+    /// 选择Sakura项目
+    /// </summary>
+    /// <param name="model"></param>
     public void SelectSakura(NetFrpRemoteModel model)
     {
         if (_itemSakura != null)

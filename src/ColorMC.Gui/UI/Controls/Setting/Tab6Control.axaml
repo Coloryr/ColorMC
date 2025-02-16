@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
@@ -19,7 +20,7 @@
         Identifier="AddLockLogin"
         OverlayBackground="Transparent">
         <dialog:DialogHost.DataTemplates>
-            <DataTemplate DataType="model:AddLockLoginModel">
+            <DataTemplate DataType="dialogmodel:AddLockLoginModel">
                 <view:AddLockLoginControl />
             </DataTemplate>
         </dialog:DialogHost.DataTemplates>

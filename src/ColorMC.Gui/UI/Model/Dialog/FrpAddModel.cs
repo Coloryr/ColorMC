@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.NetFrp;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -53,12 +54,12 @@ public partial class NetFrpAddModel : ObservableObject
     /// 映射端口
     /// </summary>
     [ObservableProperty]
-    private int _netPort;
+    private int? _netPort = 25565;
     /// <summary>
     /// 映射端口
     /// </summary>
     [ObservableProperty]
-    private int _port = 7000;
+    private int? _port = 7000;
 
     /// <summary>
     /// 是否取消
@@ -86,14 +87,14 @@ public partial class NetFrpAddModel : ObservableObject
     public void Confirm()
     {
         IsCancel = false;
-        DialogHost.Close(NetFrpTab6Control.NameCon);
+        DialogHost.Close(NetFrpModel.NameCon1);
     }
 
     [RelayCommand]
     public void Cancel()
     {
         IsCancel = true;
-        DialogHost.Close(NetFrpTab6Control.NameCon);
+        DialogHost.Close(NetFrpModel.NameCon1);
     }
 
     public FrpSelfObj Build()
@@ -103,9 +104,9 @@ public partial class NetFrpAddModel : ObservableObject
             IP = Ip,
             Name = Name,
             Key = Key,
-            NetPort = NetPort,
+            NetPort = NetPort ?? 25565,
             User = User,
-            Port = Port,
+            Port = Port ?? 7000,
             RName = RName
         };
     }

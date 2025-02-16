@@ -35,4 +35,12 @@ public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port)
     {
         top.StartThisFrp(this);
     }
+
+    /// <summary>
+    /// 选中
+    /// </summary>
+    public void Select()
+    {
+        top.SelectLocal(this);
+    }
 }

@@ -17,13 +17,6 @@ namespace ColorMC.Gui.Utils;
 
 public static class FrpLaunchUtils
 {
-    public const string Name1 = "frpc";
-    public const string Name2 = "0.51.0-sakura-9.2";
-    public const string Name3 = "frpc.exe";
-    public const string Name4 = "SakuraFrp";
-    public const string Name5 = "OpenFrp";
-    public const string Name6 = "Frp";
-
     public static string BaseDir { get; private set; }
 
     /// <summary>
@@ -31,14 +24,14 @@ public static class FrpLaunchUtils
     /// </summary>
     public static void Init()
     {
-        BaseDir = Path.Combine(ColorMCGui.RunDir, Name1);
+        BaseDir = Path.Combine(ColorMCGui.RunDir, GuiNames.NameFrpFile);
 
         Directory.CreateDirectory(BaseDir);
     }
 
     private static string GetFrpcName()
     {
-        return SystemInfo.Os == OsType.Windows ? Name3 : Name1;
+        return SystemInfo.Os == OsType.Windows ? GuiNames.NameFrpFile1 : GuiNames.NameFrpFile;
     }
 
     /// <summary>
@@ -48,7 +41,7 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetSakuraFrpLocal(string ver)
     {
-        return Path.Combine(BaseDir, Name4, ver, GetFrpcName());
+        return Path.Combine(BaseDir, GuiNames.NameSakuraFrpDir, ver, GetFrpcName());
     }
 
     /// <summary>
@@ -58,7 +51,8 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetOpenFrpLocal(string ver, string? filename = null)
     {
-        return filename != null ? Path.Combine(BaseDir, Name5, ver, filename) : Path.Combine(BaseDir, Name5, ver, GetFrpcName());
+        return filename != null ? Path.Combine(BaseDir, GuiNames.NameOpenFrpDir, ver, filename) 
+            : Path.Combine(BaseDir, GuiNames.NameOpenFrpDir, ver, GetFrpcName());
     }
 
     /// <summary>
@@ -68,7 +62,8 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetFrpLocal(string ver, string? filename = null)
     {
-        return filename != null ? Path.Combine(BaseDir, Name6, ver, filename) : Path.Combine(BaseDir, Name6, ver, GetFrpcName());
+        return filename != null ? Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, filename) 
+            : Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, GetFrpcName());
     }
 
     /// <summary>
@@ -170,7 +165,7 @@ public static class FrpLaunchUtils
     {
         string file;
         string dir;
-        string version = Name2;
+        string version = GuiNames.NameSakuraFrpVersion;
         if (SystemInfo.Os == OsType.Android)
         {
             file = ColorMCGui.PhoneGetFrp!(item1.FrpType);

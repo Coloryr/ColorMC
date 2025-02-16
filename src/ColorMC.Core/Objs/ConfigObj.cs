@@ -168,6 +168,10 @@ public record RunArgObj
     public string? JavaAgent { get; set; }
     public uint? MaxMemory { get; set; }
     public uint? MinMemory { get; set; }
+    /// <summary>
+    /// 禁用ColorASM
+    /// </summary>
+    public bool ColorASM { get; set; }
 
     public bool LaunchPre { get; set; }
     public bool PreRunSame { get; set; }

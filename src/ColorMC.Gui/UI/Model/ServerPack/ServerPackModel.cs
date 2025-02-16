@@ -5,16 +5,18 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
+/// <summary>
+/// 服务器包生成
+/// </summary>
 public partial class ServerPackModel : MenuModel
 {
+    /// <summary>
+    /// 服务器包
+    /// </summary>
     public ServerPackObj Obj { get; }
-
-    private readonly string _name;
 
     public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
     {
-        _name = ToString() ?? "ServerPackModel";
-
         Obj = obj;
 
         SetMenu(
@@ -84,6 +86,9 @@ public partial class ServerPackModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 开始生成
+    /// </summary>
     public async void Gen()
     {
         var top = Model.GetTopLevel();

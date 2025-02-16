@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -16,6 +17,8 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    public const string NameNetSetting = "NetworkSetting";
+
     private bool _httpLoad = true;
 
     public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
@@ -212,7 +215,7 @@ public partial class SettingModel
         }
 
         var model = new AddDnsModel();
-        var res = await DialogHost.Show(model, "NetworkSetting");
+        var res = await DialogHost.Show(model, NameNetSetting);
         if (res is not true)
         {
             return;

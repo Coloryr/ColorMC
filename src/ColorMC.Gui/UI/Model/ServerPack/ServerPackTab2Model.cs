@@ -12,11 +12,20 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackModel
 {
+    /// <summary>
+    /// 模组列表
+    /// </summary>
     public ObservableCollection<ServerPackItemModel> ModList { get; init; } = [];
 
+    /// <summary>
+    /// 选中的模组项目
+    /// </summary>
     [ObservableProperty]
     private ServerPackItemModel _modItem;
 
+    /// <summary>
+    /// 选中所有模组
+    /// </summary>
     [RelayCommand]
     public void SelectAllMod()
     {
@@ -27,6 +36,9 @@ public partial class ServerPackModel
         }
     }
 
+    /// <summary>
+    /// 取消选中所有模组
+    /// </summary>
     [RelayCommand]
     public void UnSelectAllMod()
     {
@@ -37,11 +49,18 @@ public partial class ServerPackModel
         }
     }
 
+    /// <summary>
+    /// 模组编辑
+    /// </summary>
     public void ModItemEdit()
     {
         ModItemEdit(ModItem);
     }
 
+    /// <summary>
+    /// 模组编辑
+    /// </summary>
+    /// <param name="model">服务器包模组项目</param>
     private void ModItemEdit(ServerPackItemModel model)
     {
         var item = Obj.Mod?.FirstOrDefault(a => a.Sha256 == model.Sha256
@@ -94,6 +113,9 @@ public partial class ServerPackModel
         GameBinding.SaveServerPack(Obj);
     }
 
+    /// <summary>
+    /// 加载模组列表
+    /// </summary>
     public async void LoadMod()
     {
         ModList.Clear();

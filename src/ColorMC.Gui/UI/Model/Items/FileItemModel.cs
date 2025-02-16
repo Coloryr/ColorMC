@@ -196,8 +196,7 @@ public partial class FileItemModel : SelectItemModel
         Data = data;
         McMod = data;
 
-        Logo = data.McmodIcon.StartsWith("//")
-                    ? "https:" + data.McmodIcon : data.McmodIcon;
+        Logo = data.McmodIcon.StartsWith("//") ? "https:" + data.McmodIcon : data.McmodIcon;
         Name = data.McmodName;
         Summary = data.McmodText;
         Author = data.McmodAuthor;

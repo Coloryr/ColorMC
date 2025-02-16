@@ -13,8 +13,6 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class ToolUtils
 {
-    public const string Name1 = "tools";
-
     /// <summary>
     /// 基础路径
     /// </summary>
@@ -39,7 +37,7 @@ public static class ToolUtils
     /// </summary>
     public static void Init()
     {
-        s_baseDir = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_baseDir = Path.Combine(ColorMCGui.RunDir, GuiNames.NameTooslDir);
 
         Directory.CreateDirectory(s_baseDir);
     }

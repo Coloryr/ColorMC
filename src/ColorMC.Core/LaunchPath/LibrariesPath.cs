@@ -20,7 +20,7 @@ public static class LibrariesPath
     public static void Init(string dir)
     {
         BaseDir = Path.Combine(dir, Names.NameLibDir);
-        NativeDir = Path.Combine(BaseDir, $"/native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower());
+        NativeDir = Path.Combine(BaseDir, $"native-{SystemInfo.Os}-{SystemInfo.SystemArch}".ToLower());
 
         Directory.CreateDirectory(BaseDir);
         Directory.CreateDirectory(NativeDir);

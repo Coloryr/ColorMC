@@ -20,9 +20,13 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class GameCloudUtils
 {
-    public const string Name1 = "cloud.json";
-
+    /// <summary>
+    /// 云同步储存
+    /// </summary>
     private static Dictionary<string, CloudDataObj> s_datas;
+    /// <summary>
+    /// 云同步配置文件
+    /// </summary>
     private static string s_file;
 
     /// <summary>
@@ -30,7 +34,7 @@ public static class GameCloudUtils
     /// </summary>
     public static void Init()
     {
-        s_file = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameGameCloudFile);
 
         if (File.Exists(s_file))
         {
@@ -75,7 +79,7 @@ public static class GameCloudUtils
     {
         ConfigSave.AddItem(new()
         {
-            Name = Name1,
+            Name = GuiNames.NameGameCloudFile,
             File = s_file,
             Obj = s_datas
         });

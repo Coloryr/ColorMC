@@ -201,6 +201,11 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private bool _preRunSame;
+    /// <summary>
+    /// 是否禁用ColorMC ASM
+    /// </summary>
+    [ObservableProperty]
+    private bool _colorASM;
 
     /// <summary>
     /// 当前内存大小
@@ -212,6 +217,18 @@ public partial class GameEditModel
     /// 是否在加载配置文件
     /// </summary>
     private bool _configLoad;
+
+    partial void OnColorASMChanged(bool value)
+    {
+        if (_configLoad)
+        {
+            return;
+        }
+
+        _obj.JvmArg ??= new();
+        _obj.JvmArg.ColorASM = value;
+        _obj.Save();
+    }
 
     partial void OnCycTitleChanged(bool value)
     {
@@ -685,6 +702,7 @@ public partial class GameEditModel
             PreRunSame = config.PreRunSame;
             RemoveJvmArg = config.RemoveJvmArg ?? false;
             RemoveGameArg = config.RemoveGameArg ?? false;
+            ColorASM = config.ColorASM;
 
             PerRun = config.LaunchPre;
             PostRun = config.LaunchPost;

@@ -252,6 +252,11 @@
                         Margin="0,0,10,0"
                         Text="{setting:Localize GameEditWindow.Tab2.Text35}"
                         TextWrapping="Wrap" />
+                    <ToggleSwitch
+                        Margin="0,0,0,-10"
+                        IsChecked="{Binding ColorASM}"
+                        OffContent="{setting:Localize SettingWindow.Tab4.Text30}"
+                        OnContent="{setting:Localize SettingWindow.Tab4.Text30}" />
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

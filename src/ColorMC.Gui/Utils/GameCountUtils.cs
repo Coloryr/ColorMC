@@ -18,8 +18,6 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class GameCountUtils
 {
-    public const string Name1 = "count.dat";
-
     private static string s_local;
     private static bool s_isSave;
     private static bool s_isRun;
@@ -38,7 +36,7 @@ public static class GameCountUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCountDataFile);
 
         s_isRun = true;
 

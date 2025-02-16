@@ -14,17 +14,32 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    /// <summary>
+    /// 服务器映射列表
+    /// </summary>
     public ObservableCollection<NetFrpCloudServerModel> CloudServers { get; init; } = [];
 
+    /// <summary>
+    /// 是否没有服务器映射
+    /// </summary>
     [ObservableProperty]
     private bool _isCloudEmpty = true;
 
+    /// <summary>
+    /// 游戏版本
+    /// </summary>
     [ObservableProperty]
     private string _version;
 
+    /// <summary>
+    /// 显示信息的地址
+    /// </summary>
     [ObservableProperty]
     private (string?, ushort) _iPPort;
 
+    /// <summary>
+    /// 游戏版本列表
+    /// </summary>
     public List<string> Versions { get; init; } = [];
 
     partial void OnVersionChanged(string value)
@@ -32,6 +47,9 @@ public partial class NetFrpModel
         GetCloud();
     }
 
+    /// <summary>
+    /// 获取服务器映射列表
+    /// </summary>
     [RelayCommand]
     public void GetCloud()
     {
@@ -39,6 +57,9 @@ public partial class NetFrpModel
         LoadCloud();
     }
 
+    /// <summary>
+    /// 获取服务器映射列表
+    /// </summary>
     public async void LoadCloud()
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab4.Info1"));
@@ -61,11 +82,19 @@ public partial class NetFrpModel
         IsCloudEmpty = CloudServers.Count == 0;
     }
 
+    /// <summary>
+    /// 获取服务器映射信息
+    /// </summary>
+    /// <param name="model"></param>
     public void Test(NetFrpCloudServerModel model)
     {
         IPPort = (model.IP, 0);
     }
 
+    /// <summary>
+    /// 加入该服务器映射
+    /// </summary>
+    /// <param name="model"></param>
     public async void Join(NetFrpCloudServerModel model)
     {
         var list = GameBinding.GetGames();
@@ -79,6 +108,7 @@ public partial class NetFrpModel
                 list2.Add(item);
             }
         }
+        //选择一个游戏实例
         var select = await Model.Combo(App.Lang("NetFrpWindow.Tab4.Info3"), list1);
         if (select.Cancel)
         {

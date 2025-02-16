@@ -18,26 +18,63 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    public const string NameCon = "ShareCon";
+
+    /// <summary>
+    /// 已经映射的地址
+    /// </summary>
     private readonly List<string> _isOut = [];
 
+    /// <summary>
+    /// 是否运行中
+    /// </summary>
     [ObservableProperty]
     private bool _isRuning;
+    /// <summary>
+    /// 是否成功启动
+    /// </summary>
     [ObservableProperty]
     private bool _isOk;
-
+    /// <summary>
+    /// 进程日志
+    /// </summary>
     [ObservableProperty]
     private TextDocument _text = new();
 
+    /// <summary>
+    /// 日志缓存
+    /// </summary>
     public string? Temp { get; private set; } = "";
 
+    /// <summary>
+    /// 映射进程
+    /// </summary>
     private Process? _process;
+    /// <summary>
+    /// 同步锁
+    /// </summary>
     private readonly object Lock = new();
 
+    /// <summary>
+    /// 远程地址
+    /// </summary>
     private string _remoteIP;
+    /// <summary>
+    /// 本地地址
+    /// </summary>
     private string _localIP;
+    /// <summary>
+    /// 是否已经通知成功
+    /// </summary>
     private bool _isSend;
+    /// <summary>
+    /// 是否停止中
+    /// </summary>
     private bool _isStoping;
 
+    /// <summary>
+    /// 开始的本地映射
+    /// </summary>
     private NetFrpLocalModel _now;
 
     partial void OnIsOkChanged(bool value)
@@ -52,6 +89,12 @@ public partial class NetFrpModel
         SetTab3Click();
     }
 
+    /// <summary>
+    /// 设置映射进程
+    /// </summary>
+    /// <param name="process">进程</param>
+    /// <param name="model">本地地址</param>
+    /// <param name="ip">远程地址</param>
     private void SetProcess(Process process, NetFrpLocalModel model, string ip)
     {
         _now = model;
@@ -90,6 +133,11 @@ public partial class NetFrpModel
         Text = new();
     }
 
+    /// <summary>
+    /// 进程退出
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Process_Exited(object? sender, EventArgs e)
     {
         IsRuning = false;
@@ -97,11 +145,21 @@ public partial class NetFrpModel
         _now.IsStart = false;
     }
 
+    /// <summary>
+    /// 进程日志
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
     {
         Log(e.Data);
     }
 
+    /// <summary>
+    /// 进程日志
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Process_OutputDataReceived(object sender, DataReceivedEventArgs e)
     {
         if (_isSend)
@@ -125,7 +183,10 @@ public partial class NetFrpModel
         }
     }
 
-    public async void Share()
+    /// <summary>
+    /// 开始共享映射
+    /// </summary>
+    private async void Share()
     {
         var model = new FrpShareModel();
         _ = ushort.TryParse(_localIP, out var port);
@@ -137,7 +198,7 @@ public partial class NetFrpModel
             version = version1;
         }
         await model.Init(version);
-        var res1 = await DialogHost.Show(model, "ShareCon");
+        var res1 = await DialogHost.Show(model, NameCon);
         if (res1 is not true)
         {
             return;
@@ -189,7 +250,10 @@ public partial class NetFrpModel
         }
     }
 
-    public async void Stop()
+    /// <summary>
+    /// 停止映射进程
+    /// </summary>
+    private async void Stop()
     {
         if (_isStoping)
         {
@@ -218,7 +282,11 @@ public partial class NetFrpModel
         Model.ProgressClose();
     }
 
-    public void Log(string? data)
+    /// <summary>
+    /// 映射日志
+    /// </summary>
+    /// <param name="data"></param>
+    private void Log(string? data)
     {
         lock (Lock)
         {
@@ -248,6 +316,9 @@ public partial class NetFrpModel
         return false;
     }
 
+    /// <summary>
+    /// 设置标题按钮
+    /// </summary>
     public void SetTab3Click()
     {
         if (IsOk && IsRuning)

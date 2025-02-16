@@ -11,23 +11,48 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    /// <summary>
+    /// 本地游戏检测
+    /// </summary>
     private LanClient _client;
+    /// <summary>
+    /// 已有的本地游戏列表
+    /// </summary>
     private readonly List<string> _have = [];
 
+    /// <summary>
+    /// 是否没有本地游戏列表
+    /// </summary>
     [ObservableProperty]
     private bool _isLocalEmpty = true;
 
+    /// <summary>
+    /// 本地游戏列表
+    /// </summary>
     public ObservableCollection<NetFrpLocalModel> Locals { get; set; } = [];
 
+    /// <summary>
+    /// 选中的本地游戏
+    /// </summary>
+    private NetFrpLocalModel? _localItem;
+
+    /// <summary>
+    /// 清理本地游戏列表
+    /// </summary>
     [RelayCommand]
     public void CleanLocal()
     {
         Locals.Clear();
         _have.Clear();
 
+        _localItem = null;
         IsLocalEmpty = true;
     }
 
+    /// <summary>
+    /// 开始映射该本地游戏
+    /// </summary>
+    /// <param name="local">本地游戏地址</param>
     public async void StartThisFrp(NetFrpLocalModel local)
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
@@ -61,6 +86,7 @@ public partial class NetFrpModel
             return;
         }
 
+        //选择一个通道
         var item1 = list1[res.Index];
         var res1 = await BaseBinding.StartFrp(item1, local);
         if (!res1.Res)
@@ -76,6 +102,9 @@ public partial class NetFrpModel
         }
     }
 
+    /// <summary>
+    /// 加载本地游戏
+    /// </summary>
     public void LoadLocal()
     {
         _client ??= new()
@@ -84,6 +113,12 @@ public partial class NetFrpModel
         };
     }
 
+    /// <summary>
+    /// 发现本地游戏
+    /// </summary>
+    /// <param name="motd">显示内容</param>
+    /// <param name="ip">地址</param>
+    /// <param name="port">端口</param>
     private void Find(string motd, string ip, string port)
     {
         if (_have.Contains(ip + ":" + port))
@@ -103,5 +138,20 @@ public partial class NetFrpModel
             }
             Locals.Add(item);
         });
+    }
+
+    /// <summary>
+    /// 选中本地游戏项目
+    /// </summary>
+    /// <param name="model"></param>
+    public void SelectLocal(NetFrpLocalModel model)
+    {
+        if (_localItem != null)
+        {
+            _localItem.IsSelect = false;
+        }
+
+        model.IsSelect = true;
+        _localItem = model;
     }
 }
