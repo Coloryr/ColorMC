@@ -7,6 +7,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -18,6 +19,8 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    public const string NameLockLogin = "AddLockLogin";
+
     private readonly List<string> _uuids = [];
 
     public ObservableCollection<string> GameList { get; init; } = [];
@@ -248,7 +251,7 @@ public partial class SettingModel
     public async Task AddLockLogin()
     {
         var model = new AddLockLoginModel();
-        var res = await DialogHost.Show(model, "AddLockLogin");
+        var res = await DialogHost.Show(model, NameLockLogin);
         if (res is true)
         {
             if (model.Index == 0)

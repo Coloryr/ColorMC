@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -45,12 +46,12 @@ public partial class FrpShareModel : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close("ShareCon", true);
+        DialogHost.Close(NetFrpModel.NameCon, true);
     }
 
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close("ShareCon", false);
+        DialogHost.Close(NetFrpModel.NameCon, false);
     }
 }

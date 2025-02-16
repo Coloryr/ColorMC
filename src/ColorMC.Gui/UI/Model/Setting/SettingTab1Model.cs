@@ -13,19 +13,41 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    /// <summary>
+    /// 配置文件本地位置
+    /// </summary>
     [ObservableProperty]
     private string? _local1;
+    /// <summary>
+    /// 账户文件本地位置
+    /// </summary>
     [ObservableProperty]
     private string? _local2;
+    /// <summary>
+    /// 配置文件本地位置
+    /// </summary>
     [ObservableProperty]
     private string? _local3;
+    /// <summary>
+    /// 配置文件本地位置
+    /// </summary>
     [ObservableProperty]
     private string? _local4;
+    /// <summary>
+    /// 缓存大小
+    /// </summary>
     [ObservableProperty]
     private string _tempSize;
 
+    /// <summary>
+    /// 运行路径
+    /// </summary>
     public string RunDir => ColorMCGui.RunDir;
 
+    /// <summary>
+    /// 清理运行路径
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ChangeBackRunDir()
     {
@@ -41,6 +63,10 @@ public partial class SettingModel
         ColorMCGui.Reboot();
     }
 
+    /// <summary>
+    /// 设置运行路径
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ChangeRunDir()
     {
@@ -67,6 +93,10 @@ public partial class SettingModel
         ColorMCGui.Reboot();
     }
 
+    /// <summary>
+    /// 选中配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Open1()
     {
@@ -82,6 +112,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 选中配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Open2()
     {
@@ -97,6 +131,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 选中配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Open3()
     {
@@ -113,6 +151,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 选中配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task Open4()
     {
@@ -128,6 +170,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 导入设置
+    /// </summary>
     [RelayCommand]
     public void Import1()
     {
@@ -160,6 +205,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 导入设置
+    /// </summary>
     [RelayCommand]
     public void Import2()
     {
@@ -191,6 +239,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 导入设置
+    /// </summary>
     [RelayCommand]
     public void Import3()
     {
@@ -223,6 +274,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 导入设置
+    /// </summary>
     [RelayCommand]
     public void Import4()
     {
@@ -255,6 +309,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 清理缓存
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ClearTemp()
     {
@@ -266,6 +324,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 获取缓存大小
+    /// </summary>
     public void LoadTempSize()
     {
         var temp = DownloadManager.DownloadDir;
@@ -273,6 +334,9 @@ public partial class SettingModel
         TempSize = string.Format(App.Lang("SettingWindow.Tab1.Info20"), BaseBinding.GetFolderSize(temp));
     }
 
+    /// <summary>
+    /// 重置
+    /// </summary>
     private async void Reset()
     {
         var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info1"));
@@ -283,6 +347,9 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info2"));
     }
 
+    /// <summary>
+    /// 清理账户
+    /// </summary>
     private async void ClearUser()
     {
         var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info3"));
@@ -293,6 +360,9 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info4"));
     }
 
+    /// <summary>
+    /// 清理窗口设置
+    /// </summary>
     private async void ClearWindow()
     {
         var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab1.Info18"));
@@ -303,6 +373,9 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab1.Info19"));
     }
 
+    /// <summary>
+    /// 导出账户
+    /// </summary>
     private async void DumpUser()
     {
         var top = Model.GetTopLevel();
@@ -317,16 +390,25 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 打开下载地址
+    /// </summary>
     private void OpenDownloadPath()
     {
         PathBinding.OpenPath(PathType.DownloadPath);
     }
 
+    /// <summary>
+    /// 打开运行路径
+    /// </summary>
     private void Open()
     {
         PathBinding.OpenPath(PathType.BasePath);
     }
 
+    /// <summary>
+    /// 打开图片缓存路径
+    /// </summary>
     private void OpenPicPath()
     {
         PathBinding.OpenPath(PathType.PicPath);

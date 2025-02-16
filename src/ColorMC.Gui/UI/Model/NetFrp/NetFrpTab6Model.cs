@@ -16,13 +16,27 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    public const string NameCon1 = "ShareCon1";
+
+    /// <summary>
+    /// 是否没有自定义映射
+    /// </summary>
     [ObservableProperty]
     private bool _isSelfFrpEmpty;
 
+    /// <summary>
+    /// 自定义映射列表
+    /// </summary>
     public ObservableCollection<NetFrpSelfItemModel> RemoteSelfFrp { get; set; } = [];
 
+    /// <summary>
+    /// 选中的自定义映射项目
+    /// </summary>
     private NetFrpSelfItemModel? _frpSelfItem;
 
+    /// <summary>
+    /// 加载自定义映射列表
+    /// </summary>
     [RelayCommand]
     public void LoadSelfFrp()
     {
@@ -35,11 +49,15 @@ public partial class NetFrpModel
         IsSelfFrpEmpty = RemoteSelfFrp.Count == 0;
     }
 
+    /// <summary>
+    /// 添加自定义映射
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddSelfFrp()
     {
         var model = new NetFrpAddModel();
-        await DialogHost.Show(model, NetFrpTab6Control.NameCon);
+        await DialogHost.Show(model, NameCon1);
         if (model.IsCancel || string.IsNullOrWhiteSpace(model.Name))
         {
             return;
@@ -61,11 +79,11 @@ public partial class NetFrpModel
     /// <summary>
     /// 编辑自定义映射
     /// </summary>
-    /// <param name="model"></param>
+    /// <param name="model">自定义映射</param>
     public async void Edit(NetFrpSelfItemModel model)
     {
         var model1 = new NetFrpAddModel(model);
-        await DialogHost.Show(model1, NetFrpTab6Control.NameCon);
+        await DialogHost.Show(model1, NameCon1);
         if (model1.IsCancel || string.IsNullOrWhiteSpace(model1.Name))
         {
             return;
@@ -82,6 +100,10 @@ public partial class NetFrpModel
         FrpConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 删除自定义映射
+    /// </summary>
+    /// <param name="model">自定义映射</param>
     public async void Delete(NetFrpSelfItemModel model)
     {
         var res = await Model.ShowAsync(App.Lang("NetFrpWindow.Tab6.Info1"));
@@ -96,6 +118,10 @@ public partial class NetFrpModel
         IsSelfFrpEmpty = RemoteSelfFrp.Count == 0;
     }
 
+    /// <summary>
+    /// 选中自定义映射
+    /// </summary>
+    /// <param name="model">自定义映射</param>
     public void Select(NetFrpSelfItemModel model)
     {
         if (_frpSelfItem != null)

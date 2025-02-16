@@ -9,8 +9,10 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class NetFrpRemoteModel : SelectItemModel
 {
+    /// <summary>
+    /// 顶层
+    /// </summary>
     private readonly NetFrpModel _model;
-    private readonly bool _isSakura;
 
     public NetFrpRemoteModel(NetFrpModel model, string key, SakuraFrpChannelObj obj)
     {
@@ -20,7 +22,6 @@ public partial class NetFrpRemoteModel : SelectItemModel
         Remote = obj.remote.ToString();
         FrpType = FrpType.SakuraFrp;
         _model = model;
-        _isSakura = true;
     }
 
     public NetFrpRemoteModel(NetFrpModel model, string key, OpenFrpChannelObj.Data data, OpenFrpChannelObj.Proxie obj)
@@ -31,33 +32,32 @@ public partial class NetFrpRemoteModel : SelectItemModel
         Remote = obj.remote;
         FrpType = FrpType.OpenFrp;
         _model = model;
-        _isSakura = false;
     }
 
     /// <summary>
     /// 名字
     /// </summary>
-    public string Name { get; }
+    public string Name { get; init; }
     /// <summary>
     /// 端口ID
     /// </summary>
-    public int ID { get; }
+    public int ID { get; init; }
     /// <summary>
     /// 远程地址
     /// </summary>
-    public string Remote { get; }
+    public string Remote { get; init; }
     /// <summary>
     /// 映射类型
     /// </summary>
-    public FrpType FrpType;
+    public FrpType FrpType { get; init; }
     /// <summary>
     /// API KEY
     /// </summary>
-    public string Key;
+    public string Key { get; init; }
 
     public void Select()
     {
-        if (_isSakura)
+        if (FrpType == FrpType.SakuraFrp)
         {
             _model.SelectSakura(this);
         }

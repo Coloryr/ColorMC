@@ -11,11 +11,20 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackModel
 {
+    /// <summary>
+    /// 资源包列表
+    /// </summary>
     public ObservableCollection<ServerPackItemModel> ResourceList { get; init; } = [];
 
+    /// <summary>
+    /// 选中的资源包
+    /// </summary>
     [ObservableProperty]
     private ServerPackItemModel _resourceItem;
 
+    /// <summary>
+    /// 选中所有资源
+    /// </summary>
     [RelayCommand]
     public void SelectAllResource()
     {
@@ -26,6 +35,9 @@ public partial class ServerPackModel
         }
     }
 
+    /// <summary>
+    /// 取消选中所有资源
+    /// </summary>
     [RelayCommand]
     public void UnSelectAllResource()
     {
@@ -36,11 +48,17 @@ public partial class ServerPackModel
         }
     }
 
+    /// <summary>
+    /// 编辑资源项目
+    /// </summary>
     public void ResourceItemEdit()
     {
         ResourceItemEdit(ResourceItem);
     }
 
+    /// <summary>
+    /// 加载资源项目列表
+    /// </summary>
     public async void LoadResourceList()
     {
         ResourceList.Clear();
@@ -83,6 +101,10 @@ public partial class ServerPackModel
         GameBinding.SaveServerPack(Obj);
     }
 
+    /// <summary>
+    /// 编辑资源项目
+    /// </summary>
+    /// <param name="obj">服务器包资源项目</param>
     private void ResourceItemEdit(ServerPackItemModel obj)
     {
         var item = Obj.Resourcepack?.FirstOrDefault(a => a.Sha256 == obj.Sha256

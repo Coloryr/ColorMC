@@ -11,7 +11,7 @@ namespace ColorMC.Gui.Utils;
 
 public static class GameGuiSetting
 {
-    public const string Name = "guisetting.json";
+
 
     private readonly static Dictionary<string, GameGuiSettingObj> s_datas = [];
 
@@ -23,7 +23,7 @@ public static class GameGuiSetting
         }
 
         var path = obj.GetBasePath();
-        var dir = Path.GetFullPath($"{path}/{Name}");
+        var dir = Path.Combine(path, GuiNames.NameGameGuiConfigFile);
 
         if (File.Exists(dir))
         {
@@ -56,7 +56,7 @@ public static class GameGuiSetting
             s_datas[obj.UUID] = config;
         }
 
-        var dir = Path.GetFullPath($"{obj.GetBasePath()}/{Name}");
+        var dir = Path.Combine(obj.GetBasePath(), GuiNames.NameGameGuiConfigFile);
 
         ConfigSave.AddItem(new()
         {

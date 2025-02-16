@@ -6,6 +6,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
+/// <summary>
+/// 映射窗口
+/// </summary>
 public partial class NetFrpModel : MenuModel
 {
     private readonly string _name;
@@ -57,6 +60,10 @@ public partial class NetFrpModel : MenuModel
         ]);
     }
 
+    /// <summary>
+    /// 打开窗口加载信息
+    /// </summary>
+    /// <returns></returns>
     public async Task<bool> Open()
     {
         _isLoadSakura = true;
@@ -95,6 +102,9 @@ public partial class NetFrpModel : MenuModel
         return true;
     }
 
+    /// <summary>
+    /// 删除标题按钮
+    /// </summary>
     public void RemoveClick()
     {
         Model.RemoveChoiseData(_name);

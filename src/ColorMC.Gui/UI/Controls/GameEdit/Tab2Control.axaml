@@ -275,12 +275,10 @@
                         Text="{Binding GameArg}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
-
                     <TextBlock
                         Margin="0,0,0,10"
                         Text="{setting:Localize GameEditWindow.Tab2.Text25}"
                         TextWrapping="Wrap" />
-
                     <TextBox
                         Height="100"
                         Margin="0,0,0,5"
@@ -288,12 +286,10 @@
                         Text="{Binding ClassPath}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text32}" />
-
                     <TextBlock
                         Margin="0,0,0,10"
                         Text="{setting:Localize GameEditWindow.Tab2.Text25}"
                         TextWrapping="Wrap" />
-
                     <TextBox
                         Height="100"
                         Margin="0,0,0,5"
@@ -301,13 +297,16 @@
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
                         Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
-
                     <TextBlock
                         Margin="0,0,0,10"
                         Text="{setting:Localize GameEditWindow.Tab2.Text35}"
                         TextWrapping="Wrap" />
-
                     <TextBox Text="{Binding MainClass}" Watermark="{setting:Localize GameEditWindow.Tab2.Text27}" />
+                    <ToggleSwitch
+                        Margin="0,0,0,-10"
+                        IsChecked="{Binding ColorASM}"
+                        OffContent="{setting:Localize SettingWindow.Tab4.Text30}"
+                        OnContent="{setting:Localize SettingWindow.Tab4.Text30}" />
                 </StackPanel>
             </Border>
             <!--  自动加入  -->

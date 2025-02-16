@@ -6,14 +6,28 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.News;
 
+/// <summary>
+/// Minecraft news窗口
+/// </summary>
+/// <param name="model"></param>
 public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
 {
+    /// <summary>
+    /// 新闻列表
+    /// </summary>
     public ObservableCollection<NewsItemModel> News { get; init; } = [];
 
+    /// <summary>
+    /// 当前页数
+    /// </summary>
     private int _newsPage = 0;
 
-    private string _use = "MinecraftNewsModel";
+    private readonly string _use = "MinecraftNewsModel";
 
+    /// <summary>
+    /// 加载新闻列表
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ReloadNews()
     {
@@ -35,6 +49,10 @@ public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
         Model.ProgressClose();
     }
 
+    /// <summary>
+    /// 获取下一页
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task NewsNextPage()
     {
@@ -53,6 +71,9 @@ public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
         }
     }
 
+    /// <summary>
+    /// 设置标题按钮
+    /// </summary>
     public async void LoadNews()
     {
         Model.SetChoiseContent(_use, App.Lang("Button.Refash"));
@@ -65,6 +86,9 @@ public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
         News.Clear();
     }
 
+    /// <summary>
+    /// 重新加载新闻列表
+    /// </summary>
     private async void Reload()
     {
         await ReloadNews();

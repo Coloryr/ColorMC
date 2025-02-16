@@ -27,7 +27,7 @@ public partial class GameLogModel : GameModel
     public const string NameInsert = "Insert";
     public const string NameTop = "Top";
     public const string NameSearch = "Search";
-    
+
     /// <summary>
     /// 文件列表
     /// </summary>
@@ -594,6 +594,7 @@ public partial class GameLogModel : GameModel
         {
             Dispatcher.UIThread.Post(() =>
             {
+                //弹出日志上传选项
                 Model.ShowWithChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
                 {
                     Model.ShowClose();

@@ -11,7 +11,6 @@ using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 
-
 namespace ColorMC.Gui.UIBinding;
 
 public static class ConfigBinding
@@ -237,10 +236,11 @@ public static class ConfigBinding
         }
 
         ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        ConfigUtils.Config.Http.ProxyIP = ip;
-        ConfigUtils.Config.Http.ProxyPort = port;
-        ConfigUtils.Config.Http.ProxyUser = user;
-        ConfigUtils.Config.Http.ProxyPassword = password;
+        var con = ConfigUtils.Config.Http;
+        con.ProxyIP = ip;
+        con.ProxyPort = port;
+        con.ProxyUser = user;
+        con.ProxyPassword = password;
         ConfigUtils.Save();
 
         CoreHttpClient.Init();
@@ -260,9 +260,10 @@ public static class ConfigBinding
         }
 
         ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        ConfigUtils.Config.Http.LoginProxy = v1;
-        ConfigUtils.Config.Http.DownloadProxy = v2;
-        ConfigUtils.Config.Http.GameProxy = v3;
+        var con = ConfigUtils.Config.Http;
+        con.LoginProxy = v1;
+        con.DownloadProxy = v2;
+        con.GameProxy = v3;
         ConfigUtils.Save();
 
         CoreHttpClient.Init();
@@ -282,8 +283,9 @@ public static class ConfigBinding
         }
 
         ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        ConfigUtils.Config.Http.CheckFile = v1;
-        ConfigUtils.Config.Http.AutoDownload = v2;
+        var con = ConfigUtils.Config.Http;
+        con.CheckFile = v1;
+        con.AutoDownload = v2;
         ConfigUtils.Save();
     }
 
@@ -305,8 +307,9 @@ public static class ConfigBinding
     public static void SetGc(GCType gc, string? arg)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        ConfigUtils.Config.DefaultJvmArg.GC = gc;
-        ConfigUtils.Config.DefaultJvmArg.GCArgument = arg;
+        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        jvm.GC = gc;
+        jvm.GCArgument = arg;
         ConfigUtils.Save();
     }
 
@@ -320,11 +323,12 @@ public static class ConfigBinding
     public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4, bool v5)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        ConfigUtils.Config.DefaultJvmArg.LaunchPre = v1;
-        ConfigUtils.Config.DefaultJvmArg.LaunchPost = v2;
-        ConfigUtils.Config.DefaultJvmArg.LaunchPreData = v3;
-        ConfigUtils.Config.DefaultJvmArg.LaunchPostData = v4;
-        ConfigUtils.Config.DefaultJvmArg.PreRunSame = v5;
+        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        jvm.LaunchPre = v1;
+        jvm.LaunchPost = v2;
+        jvm.LaunchPreData = v3;
+        jvm.LaunchPostData = v4;
+        jvm.PreRunSame = v5;
         ConfigUtils.Save();
     }
 
@@ -335,13 +339,15 @@ public static class ConfigBinding
     /// <param name="v2"></param>
     /// <param name="v3"></param>
     /// <param name="v4"></param>
-    public static void SetRunArg(string? v1, string? v2, string? v3, string? v4)
+    public static void SetRunArg(string? v1, string? v2, string? v3, string? v4, bool colorasm)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        ConfigUtils.Config.DefaultJvmArg.JavaAgent = v1;
-        ConfigUtils.Config.DefaultJvmArg.JvmArgs = v2;
-        ConfigUtils.Config.DefaultJvmArg.GameArgs = v3;
-        ConfigUtils.Config.DefaultJvmArg.JvmEnv = v4;
+        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        jvm.JavaAgent = v1;
+        jvm.JvmArgs = v2;
+        jvm.GameArgs = v3;
+        jvm.JvmEnv = v4;
+        jvm.ColorASM = colorasm;
         ConfigUtils.Save();
     }
 
@@ -354,9 +360,10 @@ public static class ConfigBinding
     public static void SetGameWindow(bool v1, uint? v2, uint? v3)
     {
         ConfigUtils.Config.Window ??= ConfigUtils.MakeWindowSettingConfig();
-        ConfigUtils.Config.Window.FullScreen = v1;
-        ConfigUtils.Config.Window.Width = v2;
-        ConfigUtils.Config.Window.Height = v3;
+        var con = ConfigUtils.Config.Window;
+        con.FullScreen = v1;
+        con.Width = v2;
+        con.Height = v3;
         ConfigUtils.Save();
     }
 
@@ -368,8 +375,9 @@ public static class ConfigBinding
     public static void SetMemory(uint? minMemory, uint? maxMemory)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        ConfigUtils.Config.DefaultJvmArg.MinMemory = minMemory;
-        ConfigUtils.Config.DefaultJvmArg.MaxMemory = maxMemory;
+        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        jvm.MinMemory = minMemory;
+        jvm.MaxMemory = maxMemory;
         ConfigUtils.Save();
     }
 
@@ -393,14 +401,15 @@ public static class ConfigBinding
         bool v5, bool v6, bool v7, bool v8)
     {
         ConfigUtils.Config.GameCheck ??= ConfigUtils.MakeGameCheckConfig();
-        ConfigUtils.Config.GameCheck.CheckCore = v1;
-        ConfigUtils.Config.GameCheck.CheckAssets = v2;
-        ConfigUtils.Config.GameCheck.CheckLib = v3;
-        ConfigUtils.Config.GameCheck.CheckMod = v4;
-        ConfigUtils.Config.GameCheck.CheckCoreSha1 = v5;
-        ConfigUtils.Config.GameCheck.CheckAssetsSha1 = v6;
-        ConfigUtils.Config.GameCheck.CheckLibSha1 = v7;
-        ConfigUtils.Config.GameCheck.CheckModSha1 = v8;
+        var con = ConfigUtils.Config.GameCheck;
+        con.CheckCore = v1;
+        con.CheckAssets = v2;
+        con.CheckLib = v3;
+        con.CheckMod = v4;
+        con.CheckCoreSha1 = v5;
+        con.CheckAssetsSha1 = v6;
+        con.CheckLibSha1 = v7;
+        con.CheckModSha1 = v8;
         ConfigUtils.Save();
     }
 

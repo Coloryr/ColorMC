@@ -78,5 +78,8 @@ public partial class FileModVersionModel : SelectItemModel
 public partial class ModUpgradeModel(ModObj obj, string name, List<string> version, List<DownloadModArg> items) 
     : FileModVersionModel(name, version, items, false)
 {
+    /// <summary>
+    /// 模组信息
+    /// </summary>
     public ModObj Obj => obj;
 }

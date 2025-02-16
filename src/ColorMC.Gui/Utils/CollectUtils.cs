@@ -12,10 +12,14 @@ using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 资源收藏
+/// </summary>
 public static class CollectUtils
 {
-    public const string Name1 = "collect.json";
-
+    /// <summary>
+    /// 收藏储存文件
+    /// </summary>
     private static string s_local;
 
     /// <summary>
@@ -23,16 +27,26 @@ public static class CollectUtils
     /// </summary>
     public static CollectObj Collect { get; set; }
 
+    /// <summary>
+    /// 收藏列表
+    /// </summary>
     private static readonly Dictionary<string, int> s_itemUse = [];
 
+    /// <summary>
+    /// 初始化收藏
+    /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, Name1);
+        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCollectFile);
 
         Load(s_local);
     }
 
-    public static void Load(string file)
+    /// <summary>
+    /// 读取收藏
+    /// </summary>
+    /// <param name="file">文件</param>
+    private static void Load(string file)
     {
         if (File.Exists(file))
         {
@@ -88,7 +102,7 @@ public static class CollectUtils
     /// <summary>
     /// 删除一个收藏
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">收藏项目</param>
     public static void RemoveItem(CollectItemObj obj)
     {
         string? uuid = null;
@@ -127,7 +141,7 @@ public static class CollectUtils
     /// <summary>
     /// 根据UUID删除
     /// </summary>
-    /// <param name="uuid"></param>
+    /// <param name="uuid">收藏UUID</param>
     public static void RemoveItem(string uuid)
     {
         if (s_itemUse.TryGetValue(uuid, out var use))
@@ -151,7 +165,7 @@ public static class CollectUtils
     /// <summary>
     /// 添加一个收藏
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">收藏项目</param>
     public static void AddItem(CollectItemObj obj)
     {
         string? uuid = null;
@@ -194,6 +208,10 @@ public static class CollectUtils
         Save();
     }
 
+    /// <summary>
+    /// 新的收藏UUID
+    /// </summary>
+    /// <returns></returns>
     private static string NewUUID()
     {
         string uuid;
@@ -205,6 +223,9 @@ public static class CollectUtils
         return uuid;
     }
 
+    /// <summary>
+    /// 保存收藏储存
+    /// </summary>
     private static void Save()
     {
         ConfigSave.AddItem(new()
@@ -237,6 +258,10 @@ public static class CollectUtils
         Save();
     }
 
+    /// <summary>
+    /// 删除收藏分组
+    /// </summary>
+    /// <param name="group">分组名字</param>
     private static void RemoveGroupItem(string group)
     {
         if (Collect.Groups.TryGetValue(group, out var list))

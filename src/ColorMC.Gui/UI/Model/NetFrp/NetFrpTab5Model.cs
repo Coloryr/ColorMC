@@ -12,17 +12,31 @@ namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
+    /// <summary>
+    /// Openfrp Key
+    /// </summary>
     [ObservableProperty]
     private string _keyOpenFrp;
 
+    /// <summary>
+    /// 是否没有openfrp映射
+    /// </summary>
     [ObservableProperty]
     private bool _isOpenFrpEmpty = true;
-
+    /// <summary>
+    /// 是否在获取openfrp映射
+    /// </summary>
     private bool _isLoadOpenFrp;
 
+    /// <summary>
+    /// openfrp列表
+    /// </summary>
     public ObservableCollection<NetFrpRemoteModel> RemotesOpenFrp { get; set; } = [];
 
-    private NetFrpRemoteModel _itemOpenFrp;
+    /// <summary>
+    /// 选中的openfrp项目
+    /// </summary>
+    private NetFrpRemoteModel? _itemOpenFrp;
 
     partial void OnKeyOpenFrpChanged(string value)
     {
@@ -34,6 +48,9 @@ public partial class NetFrpModel
         ConfigBinding.SetFrpKeyOpenFrp(KeyOpenFrp);
     }
 
+    /// <summary>
+    /// 获取openfrp项目
+    /// </summary>
     [RelayCommand]
     public void GetChannelOpenFrp()
     {
@@ -48,12 +65,18 @@ public partial class NetFrpModel
         LoadOpenFrpList();
     }
 
+    /// <summary>
+    /// 打开openfrp网页
+    /// </summary>
     [RelayCommand]
     public void OpenUrlOpenFrp()
     {
         WebBinding.OpenWeb(WebType.OpenFrp);
     }
 
+    /// <summary>
+    /// 加载openfep列表
+    /// </summary>
     public void LoadOpenFrp()
     {
         _isLoadOpenFrp = true;
@@ -73,6 +96,9 @@ public partial class NetFrpModel
         LoadOpenFrpList();
     }
 
+    /// <summary>
+    /// 加载openfep列表
+    /// </summary>
     private async void LoadOpenFrpList()
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
@@ -83,6 +109,7 @@ public partial class NetFrpModel
             return;
         }
 
+        _itemOpenFrp = null;
         RemotesOpenFrp.Clear();
         foreach (var item in res1.data)
         {
@@ -98,6 +125,10 @@ public partial class NetFrpModel
         IsOpenFrpEmpty = RemotesOpenFrp.Count == 0;
     }
 
+    /// <summary>
+    /// 选中openfrp项目
+    /// </summary>
+    /// <param name="model"></param>
     public void SelectOpenFrp(NetFrpRemoteModel model)
     {
         if (_itemOpenFrp != null)

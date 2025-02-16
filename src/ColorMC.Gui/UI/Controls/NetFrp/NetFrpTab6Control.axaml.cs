@@ -6,8 +6,6 @@ namespace ColorMC.Gui.UI.Controls.NetFrp;
 
 public partial class NetFrpTab6Control : UserControl
 {
-    public const string NameCon = "ShareCon1";
-
     public NetFrpTab6Control()
     {
         InitializeComponent();

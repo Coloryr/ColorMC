@@ -11,19 +11,38 @@ namespace ColorMC.Gui.UI.Model.ServerPack;
 
 public partial class ServerPackModel
 {
+    /// <summary>
+    /// 文件下载列表
+    /// </summary>
     public ObservableCollection<ServerPackConfigModel> FileList { get; init; } = [];
+    /// <summary>
+    /// 文件列表
+    /// </summary>
     public ObservableCollection<string> NameList { get; init; } = [];
+    /// <summary>
+    /// 打包方式
+    /// </summary>
     public string[] FuntionList { get; init; } = LanguageBinding.GetFuntionList();
 
+    /// <summary>
+    /// 选中的文件
+    /// </summary>
     [ObservableProperty]
     private ServerPackConfigModel _fileItem;
-
+    /// <summary>
+    /// 选中的打包方式
+    /// </summary>
     [ObservableProperty]
     private int _funtion;
-
+    /// <summary>
+    /// 文件夹
+    /// </summary>
     [ObservableProperty]
     private string? _group;
 
+    /// <summary>
+    /// 添加文件
+    /// </summary>
     [RelayCommand]
     public void AddFile()
     {
@@ -73,6 +92,9 @@ public partial class ServerPackModel
         LoadFile();
     }
 
+    /// <summary>
+    /// 加载文件列表
+    /// </summary>
     public void LoadFile()
     {
         FileList.Clear();
@@ -97,6 +119,10 @@ public partial class ServerPackModel
         GameBinding.SaveServerPack(Obj);
     }
 
+    /// <summary>
+    /// 删除文件
+    /// </summary>
+    /// <param name="obj">服务器包文件</param>
     public void DeleteFile(ServerPackConfigModel obj)
     {
         Obj.Config?.Remove(obj.Obj);

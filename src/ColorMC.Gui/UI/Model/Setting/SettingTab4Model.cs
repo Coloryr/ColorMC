@@ -61,6 +61,8 @@ public partial class SettingModel
     private bool _checkLoader;
     [ObservableProperty]
     private bool _checkMemory;
+    [ObservableProperty]
+    private bool _colorASM;
 
     [ObservableProperty]
     private GCType _gC;
@@ -78,6 +80,11 @@ public partial class SettingModel
     private string _memory;
 
     private bool _argLoad = true;
+
+    partial void OnColorASMChanged(bool value)
+    {
+        SetArg();
+    }
 
     partial void OnCheckUserChanged(bool value)
     {
@@ -247,6 +254,7 @@ public partial class SettingModel
             PreCmd = con.DefaultJvmArg.LaunchPreData;
             JvmEnv = con.DefaultJvmArg.JvmEnv;
             PreRunSame = con.DefaultJvmArg.PreRunSame;
+            ColorASM = con.DefaultJvmArg.ColorASM;
 
             FullScreen = con.Window.FullScreen ?? false;
             CheckCore = con.GameCheck.CheckCore;
@@ -278,7 +286,9 @@ public partial class SettingModel
     private void SetCheck()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetCheck(CheckUser, CheckLoader, CheckMemory);
     }
@@ -286,7 +296,9 @@ public partial class SettingModel
     private void SetMemory()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetMemory(MinMemory, MaxMemory);
     }
@@ -294,7 +306,9 @@ public partial class SettingModel
     private void SetWindow()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetGameWindow(FullScreen, Width, Height);
     }
@@ -302,7 +316,9 @@ public partial class SettingModel
     private void SetGc()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetGc(GC, GCArg);
     }
@@ -310,15 +326,19 @@ public partial class SettingModel
     private void SetArg()
     {
         if (_argLoad)
+        {
             return;
+        }
 
-        ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg, JvmEnv);
+        ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg, JvmEnv, ColorASM);
     }
 
     private void SetCommand()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetRunCommand(PreRun, PostRun, PreCmd, PostCmd, PreRunSame);
     }
@@ -326,7 +346,9 @@ public partial class SettingModel
     private void SetGameCheck()
     {
         if (_argLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetGameCheckConfig(CheckCore, CheckAssets, CheckLib, CheckMod,
             CheckCoreSha1, CheckAssetsSha1, CheckLibSha1, CheckModSha1);
