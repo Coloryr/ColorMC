@@ -17,6 +17,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.BuildPack;
 using ColorMC.Gui.UI.Controls.Collect;
 using ColorMC.Gui.UI.Controls.Count;
 using ColorMC.Gui.UI.Controls.Download;
@@ -108,6 +109,10 @@ public static class WindowManager
     /// 收藏窗口
     /// </summary>
     public static CollectControl? CollectWindow { get; set; }
+    /// <summary>
+    /// 生成客户端包窗口
+    /// </summary>
+    public static BuildPackControl? BuildPackWindow { get; set; }
 
     /// <summary>
     /// 游戏实例编辑窗口
@@ -416,6 +421,22 @@ public static class WindowManager
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// 显示生成客户端包窗口
+    /// </summary>
+    public static void ShowBuildPack()
+    {
+        if (BuildPackWindow != null)
+        {
+            BuildPackWindow.Window.TopActivate();
+        }
+        else
+        {
+            BuildPackWindow = new();
+            AWindow(BuildPackWindow);
+        }
     }
 
     /// <summary>

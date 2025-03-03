@@ -450,8 +450,7 @@ public partial class GameItemModel : GameModel
     /// <returns></returns>
     private Bitmap GetImage()
     {
-        var icon = ImageManager.GetGameIcon(Obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(Obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -460,8 +459,7 @@ public partial class GameItemModel : GameModel
     /// <returns></returns>
     private Bitmap ReloadImage()
     {
-        var icon = ImageManager.ReloadImage(Obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.ReloadImage(Obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>

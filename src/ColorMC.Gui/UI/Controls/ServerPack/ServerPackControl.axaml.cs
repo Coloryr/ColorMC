@@ -32,8 +32,7 @@ public partial class ServerPackControl : MenuControl
     public ServerPackControl(GameSettingObj obj) : base(WindowManager.GetUseName<ServerPackControl>(obj))
     {
         _obj = obj;
-        Title = string.Format(App.Lang("ServerPackWindow.Title"),
-           _obj.Name);
+        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
     }
 
     protected override void Opened()
@@ -91,7 +90,26 @@ public partial class ServerPackControl : MenuControl
     }
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(_obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
+    }
+
+    /// <summary>
+    /// 重新加载标题
+    /// </summary>
+    public void ReloadTitle()
+    {
+        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
+        Window.SetTitle(Title);
+    }
+
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
+        }
     }
 }

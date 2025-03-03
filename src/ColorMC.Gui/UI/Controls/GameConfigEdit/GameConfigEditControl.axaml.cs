@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -157,20 +158,12 @@ public partial class GameConfigEditControl : BaseUserControl
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;
-
-        var icon = ImageManager.GetGameIcon(_obj);
-        if (icon != null)
-        {
-            model.Icon = icon;
-        }
-
         return amodel;
     }
 
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(_obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -187,6 +180,17 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
                     _world.Game.Name, _world.LevelName);
+        }
+    }
+
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
         }
     }
 }

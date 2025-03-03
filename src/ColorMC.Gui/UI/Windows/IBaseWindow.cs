@@ -33,7 +33,7 @@ public interface IBaseWindow
     /// <summary>
     /// ¹Ø±Õ´°¿Ú
     /// </summary>
-    public void Close()
+    virtual public void Close()
     {
         if (ConfigBinding.WindowMode())
         {

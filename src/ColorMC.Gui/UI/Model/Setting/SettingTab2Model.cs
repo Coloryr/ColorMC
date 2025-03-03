@@ -18,105 +18,240 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    /// <summary>
+    /// 字体列表
+    /// </summary>
     public ObservableCollection<FontDisplayModel> FontList { get; init; } = [];
+    /// <summary>
+    /// 透明类型列表
+    /// </summary>
     public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
+    /// <summary>
+    /// 语言列表
+    /// </summary>
     public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
+    /// <summary>
+    /// 位置列表
+    /// </summary>
     public string[] PosList { get; init; } = LanguageBinding.GetPos();
 
+    /// <summary>
+    /// 字体
+    /// </summary>
     [ObservableProperty]
     private FontDisplayModel? _fontItem;
-
+    /// <summary>
+    /// 主要颜色
+    /// </summary>
     [ObservableProperty]
     private Color _mainColor;
-
+    /// <summary>
+    /// 警告颜色
+    /// </summary>
     [ObservableProperty]
     private Color _warnColor;
+    /// <summary>
+    /// 错误颜色
+    /// </summary>
     [ObservableProperty]
     private Color _errorColor;
+    /// <summary>
+    /// 调试颜色
+    /// </summary>
     [ObservableProperty]
     private Color _debugColor;
-
+    /// <summary>
+    /// 是否启用单窗口模式
+    /// </summary>
     [ObservableProperty]
     private bool _windowMode;
+    /// <summary>
+    /// 是否使用自定义字体
+    /// </summary>
     [ObservableProperty]
     private bool _isCutsomFont;
+    /// <summary>
+    /// 是否启用背景图分辨率缩放
+    /// </summary>
     [ObservableProperty]
     private bool _enablePicResize;
+    /// <summary>
+    /// 是否启动自动主题
+    /// </summary>
     [ObservableProperty]
     private bool _isAutoColor;
+    /// <summary>
+    /// 是否启用亮主题
+    /// </summary>
     [ObservableProperty]
     private bool _isLightColor;
+    /// <summary>
+    /// 是否启用暗主题
+    /// </summary>
     [ObservableProperty]
     private bool _isDarkColor;
+    /// <summary>
+    /// 是否启用RGB模式
+    /// </summary>
     [ObservableProperty]
     private bool _enableRGB;
+    /// <summary>
+    /// 是否启用窗口透明
+    /// </summary>
     [ObservableProperty]
     private bool _enableWindowTran;
-    [ObservableProperty]
-    private bool _enableWindowMode = true;
+    /// <summary>
+    /// Live2d核心是否安装
+    /// </summary>
     [ObservableProperty]
     private bool _coreInstall;
+    /// <summary>
+    /// 是否启用动画虚化
+    /// </summary>
     [ObservableProperty]
     private bool _amFade;
+    /// <summary>
+    /// 是否启用自定义背景图
+    /// </summary>
     [ObservableProperty]
     private bool _enableBG;
+    /// <summary>
+    /// 是否启用Live2d
+    /// </summary>
     [ObservableProperty]
     private bool _enableLive2D;
+    /// <summary>
+    /// 是否降低FPS
+    /// </summary>
     [ObservableProperty]
     private bool _lowFps;
+    /// <summary>
+    /// 是否启用动画
+    /// </summary>
     [ObservableProperty]
     private bool _enableAm;
+    /// <summary>
+    /// 是否启用Minecraft news
+    /// </summary>
     [ObservableProperty]
     private bool _cardNews;
+    /// <summary>
+    /// 是否启用上次启动
+    /// </summary>
     [ObservableProperty]
     private bool _cardLast;
+    /// <summary>
+    /// 是否启用在线联机
+    /// </summary>
     [ObservableProperty]
     private bool _cardOnline;
-
+    /// <summary>
+    /// 是否启用头像1
+    /// </summary>
     [ObservableProperty]
     private bool _isHead1;
+    /// <summary>
+    /// 是否启用头像1
+    /// </summary>
     [ObservableProperty]
     private bool _isHead2;
+    /// <summary>
+    /// 是否启用头像1
+    /// </summary>
     [ObservableProperty]
     private bool _isHead3;
+
+    /// <summary>
+    /// 头像旋转
+    /// </summary>
     [ObservableProperty]
     private int _headX;
+    /// <summary>
+    /// 头像旋转
+    /// </summary>
     [ObservableProperty]
     private int _headY;
-
+    /// <summary>
+    /// 选中的语言
+    /// </summary>
     [ObservableProperty]
     private LanguageType _language;
+    /// <summary>
+    /// 背景图虚化
+    /// </summary>
     [ObservableProperty]
     private int _picEffect;
+    /// <summary>
+    /// 背景图透明
+    /// </summary>
     [ObservableProperty]
     private int _picTran;
+    /// <summary>
+    /// 背景图缩小分辨率
+    /// </summary>
     [ObservableProperty]
     private int _picResize;
+    /// <summary>
+    /// 窗口透明模式
+    /// </summary>
     [ObservableProperty]
     private int _windowTranType;
+    /// <summary>
+    /// RGB
+    /// </summary>
     [ObservableProperty]
     private int _rgbV1;
+    /// <summary>
+    /// RGB
+    /// </summary>
     [ObservableProperty]
     private int _rgbV2;
+    /// <summary>
+    /// Live2d宽度
+    /// </summary>
     [ObservableProperty]
     private int _l2dWidth;
+    /// <summary>
+    /// Live2d高度
+    /// </summary>
     [ObservableProperty]
     private int _l2dHeight;
+    /// <summary>
+    /// 动画时间
+    /// </summary>
     [ObservableProperty]
     private int _amTime;
+    /// <summary>
+    /// Live2d位置
+    /// </summary>
     [ObservableProperty]
     private int _l2dPos;
 
+    /// <summary>
+    /// 背景图位置
+    /// </summary>
     [ObservableProperty]
     private string? _pic;
+    /// <summary>
+    /// Live2d模型位置
+    /// </summary>
     [ObservableProperty]
     private string? _live2DModel;
-
+    /// <summary>
+    /// Live2d Core状态
+    /// </summary>
     [ObservableProperty]
     private string _live2DCoreState;
 
+    /// <summary>
+    /// 是否在加载中
+    /// </summary>
     private bool _load = true;
 
+    /// <summary>
+    /// 图标
+    ///    
+    /// </summary>
     public string IconHead
     {
         get

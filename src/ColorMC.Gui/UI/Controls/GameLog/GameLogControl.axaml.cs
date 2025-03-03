@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -226,5 +227,16 @@ public partial class GameLogControl : BaseUserControl
     public void GameExit(int code)
     {
         (DataContext as GameLogModel)?.GameExit(code);
+    }
+
+    /// <summary>
+    /// жидиЭМБъ
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
+        }
     }
 }

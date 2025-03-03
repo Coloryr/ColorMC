@@ -152,7 +152,6 @@
                                 DockPanel.Dock="Right"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text121}" />
                         </StackPanel>
-
                     </StackPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Button
