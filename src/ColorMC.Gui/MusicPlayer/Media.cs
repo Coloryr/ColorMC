@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using Avalonia.Animation;
 using ColorMC.Core.Net;
 using ColorMC.Core.Utils;
@@ -13,6 +8,11 @@ using ColorMC.Gui.MusicPlayer.Decoder.Wav;
 using ColorMC.Gui.MusicPlayer.Players;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using System;
+using System.IO;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.MusicPlayer;
 

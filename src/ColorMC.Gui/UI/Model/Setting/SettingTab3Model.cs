@@ -1,8 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using ColorMC.Core.Config;
+﻿using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -12,6 +8,10 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 

@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
@@ -14,6 +8,12 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.GameExport;
 
@@ -494,7 +494,7 @@ public partial class GameExportModel : MenuModel
             }
 
             var type = DownloadItemHelper.TestSourceType(item.Obj1.ModId, item.Obj1.FileId);
-            if ((type == SourceType.CurseForge && Type == PackType.CurseForge) 
+            if ((type == SourceType.CurseForge && Type == PackType.CurseForge)
                 || (type == SourceType.Modrinth && Type == PackType.Modrinth))
             {
                 item.Export = true;

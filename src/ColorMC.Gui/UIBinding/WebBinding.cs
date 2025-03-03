@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -27,8 +21,13 @@ using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.Utils;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 

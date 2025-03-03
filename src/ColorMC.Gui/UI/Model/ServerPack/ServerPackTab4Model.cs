@@ -1,11 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 

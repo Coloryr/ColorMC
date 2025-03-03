@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using System;
+using System.Threading;
 
 namespace ColorMC.Gui.Utils;
 

@@ -1,10 +1,10 @@
-using System.Collections.Concurrent;
-using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
+using System.Collections.Concurrent;
+using System.Text;
 
 namespace ColorMC.Core.Helpers;
 

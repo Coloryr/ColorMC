@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Manager;
 

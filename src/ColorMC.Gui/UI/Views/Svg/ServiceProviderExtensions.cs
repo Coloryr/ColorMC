@@ -1,5 +1,5 @@
-using System;
 using Avalonia.Markup.Xaml;
+using System;
 
 namespace ColorMC.Gui.UI.Views.Svg;
 

@@ -1,10 +1,10 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using Avalonia.Styling;
 using ColorMC.Gui.Utils;
+using System;
 
 namespace ColorMC.Gui.UI.Animations;
 

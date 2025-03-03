@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
@@ -10,6 +8,8 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Skin;
 using MinecraftSkinRender;
 using MinecraftSkinRender.OpenGL;
+using System;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 

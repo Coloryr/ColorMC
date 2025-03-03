@@ -1,7 +1,7 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using ColorMC.Gui.MusicPlayer.Decoder;
+﻿using ColorMC.Gui.MusicPlayer.Decoder;
 using Silk.NET.SDL;
+using System;
+using System.Runtime.InteropServices;
 using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.MusicPlayer.Players;

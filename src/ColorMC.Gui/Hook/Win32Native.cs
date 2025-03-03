@@ -1,9 +1,9 @@
-using System;
-using System.Runtime.InteropServices;
 using Avalonia.Input;
 using Avalonia.Win32.Input;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
+using System;
+using System.Runtime.InteropServices;
 
 namespace ColorMC.Gui.Hook;
 

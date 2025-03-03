@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -6,6 +5,7 @@ using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 

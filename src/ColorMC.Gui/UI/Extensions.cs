@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using ColorMC.Gui.Manager;
+using System;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI;
 

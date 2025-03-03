@@ -1,7 +1,7 @@
-﻿using System.Net;
+﻿using ColorMC.Core.Helpers;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Game;
 

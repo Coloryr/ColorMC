@@ -1,6 +1,6 @@
-﻿using System;
-using ColorMC.Core.Helpers;
+﻿using ColorMC.Core.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -24,7 +24,7 @@ public partial class NbtDataItemModel : ObservableObject
     /// 实际数据
     /// </summary>
     private object _valueSave;
-    
+
     /// <summary>
     /// 是否为hex
     /// </summary>

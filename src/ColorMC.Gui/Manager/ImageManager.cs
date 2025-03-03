@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Threading;
@@ -16,8 +11,12 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-
 using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Manager;
 

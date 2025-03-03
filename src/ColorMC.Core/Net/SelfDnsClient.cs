@@ -1,6 +1,6 @@
-﻿using System.Net;
-using Ae.Dns.Client;
+﻿using Ae.Dns.Client;
 using Ae.Dns.Protocol;
+using System.Net;
 
 namespace ColorMC.Core.Net;
 

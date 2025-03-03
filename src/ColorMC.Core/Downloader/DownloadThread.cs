@@ -1,9 +1,9 @@
-using System.Buffers;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System.Buffers;
 
 namespace ColorMC.Core.Downloader;
 

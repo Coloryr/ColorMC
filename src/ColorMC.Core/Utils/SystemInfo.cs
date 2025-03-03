@@ -1,6 +1,6 @@
+using ColorMC.Core.Objs;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Utils;
 

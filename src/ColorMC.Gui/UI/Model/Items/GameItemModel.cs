@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
@@ -18,6 +15,9 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -394,7 +394,7 @@ public partial class GameItemModel : GameModel
             time4.Ticks == 0 ? "" :
             $"{time4.TotalHours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
     }
-    
+
     /// <summary>
     /// 移动游戏实例
     /// </summary>

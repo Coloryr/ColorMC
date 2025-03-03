@@ -1,8 +1,8 @@
-using System.Collections.ObjectModel;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

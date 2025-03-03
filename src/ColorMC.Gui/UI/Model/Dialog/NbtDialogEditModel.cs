@@ -1,8 +1,8 @@
-﻿using System.Collections.ObjectModel;
-using ColorMC.Gui.UI.Model.Items;
+﻿using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 

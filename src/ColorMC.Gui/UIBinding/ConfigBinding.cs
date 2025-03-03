@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
@@ -10,6 +8,8 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 

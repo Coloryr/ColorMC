@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
@@ -12,6 +10,8 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
+using System;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Windows;
 

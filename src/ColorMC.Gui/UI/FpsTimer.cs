@@ -1,7 +1,7 @@
-using System;
-using System.Timers;
 using Avalonia.Controls;
 using Avalonia.OpenGL.Controls;
+using System;
+using System.Timers;
 using Timer = System.Timers.Timer;
 
 namespace ColorMC.Gui.UI;

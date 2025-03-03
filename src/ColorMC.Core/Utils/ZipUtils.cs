@@ -1,8 +1,8 @@
-using System.Text;
 using ColorMC.Core.Helpers;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
+using System.Text;
 using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
 namespace ColorMC.Core.Utils;

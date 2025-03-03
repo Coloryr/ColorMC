@@ -1,9 +1,9 @@
-﻿using System;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using Silk.NET.SDL;
+using System;
 
 namespace ColorMC.Gui.Utils;
 

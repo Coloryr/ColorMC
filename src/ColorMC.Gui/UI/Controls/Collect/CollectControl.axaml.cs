@@ -1,8 +1,8 @@
-using System.ComponentModel;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Collect;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Collect;
 
