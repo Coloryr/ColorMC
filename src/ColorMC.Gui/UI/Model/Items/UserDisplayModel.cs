@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -11,6 +9,8 @@ using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Model.User;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SkiaSharp;
+using System;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

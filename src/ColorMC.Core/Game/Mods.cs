@@ -1,5 +1,3 @@
-using System.Collections.Concurrent;
-using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -7,6 +5,8 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
+using System.Text;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -46,7 +46,7 @@ public static class Mods
                 var sha1 = await HashHelper.GenSha1Async(filestream);
                 filestream.Seek(0, SeekOrigin.Begin);
 
-                list.Add(new() 
+                list.Add(new()
                 {
                     Local = item.FullName,
                     Sha1 = sha1

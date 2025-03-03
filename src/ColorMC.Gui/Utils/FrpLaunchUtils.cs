@@ -1,9 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -12,6 +6,12 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
@@ -51,7 +51,7 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetOpenFrpLocal(string ver, string? filename = null)
     {
-        return filename != null ? Path.Combine(BaseDir, GuiNames.NameOpenFrpDir, ver, filename) 
+        return filename != null ? Path.Combine(BaseDir, GuiNames.NameOpenFrpDir, ver, filename)
             : Path.Combine(BaseDir, GuiNames.NameOpenFrpDir, ver, GetFrpcName());
     }
 
@@ -62,7 +62,7 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static string GetFrpLocal(string ver, string? filename = null)
     {
-        return filename != null ? Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, filename) 
+        return filename != null ? Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, filename)
             : Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, GetFrpcName());
     }
 

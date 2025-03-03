@@ -1,11 +1,11 @@
-﻿using System.Timers;
-using Avalonia.Threading;
+﻿using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -127,7 +127,7 @@ public partial class SettingModel : MenuModel
                 SubMenu =
                 [
                     new SubMenuItemModel()
-                    { 
+                    {
                         Name = App.Lang("SettingWindow.Tab6.Text43"),
                         Func = ShowBuildPack
                     }

@@ -1,5 +1,5 @@
-using System;
 using Avalonia.Controls;
+using System;
 
 namespace ColorMC.Gui.UI.Windows;
 

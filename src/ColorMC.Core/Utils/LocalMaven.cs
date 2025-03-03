@@ -1,10 +1,10 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 

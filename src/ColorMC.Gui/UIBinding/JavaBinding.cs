@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 

@@ -1,17 +1,10 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media.Imaging;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.BuildPack;
 

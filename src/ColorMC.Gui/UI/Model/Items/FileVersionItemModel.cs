@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.Utils;
+using System;
+using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

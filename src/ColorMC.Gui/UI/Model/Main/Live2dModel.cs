@@ -1,6 +1,6 @@
-﻿using System;
-using Avalonia.Layout;
+﻿using Avalonia.Layout;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace ColorMC.Gui.UI.Model.Main;
 

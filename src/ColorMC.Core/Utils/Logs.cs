@@ -1,5 +1,5 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Helpers;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Utils;
 

@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using ColorMC.Gui.Objs;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 

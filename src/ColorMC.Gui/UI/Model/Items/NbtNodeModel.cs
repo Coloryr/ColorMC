@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using ColorMC.Core.Chunk;
+﻿using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

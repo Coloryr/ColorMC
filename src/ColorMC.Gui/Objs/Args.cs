@@ -1,6 +1,6 @@
-﻿using System;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using System;
 
 namespace ColorMC.Gui.Objs;
 

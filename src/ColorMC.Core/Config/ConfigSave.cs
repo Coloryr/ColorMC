@@ -1,8 +1,8 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Config;
 

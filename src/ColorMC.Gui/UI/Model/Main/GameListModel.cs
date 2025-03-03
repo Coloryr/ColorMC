@@ -1,11 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia.Media.Imaging;
-using AvaloniaEdit.Utils;
+﻿using Avalonia.Media.Imaging;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -17,6 +10,11 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -186,7 +184,7 @@ public partial class MainModel
         }
         return list;
     }
-    
+
     /// <summary>
     /// 结束多选
     /// </summary>

@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
@@ -6,6 +5,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.ServerPack;
 using ColorMC.Gui.UIBinding;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

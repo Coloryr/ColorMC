@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -8,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Game;
 

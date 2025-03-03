@@ -1,7 +1,7 @@
-﻿using System.Runtime.InteropServices;
-using System.Text;
-using Avalonia.OpenGL;
+﻿using Avalonia.OpenGL;
 using MinecraftSkinRender.OpenGL;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 

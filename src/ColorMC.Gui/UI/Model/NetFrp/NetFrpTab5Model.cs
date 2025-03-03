@@ -1,12 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using ColorMC.Gui.Net.Apis;
+﻿using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 

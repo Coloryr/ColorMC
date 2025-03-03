@@ -1,4 +1,3 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
@@ -7,6 +6,7 @@ using Avalonia.Svg.Skia;
 using ColorMC.Core.Utils;
 using ShimSkiaSharp;
 using Svg.Skia;
+using System;
 
 namespace ColorMC.Gui.UI.Views.Svg;
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.Main;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Flyouts;
 

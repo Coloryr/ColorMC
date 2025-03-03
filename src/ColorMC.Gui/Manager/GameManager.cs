@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using ColorMC.Core;
+﻿using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using System.Collections.Generic;
 
 namespace ColorMC.Gui.Manager;
 

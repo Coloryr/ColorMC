@@ -1,7 +1,7 @@
-using System.Text;
-using System.Text.RegularExpressions;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ColorMC.Core.Helpers;
 

@@ -1,10 +1,10 @@
-using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -367,7 +367,7 @@ public partial class GameEditModel : MenuModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), 
+            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"),
                 HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
         });
     }

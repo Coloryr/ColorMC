@@ -1,4 +1,3 @@
-using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
@@ -6,6 +5,7 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using System.Text;
 
 namespace ColorMC.Core.Game;
 

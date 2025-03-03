@@ -1,8 +1,8 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using System;
 
 namespace ColorMC.Gui.UI.Windows;
 

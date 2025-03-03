@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -13,6 +9,10 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -741,7 +741,8 @@ public partial class SettingModel
                     IsHead2 = false;
                     IsHead3 = true;
                     break;
-            };
+            }
+            ;
 
             HeadX = con.Head.X;
             HeadY = con.Head.Y;

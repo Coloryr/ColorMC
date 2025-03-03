@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
-using ColorMC.Gui.Utils;
+﻿using ColorMC.Gui.Utils;
 using SkiaSharp;
+using System;
+using System.IO;
 
 namespace ColorMC.Gui.Skin;
 

@@ -1,5 +1,3 @@
-using System;
-using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -12,6 +10,8 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using System;
+using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 

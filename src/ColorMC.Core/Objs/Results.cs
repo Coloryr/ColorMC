@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Java;
@@ -6,6 +5,7 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
+using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Objs;
 
