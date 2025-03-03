@@ -1628,6 +1628,42 @@ public static class GameBinding
         {
             window5.ReloadTitle();
         }
+        if (WindowManager.ServerPackWindows.TryGetValue(obj.UUID, out var window6))
+        {
+            window6.ReloadTitle();
+        }
+    }
+
+    public static void ReloadIcon(GameSettingObj obj)
+    {
+        if (WindowManager.GameEditWindows.TryGetValue(obj.UUID, out var window))
+        {
+            window.ReloadIcon();
+        }
+        if (WindowManager.GameExportWindows.TryGetValue(obj.UUID, out var window1))
+        {
+            window1.ReloadIcon();
+        }
+        if (WindowManager.GameCloudWindows.TryGetValue(obj.UUID, out var window2))
+        {
+            window2.ReloadIcon();
+        }
+        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var window3))
+        {
+            window3.ReloadIcon();
+        }
+        if (WindowManager.GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
+        {
+            window4.ReloadIcon();
+        }
+        if (WindowManager.GameAddWindows.TryGetValue(obj.UUID, out var window5))
+        {
+            window5.ReloadIcon();
+        }
+        if (WindowManager.ServerPackWindows.TryGetValue(obj.UUID, out var window6))
+        {
+            window6.ReloadIcon();
+        }
     }
 
     /// <summary>

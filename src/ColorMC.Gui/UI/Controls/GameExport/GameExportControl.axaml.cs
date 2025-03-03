@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -81,8 +82,7 @@ public partial class GameExportControl : MenuControl
 
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(_obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -92,5 +92,16 @@ public partial class GameExportControl : MenuControl
     {
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
+    }
+
+    /// <summary>
+    /// жидиЭМБъ
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
+        }
     }
 }

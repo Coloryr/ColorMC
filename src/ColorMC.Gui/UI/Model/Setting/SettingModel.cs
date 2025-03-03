@@ -5,6 +5,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -23,6 +24,12 @@ public partial class SettingModel : MenuModel
     public bool IsInputEnable { get; }
 
     /// <summary>
+    /// 
+    /// </summary>
+    [ObservableProperty]
+    private bool _enableWindowMode;
+
+    /// <summary>
     /// 更新定制器
     /// </summary>
     private readonly Timer _timer;
@@ -37,6 +44,7 @@ public partial class SettingModel : MenuModel
         else if (SystemInfo.Os is OsType.Windows)
         {
             IsInputEnable = true;
+            _enableWindowMode = true;
         }
 
         //更新定制器用于内存
@@ -115,7 +123,15 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item5.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text6")
+                Text = App.Lang("SettingWindow.Tabs.Text6"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    { 
+                        Name = App.Lang("SettingWindow.Tab6.Text43"),
+                        Func = ShowBuildPack
+                    }
+                ]
             },
             new()
             {

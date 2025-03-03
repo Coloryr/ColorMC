@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -130,8 +131,7 @@ public partial class GameEditControl : MenuControl
 
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(_obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -165,5 +165,16 @@ public partial class GameEditControl : MenuControl
     {
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
+    }
+
+    /// <summary>
+    /// жидиЭМБъ
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
+        }
     }
 }

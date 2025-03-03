@@ -368,6 +368,9 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\BuildPack\Tab1Control.axaml.cs">
+      <DependentUpon>Tab1Control.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\Dialog\NetFrpAddControl.axaml.cs">
       <DependentUpon>NetFrpAddControl.axaml</DependentUpon>
     </Compile>

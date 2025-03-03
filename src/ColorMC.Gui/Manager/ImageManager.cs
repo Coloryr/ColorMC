@@ -14,6 +14,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Skin;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
 using SkiaSharp;
@@ -257,12 +258,13 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? ReloadImage(GameSettingObj obj)
     {
-        s_gameIcon.Remove(obj.UUID, out var temp);
-        if (temp != null)
+        if (s_gameIcon.Remove(obj.UUID, out var temp))
         {
             Dispatcher.UIThread.Post(temp.Dispose);
         }
-        return GetGameIcon(obj);
+        var icon = GetGameIcon(obj);
+        GameBinding.ReloadIcon(obj);
+        return icon;
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -20,11 +21,11 @@ public partial class GameCloudControl : MenuControl
     /// <summary>
     /// 游戏实例
     /// </summary>
-    public GameSettingObj Obj { get; }
+    private readonly GameSettingObj _obj;
 
     public GameCloudControl(GameSettingObj obj) : base(WindowManager.GetUseName<GameCloudControl>(obj))
     {
-        Obj = obj;
+        _obj = obj;
 
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
     }
@@ -44,13 +45,12 @@ public partial class GameCloudControl : MenuControl
 
     protected override TopModel GenModel(BaseModel model)
     {
-        return new GameCloudModel(model, Obj);
+        return new GameCloudModel(model, _obj);
     }
 
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(Obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
     }
 
     protected override Control ViewChange(int old, int index)
@@ -80,7 +80,18 @@ public partial class GameCloudControl : MenuControl
     /// </summary>
     public void ReloadTitle()
     {
-        Title = string.Format(App.Lang("GameCloudWindow.Title"), Obj.Name);
+        Title = string.Format(App.Lang("GameCloudWindow.Title"), _obj.Name);
         Window.SetTitle(Title);
+    }
+
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    public void ReloadIcon()
+    {
+        if (DataContext is BaseModel model)
+        {
+            model.SetIcon(GetIcon());
+        }
     }
 }

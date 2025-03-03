@@ -80,7 +80,9 @@ public partial class SettingModel
     partial void OnGameAdminLaunchChanged(bool value)
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         SetAdmin();
     }
@@ -88,7 +90,9 @@ public partial class SettingModel
     partial void OnAdminLaunchChanged(bool value)
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         SetAdmin();
     }
@@ -96,7 +100,9 @@ public partial class SettingModel
     partial void OnLoopChanged(bool value)
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         SetMusic();
     }
@@ -104,7 +110,9 @@ public partial class SettingModel
     partial void OnEnableUIChanged(bool value)
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetUI(value);
     }
@@ -364,7 +372,9 @@ public partial class SettingModel
     private void SetMusic()
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetMusic(EnableMusic, SlowVolume, Music, Volume, RunPause, Loop);
     }
@@ -372,7 +382,9 @@ public partial class SettingModel
     private void SetLoginLock()
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         var list = new List<LockLoginSetting>();
         foreach (var item in Locks)
@@ -386,7 +398,9 @@ public partial class SettingModel
     private void SetIP()
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetMotd(ServerIP, ServerPort ?? 0, EnableMotd,
             EnableJoin, MotdFontColor.ToString(), MotdBackColor.ToString());
@@ -395,7 +409,9 @@ public partial class SettingModel
     private void SetOneGame()
     {
         if (_serverLoad)
+        {
             return;
+        }
 
         ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
     }
@@ -403,5 +419,10 @@ public partial class SettingModel
     private void SetAdmin()
     {
         ConfigBinding.SetAdmin(AdminLaunch, GameAdminLaunch);
+    }
+
+    private void ShowBuildPack()
+    {
+        WindowManager.ShowBuildPack();
     }
 }
