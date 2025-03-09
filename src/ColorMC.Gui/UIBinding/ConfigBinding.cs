@@ -8,6 +8,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -556,7 +557,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.GameName = v2;
         GuiConfigUtils.Save();
 
-        WindowManager.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadGameItem();
     }
 
     /// <summary>
@@ -1045,5 +1046,13 @@ public static class ConfigBinding
         GuiConfigUtils.Config.LaunchCheck.CheckMemory = memory;
 
         GuiConfigUtils.Save();
+    }
+
+    public static void SetWindowSimple(bool value)
+    {
+        GuiConfigUtils.Config.Simple = value;
+
+        GuiConfigUtils.Save();
+        WindowManager.MainWindow?.LoadDone();
     }
 }

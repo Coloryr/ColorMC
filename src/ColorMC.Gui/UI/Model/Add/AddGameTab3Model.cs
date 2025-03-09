@@ -23,7 +23,7 @@ public partial class AddGameModel
     /// <summary>
     /// 文件列表
     /// </summary>
-    private FilesPageModel? _fileModel;
+    private FilesPage? _fileModel;
 
     /// <summary>
     /// 文件夹路径
@@ -66,7 +66,7 @@ public partial class AddGameModel
 
             _fileModel = await Task.Run(() =>
             {
-                return new FilesPageModel(SelectPath, true,
+                return new FilesPage(SelectPath, true,
                     ["assets", "libraries", "versions", "launcher_profiles.json"]);
             });
             Model.ProgressClose();

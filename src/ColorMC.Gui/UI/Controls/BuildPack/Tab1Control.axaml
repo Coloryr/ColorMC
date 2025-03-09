@@ -8,7 +8,6 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:BuildPackModel"
     mc:Ignorable="d">
@@ -22,19 +21,140 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Path="/Resource/Icon/Setting/svg1.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="选择配置文件" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize BuildPackWindow.Tab1.Text1}" />
                     </StackPanel>
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize BuildPackWindow.Tab1.Text2}"
+                        IsChecked="{Binding UiSetting}" />
                     <WrapPanel>
-                        <CheckBox Margin="0,0,10,0" Content="导出界面设置" />
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text3}"
+                            IsChecked="{Binding UiBg}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text4}"
+                            IsChecked="{Binding UiColor}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text5}"
+                            IsChecked="{Binding UiLive2d}" />
                     </WrapPanel>
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize BuildPackWindow.Tab1.Text6}"
+                        IsChecked="{Binding LaunchSetting}" />
                     <WrapPanel>
-                        <CheckBox Margin="0,0,10,0" Content="导出启动设置" />
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text7}"
+                            IsChecked="{Binding LaunchCheck}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text8}"
+                            IsChecked="{Binding LaunchJvm}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text9}"
+                            IsChecked="{Binding LaunchGame}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text10}"
+                            IsChecked="{Binding LaunchPrRun}" />
                     </WrapPanel>
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize BuildPackWindow.Tab1.Text11}"
+                        IsChecked="{Binding ServerSetting}" />
                     <WrapPanel>
-                        <CheckBox Margin="0,0,10,0" Content="导出服务器设置" />
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text12}"
+                            IsChecked="{Binding ServerOpt}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text13}"
+                            IsChecked="{Binding ServerLock}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text14}"
+                            IsChecked="{Binding ServerMusic}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text15}"
+                            IsChecked="{Binding ServerUi}" />
                     </WrapPanel>
+                    <CheckBox
+                        Margin="0,0,10,0"
+                        Content="{setting:Localize BuildPackWindow.Tab1.Text16}"
+                        IsChecked="{Binding Java}" />
+                    <DataGrid
+                        Height="200"
+                        Margin="5"
+                        AutoGenerateColumns="False"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="False"
+                        IsEnabled="{Binding Java}"
+                        ItemsSource="{Binding Javas}">
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn Binding="{Binding IsSelect}" />
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize Text.Name}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding MajorVersion}"
+                                Header="{setting:Localize SettingWindow.Tab5.Text9}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Version}"
+                                Header="{setting:Localize Text.Version}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Type}"
+                                Header="{setting:Localize SettingWindow.Tab5.Text10}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Arch}"
+                                Header="{setting:Localize SettingWindow.Tab5.Text11}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Path}"
+                                Header="{setting:Localize Text.Path}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                     <WrapPanel>
-                        <CheckBox Margin="0,0,10,0" Content="导出内置Java" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text17}"
+                            IsChecked="{Binding PackLaunch}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text18}"
+                            IsChecked="{Binding PackUpdate}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>

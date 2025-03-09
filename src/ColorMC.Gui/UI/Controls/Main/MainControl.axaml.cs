@@ -38,6 +38,10 @@ public partial class MainControl : BaseUserControl
     /// 游戏实例列表
     /// </summary>
     private MainGamesControl? _games;
+    /// <summary>
+    /// 简易主界面
+    /// </summary>
+    private SimpleControl? _simple;
 
     public MainControl() : base(WindowManager.GetUseName<MainControl>())
     {
@@ -180,6 +184,12 @@ public partial class MainControl : BaseUserControl
             _oneGame ??= new();
             Content1.Child = _oneGame;
         }
+        else if (model.IsSimple)
+        {
+            _simple ??= new();
+            Content1.Child = _simple;
+            model.LoadSimpleGames();
+        }
         else if (model.IsNotGame && Content1.Child is not MainEmptyControl)
         {
             _emptyGame ??= new();
@@ -272,7 +282,10 @@ public partial class MainControl : BaseUserControl
         });
     }
 
-    public void LoadMain()
+    /// <summary>
+    /// 加载游戏列表
+    /// </summary>
+    public void LoadGameItem()
     {
         Dispatcher.UIThread.Post(() =>
         {

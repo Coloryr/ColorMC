@@ -6,6 +6,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -54,7 +55,7 @@ public partial class GameGroupModel : TopModel
     /// <summary>
     /// 游戏项目列表
     /// </summary>
-    private readonly Dictionary<string, GameItemModel> _items = [];
+    public readonly Dictionary<string, GameItemModel> Items = [];
     /// <summary>
     /// 添加项目用
     /// </summary>
@@ -66,18 +67,18 @@ public partial class GameGroupModel : TopModel
         Header = name;
         Key = key;
         GameList.Clear();
-        _items.Clear();
+        Items.Clear();
         foreach (var item in list)
         {
             var model1 = new GameItemModel(Model, Top, item);
-            _items.Add(item.UUID, model1);
+            Items.Add(item.UUID, model1);
         }
         _addItem = new(Model, Key == InstancesPath.DefaultGroup ? null : Key);
         Task.Run(() =>
         {
             bool res = false;
             int index = 1;
-            if (_items.Count == 5)
+            if (Items.Count == 5)
             {
                 var random = new Random();
                 if (random.Next(2000) == 666)
@@ -85,11 +86,15 @@ public partial class GameGroupModel : TopModel
                     res = true;
                 }
             }
+            if (GuiConfigUtils.Config.Simple)
+            {
+                res = false;
+            }
 
             var list1 = new List<GameItemModel>();
 
             //检查是否星标
-            foreach (var item in _items)
+            foreach (var item in Items)
             {
                 if (!GameManager.IsStar(item.Value.Obj))
                 {
@@ -139,7 +144,7 @@ public partial class GameGroupModel : TopModel
         {
             return;
         }
-        Top.Launch(_items.Values);
+        Top.Launch(Items.Values);
     }
 
     /// <summary>
@@ -150,7 +155,7 @@ public partial class GameGroupModel : TopModel
     public bool DropIn(IDataObject data)
     {
         return data.Get(BaseBinding.DrapType) is not string c
-            || !_items.ContainsKey(c);
+            || !Items.ContainsKey(c);
     }
 
     /// <summary>
@@ -172,7 +177,7 @@ public partial class GameGroupModel : TopModel
 
         game.IsDrop = false;
 
-        if (_items.ContainsKey(c))
+        if (Items.ContainsKey(c))
         {
             return;
         }
@@ -191,7 +196,7 @@ public partial class GameGroupModel : TopModel
         {
             return null;
         }
-        if (_items.TryGetValue(uuid, out var item))
+        if (Items.TryGetValue(uuid, out var item))
         {
             Expander = true;
             return item;
@@ -211,7 +216,7 @@ public partial class GameGroupModel : TopModel
 
         foreach (var item in list)
         {
-            if (_items.ContainsKey(item.UUID))
+            if (Items.ContainsKey(item.UUID))
             {
                 continue;
             }
@@ -219,7 +224,7 @@ public partial class GameGroupModel : TopModel
         }
 
         //筛选删除的内容
-        foreach (var item in _items.Keys)
+        foreach (var item in Items.Keys)
         {
             if (list.Any(item1 => item1.UUID == item))
             {
@@ -236,7 +241,7 @@ public partial class GameGroupModel : TopModel
 
         foreach (var item in remove)
         {
-            _items.Remove(item);
+            Items.Remove(item);
             var model = GameList.FirstOrDefault(item1 => item1.Obj.UUID == item);
             if (model != null)
             {
@@ -249,7 +254,7 @@ public partial class GameGroupModel : TopModel
         foreach (var item in ins)
         {
             var model1 = new GameItemModel(Model, Top, item);
-            _items.Add(item.UUID, model1);
+            Items.Add(item.UUID, model1);
         }
 
         Task.Run(() =>
@@ -259,7 +264,7 @@ public partial class GameGroupModel : TopModel
                 Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    GameList.Add(_items[item.UUID]);
+                    GameList.Add(Items[item.UUID]);
                 });
             }
 
@@ -277,7 +282,7 @@ public partial class GameGroupModel : TopModel
             item.Close();
         }
         GameList.Clear();
-        _items.Clear();
+        Items.Clear();
     }
 
     /// <summary>
@@ -393,7 +398,7 @@ public partial class GameGroupModel : TopModel
     public void SetMinMode(bool minMode)
     {
         MinMode = minMode;
-        foreach (var item in _items.Values)
+        foreach (var item in Items.Values)
         {
             item.MinMode = minMode;
         }

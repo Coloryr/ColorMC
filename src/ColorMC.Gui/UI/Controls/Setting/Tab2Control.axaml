@@ -64,6 +64,12 @@
                             ItemsSource="{Binding TranTypeList}"
                             SelectedIndex="{Binding WindowTranType}" />
                     </panel:WrapPanelWithStretch>
+                    <ToggleSwitch
+                        Margin="0,0,10,10"
+                        VerticalAlignment="Center"
+                        IsChecked="{Binding Simple}"
+                        OffContent="{setting:Localize SettingWindow.Tab2.Text68}"
+                        OnContent="{setting:Localize SettingWindow.Tab2.Text68}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         Text="{setting:Localize SettingWindow.Tab2.Text6}"

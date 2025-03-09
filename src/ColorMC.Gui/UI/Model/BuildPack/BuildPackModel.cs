@@ -38,6 +38,8 @@ public partial class BuildPackModel : MenuModel
 
     public void Load()
     {
+        LoadGames();
+
         NowView = 0;
     }
 }

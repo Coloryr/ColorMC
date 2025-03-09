@@ -30,7 +30,7 @@ public partial class GameCloudModel : MenuModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    private FilesPageModel _files;
+    private FilesPage _files;
 
     /// <summary>
     /// 文件列表
@@ -246,7 +246,7 @@ public partial class GameCloudModel : MenuModel
     public async Task LoadConfig()
     {
         string dir = Obj.GetBasePath();
-        _files = new FilesPageModel(dir, false);
+        _files = new FilesPage(dir, false);
         var data = GameCloudUtils.GetCloudData(Obj);
         LocalConfigTime = data.ConfigTime.ToString();
 

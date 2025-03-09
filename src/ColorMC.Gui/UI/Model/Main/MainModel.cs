@@ -258,13 +258,8 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     public void LoadDone()
     {
-        LoadGameItem();
-        LoadUser();
-        LoadMotd();
-        LoadNews();
-        LoadMusic();
-
         var config = GuiConfigUtils.Config;
+        IsSimple = config.Simple;
         if (config.Live2D?.LowFps == true)
         {
             LowFps = true;
@@ -274,6 +269,11 @@ public partial class MainModel : TopModel, IMutTop
             CheckUpdate();
         }
 
+        LoadGameItem();
+        LoadUser();
+        LoadMotd();
+        LoadNews();
+        LoadMusic();
         LoadCard();
     }
 
