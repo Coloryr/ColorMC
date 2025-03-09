@@ -114,6 +114,19 @@ public partial class MainModel
         }
     }
 
+    partial void OnGameChanged(GameItemModel? oldValue, GameItemModel? newValue)
+    {
+        oldValue?.Unselect();
+        newValue?.Select();
+
+        HaveGame = newValue != null;
+
+        if (IsSimple)
+        {
+            LoadSimple();
+        }
+    }
+
     /// <summary>
     /// 运行上次游戏实例
     /// </summary>
@@ -461,6 +474,19 @@ public partial class MainModel
             }
         }
 
+        if (IsSimple)
+        {
+            if (OneGame != null)
+            {
+                GameList.Add(OneGame);
+                Game = OneGame;
+            }
+            else
+            {
+                LoadSimpleGames();
+            }
+        }
+
         OnPropertyChanged(SwitchView);
         MinModeChange();
     }
@@ -498,9 +524,7 @@ public partial class MainModel
             HaveLast = false;
         }
 
-        Game?.Unselect();
         Game = obj;
-        Game?.Select();
     }
 
     /// <summary>

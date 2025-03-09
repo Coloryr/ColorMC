@@ -25,7 +25,7 @@ public partial class GameExportModel : MenuModel
     /// <summary>
     /// 导出的文件列表
     /// </summary>
-    public FilesPageModel Files { get; private set; }
+    public FilesPage Files { get; private set; }
 
     /// <summary>
     /// 文件列表
@@ -480,9 +480,9 @@ public partial class GameExportModel : MenuModel
     {
         Files = Type switch
         {
-            PackType.Modrinth => new FilesPageModel(Obj.GetGamePath(), false),
-            PackType.CurseForge => new FilesPageModel(Obj.GetGamePath(), true),
-            _ => new FilesPageModel(Obj.GetBasePath(), true)
+            PackType.Modrinth => new FilesPage(Obj.GetGamePath(), false),
+            PackType.CurseForge => new FilesPage(Obj.GetGamePath(), true),
+            _ => new FilesPage(Obj.GetBasePath(), true)
         };
         //除去可以自己下载的模组
         var list = new List<string>();

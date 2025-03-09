@@ -1,0 +1,114 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.SimpleControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border Classes="t2">
+        <StackPanel
+            Margin="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            RenderOptions.TextRenderingMode="Antialias">
+            <Image
+                Width="120"
+                Height="120"
+                Source="{Binding GameIcon}" />
+            <TextBlock
+                Margin="0,10,0,10"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                MaxLines="3"
+                Text="{Binding GameName}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+            <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
+                <DockPanel MinWidth="200" Margin="0,0,10,10">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                    <NumericUpDown
+                        Height="30"
+                        HorizontalAlignment="Stretch"
+                        FormatString="N0"
+                        IsEnabled="{Binding !MaxWindow}"
+                        Minimum="1"
+                        Value="{Binding GameWidth}" />
+                </DockPanel>
+                <DockPanel MinWidth="200" Margin="0,0,10,10">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                    <NumericUpDown
+                        Height="30"
+                        HorizontalAlignment="Stretch"
+                        FormatString="N0"
+                        IsEnabled="{Binding !MaxWindow}"
+                        Minimum="1"
+                        Value="{Binding GameHeight}" />
+                </DockPanel>
+                <ToggleSwitch
+                    Margin="0,0,10,10"
+                    IsChecked="{Binding MaxWindow}"
+                    OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
+                    OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
+            </panel:WrapPanelWithStretch>
+            <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
+                <DockPanel MinWidth="230" Margin="0,0,10,10">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                    <NumericUpDown
+                        Height="30"
+                        HorizontalAlignment="Stretch"
+                        FormatString="N0"
+                        Minimum="1"
+                        Value="{Binding MinMem}" />
+                </DockPanel>
+                <DockPanel MinWidth="230" Margin="0,0,10,10">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                    <NumericUpDown
+                        Height="30"
+                        HorizontalAlignment="Stretch"
+                        FormatString="N0"
+                        Minimum="1"
+                        Value="{Binding MaxMem}" />
+                </DockPanel>
+            </panel:WrapPanelWithStretch>
+            <ComboBox
+                Width="300"
+                HorizontalAlignment="Center"
+                DisplayMemberBinding="{Binding Name}"
+                ItemsSource="{Binding GameList}"
+                SelectedItem="{Binding Game}" />
+            <Button
+                Width="300"
+                Height="50"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                Command="{Binding Launch}"
+                Content="{setting:Localize MainWindow.Text35}"
+                IsEnabled="{Binding HaveGame}" />
+            <UniformGrid
+                Width="300"
+                Margin="0,10,0,0"
+                Columns="2"
+                Rows="1">
+                <Button
+                    Height="30"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding AddGame}"
+                    Content="{setting:Localize MainWindow.Text36}" />
+                <Button
+                    Height="30"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding EditGame}"
+                    Content="{setting:Localize MainWindow.Text37}"
+                    IsEnabled="{Binding HaveGame}" />
+            </UniformGrid>
+        </StackPanel>
+    </Border>
+</UserControl>

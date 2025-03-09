@@ -42,7 +42,7 @@ public static class CoreManager
     /// </summary>
     private static void InstanceChange()
     {
-        WindowManager.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadGameItem();
     }
 
     /// <summary>

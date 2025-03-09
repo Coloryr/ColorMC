@@ -813,7 +813,7 @@ public static class GameBinding
     public static void MoveGameGroup(GameSettingObj obj, string? now)
     {
         obj.MoveGameGroup(now);
-        WindowManager.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadGameItem();
     }
 
     /// <summary>
@@ -1603,7 +1603,7 @@ public static class GameBinding
         obj.Name = data;
         obj.Save();
 
-        WindowManager.MainWindow?.LoadMain();
+        WindowManager.MainWindow?.LoadGameItem();
         if (WindowManager.GameEditWindows.TryGetValue(obj.UUID, out var window))
         {
             window.ReloadTitle();

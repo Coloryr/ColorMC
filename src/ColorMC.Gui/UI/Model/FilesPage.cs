@@ -5,12 +5,12 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 
-public class FilesPageModel
+public class FilesPage
 {
     private readonly FileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; init; }
 
-    public FilesPageModel(string obj, bool check, List<string>? unselect = null)
+    public FilesPage(string obj, bool check, List<string>? unselect = null)
     {
         _root = new FileTreeNodeModel(null, obj, true, check, true);
         Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(_root)

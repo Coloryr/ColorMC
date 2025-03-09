@@ -35,4 +35,22 @@
             <TextBlock Text="{Binding Name}" />
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="GameFileNameCell1" DataType="vm:GameFileTreeNodeModel">
+        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="GameFileNameCell" DataType="vm:GameFileTreeNodeModel">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock
+                Width="30"
+                HorizontalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
+                        <Binding Path="IsDirectory" />
+                        <Binding Path="IsExpanded" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Text="{Binding Name}" />
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

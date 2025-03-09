@@ -3,7 +3,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <summary>
 /// Java显示
 /// </summary>
-public record JavaDisplayModel
+public class JavaDisplayModel
 {
     /// <summary>
     /// 名字

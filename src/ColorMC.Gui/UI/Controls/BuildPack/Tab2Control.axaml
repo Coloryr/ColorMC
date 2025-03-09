@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     x:DataType="model:BuildPackModel"
     mc:Ignorable="d">
-    <Border Classes="t1">
-        <StackPanel />
+    <Border Margin="10" Classes="t1">
+        <TreeDataGrid Margin="10" Source="{Binding Games}" />
     </Border>
 </UserControl>
