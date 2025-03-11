@@ -64,15 +64,36 @@ public record HttpObj
     public bool AutoDownload { get; set; }
 }
 
+/// <summary>
+/// 自定义Dns设置
+/// </summary>
 public record DnsObj
 {
+    /// <summary>
+    /// 是否启用自定义DNS
+    /// </summary>
     public bool Enable { get; set; }
+    /// <summary>
+    /// DNS IP地址
+    /// </summary>
     public List<string> Dns { get; set; }
+    /// <summary>
+    /// DNS over HTTPS地址
+    /// </summary>
     public List<string> Https { get; set; }
+    /// <summary>
+    /// 启用的DNS类型
+    /// </summary>
     public DnsType DnsType { get; set; }
+    /// <summary>
+    /// 是否对代理也启用
+    /// </summary>
     public bool HttpProxy { get; set; }
 }
 
+/// <summary>
+/// 游戏窗口设置
+/// </summary>
 public record WindowSettingObj
 {
     /// <summary>
@@ -112,27 +133,23 @@ public enum GCType
     /// <summary>
     /// 默认G1垃圾回收器 兼容JAVA9
     /// </summary>
-    G1GC = 0,
-
+    G1GC,
     /// <summary>
     /// 串行垃圾回收器
     /// </summary>
-    SerialGC = 1,
-
+    SerialGC,
     /// <summary>
     /// 并行垃圾回收器
     /// </summary>
-    ParallelGC = 2,
-
+    ParallelGC,
     /// <summary>
     /// 并发标记扫描垃圾回收器
     /// </summary>
-    CMSGC = 3,
-
+    CMSGC,
     /// <summary>
     /// 设置为空（手动设置）
     /// </summary>
-    User = 4
+    User
 }
 
 /// <summary>
@@ -164,45 +181,128 @@ public record RunArgObj
     /// 自定义环境变量
     /// </summary>
     public string? JvmEnv { get; set; }
+    /// <summary>
+    /// GC模式
+    /// </summary>
     public GCType? GC { get; set; }
+    /// <summary>
+    /// 自定义JavaAgent
+    /// </summary>
     public string? JavaAgent { get; set; }
+    /// <summary>
+    /// 最大内存
+    /// </summary>
     public uint? MaxMemory { get; set; }
+    /// <summary>
+    /// 最小内存
+    /// </summary>
     public uint? MinMemory { get; set; }
     /// <summary>
     /// 禁用ColorASM
     /// </summary>
     public bool ColorASM { get; set; }
 
+    /// <summary>
+    /// 启动前运行
+    /// </summary>
     public bool LaunchPre { get; set; }
+    /// <summary>
+    /// 是否同时启动游戏
+    /// </summary>
     public bool PreRunSame { get; set; }
+    /// <summary>
+    /// 启动前运行
+    /// </summary>
     public string? LaunchPreData { get; set; }
+    /// <summary>
+    /// 启动后运行
+    /// </summary>
     public bool LaunchPost { get; set; }
+    /// <summary>
+    /// 启动后运行
+    /// </summary>
     public string? LaunchPostData { get; set; }
 }
 
+/// <summary>
+/// 游戏文件检查
+/// </summary>
 public record GameCheckObj
 {
+    /// <summary>
+    /// 检查游戏核心
+    /// </summary>
     public bool CheckCore { get; set; }
+    /// <summary>
+    /// 检查运行库
+    /// </summary>
     public bool CheckLib { get; set; }
+    /// <summary>
+    /// 检查资源文件
+    /// </summary>
     public bool CheckAssets { get; set; }
+    /// <summary>
+    /// 检查模组
+    /// </summary>
     public bool CheckMod { get; set; }
 
+    /// <summary>
+    /// 检查游戏核心
+    /// </summary>
     public bool CheckCoreSha1 { get; set; }
+    /// <summary>
+    /// 检查运行库
+    /// </summary>
     public bool CheckLibSha1 { get; set; }
+    /// <summary>
+    /// 检查资源文件
+    /// </summary>
     public bool CheckAssetsSha1 { get; set; }
+    /// <summary>
+    /// 检查模组
+    /// </summary>
     public bool CheckModSha1 { get; set; }
 }
 
+/// <summary>
+/// Core配置文件
+/// </summary>
 public record ConfigObj
 {
+    /// <summary>
+    /// 语言
+    /// </summary>
     public LanguageType Language { get; set; }
+    /// <summary>
+    /// 配置文件版本
+    /// </summary>
     public string Version { get; set; }
+    /// <summary>
+    /// Java列表
+    /// </summary>
     public List<JvmConfigObj> JavaList { get; set; }
-
+    /// <summary>
+    /// 联网设置
+    /// </summary>
     public HttpObj Http { get; set; }
+    /// <summary>
+    /// 内置DNS设置
+    /// </summary>
     public DnsObj Dns { get; set; }
+    /// <summary>
+    /// 启动参数
+    /// </summary>
     public RunArgObj DefaultJvmArg { get; set; }
+    /// <summary>
+    /// 游戏窗口设置
+    /// </summary>
     public WindowSettingObj Window { get; set; }
+    /// <summary>
+    /// 游戏检查设置
+    /// </summary>
     public GameCheckObj GameCheck { get; set; }
+    /// <summary>
+    /// 安全log4j
+    /// </summary>
     public bool SafeLog4j { get; set; }
 }

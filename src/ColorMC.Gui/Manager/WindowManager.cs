@@ -385,7 +385,7 @@ public static class WindowManager
         try
         {
             //加载dll
-            string file = Path.Combine(ColorMCGui.RunDir, "ColorMC.CustomGui.dll");
+            string file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
             if (!File.Exists(file))
             {
                 return false;

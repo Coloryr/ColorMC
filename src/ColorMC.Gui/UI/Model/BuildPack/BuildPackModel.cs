@@ -1,9 +1,16 @@
-﻿namespace ColorMC.Gui.UI.Model.BuildPack;
+﻿using ColorMC.Gui.UIBinding;
+using System.Threading.Tasks;
+
+namespace ColorMC.Gui.UI.Model.BuildPack;
 
 public partial class BuildPackModel : MenuModel
 {
+    private string _useName;
+
     public BuildPackModel(BaseModel model) : base(model)
     {
+        _useName = ToString() ?? "BuildPackModel";
+
         SetMenu(
         [
             new()
@@ -15,31 +22,30 @@ public partial class BuildPackModel : MenuModel
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
                 Text = App.Lang("BuildPackWindow.Tabs.Text2")
-            },
-            //new()
-            //{
-            //    Icon = "/Resource/Icon/GameExport/item3.svg",
-            //    Text = App.Lang("GameExportWindow.Tabs.Text3")
-            //},
-            //new()
-            //{
-            //    Icon = "/Resource/Icon/GameExport/item4.svg",
-            //    Text = App.Lang("GameExportWindow.Tabs.Text4")
-            //},
+            }
         ]);
 
-
+        Model.SetChoiseCall(_useName, Build);
+        Model.SetChoiseContent(_useName, App.Lang("BuildPackWindow.Tabs.Text3"));
     }
 
     public override void Close()
     {
-
+        Model.RemoveChoiseData(_useName);
     }
 
     public void Load()
     {
+        LoadSetting();
         LoadGames();
 
         NowView = 0;
+    }
+
+    private async void Build()
+    {
+        Model.Progress(App.Lang("BuildPackWindow.Tabs.Text4"));
+        var res = await BaseBinding.BuildPack(this);
+        Model.ProgressClose();
     }
 }

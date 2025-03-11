@@ -10,9 +10,9 @@ public class GamesPage
     private readonly GameFileTreeNodeModel _root;
     public HierarchicalTreeDataGridSource<GameFileTreeNodeModel> Source { get; init; }
 
-    public GamesPage(bool check, List<string>? unselect = null)
+    public GamesPage()
     {
-        _root = new GameFileTreeNodeModel(null, null, true, null, true, check);
+        _root = new GameFileTreeNodeModel(null, null, true, null, true);
         Source = new HierarchicalTreeDataGridSource<GameFileTreeNodeModel>(_root)
         {
             Columns =
@@ -60,20 +60,6 @@ public class GamesPage
         };
 
         Source.RowSelection!.SingleSelect = false;
-
-        if (unselect != null)
-        {
-            foreach (var item in unselect)
-            {
-                foreach (var item1 in _root.Children!)
-                {
-                    if (item1.Name == item || item1.Path == item)
-                    {
-                        item1.IsChecked = false;
-                    }
-                }
-            }
-        }
     }
 
     public void SetUnSelectItems(List<string> config)
