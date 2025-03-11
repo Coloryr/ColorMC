@@ -28,6 +28,11 @@ public partial class BuildPackControl : MenuControl
         (DataContext as BuildPackModel)?.Load();
     }
 
+    public override void Closed()
+    {
+        WindowManager.BuildPackWindow = null;
+    }
+
     protected override TopModel GenModel(BaseModel model)
     {
         return new BuildPackModel(model);

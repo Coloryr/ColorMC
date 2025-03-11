@@ -5,6 +5,7 @@ using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -17,15 +18,20 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Path = System.IO.Path;
+using ZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -464,5 +470,154 @@ public static class BaseBinding
         var temp = DownloadManager.DownloadDir;
         PathHelper.MoveToTrash(temp);
         Directory.CreateDirectory(temp);
+    }
+
+    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path)
+    {
+        var buffer = PathHelper.ReadByte(path)!;
+
+        var entry = new ZipEntry(file)
+        {
+            DateTime = DateTime.Now,
+            Size = buffer.Length
+        };
+        crc.Reset();
+        crc.Update(buffer);
+        entry.Crc = crc.Value;
+        await stream.PutNextEntryAsync(entry);
+        await stream.WriteAsync(buffer);
+
+    }
+
+    public static async Task<bool> BuildPack(BuildPackModel model)
+    {
+        var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+        using var s = new ZipOutputStream(PathHelper.OpenWrite(file, true));
+        s.SetLevel(9);
+        var crc = new Crc32();
+
+        var conf = GuiConfigUtils.Config;
+        var conf1 = ConfigUtils.Config;
+
+        var obj = new JObject();
+
+        if (model.UiBg && File.Exists(conf.BackImage))
+        {
+            var filename = Path.GetFileName(conf.BackImage);
+            await PutFile(crc, s, filename, conf.BackImage);
+            obj.Add(nameof(GuiConfigObj.EnableBG), conf.EnableBG);
+            obj.Add(nameof(GuiConfigObj.BackImage), filename);
+            obj.Add(nameof(GuiConfigObj.BackEffect), conf.BackEffect);
+            obj.Add(nameof(GuiConfigObj.BackTran), conf.BackTran);
+            obj.Add(nameof(GuiConfigObj.BackLimit), conf.BackLimit);
+            obj.Add(nameof(GuiConfigObj.BackLimitValue), conf.BackLimitValue);
+        }
+
+        if (model.UiColor)
+        {
+            obj.Add(nameof(GuiConfigObj.ColorType), (int)conf.ColorType);
+            obj.Add(nameof(GuiConfigObj.ColorMain), conf.ColorMain);
+            obj.Add(nameof(GuiConfigObj.RGB), conf.RGB);
+            obj.Add(nameof(GuiConfigObj.RGBS), conf.RGBS);
+            obj.Add(nameof(GuiConfigObj.RGBV), conf.RGBV);
+            obj.Add(nameof(GuiConfigObj.WindowMode), conf.WindowMode);
+            obj.Add(nameof(GuiConfigObj.Simple), conf.Simple);
+            obj.Add(nameof(GuiConfigObj.Style), new JObject(conf.Style));
+            obj.Add(nameof(GuiConfigObj.LogColor), new JObject(conf.LogColor));
+        }
+
+        if (model.UiOther)
+        {
+            obj.Add(nameof(GuiConfigObj.Head), new JObject(conf.Head));
+            obj.Add(nameof(GuiConfigObj.CloseBeforeLaunch), conf.CloseBeforeLaunch);
+            obj.Add(nameof(GuiConfigObj.Card), new JObject(conf.Card));
+        }
+
+        if (model.LaunchCheck)
+        {
+            obj.Add(nameof(ConfigObj.GameCheck), new JObject(conf1.GameCheck));
+            obj.Add(nameof(GuiConfigObj.LaunchCheck), new JObject(conf.LaunchCheck));
+        }
+
+        if (model.LaunchArg)
+        {
+            obj.Add(nameof(ConfigObj.DefaultJvmArg), new JObject(conf1.DefaultJvmArg));
+        }
+
+        if (model.LaunchWindow)
+        {
+            obj.Add(nameof(ConfigObj.Window), new JObject(conf1.Window));
+        }
+
+        var obj1 = new JObject();
+        var conf2 = conf.ServerCustom;
+
+        if (model.ServerOpt)
+        {
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.IP), conf2.IP);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.Port), conf2.Port);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.Motd), conf2.Motd);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.JoinServer), conf2.JoinServer);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdColor), conf2.MotdColor);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdBackColor), conf2.MotdBackColor);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.AdminLaunch), conf2.AdminLaunch);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.GameAdminLaunch), conf2.GameAdminLaunch);
+        }
+
+        if (model.ServerLock)
+        {
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockGame), conf2.LockGame);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.GameName), conf2.GameName);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogin), conf2.LockLogin);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogins), new JArray(conf2.LockLogins));
+        }
+
+        var uiFile = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
+
+        if (model.ServerUi && File.Exists(uiFile))
+        {
+            await PutFile(crc, s, GuiNames.NameCustomUIFile, uiFile);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.EnableUI), conf2.EnableUI);
+        }
+
+        var musicFile = conf2.Music;
+
+        if (model.ServerMusic && File.Exists(musicFile))
+        {
+            await PutFile(crc, s, Path.GetFileName(musicFile), musicFile);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.PlayMusic), conf2.PlayMusic);
+        }
+
+        obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
+
+        //foreach (var item in zipList)
+        //{
+        //    string tempfile = item[(path.Length + 1)..];
+        //    if (Directory.Exists(item))
+        //    {
+        //        var entry = new ZipEntry(tempfile + "/")
+        //        {
+        //            DateTime = DateTime.Now
+        //        };
+        //        await s.PutNextEntryAsync(entry);
+        //    }
+        //    else
+        //    {
+        //        var buffer = PathHelper.ReadByte(item)!;
+
+        //        var entry = new ZipEntry(tempfile)
+        //        {
+        //            DateTime = DateTime.Now,
+        //            Size = buffer.Length
+        //        };
+        //        crc.Reset();
+        //        crc.Update(buffer);
+        //        entry.Crc = crc.Value;
+        //        await s.PutNextEntryAsync(entry);
+        //        await s.WriteAsync(buffer);
+        //    }
+        //}
+
+        return false;
     }
 }

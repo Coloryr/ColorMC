@@ -1,13 +1,11 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -21,6 +19,8 @@ public partial class GameFileTreeNodeModel : ObservableObject
     /// 是否为文件夹
     /// </summary>
     public bool IsDirectory { get; init; }
+
+    public bool IsEnable { get; init; }
 
     /// <summary>
     /// 路径
@@ -54,18 +54,17 @@ public partial class GameFileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool _isChecked;
 
-    private bool _isGame;
+    private readonly bool _isGame;
 
     /// <summary>
     /// 父文件夹
     /// </summary>
     private readonly GameFileTreeNodeModel _par;
 
-    public GameFileTreeNodeModel(GameFileTreeNodeModel? par, string? name, bool isGame, string? path, bool isDirectory, bool check)
+    public GameFileTreeNodeModel(GameFileTreeNodeModel? par, string? name, bool isGame, string? path, bool isDirectory)
     {
         _par = par ?? this;
         _isGame = isGame;
-        _isChecked = check;
 
         if (path != null)
         {
@@ -87,7 +86,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
             }
             else
             {
-                LoadChildren(check);
+                LoadChildren();
             }
         }
         else
@@ -95,19 +94,20 @@ public partial class GameFileTreeNodeModel : ObservableObject
             IsDirectory = true;
             if (path == null)
             {
+                Name = App.Lang("BuildPackWindow.Tab2.Text1");
                 _isExpanded = true;
                 foreach (var item in GameBinding.GetGames())
                 {
-                    Children.Add(new GameFileTreeNodeModel(this, item.Name, true, item.GetBasePath(), true, false));
+                    Children.Add(new GameFileTreeNodeModel(this, item.Name, true, item.GetBasePath(), true));
                 }
             }
             else
             {
-                LoadChildren(check);
+                LoadChildren();
             }
         }
 
-        
+        IsEnable = !CheckIsGameFile();
         HasChildren = Children.Count != 0;
     }
 
@@ -116,8 +116,19 @@ public partial class GameFileTreeNodeModel : ObservableObject
         //选中时让子项目也选中
         if (IsChecked == true)
         {
+            bool isroot = false;
+
+            if (Name is Names.NameGameDir)
+            {
+                isroot = true;
+            }
+
             foreach (var item in Children)
             {
+                if (isroot && item.CheckGameDir())
+                {
+                    continue;
+                }
                 item.IsChecked = true;
             }
             _par.IsAllCheck();
@@ -135,7 +146,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
     /// 加载子项目
     /// </summary>
     /// <param name="check"></param>
-    private void LoadChildren(bool check)
+    private void LoadChildren()
     {
         Children.Clear();
         if (!IsDirectory)
@@ -147,12 +158,12 @@ public partial class GameFileTreeNodeModel : ObservableObject
 
         foreach (var d in Directory.EnumerateDirectories(Path, "*", options))
         {
-            Children.Add(new GameFileTreeNodeModel(this, null, false, d, true, check));
+            Children.Add(new GameFileTreeNodeModel(this, null, false, d, true));
         }
 
         foreach (var f in Directory.EnumerateFiles(Path, "*", options))
         {
-            Children.Add(new GameFileTreeNodeModel(this, null, false, f, false, check));
+            Children.Add(new GameFileTreeNodeModel(this, null, false, f, false));
         }
 
         if (Children.Count == 0)
@@ -361,5 +372,17 @@ public partial class GameFileTreeNodeModel : ObservableObject
         }
 
         IsChecked = true;
+    }
+
+    private bool CheckIsGameFile()
+    {
+        return Name is Names.NameGameFile or Names.NameModInfoFile
+            or Names.NameModPackFile or Names.NameIconFile;
+    }
+
+    private bool CheckGameDir()
+    {
+        return Name is Names.NameGameLogDir 
+            or Names.NameGameCrashLogDir or Names.NameGameSavesDir;
     }
 }

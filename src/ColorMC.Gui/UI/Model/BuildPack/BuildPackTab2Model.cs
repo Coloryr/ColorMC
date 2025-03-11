@@ -16,7 +16,7 @@ public partial class BuildPackModel
 
     public void LoadGames()
     {
-        _gamesPage = new(false);
+        _gamesPage = new();
         Games = _gamesPage.Source;
     }
 }

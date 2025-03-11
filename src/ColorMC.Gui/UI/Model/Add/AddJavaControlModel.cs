@@ -360,6 +360,7 @@ public partial class AddJavaControlModel : TopModel
 
     public override void Close()
     {
+        Model.RemoveChoiseData(_useName);
         _load = true;
         _javaList.Clear();
         JavaList.Clear();

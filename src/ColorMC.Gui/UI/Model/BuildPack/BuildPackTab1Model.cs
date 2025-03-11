@@ -1,6 +1,13 @@
-﻿using ColorMC.Gui.UI.Model.Items;
+﻿using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
@@ -15,17 +22,15 @@ public partial class BuildPackModel
     [ObservableProperty]
     private bool _uiColor;
     [ObservableProperty]
-    private bool _uiLive2d;
+    private bool _uiOther;
     [ObservableProperty]
     private bool _launchSetting;
     [ObservableProperty]
     private bool _launchCheck;
     [ObservableProperty]
-    private bool _launchJvm;
+    private bool _launchArg;
     [ObservableProperty]
-    private bool _launchGame;
-    [ObservableProperty]
-    private bool _launchPrRun;
+    private bool _launchWindow;
     [ObservableProperty]
     private bool _serverSetting;
     [ObservableProperty]
@@ -43,11 +48,36 @@ public partial class BuildPackModel
     [ObservableProperty]
     private bool _packUpdate;
 
+    [ObservableProperty]
+    private bool _canBg;
+    [ObservableProperty]
+    private bool _canUi;
+    [ObservableProperty]
+    private bool _canMusic;
+    [ObservableProperty]
+    private bool _canPack;
+    [ObservableProperty]
+    private bool _canUpdate;
+
+    private bool _isItem;
+
     partial void OnUiSettingChanged(bool value)
     {
+        if (_isItem)
+        {
+            return;
+        }
         if (value)
         {
-            UiBg = UiColor = UiLive2d = true;
+            if (CanBg)
+            {
+                UiBg = true;
+            }
+            UiOther = UiColor = true;
+        }
+        else
+        {
+            UiBg = UiOther = UiColor = false;
         }
     }
 
@@ -61,17 +91,18 @@ public partial class BuildPackModel
         UISwitch();
     }
 
-    partial void OnUiLive2dChanged(bool value)
+    partial void OnUiOtherChanged(bool value)
     {
         UISwitch();
     }
 
     partial void OnLaunchSettingChanged(bool value)
     {
-        if (value)
+        if (_isItem)
         {
-            LaunchCheck = LaunchJvm = LaunchGame = LaunchPrRun = true;
+            return;
         }
+        LaunchCheck = LaunchArg = LaunchWindow = value;
     }
 
     partial void OnLaunchCheckChanged(bool value)
@@ -79,26 +110,37 @@ public partial class BuildPackModel
         LaunchSwitch();
     }
 
-    partial void OnLaunchJvmChanged(bool value)
+    partial void OnLaunchArgChanged(bool value)
     {
         LaunchSwitch();
     }
 
-    partial void OnLaunchGameChanged(bool value)
-    {
-        LaunchSwitch();
-    }
-
-    partial void OnLaunchPrRunChanged(bool value)
+    partial void OnLaunchWindowChanged(bool value)
     {
         LaunchSwitch();
     }
 
     partial void OnServerSettingChanged(bool value)
     {
+        if (_isItem)
+        {
+            return;
+        }
         if (value)
         {
-            ServerOpt = ServerLock = ServerMusic = ServerUi = true;
+            if (CanMusic)
+            {
+                ServerMusic = true;
+            }
+            if (CanUi)
+            {
+                ServerUi = true;
+            }
+            ServerOpt = ServerLock = true;
+        }
+        else
+        {
+            ServerMusic = ServerUi = ServerOpt = ServerLock = false;
         }
     }
 
@@ -122,18 +164,44 @@ public partial class BuildPackModel
         ServerSwitch();
     }
 
+    private void LoadSetting()
+    {
+        var conf = GuiConfigUtils.Config;
+        CanBg = File.Exists(conf.BackImage);
+        CanPack = PackLaunch = SystemInfo.Os is OsType.Windows;
+        CanUpdate = PackUpdate = File.Exists(UpdateUtils.LocalPath[0]);
+        CanUi = File.Exists(Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile));
+        CanMusic = File.Exists(conf.ServerCustom.Music);
+
+        Javas.Clear();
+        foreach (var item in JavaBinding.GetJavas())
+        {
+            if (!item.Path.StartsWith(JvmPath.JavaDir))
+            {
+                continue;
+            }
+            Javas.Add(new JavaSelectModel(item));
+        }
+    }
+
     private void UISwitch()
     {
-        UiSetting = UiBg || UiColor || UiLive2d;
+        _isItem = true;
+        UiSetting = UiBg || UiColor || UiOther;
+        _isItem = false;
     }
 
     private void LaunchSwitch()
     {
-        LaunchSetting = LaunchCheck || LaunchJvm || LaunchGame || LaunchPrRun;
+        _isItem = true;
+        LaunchSetting = LaunchCheck || LaunchArg || LaunchWindow;
+        _isItem = false;
     }
 
     private void ServerSwitch()
     {
+        _isItem = true;
         ServerSetting = ServerOpt || ServerLock || ServerMusic || ServerUi;
+        _isItem = false;
     }
 }

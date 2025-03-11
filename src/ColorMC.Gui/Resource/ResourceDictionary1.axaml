@@ -8,9 +8,7 @@
     </DataTemplate>
     <DataTemplate x:Key="FileNameCell" DataType="vm:FileTreeNodeModel">
         <StackPanel Orientation="Horizontal">
-            <TextBlock
-                Width="30"
-                HorizontalAlignment="Center">
+            <TextBlock Width="30" HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
                         <Binding Path="IsDirectory" />
@@ -23,9 +21,7 @@
     </DataTemplate>
     <DataTemplate x:Key="NbtCell" DataType="vm:NbtNodeModel">
         <StackPanel Orientation="Horizontal">
-            <TextBlock
-                Width="30"
-                HorizontalAlignment="Center">
+            <TextBlock Width="30" HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.NbtIconConverter}">
                         <Binding Path="NbtType" />
@@ -36,13 +32,11 @@
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="GameFileNameCell1" DataType="vm:GameFileTreeNodeModel">
-        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" IsEnabled="{Binding IsEnable}" />
     </DataTemplate>
     <DataTemplate x:Key="GameFileNameCell" DataType="vm:GameFileTreeNodeModel">
         <StackPanel Orientation="Horizontal">
-            <TextBlock
-                Width="30"
-                HorizontalAlignment="Center">
+            <TextBlock Width="30" HorizontalAlignment="Center">
                 <TextBlock.Text>
                     <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
                         <Binding Path="IsDirectory" />

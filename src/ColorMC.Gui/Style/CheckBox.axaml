@@ -7,6 +7,10 @@
             <StackPanel>
                 <CheckBox Content="rest" />
                 <CheckBox Content="rest" IsChecked="True" />
+                <CheckBox
+                    Content="rest"
+                    IsChecked="True"
+                    IsEnabled="False" />
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -22,6 +26,11 @@
         <Style Selector="^:checked /template/ Border#NormalRectangle">
             <Setter Property="Background" Value="{setting:Theme MainColor}" />
             <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
+
+            <Style Selector="^:disabled">
+                <Setter Property="Background" Value="#CCCCCC" />
+                <Setter Property="BorderBrush" Value="#CCCCCC" />
+            </Style>
         </Style>
     </Style>
 </Styles>
