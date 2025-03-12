@@ -132,7 +132,7 @@ public partial class GameConfigEditControl : BaseUserControl
         }
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         var model = (DataContext as GameConfigEditModel)!;
         model.Load();
@@ -179,17 +179,6 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
                     _world.Game.Name, _world.LevelName);
-        }
-    }
-
-    /// <summary>
-    /// 重载图标
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
         }
     }
 }

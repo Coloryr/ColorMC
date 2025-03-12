@@ -14,6 +14,33 @@ namespace ColorMC.Gui.UI.Controls;
 /// </summary>
 public abstract class BaseUserControl : UserControl, ITopWindow
 {
+    /// <summary>
+    /// 实际窗口
+    /// </summary>
+    public IBaseWindow? Window => WindowManager.FindRoot(VisualRoot);
+    /// <summary>
+    /// 标题
+    /// </summary>
+    public string Title
+    {
+        get
+        {
+            return _title;
+        }
+        protected set
+        {
+            _title = value;
+            Window?.SetTitle(value);
+        }
+    }
+
+    private string _title;
+
+    /// <summary>
+    /// 窗口Id
+    /// </summary>
+    public string WindowId { get; private init; }
+
     public BaseUserControl(string id)
     {
         WindowId = id;
@@ -21,31 +48,6 @@ public abstract class BaseUserControl : UserControl, ITopWindow
         SizeChanged += BaseUserControl_SizeChanged;
     }
 
-    private void BaseUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
-    {
-        if (DataContext is TopModel model)
-        {
-            model.WidthChange(-1, e.NewSize.Width);
-        }
-    }
-
-    /// <summary>
-    /// 实际窗口
-    /// </summary>
-    public IBaseWindow Window => WindowManager.FindRoot(VisualRoot);
-    /// <summary>
-    /// 标题
-    /// </summary>
-    public string Title { get; protected set; }
-    /// <summary>
-    /// 窗口Id
-    /// </summary>
-    public string WindowId { get; private init; }
-    /// <summary>
-    /// 获取图标
-    /// </summary>
-    /// <returns></returns>
-    public abstract Bitmap GetIcon();
     /// <summary>
     /// 设置模型
     /// </summary>
@@ -55,14 +57,6 @@ public abstract class BaseUserControl : UserControl, ITopWindow
         var topmodel = GenModel(model);
         topmodel.PropertyChanged += Model_PropertyChanged;
         DataContext = topmodel;
-    }
-
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == TopModel.WindowCloseName)
-        {
-            Window?.Close();
-        }
     }
 
     /// <summary>
@@ -99,15 +93,16 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     /// <summary>
     /// 窗口打开
     /// </summary>
-    public void TopOpened()
+    public void WindowOpened()
     {
-        Window.SetTitle(Title);
+        Window?.SetTitle(_title);
         Opened();
     }
+
     /// <summary>
     /// 窗口打开
     /// </summary>
-    protected virtual void Opened() { }
+    public virtual void Opened() { }
     /// <summary>
     /// 窗口关闭
     /// </summary>
@@ -121,4 +116,36 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     /// </summary>
     /// <returns>是否阻止关闭</returns>
     public virtual Task<bool> Closing() { return Task.FromResult(false); }
+
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    public virtual void ReloadIcon() 
+    {
+        Window?.ReloadIcon();
+    }
+    /// <summary>
+    /// 获取图标
+    /// </summary>
+    /// <returns></returns>
+    public virtual Bitmap GetIcon()
+    {
+        return ImageManager.Icon;
+    }
+
+    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == TopModel.WindowCloseName)
+        {
+            Window?.Close();
+        }
+    }
+
+    private void BaseUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        if (DataContext is TopModel model)
+        {
+            model.WidthChange(-1, e.NewSize.Width);
+        }
+    }
 }

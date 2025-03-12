@@ -105,7 +105,7 @@ public partial class SkinControl : BaseUserControl
         _renderTimer.Pause = state != WindowState.Minimized;
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         _renderTimer = new(Skin)
         {
@@ -138,11 +138,6 @@ public partial class SkinControl : BaseUserControl
         var amodel = new SkinModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
         return amodel;
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)

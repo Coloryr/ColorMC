@@ -20,7 +20,7 @@
                 Height="129"
                 Margin="0,0,0,5">
                 <Border.Background>
-                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
+                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
             <TextBlock

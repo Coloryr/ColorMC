@@ -17,7 +17,7 @@ public partial class MinecraftNewsControl : BaseUserControl
         Title = App.Lang("NewsWindow.Title");
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         if (DataContext is MinecraftNewsModel model)
         {
@@ -33,10 +33,5 @@ public partial class MinecraftNewsControl : BaseUserControl
     protected override TopModel GenModel(BaseModel model)
     {
         return new MinecraftNewsModel(model);
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 }

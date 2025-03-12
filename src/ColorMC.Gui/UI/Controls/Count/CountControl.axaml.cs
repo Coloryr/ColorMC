@@ -26,9 +26,4 @@ public partial class CountControl : BaseUserControl
     {
         return new CountModel(model);
     }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
 }

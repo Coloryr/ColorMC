@@ -32,7 +32,11 @@ public static class ImageManager
     /// <summary>
     /// 加载图标图片
     /// </summary>
-    public static Bitmap LoadIcon { get; private set; }
+    public static Bitmap LoadBitmap { get; private set; }
+    /// <summary>
+    /// 图标图片
+    /// </summary>
+    public static Bitmap Icon => _icon ?? GameIcon;
     /// <summary>
     /// 窗口图标
     /// </summary>
@@ -43,6 +47,10 @@ public static class ImageManager
     /// </summary>
     public static Bitmap? BackBitmap { get; private set; }
     /// <summary>
+    /// 头像图片
+    /// </summary>
+    public static Bitmap? HeadBitmap { get; private set; }
+    /// <summary>
     /// 皮肤图片
     /// </summary>
     public static SKBitmap? SkinBitmap { get; private set; }
@@ -50,10 +58,6 @@ public static class ImageManager
     /// 披风图片
     /// </summary>
     public static SKBitmap? CapeBitmap { get; private set; }
-    /// <summary>
-    /// 头像图片
-    /// </summary>
-    public static Bitmap? HeadBitmap { get; private set; }
 
     /// <summary>
     /// 游戏实例图标
@@ -87,6 +91,8 @@ public static class ImageManager
     /// </summary>
     private static string s_local;
 
+    private static Bitmap? _icon;
+
     public static string GetImagePath() => s_local;
 
     /// <summary>
@@ -108,12 +114,51 @@ public static class ImageManager
         {
             //加载图片
             using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
-            LoadIcon = new(asset1!);
+            LoadBitmap = new(asset1!);
         }
 
         s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameImageDir);
 
         Directory.CreateDirectory(s_local);
+
+        LoadIcon();
+    }
+
+    public static void LoadIcon()
+    {
+        var path = GuiConfigUtils.Config.ServerCustom.IconFile;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return;
+        }
+
+        path = Path.Combine(ColorMCGui.RunDir, path);
+        if (!File.Exists(path))
+        {
+            return;
+        }
+
+        _icon = new(path);
+        WindowIcon = new(_icon);
+
+        WindowManager.ReloadIcon();
+    }
+
+    public static Bitmap? LoadStartIcon()
+    {
+        var path = GuiConfigUtils.Config.ServerCustom.StartIconFile;
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            return null;
+        }
+
+        path = Path.Combine(ColorMCGui.RunDir, path);
+        if (!File.Exists(path))
+        {
+            return null;
+        }
+
+        return new(path);
     }
 
     /// <summary>

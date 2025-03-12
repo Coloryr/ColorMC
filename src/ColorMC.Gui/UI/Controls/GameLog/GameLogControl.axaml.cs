@@ -135,7 +135,7 @@ public partial class GameLogControl : BaseUserControl
         });
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as GameLogModel)!.Load();
         (DataContext as GameLogModel)!.LoadFileList();
@@ -155,8 +155,7 @@ public partial class GameLogControl : BaseUserControl
 
     public override Bitmap GetIcon()
     {
-        var icon = ImageManager.GetGameIcon(_obj);
-        return icon ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -216,7 +215,6 @@ public partial class GameLogControl : BaseUserControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
     }
 
     /// <summary>
@@ -226,16 +224,5 @@ public partial class GameLogControl : BaseUserControl
     public void GameExit(int code)
     {
         (DataContext as GameLogModel)?.GameExit(code);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

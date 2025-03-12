@@ -47,9 +47,4 @@ public partial class CollectControl : BaseUserControl
             }
         }
     }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
 }

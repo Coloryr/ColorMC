@@ -60,7 +60,7 @@ public partial class AddControl : BaseUserControl
 
     public override Bitmap GetIcon()
     {
-        return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
+        return ImageManager.GetGameIcon(_obj) ?? ImageManager.Icon;
     }
 
     public override void Closed()
@@ -68,7 +68,7 @@ public partial class AddControl : BaseUserControl
         WindowManager.GameAddWindows.Remove(_obj.UUID);
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as AddControlModel)!.Display = true;
     }
@@ -179,17 +179,5 @@ public partial class AddControl : BaseUserControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

@@ -169,3 +169,23 @@ public enum LogLevel : int
     All = 0b00011111,
     Fatal = 0b00100000,
 }
+
+public enum DisplayType
+{
+    /// <summary>
+    /// 无动画左右
+    /// </summary>
+    Normal,
+    /// <summary>
+    /// 无动画上下
+    /// </summary>
+    NormalTop,
+    /// <summary>
+    /// 左右动画
+    /// </summary>
+    LeftRight,
+    /// <summary>
+    /// 上下动画
+    /// </summary>
+    TopBottom
+}

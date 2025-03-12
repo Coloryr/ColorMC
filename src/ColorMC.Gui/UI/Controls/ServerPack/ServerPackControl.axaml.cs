@@ -35,7 +35,7 @@ public partial class ServerPackControl : MenuControl
         Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         if (DataContext is ServerPackModel model)
         {
@@ -99,17 +99,5 @@ public partial class ServerPackControl : MenuControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

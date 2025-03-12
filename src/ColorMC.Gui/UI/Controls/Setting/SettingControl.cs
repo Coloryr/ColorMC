@@ -82,7 +82,7 @@ public partial class SettingControl : MenuControl
         }
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as SettingModel)?.Load();
     }
@@ -130,10 +130,5 @@ public partial class SettingControl : MenuControl
             default:
                 throw new InvalidEnumArgumentException();
         }
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 }

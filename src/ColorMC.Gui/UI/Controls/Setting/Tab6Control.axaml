@@ -172,6 +172,61 @@
                                 Command="{Binding Test}"
                                 Content="{setting:Localize SettingWindow.Tab6.Text11}" />
                         </WrapPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                IsChecked="{Binding CustomIcon}"
+                                OffContent="{setting:Localize SettingWindow.Tab6.Text44}"
+                                OnContent="{setting:Localize SettingWindow.Tab6.Text44}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding SelectIcon}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text45}"
+                                IsEnabled="{Binding CustomIcon}" />
+                            <Image
+                                Width="30"
+                                Height="30"
+                                Margin="10,0,0,0"
+                                Source="{Binding IconImage}" />
+                        </StackPanel>
+                        <ToggleSwitch
+                            Margin="0,0,10,0"
+                            IsChecked="{Binding CustomStart}"
+                            OffContent="{setting:Localize SettingWindow.Tab6.Text46}"
+                            OnContent="{setting:Localize SettingWindow.Tab6.Text46}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text47}" />
+                            <ComboBox
+                                Width="230"
+                                Margin="10,0,0,0"
+                                ItemsSource="{Binding DisplayList}"
+                                SelectedIndex="{Binding DisplayType}" />
+                        </StackPanel>
+                        <DockPanel Margin="0,5,0,5">
+                            <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text48}" />
+                            <TextBox
+                                Margin="10,0,0,0"
+                                Classes="input1"
+                                Text="{Binding StartText}"
+                                Watermark="{setting:Localize SettingWindow.Tab6.Text49}" />
+                        </DockPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text50}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Classes="top"
+                                Command="{Binding SelectIcon}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text45}"
+                                IsEnabled="{Binding CustomIcon}" />
+                            <Image
+                                Width="30"
+                                Height="30"
+                                Margin="10,0,0,0"
+                                Source="{Binding IconImage}" />
+                        </StackPanel>
                     </StackPanel>
                 </Border>
                 <Border

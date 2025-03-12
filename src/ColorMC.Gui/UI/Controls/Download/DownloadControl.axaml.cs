@@ -34,11 +34,6 @@ public partial class DownloadControl : BaseUserControl
         return new DownloadModel(model);
     }
 
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
-
     /// <summary>
     /// 开始下载更新
     /// </summary>

@@ -15,6 +15,9 @@ using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 基础多窗口
+/// </summary>
 public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 {
     private WindowNotificationManager windowNotification;
@@ -45,14 +48,14 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
             SetChild(con1);
         }
 
-        Closed += UserWindow_Closed;
-        Activated += Window_Activated;
-        Closing += SelfBaseWindow_Closing;
-        PropertyChanged += SelfBaseWindow_PropertyChanged;
-        PointerReleased += SelfBaseWindow_PointerReleased;
-        PointerPressed += SelfBaseWindow_PointerPressed;
+        Closed += AMultiWindow_Closed;
+        Activated += AMultiWindow_Activated;
+        Closing += AMultiWindow_Closing;
+        PropertyChanged += AMultiWindow_PropertyChanged;
+        PointerReleased += AMultiWindow_PointerReleased;
+        PointerPressed += AMultiWindow_PointerPressed;
 
-        ImageManager.BGUpdate += PicUpdate;
+        ImageManager.BGUpdate += AMultiWindow_PicUpdate;
 
         if (con is ErrorControl)
         {
@@ -63,17 +66,17 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
             FindGoodPos();
         }
 
-        PicUpdate();
+        AMultiWindow_PicUpdate();
     }
 
     protected abstract void SetChild(Control control);
 
-    private void SelfBaseWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
+    private void AMultiWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         ICon.IPointerPressed(e);
     }
 
-    private void SelfBaseWindow_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    private void AMultiWindow_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         ICon.IPointerReleased(e);
     }
@@ -112,7 +115,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         };
     }
 
-    private void SelfBaseWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void AMultiWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property == WindowStateProperty)
         {
@@ -120,7 +123,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         }
     }
 
-    private void SelfBaseWindow_Closing(object? sender, WindowClosingEventArgs e)
+    private void AMultiWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
         if (ICon == null || _isClose == true)
         {
@@ -186,30 +189,27 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         Position = new(x, y);
     }
 
-    private void UserWindow_Closed(object? sender, EventArgs e)
+    private void AMultiWindow_Closed(object? sender, EventArgs e)
     {
-        ImageManager.BGUpdate -= PicUpdate;
+        ImageManager.BGUpdate -= AMultiWindow_PicUpdate;
 
         ((ICon as UserControl)?.DataContext as TopModel)?.Close();
         DataContext = null;
         ICon.Closed();
 
-        if (WindowManager.LastWindow == this)
-        {
-            WindowManager.LastWindow = null;
-        }
+        WindowManager.CloseWindow(this);
 
         App.Clear();
         App.TestClose();
     }
 
-    private void Window_Activated(object? sender, EventArgs e)
+    private void AMultiWindow_Activated(object? sender, EventArgs e)
     {
         WindowManager.LastWindow = this;
         //App.TopLevel = this;
     }
 
-    private void PicUpdate()
+    private void AMultiWindow_PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
 
@@ -225,5 +225,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         Width = width;
         Height = height;
+    }
+
+    public void ReloadIcon()
+    {
+        Model.SetIcon(_con.GetIcon());
+        Icon = ImageManager.WindowIcon;
     }
 }

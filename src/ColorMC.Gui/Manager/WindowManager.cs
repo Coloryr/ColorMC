@@ -155,6 +155,8 @@ public static class WindowManager
         WindowTransparencyLevel.Mica
     ];
 
+    private static readonly List<AMultiWindow> _windows = [];
+
     /// <summary>
     /// 窗口位置信息
     /// </summary>
@@ -181,7 +183,7 @@ public static class WindowManager
             {
                 AllWindow = new();
                 AllWindow.Model.HeadDisplay = false;
-                AllWindow.TopOpened();
+                AllWindow.WindowOpened();
             }
             else if (SystemInfo.Os == OsType.Linux ||
                 (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
@@ -297,16 +299,28 @@ public static class WindowManager
     /// </summary>
     /// <param name="con"></param>
     /// <returns></returns>
-    public static IBaseWindow FindRoot(object? con)
+    public static IBaseWindow? FindRoot(object? con)
     {
+        if (con == null)
+        {
+            return null;
+        }
         if (con is SingleControl all)
+        {
             return all;
+        }
         else if (GuiConfigUtils.Config.WindowMode)
+        {
             return AllWindow!;
+        }
         else if (con is IBaseWindow win)
+        {
             return win;
+        }
         else if (con is BaseUserControl con1)
+        {
             return con1.Window;
+        }
 
         return AllWindow!;
     }
@@ -328,6 +342,7 @@ public static class WindowManager
             win = new MultiWindow(con);
         }
         win.Show();
+        _windows.Add(win);
     }
 
     /// <summary>
@@ -369,7 +384,7 @@ public static class WindowManager
     {
         if (CustomWindow != null)
         {
-            CustomWindow.Window.Window.TopActivate();
+            CustomWindow.Icon.Window?.WindowActivate();
             return true;
         }
 
@@ -399,12 +414,12 @@ public static class WindowManager
                 {
                     CustomWindow = dll;
                 }
-                AWindow(dll.Window, test);
+                AWindow(dll.Icon, test);
                 var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC", "custom");
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
-                    CustomWindow?.Window.Window.Model.Show(App.Lang("WindowManager.Info1"));
+                    CustomWindow?.Icon.Window?.Model.Show(App.Lang("WindowManager.Info1"));
                 }
                 return true;
             }
@@ -430,7 +445,7 @@ public static class WindowManager
     {
         if (BuildPackWindow != null)
         {
-            BuildPackWindow.Window.TopActivate();
+            BuildPackWindow.Window?.WindowActivate();
         }
         else
         {
@@ -449,7 +464,7 @@ public static class WindowManager
     {
         if (AddGameWindow != null)
         {
-            AddGameWindow.Window.TopActivate();
+            AddGameWindow.Window?.WindowActivate();
         }
         else
         {
@@ -473,7 +488,7 @@ public static class WindowManager
         {
             if (DownloadWindow != null)
             {
-                DownloadWindow.Window.TopActivate();
+                DownloadWindow.Window?.WindowActivate();
             }
             else
             {
@@ -495,7 +510,7 @@ public static class WindowManager
     {
         if (UserWindow != null)
         {
-            UserWindow.Window.TopActivate();
+            UserWindow.Window?.WindowActivate();
         }
         else
         {
@@ -524,7 +539,7 @@ public static class WindowManager
     {
         if (MainWindow != null)
         {
-            MainWindow.Window.TopActivate();
+            MainWindow.Window?.WindowActivate();
         }
         else
         {
@@ -540,7 +555,7 @@ public static class WindowManager
     {
         if (AddModPackWindow != null)
         {
-            AddModPackWindow.Window.TopActivate();
+            AddModPackWindow.Window?.WindowActivate();
         }
         else
         {
@@ -558,7 +573,7 @@ public static class WindowManager
     {
         if (SettingWindow != null)
         {
-            SettingWindow.Window.TopActivate();
+            SettingWindow.Window?.WindowActivate();
         }
         else
         {
@@ -576,7 +591,7 @@ public static class WindowManager
     {
         if (SkinWindow != null)
         {
-            SkinWindow.Window.TopActivate();
+            SkinWindow.Window?.WindowActivate();
         }
         else
         {
@@ -595,7 +610,7 @@ public static class WindowManager
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.TopActivate();
+            win1.Window?.WindowActivate();
             win1.SetType(type);
         }
         else
@@ -615,7 +630,7 @@ public static class WindowManager
     {
         if (AddJavaWindow != null)
         {
-            AddJavaWindow.Window.TopActivate();
+            AddJavaWindow.Window?.WindowActivate();
         }
         else
         {
@@ -638,7 +653,7 @@ public static class WindowManager
 
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
             value.GoFile(type1, obj1.PID!);
         }
         else
@@ -658,7 +673,7 @@ public static class WindowManager
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
             return value.GoSet();
         }
         else
@@ -678,7 +693,7 @@ public static class WindowManager
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
             value.GoUpgrade(list);
         }
         else
@@ -698,7 +713,7 @@ public static class WindowManager
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
             value.GoTo(type);
         }
         else
@@ -718,7 +733,7 @@ public static class WindowManager
     {
         if (ServerPackWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
         }
         else
         {
@@ -735,7 +750,7 @@ public static class WindowManager
     {
         if (CollectWindow != null)
         {
-            CollectWindow.Window.TopActivate();
+            CollectWindow.Window?.WindowActivate();
         }
         else
         {
@@ -753,7 +768,7 @@ public static class WindowManager
     {
         if (GameLogWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
             value.GameExit(code);
         }
         else
@@ -773,7 +788,7 @@ public static class WindowManager
     {
         if (GameConfigEditWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.TopActivate();
+            win1.Window?.WindowActivate();
         }
         else
         {
@@ -791,7 +806,7 @@ public static class WindowManager
         string key = obj.Game.UUID + ":" + obj.LevelName;
         if (GameConfigEditWindows.TryGetValue(key, out var win1))
         {
-            win1.Window.TopActivate();
+            win1.Window?.WindowActivate();
         }
         else
         {
@@ -811,7 +826,7 @@ public static class WindowManager
         string key = obj.UUID;
         if (GameCloudWindows.TryGetValue(key, out var win1))
         {
-            win1.Window.TopActivate();
+            win1.Window?.WindowActivate();
             if (world)
             {
                 win1.GoWorld();
@@ -836,7 +851,7 @@ public static class WindowManager
     {
         if (CountWindow != null)
         {
-            CountWindow.Window.TopActivate();
+            CountWindow.Window?.WindowActivate();
         }
         else
         {
@@ -853,7 +868,7 @@ public static class WindowManager
     {
         if (GameExportWindows.TryGetValue(obj.UUID, out var value))
         {
-            value.Window.TopActivate();
+            value.Window?.WindowActivate();
         }
         else
         {
@@ -870,7 +885,7 @@ public static class WindowManager
     {
         if (NetFrpWindow != null)
         {
-            NetFrpWindow.Window.TopActivate();
+            NetFrpWindow.Window?.WindowActivate();
         }
         else
         {
@@ -886,7 +901,7 @@ public static class WindowManager
     {
         if (NewsWindow != null)
         {
-            NewsWindow.Window.TopActivate();
+            NewsWindow.Window?.WindowActivate();
         }
         else
         {
@@ -932,33 +947,33 @@ public static class WindowManager
     {
         if (GameEditWindows.TryGetValue(obj.UUID, out var win))
         {
-            win.Window.Close();
+            win.Window?.Close();
         }
         if (GameLogWindows.TryGetValue(obj.UUID, out var win5))
         {
-            win5.Window.Close();
+            win5.Window?.Close();
         }
         if (GameAddWindows.TryGetValue(obj.UUID, out var win1))
         {
-            win1.Window.Close();
+            win1.Window?.Close();
         }
         if (GameCloudWindows.TryGetValue(obj.UUID, out var win2))
         {
-            win2.Window.Close();
+            win2.Window?.Close();
         }
         if (GameExportWindows.TryGetValue(obj.UUID, out var win3))
         {
-            win3.Window.Close();
+            win3.Window?.Close();
         }
         if (ServerPackWindows.TryGetValue(obj.UUID, out var win4))
         {
-            win4.Window.Close();
+            win4.Window?.Close();
         }
         foreach (var item in GameConfigEditWindows)
         {
             if (item.Key.StartsWith(obj.UUID))
             {
-                item.Value.Window.Close();
+                item.Value.Window?.Close();
             }
         }
     }
@@ -981,7 +996,7 @@ public static class WindowManager
             }
             else
             {
-                return CustomWindow.Window.Window;
+                return CustomWindow.Icon.Window;
             }
         }
 
@@ -1051,7 +1066,7 @@ public static class WindowManager
                 window.WindowState = WindowState.Normal;
                 window.Activate();
             }
-            else if (CustomWindow?.Window.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Icon.GetVisualRoot() is Window window1)
             {
                 window1.Show();
                 window1.WindowState = WindowState.Normal;
@@ -1079,9 +1094,9 @@ public static class WindowManager
             if (MainWindow?.GetVisualRoot() is Window window)
             {
                 window.Hide();
-                (CustomWindow?.Window.GetVisualRoot() as Window)?.Close();
+                (CustomWindow?.Icon.GetVisualRoot() as Window)?.Close();
             }
-            else if (CustomWindow?.Window.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Icon.GetVisualRoot() is Window window1)
             {
                 window1.Hide();
             }
@@ -1094,42 +1109,9 @@ public static class WindowManager
     /// </summary>
     public static void CloseAllWindow()
     {
-        (NetFrpWindow?.GetVisualRoot() as Window)?.Close();
-        (CountWindow?.GetVisualRoot() as Window)?.Close();
-        (AddJavaWindow?.GetVisualRoot() as Window)?.Close();
-        (SkinWindow?.GetVisualRoot() as Window)?.Close();
-        (SettingWindow?.GetVisualRoot() as Window)?.Close();
-        (AddModPackWindow?.GetVisualRoot() as Window)?.Close();
-        (AddGameWindow?.GetVisualRoot() as Window)?.Close();
-        (UserWindow?.GetVisualRoot() as Window)?.Close();
-        (DownloadWindow?.GetVisualRoot() as Window)?.Close();
-        foreach (var item in GameEditWindows.Values)
+        foreach (var item in _windows)
         {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in GameConfigEditWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in GameAddWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in ServerPackWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in GameLogWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in GameExportWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
-        }
-        foreach (var item in GameCloudWindows.Values)
-        {
-            (item.GetVisualRoot() as Window)?.Close();
+            item.Close();
         }
     }
 
@@ -1150,5 +1132,23 @@ public static class WindowManager
     public static string GetUseName<T>(GameSettingObj obj) where T : BaseUserControl
     {
         return typeof(T).FullName ?? typeof(T).Name + ":" + obj.UUID;
+    }
+
+    public static void ReloadIcon()
+    {
+        foreach (var item in _windows)
+        { 
+            item.ReloadIcon();
+        }
+    }
+
+    public static void CloseWindow(AMultiWindow window)
+    {
+        if (LastWindow == window)
+        {
+            LastWindow = null;
+        }
+
+        _windows.Remove(window);
     }
 }

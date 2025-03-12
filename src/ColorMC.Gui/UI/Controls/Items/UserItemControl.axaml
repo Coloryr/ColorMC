@@ -25,7 +25,7 @@
                     VerticalAlignment="Center"
                     CornerRadius="5">
                     <Border.Background>
-                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadIcon}}" Stretch="UniformToFill" />
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
                 <DockPanel Margin="60,0,0,0">

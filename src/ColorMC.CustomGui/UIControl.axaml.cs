@@ -14,13 +14,7 @@ public partial class UIControl : BaseUserControl
         Title = "服务器客户端"; //窗口标题
     }
 
-    public override Bitmap GetIcon()
-    {
-        //窗口图标
-        return ImageManager.GameIcon;
-    }
-
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as UIModel)?.Load();
     }

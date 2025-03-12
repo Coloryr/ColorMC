@@ -39,7 +39,7 @@ public partial class AddJavaControl : BaseUserControl
         return Task.FromResult(false);
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as AddJavaControlModel)!.TypeIndex = 0;
     }
@@ -52,11 +52,6 @@ public partial class AddJavaControl : BaseUserControl
     protected override TopModel GenModel(BaseModel model)
     {
         return new AddJavaControlModel(model, NeedJava);
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 
     private void JavaFiles_DoubleTapped(object? sender, TappedEventArgs e)

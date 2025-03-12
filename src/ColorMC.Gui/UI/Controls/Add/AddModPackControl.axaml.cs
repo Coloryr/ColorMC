@@ -39,7 +39,7 @@ public partial class AddModPackControl : BaseUserControl
         WindowManager.AddModPackWindow = null;
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as AddModPackControlModel)!.Source = 0;
     }
@@ -49,11 +49,6 @@ public partial class AddModPackControl : BaseUserControl
         var amodel = new AddModPackControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
         return amodel;
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)

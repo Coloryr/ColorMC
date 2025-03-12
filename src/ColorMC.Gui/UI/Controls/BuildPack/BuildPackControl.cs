@@ -18,12 +18,7 @@ public partial class BuildPackControl : MenuControl
         Title = App.Lang("BuildPackWindow.Title");
     }
 
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
-
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as BuildPackModel)?.Load();
     }

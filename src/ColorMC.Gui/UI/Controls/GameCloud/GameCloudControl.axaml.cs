@@ -29,7 +29,7 @@ public partial class GameCloudControl : MenuControl
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
     }
 
-    protected override async void Opened()
+    public override async void Opened()
     {
         if (DataContext is GameCloudModel model && await model.Init())
         {
@@ -80,17 +80,5 @@ public partial class GameCloudControl : MenuControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameCloudWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

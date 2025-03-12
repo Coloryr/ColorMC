@@ -46,11 +46,6 @@ public partial class AddGameControl : BaseUserControl
         WindowManager.AddGameWindow = null;
     }
 
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
-
     /// <summary>
     /// 设置添加的文件
     /// </summary>

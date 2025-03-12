@@ -14,7 +14,7 @@ public class UIAssembly : AssemblyLoadContext
     public ICustomControl Plugin { get; init; }
 
     public bool IsLoad { get; private set; }
-    public BaseUserControl Window { get; private set; }
+    public BaseUserControl Icon { get; private set; }
 
     public UIAssembly() : base("ColorMC.Custom", true)
     {
@@ -52,7 +52,7 @@ public class UIAssembly : AssemblyLoadContext
                         return;
                     }
                     Plugin = plugin;
-                    Window = Plugin.GetControl();
+                    Icon = Plugin.GetControl();
                     IsLoad = true;
                     return;
                 }
