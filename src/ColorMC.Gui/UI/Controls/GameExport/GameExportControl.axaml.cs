@@ -30,7 +30,7 @@ public partial class GameExportControl : MenuControl
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
     }
 
-    protected override async void Opened()
+    public override async void Opened()
     {
         var model = (DataContext as GameExportModel)!;
         model.Model.Progress(App.Lang("GameExportWindow.Info7"));
@@ -90,17 +90,5 @@ public partial class GameExportControl : MenuControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

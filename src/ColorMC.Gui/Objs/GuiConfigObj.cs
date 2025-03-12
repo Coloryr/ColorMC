@@ -160,6 +160,30 @@ public record ServerCustomSetting
     /// 游戏管理员方式启动
     /// </summary>
     public bool GameAdminLaunch { get; set; }
+    /// <summary>
+    /// 是否使用自定义图标
+    /// </summary>
+    public bool CustomIcon { get; set; }
+    /// <summary>
+    /// 自定义图标
+    /// </summary>
+    public string IconFile { get; set; }
+    /// <summary>
+    /// 是否使用自定义开始界面
+    /// </summary>
+    public bool CustomStart { get; set; }
+    /// <summary>
+    /// 自定义开始界面文件
+    /// </summary>
+    public string StartIconFile { get; set; }
+    /// <summary>
+    /// 自定义开始界面显示类型
+    /// </summary>
+    public DisplayType DisplayType { get; set; }
+    /// <summary>
+    /// 自定义开始界面显示文本
+    /// </summary>
+    public string? DisplayText { get; set; }
 }
 
 /// <summary>

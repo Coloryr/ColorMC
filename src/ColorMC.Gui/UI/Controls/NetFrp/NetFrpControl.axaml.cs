@@ -33,7 +33,7 @@ public partial class NetFrpControl : MenuControl
         model.RemoveClick();
     }
 
-    protected override async void Opened()
+    public override async void Opened()
     {
         var model = (DataContext as NetFrpModel)!;
         if (await model.Open())
@@ -84,10 +84,5 @@ public partial class NetFrpControl : MenuControl
     public override Task<bool> Closing()
     {
         return (DataContext as NetFrpModel)!.Closing();
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 }

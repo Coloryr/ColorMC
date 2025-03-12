@@ -565,10 +565,15 @@ public static class ConfigBinding
     /// </summary>
     /// <param name="enable"></param>
     /// <param name="value"></param>
-    public static void SetUI(bool enable)
+    public static void SetUI(bool enable, bool customIcon, bool customStart, string? startText, DisplayType display)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.EnableUI = enable;
+        GuiConfigUtils.Config.ServerCustom.CustomIcon = customIcon;
+        GuiConfigUtils.Config.ServerCustom.CustomStart = customStart;
+        GuiConfigUtils.Config.ServerCustom.DisplayType = display;
+        GuiConfigUtils.Config.ServerCustom.DisplayText = startText;
+
         GuiConfigUtils.Save();
     }
 

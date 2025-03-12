@@ -10,6 +10,9 @@ using System;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 基础窗口
+/// </summary>
 public abstract class ABaseWindow : Window
 {
     public abstract ITopWindow ICon { get; }
@@ -23,13 +26,14 @@ public abstract class ABaseWindow : Window
 
         AddHandler(KeyDownEvent, Window_KeyDown, RoutingStrategies.Tunnel);
 
-        Opened += UserWindow_Opened;
+        Opened += ABaseWindow_Opened;
         Closing += ABaseWindow_Closing;
-        PropertyChanged += OnPropertyChanged;
+        PropertyChanged += ABaseWindow_OnPropertyChanged;
     }
 
     private void ABaseWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
+        //保存窗口状态
         if (WindowState == WindowState.Minimized)
         {
             WindowState = WindowState.Normal;
@@ -45,13 +49,14 @@ public abstract class ABaseWindow : Window
         });
     }
 
-    private void UserWindow_Opened(object? sender, EventArgs e)
+    private void ABaseWindow_Opened(object? sender, EventArgs e)
     {
-        ICon.TopOpened();
+        ICon.WindowOpened();
     }
 
-    private void OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void ABaseWindow_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
+        //状态改变时切换边框大小
         if (e.Property == WindowStateProperty)
         {
             ICon.WindowStateChange(WindowState);

@@ -290,7 +290,7 @@ public static class GameBinding
     {
         try
         {
-            var file = await PathBinding.SelectFile(top, FileType.Icon);
+            var file = await PathBinding.SelectFile(top, FileType.GameIcon);
             if (file.Item1 != null)
             {
                 bool resize = await model.ShowAsync(App.Lang("GameBinding.Info14"));
@@ -2797,7 +2797,7 @@ public static class GameBinding
 
     public static async void ExportCmd(GameSettingObj obj, BaseModel model)
     {
-        var top = TopLevel.GetTopLevel(WindowManager.FindRoot(WindowManager.MainWindow).ICon);
+        var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
         if (top == null)
         {
             model.Show(App.Lang("MainWindow.Error10"));

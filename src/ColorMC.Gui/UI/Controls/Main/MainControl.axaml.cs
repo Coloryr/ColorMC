@@ -218,7 +218,7 @@ public partial class MainControl : BaseUserControl
         App.Exit();
     }
 
-    protected override async void Opened()
+    public override async void Opened()
     {
         ChangeLive2DSize();
 
@@ -448,11 +448,6 @@ public partial class MainControl : BaseUserControl
                 }
             }
         }
-    }
-
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
     }
 
     /// <summary>

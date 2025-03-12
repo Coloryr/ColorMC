@@ -79,7 +79,7 @@ public partial class GameEditControl : MenuControl
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 
-    protected override void Opened()
+    public override void Opened()
     {
         (DataContext as GameEditModel)?.Load();
     }
@@ -163,17 +163,5 @@ public partial class GameEditControl : MenuControl
     public void ReloadTitle()
     {
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
-        Window.SetTitle(Title);
-    }
-
-    /// <summary>
-    /// жидиЭМБъ
-    /// </summary>
-    public void ReloadIcon()
-    {
-        if (DataContext is BaseModel model)
-        {
-            model.SetIcon(GetIcon());
-        }
     }
 }

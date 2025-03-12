@@ -109,7 +109,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         Controls.Child = null;
     }
 
-    public void TopOpened()
+    public void WindowOpened()
     {
         PicUpdate();
     }
@@ -123,7 +123,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             Controls.Child = con1;
             Dispatcher.UIThread.Post(() =>
             {
-                _baseControl.TopOpened();
+                _baseControl.WindowOpened();
             });
         }
         else
@@ -139,7 +139,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             ThemeManager.CrossFade.Start(null, con2);
 
             Model.PushBack(Back);
-            con.TopOpened();
+            con.WindowOpened();
         }
 
         _nowControl = con;
@@ -267,5 +267,14 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         TopView.IsVisible = true;
         BottomView.IsVisible = false;
+    }
+
+    public void ReloadIcon()
+    {
+        Model.SetIcon(_nowControl.GetIcon());
+        if (VisualRoot is Window window)
+        {
+            window.Icon = ImageManager.WindowIcon;
+        }
     }
 }

@@ -122,8 +122,8 @@ public enum FileType
     DataPacks,
     Schematic,
     Java, Game, Config, AuthConfig, Pic, Optifine, Skin, Music,
-    Text, Live2D, Icon, Head, JavaZip, Live2DCore, Loader, InputConfig,
-    User, Cmd
+    Text, Live2D, GameIcon, Head, JavaZip, Live2DCore, Loader, InputConfig,
+    User, Cmd, Icon, StartIcon
 }
 
 /// <summary>

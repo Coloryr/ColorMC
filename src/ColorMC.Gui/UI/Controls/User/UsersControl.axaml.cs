@@ -80,11 +80,6 @@ public partial class UsersControl : BaseUserControl
         return new UsersControlModel(model);
     }
 
-    public override Bitmap GetIcon()
-    {
-        return ImageManager.GameIcon;
-    }
-
     /// <summary>
     /// ÖØÐÂµÇÂ½
     /// </summary>

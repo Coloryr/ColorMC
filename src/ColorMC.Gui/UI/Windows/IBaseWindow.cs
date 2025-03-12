@@ -61,7 +61,7 @@ public interface IBaseWindow
     /// <summary>
     /// 转到最顶层
     /// </summary>
-    virtual public void TopActivate()
+    virtual public void WindowActivate()
     {
         if (ConfigBinding.WindowMode())
         {
@@ -77,4 +77,8 @@ public interface IBaseWindow
             window.Activate();
         }
     }
+    /// <summary>
+    /// 重载图标
+    /// </summary>
+    void ReloadIcon();
 }

@@ -2,6 +2,7 @@ using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
@@ -590,6 +591,13 @@ public static class BaseBinding
 
         obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
 
+        if (model.PackUpdate)
+        { 
+            
+        }
+
+        var data = obj.ToString();
+
         //foreach (var item in zipList)
         //{
         //    string tempfile = item[(path.Length + 1)..];
@@ -619,5 +627,35 @@ public static class BaseBinding
         //}
 
         return false;
+    }
+
+    public static void SetWindowIcon(string file)
+    {
+        var name = Path.GetFileName(file);
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, name));
+
+        GuiConfigUtils.Config.ServerCustom.IconFile = name;
+        GuiConfigUtils.Save();
+
+        ImageManager.LoadIcon();
+    }
+
+    public static Bitmap? GetWindowIcon()
+    {
+        return ImageManager.Icon;
+    }
+
+    public static Bitmap? GetStartIcon()
+    {
+        return ImageManager.LoadStartIcon();
+    }
+
+    public static void SetStartIcon(string file)
+    {
+        var name = Path.GetFileName(file);
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, name));
+
+        GuiConfigUtils.Config.ServerCustom.StartIconFile = name;
+        GuiConfigUtils.Save();
     }
 }

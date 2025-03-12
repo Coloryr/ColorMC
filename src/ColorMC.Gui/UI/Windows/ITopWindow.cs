@@ -17,7 +17,7 @@ public interface ITopWindow
     /// <summary>
     /// 窗口打开后
     /// </summary>
-    public void TopOpened();
+    public void WindowOpened();
     /// <summary>
     /// 窗口状态切换
     /// </summary>

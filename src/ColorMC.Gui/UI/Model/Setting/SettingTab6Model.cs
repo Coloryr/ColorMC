@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -29,6 +30,8 @@ public partial class SettingModel
 
     public string[] LoginList { get; init; } = LanguageBinding.GetLockLoginType();
 
+    public string[] DisplayList { get; init; } = LanguageBinding.GetDisplayList();
+
     [ObservableProperty]
     private LockLoginModel _lockSelect;
 
@@ -41,6 +44,8 @@ public partial class SettingModel
     private string _serverIP;
     [ObservableProperty]
     private string? _music;
+    [ObservableProperty]
+    private string? _startText;
 
     [ObservableProperty]
     private ushort? _serverPort;
@@ -69,11 +74,23 @@ public partial class SettingModel
     private bool _adminLaunch;
     [ObservableProperty]
     private bool _gameAdminLaunch;
+    [ObservableProperty]
+    private bool _customIcon;
+    [ObservableProperty]
+    private bool _customStart;
 
     [ObservableProperty]
     private int _game = -1;
     [ObservableProperty]
     private int _volume;
+
+    [ObservableProperty]
+    private Bitmap? _iconImage;
+    [ObservableProperty]
+    private Bitmap? _startImage;
+
+    [ObservableProperty]
+    private DisplayType _displayType;
 
     private bool _serverLoad = true;
 
@@ -109,12 +126,7 @@ public partial class SettingModel
 
     partial void OnEnableUIChanged(bool value)
     {
-        if (_serverLoad)
-        {
-            return;
-        }
-
-        ConfigBinding.SetUI(value);
+        SetUI();
     }
 
     partial void OnEnableOneLoginChanged(bool value)
@@ -193,6 +205,46 @@ public partial class SettingModel
         SetIP();
     }
 
+    partial void OnCustomIconChanged(bool value)
+    {
+        SetUI();
+    }
+
+    [RelayCommand]
+    public async Task SelectStartIcon()
+    {
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SelectFile(top, FileType.StartIcon);
+        if (res.Item1 == null)
+        {
+            return;
+        }
+
+        BaseBinding.SetStartIcon(res.Item1);
+        IconImage = BaseBinding.GetStartIcon();
+    }
+
+    [RelayCommand]
+    public async Task SelectIcon()
+    {
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var res = await PathBinding.SelectFile(top, FileType.Icon);
+        if (res.Item1 == null)
+        {
+            return;
+        }
+
+        BaseBinding.SetWindowIcon(res.Item1);
+        IconImage = BaseBinding.GetWindowIcon();
+    }
 
     [RelayCommand]
     public void Test()
@@ -337,7 +389,6 @@ public partial class SettingModel
             EnableJoin = config.JoinServer;
             EnableOneGame = config.LockGame;
             EnableMusic = config.PlayMusic;
-            EnableUI = config.EnableUI;
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
             Loop = config.MusicLoop;
@@ -364,9 +415,27 @@ public partial class SettingModel
             {
                 Locks.Add(new(this, item));
             }
+
+            EnableUI = config.EnableUI;
+            CustomIcon = config.CustomIcon;
+            IconImage = BaseBinding.GetWindowIcon();
+            StartImage = BaseBinding.GetStartIcon();
+            CustomStart = config.CustomStart;
+            StartText = config.DisplayText;
+            DisplayType = config.DisplayType;
         }
 
         _serverLoad = false;
+    }
+
+    private void SetUI()
+    {
+        if (_serverLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetUI(EnableUI, CustomIcon, CustomStart, StartText, DisplayType);
     }
 
     private void SetMusic()

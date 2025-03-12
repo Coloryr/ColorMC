@@ -1,11 +1,23 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class LanguageBinding
 {
+    public static string[] GetDisplayList()
+    {
+        return
+        [
+            App.Lang("Type.DisplayType.Item1"),
+            App.Lang("Type.DisplayType.Item2"),
+            App.Lang("Type.DisplayType.Item3"),
+            App.Lang("Type.DisplayType.Item4"),
+        ];
+    }
+
     public static string[] GetLockLoginType()
     {
         return

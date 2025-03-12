@@ -439,7 +439,7 @@ public static class PathBinding
     /// <summary>
     /// 打开文件
     /// </summary>
-    /// <param name="window">窗口</param>
+    /// <param name="top">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
     public static async Task<(string?, string?)> SelectFile(TopLevel top, FileType type)
@@ -517,6 +517,16 @@ public static class PathBinding
                     return (res[0].GetPath(), res[0].Name);
                 }
                 break;
+            case FileType.Icon:
+                res = await SelectFile(top,
+                    App.Lang("PathBinding.Text42"),
+                    PICFILE,
+                    App.Lang("PathBinding.Text43"));
+                if (res?.Any() == true)
+                {
+                    return (res[0].GetPath(), res[0].Name);
+                }
+                break;
             case FileType.Music:
                 res = await SelectFile(top,
                     App.Lang("PathBinding.Text11"),
@@ -537,7 +547,7 @@ public static class PathBinding
                     return (res[0].GetPath(), res[0].Name);
                 }
                 break;
-            case FileType.Icon:
+            case FileType.GameIcon:
                 res = await SelectFile(top,
                     App.Lang("PathBinding.Text7"),
                     PICFILE,

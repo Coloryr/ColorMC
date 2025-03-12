@@ -28,7 +28,7 @@ public partial class MainModel
     /// 头像
     /// </summary>
     [ObservableProperty]
-    private Bitmap _head = ImageManager.LoadIcon;
+    private Bitmap _head = ImageManager.LoadBitmap;
 
     /// <summary>
     /// 是否有头像
