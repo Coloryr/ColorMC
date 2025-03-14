@@ -1005,7 +1005,7 @@ public static class GameBinding
         list.Add(obj.GetOptionsFile()[dir..]);
         string con = obj.GetConfigPath();
 
-        var list1 = PathHelper.GetAllFile(con);
+        var list1 = PathHelper.GetAllFiles(con);
         foreach (var item in list1)
         {
             list.Add(item.FullName[dir..].Replace("\\", "/"));
@@ -1024,7 +1024,7 @@ public static class GameBinding
         var list = new List<string>();
         var dir = obj.Local.Length + 1;
 
-        var list1 = PathHelper.GetAllFile(obj.Local);
+        var list1 = PathHelper.GetAllFiles(obj.Local);
         foreach (var item in list1)
         {
             if (item.Extension is ".png" or ".lock")
@@ -3143,7 +3143,7 @@ public static class GameBinding
                 };
             }
             //本地文件
-            var files = PathHelper.GetAllFile(dir);
+            var files = PathHelper.GetAllFiles(dir);
             var pack = new List<string>();
 
             string dir1 = Path.GetFullPath(dir + "/");
@@ -3239,7 +3239,7 @@ public static class GameBinding
         var list = new Dictionary<string, string>();
         if (world.HaveLocal)
         {
-            var files = PathHelper.GetAllFile(dir);
+            var files = PathHelper.GetAllFiles(dir);
             string dir1 = Path.GetFullPath(dir + "/");
             foreach (var item in files)
             {

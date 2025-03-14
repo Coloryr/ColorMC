@@ -266,7 +266,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
             return list;
         }
 
-        if (IsChecked)
+        if (IsChecked && !_isGame)
         {
             list.Add(System.IO.Path.GetFullPath(Path));
         }

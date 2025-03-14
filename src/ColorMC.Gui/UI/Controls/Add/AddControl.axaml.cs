@@ -73,9 +73,9 @@ public partial class AddControl : BaseUserControl
         (DataContext as AddControlModel)!.Display = true;
     }
 
-    public async Task GoSet()
+    public void GoSet()
     {
-        await (DataContext as AddControlModel)!.GoSet();
+        (DataContext as AddControlModel)?.GoSet();
     }
 
     public void GoTo(FileType type)

@@ -23,7 +23,7 @@ public static class GuiConfigUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameGuiConfigFile);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameGuiConfigFile);
 
         Load(s_local);
     }

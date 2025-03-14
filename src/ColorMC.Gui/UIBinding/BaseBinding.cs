@@ -22,13 +22,13 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Hashing;
 using System.Text;
 using System.Threading.Tasks;
 using Path = System.IO.Path;
@@ -282,12 +282,12 @@ public static class BaseBinding
             {
                 var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
                 dynamic shell = Activator.CreateInstance(shellType)!;
-                var file = Path.Combine(ColorMCGui.RunDir, $"{obj.Name}.lnk");
+                var file = Path.Combine(ColorMCGui.BaseDir, $"{obj.Name}.lnk");
                 var shortcut = shell.CreateShortcut(file);
                 var path = Environment.ProcessPath;
                 shortcut.TargetPath = path;
                 shortcut.Arguments = "-game " + obj.UUID;
-                shortcut.WorkingDirectory = ColorMCGui.RunDir;
+                shortcut.WorkingDirectory = ColorMCGui.BaseDir;
                 shortcut.Save();
                 PathBinding.OpenFileWithExplorer(file);
             }
@@ -475,7 +475,7 @@ public static class BaseBinding
 
     private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path)
     {
-        var buffer = PathHelper.ReadByte(path)!;
+        using var buffer = PathHelper.OpenRead(path)!;
 
         var entry = new ZipEntry(file)
         {
@@ -483,10 +483,11 @@ public static class BaseBinding
             Size = buffer.Length
         };
         crc.Reset();
-        crc.Update(buffer);
-        entry.Crc = crc.Value;
+        await crc.AppendAsync(buffer);
+        entry.Crc = crc.GetCurrentHashAsUInt32();
         await stream.PutNextEntryAsync(entry);
-        await stream.WriteAsync(buffer);
+        buffer.Seek(0, SeekOrigin.Begin);
+        await buffer.CopyToAsync(stream);
     }
 
     private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, byte[] data)
@@ -497,205 +498,239 @@ public static class BaseBinding
             Size = data.Length
         };
         crc.Reset();
-        crc.Update(data);
-        entry.Crc = crc.Value;
+        crc.Append(data);
+        entry.Crc = crc.GetCurrentHashAsUInt32();
         await stream.PutNextEntryAsync(entry);
         await stream.WriteAsync(data);
     }
 
-    public static async Task<bool> BuildPack(BuildPackModel model)
+    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path, string basepath)
     {
-        var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
-        using var stream = new ZipOutputStream(PathHelper.OpenWrite(file, true));
-        stream.SetLevel(9);
-        var crc = new Crc32();
-
-        var conf = GuiConfigUtils.Config;
-        var conf1 = ConfigUtils.Config;
-
-        var obj = new JObject();
-
-        if (model.UiBg && File.Exists(conf.BackImage))
+        foreach (var item in PathHelper.GetAllFiles(path))
         {
-            var filename = Path.GetFileName(conf.BackImage);
-            await PutFile(crc, stream, filename, conf.BackImage);
-            obj.Add(nameof(GuiConfigObj.EnableBG), conf.EnableBG);
-            obj.Add(nameof(GuiConfigObj.BackImage), filename);
-            obj.Add(nameof(GuiConfigObj.BackEffect), conf.BackEffect);
-            obj.Add(nameof(GuiConfigObj.BackTran), conf.BackTran);
-            obj.Add(nameof(GuiConfigObj.BackLimit), conf.BackLimit);
-            obj.Add(nameof(GuiConfigObj.BackLimitValue), conf.BackLimitValue);
-        }
+            string tempfile = file + "/" + item.FullName[(basepath.Length + 1)..];
+            tempfile = tempfile.Replace("\\", "/");
+            using var buffer = PathHelper.OpenRead(item.FullName)!;
 
-        if (model.UiColor)
-        {
-            obj.Add(nameof(GuiConfigObj.ColorType), (int)conf.ColorType);
-            obj.Add(nameof(GuiConfigObj.ColorMain), conf.ColorMain);
-            obj.Add(nameof(GuiConfigObj.RGB), conf.RGB);
-            obj.Add(nameof(GuiConfigObj.RGBS), conf.RGBS);
-            obj.Add(nameof(GuiConfigObj.RGBV), conf.RGBV);
-            obj.Add(nameof(GuiConfigObj.WindowMode), conf.WindowMode);
-            obj.Add(nameof(GuiConfigObj.Simple), conf.Simple);
-            obj.Add(nameof(GuiConfigObj.Style), new JObject(conf.Style));
-            obj.Add(nameof(GuiConfigObj.LogColor), new JObject(conf.LogColor));
-        }
-
-        if (model.UiOther)
-        {
-            obj.Add(nameof(GuiConfigObj.Head), new JObject(conf.Head));
-            obj.Add(nameof(GuiConfigObj.CloseBeforeLaunch), conf.CloseBeforeLaunch);
-            obj.Add(nameof(GuiConfigObj.Card), new JObject(conf.Card));
-        }
-
-        if (model.LaunchCheck)
-        {
-            obj.Add(nameof(ConfigObj.GameCheck), new JObject(conf1.GameCheck));
-            obj.Add(nameof(GuiConfigObj.LaunchCheck), new JObject(conf.LaunchCheck));
-        }
-
-        if (model.LaunchArg)
-        {
-            obj.Add(nameof(ConfigObj.DefaultJvmArg), new JObject(conf1.DefaultJvmArg));
-        }
-
-        if (model.LaunchWindow)
-        {
-            obj.Add(nameof(ConfigObj.Window), new JObject(conf1.Window));
-        }
-
-        var obj1 = new JObject();
-        var conf2 = conf.ServerCustom;
-
-        if (model.ServerOpt)
-        {
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.IP), conf2.IP);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.Port), conf2.Port);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.Motd), conf2.Motd);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.JoinServer), conf2.JoinServer);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdColor), conf2.MotdColor);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdBackColor), conf2.MotdBackColor);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.AdminLaunch), conf2.AdminLaunch);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.GameAdminLaunch), conf2.GameAdminLaunch);
-        }
-
-        if (model.ServerLock)
-        {
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockGame), conf2.LockGame);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.GameName), conf2.GameName);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogin), conf2.LockLogin);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogins), new JArray(conf2.LockLogins));
-        }
-
-        if (model.ServerUi)
-        {
-            var uiFile = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
-            if (File.Exists(uiFile))
+            var entry = new ZipEntry(tempfile)
             {
-                await PutFile(crc, stream, GuiNames.NameCustomUIFile, uiFile);
-            }
-            uiFile = Path.Combine(ColorMCGui.RunDir, conf2.IconFile);
-            if (File.Exists(uiFile))
-            {
-                await PutFile(crc, stream, conf2.IconFile, uiFile);
-            }
-            uiFile = Path.Combine(ColorMCGui.RunDir, conf2.StartIconFile);
-            if (File.Exists(uiFile))
-            {
-                await PutFile(crc, stream, conf2.StartIconFile, uiFile);
-            }
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.EnableUI), conf2.EnableUI);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomIcon), conf2.CustomIcon);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.IconFile), conf2.IconFile);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomStart), conf2.CustomStart);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.StartIconFile), conf2.StartIconFile);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.DisplayType), (int)conf2.DisplayType);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.StartText), conf2.StartText);
+                DateTime = DateTime.Now,
+                Size = buffer.Length
+            };
+            crc.Reset();
+            await crc.AppendAsync(buffer);
+            entry.Crc = crc.GetCurrentHashAsUInt32();
+            await stream.PutNextEntryAsync(entry);
+            buffer.Seek(0, SeekOrigin.Begin);
+            await buffer.CopyToAsync(stream);
         }
+    }
 
-        if (model.ServerMusic)
+    public static async Task<bool> BuildPack(BuildPackModel model, string output)
+    {
+        try
         {
-            var musicFile = conf2.Music;
-            var filename = Path.GetFileName(musicFile);
-            if (File.Exists(musicFile))
+            var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+            var stream = new ZipOutputStream(PathHelper.OpenWrite(file, true));
+            stream.SetLevel(9);
+            var crc = new Crc32();
+
+            var conf = GuiConfigUtils.Config;
+            var conf1 = ConfigUtils.Config;
+
+            var obj = new JObject();
+
+            if (model.UiBg && File.Exists(conf.BackImage))
             {
-                await PutFile(crc, stream, filename!, musicFile);
+                var filename = Path.GetFileName(conf.BackImage);
+                await PutFile(crc, stream, filename, conf.BackImage);
+                obj.Add(nameof(GuiConfigObj.EnableBG), conf.EnableBG);
+                obj.Add(nameof(GuiConfigObj.BackImage), filename);
+                obj.Add(nameof(GuiConfigObj.BackEffect), conf.BackEffect);
+                obj.Add(nameof(GuiConfigObj.BackTran), conf.BackTran);
+                obj.Add(nameof(GuiConfigObj.BackLimit), conf.BackLimit);
+                obj.Add(nameof(GuiConfigObj.BackLimitValue), conf.BackLimitValue);
             }
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.PlayMusic), conf2.PlayMusic);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.Music), filename);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.Volume), conf2.Volume);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.SlowVolume), conf2.SlowVolume);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.MusicLoop), conf2.MusicLoop);
-            obj1.Add(nameof(GuiConfigObj.ServerCustom.RunPause), conf2.RunPause);
+
+            if (model.UiColor)
+            {
+                obj.Add(nameof(GuiConfigObj.ColorType), (int)conf.ColorType);
+                obj.Add(nameof(GuiConfigObj.ColorMain), conf.ColorMain);
+                obj.Add(nameof(GuiConfigObj.RGB), conf.RGB);
+                obj.Add(nameof(GuiConfigObj.RGBS), conf.RGBS);
+                obj.Add(nameof(GuiConfigObj.RGBV), conf.RGBV);
+                obj.Add(nameof(GuiConfigObj.WindowMode), conf.WindowMode);
+                obj.Add(nameof(GuiConfigObj.Simple), conf.Simple);
+                obj.Add(nameof(GuiConfigObj.Style), JObject.FromObject(conf.Style));
+                obj.Add(nameof(GuiConfigObj.LogColor), JObject.FromObject(conf.LogColor));
+            }
+
+            if (model.UiOther)
+            {
+                obj.Add(nameof(GuiConfigObj.Head), JObject.FromObject(conf.Head));
+                obj.Add(nameof(GuiConfigObj.CloseBeforeLaunch), conf.CloseBeforeLaunch);
+                obj.Add(nameof(GuiConfigObj.Card), JObject.FromObject(conf.Card));
+            }
+
+            if (model.LaunchCheck)
+            {
+                obj.Add(nameof(ConfigObj.GameCheck), JObject.FromObject(conf1.GameCheck));
+                obj.Add(nameof(GuiConfigObj.LaunchCheck), JObject.FromObject(conf.LaunchCheck));
+            }
+
+            if (model.LaunchArg)
+            {
+                obj.Add(nameof(ConfigObj.DefaultJvmArg), JObject.FromObject(conf1.DefaultJvmArg));
+            }
+
+            if (model.LaunchWindow)
+            {
+                obj.Add(nameof(ConfigObj.Window), JObject.FromObject(conf1.Window));
+            }
+
+            var obj1 = new JObject();
+            var conf2 = conf.ServerCustom;
+
+            if (model.ServerOpt)
+            {
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.IP), conf2.IP);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.Port), conf2.Port);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.Motd), conf2.Motd);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.JoinServer), conf2.JoinServer);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdColor), conf2.MotdColor);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdBackColor), conf2.MotdBackColor);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.AdminLaunch), conf2.AdminLaunch);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.GameAdminLaunch), conf2.GameAdminLaunch);
+            }
+
+            if (model.ServerLock)
+            {
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockGame), conf2.LockGame);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.GameName), conf2.GameName);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogin), conf2.LockLogin);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogins), new JArray(conf2.LockLogins));
+            }
+
+            if (model.ServerUi)
+            {
+                var uiFile = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCustomUIFile);
+                if (File.Exists(uiFile))
+                {
+                    await PutFile(crc, stream, GuiNames.NameCustomUIFile, uiFile);
+                }
+                uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.IconFile);
+                if (File.Exists(uiFile))
+                {
+                    await PutFile(crc, stream, conf2.IconFile, uiFile);
+                }
+                uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.StartIconFile);
+                if (File.Exists(uiFile))
+                {
+                    await PutFile(crc, stream, conf2.StartIconFile, uiFile);
+                }
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.EnableUI), conf2.EnableUI);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomIcon), conf2.CustomIcon);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.IconFile), conf2.IconFile);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomStart), conf2.CustomStart);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.StartIconFile), conf2.StartIconFile);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.DisplayType), (int)conf2.DisplayType);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.StartText), conf2.StartText);
+            }
+
+            if (model.ServerMusic)
+            {
+                var musicFile = conf2.Music;
+                var filename = Path.GetFileName(musicFile);
+                if (File.Exists(musicFile))
+                {
+                    await PutFile(crc, stream, filename!, musicFile);
+                }
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.PlayMusic), conf2.PlayMusic);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.Music), filename);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.Volume), conf2.Volume);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.SlowVolume), conf2.SlowVolume);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.MusicLoop), conf2.MusicLoop);
+                obj1.Add(nameof(GuiConfigObj.ServerCustom.RunPause), conf2.RunPause);
+            }
+
+            obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
+
+            if (model.PackUpdate)
+            {
+                if (File.Exists(UpdateUtils.LocalPath[0]))
+                {
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
+                }
+                if (File.Exists(UpdateUtils.LocalPath[1]))
+                {
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", UpdateUtils.LocalPath[1]);
+                }
+                if (File.Exists(UpdateUtils.LocalPath[2]))
+                {
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
+                }
+                if (File.Exists(UpdateUtils.LocalPath[3]))
+                {
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", UpdateUtils.LocalPath[3]);
+                }
+            }
+
+            if (model.PackLaunch)
+            {
+                foreach (var item in UpdateUtils.LaunchFiles)
+                {
+                    var fileitem = Path.Combine(ColorMCGui.BaseDir,
+                    item);
+                    if (File.Exists(fileitem))
+                    {
+                        await PutFile(crc, stream, item, fileitem);
+                    }
+                }
+            }
+
+            var data = obj.ToString();
+            await PutFile(crc, stream, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
+
+            if (model.Java)
+            {
+                foreach (var item in model.Javas)
+                {
+                    await PutFile(crc, stream, "java", Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
+                }
+            }
+
+            foreach (var item in model.GetSelectItems())
+            {
+                string tempfile = item[(ColorMCGui.BaseDir.Length)..];
+                tempfile = tempfile.Replace("\\", "/");
+
+                await PutFile(crc, stream, tempfile, item);
+            }
+
+            await stream.DisposeAsync();
+
+            PathHelper.MoveFile(file, output);
+
+            PathBinding.OpenFileWithExplorer(output);
+
+            return true;
         }
-
-        obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
-
-        if (model.PackUpdate)
+        catch (Exception e)
         {
-            if (File.Exists(UpdateUtils.LocalPath[0]))
-            {
-                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
-            }
-            if (File.Exists(UpdateUtils.LocalPath[1]))
-            {
-                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", UpdateUtils.LocalPath[1]);
-            }
-            if (File.Exists(UpdateUtils.LocalPath[2]))
-            {
-                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
-            }
-            if (File.Exists(UpdateUtils.LocalPath[3]))
-            {
-                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", UpdateUtils.LocalPath[3]);
-            }
+            WindowManager.ShowError(App.Lang("BuildPackWindow.Error1"), e);
         }
-
-        var data = obj.ToString();
-        await PutFile(crc, stream, $"colormc.json", Encoding.UTF8.GetBytes(data));
-
-        if (model.Java)
-        {
-            foreach (var item in model.Javas)
-            { 
-                
-            }
-        }
-
-        //foreach (var item in zipList)
-        //{
-        //    string tempfile = item[(path.Length + 1)..];
-        //    if (Directory.Exists(item))
-        //    {
-        //        var entry = new ZipEntry(tempfile + "/")
-        //        {
-        //            DateTime = DateTime.Now
-        //        };
-        //        await s.PutNextEntryAsync(entry);
-        //    }
-        //    else
-        //    {
-        //        var buffer = PathHelper.ReadByte(item)!;
-
-        //        var entry = new ZipEntry(tempfile)
-        //        {
-        //            DateTime = DateTime.Now,
-        //            Size = buffer.Length
-        //        };
-        //        crc.Reset();
-        //        crc.Update(buffer);
-        //        entry.Crc = crc.Value;
-        //        await s.PutNextEntryAsync(entry);
-        //        await s.WriteAsync(buffer);
-        //    }
-        //}
 
         return false;
     }
 
+    /// <summary>
+    /// 设置窗口图标
+    /// </summary>
+    /// <param name="file"></param>
     public static void SetWindowIcon(string file)
     {
         var name = Path.GetExtension(file);
-        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, GuiNames.NameIconFile + name));
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.BaseDir, GuiNames.NameIconFile + name));
 
         GuiConfigUtils.Config.ServerCustom.IconFile = GuiNames.NameIconFile + name;
         GuiConfigUtils.Save();
@@ -713,10 +748,14 @@ public static class BaseBinding
         return ImageManager.GetStartIcon();
     }
 
+    /// <summary>
+    /// 设置启动页图标
+    /// </summary>
+    /// <param name="file"></param>
     public static void SetStartIcon(string file)
     {
         var name = Path.GetExtension(file);
-        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, GuiNames.NameStartImageFile + name));
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.BaseDir, GuiNames.NameStartImageFile + name));
 
         GuiConfigUtils.Config.ServerCustom.StartIconFile = GuiNames.NameStartImageFile + name;
         GuiConfigUtils.Save();

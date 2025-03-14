@@ -36,7 +36,7 @@ public static class GameCountUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCountDataFile);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCountDataFile);
 
         s_isRun = true;
 

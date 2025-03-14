@@ -29,7 +29,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             zipDir += Path.DirectorySeparatorChar;
         using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
         s.SetLevel(9);
-        _size = PathHelper.GetAllFile(zipDir).Count;
+        _size = PathHelper.GetAllFiles(zipDir).Count;
         _now = 0;
         await ZipAsync(zipDir, s, zipDir, filter);
         await s.FinishAsync(CancellationToken.None);

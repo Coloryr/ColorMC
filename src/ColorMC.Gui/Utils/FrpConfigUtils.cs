@@ -29,7 +29,7 @@ public static class FrpConfigUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameFrpConfigFile);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameFrpConfigFile);
 
         Load(s_local, false);
     }

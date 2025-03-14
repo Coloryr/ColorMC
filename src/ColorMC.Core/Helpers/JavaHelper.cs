@@ -264,7 +264,7 @@ public static class JavaHelper
         try
         {
             var list = new List<JavaInfo>();
-            var list1 = PathHelper.GetAllFile(local)
+            var list1 = PathHelper.GetAllFiles(local)
                 .Where(item => item.Name == "javaw.exe" || item.Name == "java.exe");
             foreach (var item in list1)
             {

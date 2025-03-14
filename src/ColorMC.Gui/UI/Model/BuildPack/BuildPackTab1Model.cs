@@ -170,7 +170,7 @@ public partial class BuildPackModel
         CanBg = File.Exists(conf.BackImage);
         CanPack = PackLaunch = SystemInfo.Os is OsType.Windows;
         CanUpdate = PackUpdate = File.Exists(UpdateUtils.LocalPath[0]);
-        CanUi = File.Exists(Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile));
+        CanUi = File.Exists(Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCustomUIFile));
         CanMusic = File.Exists(conf.ServerCustom.Music);
 
         Javas.Clear();

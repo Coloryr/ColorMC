@@ -169,7 +169,7 @@ public static class WindowManager
     /// </summary>
     public static void Init()
     {
-        s_file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameWindowFile);
+        s_file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameWindowFile);
         LoadState();
         if (s_WindowState == null)
         {
@@ -400,7 +400,7 @@ public static class WindowManager
         try
         {
             //加载dll
-            string file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
+            string file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCustomUIFile);
             if (!File.Exists(file))
             {
                 return false;
@@ -669,19 +669,19 @@ public static class WindowManager
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static Task ShowAddSet(GameSettingObj obj)
+    public static void ShowAddSet(GameSettingObj obj)
     {
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {
             value.Window?.WindowActivate();
-            return value.GoSet();
+            value.GoSet();
         }
         else
         {
             var con = new AddControl(obj);
             GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
-            return con.GoSet();
+            con.GoSet();
         }
     }
     /// <summary>

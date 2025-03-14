@@ -18,8 +18,8 @@ public class UIAssembly : AssemblyLoadContext
 
     public UIAssembly() : base("ColorMC.Custom", true)
     {
-        var local1 = Path.Combine(ColorMCGui.RunDir, "ColorMC.CustomGui.dll");
-        var local2 = Path.Combine(ColorMCGui.RunDir, "ColorMC.CustomGui.pdb");
+        var local1 = Path.Combine(ColorMCGui.BaseDir, "ColorMC.CustomGui.dll");
+        var local2 = Path.Combine(ColorMCGui.BaseDir, "ColorMC.CustomGui.pdb");
         if (!File.Exists(local1))
         {
             return;

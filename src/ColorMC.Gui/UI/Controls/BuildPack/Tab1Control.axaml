@@ -27,7 +27,7 @@
                         Margin="0,0,10,0"
                         Content="{setting:Localize BuildPackWindow.Tab1.Text2}"
                         IsChecked="{Binding UiSetting}" />
-                    <WrapPanel>
+                    <DockPanel>
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -35,25 +35,27 @@
                             HorizontalAlignment="Left"
                             Path="/Resource/Icon/down.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text3}"
-                            IsChecked="{Binding UiBg}"
-                            IsEnabled="{Binding CanBg}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text4}"
-                            IsChecked="{Binding UiColor}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text5}"
-                            IsChecked="{Binding UiOther}" />
-                    </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text3}"
+                                IsChecked="{Binding UiBg}"
+                                IsEnabled="{Binding CanBg}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text4}"
+                                IsChecked="{Binding UiColor}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text5}"
+                                IsChecked="{Binding UiOther}" />
+                        </WrapPanel>
+                    </DockPanel>
                     <CheckBox
                         Margin="0,0,10,0"
                         Content="{setting:Localize BuildPackWindow.Tab1.Text6}"
                         IsChecked="{Binding LaunchSetting}" />
-                    <WrapPanel>
+                    <DockPanel>
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -61,24 +63,26 @@
                             HorizontalAlignment="Left"
                             Path="/Resource/Icon/down.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text7}"
-                            IsChecked="{Binding LaunchCheck}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text8}"
-                            IsChecked="{Binding LaunchArg}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text9}"
-                            IsChecked="{Binding LaunchWindow}" />
-                    </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text7}"
+                                IsChecked="{Binding LaunchCheck}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text8}"
+                                IsChecked="{Binding LaunchArg}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text9}"
+                                IsChecked="{Binding LaunchWindow}" />
+                        </WrapPanel>
+                    </DockPanel>
                     <CheckBox
                         Margin="0,0,10,0"
                         Content="{setting:Localize BuildPackWindow.Tab1.Text11}"
                         IsChecked="{Binding ServerSetting}" />
-                    <WrapPanel>
+                    <DockPanel>
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -86,25 +90,27 @@
                             HorizontalAlignment="Left"
                             Path="/Resource/Icon/down.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text12}"
-                            IsChecked="{Binding ServerOpt}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text13}"
-                            IsChecked="{Binding ServerLock}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text14}"
-                            IsChecked="{Binding ServerMusic}"
-                            IsEnabled="{Binding CanUi}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize BuildPackWindow.Tab1.Text15}"
-                            IsChecked="{Binding ServerUi}"
-                            IsEnabled="{Binding CanMusic}" />
-                    </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text12}"
+                                IsChecked="{Binding ServerOpt}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text13}"
+                                IsChecked="{Binding ServerLock}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text14}"
+                                IsChecked="{Binding ServerMusic}"
+                                IsEnabled="{Binding CanUi}" />
+                            <CheckBox
+                                Margin="0,0,10,0"
+                                Content="{setting:Localize BuildPackWindow.Tab1.Text15}"
+                                IsChecked="{Binding ServerUi}"
+                                IsEnabled="{Binding CanMusic}" />
+                        </WrapPanel>
+                    </DockPanel>
                     <WrapPanel>
                         <CheckBox
                             Margin="0,0,10,0"
@@ -120,8 +126,8 @@
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                <StackPanel>
+                    <StackPanel Margin="15,15,15,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
@@ -130,7 +136,7 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize BuildPackWindow.Tab1.Text19}" />
                     </StackPanel>
                     <CheckBox
-                        Margin="0,0,10,0"
+                        Margin="15,0,10,0"
                         Content="{setting:Localize BuildPackWindow.Tab1.Text16}"
                         IsChecked="{Binding Java}" />
                     <DataGrid

@@ -34,7 +34,7 @@ public static class GameCloudUtils
     /// </summary>
     public static void Init()
     {
-        s_file = Path.Combine(ColorMCGui.RunDir, GuiNames.NameGameCloudFile);
+        s_file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameGameCloudFile);
 
         if (File.Exists(s_file))
         {

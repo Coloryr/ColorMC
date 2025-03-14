@@ -24,7 +24,7 @@ public static class FrpLaunchUtils
     /// </summary>
     public static void Init()
     {
-        BaseDir = Path.Combine(ColorMCGui.RunDir, GuiNames.NameFrpFile);
+        BaseDir = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameFrpFile);
 
         Directory.CreateDirectory(BaseDir);
     }

@@ -480,7 +480,7 @@ public static partial class CheckHelpers
         {
             list1.Add(Task.Run(() =>
             {
-                var mods = PathHelper.GetAllFile(obj.GetModsPath());
+                var mods = PathHelper.GetAllFiles(obj.GetModsPath());
                 var shas = new Dictionary<string, string>();
                 int find = 0;
                 var array = new LinkedList<ModInfoObj>(obj.Mods.Values);
