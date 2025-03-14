@@ -12,6 +12,7 @@ public partial class BuildPackControl : MenuControl
 {
     private Tab1Control _tab1;
     private Tab2Control _tab2;
+    private Tab3Control _tab3;
 
     public BuildPackControl() : base(WindowManager.GetUseName<DownloadControl>())
     {
@@ -44,6 +45,9 @@ public partial class BuildPackControl : MenuControl
             case 1:
                 _tab2 ??= new();
                 return _tab2;
+            case 2:
+                _tab3 ??= new();
+                return _tab3;
             default:
                 throw new InvalidEnumArgumentException();
         }

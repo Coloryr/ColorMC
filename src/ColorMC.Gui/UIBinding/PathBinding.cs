@@ -446,8 +446,18 @@ public static class PathBinding
     {
         switch (type)
         {
-            case FileType.Java:
+            case FileType.File:
                 var res = await SelectFile(top,
+                    App.Lang("PathBinding.Text46"),
+                    null,
+                    App.Lang("PathBinding.Text47"));
+                if (res?.Any() == true)
+                {
+                    return (res[0].GetPath(), res[0].Name);
+                }
+                break;
+            case FileType.Java:
+                res = await SelectFile(top,
                     App.Lang("PathBinding.Text26"),
                     SystemInfo.Os == OsType.Windows ? EXE : null,
                     App.Lang("PathBinding.Text27"),

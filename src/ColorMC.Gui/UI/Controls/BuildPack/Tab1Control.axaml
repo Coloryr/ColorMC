@@ -102,12 +102,12 @@
                             <CheckBox
                                 Margin="0,0,10,0"
                                 Content="{setting:Localize BuildPackWindow.Tab1.Text14}"
-                                IsChecked="{Binding ServerMusic}"
+                                IsChecked="{Binding ServerUi}"
                                 IsEnabled="{Binding CanUi}" />
                             <CheckBox
                                 Margin="0,0,10,0"
                                 Content="{setting:Localize BuildPackWindow.Tab1.Text15}"
-                                IsChecked="{Binding ServerUi}"
+                                IsChecked="{Binding ServerMusic}"
                                 IsEnabled="{Binding CanMusic}" />
                         </WrapPanel>
                     </DockPanel>
