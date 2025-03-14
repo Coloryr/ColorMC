@@ -19,8 +19,6 @@ namespace ColorMC.Gui;
 
 public static class ColorMCGui
 {
-    public const string LockFile = "lock";
-
     private static readonly CoreInitArg s_arg = new()
     {
         Local = "",
@@ -30,7 +28,7 @@ public static class ColorMCGui
 
     private static FileStream s_lock;
 
-    public static string RunDir { get; private set; }
+    public static string BaseDir { get; private set; }
     public static string[] BaseSha1 { get; private set; }
 
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
@@ -68,7 +66,7 @@ public static class ColorMCGui
 
         RunType = RunType.Program;
 
-        Console.WriteLine($"RunDir: {RunDir}");
+        Console.WriteLine($"RunDir: {BaseDir}");
 
         SystemInfo.Init();
 
@@ -107,7 +105,7 @@ public static class ColorMCGui
                 return;
             }
 
-            s_arg.Local = RunDir;
+            s_arg.Local = BaseDir;
             ColorMCCore.Init(s_arg);
 
             builder.StartWithClassicDesktopLifetime(args);
@@ -155,11 +153,11 @@ public static class ColorMCGui
 
         RunType = RunType.Phone;
 
-        RunDir = local;
+        BaseDir = local;
 
-        Console.WriteLine($"RunDir:{RunDir}");
+        Console.WriteLine($"RunDir:{BaseDir}");
 
-        s_arg.Local = RunDir;
+        s_arg.Local = BaseDir;
         ColorMCCore.Init(s_arg);
         GuiConfigUtils.Init();
     }
@@ -177,7 +175,7 @@ public static class ColorMCGui
 
     public static void SetInputDir(string dir)
     {
-        RunDir = dir;
+        BaseDir = dir;
     }
 
     public static void SetCrash(bool crash)
@@ -189,7 +187,7 @@ public static class ColorMCGui
     {
         if (RunType == RunType.AppBuilder)
         {
-            RunDir = AppContext.BaseDirectory;
+            BaseDir = AppContext.BaseDirectory;
 
             SystemInfo.Init();
         }
@@ -308,7 +306,7 @@ public static class ColorMCGui
 
     private static bool IsLock(out int port)
     {
-        var name = Path.Combine(RunDir, LockFile);
+        var name = Path.Combine(BaseDir, GuiNames.NameLockFile);
         port = -1;
         if (File.Exists(name))
         {
@@ -332,7 +330,7 @@ public static class ColorMCGui
     public static void StartLock()
     {
         LaunchSocketUtils.Init().Wait();
-        string name = Path.Combine(RunDir, LockFile);
+        string name = Path.Combine(BaseDir, GuiNames.NameLockFile);
         s_lock = File.Open(name, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         var data = BitConverter.GetBytes(LaunchSocketUtils.Port);
         s_lock.Write(data);

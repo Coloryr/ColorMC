@@ -142,7 +142,7 @@ public static class ImageManager
             LoadBitmap = new(asset1!);
         }
 
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameImageDir);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameImageDir);
 
         Directory.CreateDirectory(s_local);
 
@@ -158,7 +158,7 @@ public static class ImageManager
             return;
         }
 
-        path = Path.Combine(ColorMCGui.RunDir, path);
+        path = Path.Combine(ColorMCGui.BaseDir, path);
         if (!File.Exists(path))
         {
             return;
@@ -178,7 +178,7 @@ public static class ImageManager
             return;
         }
 
-        path = Path.Combine(ColorMCGui.RunDir, path);
+        path = Path.Combine(ColorMCGui.BaseDir, path);
         if (!File.Exists(path))
         {
             return;
@@ -455,7 +455,7 @@ public static class ImageManager
                 }
                 else if (SystemInfo.Os == OsType.Android)
                 {
-                    file = Path.Combine(ColorMCGui.RunDir, "BG");
+                    file = Path.Combine(ColorMCGui.BaseDir, "BG");
                     stream1 = PathHelper.OpenRead(file);
                 }
                 else

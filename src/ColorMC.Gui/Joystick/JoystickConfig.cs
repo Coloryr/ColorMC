@@ -31,7 +31,7 @@ public static class JoystickConfig
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameJoyDir);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameJoyDir);
 
         Directory.CreateDirectory(s_local);
 

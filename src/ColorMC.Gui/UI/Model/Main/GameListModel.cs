@@ -369,7 +369,8 @@ public partial class MainModel
                 IsGameError = false;
                 OneGame = new(Model, this, game)
                 {
-                    OneGame = true
+                    OneGame = true,
+                    IsSelect = true
                 };
                 IsOneGame = true;
             }

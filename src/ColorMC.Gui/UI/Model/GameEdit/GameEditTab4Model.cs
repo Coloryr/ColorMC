@@ -194,16 +194,9 @@ public partial class GameEditModel : IModEdit
     /// <summary>
     /// 开始标记模组
     /// </summary>
-    public async void StartSetMod()
+    public void StartSetMod()
     {
-        if (_isModSet)
-        {
-            return;
-        }
-
-        _isModSet = true;
-        await WindowManager.ShowAddSet(_obj);
-        _isModSet = false;
+        WindowManager.ShowAddSet(_obj);
     }
 
     /// <summary>

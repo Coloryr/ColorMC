@@ -37,7 +37,7 @@ public static class ToolUtils
     /// </summary>
     public static void Init()
     {
-        s_baseDir = Path.Combine(ColorMCGui.RunDir, GuiNames.NameTooslDir);
+        s_baseDir = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameTooslDir);
 
         Directory.CreateDirectory(s_baseDir);
     }

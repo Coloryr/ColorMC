@@ -37,7 +37,7 @@ public static class CollectUtils
     /// </summary>
     public static void Init()
     {
-        s_local = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCollectFile);
+        s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCollectFile);
 
         Load(s_local);
     }

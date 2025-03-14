@@ -1,4 +1,5 @@
 ﻿using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
@@ -26,7 +27,7 @@ public partial class BuildPackModel : MenuModel
         ]);
 
         Model.SetChoiseCall(_useName, Build);
-        Model.SetChoiseContent(_useName, App.Lang("BuildPackWindow.Tabs.Text3"));
+        Model.SetChoiseContent(_useName, App.Lang("BuildPackWindow.Text1"));
     }
 
     public override void Close()
@@ -44,8 +45,25 @@ public partial class BuildPackModel : MenuModel
 
     private async void Build()
     {
-        Model.Progress(App.Lang("BuildPackWindow.Tabs.Text4"));
-        var res = await BaseBinding.BuildPack(this);
+        var top = Model.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+
+        string ext = PackLaunch ? ".zip" : ".colormc";
+        var local = await PathBinding.SaveFile(top, App.Lang("BuildPackWindow.Info2"), ext, "client" + ext);
+        if (local == null)
+        {
+            return;
+        }
+
+        Model.Progress(App.Lang("BuildPackWindow.Info1"));
+        var res = await BaseBinding.BuildPack(this, local.GetPath()!);
         Model.ProgressClose();
+        if (!res)
+        {
+            Model.Show(App.Lang("BuildPackWindow.Error1"));
+        }
     }
 }

@@ -111,7 +111,7 @@ public static class PathHelper
     /// </summary>
     /// <param name="local">路径</param>
     /// <returns>文件列表</returns>
-    public static List<FileInfo> GetAllFile(string local)
+    public static List<FileInfo> GetAllFiles(string local)
     {
         var list = new List<FileInfo>();
         var info = new DirectoryInfo(local);
@@ -123,7 +123,7 @@ public static class PathHelper
         list.AddRange(info.GetFiles());
         foreach (var item in info.GetDirectories())
         {
-            list.AddRange(GetAllFile(item.FullName));
+            list.AddRange(GetAllFiles(item.FullName));
         }
 
         return list;
@@ -311,7 +311,7 @@ public static class PathHelper
     /// <returns>完整路径</returns>
     public static string? GetFile(string local, string name)
     {
-        var list = GetAllFile(local);
+        var list = GetAllFiles(local);
         foreach (var item in list)
         {
             if (item.Name == name)

@@ -180,16 +180,16 @@ public partial class MainControl : BaseUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.IsOneGame || model.IsGameError)
-        {
-            _oneGame ??= new();
-            Content1.Child = _oneGame;
-        }
-        else if (model.IsSimple)
+        if (model.IsSimple)
         {
             _simple ??= new();
             Content1.Child = _simple;
             model.LoadSimpleGames();
+        }
+        else if (model.IsOneGame || model.IsGameError)
+        {
+            _oneGame ??= new();
+            Content1.Child = _oneGame;
         }
         else if (model.IsNotGame && Content1.Child is not MainEmptyControl)
         {

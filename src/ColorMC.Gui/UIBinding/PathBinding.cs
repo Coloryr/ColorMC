@@ -138,7 +138,7 @@ public static class PathBinding
         switch (type)
         {
             case PathType.BasePath:
-                OpenPathWithExplorer(ColorMCGui.RunDir);
+                OpenPathWithExplorer(ColorMCGui.BaseDir);
                 break;
             case PathType.RunPath:
                 OpenPathWithExplorer(AppContext.BaseDirectory);
@@ -258,7 +258,7 @@ public static class PathBinding
     /// <param name="ext">后缀</param>
     /// <param name="name">名字</param>
     /// <returns>文件路径</returns>
-    private static Task<IStorageFile?> SaveFile(TopLevel window, string title, string ext, string name)
+    public static Task<IStorageFile?> SaveFile(TopLevel window, string title, string ext, string name)
     {
         return window.StorageProvider.SaveFilePickerAsync(new()
         {
@@ -999,7 +999,7 @@ public static class PathBinding
             using var stream = PathHelper.OpenRead(pic);
             if (stream == null)
                 return pic;
-            string file = Path.Combine(ColorMCGui.RunDir, "BG");
+            string file = Path.Combine(ColorMCGui.BaseDir, "BG");
             PathHelper.Delete(file);
             using var temp = PathHelper.OpenWrite(file, true);
             await stream.CopyToAsync(temp);

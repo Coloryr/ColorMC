@@ -41,7 +41,7 @@ public partial class SettingModel
     /// <summary>
     /// 运行路径
     /// </summary>
-    public string RunDir => ColorMCGui.RunDir;
+    public string RunDir => ColorMCGui.BaseDir;
 
     /// <summary>
     /// 清理运行路径

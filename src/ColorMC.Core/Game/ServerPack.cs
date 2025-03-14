@@ -394,7 +394,7 @@ public static class ServerPack
                         else
                         {
                             //复制文件
-                            var files = PathHelper.GetAllFile(path1);
+                            var files = PathHelper.GetAllFiles(path1);
                             foreach (var item1 in files)
                             {
                                 var name = item1.FullName.Replace(path1, "").Replace("\\", "/");

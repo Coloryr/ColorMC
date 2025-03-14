@@ -364,7 +364,7 @@ public partial class GameExportModel : MenuModel
 
         var path = Obj.GetGamePath();
 
-        var list = PathHelper.GetAllFile(path);
+        var list = PathHelper.GetAllFiles(path);
         var list1 = new List<string>();
         foreach (var item in list)
         {

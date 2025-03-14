@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using static ColorMC.Gui.Objs.Frp.OpenFrpDownloadObj.Data;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -723,21 +724,13 @@ public partial class AddControlModel : GameModel
     /// <summary>
     /// 转到标记
     /// </summary>
-    public async Task GoSet()
+    public void GoSet()
     {
         Set = true;
 
         //跳转到模组
         Type = 0;
         DownloadSource = 0;
-        //等待标记结束
-        await Task.Run(() =>
-        {
-            while (!_close)
-            {
-                Thread.Sleep(100);
-            }
-        });
     }
 
     /// <summary>

@@ -94,9 +94,17 @@ public partial class MainModel
     public void LoadSimpleGames()
     {
         GameList.Clear();
-        foreach (var item in GameGroups)
+        if (IsOneGame)
         {
-            GameList.AddRange(item.Items.Values);
+            GameList.Add(OneGame!);
+            Game = OneGame;
+        }
+        else
+        {
+            foreach (var item in GameGroups)
+            {
+                GameList.AddRange(item.Items.Values);
+            }
         }
     }
 }
