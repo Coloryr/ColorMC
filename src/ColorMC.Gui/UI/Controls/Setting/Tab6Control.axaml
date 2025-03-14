@@ -196,7 +196,7 @@
                             IsChecked="{Binding CustomStart}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text46}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text46}" />
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel IsEnabled="{Binding CustomStart}" Orientation="Horizontal">
                             <TextBlock HorizontalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text47}" />
                             <ComboBox
                                 Width="230"
@@ -204,7 +204,7 @@
                                 ItemsSource="{Binding DisplayList}"
                                 SelectedIndex="{Binding DisplayType}" />
                         </StackPanel>
-                        <DockPanel Margin="0,5,0,5">
+                        <DockPanel Margin="0,5,0,5" IsEnabled="{Binding CustomStart}">
                             <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text48}" />
                             <TextBox
                                 Margin="10,0,0,0"
@@ -218,14 +218,14 @@
                                 Width="100"
                                 Height="35"
                                 Classes="top"
-                                Command="{Binding SelectIcon}"
+                                Command="{Binding SelectStartIcon}"
                                 Content="{setting:Localize SettingWindow.Tab6.Text45}"
-                                IsEnabled="{Binding CustomIcon}" />
+                                IsEnabled="{Binding CustomStart}" />
                             <Image
                                 Width="30"
                                 Height="30"
                                 Margin="10,0,0,0"
-                                Source="{Binding IconImage}" />
+                                Source="{Binding StartImage}" />
                         </StackPanel>
                     </StackPanel>
                 </Border>

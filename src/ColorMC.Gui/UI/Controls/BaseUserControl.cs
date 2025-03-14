@@ -96,6 +96,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     public void WindowOpened()
     {
         Window?.SetTitle(_title);
+        Window?.ReloadIcon();
         Opened();
     }
 

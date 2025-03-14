@@ -205,8 +205,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void AMultiWindow_Activated(object? sender, EventArgs e)
     {
-        WindowManager.LastWindow = this;
-        //App.TopLevel = this;
+        WindowManager.Activated(this);
     }
 
     private void AMultiWindow_PicUpdate()
@@ -221,11 +220,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         Model.SetIcon(icon);
     }
 
-    public void SetSize(int width, int height)
-    {
-        Width = width;
-        Height = height;
-    }
+    //public void SetSize(int width, int height)
+    //{
+    //    Width = width;
+    //    Height = height;
+    //}
 
     public void ReloadIcon()
     {
