@@ -557,6 +557,16 @@ public static class PathBinding
                     return (res[0].GetPath(), res[0].Name);
                 }
                 break;
+            case FileType.StartIcon:
+                res = await SelectFile(top,
+                    App.Lang("PathBinding.Text44"),
+                    PICFILE,
+                    App.Lang("PathBinding.Text45"));
+                if (res?.Any() == true)
+                {
+                    return (res[0].GetPath(), res[0].Name);
+                }
+                break;
             case FileType.Head:
                 res = await SelectFile(top,
                     App.Lang("PathBinding.Text9"),

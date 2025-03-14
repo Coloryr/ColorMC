@@ -160,6 +160,7 @@ public record ServerCustomSetting
     /// 游戏管理员方式启动
     /// </summary>
     public bool GameAdminLaunch { get; set; }
+
     /// <summary>
     /// 是否使用自定义图标
     /// </summary>
@@ -183,7 +184,7 @@ public record ServerCustomSetting
     /// <summary>
     /// 自定义开始界面显示文本
     /// </summary>
-    public string? DisplayText { get; set; }
+    public string? StartText { get; set; }
 }
 
 /// <summary>

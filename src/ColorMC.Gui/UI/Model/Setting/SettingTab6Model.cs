@@ -210,6 +210,21 @@ public partial class SettingModel
         SetUI();
     }
 
+    partial void OnCustomStartChanged(bool value)
+    {
+        SetUI();
+    }
+
+    partial void OnDisplayTypeChanged(DisplayType value)
+    {
+        SetUI();
+    }
+
+    partial void OnStartTextChanged(string? value)
+    {
+        SetUI();
+    }
+
     [RelayCommand]
     public async Task SelectStartIcon()
     {
@@ -225,7 +240,7 @@ public partial class SettingModel
         }
 
         BaseBinding.SetStartIcon(res.Item1);
-        IconImage = BaseBinding.GetStartIcon();
+        StartImage = BaseBinding.GetStartIcon();
     }
 
     [RelayCommand]
@@ -421,7 +436,7 @@ public partial class SettingModel
             IconImage = BaseBinding.GetWindowIcon();
             StartImage = BaseBinding.GetStartIcon();
             CustomStart = config.CustomStart;
-            StartText = config.DisplayText;
+            StartText = config.StartText;
             DisplayType = config.DisplayType;
         }
 

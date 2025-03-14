@@ -6,6 +6,7 @@ using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
@@ -222,15 +223,17 @@ public partial class MainControl : BaseUserControl
     {
         ChangeLive2DSize();
 
-        if (BaseBinding.NewStart)
+        var config = GuiConfigUtils.Config.ServerCustom;
+        if (BaseBinding.NewStart || config.CustomStart)
         {
             MainView.Opacity = 0;
             var con1 = new MainStartControl();
             Start.Child = con1;
             Start.IsVisible = true;
-            await con1.Start();
+            await con1.Start(config.CustomStart ? config.DisplayType : DisplayType.LeftRight, config.StartText, ImageManager.GetStartIcon());
             await ThemeManager.CrossFade.Start(Start, MainView, CancellationToken.None);
             Start.IsVisible = false;
+            Start.Child = null;
         }
 
         if (ColorMCGui.IsCrash)

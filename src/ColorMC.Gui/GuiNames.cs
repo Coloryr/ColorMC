@@ -22,6 +22,8 @@ public static class GuiNames
     public const string NameFrpConfigFile = "frp.json";
     public const string NameCollectFile = "collect.json";
     public const string NameCustomUIFile = "ColorMC.CustomGui.dll";
+    public const string NameStartImageFile = "start";
+    public const string NameIconFile = "icon";
 
     public const string NameAuthlibKey = "authlib-injector:yggdrasil-server:";
     public const string NameColorMCCloudKey = "cloudkey:";

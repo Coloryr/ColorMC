@@ -487,14 +487,27 @@ public static class BaseBinding
         entry.Crc = crc.Value;
         await stream.PutNextEntryAsync(entry);
         await stream.WriteAsync(buffer);
+    }
 
+    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, byte[] data)
+    {
+        var entry = new ZipEntry(file)
+        {
+            DateTime = DateTime.Now,
+            Size = data.Length
+        };
+        crc.Reset();
+        crc.Update(data);
+        entry.Crc = crc.Value;
+        await stream.PutNextEntryAsync(entry);
+        await stream.WriteAsync(data);
     }
 
     public static async Task<bool> BuildPack(BuildPackModel model)
     {
         var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(file, true));
-        s.SetLevel(9);
+        using var stream = new ZipOutputStream(PathHelper.OpenWrite(file, true));
+        stream.SetLevel(9);
         var crc = new Crc32();
 
         var conf = GuiConfigUtils.Config;
@@ -505,7 +518,7 @@ public static class BaseBinding
         if (model.UiBg && File.Exists(conf.BackImage))
         {
             var filename = Path.GetFileName(conf.BackImage);
-            await PutFile(crc, s, filename, conf.BackImage);
+            await PutFile(crc, stream, filename, conf.BackImage);
             obj.Add(nameof(GuiConfigObj.EnableBG), conf.EnableBG);
             obj.Add(nameof(GuiConfigObj.BackImage), filename);
             obj.Add(nameof(GuiConfigObj.BackEffect), conf.BackEffect);
@@ -573,30 +586,80 @@ public static class BaseBinding
             obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogins), new JArray(conf2.LockLogins));
         }
 
-        var uiFile = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
-
-        if (model.ServerUi && File.Exists(uiFile))
+        if (model.ServerUi)
         {
-            await PutFile(crc, s, GuiNames.NameCustomUIFile, uiFile);
+            var uiFile = Path.Combine(ColorMCGui.RunDir, GuiNames.NameCustomUIFile);
+            if (File.Exists(uiFile))
+            {
+                await PutFile(crc, stream, GuiNames.NameCustomUIFile, uiFile);
+            }
+            uiFile = Path.Combine(ColorMCGui.RunDir, conf2.IconFile);
+            if (File.Exists(uiFile))
+            {
+                await PutFile(crc, stream, conf2.IconFile, uiFile);
+            }
+            uiFile = Path.Combine(ColorMCGui.RunDir, conf2.StartIconFile);
+            if (File.Exists(uiFile))
+            {
+                await PutFile(crc, stream, conf2.StartIconFile, uiFile);
+            }
             obj1.Add(nameof(GuiConfigObj.ServerCustom.EnableUI), conf2.EnableUI);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomIcon), conf2.CustomIcon);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.IconFile), conf2.IconFile);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomStart), conf2.CustomStart);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.StartIconFile), conf2.StartIconFile);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.DisplayType), (int)conf2.DisplayType);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.StartText), conf2.StartText);
         }
 
-        var musicFile = conf2.Music;
-
-        if (model.ServerMusic && File.Exists(musicFile))
+        if (model.ServerMusic)
         {
-            await PutFile(crc, s, Path.GetFileName(musicFile), musicFile);
+            var musicFile = conf2.Music;
+            var filename = Path.GetFileName(musicFile);
+            if (File.Exists(musicFile))
+            {
+                await PutFile(crc, stream, filename!, musicFile);
+            }
             obj1.Add(nameof(GuiConfigObj.ServerCustom.PlayMusic), conf2.PlayMusic);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.Music), filename);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.Volume), conf2.Volume);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.SlowVolume), conf2.SlowVolume);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.MusicLoop), conf2.MusicLoop);
+            obj1.Add(nameof(GuiConfigObj.ServerCustom.RunPause), conf2.RunPause);
         }
 
         obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
 
         if (model.PackUpdate)
-        { 
-            
+        {
+            if (File.Exists(UpdateUtils.LocalPath[0]))
+            {
+                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
+            }
+            if (File.Exists(UpdateUtils.LocalPath[1]))
+            {
+                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", UpdateUtils.LocalPath[1]);
+            }
+            if (File.Exists(UpdateUtils.LocalPath[2]))
+            {
+                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
+            }
+            if (File.Exists(UpdateUtils.LocalPath[3]))
+            {
+                await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", UpdateUtils.LocalPath[3]);
+            }
         }
 
         var data = obj.ToString();
+        await PutFile(crc, stream, $"colormc.json", Encoding.UTF8.GetBytes(data));
+
+        if (model.Java)
+        {
+            foreach (var item in model.Javas)
+            { 
+                
+            }
+        }
 
         //foreach (var item in zipList)
         //{
@@ -631,10 +694,10 @@ public static class BaseBinding
 
     public static void SetWindowIcon(string file)
     {
-        var name = Path.GetFileName(file);
-        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, name));
+        var name = Path.GetExtension(file);
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, GuiNames.NameIconFile + name));
 
-        GuiConfigUtils.Config.ServerCustom.IconFile = name;
+        GuiConfigUtils.Config.ServerCustom.IconFile = GuiNames.NameIconFile + name;
         GuiConfigUtils.Save();
 
         ImageManager.LoadIcon();
@@ -642,20 +705,22 @@ public static class BaseBinding
 
     public static Bitmap? GetWindowIcon()
     {
-        return ImageManager.Icon;
+        return ImageManager.GetCustomIcon();
     }
 
     public static Bitmap? GetStartIcon()
     {
-        return ImageManager.LoadStartIcon();
+        return ImageManager.GetStartIcon();
     }
 
     public static void SetStartIcon(string file)
     {
-        var name = Path.GetFileName(file);
-        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, name));
+        var name = Path.GetExtension(file);
+        PathHelper.CopyFile(file, Path.Combine(ColorMCGui.RunDir, GuiNames.NameStartImageFile + name));
 
-        GuiConfigUtils.Config.ServerCustom.StartIconFile = name;
+        GuiConfigUtils.Config.ServerCustom.StartIconFile = GuiNames.NameStartImageFile + name;
         GuiConfigUtils.Save();
+
+        ImageManager.LoadStartIcon();
     }
 }

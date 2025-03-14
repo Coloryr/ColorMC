@@ -9,6 +9,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <StackPanel
+        Name="StackPanel1"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
         Orientation="Horizontal">
@@ -16,21 +17,21 @@
             Name="Image1"
             Width="100"
             Height="100"
-            Margin="0,0,10,0"
+            Margin="10"
             HorizontalAlignment="Center"
             Source="resm:ColorMC.Gui.Resource.Pic.game.png" />
         <StackPanel
             Name="Grid1"
+            Margin="10"
             ClipToBounds="True"
             RenderOptions.TextRenderingMode="Antialias">
             <TextBlock
+                Name="Text1"
                 HorizontalAlignment="Center"
                 FontSize="40"
-                Text="{setting:Localize MainWindow.Text12}" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="40"
-                Text="ColorMC" />
+                Text="{setting:Localize MainWindow.Text12}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
         </StackPanel>
     </StackPanel>
 </UserControl>

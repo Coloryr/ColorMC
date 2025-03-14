@@ -51,7 +51,7 @@ public static class WindowManager
     /// <summary>
     /// 上一个窗口
     /// </summary>
-    public static Window? LastWindow { get; set; }
+    public static Window? LastWindow { get; private set; }
 
     /// <summary>
     /// 单窗口
@@ -797,6 +797,7 @@ public static class WindowManager
             AWindow(con);
         }
     }
+
     /// <summary>
     /// 显示游戏实例配置修改窗口
     /// </summary>
@@ -1150,5 +1151,10 @@ public static class WindowManager
         }
 
         _windows.Remove(window);
+    }
+
+    public static void Activated(Window window)
+    {
+        LastWindow = window;
     }
 }

@@ -572,9 +572,11 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.CustomIcon = customIcon;
         GuiConfigUtils.Config.ServerCustom.CustomStart = customStart;
         GuiConfigUtils.Config.ServerCustom.DisplayType = display;
-        GuiConfigUtils.Config.ServerCustom.DisplayText = startText;
+        GuiConfigUtils.Config.ServerCustom.StartText = startText;
 
         GuiConfigUtils.Save();
+
+        WindowManager.ReloadIcon();
     }
 
     /// <summary>
