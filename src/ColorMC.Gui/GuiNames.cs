@@ -26,6 +26,9 @@ public static class GuiNames
     public const string NameIconFile = "icon";
     public const string NameClientConfigFile = "colormc.info.json";
     public const string NameLockFile = "lock";
+    public const string NameClientFile = "client";
+
+    public const string NameColorMCExt = ".colormc";
 
     public const string NameAuthlibKey = "authlib-injector:yggdrasil-server:";
     public const string NameColorMCCloudKey = "cloudkey:";

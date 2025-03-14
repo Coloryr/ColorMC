@@ -1,12 +1,12 @@
-﻿using ColorMC.Gui.UIBinding;
+﻿using ColorMC.Core;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
 public partial class BuildPackModel : MenuModel
 {
-    private string _useName;
+    private readonly string _useName;
 
     public BuildPackModel(BaseModel model) : base(model)
     {
@@ -23,6 +23,11 @@ public partial class BuildPackModel : MenuModel
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
                 Text = App.Lang("BuildPackWindow.Tabs.Text2")
+            },
+            new()
+            {
+                Icon = "/Resource/Icon/GameExport/item3.svg",
+                Text = App.Lang("BuildPackWindow.Tabs.Text3")
             }
         ]);
 
@@ -51,8 +56,8 @@ public partial class BuildPackModel : MenuModel
             return;
         }
 
-        string ext = PackLaunch ? ".zip" : ".colormc";
-        var local = await PathBinding.SaveFile(top, App.Lang("BuildPackWindow.Info2"), ext, "client" + ext);
+        string ext = PackLaunch ? Names.NameZipExt : GuiNames.NameColorMCExt;
+        var local = await PathBinding.SaveFile(top, App.Lang("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
         if (local == null)
         {
             return;

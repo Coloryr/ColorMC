@@ -1,0 +1,52 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.BuildPack.Tab3Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.BuildPack"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:BuildPackModel"
+    mc:Ignorable="d">
+    <Decorator Margin="0,0,10,15">
+        <Border
+            Margin="10,5,10,3"
+            Classes="t2"
+            DockPanel.Dock="Top">
+            <DockPanel>
+                <DockPanel Margin="15,15,15,0" DockPanel.Dock="Top">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,-2,-3"
+                        VerticalAlignment="Center"
+                        Classes="top"
+                        Command="{Binding AddFile}"
+                        Content="{setting:Localize Button.Add}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text114}" />
+                </DockPanel>
+                <DataGrid
+                    Name="DataGrid1"
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    HorizontalScrollBarVisibility="Visible"
+                    ItemsSource="{Binding Files}"
+                    SelectedItem="{Binding FileItem}"
+                    VerticalScrollBarVisibility="Visible">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding File}" Header="{setting:Localize BuildPackWindow.Tab3.Text2}" />
+                        <DataGridTextColumn
+                            Binding="{Binding Local}"
+                            Header="{setting:Localize BuildPackWindow.Tab3.Text1}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </DockPanel>
+        </Border>
+    </Decorator>
+</UserControl>

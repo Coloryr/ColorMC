@@ -695,6 +695,10 @@ public static class BaseBinding
             {
                 foreach (var item in model.Javas)
                 {
+                    if (!item.IsSelect)
+                    {
+                        continue;
+                    }
                     await PutFile(crc, stream, "java", Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
                 }
             }
@@ -705,6 +709,11 @@ public static class BaseBinding
                 tempfile = tempfile.Replace("\\", "/");
 
                 await PutFile(crc, stream, tempfile, item);
+            }
+
+            foreach (var item in model.Files)
+            {
+                await PutFile(crc, stream, item.File, item.Local);
             }
 
             await stream.DisposeAsync();
