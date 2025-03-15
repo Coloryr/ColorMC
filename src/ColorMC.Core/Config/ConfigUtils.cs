@@ -113,6 +113,15 @@ public static class ConfigUtils
     }
 
     /// <summary>
+    /// 立即保存配置文件
+    /// </summary>
+    public static void SaveNow()
+    {
+        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
+        File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
+    }
+
+    /// <summary>
     /// 创建新的配置文件
     /// </summary>
     /// <returns>配置内容</returns>

@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Config;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -48,6 +49,65 @@ public partial class MainModel
     private bool _haveGame;
 
     public bool IsSimple { get; private set; }
+
+    partial void OnMaxWindowChanged(bool value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.Window ??= new();
+        obj.Window.FullScreen = value;
+        obj.Save();
+    }
+
+    partial void OnGameWidthChanged(uint? value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.Window ??= new();
+        obj.Window.Width = value;
+        obj.Save();
+    }
+
+    partial void OnGameHeightChanged(uint? value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.Window ??= new();
+        obj.Window.Height = value;
+        obj.Save();
+    }
+
+    partial void OnMinMemChanged(uint? value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.JvmArg ??= new();
+        obj.JvmArg.MinMemory = value;
+        obj.Save();
+    }
+    partial void OnMaxMemChanged(uint? value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.JvmArg ??= new();
+        obj.JvmArg.MaxMemory = value;
+        obj.Save();
+    }
 
     [RelayCommand]
     public void Launch()

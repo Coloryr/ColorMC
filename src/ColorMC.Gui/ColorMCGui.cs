@@ -108,6 +108,8 @@ public static class ColorMCGui
             s_arg.Local = BaseDir;
             ColorMCCore.Init(s_arg);
 
+            BaseBinding.ReadBuildConfig();
+
             builder.StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)

@@ -70,5 +70,9 @@ public partial class BuildPackModel : MenuModel
         {
             Model.Show(App.Lang("BuildPackWindow.Error1"));
         }
+        else
+        {
+            Model.Notify(App.Lang("BuildPackWindow.Info7"));
+        }
     }
 }

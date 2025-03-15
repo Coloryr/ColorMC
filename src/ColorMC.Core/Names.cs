@@ -26,6 +26,7 @@ public static class Names
     public const string NameGameSavesDir = "saves";
     public const string NameGameConfigDir = "config";
     public const string NameGameSchematicsDir = "schematics";
+    public const string NameJavaDir = "java";
 
     public const string NameModInfoFile = "modfileinfo.json";
     public const string NameGameFile = "game.json";
