@@ -131,10 +131,10 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// 解压
     /// </summary>
     /// <param name="path">解压路径</param>
-    /// <param name="local">文件名</param>
-    public async Task<bool> UnzipAsync(string path, string local, Stream stream)
+    /// <param name="file">文件名</param>
+    public async Task<bool> UnzipAsync(string path, string file, Stream stream)
     {
-        if (local.EndsWith(Names.NameTarGzExt))
+        if (file.EndsWith(Names.NameTarGzExt))
         {
             using var gzipStream = new GZipInputStream(stream);
             var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
@@ -152,8 +152,8 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                 _now++;
                 ZipUpdate?.Invoke(theEntry.Name, _now, _size);
 
-                var file = Path.GetFullPath($"{path}/{theEntry.Name}");
-                var info = new FileInfo(file);
+                var item = Path.GetFullPath($"{path}/{theEntry.Name}");
+                var info = new FileInfo(item);
 
                 info.Directory?.Create();
 
@@ -171,10 +171,10 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                         {
                             return false;
                         }
-                        file = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
+                        item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
                     }
                     using var stream2 = s.GetInputStream(theEntry);
-                    await PathHelper.WriteBytesAsync(file, stream2);
+                    await PathHelper.WriteBytesAsync(item, stream2);
                 }
             }
         }

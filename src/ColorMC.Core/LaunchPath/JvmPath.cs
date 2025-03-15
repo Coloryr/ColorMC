@@ -11,10 +11,9 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class JvmPath
 {
-    public const string Name1 = "java";
     public static Dictionary<string, JavaInfo> Jvms { get; } = [];
 
-    private static string s_baseDir;
+    public static string BaseDir { get; private set; }
     public static string JavaDir { get; private set; }
 
     /// <summary>
@@ -24,19 +23,19 @@ public static class JvmPath
     {
         if (SystemInfo.Os == OsType.Android)
         {
-            s_baseDir = ColorMCCore.PhoneGetDataDir();
+            BaseDir = ColorMCCore.PhoneGetDataDir();
         }
         else
         {
-            s_baseDir = ColorMCCore.BaseDir;
+            BaseDir = ColorMCCore.BaseDir;
         }
 
-        if (!s_baseDir.EndsWith('/') && !s_baseDir.EndsWith('\\'))
+        if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
         {
-            s_baseDir += "/";
+            BaseDir += "/";
         }
 
-        JavaDir = Path.Combine(s_baseDir, Name1);
+        JavaDir = Path.Combine(BaseDir, Names.NameJavaDir);
 
         Directory.CreateDirectory(JavaDir);
 
@@ -50,9 +49,9 @@ public static class JvmPath
     /// <returns>路径</returns>
     public static string GetPath(this JavaInfo info)
     {
-        if (info.Path.StartsWith(Name1))
+        if (info.Path.StartsWith(Names.NameJavaDir))
         {
-            return Path.GetFullPath(s_baseDir + info.Path);
+            return Path.Combine(BaseDir, info.Path);
         }
 
         return info.Path;
@@ -146,7 +145,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static async Task<MessageRes> UnzipJavaAsync(UnzipArg arg)
     {
-        string path = s_baseDir + Name1 + "/" + arg.Name;
+        string path = BaseDir + Names.NameJavaDir + "/" + arg.Name;
         Directory.CreateDirectory(path);
         var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
@@ -231,18 +230,18 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static MessageRes AddItem(string name, string local)
     {
-        if (local.StartsWith(s_baseDir))
+        if (local.StartsWith(BaseDir))
         {
-            local = local[s_baseDir.Length..];
+            local = local[BaseDir.Length..];
         }
 
         Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info5"), local));
 
         Remove(name);
         var path = local;
-        if (path.StartsWith(Name1))
+        if (path.StartsWith(Names.NameJavaDir))
         {
-            path = Path.GetFullPath(s_baseDir + path);
+            path = Path.GetFullPath(BaseDir + path);
         }
 
         var info = JavaHelper.GetJavaInfo(path);
@@ -296,9 +295,9 @@ public static class JvmPath
             {
                 var path = a.Local;
                 var local = path;
-                if (path.StartsWith(Name1))
+                if (path.StartsWith(Names.NameJavaDir))
                 {
-                    local = Path.GetFullPath(s_baseDir + path);
+                    local = Path.GetFullPath(BaseDir + path);
                 }
 
                 var info = JavaHelper.GetJavaInfo(local);

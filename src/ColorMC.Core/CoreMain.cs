@@ -16,7 +16,7 @@ public static class ColorMCCore
 {
     public const int VersionNum = 35;
     public const string TopVersion = "A35";
-    public const string DateVersion = "20250215";
+    public const string DateVersion = "20250315";
 
     /// <summary>
     /// 版本号
@@ -235,10 +235,10 @@ public static class ColorMCCore
     public static void Init1()
     {
         ConfigSave.Init();
-        JvmPath.Init();
         LocalMaven.Init();
         DownloadManager.Init();
         AuthDatabase.Init();
+        JvmPath.Init();
         MinecraftPath.Init(BaseDir);
 
         Logs.Info(LanguageHelper.Get("Core.Info3"));

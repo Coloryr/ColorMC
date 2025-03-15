@@ -126,6 +126,11 @@ public partial class MainControl : BaseUserControl
                 Grid2.IsVisible = true;
                 Label1.Text = App.Lang("MainWindow.Text25");
             }
+            else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
+            {
+                Grid2.IsVisible = true;
+                Label1.Text = App.Lang("MainWindow.Text38");
+            }
         }
     }
 
@@ -134,7 +139,7 @@ public partial class MainControl : BaseUserControl
         Grid2.IsVisible = false;
     }
 
-    private void Drop(object? sender, DragEventArgs e)
+    private async void Drop(object? sender, DragEventArgs e)
     {
         if (e.Data.Contains(BaseBinding.DrapType))
         {
@@ -173,6 +178,22 @@ public partial class MainControl : BaseUserControl
             else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
             {
                 WindowManager.ShowAddGame(null, false, item.GetPath());
+            }
+            else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
+            {
+                if (DataContext is not MainModel model)
+                {
+                    return;
+                }
+                if (!GameBinding.IsNotGame)
+                {
+                    var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
+                    if (res is not true)
+                    {
+                        return;
+                    }
+                }
+                BaseBinding.ReadBuildConfig(model.Model, item);
             }
         }
     }

@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
+using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Config;
@@ -12,6 +13,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -22,15 +24,18 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using DialogHostAvalonia;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.IO;
 using System.IO.Hashing;
 using System.Text;
 using System.Threading.Tasks;
+using static ColorMC.Gui.Objs.CountObj;
 using Path = System.IO.Path;
 using ZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
@@ -526,6 +531,135 @@ public static class BaseBinding
         }
     }
 
+    public static void ReadBuildConfig()
+    {
+        var file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameClientConfigFile);
+        if (!File.Exists(file))
+        {
+            return;
+        }
+
+        var temp = PathHelper.ReadText(file);
+        if (temp == null)
+        {
+            return;
+        }
+
+        var obj = JObject.Parse(temp);
+
+        var conf = GuiConfigUtils.Config;
+        var conf1 = ConfigUtils.Config;
+        var conf2 = conf.ServerCustom;
+
+        if (obj.TryGetValue(nameof(BuildPackModel.UiBg), out var value) && value is JObject obj1)
+        {
+            var config = obj1.ToObject<UiBackConfigObj>()!;
+            conf.EnableBG = config.EnableBG;
+            conf.BackImage = config.BackImage;
+            conf.BackEffect = config.BackEffect;
+            conf.BackTran = config.BackTran;
+            conf.BackLimit = config.BackLimit;
+            conf.BackLimitValue = config.BackLimitValue;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.UiColor), out value) && value is JObject obj2)
+        {
+            var config = obj2.ToObject<UiColorConfigObj>()!;
+            conf.ColorType = config.ColorType;
+            conf.ColorMain = config.ColorMain;
+            conf.RGB = config.RGB;
+            conf.RGBS = config.RGBS;
+            conf.RGBV = config.RGBV;
+            conf.WindowMode = config.WindowMode;
+            conf.Simple = config.Simple;
+            conf.Style = config.Style;
+            conf.LogColor = config.LogColor;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.UiOther), out value) && value is JObject obj3)
+        {
+            var config = obj3.ToObject<UiOtherConfigObj>()!;
+            conf.Head = config.Head;
+            conf.CloseBeforeLaunch = config.CloseBeforeLaunch;
+            conf.Card = config.Card;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.LaunchCheck), out value) && value is JObject obj4)
+        {
+            var config = obj4.ToObject<LaunchCheckConfigObj>()!;
+            conf1.GameCheck = config.GameCheck;
+            conf.LaunchCheck = config.LaunchCheck;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.LaunchArg), out value) && value is JObject obj5)
+        {
+            var config = obj5.ToObject<RunArgObj>()!;
+            conf1.DefaultJvmArg = config;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.LaunchWindow), out value) && value is JObject obj6)
+        {
+            var config = obj6.ToObject<WindowSettingObj>()!;
+            conf1.Window = config;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.ServerOpt), out value) && value is JObject obj7)
+        {
+            var config = obj7.ToObject<ServerOptConfigObj>()!;
+            conf2.IP = config.IP;
+            conf2.Port = config.Port;
+            conf2.Motd = config.Motd;
+            conf2.JoinServer = config.JoinServer;
+            conf2.MotdColor = config.MotdColor;
+            conf2.MotdBackColor = config.MotdBackColor;
+            conf2.AdminLaunch = config.AdminLaunch;
+            conf2.GameAdminLaunch = config.GameAdminLaunch;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.ServerLock), out value) && value is JObject obj8)
+        {
+            var config = obj8.ToObject<ServerLockConfigObj>()!;
+            conf2.LockGame = config.LockGame;
+            conf2.GameName = config.GameName;
+            conf2.LockLogin = config.LockLogin;
+            conf2.LockLogins = config.LockLogins;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.ServerUi), out value) && value is JObject obj9)
+        {
+            var config = obj9.ToObject<ServerUiConfigObj>()!;
+            conf2.EnableUI = config.EnableUI;
+            conf2.CustomIcon = config.CustomIcon;
+            conf2.IconFile = config.IconFile;
+            conf2.CustomStart = config.CustomStart;
+            conf2.StartIconFile = config.StartIconFile;
+            conf2.DisplayType = config.DisplayType;
+            conf2.StartText = config.StartText;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.ServerMusic), out value) && value is JObject obj10)
+        {
+            var config = obj10.ToObject<ServerMusicConfigObj>()!;
+            conf2.PlayMusic = config.PlayMusic;
+            conf2.Music = config.Music;
+            conf2.Volume = config.Volume;
+            conf2.SlowVolume = config.SlowVolume;
+            conf2.MusicLoop = config.MusicLoop;
+            conf2.RunPause = config.RunPause;
+        }
+
+        if (obj.TryGetValue(nameof(BuildPackModel.Javas), out value) && value is JArray obj11)
+        {
+            var list = obj11.ToObject<List<JvmConfigObj>>()!;
+            conf1.JavaList.AddRange(list);
+        }
+
+        GuiConfigUtils.SaveNow();
+        ConfigUtils.SaveNow();
+
+        File.Delete(file);
+    }
+
     public static async Task<bool> BuildPack(BuildPackModel model, string output)
     {
         try
@@ -537,78 +671,96 @@ public static class BaseBinding
 
             var conf = GuiConfigUtils.Config;
             var conf1 = ConfigUtils.Config;
+            var conf2 = conf.ServerCustom;
 
             var obj = new JObject();
+
+            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info3"));
 
             if (model.UiBg && File.Exists(conf.BackImage))
             {
                 var filename = Path.GetFileName(conf.BackImage);
                 await PutFile(crc, stream, filename, conf.BackImage);
-                obj.Add(nameof(GuiConfigObj.EnableBG), conf.EnableBG);
-                obj.Add(nameof(GuiConfigObj.BackImage), filename);
-                obj.Add(nameof(GuiConfigObj.BackEffect), conf.BackEffect);
-                obj.Add(nameof(GuiConfigObj.BackTran), conf.BackTran);
-                obj.Add(nameof(GuiConfigObj.BackLimit), conf.BackLimit);
-                obj.Add(nameof(GuiConfigObj.BackLimitValue), conf.BackLimitValue);
+                obj.Add(nameof(BuildPackModel.UiBg), JObject.FromObject(new UiBackConfigObj()
+                {
+                    EnableBG = conf.EnableBG,
+                    BackImage = conf.BackImage,
+                    BackEffect = conf.BackEffect,
+                    BackTran = conf.BackTran,
+                    BackLimit = conf.BackLimit,
+                    BackLimitValue = conf.BackLimitValue
+                }));
             }
 
             if (model.UiColor)
             {
-                obj.Add(nameof(GuiConfigObj.ColorType), (int)conf.ColorType);
-                obj.Add(nameof(GuiConfigObj.ColorMain), conf.ColorMain);
-                obj.Add(nameof(GuiConfigObj.RGB), conf.RGB);
-                obj.Add(nameof(GuiConfigObj.RGBS), conf.RGBS);
-                obj.Add(nameof(GuiConfigObj.RGBV), conf.RGBV);
-                obj.Add(nameof(GuiConfigObj.WindowMode), conf.WindowMode);
-                obj.Add(nameof(GuiConfigObj.Simple), conf.Simple);
-                obj.Add(nameof(GuiConfigObj.Style), JObject.FromObject(conf.Style));
-                obj.Add(nameof(GuiConfigObj.LogColor), JObject.FromObject(conf.LogColor));
+                obj.Add(nameof(BuildPackModel.UiColor), JObject.FromObject(new UiColorConfigObj()
+                {
+                    ColorType = conf.ColorType,
+                    ColorMain = conf.ColorMain,
+                    RGB = conf.RGB,
+                    RGBS = conf.RGBS,
+                    RGBV = conf.RGBV,
+                    WindowMode = conf.WindowMode,
+                    Simple = conf.Simple,
+                    Style = conf.Style,
+                    LogColor = conf.LogColor
+                }));
             }
 
             if (model.UiOther)
             {
-                obj.Add(nameof(GuiConfigObj.Head), JObject.FromObject(conf.Head));
-                obj.Add(nameof(GuiConfigObj.CloseBeforeLaunch), conf.CloseBeforeLaunch);
-                obj.Add(nameof(GuiConfigObj.Card), JObject.FromObject(conf.Card));
+                obj.Add(nameof(BuildPackModel.UiOther), JObject.FromObject(new UiOtherConfigObj()
+                {
+                    Head = conf.Head,
+                    CloseBeforeLaunch = conf.CloseBeforeLaunch,
+                    Card = conf.Card
+                }));
             }
 
             if (model.LaunchCheck)
             {
-                obj.Add(nameof(ConfigObj.GameCheck), JObject.FromObject(conf1.GameCheck));
-                obj.Add(nameof(GuiConfigObj.LaunchCheck), JObject.FromObject(conf.LaunchCheck));
+                obj.Add(nameof(BuildPackModel.LaunchCheck), JObject.FromObject(new LaunchCheckConfigObj()
+                {
+                    GameCheck = conf1.GameCheck,
+                    LaunchCheck = conf.LaunchCheck,
+                }));
             }
 
             if (model.LaunchArg)
             {
-                obj.Add(nameof(ConfigObj.DefaultJvmArg), JObject.FromObject(conf1.DefaultJvmArg));
+                obj.Add(nameof(BuildPackModel.LaunchArg), JObject.FromObject(conf1.DefaultJvmArg));
             }
 
             if (model.LaunchWindow)
             {
-                obj.Add(nameof(ConfigObj.Window), JObject.FromObject(conf1.Window));
+                obj.Add(nameof(BuildPackModel.LaunchWindow), JObject.FromObject(conf1.Window));
             }
-
-            var obj1 = new JObject();
-            var conf2 = conf.ServerCustom;
 
             if (model.ServerOpt)
             {
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.IP), conf2.IP);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.Port), conf2.Port);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.Motd), conf2.Motd);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.JoinServer), conf2.JoinServer);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdColor), conf2.MotdColor);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.MotdBackColor), conf2.MotdBackColor);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.AdminLaunch), conf2.AdminLaunch);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.GameAdminLaunch), conf2.GameAdminLaunch);
+                obj.Add(nameof(BuildPackModel.ServerOpt), JObject.FromObject(new ServerOptConfigObj()
+                {
+                    IP = conf2.IP,
+                    Port = conf2.Port,
+                    Motd = conf2.Motd,
+                    JoinServer = conf2.JoinServer,
+                    MotdColor = conf2.MotdColor,
+                    MotdBackColor = conf2.MotdBackColor,
+                    AdminLaunch = conf2.AdminLaunch,
+                    GameAdminLaunch = conf2.GameAdminLaunch
+                }));
             }
 
             if (model.ServerLock)
             {
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockGame), conf2.LockGame);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.GameName), conf2.GameName);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogin), conf2.LockLogin);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.LockLogins), new JArray(conf2.LockLogins));
+                obj.Add(nameof(BuildPackModel.ServerLock), JObject.FromObject(new ServerLockConfigObj()
+                {
+                    LockGame = conf2.LockGame,
+                    GameName = conf2.GameName,
+                    LockLogin = conf2.LockLogin,
+                    LockLogins = conf2.LockLogins
+                }));
             }
 
             if (model.ServerUi)
@@ -628,13 +780,17 @@ public static class BaseBinding
                 {
                     await PutFile(crc, stream, conf2.StartIconFile, uiFile);
                 }
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.EnableUI), conf2.EnableUI);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomIcon), conf2.CustomIcon);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.IconFile), conf2.IconFile);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.CustomStart), conf2.CustomStart);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.StartIconFile), conf2.StartIconFile);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.DisplayType), (int)conf2.DisplayType);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.StartText), conf2.StartText);
+
+                obj.Add(nameof(BuildPackModel.ServerUi), JObject.FromObject(new ServerUiConfigObj()
+                {
+                    EnableUI = conf2.EnableUI,
+                    CustomIcon = conf2.CustomIcon,
+                    IconFile = conf2.IconFile,
+                    CustomStart = conf2.CustomStart,
+                    StartIconFile = conf2.StartIconFile,
+                    DisplayType = conf2.DisplayType,
+                    StartText = conf2.StartText
+                }));
             }
 
             if (model.ServerMusic)
@@ -645,15 +801,17 @@ public static class BaseBinding
                 {
                     await PutFile(crc, stream, filename!, musicFile);
                 }
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.PlayMusic), conf2.PlayMusic);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.Music), filename);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.Volume), conf2.Volume);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.SlowVolume), conf2.SlowVolume);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.MusicLoop), conf2.MusicLoop);
-                obj1.Add(nameof(GuiConfigObj.ServerCustom.RunPause), conf2.RunPause);
-            }
 
-            obj.Add(nameof(GuiConfigObj.ServerCustom), obj1);
+                obj.Add(nameof(BuildPackModel.ServerMusic), JObject.FromObject(new ServerMusicConfigObj()
+                {
+                    PlayMusic = conf2.PlayMusic,
+                    Music = filename,
+                    Volume = conf2.Volume,
+                    SlowVolume = conf2.SlowVolume,
+                    MusicLoop = conf2.MusicLoop,
+                    RunPause = conf2.RunPause
+                }));
+            }
 
             if (model.PackUpdate)
             {
@@ -675,6 +833,31 @@ public static class BaseBinding
                 }
             }
 
+            if (model.Java)
+            {
+                model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info4"));
+
+                var list = new List<JvmConfigObj>();
+                foreach (var item in model.Javas)
+                {
+                    if (!item.IsSelect)
+                    {
+                        continue;
+                    }
+                    await PutFile(crc, stream, Names.NameJavaDir, Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
+                    list.Add(new()
+                    {
+                        Name = item.Name,
+                        Local = item.Path.Replace(JvmPath.BaseDir, "")
+                    });
+                }
+
+                obj.Add(nameof(BuildPackModel.Javas), JArray.FromObject(list));
+            }
+
+            var data = obj.ToString();
+            await PutFile(crc, stream, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
+
             if (model.PackLaunch)
             {
                 foreach (var item in UpdateUtils.LaunchFiles)
@@ -688,20 +871,7 @@ public static class BaseBinding
                 }
             }
 
-            var data = obj.ToString();
-            await PutFile(crc, stream, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
-
-            if (model.Java)
-            {
-                foreach (var item in model.Javas)
-                {
-                    if (!item.IsSelect)
-                    {
-                        continue;
-                    }
-                    await PutFile(crc, stream, "java", Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
-                }
-            }
+            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info5"));
 
             foreach (var item in model.GetSelectItems())
             {
@@ -710,6 +880,8 @@ public static class BaseBinding
 
                 await PutFile(crc, stream, tempfile, item);
             }
+
+            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info6"));
 
             foreach (var item in model.Files)
             {
@@ -770,5 +942,25 @@ public static class BaseBinding
         GuiConfigUtils.Save();
 
         ImageManager.LoadStartIcon();
+    }
+
+    /// <summary>
+    /// 解压客户端
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="item"></param>
+    public static async void ReadBuildConfig(BaseModel model, IStorageItem item)
+    {
+        if (item.GetPath() is not { } file)
+        {
+            return;
+        }
+
+        using var temp = PathHelper.OpenRead(file)!;
+        model.Progress(App.Lang("MainWindow.Info46"));
+        await new ZipUtils().UnzipAsync(ColorMCGui.BaseDir, file, temp);
+        model.ProgressClose();
+
+        ColorMCGui.Reboot();
     }
 }
