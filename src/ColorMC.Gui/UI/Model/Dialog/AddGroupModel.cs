@@ -3,6 +3,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
@@ -17,7 +18,7 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     /// <summary>
     /// 游戏分组列表
     /// </summary>
-    public string[] GroupList { get; init; } = [.. GameBinding.GetGameGroups().Keys];
+    public ObservableCollection<string> GroupList { get; init; } = [.. GameBinding.GetGameGroups().Keys];
 
     /// <summary>
     /// 选择的群组
@@ -51,6 +52,8 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
             model.Show(App.Lang("MainWindow.Error4"));
             return;
         }
+
+        GroupList.Add(res.Text1);
     }
 
     /// <summary>

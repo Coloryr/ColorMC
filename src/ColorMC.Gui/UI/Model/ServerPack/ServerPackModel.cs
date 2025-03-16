@@ -15,24 +15,20 @@ public partial class ServerPackModel : MenuModel
     /// </summary>
     public ServerPackObj Obj { get; }
 
+    private readonly string _useName;
+
     public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
     {
         Obj = obj;
+
+        _useName = ToString() ?? "ServerPackModel";
 
         SetMenu(
         [
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text1"),
-                SubMenu =
-                [
-                    new SubMenuItemModel()
-                    {
-                        Func = Gen,
-                        Name = App.Lang("ServerPackWindow.Tab1.Text10")
-                    }
-                ]
+                Text = App.Lang("ServerPackWindow.Tabs.Text1")
             },
             new()
             {
@@ -84,6 +80,9 @@ public partial class ServerPackModel : MenuModel
                 ]
             },
         ]);
+
+        Model.SetChoiseContent(_useName, App.Lang("ServerPackWindow.Tab1.Text10"));
+        Model.SetChoiseCall(_useName, Gen);
     }
 
     /// <summary>
@@ -119,6 +118,7 @@ public partial class ServerPackModel : MenuModel
 
     public override void Close()
     {
+        Model.RemoveChoiseData(_useName);
         ModList.Clear();
         ResourceList.Clear();
         NameList.Clear();

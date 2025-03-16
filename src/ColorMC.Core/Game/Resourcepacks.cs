@@ -47,17 +47,19 @@ public static class Resourcepacks
             }
             try
             {
+                string filesha256 = "";
+                if (sha256)
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    filesha256 = HashHelper.GenSha256(stream);
+                }
                 stream.Seek(0, SeekOrigin.Begin);
                 var obj = await ReadResourcepackAsync(stream, cancel);
                 if (obj != null)
                 {
                     obj.Local = item.FullName;
                     obj.Sha1 = sha1;
-                    if (sha256)
-                    {
-                        stream.Seek(0, SeekOrigin.Begin);
-                        obj.Sha256 = HashHelper.GenSha256(stream);
-                    }
+                    obj.Sha256 = filesha256;
                     list.Add(obj);
                 }
                 else

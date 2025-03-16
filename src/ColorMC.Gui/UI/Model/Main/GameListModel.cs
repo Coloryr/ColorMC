@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -354,6 +355,8 @@ public partial class MainModel
 
         var config = GuiConfigUtils.Config.ServerCustom;
 
+        GameItemModel? last = null;
+
         if (config?.LockGame == true)
         {
             GameGroups.Clear();
@@ -381,7 +384,7 @@ public partial class MainModel
             IsOneGame = false;
             var list = GameBinding.GetGameGroups();
             var uuid = ConfigBinding.GetLastLaunch();
-            GameItemModel? last = null;
+
             if (IsFirst)
             {
                 //第一次加载项目
@@ -475,20 +478,15 @@ public partial class MainModel
             }
         }
 
+        OnPropertyChanged(SwitchView);
         if (IsSimple)
         {
-            if (OneGame != null)
+            Dispatcher.UIThread.Post(() =>
             {
-                GameList.Add(OneGame);
-                Game = OneGame;
-            }
-            else
-            {
-                LoadSimpleGames();
-            }
+                Game = null;
+                Game = last;
+            });
         }
-
-        OnPropertyChanged(SwitchView);
         MinModeChange();
     }
 

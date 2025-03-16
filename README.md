@@ -18,16 +18,16 @@ More Languages: [English](README_EN.md)
 [加入多语言翻译](https://crowdin.com/project/colormc)(帮帮忙)
 
 ## 窗口截图 🪟
-![](/docs/images/run.png)  
+![](/docs/images/image.png)  
 
 **演示动画**
 
-![](/docs/images/GIF.gif)  
+<video src="./docs/images/launch.mp4" controls="controls"></video>
 
 ## 支持平台
+- Windows(zip)
 - Linux(提供deb pkg rpm，同时可以在[星火商店](https://www.spark-app.store/)或者[AUR](https://aur.archlinux.org/)上安装)
-- Windows
-- macOs
+- macOs(zip)
 
 **注意：ARM64平台不能保证其兼容性  
 由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决，我只在自己的虚拟机内测试启动，若有驱动兼容性问题不在我的考虑范围内**

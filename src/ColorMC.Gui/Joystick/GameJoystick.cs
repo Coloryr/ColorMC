@@ -165,6 +165,8 @@ public class GameJoystick
 
         _implementation?.Stop();
         CloseJoyDevice();
+
+        NowGameJoystick.Remove(_obj.UUID);
     }
 
     /// <summary>

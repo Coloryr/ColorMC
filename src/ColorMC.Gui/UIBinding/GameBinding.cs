@@ -2073,7 +2073,7 @@ public static class GameBinding
                         continue;
                     var file1 = file.ToLower();
                     if (File.Exists(file) &&
-                        (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt)))
+                        (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt) || file1.EndsWith(Names.NameSchemExt)))
                     {
                         list1.Add(file);
                     }
@@ -2710,14 +2710,7 @@ public static class GameBinding
                     var run = true;
                     var uuid = GuiConfigUtils.Config.Input.NowConfig;
 
-                    if (string.IsNullOrWhiteSpace(uuid) || !JoystickConfig.Configs.ContainsKey(uuid))
-                    {
-                        run = await model.ShowAsync(App.Lang("BaseBinding.Error7"));
-                    }
-                    if (run)
-                    {
-                        GameJoystick.Start(obj, handel);
-                    }
+                    GameJoystick.Start(obj, handel);
                 }
 
                 //修改窗口标题

@@ -10,7 +10,10 @@
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Border Classes="t2">
-        <StackPanel Margin="0,0,0,20">
+        <StackPanel
+            Margin="0,0,0,20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
             <TextBlock
                 Margin="0,20,0,0"
                 HorizontalAlignment="Center"
