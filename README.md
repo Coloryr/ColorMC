@@ -22,7 +22,7 @@ More Languages: [English](README_EN.md)
 
 **演示动画**
 
-<video src="./docs/images/launch.mp4" controls="controls"></video>
+https://github.com/user-attachments/assets/4b3b1207-58a9-46e8-a99c-b9f1a64761be
 
 ## 支持平台
 - Windows(zip)
