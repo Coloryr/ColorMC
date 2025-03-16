@@ -40,7 +40,7 @@ internal class Program
 
         //ColorMCCore.GameLog += Log;
 
-        TestItem.Item41();
+        //TestItem.Item41();
 
         GetSha1();
 
