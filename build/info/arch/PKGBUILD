@@ -6,11 +6,11 @@ url="https://www.github.com/Coloryr/ColorMC"
 packager="colormc"
 arch=("%arch%")
 license=("Apache 2.0")
-sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" 
+sha512sums=("SKIP" "SKIP" "SKIP" "SKIP" "SKIP" 
             "SKIP" "SKIP" "SKIP" "SKIP" "SKIP" "SKIP")
 OPTIONS=(!strip)
 source=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
+        "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb"
         "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher"
         "ColorMC.desktop" "colormc.png")
 install=colormc.install
@@ -23,7 +23,7 @@ package() {
     dir="${pkgdir}/usr/share/ColorMC"
 
     pdbs=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "Live2DCSharpSDK.App.pdb"
-          "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb" "X11.pdb"
+          "Live2DCSharpSDK.Framework.pdb" "ColorMC.Launcher.pdb"
           "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher")
 
     for line in ${pdbs[@]}
