@@ -178,7 +178,7 @@
                                 DockPanel.Dock="Top"
                                 IPPort="{Binding Server}"
                                 IsVisible="{Binding MotdDisplay}" />
-                            <Decorator Name="Content1" Margin="10,0,0,10" />
+                            <Decorator Name="Content1" Margin="10,0,0,20" />
                         </DockPanel>
                     </ScrollViewer>
                 </DockPanel>

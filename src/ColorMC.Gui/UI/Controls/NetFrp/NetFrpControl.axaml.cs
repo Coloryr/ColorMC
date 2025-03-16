@@ -53,6 +53,7 @@ public partial class NetFrpControl : MenuControl
         switch (old)
         {
             case 4:
+            case 5:
                 model.RemoveClick();
                 break;
         }

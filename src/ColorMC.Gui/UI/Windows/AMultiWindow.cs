@@ -191,13 +191,13 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void AMultiWindow_Closed(object? sender, EventArgs e)
     {
+        WindowManager.CloseWindow(this);
+
         ImageManager.BGUpdate -= AMultiWindow_PicUpdate;
 
         ((ICon as UserControl)?.DataContext as TopModel)?.Close();
         DataContext = null;
         ICon.Closed();
-
-        WindowManager.CloseWindow(this);
 
         App.Clear();
         App.TestClose();

@@ -29,7 +29,7 @@ public class SchematicObjComparer : IComparer<SchematicObj>
     public static readonly SchematicObjComparer Instance = new();
     public int Compare(SchematicObj? x, SchematicObj? y)
     {
-        if (x == null || y == null)
+        if (x == null || y == null || x.Name == null || y.Name == null)
         {
             return 0;
         }

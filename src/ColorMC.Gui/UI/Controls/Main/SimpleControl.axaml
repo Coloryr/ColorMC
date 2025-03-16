@@ -30,7 +30,7 @@
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
             <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
-                <DockPanel MinWidth="200" Margin="5,0,5,10">
+                <DockPanel MinWidth="180" Margin="5,0,5,10">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
                     <NumericUpDown
                         Height="30"
@@ -40,7 +40,7 @@
                         Minimum="1"
                         Value="{Binding GameWidth}" />
                 </DockPanel>
-                <DockPanel MinWidth="200" Margin="5,0,5,10">
+                <DockPanel MinWidth="180" Margin="5,0,5,10">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text11}" />
                     <NumericUpDown
                         Height="30"
@@ -57,7 +57,7 @@
                     OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
             </panel:WrapPanelWithStretch>
             <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
-                <DockPanel MinWidth="230" Margin="5,0,5,10">
+                <DockPanel MinWidth="210" Margin="5,0,5,10">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
                     <NumericUpDown
                         Height="30"
@@ -66,7 +66,7 @@
                         Minimum="1"
                         Value="{Binding MinMem}" />
                 </DockPanel>
-                <DockPanel MinWidth="230" Margin="5,0,5,0">
+                <DockPanel MinWidth="210" Margin="5,0,5,0">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text5}" />
                     <NumericUpDown
                         Height="30"

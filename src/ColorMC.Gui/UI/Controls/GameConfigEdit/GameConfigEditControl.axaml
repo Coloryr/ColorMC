@@ -39,7 +39,7 @@
                 <StackPanel Margin="15,15,5,15" DockPanel.Dock="Top">
                     <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <TextBox
-                            Width="300"
+                            Width="270"
                             Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
                             DockPanel.Dock="Right"
@@ -47,7 +47,7 @@
                             Text="{Binding Name}"
                             Watermark="{setting:Localize ConfigEditWindow.Text1}" />
                         <ComboBox
-                            MinWidth="280"
+                            MinWidth="270"
                             Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding FileList}"
@@ -62,8 +62,7 @@
                             Command="{Binding Load}"
                             Content="{setting:Localize ConfigEditWindow.Text3}"
                             DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text41}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text41}" />
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch RightMax="True">
                         <Button
@@ -74,8 +73,7 @@
                             Classes="top"
                             Command="{Binding Open}"
                             Content="{setting:Localize Button.OpFile}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text39}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text39}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -85,8 +83,7 @@
                             Command="{Binding FindBlock}"
                             Content="{setting:Localize ConfigEditWindow.Text5}"
                             IsVisible="{Binding IsWorld}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text97}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text97}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -96,8 +93,7 @@
                             Command="{Binding FindEntity}"
                             Content="{setting:Localize ConfigEditWindow.Text6}"
                             IsVisible="{Binding IsWorld}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text98}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text98}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -108,8 +104,7 @@
                             Command="{Binding Save}"
                             Content="{setting:Localize ConfigEditWindow.Text2}"
                             IsEnabled="{Binding IsEdit}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text40}" />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </Border>

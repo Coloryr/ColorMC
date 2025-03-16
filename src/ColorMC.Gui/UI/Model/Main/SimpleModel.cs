@@ -153,6 +153,7 @@ public partial class MainModel
 
     public void LoadSimpleGames()
     {
+        var temp = Game;
         GameList.Clear();
         if (IsOneGame)
         {
@@ -165,6 +166,10 @@ public partial class MainModel
             {
                 GameList.AddRange(item.Items.Values);
             }
+        }
+        if (temp != null && GameList.Contains(temp))
+        {
+            Game = temp;
         }
     }
 }
