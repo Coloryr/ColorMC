@@ -35,11 +35,9 @@ public partial class App : Application
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
-
-        if (SystemInfo.Os != OsType.Android)
-        {
-            ColorMCGui.StartLock();
-        }
+#if !Phone
+        ColorMCGui.StartLock();
+#endif
     }
 
     /// <summary>
@@ -120,19 +118,17 @@ public partial class App : Application
         ImageManager.Init();
         WindowManager.Init();
 
-        JoystickConfig.Init();
-
-        FrpConfigUtils.Init();
-        FrpLaunchUtils.Init();
         CollectUtils.Init();
         GameCountUtils.Init();
+#if !Phone
+        FrpConfigUtils.Init();
+        FrpLaunchUtils.Init();
+        JoystickConfig.Init();
         ToolUtils.Init();
-        //if (SystemInfo.Os != OsType.MacOS)
-        //{
         SdlUtils.Init();
-        //}
         Media.Init();
         UpdateUtils.Init();
+#endif
         GameCloudUtils.Init();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
@@ -186,7 +182,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// 退出程序
+    /// 关闭程序并退出
     /// </summary>
     public static void Exit()
     {
@@ -195,7 +191,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// 关闭程序
+    /// 关闭程序不退出
     /// </summary>
     public static void Close()
     {
@@ -231,7 +227,7 @@ public partial class App : Application
     {
         if (IsHide && !GameManager.IsGameRuning())
         {
-            ColorMCGui.Close();
+            ColorMCGui.Exit();
         }
     }
 }

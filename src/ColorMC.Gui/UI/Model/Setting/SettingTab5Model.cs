@@ -114,10 +114,9 @@ public partial class SettingModel
 
     public async void FindJavaDir()
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
+        #if Phone
+        return;
+#endif
         var top = Model.GetTopLevel();
         if (top == null)
         {
@@ -153,10 +152,9 @@ public partial class SettingModel
 
     public async void FindJava()
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
+        #if Phone
+        return;
+#endif
         JavaFinding = true;
         Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
         var list = await JavaBinding.FindJava();

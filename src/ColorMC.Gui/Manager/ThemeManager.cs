@@ -96,11 +96,9 @@ public static class ThemeManager
         }
 
         LoadColor();
-        if (SystemInfo.Os != OsType.Android)
-        {
-            LoadFont();
-        }
-
+#if !Phone
+        LoadFont();
+#endif
         RgbColorUtils.Load();
         ColorManager.Load();
 

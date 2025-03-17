@@ -13,6 +13,7 @@ public partial class Tab2Control : UserControl
     {
         InitializeComponent();
 
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             var con = ColorMCGui.PhoneGetSetting?.Invoke();
@@ -21,5 +22,6 @@ public partial class Tab2Control : UserControl
                 PhoneSetting.Children.Add(con1);
             }
         }
+#endif
     }
 }

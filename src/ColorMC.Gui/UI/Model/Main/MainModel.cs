@@ -26,11 +26,17 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     public bool IsFirst = true;
 
+#if Phone
     /// <summary>
     /// 是否为手机模式
     /// </summary>
-    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
-
+    public bool IsPhone => true;
+#else
+    /// <summary>
+    /// 是否为手机模式
+    /// </summary>
+    public bool IsPhone => false;
+#endif
     /// <summary>
     /// Motd地址
     /// </summary>

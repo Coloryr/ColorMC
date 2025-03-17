@@ -1,10 +1,13 @@
+using System;
+
+namespace ColorMC.Gui.UI;
+
+#if Phone
+
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System;
 using System.Timers;
-
-namespace ColorMC.Gui.UI;
 
 /// <summary>
 /// 长按处理
@@ -48,7 +51,7 @@ public static class LongPressed
     private static void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         s_count++;
-        if (s_count >= 4 && SystemInfo.Os != OsType.Android)
+        if (s_count >= 4)
         {
             Dispatcher.UIThread.Post(() =>
             {
@@ -62,7 +65,7 @@ public static class LongPressed
     /// </summary>
     public static void Released()
     {
-        if (s_count >= 1 && SystemInfo.Os == OsType.Android)
+        if (s_count >= 1)
         {
             s_action?.Invoke();
         }
@@ -75,3 +78,20 @@ public static class LongPressed
         t_timer.Stop();
     }
 }
+#else
+public static class LongPressed
+{
+    public static void Pressed(Action _)
+    {
+
+    }
+    public static void Released()
+    {
+
+    }
+    public static void Cancel()
+    {
+
+    }
+}
+#endif

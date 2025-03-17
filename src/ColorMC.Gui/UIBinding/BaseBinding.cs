@@ -157,9 +157,11 @@ public static class BaseBinding
             case OsType.MacOS:
                 Process.Start("open", '"' + url + '"');
                 break;
+#if Phone
             case OsType.Android:
                 ColorMCGui.PhoneOpenUrl(url);
                 break;
+#endif
         }
     }
 

@@ -34,7 +34,6 @@ public partial class SingleWindow : ABaseWindow
 
     private void UserWindow_Closed(object? sender, EventArgs e)
     {
-        Win.Closed();
-        App.Exit();
+        ColorMCGui.Exit();
     }
 }

@@ -299,10 +299,12 @@ public partial class BaseModel : ObservableObject
     public void Unlock()
     {
         _isWork = false;
-        if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
+#if !Phone
+        if (!_listBack.IsEmpty)
         {
             HeadBackEnable = true;
         }
+#endif
         HeadCloseDisplay = true;
     }
 
@@ -365,10 +367,12 @@ public partial class BaseModel : ObservableObject
     public void PushBack(Action back)
     {
         _listBack.Push(back);
-        if (SystemInfo.Os != OsType.Android && !_listBack.IsEmpty)
+#if !Phone
+        if (!_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
         }
+#endif
     }
     /// <summary>
     /// 删除一个返回

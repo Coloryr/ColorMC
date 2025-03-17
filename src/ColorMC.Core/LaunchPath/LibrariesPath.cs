@@ -104,7 +104,7 @@ public static class LibrariesPath
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
-                return new(obj2.MinecraftArguments.Split(" "));
+                return [.. obj2.MinecraftArguments.Split(" ")];
             }
         }
 
@@ -142,11 +142,13 @@ public static class LibrariesPath
         {
             if (item.Later == null)
             {
+#if Phone
                 //不添加lwjgl
                 if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
                 {
                     continue;
                 }
+#endif
                 gameList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }

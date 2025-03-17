@@ -17,8 +17,14 @@ using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui;
 
+/// <summary>
+/// ColorMC Gui
+/// </summary>
 public static class ColorMCGui
 {
+    /// <summary>
+    /// Core 启动参数
+    /// </summary>
     private static readonly CoreInitArg s_arg = new()
     {
         Local = "",
@@ -26,25 +32,59 @@ public static class ColorMCGui
         OAuthKey = "aa0dd576-d717-4950-b257-a478d2c20968"
     };
 
+    /// <summary>
+    /// 文件锁
+    /// </summary>
     private static FileStream s_lock;
 
+    /// <summary>
+    /// 运行目录
+    /// </summary>
     public static string BaseDir { get; private set; }
+    /// <summary>
+    /// 基础版本信息
+    /// </summary>
     public static string[] BaseSha1 { get; private set; }
 
+    /// <summary>
+    /// 运行类型
+    /// </summary>
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
+#if Phone
+    /// <summary>
+    /// 手机端打开设置
+    /// </summary>
     public static Func<Control>? PhoneGetSetting { get; set; }
+    /// <summary>
+    /// 手机端获取Frp
+    /// </summary>
     public static Func<FrpType, string>? PhoneGetFrp { get; set; }
     /// <summary>
     /// 手机端打开网页
     /// </summary>
     public static Action<string?> PhoneOpenUrl { get; set; }
-
+#endif
+    /// <summary>
+    /// 是否为Aot模式
+    /// </summary>
     public static bool IsAot { get; private set; }
+    /// <summary>
+    /// 是否为Min模式
+    /// </summary>
     public static bool IsMin { get; private set; }
+    /// <summary>
+    /// 是否崩溃
+    /// </summary>
     public static bool IsCrash { get; private set; }
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
     public static bool IsClose { get; private set; }
 
+    /// <summary>
+    /// 默认字体
+    /// </summary>
     public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
@@ -74,6 +114,7 @@ public static class ColorMCGui
         {
             var builder = BuildAvaloniaApp();
 
+            //以管理员方式启动
             if (GuiConfigUtils.Config.ServerCustom.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
             {
                 try
@@ -87,6 +128,7 @@ public static class ColorMCGui
                 return;
             }
 
+            //快捷启动
             if (args.Length > 0)
             {
                 if (args[0] == "-game" && args.Length < 2)
@@ -99,6 +141,7 @@ public static class ColorMCGui
                 }
             }
 
+            //是否已经启动过了
             if (IsLock(out var port))
             {
                 LaunchSocketUtils.SendMessage(port).Wait();
@@ -129,26 +172,33 @@ public static class ColorMCGui
         }
     }
 
-    public static void Close()
+    /// <summary>
+    /// 退出程序
+    /// </summary>
+    public static void Exit()
     {
         IsClose = true;
         App.Exit();
     }
 
+    /// <summary>
+    /// 重启程序
+    /// </summary>
     public static void Reboot()
     {
-        if (SystemInfo.Os != OsType.Android)
-        {
-            IsClose = true;
-            s_lock.Close();
-            s_lock.Dispose();
-            Thread.Sleep(500);
-            Process.Start($"{(SystemInfo.Os == OsType.Windows ?
-                    "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
-            App.Exit();
-        }
+#if !Phone
+        IsClose = true;
+        App.Close();
+        //s_lock.Close();
+        //s_lock.Dispose();
+        Thread.Sleep(500);
+        Process.Start($"{(SystemInfo.Os == OsType.Windows ?
+                "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
+        //App.Exit();
+#endif
     }
 
+#if Phone
     public static void StartPhone(string local)
     {
         SystemInfo.Init();
@@ -163,6 +213,7 @@ public static class ColorMCGui
         ColorMCCore.Init(s_arg);
         GuiConfigUtils.Init();
     }
+#endif
 
     public static void SetRuntimeState(bool aot, bool min)
     {
@@ -329,7 +380,7 @@ public static class ColorMCGui
         return false;
     }
 
-    public static void StartLock()
+    internal static void StartLock()
     {
         LaunchSocketUtils.Init().Wait();
         string name = Path.Combine(BaseDir, GuiNames.NameLockFile);

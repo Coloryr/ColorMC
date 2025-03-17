@@ -18,10 +18,9 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFolder file)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return file.Path.AbsoluteUri;
-        }
+#if Phone
+        return file.Path.AbsoluteUri;
+#endif
         return file.Path.LocalPath;
     }
 
@@ -32,10 +31,9 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return file.Path.AbsoluteUri;
-        }
+#if Phone
+        return file.Path.AbsoluteUri;
+#endif
         return file.Path.LocalPath;
     }
 
@@ -46,10 +44,9 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageItem file)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return file.Path.AbsoluteUri;
-        }
+#if Phone
+        return file.Path.AbsoluteUri;
+#endif
         return file.Path.LocalPath;
     }
 

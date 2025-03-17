@@ -33,12 +33,10 @@ public partial class Live2dControl : UserControl
     public Live2dControl()
     {
         InitializeComponent();
-
-        if (SystemInfo.Os == OsType.Android)
-        {
-            IsVisible = false;
-            return;
-        }
+#if Phone
+        IsVisible = false;
+        return;
+#endif
 
         _render = new();
 

@@ -251,10 +251,9 @@ public partial class GameItemModel : GameModel
         Wrap = value ? TextWrapping.Wrap : TextWrapping.NoWrap;
         Trim = value ? TextTrimming.None : TextTrimming.CharacterEllipsis;
         IsDrop = false;
-        if (SystemInfo.Os == OsType.Android)
-        {
-            IsOver = value;
-        }
+#if Phone
+        IsOver = value;
+#endif
 
         ButtonShow = value || IsOver;
     }
@@ -402,6 +401,7 @@ public partial class GameItemModel : GameModel
     /// <param name="e"></param>
     public async void Move(TopLevel? top, PointerEventArgs e)
     {
+#if !Phone
         if (ShowCheck)
         {
             return;
@@ -409,22 +409,19 @@ public partial class GameItemModel : GameModel
         var dragData = new DataObject();
         dragData.Set(BaseBinding.DrapType, Obj.UUID);
         IsDrop = true;
-
-        if (SystemInfo.Os != OsType.Android)
+        var files = new List<IStorageFolder>();
+        if (top == null)
         {
-            var files = new List<IStorageFolder>();
-            if (top == null)
-            {
-                return;
-            }
-            var item = await top.StorageProvider.TryGetFolderFromPathAsync(Obj.GetBasePath());
-            files.Add(item!);
-            dragData.Set(DataFormats.Files, files);
+            return;
         }
+        var item = await top.StorageProvider.TryGetFolderFromPathAsync(Obj.GetBasePath());
+        files.Add(item!);
+        dragData.Set(DataFormats.Files, files);
         Dispatcher.UIThread.Post(() =>
         {
             DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
         });
+#endif
     }
 
     /// <summary>

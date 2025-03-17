@@ -453,16 +453,18 @@ public static class ImageManager
                     var assm = Assembly.GetExecutingAssembly();
                     stream1 = assm.GetManifestResourceStream(file)!;
                 }
+#if Phone
                 else if (SystemInfo.Os == OsType.Android)
                 {
                     file = Path.Combine(ColorMCGui.BaseDir, "BG");
                     stream1 = PathHelper.OpenRead(file);
                 }
+#else
                 else
                 {
                     stream1 = PathHelper.OpenRead(file);
                 }
-
+#endif
                 if (stream1 == null)
                 {
                     return null;

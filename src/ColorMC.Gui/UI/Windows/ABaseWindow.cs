@@ -90,7 +90,7 @@ public abstract class ABaseWindow : Window
                     WindowManager.ShowSetting(SettingType.Normal);
                     break;
                 case Key.Q:
-                    App.Exit();
+                    ColorMCGui.Exit();
                     break;
                 case Key.M:
                     WindowState = WindowState.Minimized;
