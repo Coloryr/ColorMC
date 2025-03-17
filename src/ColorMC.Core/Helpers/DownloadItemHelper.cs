@@ -404,13 +404,13 @@ public static class DownloadItemHelper
                         return;
                     }
                 }
-
+#if Phone
                 //更换运行库
                 if (SystemInfo.Os == OsType.Android)
                 {
                     item1 = GameHelper.ReplaceLib(item1);
                 }
-
+#endif
                 if (item1.Name.Contains("natives"))
                 {
                     var index = item1.Name.LastIndexOf(':');

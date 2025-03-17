@@ -49,14 +49,14 @@ public static class CoreHttpClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             DownloadClient = new();
             LoginClient = new();
         }
-        else
-        {
-            foreach (var item in _dnsClients)
+#else
+        foreach (var item in _dnsClients)
             {
                 item.Dispose();
             }
@@ -135,9 +135,9 @@ public static class CoreHttpClient
                     Proxy = http.LoginProxy ? proxy : null
                 });
             }
-        }
+#endif
 
-        DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
+    DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
         DownloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
         DownloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();

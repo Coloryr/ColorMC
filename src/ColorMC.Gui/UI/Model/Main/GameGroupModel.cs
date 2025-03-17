@@ -28,10 +28,17 @@ public partial class GameGroupModel : TopModel
     /// </summary>
     public ObservableCollection<GameItemModel> GameList { get; init; } = [];
 
+#if Phone
     /// <summary>
     /// 是否为手机
     /// </summary>
-    public bool IsPhone { get; } = SystemInfo.Os == OsType.Android;
+    public bool IsPhone => true;
+#else
+    /// <summary>
+    /// 是否为手机
+    /// </summary>
+    public bool IsPhone => false;
+#endif
     /// <summary>
     /// 标题
     /// </summary>

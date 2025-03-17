@@ -14,7 +14,7 @@ public static class SdlUtils
 
     public static void Init()
     {
-        if (ColorMCGui.RunType == RunType.Program && SystemInfo.Os != OsType.Android)
+        if (ColorMCGui.RunType == RunType.Program)
         {
             try
             {

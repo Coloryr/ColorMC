@@ -1006,6 +1006,7 @@ public static class WebBinding
 
     public static async Task<GetJavaListRes> GetJavaList(int type, int os, int mainversion)
     {
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             var res = await GetPojavLauncherTeamList();
@@ -1023,7 +1024,7 @@ public static class WebBinding
                 Download = res
             };
         }
-
+#else
         if (mainversion == -1)
             mainversion = 0;
         if (os == -1)
@@ -1067,7 +1068,7 @@ public static class WebBinding
                     Download = GetGraalvmList()
                 };
         }
-
+#endif
         return new();
     }
 
@@ -1663,7 +1664,11 @@ public static class WebBinding
     /// <returns></returns>
     public static List<string> GetJavaType()
     {
-        return SystemInfo.Os == OsType.Android ? PhoneJavaType : PCJavaType;
+#if Phone
+        return SystemInfo.Os == OsType.Android ? PhoneJavaType : IosJavaType;
+#else
+        return PCJavaType;
+#endif
     }
 
     /// <summary>

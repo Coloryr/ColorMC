@@ -333,10 +333,6 @@ public static class GameBinding
     /// <returns></returns>
     public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> objs)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return new();
-        }
         var list = objs.Where(item => !GameManager.IsGameRun(item))
             .ToList();
 
@@ -562,12 +558,9 @@ public static class GameBinding
         {
             return new() { Message = res.Message };
         }
-
-        if (SystemInfo.Os == OsType.Android)
-        {
-            hide = false;
-        }
-
+#if Phone
+        hide = false;
+#endif
         s_launchCancel = new();
 
         s_gameConnect[obj.UUID] = false;

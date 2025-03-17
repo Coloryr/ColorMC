@@ -36,15 +36,15 @@ public partial class SettingModel : MenuModel
 
     public SettingModel(BaseModel model) : base(model)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            Phone = true;
-            _enableWindowMode = false;
-        }
-        else if (SystemInfo.Os is OsType.Windows)
+#if Phone
+        Phone = true;
+        _enableWindowMode = false;
+#else
+        _enableWindowMode = true;
+#endif
+        if (SystemInfo.Os is OsType.Windows)
         {
             IsInputEnable = true;
-            _enableWindowMode = true;
         }
 
         //更新定制器用于内存

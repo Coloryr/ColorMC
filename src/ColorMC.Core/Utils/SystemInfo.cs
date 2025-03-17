@@ -102,10 +102,16 @@ public static class SystemInfo
             Os = OsType.MacOS;
         }
 
+#if Phone
         if (OperatingSystem.IsAndroid())
         {
             Os = OsType.Android;
         }
+        else if (OperatingSystem.IsIOS())
+        {
+            Os = OsType.Ios;
+        }
+#endif
 
         SystemName = RuntimeInformation.OSDescription;
         System = $"Os:{Os} Arch:{SystemArch}";

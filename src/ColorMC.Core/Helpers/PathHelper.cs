@@ -328,16 +328,18 @@ public static class PathHelper
     /// <returns>流</returns>
     public static Stream? OpenRead(string local)
     {
+#if Phone
         if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
         {
             return ColorMCCore.PhoneReadFile(local);
         }
+#else
         local = Path.GetFullPath(local);
         if (File.Exists(local))
         {
             return File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
         }
-
+#endif
         return null;
     }
 
@@ -402,10 +404,12 @@ public static class PathHelper
     /// <param name="local">路径</param>
     public static void Delete(string local)
     {
+#if Phone
         if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
         {
             return;
         }
+#endif
         if (!File.Exists(local))
         {
             return;

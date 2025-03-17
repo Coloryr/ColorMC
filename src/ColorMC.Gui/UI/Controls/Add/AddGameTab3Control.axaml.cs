@@ -12,10 +12,8 @@ public partial class AddGameTab3Control : UserControl
     public AddGameTab3Control()
     {
         InitializeComponent();
-
-        if (SystemInfo.Os == OsType.Android)
-        {
-            IsEnabled = false;
-        }
+        #if Phone
+        IsEnabled = false;
+#endif
     }
 }

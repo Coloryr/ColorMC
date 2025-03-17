@@ -31,10 +31,9 @@ public partial class GameEditModel : MenuModel
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
         _obj = obj;
-        if (SystemInfo.Os == OsType.Android)
-        {
-            Phone = true;
-        }
+#if Phone
+        Phone = true;
+#endif
 
         _timer = new Timer(1000);
         _timer.Elapsed += Timer_Elapsed;

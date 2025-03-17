@@ -179,13 +179,12 @@ public static class WindowManager
         //单窗口模式
         if (ConfigBinding.WindowMode())
         {
-            if (SystemInfo.Os == OsType.Android)
-            {
-                AllWindow = new();
-                AllWindow.Model.HeadDisplay = false;
-                AllWindow.WindowOpened();
-            }
-            else if (SystemInfo.Os == OsType.Linux ||
+#if Phone
+            AllWindow = new();
+            AllWindow.Model.HeadDisplay = false;
+            AllWindow.WindowOpened();
+#else
+            if (SystemInfo.Os == OsType.Linux ||
                 (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
             {
                 var win = new SingleBorderWindow();
@@ -198,6 +197,7 @@ public static class WindowManager
                 AllWindow = win.Win;
                 win.Show();
             }
+#endif
         }
 
         //长按取消处理
@@ -356,11 +356,9 @@ public static class WindowManager
         {
             if (newwindow)
             {
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    return;
-                }
-
+#if Phone
+                return;
+#endif
                 ShowWindow(con);
             }
             else

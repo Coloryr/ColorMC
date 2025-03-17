@@ -166,6 +166,7 @@ public static class FrpLaunchUtils
         string file;
         string dir;
         string version = GuiNames.NameSakuraFrpVersion;
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             file = ColorMCGui.PhoneGetFrp!(item1.FrpType);
@@ -173,39 +174,42 @@ public static class FrpLaunchUtils
         }
         else
         {
-            DownloadItemObj? obj = null;
-            string? local = "";
-            if (item1.FrpType == FrpType.SakuraFrp)
-            {
-                var obj1 = await SakuraFrpApi.GetDownload();
-                if (obj1 == null)
-                {
-                    return new();
-                }
-                version = obj1.frpc.ver;
-                obj = SakuraFrpApi.BuildFrpItem(obj1);
-                local = obj?.Local;
-            }
-            else if (item1.FrpType == FrpType.OpenFrp)
-            {
-                (obj, local) = await OpenFrpApi.BuildFrpItem();
-            }
-            if (obj == null)
+#endif
+        DownloadItemObj? obj = null;
+        string? local = "";
+        if (item1.FrpType == FrpType.SakuraFrp)
+        {
+            var obj1 = await SakuraFrpApi.GetDownload();
+            if (obj1 == null)
             {
                 return new();
             }
-            if (!File.Exists(obj.Local))
-            {
-                var res = await DownloadManager.StartAsync([obj]);
-                if (!res)
-                {
-                    return new();
-                }
-            }
-            file = local!;
-            var info2 = new FileInfo(file);
-            dir = info2.DirectoryName!;
+            version = obj1.frpc.ver;
+            obj = SakuraFrpApi.BuildFrpItem(obj1);
+            local = obj?.Local;
         }
+        else if (item1.FrpType == FrpType.OpenFrp)
+        {
+            (obj, local) = await OpenFrpApi.BuildFrpItem();
+        }
+        if (obj == null)
+        {
+            return new();
+        }
+        if (!File.Exists(obj.Local))
+        {
+            var res = await DownloadManager.StartAsync([obj]);
+            if (!res)
+            {
+                return new();
+            }
+        }
+        file = local!;
+        var info2 = new FileInfo(file);
+        dir = info2.DirectoryName!;
+#if Phone
+        }
+#endif
         string? info = null;
         if (item1.FrpType == FrpType.SakuraFrp)
         {

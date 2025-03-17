@@ -59,9 +59,9 @@ public partial class AddGameModel : TopModel
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-
-        IsPhone = SystemInfo.Os == OsType.Android;
-
+#if Phone
+        IsPhone = true;
+#endif
         GameVersionUpdate();
 
         CloudEnable = ColorMCCloudAPI.Connect;

@@ -85,16 +85,15 @@ public static class JavaHelper
             if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
                 Process? p;
-
+#if Phone
                 if (SystemInfo.Os == OsType.Android)
                 {
                     p = ColorMCCore.PhoneStartJvm(path);
                 }
-                else
-                {
-                    p = new Process();
-                    p.StartInfo.FileName = path;
-                }
+#else
+                p = new Process();
+                p.StartInfo.FileName = path;
+#endif
                 if (p == null)
                 {
                     return null;

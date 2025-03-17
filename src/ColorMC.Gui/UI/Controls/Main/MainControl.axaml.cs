@@ -237,7 +237,7 @@ public partial class MainControl : BaseUserControl
     {
         WindowManager.MainWindow = null;
 
-        App.Exit();
+        ColorMCGui.Exit();
     }
 
     public override async void Opened()

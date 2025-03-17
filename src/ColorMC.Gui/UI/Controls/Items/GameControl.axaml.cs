@@ -164,10 +164,12 @@ public partial class GameControl : UserControl
             }
             else
             {
-                if (SystemInfo.Os == OsType.Android && !select)
+                #if Phone
+                if (!select)
                 {
                     return;
                 }
+#endif
 
                 LongPressed.Pressed(() => Flyout((sender as Control)!));
             }

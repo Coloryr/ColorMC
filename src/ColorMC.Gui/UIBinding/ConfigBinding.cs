@@ -130,16 +130,15 @@ public static class ConfigBinding
     {
         GuiConfigUtils.Config.EnableBG = en;
         GuiConfigUtils.Config.BackEffect = data;
-
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             var bg = await PathBinding.CopyBG(dir!);
             GuiConfigUtils.Config.BackImage = bg;
         }
-        else
-        {
-            GuiConfigUtils.Config.BackImage = dir;
-        }
+#else
+        GuiConfigUtils.Config.BackImage = dir;
+#endif
 
         GuiConfigUtils.Save();
 
@@ -456,14 +455,13 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetWindowMode(bool value)
     {
-        if (SystemInfo.Os != OsType.Android)
-        {
-            GuiConfigUtils.Config.WindowMode = value;
+#if !Phone
+        GuiConfigUtils.Config.WindowMode = value;
 
-            GuiConfigUtils.Save();
+        GuiConfigUtils.Save();
 
-            ColorMCGui.Reboot();
-        }
+        ColorMCGui.Reboot();
+#endif
     }
 
     /// <summary>
@@ -472,7 +470,10 @@ public static class ConfigBinding
     /// <returns>true为单窗口false为多窗口</returns>
     public static bool WindowMode()
     {
-        return GuiConfigUtils.Config.WindowMode || SystemInfo.Os == OsType.Android;
+#if Phone
+        return true;
+#endif
+        return GuiConfigUtils.Config.WindowMode;
     }
 
     /// <summary>

@@ -21,14 +21,14 @@ public static class JvmPath
     /// </summary>
     public static void Init()
     {
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             BaseDir = ColorMCCore.PhoneGetDataDir();
         }
-        else
-        {
-            BaseDir = ColorMCCore.BaseDir;
-        }
+#else
+        BaseDir = ColorMCCore.BaseDir;
+#endif
 
         if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
         {
@@ -132,8 +132,10 @@ public static class JvmPath
         {
             OsType.Windows => PathHelper.GetFile(path, "javaw.exe"),
             OsType.Linux => PathHelper.GetFile(path, "java"),
-            OsType.Android => PathHelper.GetFile(path, "java"),
             OsType.MacOS => PathHelper.GetFile(path, "java"),
+                        #if Phone
+            OsType.Android => PathHelper.GetFile(path, "java"),
+#endif
             _ => null,
         };
     }
@@ -154,6 +156,7 @@ public static class JvmPath
         }
 
         (bool, Exception?) res;
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             res = await Task.Run(() =>
@@ -169,9 +172,8 @@ public static class JvmPath
                 }
             });
         }
-        else
-        {
-            res = await Task.Run(async () =>
+#else
+        res = await Task.Run(async () =>
             {
                 try
                 {
@@ -184,9 +186,8 @@ public static class JvmPath
                 }
             });
 
-            stream.Close();
-        }
-
+        stream.Close();
+#endif
         if (!res.Item1)
         {
             string temp = LanguageHelper.Get("Core.Jvm.Error12");
@@ -213,12 +214,14 @@ public static class JvmPath
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
-        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS
-            || SystemInfo.Os == OsType.Android)
+#if Phone
+        JavaHelper.PerChmod(java);
+#else
+        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
         {
             JavaHelper.PerChmod(java);
         }
-
+#endif
         return AddItem(arg.Name, java);
     }
 

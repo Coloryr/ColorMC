@@ -57,10 +57,9 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     public Live2dRender()
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
+        #if Phone
             return;
-        }
+#endif
         DataContextChanged += Live2dRender_DataContextChanged;
 
         PointerPressed += Live2dTop_PointerPressed;
@@ -177,10 +176,9 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override unsafe void OnOpenGlInit(GlInterface gl)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
+#if Phone
+        return;
+#endif
 
         if (_first)
         {
@@ -224,10 +222,9 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override void OnOpenGlDeinit(GlInterface GL)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
+#if Phone
+        return;
+#endif
 
         _lapp?.Dispose();
         _lapp = null!;
@@ -237,10 +234,9 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     protected override void OnOpenGlRender(GlInterface gl, int fb)
     {
-        if (SystemInfo.Os == OsType.Android)
-        {
-            return;
-        }
+#if Phone
+        return;
+#endif
 
         if (!_init)
         {

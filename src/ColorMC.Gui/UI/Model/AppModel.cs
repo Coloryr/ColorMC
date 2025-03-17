@@ -34,6 +34,6 @@ public partial class AppModel : ObservableObject
     [RelayCommand]
     public void Exit()
     {
-        App.Exit();
+        ColorMCGui.Exit();
     }
 }

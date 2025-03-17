@@ -252,6 +252,7 @@ public static class Launch
         {
             if (item is string str)
             {
+#if Phone
                 if (SystemInfo.Os == OsType.Android)
                 {
                     if (str.StartsWith("-Djava.library.path")
@@ -262,7 +263,7 @@ public static class Launch
                         continue;
                     }
                 }
-
+#endif
                 arg.Add(str);
             }
             else if (item is JObject obj1)
@@ -329,16 +330,17 @@ public static class Launch
         {
             var forge = obj.Loader == Loaders.NeoForge ?
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            return new(forge.MinecraftArguments.Split(' '));
+            return [.. forge.MinecraftArguments.Split(' ')];
         }
         else if (obj.Loader == Loaders.OptiFine)
         {
             var version = VersionPath.GetVersion(obj.Version)!;
-            return new(version.MinecraftArguments.Split(' '))
-            {
+            return
+            [
+                .. version.MinecraftArguments.Split(' '),
                 "--tweakClass",
                 "optifine.OptiFineTweaker"
-            };
+            ];
         }
         else if (obj.Loader == Loaders.Custom)
         {
@@ -347,7 +349,7 @@ public static class Launch
         else
         {
             var version = VersionPath.GetVersion(obj.Version)!;
-            return new(version.MinecraftArguments.Split(' '));
+            return [.. version.MinecraftArguments.Split(' ')];
         }
     }
 
@@ -539,10 +541,12 @@ public static class Launch
                     DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
                     DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
                 jvm.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
+#if Phone
                 if (SystemInfo.Os == OsType.Android)
                 {
                     jvm.Add("-Dforgewrapper.justLaunch=true");
                 }
+#endif
             }
             else if (obj.Loader == Loaders.OptiFine)
             {
@@ -646,45 +650,43 @@ public static class Launch
             var v2 = obj.IsGameVersionV2();
             gameArg.AddRange(v2 ? obj.MakeV2GameArg() : obj.MakeV1GameArg());
         }
-
-        if (SystemInfo.Os != OsType.Android)
+#if !Phone
+        //window
+        WindowSettingObj window;
+        if (obj.Window == null)
         {
-            //window
-            WindowSettingObj window;
-            if (obj.Window == null)
+            window = ConfigUtils.Config.Window;
+        }
+        else
+        {
+            window = new()
             {
-                window = ConfigUtils.Config.Window;
+                FullScreen = obj.Window.FullScreen
+                    ?? ConfigUtils.Config.Window.FullScreen,
+                Width = obj.Window.Width
+                    ?? ConfigUtils.Config.Window.Width,
+                Height = obj.Window.Height
+                    ?? ConfigUtils.Config.Window.Height,
+            };
+        }
+        if (window.FullScreen == true)
+        {
+            gameArg.Add("--fullscreen");
+        }
+        else
+        {
+            if (window.Width > 0)
+            {
+                gameArg.Add($"--width");
+                gameArg.Add($"{window.Width}");
             }
-            else
+            if (window.Height > 0)
             {
-                window = new()
-                {
-                    FullScreen = obj.Window.FullScreen
-                        ?? ConfigUtils.Config.Window.FullScreen,
-                    Width = obj.Window.Width
-                        ?? ConfigUtils.Config.Window.Width,
-                    Height = obj.Window.Height
-                        ?? ConfigUtils.Config.Window.Height,
-                };
-            }
-            if (window.FullScreen == true)
-            {
-                gameArg.Add("--fullscreen");
-            }
-            else
-            {
-                if (window.Width > 0)
-                {
-                    gameArg.Add($"--width");
-                    gameArg.Add($"{window.Width}");
-                }
-                if (window.Height > 0)
-                {
-                    gameArg.Add($"--height");
-                    gameArg.Add($"{window.Height}");
-                }
+                gameArg.Add($"--height");
+                gameArg.Add($"{window.Height}");
             }
         }
+#endif
 
         //--quickPlayMultiplayer
 
@@ -877,8 +879,12 @@ public static class Launch
             {"${user_properties}", "{}" },
             {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "mojang" },
             {"${version_type}", "release" },
+#if Phone
             {"${natives_directory}", SystemInfo.Os == OsType.Android
                 ? "%natives_directory%" : LibrariesPath.GetNativeDir(obj.Version) },
+#else
+            {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
+#endif
             {"${library_directory}",LibrariesPath.BaseDir },
             {"${classpath_separator}", sep },
             {"${launcher_name}","ColorMC" },
@@ -1177,24 +1183,21 @@ public static class Launch
                 });
                 ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
                 bool hidenext = false;
-                if (SystemInfo.Os != OsType.Android)
+                foreach (var item in arg)
                 {
-                    foreach (var item in arg)
+                    if (hidenext)
                     {
-                        if (hidenext)
-                        {
-                            hidenext = false;
-                            ColorMCCore.OnGameLog(obj, "******");
-                        }
-                        else
-                        {
-                            ColorMCCore.OnGameLog(obj, item);
-                        }
-                        var low = item.ToLower();
-                        if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
-                        {
-                            hidenext = true;
-                        }
+                        hidenext = false;
+                        ColorMCCore.OnGameLog(obj, "******");
+                    }
+                    else
+                    {
+                        ColorMCCore.OnGameLog(obj, item);
+                    }
+                    var low = item.ToLower();
+                    if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
+                    {
+                        hidenext = true;
                     }
                 }
 
@@ -1698,24 +1701,21 @@ public static class Launch
         });
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
-        if (SystemInfo.Os != OsType.Android)
+        foreach (var item in arg)
         {
-            foreach (var item in arg)
+            if (hidenext)
             {
-                if (hidenext)
-                {
-                    hidenext = false;
-                    ColorMCCore.OnGameLog(obj, "******");
-                }
-                else
-                {
-                    ColorMCCore.OnGameLog(obj, item);
-                }
-                var low = item.ToLower();
-                if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
-                {
-                    hidenext = true;
-                }
+                hidenext = false;
+                ColorMCCore.OnGameLog(obj, "******");
+            }
+            else
+            {
+                ColorMCCore.OnGameLog(obj, item);
+            }
+            var low = item.ToLower();
+            if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
+            {
+                hidenext = true;
             }
         }
 
@@ -1789,6 +1789,7 @@ public static class Launch
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(true)))
             {
+#if Phone
                 if (SystemInfo.Os == OsType.Android && start.StartsWith(JAVA_LOCAL))
                 {
                     if (JvmPath.FindJava(8) is { } jvm1)
@@ -1803,18 +1804,17 @@ public static class Launch
                         ColorMCCore.OnGameLog(obj, temp1);
                     }
                 }
-                else
-                {
-                    stopwatch.Start();
-                    larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
-                    start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env, prerun, larg.Admin);
-                    stopwatch.Stop();
-                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
-                        obj.Name, stopwatch.Elapsed.ToString());
-                    ColorMCCore.OnGameLog(obj, temp1);
-                    Logs.Info(temp1);
-                }
+#else 
+                stopwatch.Start();
+                larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
+                start = ReplaceArg(obj, path!, arg, start);
+                obj.CmdRun(start, env, prerun, larg.Admin);
+                stopwatch.Stop();
+                string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
+                    obj.Name, stopwatch.Elapsed.ToString());
+                ColorMCCore.OnGameLog(obj, temp1);
+                Logs.Info(temp1);
+#endif
             }
             else
             {
@@ -1829,7 +1829,7 @@ public static class Launch
         {
             return null;
         }
-
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             //安装Forge
@@ -1858,7 +1858,7 @@ public static class Launch
                 }
             }
         }
-
+#endif
         if (token.IsCancellationRequested)
         {
             return null;
@@ -1866,101 +1866,99 @@ public static class Launch
 
         //启动进程
         IGameHandel? handel;
-
+#if Phone
         if (SystemInfo.Os == OsType.Android)
         {
             handel = ColorMCCore.PhoneGameLaunch(larg.Auth, obj, jvm!, arg, env);
         }
-        else
+#else
+        var process = new Process()
         {
-            var process = new Process()
-            {
-                EnableRaisingEvents = true
-            };
-            process.StartInfo.FileName = path;
-            process.StartInfo.WorkingDirectory = obj.GetGamePath();
-            Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
-            foreach (var item in arg)
-            {
-                process.StartInfo.ArgumentList.Add(item);
-            }
-            foreach (var item in env)
-            {
-                process.StartInfo.Environment.Add(item.Key, item.Value);
-            }
+            EnableRaisingEvents = true
+        };
+        process.StartInfo.FileName = path;
+        process.StartInfo.WorkingDirectory = obj.GetGamePath();
+        Directory.CreateDirectory(process.StartInfo.WorkingDirectory);
+        foreach (var item in arg)
+        {
+            process.StartInfo.ArgumentList.Add(item);
+        }
+        foreach (var item in env)
+        {
+            process.StartInfo.Environment.Add(item.Key, item.Value);
+        }
 
-            process.StartInfo.RedirectStandardInput = true;
-            process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.RedirectStandardError = true;
+        process.StartInfo.RedirectStandardInput = true;
+        process.StartInfo.RedirectStandardOutput = true;
+        process.StartInfo.RedirectStandardError = true;
 
-            process.Exited += (a, b) =>
-            {
-                ColorMCCore.OnGameExit(obj, larg.Auth, process.ExitCode);
-                process.Dispose();
-            };
+        process.Exited += (a, b) =>
+        {
+            ColorMCCore.OnGameExit(obj, larg.Auth, process.ExitCode);
+            process.Dispose();
+        };
 
-            if (!ProcessUtils.Launch(process, larg.Admin))
+        if (!ProcessUtils.Launch(process, larg.Admin))
+        {
+            //监听日志
+            Encoding? encoding = null;
+            if (obj.Encoding == 1)
             {
-                //监听日志
-                Encoding? encoding = null;
-                if (obj.Encoding == 1)
+                try
                 {
-                    try
-                    {
-                        encoding = Encoding.GetEncoding("gbk");
-                    }
-                    catch
-                    {
-
-                    }
+                    encoding = Encoding.GetEncoding("gbk");
                 }
-                else
+                catch
                 {
-                    encoding = Encoding.UTF8;
+
                 }
-                new Thread(() =>
-                {
-                    bool stop = false;
-                    using var reader = new StreamReader(process.StandardOutput.BaseStream, encoding!);
-                    process.Exited += (a, b) =>
-                    {
-                        stop = true;
-                    };
-                    while (!stop)
-                    {
-                        var output = reader.ReadLine();
-                        ColorMCCore.OnGameLog(obj, output);
-                    }
-                })
-                {
-                    Name = "ColorMC-Game:" + obj.UUID + ":T1"
-                }.Start();
-                new Thread(() =>
-                {
-                    bool stop = false;
-                    using var reader = new StreamReader(process.StandardError.BaseStream, encoding!);
-                    process.Exited += (a, b) =>
-                    {
-                        stop = true;
-                    };
-                    while (!stop)
-                    {
-                        var output = reader.ReadLine();
-                        ColorMCCore.OnGameLog(obj, output);
-                    }
-                })
-                {
-                    Name = "ColorMC-Game:" + obj.UUID + ":T2"
-                }.Start();
             }
             else
             {
-                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Game.Info2"));
+                encoding = Encoding.UTF8;
             }
-
-            handel = new DesktopGameHandel(process, obj.UUID);
+            new Thread(() =>
+            {
+                bool stop = false;
+                using var reader = new StreamReader(process.StandardOutput.BaseStream, encoding!);
+                process.Exited += (a, b) =>
+                {
+                    stop = true;
+                };
+                while (!stop)
+                {
+                    var output = reader.ReadLine();
+                    ColorMCCore.OnGameLog(obj, output);
+                }
+            })
+            {
+                Name = "ColorMC-Game:" + obj.UUID + ":T1"
+            }.Start();
+            new Thread(() =>
+            {
+                bool stop = false;
+                using var reader = new StreamReader(process.StandardError.BaseStream, encoding!);
+                process.Exited += (a, b) =>
+                {
+                    stop = true;
+                };
+                while (!stop)
+                {
+                    var output = reader.ReadLine();
+                    ColorMCCore.OnGameLog(obj, output);
+                }
+            })
+            {
+                Name = "ColorMC-Game:" + obj.UUID + ":T2"
+            }.Start();
+        }
+        else
+        {
+            ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Game.Info2"));
         }
 
+        handel = new DesktopGameHandel(process, obj.UUID);
+#endif
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
             obj.Name, stopwatch.Elapsed.ToString());
@@ -1980,6 +1978,7 @@ public static class Launch
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(false)))
             {
+#if Phone
                 if (SystemInfo.Os == OsType.Android)
                 {
                     if (JvmPath.FindJava(8) is { } jvm1)
@@ -1994,16 +1993,15 @@ public static class Launch
                         ColorMCCore.OnGameLog(obj, temp1);
                     }
                 }
-                else
-                {
-                    stopwatch.Start();
-                    larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-                    start = ReplaceArg(obj, path!, arg, start);
-                    obj.CmdRun(start, env, false, larg.Admin);
-                    stopwatch.Stop();
-                    ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                        obj.Name, stopwatch.Elapsed.ToString()));
-                }
+#else
+                stopwatch.Start();
+                larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
+                start = ReplaceArg(obj, path!, arg, start);
+                obj.CmdRun(start, env, false, larg.Admin);
+                stopwatch.Stop();
+                ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                    obj.Name, stopwatch.Elapsed.ToString()));
+#endif
             }
             else
             {

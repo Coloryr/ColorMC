@@ -409,7 +409,10 @@ public enum OsType
     Windows,
     Linux,
     MacOS,
-    Android
+#if Phone
+    Android,
+    Ios
+#endif
 }
 
 /// <summary>

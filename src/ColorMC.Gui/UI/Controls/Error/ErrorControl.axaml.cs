@@ -55,7 +55,7 @@ public partial class ErrorControl : BaseUserControl
         if ((DataContext as ErrorModel)!.NeedClose
             || (App.IsHide && !GameManager.IsGameRuning()))
         {
-            App.Exit();
+            ColorMCGui.Exit();
         }
     }
 
