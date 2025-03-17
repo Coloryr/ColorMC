@@ -371,6 +371,7 @@ public static class CurseForgeHelper
             list.Add(mod);
             ids.Add(item.ModId);
 
+            //获取依赖的依赖
             foreach (var item3 in data.Dependencies)
             {
                 if (ids.Contains(item3.ModId))

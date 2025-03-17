@@ -601,6 +601,7 @@ public static partial class CheckHelpers
         return null;
     }
 
+#if Phone
     /// <summary>
     /// 检查是否需要安装Forge
     /// </summary>
@@ -680,7 +681,7 @@ public static partial class CheckHelpers
 
         //return sha1 != obj.data.MC_EXTRA_SHA.client[1..^1];
     }
-
+#endif
     /// <summary>
     /// 检查Forge的运行库
     /// </summary>

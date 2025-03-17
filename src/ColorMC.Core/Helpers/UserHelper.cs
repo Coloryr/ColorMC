@@ -2,6 +2,9 @@
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 账户相关处理
+/// </summary>
 public static class UserHelper
 {
     /// <summary>

@@ -17,17 +17,17 @@ public partial class SettingModel : MenuModel
     /// <summary>
     /// 是否为手机模式
     /// </summary>
-    public bool Phone { get; } = false;
+    public bool Phone { get; init; }
     /// <summary>
     /// 是否启用手柄
     /// </summary>
-    public bool IsInputEnable { get; }
+    public bool IsInputEnable { get; init; }
 
     /// <summary>
     /// 
     /// </summary>
     [ObservableProperty]
-    private bool _enableWindowMode;
+    private bool _enableWindowMode = true;
 
     /// <summary>
     /// 更新定制器
@@ -39,8 +39,6 @@ public partial class SettingModel : MenuModel
 #if Phone
         Phone = true;
         _enableWindowMode = false;
-#else
-        _enableWindowMode = true;
 #endif
         if (SystemInfo.Os is OsType.Windows)
         {

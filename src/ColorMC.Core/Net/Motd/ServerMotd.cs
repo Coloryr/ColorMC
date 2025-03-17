@@ -125,6 +125,7 @@ public static class ServerMotd
                 tcp.Close();
                 tcp.Dispose();
                 IPAddress? selectDns = null;
+                //获取系统Dns服务器
                 var list = NetworkInterface.GetAllNetworkInterfaces();
                 foreach (var adapter in list.Where(item => item.OperationalStatus is OperationalStatus.Up && item.NetworkInterfaceType is NetworkInterfaceType.Wireless80211 or NetworkInterfaceType.Ethernet && item.Speed > 0))
                 {
@@ -150,6 +151,7 @@ public static class ServerMotd
 
                     return info;
                 }
+                //进行SRV请求
                 using var s_dnsClient = new DnsUdpClient(selectDns);
                 var data = await s_dnsClient.Query(DnsQueryFactory.CreateQuery("_minecraft._tcp." + ip, DnsQueryType.SRV), CancellationToken.None);
                 if (data.Answers?.FirstOrDefault() is { } result)
@@ -222,7 +224,7 @@ public static class ServerMotd
             info.Ping = handler.PingWatcher.ElapsedMilliseconds;
             if (packetLength > 0)
             {
-                List<byte> packetData = new(handler.ReadDataRAW(packetLength));
+                List<byte> packetData = [.. handler.ReadDataRAW(packetLength)];
 
                 if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                 {

@@ -8,6 +8,9 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class MinecraftPath
 {
+    /// <summary>
+    /// 游戏路径
+    /// </summary>
     public static string BaseDir { get; private set; }
 
     /// <summary>

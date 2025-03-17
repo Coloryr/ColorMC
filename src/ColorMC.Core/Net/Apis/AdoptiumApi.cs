@@ -8,13 +8,22 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class AdoptiumApi
 {
+    /// <summary>
+    /// 下载地址
+    /// </summary>
     public const string AdoptiumUrl = "https://api.adoptium.net/";
 
+    /// <summary>
+    /// 系统类型
+    /// </summary>
     public static readonly List<string> SystemType =
     [
         "", "Windows", "Linux", "Alpine Linux", "MacOS", "AIX", "Solaris"
     ];
 
+    /// <summary>
+    /// Java版本
+    /// </summary>
     private static List<string> s_javaVersion;
 
     /// <summary>
@@ -35,6 +44,10 @@ public static class AdoptiumApi
         };
     }
 
+    /// <summary>
+    /// 获取Java版本
+    /// </summary>
+    /// <returns></returns>
     public static async Task<List<string>?> GetJavaVersion()
     {
         if (s_javaVersion != null)

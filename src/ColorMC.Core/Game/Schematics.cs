@@ -59,45 +59,6 @@ public static class Schematic
         return list1;
     }
 
-    private static async Task<SchematicObj> ReadSchemAsync(string file)
-    {
-        try
-        {
-            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
-            {
-                return new()
-                {
-                    Local = file,
-                    Broken = true
-                };
-            }
-
-            var com1 = tag.TryGet<NbtCompound>("Metadata")!;
-
-            var item = new SchematicObj()
-            {
-                Name = Path.GetFileName(file),
-                Broken = false,
-                Local = file
-            };
-
-            item.Height = tag.TryGet<NbtShort>("Height")!.Value;
-            item.Length = tag.TryGet<NbtShort>("Length")!.Value;
-            item.Width = tag.TryGet<NbtShort>("Width")!.Value;
-
-            return item;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error12"), e);
-            return new()
-            {
-                Local = file,
-                Broken = true
-            };
-        }
-    }
-
     /// <summary>
     /// 删除结构文件
     /// </summary>
@@ -147,6 +108,47 @@ public static class Schematic
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// 原版结构文件
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    private static async Task<SchematicObj> ReadSchemAsync(string file)
+    {
+        try
+        {
+            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
+            {
+                return new()
+                {
+                    Local = file,
+                    Broken = true
+                };
+            }
+
+            var item = new SchematicObj
+            {
+                Name = Path.GetFileName(file),
+                Broken = false,
+                Local = file,
+                Height = tag.TryGet<NbtShort>("Height")!.Value,
+                Length = tag.TryGet<NbtShort>("Length")!.Value,
+                Width = tag.TryGet<NbtShort>("Width")!.Value
+            };
+
+            return item;
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Game.Error12"), e);
+            return new()
+            {
+                Local = file,
+                Broken = true
+            };
+        }
     }
 
     /// <summary>

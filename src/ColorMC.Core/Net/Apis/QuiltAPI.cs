@@ -11,6 +11,9 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class QuiltAPI
 {
+    /// <summary>
+    /// 支持的游戏版本
+    /// </summary>
     private static List<string>? s_supportVersion;
 
     /// <summary>

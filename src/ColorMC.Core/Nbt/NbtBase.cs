@@ -66,7 +66,6 @@ public abstract class NbtBase
                     (this as NbtString)!.Value = value;
                     break;
             }
-            ;
         }
     }
 
@@ -140,15 +139,40 @@ public abstract class NbtBase
         };
     }
 
+    /// <summary>
+    /// 保存到文件
+    /// </summary>
+    /// <param name="file">文件名</param>
     public async void Save(string file)
     {
         await Save(this, file);
     }
 
+    /// <summary>
+    /// 保存到流
+    /// </summary>
+    /// <param name="stream">文件流</param>
     public void Save(Stream stream)
     {
         Save(this, stream);
     }
+
+    public static readonly Dictionary<NbtType, Type> NbtTypesCov = new()
+    {
+        {NbtType.NbtEnd, typeof(NbtEnd) },
+        {NbtType.NbtByte, typeof(NbtByte) },
+        {NbtType.NbtShort, typeof(NbtShort) },
+        {NbtType.NbtInt, typeof(NbtInt) },
+        {NbtType.NbtLong, typeof(NbtLong) },
+        {NbtType.NbtFloat, typeof(NbtFloat) },
+        {NbtType.NbtDouble, typeof(NbtDouble) },
+        {NbtType.NbtByteArray, typeof(NbtByteArray) },
+        {NbtType.NbtString, typeof(NbtString) },
+        {NbtType.NbtList, typeof(NbtList) },
+        {NbtType.NbtCompound, typeof(NbtCompound) },
+        {NbtType.NbtIntArray, typeof(NbtIntArray) },
+        {NbtType.NbtLongArray, typeof(NbtLongArray) }
+    };
 
     /// <summary>
     /// 取NBT
@@ -157,15 +181,16 @@ public abstract class NbtBase
     /// <returns>NBT标签</returns>
     public static NbtBase ById(NbtType id)
     {
-        var type = NbtTypes.VALUES[id];
+        var type = NbtTypesCov[id];
         return (Activator.CreateInstance(type) as NbtBase)!;
     }
 
-    public static async Task<T?> ReadAsync<T>(Stream stream, bool chunk = false) where T : NbtBase
-    {
-        return await ReadAsync(stream, chunk) as T;
-    }
-
+    /// <summary>
+    /// 从流读取
+    /// </summary>
+    /// <param name="stream">文件流</param>
+    /// <param name="chunk">是否为区块文件</param>
+    /// <returns>NBT标签</returns>
     public static async Task<NbtBase?> ReadAsync(Stream stream, bool chunk = false)
     {
         if (stream.Length < 2)
@@ -177,6 +202,7 @@ public abstract class NbtBase
         await stream.ReadExactlyAsync(data);
         stream.Seek(0, SeekOrigin.Begin);
         ZipType zip = ZipType.None;
+        //是否为压缩
         if (data[0] == 0x1F && data[1] == 0x8B)
         {
             var steam1 = new GZipStream(stream, CompressionMode.Decompress);
@@ -200,7 +226,7 @@ public abstract class NbtBase
             stream2 = new DataInputStream(stream);
         }
         var type = stream2.ReadByte();
-        if (type >= NbtTypes.VALUES.Count)
+        if (type >= NbtTypesCov.Count)
         {
             return null;
         }
@@ -243,6 +269,12 @@ public abstract class NbtBase
         return nbt;
     }
 
+    /// <summary>
+    /// 从文件中读取
+    /// </summary>
+    /// <typeparam name="T">类型</typeparam>
+    /// <param name="file">文件名</param>
+    /// <returns>NBT标签</returns>
     public static async Task<T?> Read<T>(string file) where T : NbtBase
     {
         using var stream = PathHelper.OpenRead(file)!;
@@ -253,13 +285,18 @@ public abstract class NbtBase
     /// 读NBT
     /// </summary>
     /// <param name="file">文件名</param>
-    /// <returns></returns>
+    /// <returns>NBT标签</returns>
     public static async Task<NbtBase?> Read(string file)
     {
         using var stream = PathHelper.OpenRead(file)!;
         return await ReadAsync(stream);
     }
 
+    /// <summary>
+    /// 保存Nbt标签到流
+    /// </summary>
+    /// <param name="nbt">NBT标签</param>
+    /// <param name="stream">文件流</param>
     public static void Save(NbtBase nbt, Stream stream)
     {
         var steam2 = new DataOutputStream(nbt.ZipType switch

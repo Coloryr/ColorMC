@@ -195,6 +195,7 @@ public static class ModPackHelper
 
         int b = 0;
 
+        //筛选需要升级的资源
         if (info3 != null)
         {
             var addlist = new List<CurseForgePackObj.FilesObj>();

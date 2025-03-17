@@ -13,10 +13,21 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class ModrinthHelper
 {
+    /// <summary>
+    /// 分类列表
+    /// </summary>
     private static List<ModrinthCategoriesObj>? s_categories;
 
+    /// <summary>
+    /// 游戏版本列表
+    /// </summary>
     private static List<string>? s_gameVersions;
 
+    /// <summary>
+    /// 构建一个字符串
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
     public static string BuildFacets(List<MFacetsObj> list)
     {
         var builder = new StringBuilder();

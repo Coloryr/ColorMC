@@ -51,7 +51,7 @@ public static class ConfigSave
     }
 
     /// <summary>
-    /// 开始执行
+    /// 执行保存操作
     /// </summary>
     private static void Run()
     {

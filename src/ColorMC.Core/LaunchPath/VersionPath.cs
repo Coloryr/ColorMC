@@ -26,8 +26,12 @@ public static class VersionPath
 
     private static VersionObj? _version;
 
+    /// <summary>
+    /// 版本缓存路径
+    /// </summary>
     public static string BaseDir { get; private set; }
 
+    //加载器缓存路径
     public static string ForgeDir { get; private set; }
     public static string FabricDir { get; private set; }
     public static string QuiltDir { get; private set; }

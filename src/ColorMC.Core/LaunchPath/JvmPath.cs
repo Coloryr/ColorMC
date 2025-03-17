@@ -11,9 +11,20 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class JvmPath
 {
+    /// <summary>
+    /// Jvm列表
+    /// </summary>
     public static Dictionary<string, JavaInfo> Jvms { get; } = [];
 
+#if Phone
+    /// <summary>
+    /// 基础位置
+    /// </summary>
     public static string BaseDir { get; private set; }
+#endif
+    /// <summary>
+    /// 下载的Java位置
+    /// </summary>
     public static string JavaDir { get; private set; }
 
     /// <summary>
@@ -26,17 +37,14 @@ public static class JvmPath
         {
             BaseDir = ColorMCCore.PhoneGetDataDir();
         }
-#else
-        BaseDir = ColorMCCore.BaseDir;
-#endif
-
         if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
         {
             BaseDir += "/";
         }
-
         JavaDir = Path.Combine(BaseDir, Names.NameJavaDir);
-
+#else
+        JavaDir = Path.Combine(ColorMCCore.BaseDir, Names.NameJavaDir);
+#endif
         Directory.CreateDirectory(JavaDir);
 
         AddList(ConfigUtils.Config.JavaList);
@@ -51,7 +59,11 @@ public static class JvmPath
     {
         if (info.Path.StartsWith(Names.NameJavaDir))
         {
+#if Phone
             return Path.Combine(BaseDir, info.Path);
+#else
+            return Path.Combine(ColorMCCore.BaseDir, info.Path);
+#endif
         }
 
         return info.Path;
@@ -130,11 +142,10 @@ public static class JvmPath
     {
         return SystemInfo.Os switch
         {
-            OsType.Windows => PathHelper.GetFile(path, "javaw.exe"),
-            OsType.Linux => PathHelper.GetFile(path, "java"),
-            OsType.MacOS => PathHelper.GetFile(path, "java"),
-                        #if Phone
-            OsType.Android => PathHelper.GetFile(path, "java"),
+            OsType.Windows => PathHelper.GetFile(path, Names.NameJavawFile),
+            OsType.Linux or OsType.MacOS => PathHelper.GetFile(path, Names.NameJavaFile),
+#if Phone
+            OsType.Android => PathHelper.GetFile(path, Names.NameJavaFile),
 #endif
             _ => null,
         };
@@ -147,7 +158,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static async Task<MessageRes> UnzipJavaAsync(UnzipArg arg)
     {
-        string path = BaseDir + Names.NameJavaDir + "/" + arg.Name;
+        string path = Path.Combine(JavaDir, arg.Name);
         Directory.CreateDirectory(path);
         var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
@@ -174,17 +185,17 @@ public static class JvmPath
         }
 #else
         res = await Task.Run(async () =>
+        {
+            try
             {
-                try
-                {
-                    await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
-                    return (true, null!);
-                }
-                catch (Exception e)
-                {
-                    return (false, e);
-                }
-            });
+                await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
+                return (true, null!);
+            }
+            catch (Exception e)
+            {
+                return (false, e);
+            }
+        });
 
         stream.Close();
 #endif
@@ -202,10 +213,11 @@ public static class JvmPath
         }
         else
         {
+            //选择jdk的java
             if (java.Contains("jre"))
             {
                 var info = new FileInfo(java);
-                var tpath = info.Directory!.Parent!.Parent!.FullName + "/bin/" + info.Name;
+                var tpath = Path.Combine(info.Directory!.Parent!.Parent!.FullName, "bin", info.Name);
                 if (File.Exists(tpath))
                 {
                     java = tpath;
@@ -217,7 +229,7 @@ public static class JvmPath
 #if Phone
         JavaHelper.PerChmod(java);
 #else
-        if (SystemInfo.Os == OsType.Linux || SystemInfo.Os == OsType.MacOS)
+        if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
         {
             JavaHelper.PerChmod(java);
         }
@@ -233,18 +245,24 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static MessageRes AddItem(string name, string local)
     {
-        if (local.StartsWith(BaseDir))
+#if Phone
+        var basedir =  BaseDir;
+#else
+        var basedir = ColorMCCore.BaseDir;
+#endif
+        if (local.StartsWith(basedir))
         {
-            local = local[BaseDir.Length..];
+            local = local[basedir.Length..];
         }
 
         Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info5"), local));
 
+        //删除旧的
         Remove(name);
         var path = local;
         if (path.StartsWith(Names.NameJavaDir))
         {
-            path = Path.GetFullPath(BaseDir + path);
+            path = Path.GetFullPath(basedir + path);
         }
 
         var info = JavaHelper.GetJavaInfo(path);
@@ -290,6 +308,11 @@ public static class JvmPath
     /// <param name="list">列表</param>
     private static void AddList(List<JvmConfigObj> list)
     {
+#if Phone
+        var basedir = BaseDir;
+#else
+        var basedir = ColorMCCore.BaseDir;
+#endif
         Logs.Info(LanguageHelper.Get("Core.Jvm.Info1"));
         Task.Run(() =>
         {
@@ -300,9 +323,10 @@ public static class JvmPath
                 var local = path;
                 if (path.StartsWith(Names.NameJavaDir))
                 {
-                    local = Path.GetFullPath(BaseDir + path);
+                    local = Path.GetFullPath(basedir + path);
                 }
 
+                //启动java获取信息
                 var info = JavaHelper.GetJavaInfo(local);
                 Jvms.Remove(a.Name);
                 if (info != null)

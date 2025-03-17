@@ -1,5 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -9,7 +10,7 @@ using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 
-namespace ColorMC.Core.Game;
+namespace ColorMC.Core.Utils;
 
 /// <summary>
 /// 服务器实例相关操作

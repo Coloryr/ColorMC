@@ -77,6 +77,7 @@ public static class DataPack
                 using var stream1 = zip.GetInputStream(ent);
                 stream1.CopyTo(stream);
                 var data = JObject.Parse(Encoding.UTF8.GetString(stream.ToArray()));
+                //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
                 if (pack != null)
                 {
@@ -110,6 +111,7 @@ public static class DataPack
                 }
                 var str = PathHelper.ReadText(file)!;
                 var data = JObject.Parse(str);
+                //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
                 if (pack != null)
                 {
@@ -236,6 +238,7 @@ public static class DataPack
         {
             try
             {
+                //删除存在的
                 foreach (var obj in arg.List)
                 {
                     foreach (var item in ens.CopyList())

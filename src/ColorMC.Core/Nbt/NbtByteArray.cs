@@ -20,7 +20,7 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
     public NbtByteArray()
     {
         NbtType = NbtType.NbtByteArray;
-        Value ??= new();
+        Value ??= [];
     }
 
     public IEnumerator<byte> GetEnumerator()

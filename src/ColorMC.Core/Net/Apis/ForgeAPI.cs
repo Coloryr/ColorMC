@@ -12,6 +12,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ForgeAPI
 {
+    //支持的版本与加载器版本
     private static List<string>? s_supportVersion;
     private static readonly Dictionary<string, List<string>> s_forgeVersion = [];
 
