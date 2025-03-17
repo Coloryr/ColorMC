@@ -5,19 +5,23 @@ using System.Text;
 namespace ColorMC.Core.Net.Motd;
 
 /// <summary>
-/// Motd客户端
+/// Motd客户端 模拟netty处理数据
 /// </summary>
 public class ProtocolHandler(TcpClient tcp)
 {
+    /// <summary>
+    /// 计时器，用于计算延迟
+    /// </summary>
     public Stopwatch PingWatcher = new();
 
-    public void Receive(byte[] buffer, int start, int offset, SocketFlags f)
+    private void Receive(byte[] buffer, int start, int offset, SocketFlags f)
     {
         int read = 0;
         int count = 0;
         while (read < offset)
         {
             count++;
+            //请求超时
             if (count > 20)
             {
                 throw new Exception("read fail");
@@ -42,7 +46,7 @@ public class ProtocolHandler(TcpClient tcp)
     /// <returns>The data read from the cache as an array</returns>
     public static byte[] ReadData(int offset, List<byte> cache)
     {
-        byte[] result = cache.Take(offset).ToArray();
+        byte[] result = [.. cache.Take(offset)];
         cache.RemoveRange(0, offset);
         return result;
     }

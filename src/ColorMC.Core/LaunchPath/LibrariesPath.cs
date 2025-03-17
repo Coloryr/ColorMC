@@ -10,7 +10,13 @@ namespace ColorMC.Core.LaunchPath;
 /// </summary>
 public static class LibrariesPath
 {
+    /// <summary>
+    /// 运行库路径
+    /// </summary>
     public static string BaseDir { get; private set; }
+    /// <summary>
+    /// 本机二进制路径
+    /// </summary>
     public static string NativeDir { get; private set; }
 
     /// <summary>
@@ -153,7 +159,7 @@ public static class LibrariesPath
             }
         }
 
-        //LoaderLib
+        //获取加载器的运行库
         if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
         {
             var forge = obj.Loader == Loaders.NeoForge ?
@@ -207,7 +213,8 @@ public static class LibrariesPath
         }
 
         var output = new Dictionary<LibVersionObj, string>();
-
+        
+        //拼接运行库列表
         if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
         {
             foreach (var item in loaderList)

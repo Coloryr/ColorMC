@@ -13,9 +13,16 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class LocalMaven
 {
+    /// <summary>
+    /// 缓存项目列表
+    /// </summary>
     private static readonly ConcurrentDictionary<string, MavenItemObj> s_items = [];
 
+    /// <summary>
+    /// 缓存文件
+    /// </summary>
     private static string s_local;
+
     /// <summary>
     /// 初始化本地缓存
     /// </summary>

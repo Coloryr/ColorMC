@@ -21,9 +21,17 @@ public static class CoreHttpClient
     /// </summary>
     public static SourceLocal Source { get; set; }
 
+    /// <summary>
+    /// 下载用http客户端
+    /// </summary>
     public static HttpClient DownloadClient { get; private set; }
+    /// <summary>
+    /// 登录用http客户端
+    /// </summary>
     public static HttpClient LoginClient { get; private set; }
-
+    /// <summary>
+    /// Dns列表
+    /// </summary>
     private readonly static List<IDnsClient> _dnsClients = [];
 
     /// <summary>
@@ -49,95 +57,87 @@ public static class CoreHttpClient
         LoginClient?.CancelPendingRequests();
         LoginClient?.Dispose();
 
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            DownloadClient = new();
-            LoginClient = new();
-        }
-#else
         foreach (var item in _dnsClients)
-            {
-                item.Dispose();
-            }
+        {
+            item.Dispose();
+        }
 
-            _dnsClients.Clear();
+        _dnsClients.Clear();
 
-            IDnsClient? dnsClient = null;
-            WebProxy? proxy = null;
+        IDnsClient? dnsClient = null;
+        WebProxy? proxy = null;
 
-            //代理
-            if (!string.IsNullOrWhiteSpace(http.ProxyIP))
+        //代理
+        if (!string.IsNullOrWhiteSpace(http.ProxyIP))
+        {
+            proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
+        }
+        //Dns
+        if (dns.Enable)
+        {
+            //有GC问题
+            //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
+            //{
+            //foreach (var item in dns.Dns)
+            //{
+            //    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
+            //}
+            //}
+            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
             {
-                proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
-            }
-            //Dns
-            if (dns.Enable)
-            {
-                //有GC问题
-                //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
-                //{
-                //foreach (var item in dns.Dns)
-                //{
-                //    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
-                //}
-                //}
-                if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
+                foreach (var item in dns.Https)
                 {
-                    foreach (var item in dns.Https)
+                    if (dns.HttpProxy)
                     {
-                        if (dns.HttpProxy)
-                        {
-                            _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
-                        }
-                        else
-                        {
-                            _dnsClients.Add(new SelfHttpDnsClient(item));
-                        }
+                        _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
+                    }
+                    else
+                    {
+                        _dnsClients.Add(new SelfHttpDnsClient(item));
                     }
                 }
-                if (_dnsClients.Count > 1)
-                {
-                    dnsClient = new DnsRacerClient([.. _dnsClients]);
-                    _dnsClients.Add(dnsClient);
-                }
-                else if (_dnsClients.Count > 0)
-                {
-                    dnsClient = _dnsClients[0];
-                }
             }
+            if (_dnsClients.Count > 1)
+            {
+                dnsClient = new DnsRacerClient([.. _dnsClients]);
+                _dnsClients.Add(dnsClient);
+            }
+            else if (_dnsClients.Count > 0)
+            {
+                dnsClient = _dnsClients[0];
+            }
+        }
 
-            if (dnsClient != null)
+        if (dnsClient != null)
+        {
+            DownloadClient = new(new DnsDelegatingHandler(dnsClient)
             {
-                DownloadClient = new(new DnsDelegatingHandler(dnsClient)
-                {
-                    InnerHandler = new SocketsHttpHandler()
-                    {
-                        Proxy = http.DownloadProxy ? proxy : null
-                    }
-                });
-                LoginClient = new(new DnsDelegatingHandler(dnsClient)
-                {
-                    InnerHandler = new SocketsHttpHandler()
-                    {
-                        Proxy = http.LoginProxy ? proxy : null
-                    }
-                });
-            }
-            else
-            {
-                DownloadClient = new(new HttpClientHandler()
+                InnerHandler = new SocketsHttpHandler()
                 {
                     Proxy = http.DownloadProxy ? proxy : null
-                });
-                LoginClient = new(new HttpClientHandler()
+                }
+            });
+            LoginClient = new(new DnsDelegatingHandler(dnsClient)
+            {
+                InnerHandler = new SocketsHttpHandler()
                 {
                     Proxy = http.LoginProxy ? proxy : null
-                });
-            }
-#endif
+                }
+            });
+        }
+        else
+        {
+            DownloadClient = new(new HttpClientHandler()
+            {
+                Proxy = http.DownloadProxy ? proxy : null
+            });
+            LoginClient = new(new HttpClientHandler()
+            {
+                Proxy = http.LoginProxy ? proxy : null
+            });
+        }
 
-    DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
+        DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
         DownloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
         DownloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();

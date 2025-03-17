@@ -185,7 +185,7 @@ public static class ChunkMca
             }
             using var stream1 = new MemoryStream(buffer);
             //读NBT标签
-            var nbt = await NbtBase.ReadAsync<ChunkNbt>(stream1, true);
+            var nbt = await NbtBase.ReadAsync(stream1, true) as ChunkNbt;
 
             //获取区块位置
             if (nbt!.TryGet("xPos") is NbtInt value)

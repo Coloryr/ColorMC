@@ -1,6 +1,5 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -34,7 +33,7 @@ public static class Launch
     [
         "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
     ];
-
+#if Phone
     /// <summary>
     /// 获取Forge安装参数
     /// </summary>
@@ -97,6 +96,42 @@ public static class Launch
 
         return jvm;
     }
+
+    private static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
+    {
+        var args = start.Split('\n');
+        var arglist = new List<string>();
+        for (int a = 1; a < args.Length; a++)
+        {
+            arglist.Add(args[a].Trim());
+        }
+
+        return PhoneCmdRun(obj, arglist, jvm1, env);
+    }
+
+    private static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
+    {
+        var res2 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
+        res2.StartInfo.RedirectStandardError = true;
+        res2.StartInfo.RedirectStandardInput = true;
+        res2.StartInfo.RedirectStandardOutput = true;
+        res2.OutputDataReceived += (a, b) =>
+        {
+            ColorMCCore.OnGameLog(obj, b.Data);
+        };
+        res2.ErrorDataReceived += (a, b) =>
+        {
+            ColorMCCore.OnGameLog(obj, b.Data);
+        };
+        res2.Start();
+        res2.BeginOutputReadLine();
+        res2.BeginErrorReadLine();
+
+        res2.WaitForExit();
+
+        return res2.ExitCode;
+    }
+#endif
 
     /// <summary>
     /// 替换参数
@@ -180,6 +215,7 @@ public static class Launch
             ColorMCCore.OnGameLog(obj, b.Data);
         };
 
+        //是否与游戏同时启动
         if (runsame)
         {
             p.Exited += (a, b) =>
@@ -196,41 +232,6 @@ public static class Launch
             p.WaitForExit();
             p.Dispose();
         }
-    }
-
-    private static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
-    {
-        var args = start.Split('\n');
-        var arglist = new List<string>();
-        for (int a = 1; a < args.Length; a++)
-        {
-            arglist.Add(args[a].Trim());
-        }
-
-        return PhoneCmdRun(obj, arglist, jvm1, env);
-    }
-
-    private static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
-    {
-        var res2 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
-        res2.StartInfo.RedirectStandardError = true;
-        res2.StartInfo.RedirectStandardInput = true;
-        res2.StartInfo.RedirectStandardOutput = true;
-        res2.OutputDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        res2.ErrorDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        res2.Start();
-        res2.BeginOutputReadLine();
-        res2.BeginErrorReadLine();
-
-        res2.WaitForExit();
-
-        return res2.ExitCode;
     }
 
     /// <summary>
@@ -273,6 +274,7 @@ public static class Launch
                 {
                     continue;
                 }
+                //检查是否需要使用
                 if (!CheckHelpers.CheckAllow(obj2.rules))
                 {
                     continue;
@@ -332,6 +334,7 @@ public static class Launch
                 obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
             return [.. forge.MinecraftArguments.Split(' ')];
         }
+        //使用OptiFine启动方式
         else if (obj.Loader == Loaders.OptiFine)
         {
             var version = VersionPath.GetVersion(obj.Version)!;
@@ -342,6 +345,7 @@ public static class Launch
                 "optifine.OptiFineTweaker"
             ];
         }
+        //使用自定义加载器
         else if (obj.Loader == Loaders.Custom)
         {
             return obj.GetLoaderGameArg();
@@ -578,7 +582,7 @@ public static class Launch
             jvm.AddRange(v2 ? obj.MakeV2JvmArg() : s_v1JvmArg);
         }
 
-        //auth
+        //外置登陆器相关
         if (login.AuthType == AuthType.Nide8)
         {
             jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
@@ -651,7 +655,7 @@ public static class Launch
             gameArg.AddRange(v2 ? obj.MakeV2GameArg() : obj.MakeV1GameArg());
         }
 #if !Phone
-        //window
+        //设置游戏窗口大小
         WindowSettingObj window;
         if (obj.Window == null)
         {
@@ -689,7 +693,7 @@ public static class Launch
 #endif
 
         //--quickPlayMultiplayer
-
+        //快速加入
         if (world != null)
         {
             gameArg.Add($"--quickPlaySingleplayer");
@@ -733,7 +737,7 @@ public static class Launch
             }
         }
 
-        //proxy
+        //游戏代理
         if (obj.ProxyHost != null)
         {
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
@@ -781,6 +785,7 @@ public static class Launch
             }
         }
 
+        //自定义游戏参数
         if (!string.IsNullOrWhiteSpace(obj.JvmArg?.GameArgs))
         {
             gameArg.AddRange(obj.JvmArg.GameArgs.Split("\n"));
@@ -1804,7 +1809,7 @@ public static class Launch
                         ColorMCCore.OnGameLog(obj, temp1);
                     }
                 }
-#else 
+#else
                 stopwatch.Start();
                 larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
                 start = ReplaceArg(obj, path!, arg, start);

@@ -54,6 +54,8 @@ public static class Names
     public const string NameAuthFile = "auth.json";
     public const string NameMavenFile = "maven.json";
     public const string NameLogFile = "logs.log";
+    public const string NameJavaFile = "java";
+    public const string NameJavawFile = "javaw.exe";
 
     public const string NameMinecraftKey = "minecraft";
     public const string NameLangKey1 = "minecraft/lang/";
@@ -94,4 +96,6 @@ public static class Names
     public const string NameDatOldExt = ".dat_old";
     public const string NameRioExt = ".rio";
     public const string NameMcaExt = ".mca";
+
+    public const string NameDefaultGroup = " ";
 }

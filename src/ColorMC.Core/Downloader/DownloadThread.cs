@@ -145,56 +145,39 @@ internal class DownloadThread
     /// <returns>是否完整</returns>
     private bool CheckFile(DownloadItemObj item)
     {
+        using var stream2 = PathHelper.OpenRead(item.Local)!;
+        item.State = DownloadItemState.Action;
+        item.Update(_index);
+
         if (!string.IsNullOrWhiteSpace(item.Md5))
         {
-            using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenMd5(stream2) == item.Md5)
+            if (HashHelper.GenMd5(stream2) != item.Md5)
             {
-                item.State = DownloadItemState.Action;
-                item.Update(_index);
-                stream2.Seek(0, SeekOrigin.Begin);
-                item.Later?.Invoke(stream2);
-
-                item.State = DownloadItemState.Done;
-                item.Update(_index);
-                _task.Done();
-                return true;
+                return false;
             }
         }
-        if (!string.IsNullOrWhiteSpace(item.Sha1))
+        else if (!string.IsNullOrWhiteSpace(item.Sha1))
         {
-            using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenSha1(stream2) == item.Sha1)
+            if (HashHelper.GenSha1(stream2) != item.Sha1)
             {
-                item.State = DownloadItemState.Action;
-                item.Update(_index);
-                stream2.Seek(0, SeekOrigin.Begin);
-                item.Later?.Invoke(stream2);
-
-                item.State = DownloadItemState.Done;
-                item.Update(_index);
-                _task.Done();
-                return true;
+                return false;
             }
         }
-        if (!string.IsNullOrWhiteSpace(item.Sha256))
+        else if(!string.IsNullOrWhiteSpace(item.Sha256))
         {
-            using var stream2 = PathHelper.OpenRead(item.Local)!;
-            if (HashHelper.GenSha256(stream2) == item.Sha256)
+            if (HashHelper.GenSha256(stream2) != item.Sha256)
             {
-                item.State = DownloadItemState.Action;
-                item.Update(_index);
-                stream2.Seek(0, SeekOrigin.Begin);
-                item.Later?.Invoke(stream2);
-
-                item.State = DownloadItemState.Done;
-                item.Update(_index);
-                _task.Done();
-                return true;
+                return false;
             }
         }
 
-        return false;
+        stream2.Seek(0, SeekOrigin.Begin);
+        item.Later?.Invoke(stream2);
+
+        item.State = DownloadItemState.Done;
+        item.Update(_index);
+        _task.Done();
+        return true;
     }
 
     /// <summary>

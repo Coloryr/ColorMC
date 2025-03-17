@@ -12,10 +12,19 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class AuthDatabase
 {
+    /// <summary>
+    /// 保存的账户
+    /// </summary>
     private static readonly ConcurrentDictionary<UserKeyObj, LoginObj> s_auths = new();
 
+    /// <summary>
+    /// 获取账户列表
+    /// </summary>
     public static Dictionary<UserKeyObj, LoginObj> Auths => new(s_auths);
 
+    /// <summary>
+    /// 账户数据库保存位置
+    /// </summary>
     private static string s_local;
 
     /// <summary>

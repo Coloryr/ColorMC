@@ -979,6 +979,7 @@ public static class DownloadItemHelper
 
         var list = new ConcurrentBag<DownloadItemObj>();
 
+        //解包自定义加载器内容
         async Task UnpackAsync(ForgeInstallObj obj1)
         {
             foreach (var item in obj1.Libraries)
@@ -987,6 +988,7 @@ public static class DownloadItemHelper
                 {
                     return;
                 }
+                //有原创下载地址
                 if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
                 {
                     string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
@@ -1012,6 +1014,7 @@ public static class DownloadItemHelper
                 }
                 else
                 {
+                    //在压缩包里面的文件
                     var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
                     if (item1 != null)
                     {
@@ -1037,6 +1040,7 @@ public static class DownloadItemHelper
             }
         }
 
+        //解包自定义加载器内容
         async Task Unpack1Async(ForgeLaunchObj obj1)
         {
             foreach (var item in obj1.Libraries)
@@ -1045,6 +1049,7 @@ public static class DownloadItemHelper
                 {
                     return;
                 }
+                //有原创下载地址
                 if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
                 {
                     string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
@@ -1070,6 +1075,7 @@ public static class DownloadItemHelper
                 }
                 else
                 {
+                    //在zip里面的内容
                     var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
                     if (item1 != null)
                     {

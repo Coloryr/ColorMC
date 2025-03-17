@@ -11,6 +11,9 @@ using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 添加游戏实例操作
+/// </summary>
 public static class AddGameHelper
 {
     /// <summary>
@@ -22,7 +25,7 @@ public static class AddGameHelper
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
         {
-            throw new Exception("Local is empty");
+            throw new ArgumentNullException(nameof(arg.Local));
         }
 
         GameSettingObj? game = null;
@@ -30,6 +33,7 @@ public static class AddGameHelper
         bool isfind = false;
         bool ismmc = false;
 
+        //是否为MMC实例
         if (GameHelper.IsMMCVersion(arg.Local))
         {
             try
@@ -53,6 +57,7 @@ public static class AddGameHelper
 
         if (!isfind)
         {
+            //是否为官启版本
             var files = Directory.GetFiles(arg.Local);
             foreach (var item in files)
             {
@@ -147,6 +152,7 @@ public static class AddGameHelper
                 return new();
             }
 
+            //导入ColorMC压缩包
             async Task<bool> ColorMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
@@ -204,6 +210,7 @@ public static class AddGameHelper
                 return true;
             }
 
+            //导入MMC压缩包
             async Task<bool> MMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
@@ -293,6 +300,7 @@ public static class AddGameHelper
                 return true;
             }
 
+            //导入HMCL压缩包
             async Task<bool> HMCL()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
@@ -388,6 +396,7 @@ public static class AddGameHelper
                 return true;
             }
 
+            //直接解压压缩包
             async Task<bool> Unzip()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);

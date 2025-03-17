@@ -11,6 +11,9 @@ using System.Text;
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 游戏处理
+/// </summary>
 public static class GameHelper
 {
     /// <summary>
@@ -271,6 +274,7 @@ public static class GameHelper
         }
     }
 
+#if Phone
     /// <summary>
     /// 手机替换运行库
     /// </summary>
@@ -317,7 +321,7 @@ public static class GameHelper
 
         return item;
     }
-
+#endif
     /// <summary>
     /// 解压native
     /// </summary>
@@ -347,39 +351,10 @@ public static class GameHelper
     }
 
     /// <summary>
-    /// 解压native
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <param name="stream">文件流</param>
-    public static void UnpackSave(string version, Stream stream)
-    {
-        using var zFile = new ZipFile(stream);
-        foreach (ZipEntry e in zFile)
-        {
-            if (e.Name.StartsWith("META-INF"))
-            {
-                continue;
-            }
-            else if (e.IsFile)
-            {
-                var file = Path.Combine(LibrariesPath.GetNativeDir(version), e.Name);
-                if (File.Exists(file))
-                {
-                    continue;
-                }
-
-                using var stream2 = zFile.GetInputStream(e);
-                PathHelper.WriteBytes(file, stream2);
-            }
-        }
-    }
-
-    /// <summary>
     /// MMC配置转ColorMC
     /// </summary>
     /// <param name="mmc">MMC储存</param>
     /// <param name="mmc1">MMC储存</param>
-    /// <param name="icon">图标输出</param>
     /// <returns>游戏设置</returns>
     public static MMCToColorMCRes ToColorMC(this MMCObj mmc, string mmc1)
     {
@@ -390,6 +365,7 @@ public static class GameHelper
             Loader = Loaders.Normal
         };
 
+        //判断游戏与加载器版本
         foreach (var item in mmc.Components)
         {
             if (item.Uid == "net.minecraft")
@@ -419,6 +395,7 @@ public static class GameHelper
         }
         game.JvmArg = new();
         game.Window = new();
+        //取出相关配置
         if (list.TryGetValue("Name", out var item1))
         {
             game.Name = item1;
@@ -547,6 +524,11 @@ public static class GameHelper
                 game.Loader = Loaders.Forge;
                 game.LoaderVersion = item.Version;
             }
+            else if (item.Id == "neoforge")
+            {
+                game.Loader = Loaders.NeoForge;
+                game.LoaderVersion = item.Version;
+            }
             else if (item.Id == "fabric")
             {
                 game.Loader = Loaders.Fabric;
@@ -670,6 +652,7 @@ public static class GameHelper
                 }
             }
 
+            //从运行库判断加载器类型
             foreach (var item in obj.Libraries)
             {
                 if (item.Name.Contains(Names.NameMinecraftForgeKey))

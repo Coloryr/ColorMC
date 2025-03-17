@@ -8,14 +8,29 @@ namespace ColorMC.Core.Utils;
 /// </summary>
 public static class Logs
 {
+    /// <summary>
+    /// 需要写入的日志列表
+    /// </summary>
     private static readonly ConcurrentBag<string> s_bags = [];
 
+    /// <summary>
+    /// 日志文件位置
+    /// </summary>
     private static string s_local;
+    /// <summary>
+    /// 日志文件流
+    /// </summary>
     private static StreamWriter s_writer;
+    /// <summary>
+    /// 日志写入线程
+    /// </summary>
     private static readonly Thread t_log = new(Run)
     {
         Name = "ColorMC Log"
     };
+    /// <summary>
+    /// 是否在运行中
+    /// </summary>
     private static bool s_run = false;
 
     /// <summary>

@@ -2,8 +2,16 @@
 
 namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 配置文件处理
+/// </summary>
 public static class ConfigHelper
 {
+    /// <summary>
+    /// 复制配置文件
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public static RunArgObj Copy(this RunArgObj arg)
     {
         return new()
@@ -23,6 +31,11 @@ public static class ConfigHelper
         };
     }
 
+    /// <summary>
+    /// 复制配置文件
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public static WindowSettingObj Copy(this WindowSettingObj arg)
     {
         return new()
@@ -33,6 +46,11 @@ public static class ConfigHelper
         };
     }
 
+    /// <summary>
+    /// 复制配置文件
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public static ServerObj Copy(this ServerObj arg)
     {
         return new()
@@ -42,6 +60,11 @@ public static class ConfigHelper
         };
     }
 
+    /// <summary>
+    /// 复制配置文件
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public static ProxyHostObj Copy(this ProxyHostObj arg)
     {
         return new()
@@ -53,6 +76,11 @@ public static class ConfigHelper
         };
     }
 
+    /// <summary>
+    /// 复制配置文件
+    /// </summary>
+    /// <param name="arg"></param>
+    /// <returns></returns>
     public static AdvanceJvmObj Copy(this AdvanceJvmObj arg)
     {
         return new()

@@ -20,30 +20,13 @@ public enum NbtType
     NbtLongArray = 12
 }
 
+/// <summary>
+/// Nbt压缩类型
+/// </summary>
 public enum ZipType
 {
     None,
     GZip,
     Zlib,
     LZ4
-}
-
-public static class NbtTypes
-{
-    public static readonly Dictionary<NbtType, Type> VALUES = new()
-    {
-        {NbtType.NbtEnd, typeof(NbtEnd) },
-        {NbtType.NbtByte, typeof(NbtByte) },
-        {NbtType.NbtShort, typeof(NbtShort) },
-        {NbtType.NbtInt, typeof(NbtInt) },
-        {NbtType.NbtLong, typeof(NbtLong) },
-        {NbtType.NbtFloat, typeof(NbtFloat) },
-        {NbtType.NbtDouble, typeof(NbtDouble) },
-        {NbtType.NbtByteArray, typeof(NbtByteArray) },
-        {NbtType.NbtString, typeof(NbtString) },
-        {NbtType.NbtList, typeof(NbtList) },
-        {NbtType.NbtCompound, typeof(NbtCompound) },
-        {NbtType.NbtIntArray, typeof(NbtIntArray) },
-        {NbtType.NbtLongArray, typeof(NbtLongArray) }
-    };
 }

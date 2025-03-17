@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Core.Helpers;
 
+/// <summary>
+/// 局域网游戏处理
+/// </summary>
 public static class LanGameHelper
 {
     public const string IPv4 = "224.0.2.60";

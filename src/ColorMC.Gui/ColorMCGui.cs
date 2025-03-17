@@ -188,13 +188,12 @@ public static class ColorMCGui
     {
 #if !Phone
         IsClose = true;
-        App.Close();
-        //s_lock.Close();
-        //s_lock.Dispose();
+        s_lock.Close();
+        s_lock.Dispose();
         Thread.Sleep(500);
         Process.Start($"{(SystemInfo.Os == OsType.Windows ?
                 "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
-        //App.Exit();
+        App.Exit();
 #endif
     }
 
