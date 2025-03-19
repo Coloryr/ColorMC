@@ -4,6 +4,9 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
+/// <summary>
+/// 导出客户端
+/// </summary>
 public partial class BuildPackModel : MenuModel
 {
     private readonly string _useName;

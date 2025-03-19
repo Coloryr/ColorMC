@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加整合包
+/// </summary>
 public partial class AddModPackControlModel : TopModel, IAddWindow
 {
     /// <summary>
@@ -119,16 +122,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         _useName = ToString() ?? "AddModPackControlModel";
     }
 
-    partial void OnPageDownloadChanged(int? value)
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        LoadVersion();
-    }
-
+    /// <summary>
+    /// 分类改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnCategorieChanged(int value)
     {
         if (_load)
@@ -139,6 +136,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
+    /// <summary>
+    /// 排序改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnSortTypeChanged(int value)
     {
         if (_load)
@@ -149,6 +150,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
+    /// <summary>
+    /// 游戏版本改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameVersionChanged(string? value)
     {
         if (_load)
@@ -161,6 +166,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
+    /// <summary>
+    /// 页数改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnPageChanged(int? value)
     {
         if (_load)
@@ -169,6 +178,10 @@ public partial class AddModPackControlModel : TopModel, IAddWindow
         Load();
     }
 
+    /// <summary>
+    /// 下载源改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnSourceChanged(int value)
     {
         LoadSourceData();

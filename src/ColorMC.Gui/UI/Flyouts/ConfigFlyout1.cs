@@ -8,6 +8,10 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 配置文件编辑页面
+/// Nbt标签右键菜单
+/// </summary>
 public class ConfigFlyout1
 {
     private readonly TreeDataGridRowSelectionModel<NbtNodeModel> _list;

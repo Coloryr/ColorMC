@@ -4,6 +4,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 下载项目
+/// 右键菜单
+/// </summary>
 public class UrlFlyout
 {
     public UrlFlyout(Control con, string? url, string? url1)

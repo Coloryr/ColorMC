@@ -94,17 +94,7 @@ public static class JoystickInput
     /// <returns></returns>
     private static unsafe string BytePointerToString(byte* bytePointer)
     {
-        byte* tempPointer = bytePointer;
-        while (*tempPointer != 0)
-        {
-            tempPointer++;
-        }
-        int length = (int)(tempPointer - bytePointer);
-        byte[] byteArray = new byte[length];
-        Marshal.Copy((nint)bytePointer, byteArray, 0, length);
-
-        string result = Encoding.Default.GetString(byteArray);
-        return result;
+        return Marshal.PtrToStringAuto(new nint(bytePointer)) ?? "";
     }
 
     /// <summary>

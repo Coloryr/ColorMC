@@ -7,6 +7,10 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 主界面
+/// 多选后右键菜单
+/// </summary>
 public class MainFlyout2
 {
     public MainFlyout2(Control con, GameGroupModel model, IMutTop top)

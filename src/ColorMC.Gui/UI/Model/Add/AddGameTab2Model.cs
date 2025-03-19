@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏实例
+/// 导入压缩包
+/// </summary>
 public partial class AddGameModel
 {
     /// <summary>

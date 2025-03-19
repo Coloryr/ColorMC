@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏实例
+/// 从头新建
+/// </summary>
 public partial class AddGameModel
 {
     /// <summary>
@@ -40,6 +44,9 @@ public partial class AddGameModel
     /// </summary>
     [ObservableProperty]
     private string? _loaderVersion;
+    /// <summary>
+    /// 自定义加载器位置
+    /// </summary>
     [ObservableProperty]
     private string? _loaderLocal;
 
@@ -48,10 +55,19 @@ public partial class AddGameModel
     /// </summary>
     [ObservableProperty]
     private bool _enableLoader;
+    /// <summary>
+    /// 后加载原版运行库
+    /// </summary>
     [ObservableProperty]
     private bool _offLib;
+    /// <summary>
+    /// 自定义加载器
+    /// </summary>
     [ObservableProperty]
     private bool _customLoader;
+    /// <summary>
+    /// 是否正在加载中
+    /// </summary>
     [ObservableProperty]
     private bool _isLoad;
 
@@ -71,6 +87,10 @@ public partial class AddGameModel
     /// </summary>
     private readonly List<Loaders> _loaderTypeList = [];
 
+    /// <summary>
+    /// 正在加载状态改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsLoadChanged(bool value)
     {
         if (value)
@@ -116,6 +136,10 @@ public partial class AddGameModel
         GameVersionUpdate();
     }
 
+    /// <summary>
+    /// 选择自定义加载器
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SelectLoader()
     {
@@ -149,94 +173,54 @@ public partial class AddGameModel
         CustomLoader = false;
         var loader = _loaderTypeList[LoaderType];
         LoaderVersionList.Clear();
+        //无加载器不需要获取
+        if (loader == Loaders.Normal)
+        {
+            return;
+        }
+        else if (loader == Loaders.Custom)
+        {
+            CustomLoader = true;
+            return;
+        }
+        //根据加载器类型获取版本信息
+        List<string>? list = null;
+        IsLoad = true;
         switch (loader)
         {
-            case Loaders.Normal:
-                break;
             case Loaders.Forge:
-                IsLoad = true;
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info1");
-                var list = await WebBinding.GetForgeVersion(Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.Clear();
-                LoaderVersionList.AddRange(list);
+                list = await WebBinding.GetForgeVersion(Version);
                 break;
             case Loaders.NeoForge:
-                IsLoad = true;
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info19");
                 list = await WebBinding.GetNeoForgeVersion(Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.Clear();
-                LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Fabric:
-                IsLoad = true;
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info2");
                 list = await WebBinding.GetFabricVersion(Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.Clear();
-                LoaderVersionList.AddRange(list);
                 break;
             case Loaders.Quilt:
-                IsLoad = true;
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info3");
                 list = await WebBinding.GetQuiltVersion(Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.Clear();
-                LoaderVersionList.AddRange(list);
                 break;
             case Loaders.OptiFine:
-                IsLoad = true;
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info16");
                 list = await WebBinding.GetOptifineVersion(Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.Clear();
-                LoaderVersionList.AddRange(list);
-                break;
-            case Loaders.Custom:
-                CustomLoader = true;
                 break;
         }
+
+        IsLoad = false;
+        Model.SubTitle = "";
+        if (list == null)
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
+            return;
+        }
+
+        EnableLoader = true;
+        LoaderVersionList.Clear();
+        LoaderVersionList.AddRange(list);
 
         Model.Notify(App.Lang("AddGameWindow.Tab1.Info22"));
     }
@@ -248,6 +232,7 @@ public partial class AddGameModel
     [RelayCommand]
     public async Task AddGame()
     {
+        //检测输入内容合法性
         var name = Name;
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -290,6 +275,7 @@ public partial class AddGameModel
         }
         else
         {
+            //自定义加载器还需要加载其他信息
             if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
             {
                 var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
@@ -426,6 +412,4 @@ public partial class AddGameModel
         Model.ProgressClose();
         return Model.ShowAsync(state);
     }
-
-
 }

@@ -1,5 +1,6 @@
 ﻿using Avalonia.Input;
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -80,7 +81,7 @@ public partial class GameGroupModel : TopModel
             var model1 = new GameItemModel(Model, Top, item);
             Items.Add(item.UUID, model1);
         }
-        _addItem = new(Model, Key == InstancesPath.DefaultGroup ? null : Key);
+        _addItem = new(Model, Key == Names.NameDefaultGroup ? null : Key);
         Task.Run(() =>
         {
             bool res = false;

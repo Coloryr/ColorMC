@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 namespace ColorMC.Gui.Net.Apis;
 
 /// <summary>
-/// ColorMC相关API
+/// ColorMC云同步相关API
 /// </summary>
 public static class ColorMCCloudAPI
 {
@@ -35,12 +35,27 @@ public static class ColorMCCloudAPI
     {
         Timeout = Timeout.InfiniteTimeSpan
     };
-
+    
+    /// <summary>
+    /// 服务器地址
+    /// </summary>
     public static string Server { get; set; }
+    /// <summary>
+    /// 服务器键
+    /// </summary>
     public static string Serverkey { get; set; }
+    /// <summary>
+    /// 客户端ID
+    /// </summary>
     public static string Clientkey { get; set; }
 
+    /// <summary>
+    /// 云同步信息
+    /// </summary>
     public static string Info { get; private set; } = App.Lang("GameCloudUtils.Error2");
+    /// <summary>
+    /// 是否已连接云同步服务器
+    /// </summary>
     public static bool Connect { get; private set; }
 
     /// <summary>
@@ -720,6 +735,12 @@ public static class ColorMCCloudAPI
         return -1;
     }
 
+    /// <summary>
+    /// 获取上游Frp
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public static (string?, DownloadItemObj?) BuildFrpItem(string key, FrpDownloadObj value)
     {
         string data1;

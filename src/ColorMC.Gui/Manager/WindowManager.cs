@@ -1123,16 +1123,30 @@ public static class WindowManager
         SaveState();
     }
 
+    /// <summary>
+    /// 获取窗口ID
+    /// </summary>
+    /// <typeparam name="T">窗口类型</typeparam>
+    /// <returns>ID</returns>
     public static string GetUseName<T>() where T : BaseUserControl
     {
         return typeof(T).FullName ?? typeof(T).Name;
     }
 
+    /// <summary>
+    /// 获取窗口ID
+    /// </summary>
+    /// <typeparam name="T">窗口类型</typeparam>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>ID</returns>
     public static string GetUseName<T>(GameSettingObj obj) where T : BaseUserControl
     {
         return typeof(T).FullName ?? typeof(T).Name + ":" + obj.UUID;
     }
 
+    /// <summary>
+    /// 更新窗口图标
+    /// </summary>
     public static void ReloadIcon()
     {
         foreach (var item in _windows)
@@ -1141,7 +1155,11 @@ public static class WindowManager
         }
     }
 
-    public static void CloseWindow(AMultiWindow window)
+    /// <summary>
+    /// 窗口关闭
+    /// </summary>
+    /// <param name="window"></param>
+    public static void ClosedWindow(AMultiWindow window)
     {
         if (LastWindow == window)
         {
@@ -1151,7 +1169,11 @@ public static class WindowManager
         _windows.Remove(window);
     }
 
-    public static void Activated(Window window)
+    /// <summary>
+    /// 窗口激活时
+    /// </summary>
+    /// <param name="window">窗口</param>
+    public static void ActivatedWindow(Window window)
     {
         LastWindow = window;
     }

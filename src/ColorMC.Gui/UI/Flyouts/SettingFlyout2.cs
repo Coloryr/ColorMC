@@ -5,6 +5,10 @@ using ColorMC.Gui.UI.Model.Setting;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 设置页面
+/// 手柄按钮右键菜单
+/// </summary>
 public class SettingFlyout2
 {
     public SettingFlyout2(Control con, SettingModel model, InputButtonModel data)

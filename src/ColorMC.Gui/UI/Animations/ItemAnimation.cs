@@ -15,6 +15,7 @@ public static class ItemAnimation
 {
     public static Animation Make()
     {
+        //从下到上滑动进入动画
         return new Animation
         {
             FillMode = FillMode.Forward,

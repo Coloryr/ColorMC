@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏实例
+/// </summary>
 public partial class AddGameModel : TopModel
 {
     public const string NameTab1 = ":1";
@@ -41,27 +44,43 @@ public partial class AddGameModel : TopModel
     /// </summary>
     [ObservableProperty]
     private bool _cloudEnable;
+    /// <summary>
+    /// 是否为主界面
+    /// </summary>
     [ObservableProperty]
     private bool _main = true;
 
-    public bool IsPhone { get; }
+#if Phone
+    /// <summary>
+    /// 是否为手机模式
+    /// </summary>
+    public bool IsPhone => true;
+#else
+    /// <summary>
+    /// 是否为手机模式
+    /// </summary>
+    public bool IsPhone => false;
+#endif
 
+    /// <summary>
+    /// 添加到的分组
+    /// </summary>
     public string? DefaultGroup { get; set; }
 
     /// <summary>
     /// 是否在加载中
     /// </summary>
     private bool _load = false;
-
+    /// <summary>
+    /// 是否继续添加
+    /// </summary>
     private bool _keep = false;
 
     public AddGameModel(BaseModel model) : base(model)
     {
         GroupList.Clear();
         GroupList.AddRange(GameBinding.GetGameGroups().Keys);
-#if Phone
-        IsPhone = true;
-#endif
+
         GameVersionUpdate();
 
         CloudEnable = ColorMCCloudAPI.Connect;
@@ -99,6 +118,10 @@ public partial class AddGameModel : TopModel
         Group = res.Text1;
     }
 
+    /// <summary>
+    /// 转到菜单
+    /// </summary>
+    /// <param name="arg">目标菜单</param>
     [RelayCommand]
     public void GoTab(object? arg)
     {
@@ -107,6 +130,9 @@ public partial class AddGameModel : TopModel
         OnPropertyChanged(arg as string);
     }
 
+    /// <summary>
+    /// 转到添加整合包
+    /// </summary>
     [RelayCommand]
     public void GoModPack()
     {
@@ -121,6 +147,9 @@ public partial class AddGameModel : TopModel
         WindowManager.ShowAddModPack();
     }
 
+    /// <summary>
+    /// 转到添加云同步实例
+    /// </summary>
     [RelayCommand]
     public void GoCloud()
     {
@@ -129,6 +158,9 @@ public partial class AddGameModel : TopModel
         GameCloudDownload();
     }
 
+    /// <summary>
+    /// 转到添加服务器实例
+    /// </summary>
     [RelayCommand]
     public void GoServer()
     {
@@ -137,6 +169,9 @@ public partial class AddGameModel : TopModel
         ServerPackDownload();
     }
 
+    /// <summary>
+    /// 转到下载实例
+    /// </summary>
     [RelayCommand]
     public void GoDownload()
     {
@@ -145,6 +180,9 @@ public partial class AddGameModel : TopModel
         OnPropertyChanged(NameTab4);
     }
 
+    /// <summary>
+    /// 返回主界面
+    /// </summary>
     public void BackMain()
     {
         Model.PopBack();
@@ -152,12 +190,18 @@ public partial class AddGameModel : TopModel
         Main = true;
     }
 
+    /// <summary>
+    /// 转到下载实例
+    /// </summary>
     public void BackDownload()
     {
         Model.PopBack();
         OnPropertyChanged(NameTab4);
     }
 
+    /// <summary>
+    /// 返回
+    /// </summary>
     private void Back()
     {
         Model.PopBack();

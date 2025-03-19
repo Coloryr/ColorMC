@@ -5,9 +5,14 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 游戏实例
+/// 光影包右键菜单
+/// </summary>
 public class GameEditFlyout6
 {
     private readonly GameEditModel _obj;
+
     public GameEditFlyout6(Control con, GameEditModel obj)
     {
         _obj = obj;

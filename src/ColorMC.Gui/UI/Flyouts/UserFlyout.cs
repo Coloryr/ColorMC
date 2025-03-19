@@ -5,6 +5,10 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 用户界面
+/// 账户右键菜单
+/// </summary>
 public class UserFlyout
 {
     private readonly UserDisplayModel _obj;

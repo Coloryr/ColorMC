@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏资源
+/// 高清修复文件列表
+/// </summary>
 public partial class AddControlModel : IAddOptifineWindow
 {
     /// <summary>

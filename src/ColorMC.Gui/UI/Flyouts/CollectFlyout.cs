@@ -5,6 +5,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 收藏页面
+/// 收藏项目右键
+/// </summary>
 public class CollectFlyout
 {
     public CollectFlyout(Control con, CollectItemModel model)

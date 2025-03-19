@@ -7,6 +7,9 @@ using System.Globalization;
 
 namespace ColorMC.Gui.UI.Converters;
 
+/// <summary>
+/// WrapPanel样板跟随窗口大小切换
+/// </summary>
 public class MinModeToPanelTemplateConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

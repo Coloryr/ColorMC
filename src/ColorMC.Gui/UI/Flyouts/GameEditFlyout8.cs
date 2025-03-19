@@ -9,6 +9,10 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 游戏实例
+/// 存档右键菜单
+/// </summary>
 public class GameEditFlyout8
 {
     public GameEditFlyout8(Control con, IList list, WorldModel model)

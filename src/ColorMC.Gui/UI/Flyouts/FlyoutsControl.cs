@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 右键菜单
+/// </summary>
 public class FlyoutsControl
 {
     public FlyoutsControl(ICollection<FlyoutMenuObj> list, Control con)
@@ -23,6 +26,12 @@ public class FlyoutsControl
         return list1;
     }
 
+    /// <summary>
+    /// 创建一个菜单项目
+    /// </summary>
+    /// <param name="flyout">上层</param>
+    /// <param name="item">菜单项目</param>
+    /// <returns></returns>
     private static MenuItem BuildItem(MenuFlyout flyout, FlyoutMenuObj item)
     {
         var button = new MenuItem()

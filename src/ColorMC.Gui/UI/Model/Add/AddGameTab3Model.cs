@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏实例
+/// 导入文件夹
+/// </summary>
 public partial class AddGameModel
 {
     /// <summary>
@@ -160,6 +164,10 @@ public partial class AddGameModel
         }
     }
 
+    /// <summary>
+    /// 设置选择的路径
+    /// </summary>
+    /// <param name="res"></param>
     public async void SetPath(string res)
     {
         SelectPath = res;
@@ -167,6 +175,11 @@ public partial class AddGameModel
         await RefashFiles();
     }
 
+    /// <summary>
+    /// 导入实例
+    /// </summary>
+    /// <param name="list">路径列表</param>
+    /// <returns></returns>
     private async Task Import(List<string> list)
     {
         BaseBinding.IsAddGames = true;
@@ -201,6 +214,12 @@ public partial class AddGameModel
         }
     }
 
+    /// <summary>
+    /// 更新状态栏
+    /// </summary>
+    /// <param name="text">显示的文本</param>
+    /// <param name="size">当前进度</param>
+    /// <param name="all">总体数量</param>
     private void Update(string text, int size, int all)
     {
         if (text.Length > 40)
