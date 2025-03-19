@@ -15,6 +15,9 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加Java
+/// </summary>
 public partial class AddJavaControlModel : TopModel
 {
     /// <summary>
@@ -96,6 +99,10 @@ public partial class AddJavaControlModel : TopModel
         Model.SetChoiseCall(_useName, Load);
     }
 
+    /// <summary>
+    /// Java类型切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnJavaTypeChanged(string value)
     {
         _load = true;
@@ -103,6 +110,10 @@ public partial class AddJavaControlModel : TopModel
         Load();
     }
 
+    /// <summary>
+    /// 进制切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnArchChanged(string value)
     {
         if (_load)
@@ -113,6 +124,10 @@ public partial class AddJavaControlModel : TopModel
         Select();
     }
 
+    /// <summary>
+    /// 系统切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnSystemChanged(string value)
     {
         if (_load)
@@ -130,6 +145,10 @@ public partial class AddJavaControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 主版本切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnVersionChanged(string value)
     {
         if (_load)
@@ -170,7 +189,7 @@ public partial class AddJavaControlModel : TopModel
                 //根据系统自动选中
                 if (SystemInfo.Os == OsType.Windows)
                 {
-                    var item = res.Os.FirstOrDefault(item => item.Equals("windows", StringComparison.CurrentCultureIgnoreCase));
+                    var item = res.Os.FirstOrDefault(item => item.Equals(GuiNames.NameWindows, StringComparison.CurrentCultureIgnoreCase));
                     if (item != null)
                     {
                         System = item;
@@ -178,7 +197,7 @@ public partial class AddJavaControlModel : TopModel
                 }
                 else if (SystemInfo.Os == OsType.Linux)
                 {
-                    var item = res.Os.FirstOrDefault(item => item.Equals("linux", StringComparison.CurrentCultureIgnoreCase));
+                    var item = res.Os.FirstOrDefault(item => item.Equals(GuiNames.NameLinux, StringComparison.CurrentCultureIgnoreCase));
                     if (item != null)
                     {
                         System = item;
@@ -186,7 +205,7 @@ public partial class AddJavaControlModel : TopModel
                 }
                 else if (SystemInfo.Os == OsType.MacOS)
                 {
-                    var item = res.Os.FirstOrDefault(item => item.Equals("macos", StringComparison.CurrentCultureIgnoreCase));
+                    var item = res.Os.FirstOrDefault(item => item.Equals(GuiNames.NameMacos, StringComparison.CurrentCultureIgnoreCase));
                     if (item != null)
                     {
                         System = item;
@@ -216,8 +235,8 @@ public partial class AddJavaControlModel : TopModel
                 {
                     if (SystemInfo.Is64Bit)
                     {
-                        var item = res.Arch.FirstOrDefault(item => item.Equals("aarch64", StringComparison.CurrentCultureIgnoreCase)
-                        || item.Equals("arm_64", StringComparison.CurrentCultureIgnoreCase));
+                        var item = res.Arch.FirstOrDefault(item => item.Equals(GuiNames.NameAarch64, StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals(GuiNames.NameArm64, StringComparison.CurrentCultureIgnoreCase));
                         if (item != null)
                         {
                             Arch = item;
@@ -225,8 +244,8 @@ public partial class AddJavaControlModel : TopModel
                     }
                     else
                     {
-                        var item = res.Arch.FirstOrDefault(item => item.Equals("arm", StringComparison.CurrentCultureIgnoreCase)
-                        || item.Equals("arm_32", StringComparison.CurrentCultureIgnoreCase));
+                        var item = res.Arch.FirstOrDefault(item => item.Equals(GuiNames.NameArm32, StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals(GuiNames.NameArm, StringComparison.CurrentCultureIgnoreCase));
                         if (item != null)
                         {
                             Arch = item;
@@ -237,8 +256,8 @@ public partial class AddJavaControlModel : TopModel
                 {
                     if (SystemInfo.Is64Bit)
                     {
-                        var item = res.Arch.FirstOrDefault(item => item.Equals("x64", StringComparison.CurrentCultureIgnoreCase)
-                        || item.Equals("x86_64", StringComparison.CurrentCultureIgnoreCase));
+                        var item = res.Arch.FirstOrDefault(item => item.Equals(GuiNames.NameX86_64, StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals(GuiNames.NameX64, StringComparison.CurrentCultureIgnoreCase));
                         if (item != null)
                         {
                             Arch = item;
@@ -246,8 +265,8 @@ public partial class AddJavaControlModel : TopModel
                     }
                     else
                     {
-                        var item = res.Arch.FirstOrDefault(item => item.Equals("x32", StringComparison.CurrentCultureIgnoreCase)
-                        || item.Equals("x86_32", StringComparison.CurrentCultureIgnoreCase));
+                        var item = res.Arch.FirstOrDefault(item => item.Equals(GuiNames.NameX32, StringComparison.CurrentCultureIgnoreCase)
+                        || item.Equals(GuiNames.NameX86_32, StringComparison.CurrentCultureIgnoreCase));
                         if (item != null)
                         {
                             Arch = item;

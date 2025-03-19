@@ -7,6 +7,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 游戏实例
+/// 资源包右键菜单
+/// </summary>
 public class GameEditFlyout3
 {
     private readonly ResourcepackObj _obj;

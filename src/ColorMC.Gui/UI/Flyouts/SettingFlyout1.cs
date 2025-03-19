@@ -8,6 +8,10 @@ using System.Linq;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 启动器设置
+/// Java右键菜单
+/// </summary>
 public class SettingFlyout1
 {
     public SettingFlyout1(Control con, SettingModel model, IList list)

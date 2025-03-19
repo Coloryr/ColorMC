@@ -5,6 +5,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 云同步页面
+/// 存档右键菜单
+/// </summary>
 public class GameCloudFlyout1
 {
     private readonly WorldCloudModel _model;

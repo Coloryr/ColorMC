@@ -34,4 +34,16 @@ public static class GuiNames
     public const string NameColorMCCloudKey = "cloudkey:";
 
     public const string NameSakuraFrpVersion = "0.51.0-sakura-9.3";
+
+    public const string NameWindows = "windows";
+    public const string NameLinux = "linux";
+    public const string NameMacos = "macos";
+    public const string NameAarch64 = "aarch64";
+    public const string NameArm64 = "arm_64";
+    public const string NameArm32 = "arm_32";
+    public const string NameArm = "arm";
+    public const string NameX86_64 = "x86_64";
+    public const string NameX86_32 = "x86_32";
+    public const string NameX64 = "x64";
+    public const string NameX32 = "x32";
 }

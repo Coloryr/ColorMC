@@ -62,6 +62,10 @@ public partial class AddModPackControlModel
     [ObservableProperty]
     private bool _enableNextPageDownload;
 
+    /// <summary>
+    /// 游戏列表显示
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnDisplayVersionChanged(bool value)
     {
         if (value)
@@ -77,6 +81,24 @@ public partial class AddModPackControlModel
         }
     }
 
+    /// <summary>
+    /// 页数改变
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnPageDownloadChanged(int? value)
+    {
+        if (_load)
+        {
+            return;
+        }
+
+        LoadVersion();
+    }
+
+    /// <summary>
+    /// 游戏版本改变
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameVersionDownloadChanged(string? value)
     {
         if (_load)

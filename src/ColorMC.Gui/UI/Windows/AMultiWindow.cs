@@ -191,7 +191,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void AMultiWindow_Closed(object? sender, EventArgs e)
     {
-        WindowManager.CloseWindow(this);
+        WindowManager.ClosedWindow(this);
 
         ImageManager.BGUpdate -= AMultiWindow_PicUpdate;
 
@@ -205,7 +205,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
     private void AMultiWindow_Activated(object? sender, EventArgs e)
     {
-        WindowManager.Activated(this);
+        WindowManager.ActivatedWindow(this);
     }
 
     private void AMultiWindow_PicUpdate()

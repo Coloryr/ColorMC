@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// Live2d控件
+/// 右键菜单
+/// </summary>
 public class Live2DFlyout
 {
     public Live2DFlyout(Live2dRender live2d)

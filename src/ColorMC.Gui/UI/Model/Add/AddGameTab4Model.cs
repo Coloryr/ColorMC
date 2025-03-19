@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏实例
+/// 云同步下载
+/// </summary>
 public partial class AddGameModel
 {
     /// <summary>

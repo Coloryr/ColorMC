@@ -7,6 +7,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 游戏实例
+/// 存档右键菜单
+/// </summary>
 public class GameEditFlyout2
 {
     private readonly WorldModel _model;

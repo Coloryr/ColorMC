@@ -850,7 +850,11 @@ public static class BaseBinding
                     list.Add(new()
                     {
                         Name = item.Name,
+#if Phone
                         Local = item.Path.Replace(JvmPath.BaseDir, "")
+#else
+                        Local = item.Path.Replace(ColorMCGui.BaseDir, "")
+#endif
                     });
                 }
 

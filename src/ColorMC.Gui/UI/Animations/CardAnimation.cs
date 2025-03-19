@@ -16,6 +16,7 @@ public static class CardAnimation
 {
     private static Animation Make()
     {
+        //从右到左滑动进入
         return new Animation()
         {
             FillMode = FillMode.Forward,

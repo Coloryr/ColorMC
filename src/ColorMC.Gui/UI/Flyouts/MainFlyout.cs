@@ -10,6 +10,10 @@ using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
+/// <summary>
+/// 主界面
+/// 游戏实例右键菜单
+/// </summary>
 public class MainFlyout
 {
     public MainFlyout(Control con, GameItemModel obj)

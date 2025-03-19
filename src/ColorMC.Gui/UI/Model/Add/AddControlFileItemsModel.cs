@@ -17,6 +17,10 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
+/// <summary>
+/// 添加游戏资源
+/// 文件列表
+/// </summary>
 public partial class AddControlModel
 {
     /// <summary>
@@ -452,15 +456,15 @@ public partial class AddControlModel
 
                 if (list.List!.Count == 0)
                 {
-                    res = await WebBinding.DownloadMod(Obj, new List<DownloadModArg>()
-                    {
+                    res = await WebBinding.DownloadMod(Obj,
+                    [
                         new()
                         {
                             Item = list.Item!,
                             Info = list.Info!,
                             Old = await Obj.ReadMod(mod)
                         }
-                    });
+                    ]);
                     IsDownload = false;
                 }
                 else

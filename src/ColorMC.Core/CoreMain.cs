@@ -155,6 +155,7 @@ public static class ColorMCCore
     /// </summary>
     public static event Action<GameSettingObj>? InstanceIconChange;
 
+#if Phone
     /// <summary>
     /// 手机端启动
     /// </summary>
@@ -183,6 +184,7 @@ public static class ColorMCCore
     public static Func<GameSettingObj, JavaInfo, string, List<string>,
         Dictionary<string, string>, Process> PhoneJvmRun
     { internal get; set; }
+#endif
 
     /// <summary>
     /// 是否为新运行
