@@ -1,7 +1,7 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+﻿using System;
+using System.Collections.Generic;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -66,20 +66,4 @@ public partial class FileModVersionModel : SelectItemModel
         SelectVersion = 0;
         Optional = opt;
     }
-}
-
-/// <summary>
-/// 模组升级项目
-/// </summary>
-/// <param name="obj"></param>
-/// <param name="name"></param>
-/// <param name="version"></param>
-/// <param name="items"></param>
-public partial class ModUpgradeModel(ModObj obj, string name, List<string> version, List<DownloadModArg> items)
-    : FileModVersionModel(name, version, items, false)
-{
-    /// <summary>
-    /// 模组信息
-    /// </summary>
-    public ModObj Obj => obj;
 }

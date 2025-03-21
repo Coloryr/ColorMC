@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
+/// <summary>
+/// 导出客户端
+/// 游戏实例列表
+/// </summary>
 public partial class BuildPackModel
 {
     /// <summary>
@@ -15,14 +19,22 @@ public partial class BuildPackModel
 
     private GamesPage _gamesPage;
 
-    public void LoadGames()
+    /// <summary>
+    /// 加载游戏列表
+    /// </summary>
+    private void LoadGames()
     {
         _gamesPage = new();
         Games = _gamesPage.Source;
     }
 
-    public List<string> GetSelectItems(bool getdir = false)
+    /// <summary>
+    /// 获取选择的游戏文件
+    /// </summary>
+    /// <param name="getdir"></param>
+    /// <returns></returns>
+    public List<string> GetSelectItems()
     {
-        return _gamesPage.GetSelectItems(getdir);
+        return _gamesPage.GetSelectItems();
     }
 }

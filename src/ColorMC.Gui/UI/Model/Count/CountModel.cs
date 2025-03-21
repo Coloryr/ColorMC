@@ -107,6 +107,9 @@ public partial class CountModel : TopModel
     /// </summary>
     private readonly List<GameSettingObj> _list = [];
 
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     public ObservableCollection<string> Game { get; init; } = [];
 
     public CountModel(BaseModel model) : base(model)
@@ -124,6 +127,7 @@ public partial class CountModel : TopModel
         }
         else
         {
+            //加载统计数据
             _count = data.LaunchCount;
             _countDone = data.LaunchDoneCount;
             _countError = data.LaunchErrorCount;
@@ -135,6 +139,7 @@ public partial class CountModel : TopModel
                                         select item).Count();
             _time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
+            //累计统计时间
             foreach (var item in data.GameRuns)
             {
                 foreach (var item1 in item.Value)
@@ -161,9 +166,13 @@ public partial class CountModel : TopModel
         _gameTime = _gameTime1 = "0";
     }
 
+    /// <summary>
+    /// 显示日期修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnDateChanged(DateTime value)
     {
-        var data = Utils.GameCountUtils.Count;
+        var data = GameCountUtils.Count;
         if (data == null)
         {
             DateCount = 0;
@@ -179,9 +188,13 @@ public partial class CountModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 显示日期修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnDate1Changed(DateTime value)
     {
-        var data = Utils.GameCountUtils.Count;
+        var data = GameCountUtils.Count;
         if (data == null)
         {
             TimeDate = "";
@@ -206,6 +219,10 @@ public partial class CountModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 游戏实例选中修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameIndexChanged(int value)
     {
         GameCount = GameCountError = GameCountDone = GameCountToday = 0;

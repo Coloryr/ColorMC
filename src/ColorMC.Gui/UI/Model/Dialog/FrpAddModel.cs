@@ -55,11 +55,6 @@ public partial class NetFrpAddModel : ObservableObject
     [ObservableProperty]
     private int? _port = 7000;
 
-    /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool IsCancel { get; private set; }
-
     public NetFrpAddModel()
     {
 
@@ -80,15 +75,13 @@ public partial class NetFrpAddModel : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        IsCancel = false;
-        DialogHost.Close(NetFrpModel.NameCon1);
+        DialogHost.Close(NetFrpModel.NameCon1, true);
     }
 
     [RelayCommand]
     public void Cancel()
     {
-        IsCancel = true;
-        DialogHost.Close(NetFrpModel.NameCon1);
+        DialogHost.Close(NetFrpModel.NameCon1, false);
     }
 
     public FrpSelfObj Build()

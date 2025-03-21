@@ -21,11 +21,6 @@ public partial class Info3Model(string? name) : ObservableObject
     public Action? ChoiseCall;
 
     /// <summary>
-    /// 是否为取消
-    /// </summary>
-    public bool IsCancel;
-
-    /// <summary>
     /// 显示文本1
     /// </summary>
     [ObservableProperty]
@@ -113,10 +108,7 @@ public partial class Info3Model(string? name) : ObservableObject
             Call = null;
             return;
         }
-
-        IsCancel = true;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, false);
     }
 
     /// <summary>
@@ -125,8 +117,6 @@ public partial class Info3Model(string? name) : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        IsCancel = false;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, true);
     }
 }

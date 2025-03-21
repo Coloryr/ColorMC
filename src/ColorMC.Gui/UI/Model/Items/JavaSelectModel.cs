@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 可选中Java列表项目
+/// </summary>
 public partial class JavaSelectModel : JavaDisplayModel
 {
     /// <summary>

@@ -35,6 +35,9 @@ public partial class NbtDialogFindModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private int? _posY = 0;
+    /// <summary>
+    /// 方块Z坐标
+    /// </summary>
     [ObservableProperty]
     private int? _posZ = 0;
     /// <summary>
@@ -52,10 +55,6 @@ public partial class NbtDialogFindModel : ObservableObject
     /// 是否为实体
     /// </summary>
     public bool IsEntity;
-    /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool Cancel;
 
     private readonly string _useName;
 
@@ -82,18 +81,21 @@ public partial class NbtDialogFindModel : ObservableObject
         PosChange();
     }
 
+    /// <summary>
+    /// 取消
+    /// </summary>
     [RelayCommand]
     public void FindCancel()
     {
-        Cancel = true;
-        DialogHost.Close(_useName);
+        DialogHost.Close(_useName, false);
     }
-
+    /// <summary>
+    /// 同意
+    /// </summary>
     [RelayCommand]
     public void FindStart()
     {
-        Cancel = false;
-        DialogHost.Close(_useName);
+        DialogHost.Close(_useName, true);
     }
 
     /// <summary>
@@ -107,6 +109,9 @@ public partial class NbtDialogFindModel : ObservableObject
         PosZ = 0;
     }
 
+    /// <summary>
+    /// 坐标修改，更改显示
+    /// </summary>
     private void PosChange()
     {
         var pos = ChunkUtils.PosToChunk(new(PosX ?? 0, PosZ ?? 0));

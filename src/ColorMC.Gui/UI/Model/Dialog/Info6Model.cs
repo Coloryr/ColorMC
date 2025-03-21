@@ -11,11 +11,6 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 public partial class Info6Model(string? name) : ObservableObject
 {
     /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool IsCancel;
-
-    /// <summary>
     /// 文本1
     /// </summary>
     [ObservableProperty]
@@ -32,19 +27,21 @@ public partial class Info6Model(string? name) : ObservableObject
     [ObservableProperty]
     private bool _cancelEnable;
 
+    /// <summary>
+    /// 取消
+    /// </summary>
     [RelayCommand]
     public void Cancel()
     {
-        IsCancel = true;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, false);
     }
 
+    /// <summary>
+    /// 同意
+    /// </summary>
     [RelayCommand]
     public void Confirm()
     {
-        IsCancel = false;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, true);
     }
 }

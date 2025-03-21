@@ -9,6 +9,9 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
+/// <summary>
+/// 游戏实例文件列表
+/// </summary>
 public partial class GameFileTreeNodeModel : ObservableObject
 {
     /// <summary>
@@ -19,7 +22,9 @@ public partial class GameFileTreeNodeModel : ObservableObject
     /// 是否为文件夹
     /// </summary>
     public bool IsDirectory { get; init; }
-
+    /// <summary>
+    /// 是否可以选择
+    /// </summary>
     public bool IsEnable { get; init; }
 
     /// <summary>
@@ -54,6 +59,9 @@ public partial class GameFileTreeNodeModel : ObservableObject
     [ObservableProperty]
     private bool _isChecked;
 
+    /// <summary>
+    /// 是否为游戏实例主体
+    /// </summary>
     private readonly bool _isGame;
 
     /// <summary>
@@ -374,12 +382,20 @@ public partial class GameFileTreeNodeModel : ObservableObject
         IsChecked = true;
     }
 
+    /// <summary>
+    /// 是否为游戏实例主要文件
+    /// </summary>
+    /// <returns></returns>
     private bool CheckIsGameFile()
     {
         return Name is Names.NameGameFile or Names.NameModInfoFile
             or Names.NameModPackFile or Names.NameIconFile;
     }
 
+    /// <summary>
+    /// 是否为游戏非重要文件夹
+    /// </summary>
+    /// <returns></returns>
     private bool CheckGameDir()
     {
         return Name is Names.NameGameLogDir 

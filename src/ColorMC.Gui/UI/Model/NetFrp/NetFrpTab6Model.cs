@@ -53,8 +53,8 @@ public partial class NetFrpModel
     public async Task AddSelfFrp()
     {
         var model = new NetFrpAddModel();
-        await DialogHost.Show(model, NameCon1);
-        if (model.IsCancel || string.IsNullOrWhiteSpace(model.Name))
+        var res = await DialogHost.Show(model, NameCon1);
+        if (res is not true || string.IsNullOrWhiteSpace(model.Name))
         {
             return;
         }
@@ -79,8 +79,8 @@ public partial class NetFrpModel
     public async void Edit(NetFrpSelfItemModel model)
     {
         var model1 = new NetFrpAddModel(model);
-        await DialogHost.Show(model1, NameCon1);
-        if (model1.IsCancel || string.IsNullOrWhiteSpace(model1.Name))
+        var res = await DialogHost.Show(model1, NameCon1);
+        if (res is not true || string.IsNullOrWhiteSpace(model1.Name))
         {
             return;
         }

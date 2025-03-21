@@ -32,6 +32,7 @@ public static class GuiNames
 
     public const string NameAuthlibKey = "authlib-injector:yggdrasil-server:";
     public const string NameColorMCCloudKey = "cloudkey:";
+    public const string NameLangKey = "lang";
 
     public const string NameSakuraFrpVersion = "0.51.0-sakura-9.3";
 
@@ -46,4 +47,8 @@ public static class GuiNames
     public const string NameX86_32 = "x86_32";
     public const string NameX64 = "x64";
     public const string NameX32 = "x32";
+
+    public const string NameTypeByte = "Byte";
+    public const string NameTypeInt = "Int";
+    public const string NameTypeLong = "Long";
 }

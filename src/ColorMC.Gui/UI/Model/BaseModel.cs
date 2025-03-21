@@ -485,13 +485,13 @@ public partial class BaseModel : ObservableObject
 
         ShowClose();
         Lock();
-        await DialogHost.Show(_info3, WindowId);
+        var res = await DialogHost.Show(_info3, WindowId);
 
         Unlock();
 
         return new InputRes
         {
-            Cancel = _info3.IsCancel,
+            Cancel = res is not true,
             Text1 = _info3.Text1
         };
     }
@@ -528,13 +528,13 @@ public partial class BaseModel : ObservableObject
 
         ShowClose();
         Lock();
-        await DialogHost.Show(_info3, WindowId);
+        var res = await DialogHost.Show(_info3, WindowId);
 
         Unlock();
 
         return new InputRes
         {
-            Cancel = _info3.IsCancel,
+            Cancel = res is not true,
             Text1 = _info3.Text1,
             Text2 = _info3.Text2
         };
@@ -550,7 +550,6 @@ public partial class BaseModel : ObservableObject
         _info3.Text2Visable = false;
         _info3.TextReadonly = lock1;
         _info3.Call = null;
-        _info3.IsCancel = true;
         _info3.ChoiseVisible = false;
 
         if (lock1)
@@ -580,14 +579,12 @@ public partial class BaseModel : ObservableObject
 
         ShowClose();
         Lock();
-
-        await DialogHost.Show(_info3, WindowId);
-
+        var res = await DialogHost.Show(_info3, WindowId);
         Unlock();
 
         return new InputRes
         {
-            Cancel = _info3.IsCancel,
+            Cancel = res is not true,
             Text1 = _info3.Text1
         };
     }
@@ -619,21 +616,18 @@ public partial class BaseModel : ObservableObject
 
         _info3.Password = password ? '*' : '\0';
 
-        _info3.IsCancel = true;
-
         _info3.ChoiseVisible = false;
 
         ShowClose();
         Lock();
-        await DialogHost.Show(_info3, WindowId);
-
+        var res = await DialogHost.Show(_info3, WindowId);
         Unlock();
 
         _info3.Call = null;
 
         return new InputRes
         {
-            Cancel = _info3.IsCancel,
+            Cancel = res is not true,
             Text1 = _info3.Text1,
             Text2 = _info3.Text2
         };
@@ -656,8 +650,6 @@ public partial class BaseModel : ObservableObject
         _info3.Text2Visable = true;
 
         _info3.Password = '\0';
-
-        _info3.IsCancel = true;
 
         _info3.ChoiseVisible = false;
 
@@ -699,8 +691,6 @@ public partial class BaseModel : ObservableObject
 
         _info3.Text2Visable = false;
         _info3.ConfirmEnable = true;
-
-        _info3.IsCancel = true;
 
         _info3.ChoiseCall = choise;
         _info3.ChoiseText = choiseText;
@@ -858,16 +848,15 @@ public partial class BaseModel : ObservableObject
             _info5.Select = item;
             break;
         }
-        _info5.IsCancel = true;
 
         ShowClose();
         Lock();
-        await DialogHost.Show(_info5, WindowId);
+        var res = await DialogHost.Show(_info5, WindowId);
         Unlock();
 
         return new ComboRes
         {
-            Cancel = _info5.IsCancel,
+            Cancel = res is not true,
             Index = _info5.Index,
             Item = _info5.Select
         };
@@ -882,7 +871,6 @@ public partial class BaseModel : ObservableObject
     {
         _info6.Text1 = data1;
         _info6.Text2 = data2;
-        _info6.IsCancel = true;
         _info6.CancelEnable = false;
 
         ShowClose();
@@ -898,16 +886,15 @@ public partial class BaseModel : ObservableObject
     {
         _info6.Text1 = data;
         _info6.Text2 = data1;
-        _info6.IsCancel = true;
         _info6.CancelEnable = true;
 
         ShowClose();
         Lock();
-        await DialogHost.Show(_info6, WindowId);
+        var res = await DialogHost.Show(_info6, WindowId);
 
         Unlock();
 
-        return !_info6.IsCancel;
+        return res is true;
     }
 
     /// <summary>

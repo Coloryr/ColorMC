@@ -181,12 +181,19 @@ public partial class GameItemModel : GameModel
         IsStar = GameManager.IsStar(obj);
     }
 
+    /// <summary>
+    /// 星标修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsStarChanged(bool value)
     {
         Star = ImageManager.Stars[value ? 0 : 1];
         StarVis = (value || IsOver) && !IsNew;
     }
-
+    /// <summary>
+    /// 单游戏修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnOneGameChanged(bool value)
     {
         if (value)
@@ -194,7 +201,10 @@ public partial class GameItemModel : GameModel
             IsSelect = false;
         }
     }
-
+    /// <summary>
+    /// 启动状态修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsLaunchChanged(bool value)
     {
         if (OneGame)
@@ -213,7 +223,10 @@ public partial class GameItemModel : GameModel
             }
         }
     }
-
+    /// <summary>
+    /// 加载状态修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsLoadChanged(bool value)
     {
         if (value)
@@ -228,7 +241,10 @@ public partial class GameItemModel : GameModel
             }
         }
     }
-
+    /// <summary>
+    /// 鼠标经过
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsOverChanged(bool value)
     {
         if (!ShowCheck)
@@ -237,7 +253,6 @@ public partial class GameItemModel : GameModel
             ButtonShow = value || IsSelect;
         }
     }
-
     /// <summary>
     /// 是否选中
     /// </summary>
@@ -271,7 +286,6 @@ public partial class GameItemModel : GameModel
         _top?.DoStar(this);
         IsOver = false;
     }
-
     /// <summary>
     /// 添加游戏实例
     /// </summary>
@@ -284,7 +298,6 @@ public partial class GameItemModel : GameModel
         }
         WindowManager.ShowAddGame(_group);
     }
-
     /// <summary>
     /// 启动
     /// </summary>
@@ -302,7 +315,6 @@ public partial class GameItemModel : GameModel
 
         _top?.Launch(this);
     }
-
     /// <summary>
     /// 编辑
     /// </summary>
@@ -481,19 +493,17 @@ public partial class GameItemModel : GameModel
     /// <summary>
     /// 设置手柄
     /// </summary>
-    public void SetJoystick()
+    public async void SetJoystick()
     {
         if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
         {
             var model = value.MakeModel();
-            model.TopCancel = () => { DialogHost.Close("MainCon"); };
-            model.TopConfirm = () =>
+            var res = await DialogHost.Show(model, "MainCon");
+            if (res is true)
             {
-                DialogHost.Close("MainCon");
                 value.ChangeConfig(model);
                 Model.Notify(App.Lang("MainWindow.Info39"));
-            };
-            DialogHost.Show(model, "MainCon");
+            }
         }
     }
 

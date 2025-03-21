@@ -122,11 +122,18 @@ public partial class GameConfigEditModel : GameModel
         _text = new();
     }
 
+    /// <summary>
+    /// 名字修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnNameChanged(string? value)
     {
         Load1();
     }
-
+    /// <summary>
+    /// 文件名修改
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnFileChanged(string value)
     {
         if (_lastName == value || string.IsNullOrWhiteSpace(value))
@@ -236,8 +243,8 @@ public partial class GameConfigEditModel : GameModel
             FindText1 = App.Lang("ConfigEditWindow.Text6"),
             FindText2 = App.Lang("ConfigEditWindow.Text11")
         };
-        await DialogHost.Show(model, UseName);
-        if (model.Cancel)
+        var res = await DialogHost.Show(model, UseName);
+        if (res is not true)
         {
             return;
         }
@@ -257,8 +264,8 @@ public partial class GameConfigEditModel : GameModel
             FindText1 = App.Lang("ConfigEditWindow.Text5"),
             FindText2 = App.Lang("ConfigEditWindow.Text7")
         };
-        await DialogHost.Show(model, UseName);
-        if (model.Cancel)
+        var res = await DialogHost.Show(model, UseName);
+        if (res is not true)
         {
             return;
         }
@@ -446,8 +453,8 @@ public partial class GameConfigEditModel : GameModel
                 Title = App.Lang("ConfigEditWindow.Info2"),
                 Title1 = App.Lang("ConfigEditWindow.Info3"),
             };
-            await DialogHost.Show(model1, UseName);
-            if (model1.Cancel)
+            var res = await DialogHost.Show(model1, UseName);
+            if (res is not true)
             {
                 return;
             }
@@ -531,8 +538,8 @@ public partial class GameConfigEditModel : GameModel
             Title = App.Lang("ConfigEditWindow.Info5"),
             Title1 = App.Lang("ConfigEditWindow.Info3")
         };
-        await DialogHost.Show(model1, UseName);
-        if (model1.Cancel)
+        var res = await DialogHost.Show(model1, UseName);
+        if (res is not true)
         {
             return;
         }
@@ -562,11 +569,12 @@ public partial class GameConfigEditModel : GameModel
     /// <param name="model"></param>
     public async void SetValue(NbtNodeModel model)
     {
+        //根据类型设置值
         if (model.NbtType == NbtType.NbtByteArray)
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
-                DataType = "Byte"
+                DataType = GuiNames.NameTypeByte
             };
             var list = (model.Nbt as NbtByteArray)!;
             for (int a = 0; a < list.Value.Count; a++)
@@ -591,7 +599,7 @@ public partial class GameConfigEditModel : GameModel
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
-                DataType = "Int"
+                DataType = GuiNames.NameTypeInt
             };
             var list = (model.Nbt as NbtIntArray)!;
             for (int a = 0; a < list.Value.Count; a++)
@@ -616,7 +624,7 @@ public partial class GameConfigEditModel : GameModel
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
-                DataType = "Long"
+                DataType = GuiNames.NameTypeLong
             };
             var list = (model.Nbt as NbtLongArray)!;
             for (int a = 0; a < list.Value.Count; a++)
@@ -646,8 +654,8 @@ public partial class GameConfigEditModel : GameModel
                 Title = App.Lang("ConfigEditWindow.Info6"),
                 Title1 = App.Lang("ConfigEditWindow.Info4"),
             };
-            await DialogHost.Show(model1, UseName);
-            if (model1.Cancel)
+            var res = await DialogHost.Show(model1, UseName);
+            if (res is not true)
             {
                 return;
             }

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace ColorMC.Gui.UI.Model.GameExport;
 
 /// <summary>
-/// 实例导出
+/// 实例导出整合包
 /// </summary>
 public partial class GameExportModel : MenuModel
 {
@@ -187,6 +187,10 @@ public partial class GameExportModel : MenuModel
         Model.ProgressClose();
     }
 
+    /// <summary>
+    /// 模组筛选
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnTextChanged(string value)
     {
         LoadMods();

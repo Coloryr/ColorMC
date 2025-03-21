@@ -39,6 +39,10 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
     /// </summary>
     public ObservableCollection<NbtDataItemModel> DataList { get; init; } = [];
 
+    /// <summary>
+    /// HEX模式切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnHexEditChanged(bool value)
     {
         foreach (var item in DataList)
@@ -47,6 +51,9 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         }
     }
 
+    /// <summary>
+    /// 数据编辑完毕
+    /// </summary>
     [RelayCommand]
     public void DataEditDone()
     {
@@ -83,15 +90,15 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
     {
         try
         {
-            if (DataType == "Byte")
+            if (DataType is GuiNames.NameTypeByte)
             {
                 DataItem.Value = (byte)DataItem.GetValue();
             }
-            else if (DataType == "Int")
+            else if (DataType is GuiNames.NameTypeInt)
             {
                 DataItem.Value = (int)DataItem.GetValue();
             }
-            else if (DataType == "Long")
+            else if (DataType is GuiNames.NameTypeLong)
             {
                 DataItem.Value = (long)DataItem.GetValue();
             }
@@ -106,15 +113,15 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         if (DataItem.Key == 0)
         {
             DataItem.Key = DataList.Count;
-            if (DataType == "Byte")
+            if (DataType is GuiNames.NameTypeByte)
             {
                 DataList.Add(new(0, (byte)0, HexEdit));
             }
-            else if (DataType == "Int")
+            else if (DataType is GuiNames.NameTypeInt)
             {
                 DataList.Add(new(0, 0, HexEdit));
             }
-            else if (DataType == "Long")
+            else if (DataType is GuiNames.NameTypeLong)
             {
                 DataList.Add(new(0, (long)0, HexEdit));
             }

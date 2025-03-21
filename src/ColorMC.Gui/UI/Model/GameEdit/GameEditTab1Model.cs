@@ -157,6 +157,10 @@ public partial class GameEditModel
     /// </summary>
     private bool _gameLoad;
 
+    /// <summary>
+    /// 日志相关修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnLogAutoShowChanged(bool value)
     {
         if (_gameLoad)
@@ -167,7 +171,10 @@ public partial class GameEditModel
         _obj.LogAutoShow = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 编码类型修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnEncodingChanged(int value)
     {
         if (_gameLoad)
@@ -178,7 +185,10 @@ public partial class GameEditModel
         _obj.Encoding = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 是否加载中
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsLoadChanged(bool value)
     {
         if (value)
@@ -190,7 +200,10 @@ public partial class GameEditModel
             Model.Unlock();
         }
     }
-
+    /// <summary>
+    /// 游戏内语言修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnLangChanged(int value)
     {
         if (_gameLoad)
@@ -220,12 +233,18 @@ public partial class GameEditModel
         _obj.SaveOptions(opt);
         Model.Notify(App.Lang("GameEditWindow.Tab1.Text17"));
     }
-
+    /// <summary>
+    /// 版本类型修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnVersionTypeChanged(int value)
     {
         GameVersionLoad();
     }
-
+    /// <summary>
+    /// 加载器类型修改
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnLoaderTypeChanged(int value)
     {
         if (_gameLoad)
@@ -253,7 +272,10 @@ public partial class GameEditModel
         _obj.Save();
         await LoaderVersionLoad();
     }
-
+    /// <summary>
+    /// 游戏版本修改
+    /// </summary>
+    /// <param name="value"></param>
     async partial void OnGameVersionChanged(string value)
     {
         if (_gameLoad)
@@ -278,7 +300,10 @@ public partial class GameEditModel
 
         await LoaderReload();
     }
-
+    /// <summary>
+    /// 加载器版本修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnLoaderVersionChanged(string? value)
     {
         if (_gameLoad)
@@ -289,7 +314,10 @@ public partial class GameEditModel
         _obj.LoaderVersion = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 游戏分组修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGroupChanged(string? value)
     {
         if (_gameLoad)
@@ -299,7 +327,10 @@ public partial class GameEditModel
 
         GameBinding.MoveGameGroup(_obj, value);
     }
-
+    /// <summary>
+    /// 整合包修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnModPackChanged(bool value)
     {
         if (_gameLoad)
@@ -310,7 +341,10 @@ public partial class GameEditModel
         _obj.ModPack = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 整合包修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnPIDChanged(string? value)
     {
         if (_gameLoad)
@@ -321,7 +355,10 @@ public partial class GameEditModel
         _obj.PID = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 整合包修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnFIDChanged(string? value)
     {
         if (_gameLoad)
@@ -332,7 +369,10 @@ public partial class GameEditModel
         _obj.FID = value;
         _obj.Save();
     }
-
+    /// <summary>
+    /// 加载库修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnOffLibChanged(bool value)
     {
         if (_gameLoad)
@@ -398,7 +438,6 @@ public partial class GameEditModel
 
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info16"));
     }
-
     /// <summary>
     /// 检查模组更新
     /// </summary>
@@ -498,7 +537,6 @@ public partial class GameEditModel
             }
         }
     }
-
     /// <summary>
     /// 添加游戏分组
     /// </summary>
@@ -526,10 +564,8 @@ public partial class GameEditModel
 
         Model.Notify(App.Lang("AddGameWindow.Tab1.Info6"));
 
-        GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+        GroupList.Add(res.Text1);
     }
-
     /// <summary>
     /// 获取加载器版本
     /// </summary>
@@ -546,86 +582,41 @@ public partial class GameEditModel
         }
 
         var loader = _loaderTypeList[LoaderType];
-        switch (loader)
+        if (loader is Loaders.Normal or Loaders.Custom)
         {
-            case Loaders.Normal:
-                break;
-            case Loaders.Forge:
-                IsLoad = true;
-                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info1");
-                var list = await WebBinding.GetForgeVersion(_obj.Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.AddRange(list);
-                break;
-            case Loaders.NeoForge:
-                IsLoad = true;
-                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info19");
-                list = await WebBinding.GetNeoForgeVersion(_obj.Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.AddRange(list);
-                break;
-            case Loaders.Fabric:
-                IsLoad = true;
-                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info2");
-                list = await WebBinding.GetFabricVersion(_obj.Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.AddRange(list);
-                break;
-            case Loaders.Quilt:
-                IsLoad = true;
-                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info3");
-                list = await WebBinding.GetQuiltVersion(_obj.Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.AddRange(list);
-                break;
-            case Loaders.OptiFine:
-                IsLoad = true;
-                Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info16");
-                list = await WebBinding.GetOptifineVersion(_obj.Version);
-                IsLoad = false;
-                Model.SubTitle = "";
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
-                    return;
-                }
-
-                EnableLoader = true;
-                LoaderVersionList.AddRange(list);
-                break;
+            return;
         }
+        IsLoad = true;
+        Model.SubTitle = loader switch
+        {
+            Loaders.Forge => App.Lang("AddGameWindow.Tab1.Info1"),
+            Loaders.NeoForge => App.Lang("AddGameWindow.Tab1.Info19"),
+            Loaders.Fabric => App.Lang("AddGameWindow.Tab1.Info2"),
+            Loaders.Quilt => App.Lang("AddGameWindow.Tab1.Info3"),
+            Loaders.OptiFine => App.Lang("AddGameWindow.Tab1.Info16"),
+            _ => ""
+        };
+        var list = loader switch
+        {
+            Loaders.Forge => await WebBinding.GetForgeVersion(_obj.Version),
+            Loaders.NeoForge => await WebBinding.GetNeoForgeVersion(_obj.Version),
+            Loaders.Fabric => await WebBinding.GetFabricVersion(_obj.Version),
+            Loaders.Quilt => await WebBinding.GetQuiltVersion(_obj.Version),
+            Loaders.OptiFine => await WebBinding.GetOptifineVersion(_obj.Version),
+            _ => null
+        };
+
+        IsLoad = false;
+        Model.SubTitle = "";
+        if (list == null)
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error1"));
+            return;
+        }
+
+        EnableLoader = true;
+        LoaderVersionList.AddRange(list);
+
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info15"));
     }
 
@@ -970,7 +961,7 @@ public partial class GameEditModel
         var opt = _obj.GetOptions();
 
         //加载语言
-        opt.TryGetValue("lang", out string? lang);
+        opt.TryGetValue(GuiNames.NameLangKey, out string? lang);
 
         if (lang != null && !string.IsNullOrWhiteSpace(_obj.Version))
         {

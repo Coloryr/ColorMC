@@ -75,9 +75,9 @@ public class GamesPage
         return _root.GetUnSelectItems();
     }
 
-    public List<string> GetSelectItems(bool getdir = false)
+    public List<string> GetSelectItems()
     {
-        return _root.GetSelectItems(getdir);
+        return _root.GetSelectItems(false);
     }
 
     public void SetSelectItems(List<string> config)

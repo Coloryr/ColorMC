@@ -13,23 +13,19 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// </summary>
 public class GameEditFlyout3
 {
-    private readonly ResourcepackObj _obj;
-    private readonly GameEditModel _top;
-
     public GameEditFlyout3(Control con, ResourcePackModel model)
     {
-        _top = model.TopModel;
-        _obj = model.Pack;
+        var obj = model.Obj;
 
         _ = new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpenFileWithExplorer(_obj.Local);
+                PathBinding.OpenFileWithExplorer(obj.Local);
             }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text12"), true, ()=>
             {
-                _top.DeleteResource(_obj);
+                model.DeleteResource();
             })
         ], con);
     }

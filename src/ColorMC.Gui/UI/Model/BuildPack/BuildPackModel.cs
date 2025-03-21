@@ -43,6 +43,9 @@ public partial class BuildPackModel : MenuModel
         Model.RemoveChoiseData(_useName);
     }
 
+    /// <summary>
+    /// 加载数据
+    /// </summary>
     public void Load()
     {
         LoadSetting();
@@ -51,6 +54,9 @@ public partial class BuildPackModel : MenuModel
         NowView = 0;
     }
 
+    /// <summary>
+    /// 开始导出客户端
+    /// </summary>
     private async void Build()
     {
         var top = Model.GetTopLevel();

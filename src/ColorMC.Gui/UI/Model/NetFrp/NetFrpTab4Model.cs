@@ -73,10 +73,7 @@ public partial class NetFrpModel
         }
         foreach (var item in list)
         {
-            CloudServers.Add(new(item)
-            {
-                TopModel = this
-            });
+            CloudServers.Add(new(item, this));
         }
 
         IsCloudEmpty = CloudServers.Count == 0;
