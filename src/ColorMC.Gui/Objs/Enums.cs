@@ -189,3 +189,14 @@ public enum DisplayType
     /// </summary>
     TopBottom
 }
+
+public enum ModFilterType
+{
+    Name,
+    FileName,
+    Author,
+    Modid,
+    Enabled,
+    Disabled,
+    Newer
+}

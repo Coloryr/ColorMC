@@ -87,6 +87,10 @@ public partial class DownloadModel : TopModel
         Model.HeadBackEnable = false;
     }
 
+    /// <summary>
+    /// 暂停
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnIsPauseChanged(bool value)
     {
         if (!value)
@@ -145,6 +149,11 @@ public partial class DownloadModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 更新速度计数器
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         long now = _count;
@@ -179,7 +188,14 @@ public partial class DownloadModel : TopModel
         {
             long temp = value.NowSize;
             value.NowSize = item.NowSize;
-            _count += item.NowSize - temp;
+            if (temp > item.NowSize)
+            {
+                _count = 0;
+            }
+            else
+            {
+                _count += item.NowSize - temp;
+            }
         }
         else if (item.State == DownloadItemState.Error)
         {

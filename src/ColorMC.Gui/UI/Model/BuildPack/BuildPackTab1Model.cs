@@ -11,10 +11,19 @@ using System.IO;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
+/// <summary>
+/// 导出客户端配置
+/// </summary>
 public partial class BuildPackModel
 {
+    /// <summary>
+    /// 内置Java列表
+    /// </summary>
     public ObservableCollection<JavaSelectModel> Javas { get; init; } = [];
 
+    /// <summary>
+    /// 是否导出界面设置
+    /// </summary>
     [ObservableProperty]
     private bool _uiSetting;
     [ObservableProperty]
@@ -23,6 +32,9 @@ public partial class BuildPackModel
     private bool _uiColor;
     [ObservableProperty]
     private bool _uiOther;
+    /// <summary>
+    /// 是否导出启动设置
+    /// </summary>
     [ObservableProperty]
     private bool _launchSetting;
     [ObservableProperty]
@@ -31,6 +43,9 @@ public partial class BuildPackModel
     private bool _launchArg;
     [ObservableProperty]
     private bool _launchWindow;
+    /// <summary>
+    /// 是否导出服务器设置
+    /// </summary>
     [ObservableProperty]
     private bool _serverSetting;
     [ObservableProperty]
@@ -41,26 +56,51 @@ public partial class BuildPackModel
     private bool _serverUi;
     [ObservableProperty]
     private bool _serverMusic;
+    /// <summary>
+    /// 是否导出内置Java
+    /// </summary>
     [ObservableProperty]
     private bool _java;
+    /// <summary>
+    /// 是否导出启动器
+    /// </summary>
     [ObservableProperty]
     private bool _packLaunch;
     [ObservableProperty]
     private bool _packUpdate;
 
+    /// <summary>
+    /// 是否可以选择背景界面
+    /// </summary>
     [ObservableProperty]
     private bool _canBg;
+    /// <summary>
+    /// 是否可以选择自定义UI
+    /// </summary>
     [ObservableProperty]
     private bool _canUi;
+    /// <summary>
+    /// 是否可以选择背景音乐
+    /// </summary>
     [ObservableProperty]
     private bool _canMusic;
+    /// <summary>
+    /// 是否可以打包启动器
+    /// </summary>
     [ObservableProperty]
     private bool _canPack;
+    /// <summary>
+    /// 是否可以打包启动器升级
+    /// </summary>
     [ObservableProperty]
     private bool _canUpdate;
 
+    /// <summary>
+    /// 是否在切换状态
+    /// </summary>
     private bool _isItem;
 
+    //设置项修改
     partial void OnUiSettingChanged(bool value)
     {
         if (_isItem)
@@ -164,6 +204,9 @@ public partial class BuildPackModel
         ServerSwitch();
     }
 
+    /// <summary>
+    /// 加载设置项目
+    /// </summary>
     private void LoadSetting()
     {
         var conf = GuiConfigUtils.Config;
@@ -184,6 +227,7 @@ public partial class BuildPackModel
         }
     }
 
+    //总开关切换
     private void UISwitch()
     {
         _isItem = true;

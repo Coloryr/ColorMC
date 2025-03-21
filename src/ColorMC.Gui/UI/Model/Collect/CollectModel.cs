@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Collect;
 
+/// <summary>
+/// 收藏界面
+/// </summary>
 public partial class CollectModel : TopModel, ICollectWindow
 {
     /// <summary>
@@ -108,6 +111,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 模组选中
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnModChanged(bool value)
     {
         CollectUtils.Setting(Mod, Resourcepack, Shaderpack);
@@ -115,6 +122,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 资源包选中
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnResourcepackChanged(bool value)
     {
         CollectUtils.Setting(Mod, Resourcepack, Shaderpack);
@@ -122,6 +133,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 光影包选中
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnShaderpackChanged(bool value)
     {
         CollectUtils.Setting(Mod, Resourcepack, Shaderpack);
@@ -129,6 +144,10 @@ public partial class CollectModel : TopModel, ICollectWindow
         Load();
     }
 
+    /// <summary>
+    /// 分组修改
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGroupChanged(string value)
     {
         GroupDelete = !string.IsNullOrWhiteSpace(value);

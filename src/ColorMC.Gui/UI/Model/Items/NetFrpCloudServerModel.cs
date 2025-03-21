@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// 映射
 /// </summary>
 /// <param name="obj"></param>
-public partial class NetFrpCloudServerModel(FrpCloudObj obj) : SelectItemModel
+public partial class NetFrpCloudServerModel(FrpCloudObj obj, NetFrpModel top) : SelectItemModel
 {
     /// <summary>
     /// 名字
@@ -75,20 +75,13 @@ public partial class NetFrpCloudServerModel(FrpCloudObj obj) : SelectItemModel
     }
 
     /// <summary>
-    /// 上层类型
-    /// </summary>
-    [JsonIgnore]
-    public NetFrpModel TopModel;
-
-    /// <summary>
     /// 加入
     /// </summary>
     [RelayCommand]
     public void Join()
     {
-        TopModel.Join(this);
+        top.Join(this);
     }
-
     /// <summary>
     /// 复制地址到剪贴板
     /// </summary>
@@ -96,20 +89,19 @@ public partial class NetFrpCloudServerModel(FrpCloudObj obj) : SelectItemModel
     [RelayCommand]
     public async Task Copy()
     {
-        var top = TopModel.Model.GetTopLevel();
-        if (top == null)
+        var toplevel = top.Model.GetTopLevel();
+        if (toplevel == null)
         {
             return;
         }
-        await BaseBinding.CopyTextClipboard(top, IP);
+        await BaseBinding.CopyTextClipboard(toplevel, IP);
     }
-
     /// <summary>
     /// 获取Motd
     /// </summary>
     [RelayCommand]
     public void Test()
     {
-        TopModel.Test(this);
+        top.Test(this);
     }
 }

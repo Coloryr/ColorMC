@@ -51,7 +51,7 @@ public partial class GameEditModel : IModEdit
     /// 选中的模组过滤器
     /// </summary>
     [ObservableProperty]
-    private int _modFilter;
+    private ModFilterType _modFilter;
     /// <summary>
     /// 是否显示modid列
     /// </summary>
@@ -139,11 +139,11 @@ public partial class GameEditModel : IModEdit
         GameGuiSetting.WriteConfig(_obj, _setting);
     }
 
-    partial void OnModFilterChanged(int value)
+    partial void OnModFilterChanged(ModFilterType value)
     {
         EnableModText = value switch
         {
-            <= 3 => true,
+            <= ModFilterType.Modid => true,
             _ => false
         };
 
@@ -442,7 +442,7 @@ public partial class GameEditModel : IModEdit
     private void DisplayMod(List<string> list)
     {
         ModList.Clear();
-        ModFilter = 3;
+        ModFilter = ModFilterType.Modid;
         var builder = new StringBuilder();
         foreach (var item in list)
         {
@@ -530,114 +530,95 @@ public partial class GameEditModel : IModEdit
         ModList.Clear();
         switch (ModFilter)
         {
-            case 4:
-                foreach (var item in _modItems)
-                {
-                    if (item.Enable)
-                    {
-                        ModList.Add(item);
-                    }
-
-                }
+            case ModFilterType.Enabled:
+                ModList.AddRange(_modItems.Where(item => item.Enable));
                 return;
-            case 5:
-                foreach (var item in _modItems)
-                {
-                    if (!item.Enable)
-                    {
-                        ModList.Add(item);
-                    }
-                }
+            case ModFilterType.Disabled:
+                ModList.AddRange(_modItems.Where(item => !item.Enable));
                 return;
-            case 6:
-                foreach (var item in _modItems)
-                {
-                    if (item.IsNew)
-                    {
-                        ModList.Add(item);
-                    }
-                }
+            case ModFilterType.Newer:
+                ModList.AddRange(_modItems.Where(item => item.IsNew));
                 return;
         }
+        //没有筛选内容
         if (string.IsNullOrWhiteSpace(ModText))
         {
             ModList.AddRange(_modItems);
+            return;
         }
-        else
+        string fil = ModText.ToLower();
+        var args = fil.Split(',').ToList();
+        //根据选择的筛选选择模组
+        switch (ModFilter)
         {
-            string fil = ModText.ToLower();
-            var args = fil.Split(',').ToList();
-            switch (ModFilter)
-            {
-                case 0:
-                    foreach (var item in _modItems)
+            case ModFilterType.Name:
+                foreach (var item in _modItems)
+                {
+                    foreach (var item1 in args)
                     {
-                        foreach (var item1 in args)
+                        if (string.IsNullOrWhiteSpace(item1))
                         {
-                            if (string.IsNullOrWhiteSpace(item1))
-                            {
-                                continue;
-                            }
-                            if (item.Name.Contains(item1, StringComparison.OrdinalIgnoreCase))
-                            {
-                                ModList.Add(item);
-                                break;
-                            }
+                            continue;
+                        }
+                        if (item.Name.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                        {
+                            ModList.Add(item);
+                            break;
                         }
                     }
-                    break;
-                case 1:
-                    foreach (var item in _modItems)
+                }
+                break;
+            case ModFilterType.FileName:
+                foreach (var item in _modItems)
+                {
+                    foreach (var item1 in args)
                     {
-                        foreach (var item1 in args)
+                        if (string.IsNullOrWhiteSpace(item1))
                         {
-                            if (string.IsNullOrWhiteSpace(item1))
-                            {
-                                continue;
-                            }
-                            if (item.Local.Contains(item1, StringComparison.OrdinalIgnoreCase))
-                            {
-                                ModList.Add(item);
-                                break;
-                            }
+                            continue;
+                        }
+                        if (item.Local.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                        {
+                            ModList.Add(item);
+                            break;
                         }
                     }
-                    break;
-                case 2:
-                    foreach (var item in _modItems)
+                }
+                break;
+            case ModFilterType.Author:
+                foreach (var item in _modItems)
+                {
+                    foreach (var item1 in args)
                     {
-                        foreach (var item1 in args)
+                        if (string.IsNullOrWhiteSpace(item1))
                         {
-                            if (string.IsNullOrWhiteSpace(item1))
-                            {
-                                continue;
-                            }
-                            if (item.Author.Contains(item1, StringComparison.OrdinalIgnoreCase))
-                            {
-                                ModList.Add(item);
-                                break;
-                            }
+                            continue;
+                        }
+                        if (item.Author.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                        {
+                            ModList.Add(item);
+                            break;
                         }
                     }
-                    break;
-                case 3:
-                    foreach (var item in _modItems)
+                }
+                break;
+            case ModFilterType.Modid:
+                foreach (var item in _modItems)
+                {
+                    foreach (var item1 in args)
                     {
-                        foreach (var item1 in args)
+                        if (string.IsNullOrWhiteSpace(item1))
                         {
-                            if (string.IsNullOrWhiteSpace(item1))
-                            {
-                                continue;
-                            }
-                            if (item.Modid.Contains(item1, StringComparison.OrdinalIgnoreCase))
-                            {
-                                ModList.Add(item);
-                                break;
-                            }
+                            continue;
+                        }
+                        if (item.Modid.Contains(item1, StringComparison.OrdinalIgnoreCase))
+                        {
+                            ModList.Add(item);
+                            break;
                         }
                     }
-                    break;
-            }
+                }
+                break;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class ModDisplayModel : ObservableObject
 {
-    public const string ModTextName = "ModText";
+    public const string NameModText = "ModText";
 
     /// <summary>
     /// 是否启用

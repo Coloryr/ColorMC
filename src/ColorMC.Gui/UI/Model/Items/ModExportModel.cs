@@ -7,7 +7,7 @@ using System.ComponentModel;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// 模组项目
+/// 打包模组项目
 /// </summary>
 public partial class ModExportModel : ObservableObject
 {
@@ -58,6 +58,23 @@ public partial class ModExportModel : ObservableObject
     private string? _fID;
 
     /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name => Obj.Name;
+    /// <summary>
+    /// modid
+    /// </summary>
+    public string Modid => Obj.ModId;
+    /// <summary>
+    /// 加载器
+    /// </summary>
+    public string Loader => StringHelper.MakeString(Obj.Loaders);
+    /// <summary>
+    /// 下载源
+    /// </summary>
+    public SourceType? Source { get; init; }
+
+    /// <summary>
     /// 操作
     /// </summary>
     private readonly BaseModel _model;
@@ -79,23 +96,6 @@ public partial class ModExportModel : ObservableObject
 
         Reload();
     }
-
-    /// <summary>
-    /// 名字
-    /// </summary>
-    public string Name => Obj.Name;
-    /// <summary>
-    /// modid
-    /// </summary>
-    public string Modid => Obj.ModId;
-    /// <summary>
-    /// 加载器
-    /// </summary>
-    public string Loader => StringHelper.MakeString(Obj.Loaders);
-    /// <summary>
-    /// 下载源
-    /// </summary>
-    public SourceType? Source { get; init; }
 
     partial void OnPIDChanged(string? value)
     {

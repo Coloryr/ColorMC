@@ -28,9 +28,11 @@
                             Command="{Binding LoadResource}"
                             Content="{setting:Localize Button.Refash}"
                             DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text107}"
-                             />
-                        <TextBox Margin="0,0,10,0" Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text107}" />
+                        <TextBox
+                            Margin="0,0,10,0"
+                            Text="{Binding ResourceText}"
+                            Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
                     </DockPanel>
                 </Border>
                 <Panel>

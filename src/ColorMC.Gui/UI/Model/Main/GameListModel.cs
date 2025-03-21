@@ -288,8 +288,8 @@ public partial class MainModel
         }
 
         var model = new AddGroupModel(Model, null);
-        await DialogHost.Show(model, MainControl.DialogName);
-        if (model.IsCancel)
+        var res = await DialogHost.Show(model, MainControl.DialogName);
+        if (res is not true)
         {
             return;
         }
@@ -337,8 +337,8 @@ public partial class MainModel
     public async void EditGroup(GameItemModel obj)
     {
         var model = new AddGroupModel(Model, obj.Obj.GroupName);
-        await DialogHost.Show(model, MainControl.DialogName);
-        if (model.IsCancel)
+        var res = await DialogHost.Show(model, MainControl.DialogName);
+        if (res is not true)
         {
             return;
         }

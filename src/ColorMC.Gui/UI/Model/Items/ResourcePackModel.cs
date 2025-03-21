@@ -4,6 +4,7 @@ using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
+using System;
 using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -14,41 +15,41 @@ namespace ColorMC.Gui.UI.Model.Items;
 public partial class ResourcePackModel : SelectItemModel
 {
     /// <summary>
-    /// 
+    /// 顶层
     /// </summary>
-    public readonly GameEditModel TopModel;
+    private readonly GameEditModel _top;
     /// <summary>
     /// 资源包
     /// </summary>
-    public readonly ResourcepackObj Pack;
+    public readonly ResourcepackObj Obj;
 
     /// <summary>
     /// 资源包位置
     /// </summary>
-    public string Local => Path.GetFileName(Pack.Local);
+    public string Local => Path.GetFileName(Obj.Local);
     /// <summary>
     /// 资源包版本
     /// </summary>
-    public string PackFormat => Pack.PackFormat.ToString();
+    public int PackFormat => Obj.PackFormat;
     /// <summary>
     /// 资源包描述
     /// </summary>
-    public Chat Description => GameBinding.StringToChat(Pack.Description);
+    public Chat Description => GameBinding.StringToChat(Obj.Description);
     /// <summary>
     /// 是否为损坏的资源包
     /// </summary>
-    public string Broken => Pack.Broken ? App.Lang("GameEditWindow.Tab8.Info4") : "";
+    public string Broken => Obj.Broken ? App.Lang("GameEditWindow.Tab8.Info4") : "";
 
     /// <summary>
     /// 资源包图标
     /// </summary>
-    public Bitmap Pic { get; }
+    private readonly Bitmap _pic;
 
     public ResourcePackModel(GameEditModel top, ResourcepackObj pack)
     {
-        TopModel = top;
-        Pack = pack;
-        Pic = Pack.Icon == null ? ImageManager.GameIcon : GetImage();
+        _top = top;
+        Obj = pack;
+        _pic = Obj.Icon == null ? ImageManager.GameIcon : GetImage();
     }
 
     /// <summary>
@@ -57,7 +58,7 @@ public partial class ResourcePackModel : SelectItemModel
     /// <returns></returns>
     public Bitmap GetImage()
     {
-        using var stream = new MemoryStream(Pack.Icon);
+        using var stream = new MemoryStream(Obj.Icon);
         return new Bitmap(stream);
     }
 
@@ -66,7 +67,7 @@ public partial class ResourcePackModel : SelectItemModel
     /// </summary>
     public void Select()
     {
-        TopModel.SetSelectResource(this);
+        _top.SetSelectResource(this);
     }
 
     /// <summary>
@@ -74,9 +75,17 @@ public partial class ResourcePackModel : SelectItemModel
     /// </summary>
     public void Close()
     {
-        if (Pic != ImageManager.GameIcon)
+        if (_pic != ImageManager.GameIcon)
         {
-            Pic.Dispose();
+            _pic.Dispose();
         }
+    }
+
+    /// <summary>
+    /// 删除资源
+    /// </summary>
+    public void DeleteResource()
+    {
+        _top.DeleteResource(Obj);
     }
 }

@@ -30,7 +30,11 @@
         </DockPanel>
         <DockPanel Width="300" Margin="0,0,0,10">
             <TextBlock Text="{setting:Localize NetFrpWindow.Tab3.Text6}" />
-            <TextBox Height="60" Text="{Binding Text}" />
+            <TextBox
+                Height="60"
+                AcceptsReturn="True"
+                Text="{Binding Text}"
+                TextWrapping="Wrap" />
         </DockPanel>
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <Button

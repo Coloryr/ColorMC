@@ -12,13 +12,27 @@ using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
+/// <summary>
+/// 导出客户端
+/// 自定义文件
+/// </summary>
 public partial class BuildPackModel
 {
+    /// <summary>
+    /// 自定义文件列表
+    /// </summary>
     public ObservableCollection<PackFileItem> Files { get; init; } = [];
 
+    /// <summary>
+    /// 选中的自定义文件
+    /// </summary>
     [ObservableProperty]
     private PackFileItem? _fileItem;
 
+    /// <summary>
+    /// 添加自定义文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddFile()
     {
@@ -40,6 +54,9 @@ public partial class BuildPackModel
         });
     }
 
+    /// <summary>
+    /// 删除自定义文件
+    /// </summary>
     public void DeleteFile()
     {
         if (FileItem != null)

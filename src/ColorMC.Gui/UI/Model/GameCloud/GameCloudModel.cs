@@ -186,6 +186,10 @@ public partial class GameCloudModel : MenuModel
         LocalConfigTime = ConfigTime;
     }
 
+    /// <summary>
+    /// 下载配置文件
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DownloadConfig()
     {
@@ -433,6 +437,10 @@ public partial class GameCloudModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 下载进度更新
+    /// </summary>
+    /// <param name="data"></param>
     private void ProgressUpdate(string data)
     {
         Dispatcher.UIThread.Post(() =>

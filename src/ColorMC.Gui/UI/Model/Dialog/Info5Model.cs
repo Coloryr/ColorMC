@@ -28,28 +28,25 @@ public partial class Info5Model(string? name) : ObservableObject
     private int _index;
 
     /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool IsCancel;
-
-    /// <summary>
     /// 项目列表
     /// </summary>
     public ObservableCollection<string> Items { get; init; } = [];
 
+    /// <summary>
+    /// 取消
+    /// </summary>
     [RelayCommand]
     public void Cancel()
     {
-        IsCancel = true;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, false);
     }
 
+    /// <summary>
+    /// 同意
+    /// </summary>
     [RelayCommand]
     public void Confirm()
     {
-        IsCancel = false;
-
-        DialogHost.Close(name);
+        DialogHost.Close(name, true);
     }
 }

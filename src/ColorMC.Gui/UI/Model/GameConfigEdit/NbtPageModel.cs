@@ -10,6 +10,9 @@ using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.GameConfigEdit;
 
+/// <summary>
+/// NBT标签编辑
+/// </summary>
 public class NbtPageModel
 {
     /// <summary>

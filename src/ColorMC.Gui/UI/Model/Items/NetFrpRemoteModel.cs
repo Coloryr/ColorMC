@@ -10,6 +10,27 @@ namespace ColorMC.Gui.UI.Model.Items;
 public partial class NetFrpRemoteModel : SelectItemModel
 {
     /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name { get; init; }
+    /// <summary>
+    /// 端口ID
+    /// </summary>
+    public int ID { get; init; }
+    /// <summary>
+    /// 远程地址
+    /// </summary>
+    public string Remote { get; init; }
+    /// <summary>
+    /// 映射类型
+    /// </summary>
+    public FrpType FrpType { get; init; }
+    /// <summary>
+    /// API KEY
+    /// </summary>
+    public string Key { get; init; }
+
+    /// <summary>
     /// 顶层
     /// </summary>
     private readonly NetFrpModel _model;
@@ -35,26 +56,8 @@ public partial class NetFrpRemoteModel : SelectItemModel
     }
 
     /// <summary>
-    /// 名字
+    /// 选中
     /// </summary>
-    public string Name { get; init; }
-    /// <summary>
-    /// 端口ID
-    /// </summary>
-    public int ID { get; init; }
-    /// <summary>
-    /// 远程地址
-    /// </summary>
-    public string Remote { get; init; }
-    /// <summary>
-    /// 映射类型
-    /// </summary>
-    public FrpType FrpType { get; init; }
-    /// <summary>
-    /// API KEY
-    /// </summary>
-    public string Key { get; init; }
-
     public void Select()
     {
         if (FrpType == FrpType.SakuraFrp)

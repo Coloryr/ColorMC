@@ -362,6 +362,11 @@ public partial class GameEditModel : MenuModel
         }
     }
 
+    /// <summary>
+    /// 更新内存占用
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>

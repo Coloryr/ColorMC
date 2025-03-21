@@ -590,40 +590,37 @@ public partial class GameLogModel : GameModel
         {
             return;
         }
-        Dispatcher.UIThread.Post(() =>
+        DispatcherTimer.RunOnce(() =>
         {
-            Dispatcher.UIThread.Post(() =>
+            //弹出日志上传选项
+            Model.ShowWithChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
             {
-                //弹出日志上传选项
-                Model.ShowWithChoise(string.Format(App.Lang("GameLogWindow.Info9"), code), App.Lang("GameLogWindow.Text8"), async () =>
+                Model.ShowClose();
+                Model.Progress(App.Lang("GameLogWindow.Info6"));
+                var url = await WebBinding.PushMclo(Text.Text);
+                Model.ProgressClose();
+                if (url == null)
                 {
-                    Model.ShowClose();
-                    Model.Progress(App.Lang("GameLogWindow.Info6"));
-                    var url = await WebBinding.PushMclo(Text.Text);
-                    Model.ProgressClose();
-                    if (url == null)
+                    Model.Show(App.Lang("GameLogWindow.Error1"));
+                    return;
+                }
+                else
+                {
+                    var top = Model.GetTopLevel();
+                    if (top == null)
                     {
-                        Model.Show(App.Lang("GameLogWindow.Error1"));
                         return;
                     }
-                    else
+                    Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
                     {
-                        var top = Model.GetTopLevel();
-                        if (top == null)
-                        {
-                            return;
-                        }
-                        Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
-                        {
-                            await BaseBinding.CopyTextClipboard(top, url);
-                            Model.Notify(App.Lang("GameLogWindow.Info7"));
-                        });
                         await BaseBinding.CopyTextClipboard(top, url);
                         Model.Notify(App.Lang("GameLogWindow.Info7"));
-                    }
-                });
+                    });
+                    await BaseBinding.CopyTextClipboard(top, url);
+                    Model.Notify(App.Lang("GameLogWindow.Info7"));
+                }
             });
-        });
+        }, TimeSpan.FromMilliseconds(200));
         LoadFileList();
         var item = GameBinding.GetLastCrash(Obj);
         File = item;

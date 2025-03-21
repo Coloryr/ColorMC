@@ -18,11 +18,6 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     public string[] TypeSource { get; init; } = LanguageBinding.GetNbtName();
 
     /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool Cancel { get; set; }
-
-    /// <summary>
     /// 标题1
     /// </summary>
     [ObservableProperty]
@@ -48,17 +43,21 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     [ObservableProperty]
     private NbtType _type = NbtType.NbtString;
 
+    /// <summary>
+    /// 确认
+    /// </summary>
     [RelayCommand]
     public void AddConfirm()
     {
-        Cancel = false;
-        DialogHost.Close(usename);
+        DialogHost.Close(usename, true);
     }
 
+    /// <summary>
+    /// 取消
+    /// </summary>
     [RelayCommand]
     public void AddCancel()
     {
-        Cancel = true;
-        DialogHost.Close(usename);
+        DialogHost.Close(usename, false);
     }
 }

@@ -26,8 +26,6 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     [ObservableProperty]
     private string? _groupItem = group;
 
-    public bool IsCancel;
-
     /// <summary>
     /// 添加群组
     /// </summary>
@@ -62,8 +60,7 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     [RelayCommand]
     public void Confirm()
     {
-        IsCancel = false;
-        DialogHost.Close(MainControl.DialogName);
+        DialogHost.Close(MainControl.DialogName, true);
     }
 
     /// <summary>
@@ -72,7 +69,6 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     [RelayCommand]
     public void Cancel()
     {
-        IsCancel = true;
-        DialogHost.Close(MainControl.DialogName);
+        DialogHost.Close(MainControl.DialogName, false);
     }
 }
