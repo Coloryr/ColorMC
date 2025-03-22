@@ -1,12 +1,12 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -15,9 +15,9 @@ public static class JavaBinding
     /// <summary>
     /// 导入Java压缩包
     /// </summary>
-    /// <param name="file"></param>
-    /// <param name="name"></param>
-    /// <param name="zip"></param>
+    /// <param name="file">压缩包位置</param>
+    /// <param name="name">名字</param>
+    /// <param name="zip">UI相关</param>
     /// <returns></returns>
     public static async Task<MessageRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
     {
@@ -47,8 +47,8 @@ public static class JavaBinding
     /// <summary>
     /// 测试并添加Java
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="local"></param>
+    /// <param name="name">名字</param>
+    /// <param name="local">路径</param>
     /// <returns></returns>
     public static MessageRes AddJava(string name, string local)
     {
@@ -71,7 +71,7 @@ public static class JavaBinding
     /// <summary>
     /// 获取Java信息
     /// </summary>
-    /// <param name="path"></param>
+    /// <param name="path">路径</param>
     /// <returns></returns>
     public static JavaInfo? GetJavaInfo(string path)
     {
@@ -81,7 +81,7 @@ public static class JavaBinding
     /// <summary>
     /// 删除Java
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="name">名字</param>
     public static void RemoveJava(string name)
     {
         JvmPath.Remove(name);
@@ -113,9 +113,9 @@ public static class JavaBinding
     /// <summary>
     /// 下载Java
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="zip"></param>
-    /// <param name="unzip"></param>
+    /// <param name="obj">Java下载项目</param>
+    /// <param name="zip">UI相关</param>
+    /// <param name="unzip">UI相关</param>
     /// <returns></returns>
     public static async Task<MessageRes> DownloadJava(JavaDownloadModel obj,
         ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
@@ -180,6 +180,7 @@ public static class JavaBinding
     /// <summary>
     /// 搜索Java
     /// </summary>
+    /// <param name="local">搜索路径</param>
     /// <returns></returns>
     public static Task<List<JavaInfo>?> FindJava(string local)
     {

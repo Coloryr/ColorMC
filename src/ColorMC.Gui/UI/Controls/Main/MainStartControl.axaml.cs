@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Controls;
@@ -7,8 +9,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

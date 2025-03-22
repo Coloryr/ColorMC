@@ -1,11 +1,11 @@
-﻿using ColorMC.Core;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -398,7 +398,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
     /// <returns></returns>
     private bool CheckGameDir()
     {
-        return Name is Names.NameGameLogDir 
+        return Name is Names.NameGameLogDir
             or Names.NameGameCrashLogDir or Names.NameGameSavesDir;
     }
 }

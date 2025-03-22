@@ -1,10 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Hashing;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
-using Avalonia.Styling;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Config;
@@ -13,7 +19,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
@@ -24,18 +29,8 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using DialogHostAvalonia;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.IO;
-using System.IO.Hashing;
-using System.Text;
-using System.Threading.Tasks;
-using static ColorMC.Gui.Objs.CountObj;
 using Path = System.IO.Path;
 using ZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
@@ -54,6 +49,9 @@ public static class BaseBinding
     /// </summary>
     public static bool IsDownload => DownloadManager.State;
 
+    /// <summary>
+    /// 启动完成回调
+    /// </summary>
     public static event Action? LoadDone;
 
     /// <summary>
@@ -328,7 +326,7 @@ public static class BaseBinding
     /// <summary>
     /// 导入Live2D核心
     /// </summary>
-    /// <param name="local"></param>
+    /// <param name="local">导入路径</param>
     /// <returns></returns>
     public static async Task<bool> SetLive2DCore(string local)
     {
@@ -371,8 +369,8 @@ public static class BaseBinding
     /// <summary>
     /// 启动Frp
     /// </summary>
-    /// <param name="item1"></param>
-    /// <param name="model"></param>
+    /// <param name="item1">远程Frp项目</param>
+    /// <param name="model">本地映射项目</param>
     /// <returns></returns>
     public static Task<FrpLaunchRes> StartFrp(object item1, NetFrpLocalModel model)
     {
@@ -387,22 +385,37 @@ public static class BaseBinding
         return Task.FromResult(new FrpLaunchRes());
     }
 
+    /// <summary>
+    /// 获取当前音乐信息
+    /// </summary>
+    /// <returns></returns>
     public static (PlayState, string) GetMusicNow()
     {
         return (Media.PlayState, $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
             $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}");
     }
 
+    /// <summary>
+    /// 清理窗口状态
+    /// </summary>
     public static void ClearWindowSetting()
     {
         WindowManager.Reset();
     }
 
+    /// <summary>
+    /// 获取当前音乐播放状态
+    /// </summary>
+    /// <returns></returns>
     public static PlayState GetPlayState()
     {
         return Media.PlayState;
     }
 
+    /// <summary>
+    /// 获取支持的编码
+    /// </summary>
+    /// <returns></returns>
     public static string[] GetEncoding()
     {
         try
@@ -416,6 +429,11 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 收藏资源
+    /// </summary>
+    /// <param name="model">资源</param>
+    /// <returns></returns>
     public static bool SetStart(FileItemModel model)
     {
         var obj = new CollectItemObj()
@@ -451,28 +469,20 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 资源是否收藏
+    /// </summary>
+    /// <param name="type">资源类型</param>
+    /// <param name="pid">项目ID</param>
+    /// <returns></returns>
     public static bool IsStar(SourceType type, string pid)
     {
         return CollectUtils.IsCollect(type, pid);
     }
 
-    public static string GetFolderSize(string folderPath)
-    {
-        return GetSizeReadable(PathHelper.GetFolderSize(folderPath));
-    }
-
-    private static string GetSizeReadable(long bytes)
-    {
-        string[] sizes = ["B", "KB", "MB", "GB", "TB"];
-        int order = 0;
-        while (bytes >= 1024 && order < sizes.Length - 1)
-        {
-            order++;
-            bytes /= 1024;
-        }
-        return $"{bytes:0.##} {sizes[order]}";
-    }
-
+    /// <summary>
+    /// 清理缓存
+    /// </summary>
     public static void DeleteTemp()
     {
         var temp = DownloadManager.DownloadDir;
@@ -480,6 +490,14 @@ public static class BaseBinding
         Directory.CreateDirectory(temp);
     }
 
+    /// <summary>
+    /// 给压缩包添加一个文件
+    /// </summary>
+    /// <param name="crc">校验</param>
+    /// <param name="stream">压缩包流</param>
+    /// <param name="file">文件名</param>
+    /// <param name="path">文件路径</param>
+    /// <returns></returns>
     private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path)
     {
         using var buffer = PathHelper.OpenRead(path)!;
@@ -497,6 +515,14 @@ public static class BaseBinding
         await buffer.CopyToAsync(stream);
     }
 
+    /// <summary>
+    /// 给压缩包添加一个文件
+    /// </summary>
+    /// <param name="crc">校验</param>
+    /// <param name="stream">压缩包流</param>
+    /// <param name="file">文件名</param>
+    /// <param name="data">文件内容</param>
+    /// <returns></returns>
     private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, byte[] data)
     {
         var entry = new ZipEntry(file)
@@ -511,6 +537,15 @@ public static class BaseBinding
         await stream.WriteAsync(data);
     }
 
+    /// <summary>
+    /// 给压缩包添加一个文件夹
+    /// </summary>
+    /// <param name="crc">校验</param>
+    /// <param name="stream">压缩包流</param>
+    /// <param name="file">文件名</param>
+    /// <param name="path">路径</param>
+    /// <param name="basepath">基础路径，用于替换</param>
+    /// <returns></returns>
     private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path, string basepath)
     {
         foreach (var item in PathHelper.GetAllFiles(path))
@@ -533,6 +568,9 @@ public static class BaseBinding
         }
     }
 
+    /// <summary>
+    /// 读取客户端配置
+    /// </summary>
     public static void ReadBuildConfig()
     {
         var file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameClientConfigFile);
@@ -662,6 +700,12 @@ public static class BaseBinding
         File.Delete(file);
     }
 
+    /// <summary>
+    /// 打包客户端
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="output"></param>
+    /// <returns></returns>
     public static async Task<bool> BuildPack(BuildPackModel model, string output)
     {
         try
@@ -679,6 +723,7 @@ public static class BaseBinding
 
             model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info3"));
 
+            //打包配置
             if (model.UiBg && File.Exists(conf.BackImage))
             {
                 var filename = Path.GetFileName(conf.BackImage);
@@ -835,6 +880,7 @@ public static class BaseBinding
                 }
             }
 
+            //打包java
             if (model.Java)
             {
                 model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info4"));
@@ -864,6 +910,7 @@ public static class BaseBinding
             var data = obj.ToString();
             await PutFile(crc, stream, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
 
+            //打包启动器
             if (model.PackLaunch)
             {
                 foreach (var item in UpdateUtils.LaunchFiles)
@@ -879,6 +926,7 @@ public static class BaseBinding
 
             model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info5"));
 
+            //打包游戏实例
             foreach (var item in model.GetSelectItems())
             {
                 string tempfile = item[(ColorMCGui.BaseDir.Length)..];
@@ -925,11 +973,19 @@ public static class BaseBinding
         ImageManager.LoadIcon();
     }
 
+    /// <summary>
+    /// 获取窗口图标
+    /// </summary>
+    /// <returns></returns>
     public static Bitmap? GetWindowIcon()
     {
         return ImageManager.GetCustomIcon();
     }
 
+    /// <summary>
+    /// 获取启动图标
+    /// </summary>
+    /// <returns></returns>
     public static Bitmap? GetStartIcon()
     {
         return ImageManager.GetStartIcon();

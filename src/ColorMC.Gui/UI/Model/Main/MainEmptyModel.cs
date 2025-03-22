@@ -37,7 +37,6 @@ public partial class MainModel
     {
         WindowManager.ShowUser(true);
     }
-
     /// <summary>
     /// 添加Java
     /// </summary>
@@ -46,7 +45,6 @@ public partial class MainModel
     {
         WindowManager.ShowSetting(SettingType.SetJava);
     }
-
     /// <summary>
     /// 添加游戏实例
     /// </summary>
@@ -55,7 +53,6 @@ public partial class MainModel
     {
         WindowManager.ShowAddGame(null);
     }
-
     /// <summary>
     /// 打开网页
     /// </summary>
@@ -64,7 +61,6 @@ public partial class MainModel
     {
         WebBinding.OpenWeb(WebType.Web);
     }
-
     /// <summary>
     /// 打开网页
     /// </summary>

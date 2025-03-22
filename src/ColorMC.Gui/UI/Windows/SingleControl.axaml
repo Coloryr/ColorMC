@@ -21,57 +21,54 @@
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
-    <Panel>
-        <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
-            <Image
-                IsVisible="{Binding BgVisible}"
-                Opacity="{Binding BgOpacity}"
-                Source="{Binding BackImage}"
-                Stretch="UniformToFill" />
-            <DockPanel Background="{setting:Theme WindowBG}">
-                <view:HeadControl
-                    Name="Head"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding EnableHead}" />
-                <dialog:DialogHost
-                    Background="{setting:Theme ButtonBG}"
-                    DisableOpeningAnimation="True"
-                    Identifier="{Binding WindowId}"
-                    OverlayBackground="Transparent">
-                    <dialog:DialogHost.DataTemplates>
-                        <DataTemplate DataType="dialogmodel:Info1Model">
-                            <dialogview:Info1Control DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="dialogmodel:Info3Model">
-                            <dialogview:Info3Control DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="dialogmodel:Info4Model">
-                            <dialogview:Info4Control DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="dialogmodel:Info5Model">
-                            <dialogview:Info5Control DataContext="{Binding}" />
-                        </DataTemplate>
-                        <DataTemplate DataType="dialogmodel:Info6Model">
-                            <dialogview:Info6Control DataContext="{Binding}" />
-                        </DataTemplate>
-                    </dialog:DialogHost.DataTemplates>
-                    <Panel>
-                        <Decorator Name="Controls" />
-                        <Panel
-                            Name="Grid2"
-                            Margin="20"
-                            Background="{setting:Theme TopGridColor}"
-                            IsVisible="False">
-                            <TextBlock
-                                Name="Label1"
-                                HorizontalAlignment="Center"
-                                FontSize="30"
-                                Text="test" />
-                        </Panel>
+    <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
+        <Image
+            IsVisible="{Binding BgVisible}"
+            Opacity="{Binding BgOpacity}"
+            Source="{Binding BackImage}"
+            Stretch="UniformToFill" />
+        <DockPanel Background="{setting:Theme WindowBG}">
+            <view:HeadControl
+                Name="Head"
+                DockPanel.Dock="Top"
+                IsVisible="{Binding EnableHead}" />
+            <dialog:DialogHost
+                Background="{setting:Theme ButtonBG}"
+                DisableOpeningAnimation="True"
+                Identifier="{Binding WindowId}"
+                OverlayBackground="Transparent">
+                <dialog:DialogHost.DataTemplates>
+                    <DataTemplate DataType="dialogmodel:Info1Model">
+                        <dialogview:Info1Control DataContext="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="dialogmodel:Info3Model">
+                        <dialogview:Info3Control DataContext="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="dialogmodel:Info4Model">
+                        <dialogview:Info4Control DataContext="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="dialogmodel:Info5Model">
+                        <dialogview:Info5Control DataContext="{Binding}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="dialogmodel:Info6Model">
+                        <dialogview:Info6Control DataContext="{Binding}" />
+                    </DataTemplate>
+                </dialog:DialogHost.DataTemplates>
+                <Panel>
+                    <Decorator Name="Controls" />
+                    <Panel
+                        Name="Grid2"
+                        Margin="20"
+                        Background="{setting:Theme TopGridColor}"
+                        IsVisible="False">
+                        <TextBlock
+                            Name="Label1"
+                            HorizontalAlignment="Center"
+                            FontSize="30"
+                            Text="test" />
                     </Panel>
-                </dialog:DialogHost>
-            </DockPanel>
-        </Panel>
-        <Decorator Name="TopView" IsVisible="False" />
+                </Panel>
+            </dialog:DialogHost>
+        </DockPanel>
     </Panel>
 </UserControl>

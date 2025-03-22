@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
@@ -17,14 +25,6 @@ using ICSharpCode.SharpZipLib.Checksum;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -40,6 +40,33 @@ public static class PathBinding
     private static readonly string[] HEADFILE = ["*.png"];
     private static readonly string[] ZIPFILE = ["*.zip"];
     private static readonly string[] JARFILE = ["*.jar"];
+
+    /// <summary>
+    /// 获取文件夹占用大小
+    /// </summary>
+    /// <param name="folderPath"></param>
+    /// <returns></returns>
+    public static string GetFolderSize(string folderPath)
+    {
+        return GetSizeReadable(PathHelper.GetFolderSize(folderPath));
+    }
+
+    /// <summary>
+    /// 获取文件夹占用大小
+    /// </summary>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    private static string GetSizeReadable(long bytes)
+    {
+        string[] sizes = ["B", "KB", "MB", "GB", "TB"];
+        int order = 0;
+        while (bytes >= 1024 && order < sizes.Length - 1)
+        {
+            order++;
+            bytes /= 1024;
+        }
+        return $"{bytes:0.##} {sizes[order]}";
+    }
 
     /// <summary>
     /// 提升权限
@@ -622,6 +649,13 @@ public static class PathBinding
         return (null, null);
     }
 
+    /// <summary>
+    /// 导入文件
+    /// </summary>
+    /// <param name="top">窗口</param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">文件类型</param>
+    /// <returns></returns>
     public static async Task<bool?> AddFile(TopLevel top, GameSettingObj obj, FileType type)
     {
         switch (type)
@@ -682,10 +716,10 @@ public static class PathBinding
     }
 
     /// <summary>
-    /// 导出
+    /// 导出整合包
     /// </summary>
-    /// <param name="top"></param>
-    /// <param name="model"></param>
+    /// <param name="top">窗口</param>
+    /// <param name="model">导出信息</param>
     /// <returns></returns>
     public static async Task<bool?> Export(TopLevel top, GameExportModel model)
     {
@@ -1002,6 +1036,7 @@ public static class PathBinding
         return true;
     }
 
+#if Phone
     public static async Task<string> CopyBG(string pic)
     {
         try
@@ -1023,7 +1058,12 @@ public static class PathBinding
 
         return pic;
     }
+#endif
 
+    /// <summary>
+    /// 打开图片
+    /// </summary>
+    /// <param name="screenshot">图片路径</param>
     public static void OpenPicFile(string screenshot)
     {
         screenshot = Path.GetFullPath(screenshot);

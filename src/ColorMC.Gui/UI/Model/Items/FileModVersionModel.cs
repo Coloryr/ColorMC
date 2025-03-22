@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ColorMC.Gui.Objs;
 using CommunityToolkit.Mvvm.ComponentModel;
 

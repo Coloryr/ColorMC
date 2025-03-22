@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
@@ -8,9 +10,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -1014,6 +1013,12 @@ public static class ConfigBinding
         CoreHttpClient.Init();
     }
 
+    /// <summary>
+    /// 设置日志颜色
+    /// </summary>
+    /// <param name="warnColor"></param>
+    /// <param name="errorColor"></param>
+    /// <param name="debugColor"></param>
     public static void SetLogColor(string warnColor, string errorColor, string debugColor)
     {
         GuiConfigUtils.Config.LogColor ??= GuiConfigUtils.MakeLogColorConfig();
@@ -1026,6 +1031,11 @@ public static class ConfigBinding
         ThemeManager.Init();
     }
 
+    /// <summary>
+    /// 设置管理员启动
+    /// </summary>
+    /// <param name="adminLaunch"></param>
+    /// <param name="gameAdminLaunch"></param>
     public static void SetAdmin(bool adminLaunch, bool gameAdminLaunch)
     {
         GuiConfigUtils.Config.ServerCustom ??= new();
@@ -1035,6 +1045,12 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置卡片
+    /// </summary>
+    /// <param name="cardNews"></param>
+    /// <param name="cardLast"></param>
+    /// <param name="cardOnline"></param>
     public static void SetCard(bool cardNews, bool cardLast, bool cardOnline)
     {
         GuiConfigUtils.Config.Card ??= new();
@@ -1046,6 +1062,12 @@ public static class ConfigBinding
         WindowManager.MainWindow?.LoadDone();
     }
 
+    /// <summary>
+    /// 设置启动器检测
+    /// </summary>
+    /// <param name="user"></param>
+    /// <param name="loader"></param>
+    /// <param name="memory"></param>
     public static void SetCheck(bool user, bool loader, bool memory)
     {
         GuiConfigUtils.Config.LaunchCheck ??= new();
@@ -1056,6 +1078,10 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
     }
 
+    /// <summary>
+    /// 设置主页面模式
+    /// </summary>
+    /// <param name="value"></param>
     public static void SetWindowSimple(bool value)
     {
         GuiConfigUtils.Config.Simple = value;

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
@@ -8,99 +13,194 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置页面
+/// </summary>
 public partial class SettingModel
 {
+    /// <summary>
+    /// 手柄配置列表
+    /// </summary>
     public ObservableCollection<string> Configs { get; init; } = [];
+    /// <summary>
+    /// 手柄按钮列表
+    /// </summary>
     public ObservableCollection<InputButtonModel> InputList { get; init; } = [];
+    /// <summary>
+    /// 手柄列表
+    /// </summary>
     public ObservableCollection<string> InputNames { get; init; } = [];
-
+    /// <summary>
+    /// 摇杆列表
+    /// </summary>
     public ObservableCollection<InputAxisButtonModel> InputAxisList { get; init; } = [];
 
+    /// <summary>
+    /// 摇杆类型
+    /// </summary>
     public string[] AxisType { get; init; } = LanguageBinding.GetAxisTypeName();
 
+    /// <summary>
+    /// 选中的按钮
+    /// </summary>
     [ObservableProperty]
     private InputButtonModel _inputItem;
-
+    /// <summary>
+    /// 选中的摇杆
+    /// </summary>
     [ObservableProperty]
     private InputAxisButtonModel _inputAxisItem;
 
+    /// <summary>
+    /// 是否初始化了手柄输入
+    /// </summary>
     [ObservableProperty]
     private bool _inputInit;
+    /// <summary>
+    /// 是否存在手柄
+    /// </summary>
     [ObservableProperty]
     private bool _inputExist;
+    /// <summary>
+    /// 是否启用手柄映射
+    /// </summary>
     [ObservableProperty]
     private bool _inputEnable;
+    /// <summary>
+    /// 是否启用物品循环
+    /// </summary>
     [ObservableProperty]
     private bool _itemCycle;
 
+    /// <summary>
+    /// 手柄数量
+    /// </summary>
     [ObservableProperty]
     private int _inputNum;
+    /// <summary>
+    /// 选中的手柄
+    /// </summary>
     [ObservableProperty]
     private int _inputIndex = -1;
+    /// <summary>
+    /// 选中的摇杆
+    /// </summary>
     [ObservableProperty]
     private int _inputRotateAxis = 0;
+    /// <summary>
+    /// 光标摇杆死区大小
+    /// </summary>
     [ObservableProperty]
     private int _cursorDeath;
+    /// <summary>
+    /// 移动摇杆死区大小
+    /// </summary>
     [ObservableProperty]
     private int _rotateDeath;
+    /// <summary>
+    /// 光标摇杆
+    /// </summary>
     [ObservableProperty]
     private int _inputCursorAxis = 0;
+    /// <summary>
+    /// 回滚值
+    /// </summary>
     [ObservableProperty]
     private int _toBackValue;
 
+    /// <summary>
+    /// 当前配置
+    /// </summary>
     [ObservableProperty]
     private int _nowConfig = -1;
+    /// <summary>
+    /// 选中的配置
+    /// </summary>
     [ObservableProperty]
     private int _selectConfig = -1;
-
+    /// <summary>
+    /// 选中的摇杆
+    /// </summary>
     [ObservableProperty]
     private int _nowAxis1;
+    /// <summary>
+    /// 选中的摇杆
+    /// </summary>
     [ObservableProperty]
     private int _nowAxis2;
 
+    /// <summary>
+    /// 物品循环按钮
+    /// </summary>
     [ObservableProperty]
     private byte _itemCycleLeft;
+    /// <summary>
+    /// 物品循环按钮
+    /// </summary>
     [ObservableProperty]
     private byte _itemCycleRight;
 
+    /// <summary>
+    /// 物品循环图标
+    /// </summary>
     [ObservableProperty]
     private string _cycleLeftIcon;
+    /// <summary>
+    /// 物品循环图标
+    /// </summary>
     [ObservableProperty]
     private string _cycleRightIcon;
 
+    /// <summary>
+    /// 移动倍率
+    /// </summary>
     [ObservableProperty]
     private float _rotateRate;
+    /// <summary>
+    /// 光标倍率
+    /// </summary>
     [ObservableProperty]
     private float _cursorRate;
+    /// <summary>
+    /// 降速
+    /// </summary>
     [ObservableProperty]
     private float _downRate;
 
+    /// <summary>
+    /// 控制器列表
+    /// </summary>
     private readonly List<string> _controlUUIDs = [];
+    /// <summary>
+    /// 当前数值
+    /// </summary>
     private short _leftX, _leftY, _rightX, _rightY;
 
+    //数值更新回调
     private Action<byte>? _input;
     private Action<byte, bool>? _inputAxis;
     private Action<InputKeyObj>? _inputKey;
 
+    //当前手柄
     private IntPtr _controlPtr;
     private int _joystickID;
 
+    /// <summary>
+    /// 当前控制器
+    /// </summary>
     private InputControlObj? _controlObj;
 
+    //是否加载配置中
     private bool _isInputConfigLoad;
     private bool _isInputLoad;
 
+    //配置修改
     partial void OnNowConfigChanged(int value)
     {
         if (_isInputLoad)
@@ -279,6 +379,10 @@ public partial class SettingModel
         ConfigBinding.SaveInputInfo(InputEnable);
     }
 
+    /// <summary>
+    /// 导出手柄设置
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ExportInputConfig()
     {
@@ -304,7 +408,10 @@ public partial class SettingModel
 
         Model.Notify(App.Lang("SettingWindow.Tab8.Info14"));
     }
-
+    /// <summary>
+    /// 导入手柄设置
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task ImportInputConfig()
     {
@@ -334,7 +441,10 @@ public partial class SettingModel
 
         Model.Notify(App.Lang("SettingWindow.Tab8.Info15"));
     }
-
+    /// <summary>
+    /// 删除手柄设置
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task DeleteInputConfig()
     {
@@ -359,7 +469,10 @@ public partial class SettingModel
             SelectConfig = 0;
         }
     }
-
+    /// <summary>
+    /// 重命名手柄设置
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task RenameInputConfig()
     {
@@ -386,7 +499,10 @@ public partial class SettingModel
 
         ConfigBinding.SaveInputConfig(_controlObj);
     }
-
+    /// <summary>
+    /// 新建手柄设置
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task NewInputConfig()
     {
@@ -402,7 +518,10 @@ public partial class SettingModel
 
         SelectConfig = Configs.Count - 1;
     }
-
+    /// <summary>
+    /// 添加摇杆输入
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddAxisInput()
     {
@@ -444,7 +563,10 @@ public partial class SettingModel
         ConfigBinding.AddAxisInput(_controlObj, item1.UUID, item1.GenObj());
         Model.Notify(App.Lang("SettingWindow.Tab8.Info5"));
     }
-
+    /// <summary>
+    /// 添加按钮输入
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddInput()
     {
@@ -492,7 +614,11 @@ public partial class SettingModel
         ConfigBinding.AddInput(_controlObj, item1.InputKey, item1.Obj);
         Model.Notify(App.Lang("SettingWindow.Tab8.Info7"));
     }
-
+    /// <summary>
+    /// 设置按钮
+    /// </summary>
+    /// <param name="right"></param>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SetItemButton(object? right)
     {
@@ -519,6 +645,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 保存设置
+    /// </summary>
+    /// <param name="model"></param>
     public void InputSave(InputAxisButtonModel model)
     {
         if (_controlObj == null)
@@ -528,7 +658,9 @@ public partial class SettingModel
 
         ConfigBinding.AddAxisInput(_controlObj, model.UUID, model.GenObj());
     }
-
+    /// <summary>
+    /// 开始读取手柄
+    /// </summary>
     private void StartRead()
     {
         if (SdlUtils.SdlInit)
@@ -536,7 +668,9 @@ public partial class SettingModel
             JoystickInput.OnEvent += InputControl_OnEvent;
         }
     }
-
+    /// <summary>
+    /// 更新摇杆值
+    /// </summary>
     private void UpdateType1()
     {
         Dispatcher.UIThread.Post(() =>
@@ -551,7 +685,9 @@ public partial class SettingModel
             }
         });
     }
-
+    /// <summary>
+    /// 更新摇杆值
+    /// </summary>
     private void UpdateType2()
     {
         Dispatcher.UIThread.Post(() =>
@@ -567,6 +703,9 @@ public partial class SettingModel
         });
     }
 
+    /// <summary>
+    /// 开始读取配置
+    /// </summary>
     public void LoadInput()
     {
         _isInputLoad = true;
@@ -593,6 +732,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 加载手柄设置
+    /// </summary>
+    /// <param name="config">手柄设置</param>
     private void LoadInputConfig(InputControlObj config)
     {
         _isInputConfigLoad = true;
@@ -638,6 +781,9 @@ public partial class SettingModel
         _isInputConfigLoad = false;
     }
 
+    /// <summary>
+    /// 重载手柄列表
+    /// </summary>
     public void ReloadInput()
     {
         if (!InputInit)
@@ -658,6 +804,10 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 设置手柄配置按钮
+    /// </summary>
+    /// <param name="item"></param>
     public async void SetKeyButton(InputButtonModel item)
     {
         if (_controlObj == null)
@@ -689,6 +839,10 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info9"));
     }
 
+    /// <summary>
+    /// 删除手柄配置按钮
+    /// </summary>
+    /// <param name="item"></param>
     public void DeleteInput(InputButtonModel item)
     {
         if (_controlObj == null)
@@ -708,6 +862,11 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info10"));
     }
 
+    /// <summary>
+    /// 输入鼠标按钮
+    /// </summary>
+    /// <param name="modifiers"></param>
+    /// <param name="properties"></param>
     public void InputMouse(KeyModifiers modifiers, PointerPointProperties properties)
     {
         if (_inputKey == null)
@@ -757,6 +916,12 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 输入键盘按钮
+    /// </summary>
+    /// <param name="modifiers"></param>
+    /// <param name="key"></param>
+    /// <returns></returns>
     public bool InputKey(KeyModifiers modifiers, Key key)
     {
         if (_inputKey == null)
@@ -786,6 +951,11 @@ public partial class SettingModel
         return true;
     }
 
+    /// <summary>
+    /// 等待用户输入按钮
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private Task<InputKeyObj?> WaitKey(CancellationToken token)
     {
         JoystickInput.IsEditMode = true;
@@ -813,7 +983,11 @@ public partial class SettingModel
             return keys;
         });
     }
-
+    /// <summary>
+    /// 等待用户输入按钮
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private Task<byte?> WaitInput(CancellationToken token)
     {
         byte? keys = null;
@@ -838,7 +1012,11 @@ public partial class SettingModel
             return keys;
         });
     }
-
+    /// <summary>
+    /// 等待用户摇杆输入
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public Task<(byte, bool)?> WaitAxis(CancellationToken token)
     {
         byte keys = 0;
@@ -866,6 +1044,10 @@ public partial class SettingModel
         });
     }
 
+    /// <summary>
+    /// 手柄事件
+    /// </summary>
+    /// <param name="sdlEvent"></param>
     private void InputControl_OnEvent(Event sdlEvent)
     {
         EventType type = (EventType)sdlEvent.Type;
@@ -939,6 +1121,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 关闭当前手柄
+    /// </summary>
     private void InputClose()
     {
         _joystickID = 0;
@@ -949,6 +1134,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 停止获取手柄输入
+    /// </summary>
     private void StopRead()
     {
         if (SdlUtils.SdlInit)

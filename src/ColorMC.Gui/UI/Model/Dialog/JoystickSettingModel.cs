@@ -1,11 +1,10 @@
-﻿using ColorMC.Gui.Joystick;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.UI.Controls.Main;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 

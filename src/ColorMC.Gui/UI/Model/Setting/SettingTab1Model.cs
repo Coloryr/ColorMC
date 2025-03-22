@@ -1,15 +1,18 @@
-﻿using ColorMC.Core.Downloader;
+﻿using System;
+using System.Threading.Tasks;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置窗口
+/// </summary>
 public partial class SettingModel
 {
     /// <summary>
@@ -330,7 +333,7 @@ public partial class SettingModel
     {
         var temp = DownloadManager.DownloadDir;
 
-        TempSize = string.Format(App.Lang("SettingWindow.Tab1.Info20"), BaseBinding.GetFolderSize(temp));
+        TempSize = string.Format(App.Lang("SettingWindow.Tab1.Info20"), PathBinding.GetFolderSize(temp));
     }
 
     /// <summary>

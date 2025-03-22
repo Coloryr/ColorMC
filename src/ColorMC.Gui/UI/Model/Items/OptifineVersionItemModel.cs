@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Objs.OptiFine;
-using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -12,7 +12,7 @@ public partial class OptifineVersionItemModel(OptifineObj obj) : SelectItemModel
     /// <summary>
     /// 添加
     /// </summary>
-    public IAddOptifineWindow? Add { get; set; }
+    public IAddOptifineControl? Add { get; set; }
 
     /// <summary>
     /// 版本

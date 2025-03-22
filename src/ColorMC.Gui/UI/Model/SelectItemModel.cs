@@ -4,15 +4,30 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 
+/// <summary>
+/// 带选中项目
+/// </summary>
 public partial class SelectItemModel : ObservableObject
 {
+    /// <summary>
+    /// 选中框颜色
+    /// </summary>
     [ObservableProperty]
     private BoxShadows _border = ThemeManager.BorderShadows;
 
+    /// <summary>
+    /// 是否选中
+    /// </summary>
     [ObservableProperty]
     private bool _isSelect;
+    /// <summary>
+    /// 是否鼠标在上面
+    /// </summary>
     [ObservableProperty]
     private bool _top;
+    /// <summary>
+    /// 是否启用按钮
+    /// </summary>
     [ObservableProperty]
     private bool _enableButton;
 

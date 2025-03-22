@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -6,7 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using System;
+using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -15,11 +16,23 @@ namespace ColorMC.Gui.UI.Windows;
 /// </summary>
 public abstract class ABaseWindow : Window
 {
-    public abstract ITopWindow ICon { get; }
+    /// <summary>
+    /// 基础页面
+    /// </summary>
+    public abstract IBaseControl ICon { get; }
 
+    /// <summary>
+    /// 默认窗口宽度
+    /// </summary>
     public abstract int DefaultWidth { get; }
+    /// <summary>
+    /// 默认窗口高度
+    /// </summary>
     public abstract int DefaultHeight { get; }
 
+    /// <summary>
+    /// 初始化窗口
+    /// </summary>
     protected void InitBaseWindow()
     {
         Icon = ImageManager.WindowIcon;
@@ -51,7 +64,7 @@ public abstract class ABaseWindow : Window
 
     private void ABaseWindow_Opened(object? sender, EventArgs e)
     {
-        ICon.WindowOpened();
+        ICon.ControlOpened();
     }
 
     private void ABaseWindow_OnPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
@@ -59,7 +72,7 @@ public abstract class ABaseWindow : Window
         //状态改变时切换边框大小
         if (e.Property == WindowStateProperty)
         {
-            ICon.WindowStateChange(WindowState);
+            ICon.ControlStateChange(WindowState);
             if (SystemInfo.Os == OsType.Windows)
             {
                 if (WindowState == WindowState.Maximized)
@@ -74,6 +87,11 @@ public abstract class ABaseWindow : Window
         }
     }
 
+    /// <summary>
+    /// 按键按下
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void Window_KeyDown(object? sender, KeyEventArgs e)
     {
         if (await ICon.OnKeyDown(sender, e))
@@ -102,12 +120,17 @@ public abstract class ABaseWindow : Window
         }
     }
 
+    /// <summary>
+    /// 设置窗口状态
+    /// </summary>
+    /// <returns></returns>
     protected bool SetWindowState()
     {
         if (ColorMCGui.RunType != RunType.Program)
         {
             return true;
         }
+        //获取窗口状态
         var state = WindowManager.GetWindowState(ICon.WindowId);
         if (state != null)
         {
@@ -146,11 +169,6 @@ public abstract class ABaseWindow : Window
                     newX = Math.Min(0, screenBounds.Right - newWidth);
                 }
 
-                //if (newY < 20)
-                //{
-                //    newY = 20;
-                //}
-
                 if (newWidth < MinWidth)
                 {
                     newWidth = DefaultWidth;
@@ -160,6 +178,7 @@ public abstract class ABaseWindow : Window
                     newHeight = DefaultHeight;
                 }
 
+                //设置位置以及大小
                 Position = new(newX, newY);
                 Width = newWidth;
                 Height = newHeight;

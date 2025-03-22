@@ -1,15 +1,14 @@
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.Utils;
-using System;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Controls.Add;
 

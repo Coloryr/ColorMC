@@ -1,10 +1,9 @@
+using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

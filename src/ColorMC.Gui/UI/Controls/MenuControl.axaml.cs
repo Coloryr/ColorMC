@@ -1,11 +1,11 @@
+using System;
+using System.ComponentModel;
+using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
-using System;
-using System.ComponentModel;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Controls;
 
@@ -74,18 +74,18 @@ public abstract partial class MenuControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == MenuModel.SideOpen)
+        if (e.PropertyName == MenuModel.NameSideOpen)
         {
             _control.SidePanel3.IsVisible = true;
             _control.SidePanel2.IsVisible = true;
         }
-        else if (e.PropertyName == MenuModel.SideClose)
+        else if (e.PropertyName == MenuModel.NameSideClose)
         {
             _control.SidePanel2.IsVisible = false;
             _control.SidePanel3.IsVisible = false;
         }
 
-        if (e.PropertyName == MenuModel.NowViewName)
+        if (e.PropertyName == MenuModel.NameNowView)
         {
             var model = (DataContext as MenuModel)!;
             Go(ViewChange(_now, model.NowView));

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Core;
 using ColorMC.Core.Game;
@@ -11,28 +16,30 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class UserBinding
 {
+    /// <summary>
+    /// 账户编辑回调
+    /// </summary>
     public static event Action? UserEdit;
 
+    /// <summary>
+    /// 锁定的账户类型
+    /// </summary>
     private static readonly List<UserKeyObj> s_lockUser = [];
 
     /// <summary>
     /// 添加账户
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="loginOAuth"></param>
-    /// <param name="input1"></param>
-    /// <param name="input2"></param>
-    /// <param name="input3"></param>
+    /// <param name="type">账户类型</param>
+    /// <param name="loginOAuth">UI相关</param>
+    /// <param name="select">UI相关</param>
+    /// <param name="input1">附加信息</param>
+    /// <param name="input2">附加信息</param>
+    /// <param name="input3">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     public static async Task<MessageRes> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
@@ -95,8 +102,8 @@ public static class UserBinding
     /// <summary>
     /// 删除账户
     /// </summary>
-    /// <param name="uuid"></param>
-    /// <param name="type"></param>
+    /// <param name="uuid">UUID</param>
+    /// <param name="type">账户类型</param>
     public static void Remove(string uuid, AuthType type)
     {
         if (GuiConfigUtils.Config.LastUser is { } last
@@ -126,8 +133,8 @@ public static class UserBinding
     /// <summary>
     /// 重新登录账户
     /// </summary>
-    /// <param name="uuid"></param>
-    /// <param name="type"></param>
+    /// <param name="uuid">UUID</param>
+    /// <param name="type">账户类型</param>
     /// <returns></returns>
     public static async Task<bool> ReLogin(string uuid, AuthType type)
     {
@@ -144,8 +151,8 @@ public static class UserBinding
     /// <summary>
     /// 设置选中账户
     /// </summary>
-    /// <param name="uuid"></param>
-    /// <param name="type"></param>
+    /// <param name="uuid">UUID</param>
+    /// <param name="type">账户类型</param>
     public static void SetSelectUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
@@ -171,7 +178,7 @@ public static class UserBinding
     /// <summary>
     /// 锁定账户
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">账户</param>
     public static void AddLockUser(LoginObj obj)
     {
         var key = obj.GetKey();
@@ -184,7 +191,7 @@ public static class UserBinding
     /// <summary>
     /// 解锁账户
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">账户</param>
     public static void UnLockUser(LoginObj obj)
     {
         s_lockUser.Remove(obj.GetKey());
@@ -193,7 +200,7 @@ public static class UserBinding
     /// <summary>
     /// 账户是否锁定
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">账户</param>
     /// <returns></returns>
     public static bool IsLock(LoginObj obj)
     {
@@ -246,6 +253,7 @@ public static class UserBinding
     /// <summary>
     /// 编辑皮肤
     /// </summary>
+    /// <param name="top">窗口</param>
     public static async void EditSkin(TopLevel top)
     {
         var obj = GetLastUser();
@@ -305,15 +313,14 @@ public static class UserBinding
     /// <summary>
     /// 编辑账户
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="uuid"></param>
-    /// <param name="text1"></param>
-    /// <param name="text2"></param>
-    public static void EditUser(string name, string uuid, string text1, string text2)
+    /// <param name="obj">原来的账户</param>
+    /// <param name="text1">新的名字</param>
+    /// <param name="text2">新的UUID</param>
+    public static void EditUser(LoginObj obj, string text1, string text2)
     {
         foreach (var item in AuthDatabase.Auths.Values)
         {
-            if (item.UserName == name && item.UUID == uuid && item.AuthType == AuthType.Offline)
+            if (item.UserName == obj.UserName && item.UUID == obj.UUID && item.AuthType == AuthType.Offline)
             {
                 item.UserName = text1;
                 item.UUID = text2;
@@ -335,7 +342,7 @@ public static class UserBinding
     /// <summary>
     /// 测试登录
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="user">账户</param>
     /// <returns></returns>
     public static async Task<bool> TestLogin(LoginObj user)
     {

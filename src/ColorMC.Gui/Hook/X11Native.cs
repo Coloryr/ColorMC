@@ -1,7 +1,7 @@
-﻿using Avalonia.Input;
-using ColorMC.Gui.Objs;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Avalonia.Input;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Hook;
 

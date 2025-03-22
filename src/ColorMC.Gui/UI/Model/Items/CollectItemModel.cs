@@ -1,14 +1,14 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System;
+using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -23,7 +23,7 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     /// <summary>
     /// 上层回调
     /// </summary>
-    public ICollectWindow Add { get; set; }
+    public ICollectControl Add { get; set; }
 
     /// <summary>
     /// 名字

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
@@ -10,30 +15,43 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Windows;
 
-public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
+/// <summary>
+/// 单窗口模式主界面
+/// </summary>
+public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 {
+    /// <summary>
+    /// 最底层界面
+    /// </summary>
     private BaseUserControl _baseControl;
+    /// <summary>
+    /// 当前层界面
+    /// </summary>
     private BaseUserControl _nowControl;
 
+    /// <summary>
+    /// 界面列表
+    /// </summary>
     private readonly List<Control> controls = [];
-
-    public IBaseWindow Window => this;
-
+    /// <summary>
+    /// 当前显示的界面
+    /// </summary>
     public BaseUserControl ICon => _nowControl;
-
+    /// <summary>
+    /// 基础窗口模型
+    /// </summary>
     public BaseModel Model => (DataContext as BaseModel)!;
-
+    /// <summary>
+    /// 窗口ID
+    /// </summary>
     public string WindowId { get; init; }
-
-    private WindowNotificationManager windowNotification;
+    /// <summary>
+    /// 窗口右上角提示
+    /// </summary>
+    private WindowNotificationManager _windowNotification;
 
     public SingleControl()
     {
@@ -68,7 +86,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         base.OnApplyTemplate(e);
 
         var level = TopLevel.GetTopLevel(this);
-        windowNotification = new WindowNotificationManager(level)
+        _windowNotification = new WindowNotificationManager(level)
         {
             Position = NotificationPosition.TopRight,
             MaxItems = 3,
@@ -80,7 +98,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
     {
         if (e.PropertyName == BaseModel.NameInfoShow)
         {
-            windowNotification.Show(new TextBlock()
+            _windowNotification.Show(new TextBlock()
             {
                 Margin = new Thickness(20, 0, 20, 0),
                 TextWrapping = TextWrapping.Wrap,
@@ -109,13 +127,18 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         Controls.Child = null;
     }
 
-    public void WindowOpened()
+    public void ControlOpened()
     {
         PicUpdate();
     }
 
+    /// <summary>
+    /// 添加一个显示页面
+    /// </summary>
+    /// <param name="con"></param>
     public void Add(BaseUserControl con)
     {
+        //是否为底层页面
         if (_baseControl == null)
         {
             _baseControl = con;
@@ -123,7 +146,7 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             Controls.Child = con1;
             Dispatcher.UIThread.Post(() =>
             {
-                _baseControl.WindowOpened();
+                _baseControl.ControlOpened();
             });
         }
         else
@@ -139,14 +162,19 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
             ThemeManager.CrossFade.Start(null, con2);
 
             Model.PushBack(Back);
-            con.WindowOpened();
+            con.ControlOpened();
         }
 
+        //设置对应信息
         _nowControl = con;
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
     }
 
+    /// <summary>
+    /// 让页面显示在最上面
+    /// </summary>
+    /// <param name="con"></param>
     public void Active(BaseUserControl con)
     {
         var con1 = (con as Control)!;
@@ -161,6 +189,10 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         SetIcon(_nowControl.GetIcon());
     }
 
+    /// <summary>
+    /// 关闭一个页面
+    /// </summary>
+    /// <param name="con"></param>
     public async void Close(BaseUserControl con)
     {
         var res = await con.Closing();
@@ -203,6 +235,9 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         App.Clear();
     }
 
+    /// <summary>
+    /// 回到上一个页面
+    /// </summary>
     private void Back()
     {
         if (_nowControl == null)
@@ -216,11 +251,17 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         }
     }
 
+    /// <summary>
+    /// 更新背景图
+    /// </summary>
     private void PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
     }
-
+    /// <summary>
+    /// 设置标题
+    /// </summary>
+    /// <param name="data"></param>
     public void SetTitle(string data)
     {
         if (VisualRoot is SingleWindow win)
@@ -241,32 +282,23 @@ public partial class SingleControl : UserControl, IBaseWindow, ITopWindow
         return await now.Closing();
     }
 
+    /// <summary>
+    /// 设置图标
+    /// </summary>
+    /// <param name="icon"></param>
     public void SetIcon(Bitmap icon)
     {
         Model.SetIcon(icon);
     }
 
-    public void WindowStateChange(WindowState windowState)
+    /// <summary>
+    /// 设置窗口状态
+    /// </summary>
+    /// <param name="windowState"></param>
+    public void ControlStateChange(WindowState windowState)
     {
-        ICon?.WindowStateChange(windowState);
+        ICon.ControlStateChange(windowState);
         Head.WindowStateChange(windowState);
-    }
-
-    public void SetTopView(Control control)
-    {
-        TopView.Child = control;
-    }
-
-    public void BackToBottom()
-    {
-        TopView.IsVisible = false;
-        BottomView.IsVisible = true;
-    }
-
-    public void BackToTop()
-    {
-        TopView.IsVisible = true;
-        BottomView.IsVisible = false;
     }
 
     public void ReloadIcon()

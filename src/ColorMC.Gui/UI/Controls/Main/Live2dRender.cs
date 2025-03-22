@@ -1,10 +1,13 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Rendering;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
@@ -13,10 +16,6 @@ using Live2DCSharpSDK.App;
 using Live2DCSharpSDK.Framework;
 using Live2DCSharpSDK.Framework.Motion;
 using Live2DCSharpSDK.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -57,7 +56,7 @@ public class Live2dRender : OpenGlControlBase, ICustomHitTest
 
     public Live2dRender()
     {
-        #if Phone
+#if Phone
             return;
 #endif
         DataContextChanged += Live2dRender_DataContextChanged;

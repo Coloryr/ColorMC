@@ -1,7 +1,7 @@
-﻿using ColorMC.Gui.UIBinding;
+﻿using System.Threading.Tasks;
+using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 #if !DEBUG
 using ColorMC.Gui.Objs;

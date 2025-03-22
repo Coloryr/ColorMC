@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
@@ -12,17 +20,12 @@ using DotNetty.Buffers;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// ColorMC进程通信
+/// </summary>
 public static class LaunchSocketUtils
 {
     public static readonly List<FrpCloudObj> Servers = [];
@@ -219,6 +222,11 @@ public static class LaunchSocketUtils
         }
     }
 
+    /// <summary>
+    /// 给现有的ColorMC发送信息
+    /// </summary>
+    /// <param name="port"></param>
+    /// <returns></returns>
     public static async Task SendMessage(int port)
     {
         if (port <= 0)
@@ -267,6 +275,10 @@ public static class LaunchSocketUtils
         }
     }
 
+    /// <summary>
+    /// 初始化服务器
+    /// </summary>
+    /// <returns></returns>
     public static async Task Init()
     {
         Port = await RunServerAsync();
@@ -275,6 +287,9 @@ public static class LaunchSocketUtils
         new Thread(Run).Start();
     }
 
+    /// <summary>
+    /// 联机用显示房间
+    /// </summary>
     private static void Run()
     {
         while (s_isRun)
@@ -426,54 +441,54 @@ public static class LaunchSocketUtils
         SendMessage(buf);
     }
 
-    public static void SendMousePos(GameSettingObj obj, double x, double y)
-    {
-        var buf = Unpooled.Buffer();
-        buf.WriteInt(TypeMouseXY)
-            .WriteDouble(x)
-            .WriteDouble(y);
-        SendMessage(obj, buf);
-    }
+    //public static void SendMousePos(GameSettingObj obj, double x, double y)
+    //{
+    //    var buf = Unpooled.Buffer();
+    //    buf.WriteInt(TypeMouseXY)
+    //        .WriteDouble(x)
+    //        .WriteDouble(y);
+    //    SendMessage(obj, buf);
+    //}
 
-    private static void SendMouseClick(GameSettingObj obj, MouseButton button, bool down)
-    {
-        var buf = Unpooled.Buffer();
-        buf.WriteInt(TypeMouseClick)
-            .WriteInt((int)button)
-            .WriteBoolean(down);
-        SendMessage(obj, buf);
-    }
+    //private static void SendMouseClick(GameSettingObj obj, MouseButton button, bool down)
+    //{
+    //    var buf = Unpooled.Buffer();
+    //    buf.WriteInt(TypeMouseClick)
+    //        .WriteInt((int)button)
+    //        .WriteBoolean(down);
+    //    SendMessage(obj, buf);
+    //}
 
-    private static void SendKeybordClick(GameSettingObj obj, KeyModifiers modifiers, Key key, bool down)
-    {
-        var buf = Unpooled.Buffer();
-        buf.WriteInt(TypeKeybordClick)
-            .WriteInt((int)modifiers)
-            .WriteInt((int)key)
-            .WriteBoolean(down);
-        SendMessage(obj, buf);
-    }
+    //private static void SendKeybordClick(GameSettingObj obj, KeyModifiers modifiers, Key key, bool down)
+    //{
+    //    var buf = Unpooled.Buffer();
+    //    buf.WriteInt(TypeKeybordClick)
+    //        .WriteInt((int)modifiers)
+    //        .WriteInt((int)key)
+    //        .WriteBoolean(down);
+    //    SendMessage(obj, buf);
+    //}
 
-    public static void SendMouseScoll(GameSettingObj obj, bool up)
-    {
-        var buf = Unpooled.Buffer();
-        buf.WriteInt(TypeMouseScoll)
-            .WriteBoolean(up);
-        SendMessage(obj, buf);
-    }
+    //public static void SendMouseScoll(GameSettingObj obj, bool up)
+    //{
+    //    var buf = Unpooled.Buffer();
+    //    buf.WriteInt(TypeMouseScoll)
+    //        .WriteBoolean(up);
+    //    SendMessage(obj, buf);
+    //}
 
 
-    public static void SendKey(GameSettingObj obj, InputKeyObj key, bool down)
-    {
-        if (key.MouseButton != MouseButton.None)
-        {
-            SendMouseClick(obj, key.MouseButton, down);
-        }
-        else
-        {
-            SendKeybordClick(obj, key.KeyModifiers, key.Key, down);
-        }
-    }
+    //public static void SendKey(GameSettingObj obj, InputKeyObj key, bool down)
+    //{
+    //    if (key.MouseButton != MouseButton.None)
+    //    {
+    //        SendMouseClick(obj, key.MouseButton, down);
+    //    }
+    //    else
+    //    {
+    //        SendKeybordClick(obj, key.KeyModifiers, key.Key, down);
+    //    }
+    //}
 
     public static void SetTitle(GameSettingObj obj, string title)
     {

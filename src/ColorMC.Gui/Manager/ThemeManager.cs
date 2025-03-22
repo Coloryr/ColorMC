@@ -1,16 +1,14 @@
-﻿using Avalonia;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia;
 using Avalonia.Media;
 using Avalonia.Platform;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ColorMC.Gui.Manager;
 

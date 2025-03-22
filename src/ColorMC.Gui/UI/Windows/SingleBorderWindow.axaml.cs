@@ -1,14 +1,19 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System;
+using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 带边框的单窗口
+/// 某些系统需要用这个
+/// </summary>
 public partial class SingleBorderWindow : ABaseWindow
 {
-    public override ITopWindow ICon => Win;
+    public override IBaseControl ICon => Win;
 
     public override int DefaultWidth => 770;
     public override int DefaultHeight => 460;
@@ -32,6 +37,11 @@ public partial class SingleBorderWindow : ABaseWindow
         SetWindowState();
     }
 
+    /// <summary>
+    /// 窗口关闭
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private async void SingleWindow_Closing(object? sender, WindowClosingEventArgs e)
     {
         var res = await Win.Closing();

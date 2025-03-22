@@ -1,24 +1,24 @@
-using Avalonia.Threading;
-using AvaloniaEdit.Utils;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.Main;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.Main;
+using ColorMC.Gui.UIBinding;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
 /// <summary>
 /// 添加整合包
 /// </summary>
-public partial class AddModPackControlModel : TopModel, IAddWindow
+public partial class AddModPackControlModel : TopModel, IAddControl
 {
     /// <summary>
     /// 下载源列表

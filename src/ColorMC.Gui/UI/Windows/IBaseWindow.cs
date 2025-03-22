@@ -17,7 +17,7 @@ public interface IBaseWindow
     /// </summary>
     public BaseModel Model { get; }
     /// <summary>
-    /// 基础窗口
+    /// 显示内容
     /// </summary>
     public BaseUserControl ICon { get; }
     /// <summary>

@@ -1,9 +1,8 @@
-using Avalonia.Media.Imaging;
+using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 

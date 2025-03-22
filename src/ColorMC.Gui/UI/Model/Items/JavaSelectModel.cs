@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Gui.UI.Model.Items;
+﻿namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 可选中Java列表项目

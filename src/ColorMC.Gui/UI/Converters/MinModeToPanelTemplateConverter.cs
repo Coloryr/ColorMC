@@ -1,9 +1,9 @@
-﻿using Avalonia;
+﻿using System;
+using System.Globalization;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data.Converters;
-using System;
-using System.Globalization;
 
 namespace ColorMC.Gui.UI.Converters;
 

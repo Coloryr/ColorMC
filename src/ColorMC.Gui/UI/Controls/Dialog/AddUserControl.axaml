@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    x:DataType="model:UsersControlModel"
+    x:DataType="model:AddUserModel"
     mc:Ignorable="d">
     <StackPanel Margin="5">
         <TextBlock Text="{setting:Localize UserWindow.Text5}" />
@@ -52,8 +52,7 @@
                 Margin="1,-2,3,-2"
                 Classes="top"
                 Command="{Binding Add}"
-                Content="{setting:Localize Button.Add}"
-                IsEnabled="{Binding !IsAdding}" />
+                Content="{setting:Localize Button.Add}" />
             <Button
                 Width="100"
                 Height="35"

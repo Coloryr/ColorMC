@@ -1,4 +1,13 @@
-﻿using ColorMC.Core;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -14,15 +23,6 @@ using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Net.Apis;
 
@@ -35,7 +35,7 @@ public static class ColorMCCloudAPI
     {
         Timeout = Timeout.InfiniteTimeSpan
     };
-    
+
     /// <summary>
     /// 服务器地址
     /// </summary>

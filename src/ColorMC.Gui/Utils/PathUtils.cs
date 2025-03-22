@@ -1,8 +1,6 @@
-using Avalonia.Platform.Storage;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using System.IO;
 using System.Reflection;
+using Avalonia.Platform.Storage;
 
 namespace ColorMC.Gui.Utils;
 

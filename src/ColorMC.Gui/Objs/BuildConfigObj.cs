@@ -1,9 +1,5 @@
-﻿using ColorMC.Core.Objs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
@@ -18,7 +14,7 @@ public record UiBackConfigObj
 }
 
 public record UiColorConfigObj
-{ 
+{
     public ColorType ColorType { get; set; }
     public string ColorMain { get; set; }
     public bool RGB { get; set; }
@@ -38,13 +34,13 @@ public record UiOtherConfigObj
 }
 
 public record LaunchCheckConfigObj
-{ 
+{
     public GameCheckObj GameCheck { get; set; }
     public LaunchCheckSetting LaunchCheck { get; set; }
 }
 
 public record ServerOptConfigObj
-{ 
+{
     public string IP { get; set; }
     public ushort Port { get; set; }
     public bool Motd { get; set; }

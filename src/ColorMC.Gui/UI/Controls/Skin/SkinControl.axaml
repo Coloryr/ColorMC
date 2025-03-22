@@ -14,9 +14,10 @@
     mc:Ignorable="d">
     <Panel>
         <DockPanel Margin="10,0,10,10">
-            <Border Classes="t2"
+            <Border
                 Name="Decorator1"
                 Margin="0,10,10,10"
+                Classes="t2"
                 DockPanel.Dock="Right"
                 IsVisible="False" />
             <Panel Margin="10,10,10,10">
@@ -271,7 +272,7 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         Foreground="{setting:Theme FontColor}"
-                        Text="{Binding Text}" />
+                        Text="{setting:Localize SkinWindow.Text11}" />
                 </Border>
             </Panel>
         </DockPanel>

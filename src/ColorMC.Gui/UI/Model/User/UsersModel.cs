@@ -1,33 +1,46 @@
-﻿using Avalonia.Input;
-using Avalonia.Threading;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls.User;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace ColorMC.Gui.UI.Model.User;
 
-public partial class UsersControlModel : TopModel
+/// <summary>
+/// 账户页面
+/// </summary>
+public partial class UsersModel : TopModel
 {
-    public ObservableCollection<string> UserTypeList { get; init; } = [];
+    /// <summary>
+    /// 当前账户类型列表
+    /// </summary>
     public ObservableCollection<string> DisplayUserTypeList { get; init; } = [];
+    /// <summary>
+    /// 账户列表
+    /// </summary>
     public ObservableCollection<UserDisplayModel> UserList { get; init; } = [];
 
+    /// <summary>
+    /// 是否锁定登录
+    /// </summary>
     public bool LockLogin { get; private set; }
 
+    /// <summary>
+    /// 是否有登录账户
+    /// </summary>
     public bool HaveLogin
     {
         get
@@ -41,41 +54,38 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 选中的账户
+    /// </summary>
     [ObservableProperty]
     private UserDisplayModel? _item;
 
-    [ObservableProperty]
-    private int _type = -1;
-
+    /// <summary>
+    /// 账户类型
+    /// </summary>
     [ObservableProperty]
     private int _displayType;
 
-    [ObservableProperty]
-    private bool _enableName;
-    [ObservableProperty]
-    private bool _enableUser;
-    [ObservableProperty]
-    private bool _enablePassword;
-    [ObservableProperty]
-    private bool _isAdding;
-    [ObservableProperty]
-    private bool _canRegister;
+    /// <summary>
+    /// 账户类型列表
+    /// </summary>
+    private readonly List<string> _userTypeList = [];
 
-    [ObservableProperty]
-    private string _watermarkName;
-    [ObservableProperty]
-    private string? _name;
-    [ObservableProperty]
-    private string? _user;
-    [ObservableProperty]
-    private string? _password;
-
+    /// <summary>
+    /// 锁定账户类型
+    /// </summary>
     private LockLoginSetting[] _locks;
 
+    /// <summary>
+    /// 是否取消登录
+    /// </summary>
     private bool _cancel;
+    /// <summary>
+    /// 是否为OAuth
+    /// </summary>
     private bool _isOAuth;
 
-    public UsersControlModel(BaseModel model) : base(model)
+    public UsersModel(BaseModel model) : base(model)
     {
         LoadUsers();
     }
@@ -85,209 +95,34 @@ public partial class UsersControlModel : TopModel
         Load();
     }
 
-    partial void OnPasswordChanging(string? value)
-    {
-        if (value?.EndsWith(Environment.NewLine) == true)
-        {
-            Password = value.TrimEnd();
-
-            _ = Add();
-        }
-    }
-
-    partial void OnUserChanging(string? value)
-    {
-        if (value?.EndsWith(Environment.NewLine) == true)
-        {
-            User = value.TrimEnd();
-
-            _ = Add();
-        }
-    }
-
-    partial void OnNameChanging(string? value)
-    {
-        if (value?.EndsWith(Environment.NewLine) == true)
-        {
-            Name = value.TrimEnd();
-
-            _ = Add();
-        }
-    }
-
-    partial void OnTypeChanged(int value)
-    {
-        AuthType type;
-        if (LockLogin)
-        {
-            type = _locks[value].Type;
-        }
-        else
-        {
-            type = (AuthType)value;
-        }
-        switch (type)
-        {
-            case AuthType.Offline:
-                EnableName = false;
-                WatermarkName = "";
-                Name = "";
-                EnableUser = true;
-                User = "";
-                EnablePassword = false;
-                Password = "";
-                CanRegister = false;
-                break;
-            case AuthType.OAuth:
-                EnableName = false;
-                WatermarkName = "";
-                Name = "";
-                EnableUser = false;
-                User = "";
-                EnablePassword = false;
-                Password = "";
-                CanRegister = true;
-                break;
-            case AuthType.Nide8:
-                WatermarkName = App.Lang("UserWindow.Info9");
-                if (LockLogin)
-                {
-                    EnableName = false;
-                    Name = _locks[Type].Data;
-                }
-                else
-                {
-                    EnableName = true;
-                    Name = "";
-                }
-                EnableUser = true;
-                User = "";
-                EnablePassword = true;
-                Password = "";
-                CanRegister = true;
-                break;
-            case AuthType.AuthlibInjector:
-                WatermarkName = App.Lang("UserWindow.Info10");
-                if (LockLogin)
-                {
-                    EnableName = false;
-                    Name = _locks[Type].Data;
-                }
-                else
-                {
-                    EnableName = true;
-                    Name = "";
-                }
-                EnableUser = true;
-                User = "";
-                EnablePassword = true;
-                Password = "";
-                CanRegister = false;
-                break;
-            case AuthType.LittleSkin:
-                WatermarkName = "";
-                if (LockLogin)
-                {
-                    EnableName = false;
-                    Name = _locks[Type].Data;
-                }
-                else
-                {
-                    EnableName = true;
-                    Name = "";
-                }
-                EnableName = false;
-                EnableUser = true;
-                User = "";
-                EnablePassword = true;
-                Password = "";
-                CanRegister = true;
-                break;
-            case AuthType.SelfLittleSkin:
-                WatermarkName = App.Lang("UserWindow.Info11");
-                if (LockLogin)
-                {
-                    EnableName = false;
-                    Name = _locks[Type].Data;
-                }
-                else
-                {
-                    EnableName = true;
-                    Name = "";
-                }
-                EnableUser = true;
-                User = "";
-                EnablePassword = true;
-                Password = "";
-                CanRegister = false;
-                break;
-            default:
-                EnableName = false;
-                WatermarkName = "";
-                Name = "";
-                EnableUser = false;
-                User = "";
-                EnablePassword = false;
-                Password = "";
-                CanRegister = false;
-                break;
-        }
-    }
-
-    [RelayCommand]
-    public void Register()
-    {
-        AuthType type;
-        if (LockLogin)
-        {
-            type = _locks[Type].Type;
-        }
-        else
-        {
-            type = (AuthType)Type;
-        }
-        switch (type)
-        {
-            case AuthType.OAuth:
-            case AuthType.Nide8:
-            case AuthType.LittleSkin:
-                WebBinding.OpenRegister(type, Name);
-                break;
-        }
-    }
-
+    /// <summary>
+    /// 开始添加账户
+    /// </summary>
     [RelayCommand]
     public void SetAdd()
     {
-        if (Type == -1)
-        {
-            Type = 0;
-        }
-
-        User = "";
-        Password = "";
-
-        Show();
+        ShowAdd(new());
     }
 
-    [RelayCommand]
-    public async Task Add()
+    /// <summary>
+    /// 添加账户
+    /// </summary>
+    /// <param name="model"></param>
+    private async void Add(AddUserModel model)
     {
-        bool ok = false;
-        IsAdding = true;
         AuthType type;
         if (LockLogin)
         {
-            type = _locks[Type].Type;
+            type = _locks[model.Type].Type;
         }
         else
         {
-            type = (AuthType)Type;
+            type = (AuthType)model.Type;
         }
         switch (type)
         {
             case AuthType.Offline:
-                var name = User;
+                var name = model.User;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -301,8 +136,6 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                Name = "";
-                ok = true;
                 break;
             case AuthType.OAuth:
                 _cancel = false;
@@ -320,27 +153,25 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                Name = "";
                 _isOAuth = false;
-                ok = true;
                 break;
             case AuthType.Nide8:
-                var server = Name;
+                var server = model.Name;
                 _isOAuth = false;
                 if (server?.Length != 32)
                 {
                     Model.Show(App.Lang("UserWindow.Error3"));
                     break;
                 }
-                if (string.IsNullOrWhiteSpace(User) ||
-                    string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(model.User) ||
+                    string.IsNullOrWhiteSpace(model.Password))
                 {
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, LoginSelect,
-                    server, User, Password);
+                    server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -348,26 +179,24 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                Name = "";
-                ok = true;
                 break;
             case AuthType.AuthlibInjector:
-                server = Name;
+                server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Model.Show(App.Lang("UserWindow.Error4"));
                     break;
                 }
-                if (string.IsNullOrWhiteSpace(User) ||
-                   string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(model.User) ||
+                   string.IsNullOrWhiteSpace(model.Password))
                 {
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode,
-                    LoginSelect, server, User, Password);
+                    LoginSelect, server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -375,20 +204,18 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                Name = "";
-                ok = true;
                 break;
             case AuthType.LittleSkin:
                 _isOAuth = false;
-                if (string.IsNullOrWhiteSpace(User) ||
-                   string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(model.User) ||
+                   string.IsNullOrWhiteSpace(model.Password))
                 {
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.LittleSkin, LoginOAuthCode,
-                    LoginSelect, User, Password);
+                    LoginSelect, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -396,25 +223,24 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                ok = true;
                 break;
             case AuthType.SelfLittleSkin:
-                server = Name;
+                server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
                     Model.Show(App.Lang("UserWindow.Error4"));
                     break;
                 }
-                if (string.IsNullOrWhiteSpace(User) ||
-                   string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(model.User) ||
+                   string.IsNullOrWhiteSpace(model.Password))
                 {
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
                 res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
-                    LoginSelect, User, Password, server);
+                    LoginSelect, model.User, model.Password, server);
                 Model.ProgressClose();
                 if (!res.State)
                 {
@@ -422,21 +248,20 @@ public partial class UsersControlModel : TopModel
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
-                Name = "";
-                ok = true;
                 break;
             default:
                 Model.Show(App.Lang("UserWindow.Error5"));
                 break;
         }
-        if (ok)
-        {
-            CloseShow();
-        }
         Load();
-        IsAdding = false;
     }
 
+    /// <summary>
+    /// 登录账户选择
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="items"></param>
+    /// <returns></returns>
     private async Task<int> LoginSelect(string title, List<string> items)
     {
         var res = await Model.Combo(title, items);
@@ -447,18 +272,20 @@ public partial class UsersControlModel : TopModel
         return res.Index;
     }
 
-    [RelayCommand]
-    public void Cancel()
-    {
-        CloseShow();
-    }
-
+    /// <summary>
+    /// 删除账户
+    /// </summary>
+    /// <param name="item"></param>
     public void Remove(UserDisplayModel item)
     {
         UserBinding.Remove(item.UUID, item.AuthType);
         Load();
     }
 
+    /// <summary>
+    /// 选择账户
+    /// </summary>
+    /// <param name="item"></param>
     public void Select(UserDisplayModel item)
     {
         UserBinding.SetSelectUser(item.UUID, item.AuthType);
@@ -477,6 +304,10 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 拖拽添加账户
+    /// </summary>
+    /// <param name="data"></param>
     public void Drop(IDataObject data)
     {
         if (LockLogin)
@@ -494,6 +325,10 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 通过网址添加账户
+    /// </summary>
+    /// <param name="url"></param>
     public void AddUrl(string url)
     {
         if (LockLogin)
@@ -501,11 +336,17 @@ public partial class UsersControlModel : TopModel
             return;
         }
 
-        SetAdd();
-        Type = (int)AuthType.AuthlibInjector;
-        Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""));
+        ShowAdd(new()
+        {
+            Type = (int)AuthType.AuthlibInjector,
+            Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""))
+        });
     }
 
+    /// <summary>
+    /// 刷新账户token
+    /// </summary>
+    /// <param name="obj"></param>
     public async void Refresh(UserDisplayModel obj)
     {
         Model.Progress(App.Lang("UserWindow.Info3"));
@@ -525,11 +366,10 @@ public partial class UsersControlModel : TopModel
                 }
                 var login = _locks[index];
                 type = login.Type;
-                Type = index;
             }
             else
             {
-                type = (AuthType)Type;
+                type = obj.AuthType;
             }
 
             switch (type)
@@ -537,15 +377,19 @@ public partial class UsersControlModel : TopModel
                 case AuthType.Nide8:
                 case AuthType.AuthlibInjector:
                 case AuthType.SelfLittleSkin:
-                    OnTypeChanged(Type);
-                    SetAdd();
-                    User = obj.Text2;
-                    Name = obj.Text1;
+                    ShowAdd(new()
+                    {
+                        Type = (int)type,
+                        User = obj.Text2,
+                        Name = obj.Text1
+                    });
                     break;
                 case AuthType.LittleSkin:
-                    OnTypeChanged(Type);
-                    SetAdd();
-                    User = obj.Text2;
+                    ShowAdd(new()
+                    {
+                        Type = (int)type,
+                        User = obj.Text2
+                    });
                     break;
             }
         }
@@ -555,6 +399,12 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 检索锁定的账户
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="url"></param>
+    /// <returns></returns>
     private int FindLockLogin(AuthType type, string url)
     {
         for (int a = 0; a < _locks.Length; a++)
@@ -575,8 +425,13 @@ public partial class UsersControlModel : TopModel
         return -1;
     }
 
+    /// <summary>
+    /// 重新登录账户
+    /// </summary>
+    /// <param name="obj"></param>
     public void Relogin(UserDisplayModel obj)
     {
+        int type;
         if (LockLogin)
         {
             var index = FindLockLogin(obj.AuthType, obj.Text1);
@@ -585,28 +440,31 @@ public partial class UsersControlModel : TopModel
                 Model.Show(App.Lang("UserWindow.Error9"));
                 return;
             }
-            Type = index;
+            type = index;
         }
         else
         {
-            Type = (int)obj.AuthType;
+            type = (int)obj.AuthType;
         }
 
-        EnableName = false;
-        EnableUser = false;
-
-        Name = obj.Text1;
-        User = obj.Text2;
-
-        Show();
-        IsAdding = false;
+        ShowAdd(new()
+        {
+            Type = type,
+            EnableName = false,
+            EnableUser = false,
+            Name = obj.Text1,
+            User = obj.Text2,
+        });
     }
 
+    /// <summary>
+    /// 加载账户列表
+    /// </summary>
     public void LoadUsers()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
         LockLogin = config.LockLogin;
-        UserTypeList.Clear();
+        _userTypeList.Clear();
         DisplayUserTypeList.Clear();
         UserList.Clear();
         if (LockLogin)
@@ -617,19 +475,19 @@ public partial class UsersControlModel : TopModel
             {
                 if (item.Type == AuthType.OAuth)
                 {
-                    UserTypeList.Add(AuthType.OAuth.GetName());
+                    _userTypeList.Add(AuthType.OAuth.GetName());
                     DisplayUserTypeList.Add(AuthType.OAuth.GetName());
                 }
                 else
                 {
-                    UserTypeList.Add(item.Name);
+                    _userTypeList.Add(item.Name);
                     DisplayUserTypeList.Add(item.Name);
                 }
             }
         }
         else
         {
-            UserTypeList.AddRange(LanguageBinding.GetLoginUserType());
+            _userTypeList.AddRange(LanguageBinding.GetLoginUserType());
             DisplayUserTypeList.AddRange(LanguageBinding.GetDisplayUserTypes());
         }
 
@@ -637,12 +495,16 @@ public partial class UsersControlModel : TopModel
         OnPropertyChanged(nameof(HaveLogin));
     }
 
+    /// <summary>
+    /// 加载账户
+    /// </summary>
     public void Load()
     {
         var item1 = UserBinding.GetLastUser();
         UserList.Clear();
         foreach (var item in UserBinding.GetAllUser())
         {
+            //是否为锁定账户模式
             if (LockLogin)
             {
                 if (DisplayType <= 0)
@@ -692,6 +554,11 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 展示OAuth信息
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="code"></param>
     private async void LoginOAuthCode(string url, string code)
     {
         Model.ProgressClose();
@@ -719,6 +586,9 @@ public partial class UsersControlModel : TopModel
         }
     }
 
+    /// <summary>
+    /// 重新登录
+    /// </summary>
     public void ReLogin()
     {
         var user = UserBinding.GetLastUser();
@@ -735,6 +605,10 @@ public partial class UsersControlModel : TopModel
         Relogin(obj);
     }
 
+    /// <summary>
+    /// 编辑账户
+    /// </summary>
+    /// <param name="obj"></param>
     public async void Edit(UserDisplayModel obj)
     {
         if (obj.AuthType != AuthType.Offline)
@@ -759,32 +633,33 @@ public partial class UsersControlModel : TopModel
             return;
         }
 
-        UserBinding.EditUser(obj.Name, obj.UUID, res.Text1, res.Text2);
+        UserBinding.EditUser(obj.Obj, res.Text1, res.Text2);
     }
 
-    private void Show()
+    /// <summary>
+    /// 显示添加账户
+    /// </summary>
+    /// <param name="model"></param>
+    private async void ShowAdd(AddUserModel model)
     {
-        Model.PushBack(() =>
+        model.UserTypeList.AddRange(_userTypeList);
+        model.LockLogin = LockLogin;
+        if (_locks != null)
         {
-            if (DialogHost.IsDialogOpen(UsersControl.DialogName))
-            {
-                DialogHost.Close(UsersControl.DialogName);
-            }
-            Model.PopBack();
-        });
+            model.Locks = [.. _locks];
+        }
 
-        Dispatcher.UIThread.Post(() =>
+        if (DialogHost.IsDialogOpen(UsersControl.DialogName))
         {
-            if (!DialogHost.IsDialogOpen(UsersControl.DialogName))
-            {
-                DialogHost.Show(this, UsersControl.DialogName);
-            }
-        });
-    }
+            DialogHost.Close(UsersControl.DialogName, false);
+        }
 
-    private void CloseShow()
-    {
-        Model.BackClick();
+        var res = await DialogHost.Show(model, UsersControl.DialogName);
+        if (res is not true)
+        {
+            return;
+        }
+        Add(model);
     }
 
     protected override void MinModeChange()

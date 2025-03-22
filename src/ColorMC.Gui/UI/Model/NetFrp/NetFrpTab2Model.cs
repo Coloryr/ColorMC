@@ -1,11 +1,11 @@
-﻿using Avalonia.Threading;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Avalonia.Threading;
 using ColorMC.Core.Game;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 

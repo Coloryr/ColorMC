@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -22,23 +28,16 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class WebBinding
 {
     private static readonly List<string> PCJavaType = ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
+#if Phone
 
     private static readonly List<string> PhoneJavaType = ["PojavLauncherTeam"];
-
-    private const string Android = "Android";
-    private const string Arm64 = "Arm64";
+#endif
 
     /// <summary>
     /// 获取整合包列表
@@ -1594,6 +1593,7 @@ public static class WebBinding
         }
     }
 
+#if Phone
     private static async Task<List<JavaDownloadModel>?> GetPojavLauncherTeamList()
     {
         try
@@ -1609,8 +1609,8 @@ public static class WebBinding
                 list.Add(new()
                 {
                     Name = item.Name,
-                    Os = Android,
-                    Arch = Arm64,
+                    Os = "Android",
+                    Arch = "Arm64",
                     MainVersion = "8",
                     Version = item.Name.Split('-')[2],
                     Size = item.Size,
@@ -1624,8 +1624,8 @@ public static class WebBinding
                 list.Add(new()
                 {
                     Name = item.Name,
-                    Os = Android,
-                    Arch = Arm64,
+                    Os = "Android",
+                    Arch = "Arm64",
                     MainVersion = "17",
                     Version = item.Name.Split('-')[2],
                     Size = item.Size,
@@ -1639,8 +1639,8 @@ public static class WebBinding
                 list.Add(new()
                 {
                     Name = item.Name,
-                    Os = Android,
-                    Arch = Arm64,
+                    Os = "Android",
+                    Arch = "Arm64",
                     MainVersion = "21",
                     Version = item.Name.Split('-')[2],
                     Size = item.Size,
@@ -1657,6 +1657,7 @@ public static class WebBinding
             return null;
         }
     }
+#endif
 
     /// <summary>
     /// 获取Java类型
@@ -1712,8 +1713,9 @@ public static class WebBinding
     /// <summary>
     /// 创建下载项目
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="model"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="model">需要下载的内容</param>
+    /// <param name="model1">窗口</param>
     /// <returns></returns>
     public static async Task<DownloadItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
     {
@@ -1726,7 +1728,7 @@ public static class WebBinding
                 return null;
             }
         }
-
+        //分文件类型处理
         if (model.FileType == FileType.Mod)
         {
             try
@@ -1762,7 +1764,7 @@ public static class WebBinding
                         PathHelper.Delete(arg.Old.Local);
                     }
                 };
-
+                //添加模组信息
                 if (arg.Old is { } old && arg.Item.Sha1 != null)
                 {
                     if (setting.ModName.TryGetValue(old.Sha1, out var value))
