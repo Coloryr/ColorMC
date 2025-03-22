@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 

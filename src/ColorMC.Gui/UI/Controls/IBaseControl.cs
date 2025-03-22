@@ -1,13 +1,13 @@
-﻿using Avalonia.Controls;
+﻿using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Input;
-using System.Threading.Tasks;
 
-namespace ColorMC.Gui.UI.Windows;
+namespace ColorMC.Gui.UI.Controls;
 
 /// <summary>
-/// 基础窗口
+/// 基础页面
 /// </summary>
-public interface ITopWindow
+public interface IBaseControl
 {
     /// <summary>
     /// 窗口ID
@@ -15,16 +15,16 @@ public interface ITopWindow
     public string WindowId { get; }
 
     /// <summary>
-    /// 窗口打开后
+    /// 页面窗口打开后
     /// </summary>
-    public void WindowOpened();
+    public void ControlOpened();
     /// <summary>
-    /// 窗口状态切换
+    /// 页面窗口状态切换
     /// </summary>
-    /// <param name="state"></param>
-    public void WindowStateChange(WindowState state);
+    /// <param name="state">窗口状态</param>
+    public void ControlStateChange(WindowState state);
     /// <summary>
-    /// 窗口键盘按键按下
+    /// 页面键盘按键按下
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

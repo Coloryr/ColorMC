@@ -1,8 +1,7 @@
-using Silk.NET.SDL;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
+using Silk.NET.SDL;
 using Thread = System.Threading.Thread;
 
 namespace ColorMC.Gui.Joystick;

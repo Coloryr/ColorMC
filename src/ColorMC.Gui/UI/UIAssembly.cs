@@ -1,14 +1,17 @@
-﻿using ColorMC.Core;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Controls.Custom;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
+using ColorMC.Core;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Controls.Custom;
 
 namespace ColorMC.Gui.UI;
 
+/// <summary>
+/// 自定义页面
+/// </summary>
 public class UIAssembly : AssemblyLoadContext
 {
     public ICustomControl Plugin { get; init; }
@@ -26,7 +29,7 @@ public class UIAssembly : AssemblyLoadContext
         }
 
         Assembly abs;
-
+        //加载dll
         using var stream = File.OpenRead(local1);
         if (File.Exists(local2))
         {

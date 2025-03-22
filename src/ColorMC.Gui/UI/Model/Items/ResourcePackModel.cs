@@ -1,11 +1,10 @@
+using System.IO;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
-using System;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -43,13 +42,13 @@ public partial class ResourcePackModel : SelectItemModel
     /// <summary>
     /// 资源包图标
     /// </summary>
-    private readonly Bitmap _pic;
+    public Bitmap Pic { get; set; }
 
     public ResourcePackModel(GameEditModel top, ResourcepackObj pack)
     {
         _top = top;
         Obj = pack;
-        _pic = Obj.Icon == null ? ImageManager.GameIcon : GetImage();
+        Pic = Obj.Icon == null ? ImageManager.GameIcon : GetImage();
     }
 
     /// <summary>
@@ -75,9 +74,9 @@ public partial class ResourcePackModel : SelectItemModel
     /// </summary>
     public void Close()
     {
-        if (_pic != ImageManager.GameIcon)
+        if (Pic != ImageManager.GameIcon)
         {
-            _pic.Dispose();
+            Pic.Dispose();
         }
     }
 

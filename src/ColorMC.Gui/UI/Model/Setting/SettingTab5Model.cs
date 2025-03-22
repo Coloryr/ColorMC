@@ -1,36 +1,62 @@
-﻿using Avalonia.Threading;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置窗口
+/// </summary>
 public partial class SettingModel
 {
+    /// <summary>
+    /// Java列表
+    /// </summary>
+    public ObservableCollection<JavaDisplayModel> JavaList { get; init; } = [];
+
+    /// <summary>
+    /// Java名字
+    /// </summary>
     [ObservableProperty]
     private string? _javaName;
+    /// <summary>
+    /// Java路径
+    /// </summary>
     [ObservableProperty]
     private string? _javaLocal;
 
+    /// <summary>
+    /// 选中的Java
+    /// </summary>
     [ObservableProperty]
     private JavaDisplayModel _javaItem;
 
+    /// <summary>
+    /// 是否在搜索Java
+    /// </summary>
     [ObservableProperty]
     private bool _javaFinding;
 
-    public ObservableCollection<JavaDisplayModel> JavaList { get; init; } = [];
-
+    /// <summary>
+    /// Java是否在加载
+    /// </summary>
     private bool _javaLoaded;
+    /// <summary>
+    /// 需要的Java版本
+    /// </summary>
     private int _needJava;
 
+    /// <summary>
+    /// 添加Java
+    /// </summary>
     [RelayCommand]
     public void AddJava()
     {
@@ -56,6 +82,10 @@ public partial class SettingModel
         LoadJava();
     }
 
+    /// <summary>
+    /// 选中Java
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SelectJava()
     {
@@ -76,11 +106,17 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 下载Java
+    /// </summary>
     private void ShowAddJava()
     {
         WindowManager.ShowAddJava(_needJava);
     }
 
+    /// <summary>
+    /// 导入Java压缩包
+    /// </summary>
     private async void AddJavaZip()
     {
         var top = Model.GetTopLevel();
@@ -112,9 +148,12 @@ public partial class SettingModel
         LoadJava();
     }
 
+    /// <summary>
+    /// 搜索Java
+    /// </summary>
     public async void FindJavaDir()
     {
-        #if Phone
+#if Phone
         return;
 #endif
         var top = Model.GetTopLevel();
@@ -150,9 +189,12 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab5.Info4"));
     }
 
+    /// <summary>
+    /// 搜索Java
+    /// </summary>
     public async void FindJava()
     {
-        #if Phone
+#if Phone
         return;
 #endif
         JavaFinding = true;
@@ -171,12 +213,18 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab5.Info4"));
     }
 
+    /// <summary>
+    /// 加载Java列表
+    /// </summary>
     public void LoadJava()
     {
         JavaList.Clear();
         JavaList.AddRange(JavaBinding.GetJavas());
     }
 
+    /// <summary>
+    /// 删除所有Java
+    /// </summary>
     private async void DeleteJava()
     {
         var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab5.Info3"));
@@ -187,11 +235,18 @@ public partial class SettingModel
         LoadJava();
     }
 
+    /// <summary>
+    /// 打开Java文件夹
+    /// </summary>
     private void OpenJavaPath()
     {
         PathBinding.OpenPath(PathType.JavaPath);
     }
 
+    /// <summary>
+    /// 加载Java版本
+    /// </summary>
+    /// <param name="mainversion"></param>
     public void Load(int mainversion)
     {
         _needJava = mainversion;

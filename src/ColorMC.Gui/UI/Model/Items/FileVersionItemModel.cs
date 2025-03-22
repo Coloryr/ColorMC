@@ -1,10 +1,10 @@
-﻿using ColorMC.Core.Objs;
+﻿using System;
+using System.Linq;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.Utils;
-using System;
-using System.Linq;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -16,7 +16,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// <summary>
     /// 添加
     /// </summary>
-    public IAddWindow? Add { get; set; }
+    public IAddControl? Add { get; set; }
 
     /// <summary>
     /// 名字

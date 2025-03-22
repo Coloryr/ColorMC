@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.ComponentModel;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
@@ -7,7 +8,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameConfigEdit;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.GameConfigEdit;
 

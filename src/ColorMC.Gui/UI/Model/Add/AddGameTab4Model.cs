@@ -1,7 +1,7 @@
-﻿using ColorMC.Gui.Manager;
+﻿using System.Collections.Generic;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Add;
 

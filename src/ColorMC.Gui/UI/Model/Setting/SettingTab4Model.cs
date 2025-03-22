@@ -6,81 +6,187 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置页面
+/// </summary>
 public partial class SettingModel
 {
+    /// <summary>
+    /// GC类型
+    /// </summary>
     public string[] GCTypeList { get; init; } = LanguageBinding.GetGCTypes();
 
+    /// <summary>
+    /// 启动前命令
+    /// </summary>
     [ObservableProperty]
     private string? _preCmd;
+    /// <summary>
+    /// 启动后命令
+    /// </summary>
     [ObservableProperty]
     private string? _postCmd;
+    /// <summary>
+    /// GC参数
+    /// </summary>
     [ObservableProperty]
     private string? _gCArg;
+    /// <summary>
+    /// JavaAgent参数
+    /// </summary>
     [ObservableProperty]
     private string? _javaAgent;
+    /// <summary>
+    /// Java参数
+    /// </summary>
     [ObservableProperty]
     private string? _jvmArg;
+    /// <summary>
+    /// 游戏参数
+    /// </summary>
     [ObservableProperty]
     private string? _gameArg;
+    /// <summary>
+    /// Java环境变量
+    /// </summary>
     [ObservableProperty]
     private string? _jvmEnv;
 
+    /// <summary>
+    /// 是否检测游戏文件
+    /// </summary>
     [ObservableProperty]
     private bool _checkCore;
+    /// <summary>
+    /// 是否检测资源文件
+    /// </summary>
     [ObservableProperty]
     private bool _checkAssets;
+    /// <summary>
+    /// 是否检测运行库
+    /// </summary>
     [ObservableProperty]
     private bool _checkLib;
+    /// <summary>
+    /// 是否检测模组
+    /// </summary>
     [ObservableProperty]
     private bool _checkMod;
+    /// <summary>
+    /// 是否检测游戏文件完整性
+    /// </summary>
     [ObservableProperty]
     private bool _checkCoreSha1;
+    /// <summary>
+    /// 是否检测资源文件完整性
+    /// </summary>
     [ObservableProperty]
     private bool _checkAssetsSha1;
+    /// <summary>
+    /// 是否检测运行库完整性
+    /// </summary>
     [ObservableProperty]
     private bool _checkLibSha1;
+    /// <summary>
+    /// 是否检测模组完整性
+    /// </summary>
     [ObservableProperty]
     private bool _checkModSha1;
+    /// <summary>
+    /// 是否启动前运行
+    /// </summary>
     [ObservableProperty]
     private bool _preRun;
+    /// <summary>
+    /// 是否启动后运行
+    /// </summary>
     [ObservableProperty]
     private bool _postRun;
+    /// <summary>
+    /// 是否全屏显示
+    /// </summary>
     [ObservableProperty]
     private bool _fullScreen;
+    /// <summary>
+    /// 是否启动后关闭启动器
+    /// </summary>
     [ObservableProperty]
     private bool _closeBefore;
+    /// <summary>
+    /// 是否启用安全Log4j
+    /// </summary>
     [ObservableProperty]
     private bool _safeLog4j;
+    /// <summary>
+    /// 是否使用自定义GC
+    /// </summary>
     [ObservableProperty]
     private bool _customGc;
+    /// <summary>
+    /// 是否同时启动游戏
+    /// </summary>
     [ObservableProperty]
     private bool _preRunSame;
+    /// <summary>
+    /// 是否检测用户是否占用
+    /// </summary>
     [ObservableProperty]
     private bool _checkUser;
+    /// <summary>
+    /// 是否检测加载器是否启用
+    /// </summary>
     [ObservableProperty]
     private bool _checkLoader;
+    /// <summary>
+    /// 是否检测内存分配
+    /// </summary>
     [ObservableProperty]
     private bool _checkMemory;
+    /// <summary>
+    /// 是否禁用ColorMC ASM
+    /// </summary>
     [ObservableProperty]
     private bool _colorASM;
 
+    /// <summary>
+    /// GC类型
+    /// </summary>
     [ObservableProperty]
     private GCType _gC;
 
+    /// <summary>
+    /// 最小内存
+    /// </summary>
     [ObservableProperty]
     private uint? _minMemory;
+    /// <summary>
+    /// 最大内存
+    /// </summary>
     [ObservableProperty]
     private uint? _maxMemory;
+    /// <summary>
+    /// 窗口宽度
+    /// </summary>
     [ObservableProperty]
     private uint? _width;
+    /// <summary>
+    /// 窗口高度
+    /// </summary>
     [ObservableProperty]
     private uint? _height;
 
+    /// <summary>
+    /// 内存信息
+    /// </summary>
     [ObservableProperty]
     private string _memory;
 
+    /// <summary>
+    /// 是否在加载配置
+    /// </summary>
     private bool _argLoad = true;
 
+    //配置修改
     partial void OnColorASMChanged(bool value)
     {
         SetArg();
@@ -233,6 +339,9 @@ public partial class SettingModel
         SetGameCheck();
     }
 
+    /// <summary>
+    /// 加载配置
+    /// </summary>
     public void LoadArg()
     {
         _argLoad = true;
@@ -283,6 +392,7 @@ public partial class SettingModel
         _argLoad = false;
     }
 
+    //保存配置
     private void SetCheck()
     {
         if (_argLoad)

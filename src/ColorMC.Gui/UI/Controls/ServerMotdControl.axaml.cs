@@ -1,3 +1,6 @@
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
@@ -7,9 +10,6 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Utils;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 

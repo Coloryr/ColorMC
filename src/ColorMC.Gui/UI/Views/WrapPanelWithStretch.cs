@@ -1,10 +1,15 @@
-using Avalonia;
-using Avalonia.Controls;
 using System;
 using System.Collections.Generic;
+using Avalonia;
+using Avalonia.Controls;
 
 namespace ColorMC.Gui.UI.Views;
 
+/// <summary>
+/// 自动换行控件
+/// 当设置RightMax时，最右侧的控件获取剩余宽度
+/// 当设置LeftMax时，最左侧的控件获得剩余宽度
+/// </summary>
 public class WrapPanelWithStretch : Panel
 {
     public static readonly StyledProperty<bool> RightMaxProperty =
@@ -13,17 +18,27 @@ public class WrapPanelWithStretch : Panel
     public static readonly StyledProperty<bool> LeftMaxProperty =
         AvaloniaProperty.Register<WrapPanelWithStretch, bool>(nameof(LeftMax));
 
+    /// <summary>
+    /// 是否为右侧最大
+    /// </summary>
     public bool RightMax
     {
         get => GetValue(RightMaxProperty);
         set => SetValue(RightMaxProperty, value);
     }
+    /// <summary>
+    /// 是否为左侧最大
+    /// </summary>
     public bool LeftMax
     {
         get => GetValue(LeftMaxProperty);
         set => SetValue(LeftMaxProperty, value);
     }
 
+    /// <summary>
+    /// 开关切换时
+    /// </summary>
+    /// <param name="change"></param>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -35,11 +50,21 @@ public class WrapPanelWithStretch : Panel
         }
     }
 
+    /// <summary>
+    /// 是否为非法大小
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     private static bool IsErrorSize(double value)
     {
         return value <= 0 || double.IsInfinity(value) || double.IsNaN(value);
     }
 
+    /// <summary>
+    /// 获取控件的宽度
+    /// </summary>
+    /// <param name="control"></param>
+    /// <returns></returns>
     private static double GetWidth(Control control)
     {
         double width = control.MinWidth;
@@ -66,6 +91,7 @@ public class WrapPanelWithStretch : Panel
         bool left = LeftMax;
         bool right = RightMax;
 
+        //逐一获取控件大小，然后排列
         foreach (var child in Children)
         {
             child.Measure(Size.Infinity);

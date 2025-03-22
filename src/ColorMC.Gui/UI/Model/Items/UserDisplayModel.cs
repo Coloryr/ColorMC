@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -9,38 +11,38 @@ using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Model.User;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SkiaSharp;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 账户显示
 /// </summary>
-public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : SelectItemModel
+public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItemModel
 {
     public const double DefaultWidth = 350;
+
+    public LoginObj Obj => obj;
 
     /// <summary>
     /// 用户名
     /// </summary>
-    public string Name => Obj.UserName;
+    public string Name => obj.UserName;
     /// <summary>
     /// UUID
     /// </summary>
-    public string UUID => Obj.UUID;
+    public string UUID => obj.UUID;
     /// <summary>
     /// 类型
     /// </summary>
-    public string Type => Obj.AuthType.GetName();
+    public string Type => obj.AuthType.GetName();
     /// <summary>
     /// 附加信息
     /// </summary>
-    public string Text1 => Obj.Text1;
+    public string Text1 => obj.Text1;
     /// <summary>
     /// 附加信息
     /// </summary>
-    public string Text2 => Obj.Text2;
+    public string Text2 => obj.Text2;
 
     /// <summary>
     /// 宽度
@@ -51,7 +53,7 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
     /// <summary>
     /// 账户类型
     /// </summary>
-    public AuthType AuthType => Obj.AuthType;
+    public AuthType AuthType => obj.AuthType;
 
     /// <summary>
     /// 头像
@@ -76,10 +78,10 @@ public partial class UserDisplayModel(UsersControlModel top, LoginObj Obj) : Sel
         {
             await Task.Run(async () =>
             {
-                var temp = await PlayerSkinAPI.DownloadSkin(Obj);
+                var temp = await PlayerSkinAPI.DownloadSkin(obj);
                 if (temp.Item1)
                 {
-                    var file = AssetsPath.GetSkinFile(Obj);
+                    var file = AssetsPath.GetSkinFile(obj);
                     var skin = SKBitmap.Decode(file);
                     using var data = Skin2DHead.MakeHeadImage(skin);
                     _img = new Bitmap(data);

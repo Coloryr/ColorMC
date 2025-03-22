@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -5,13 +7,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using System;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Controls.Items;
 
@@ -164,7 +162,7 @@ public partial class GameControl : UserControl
             }
             else
             {
-                #if Phone
+#if Phone
                 if (!select)
                 {
                     return;

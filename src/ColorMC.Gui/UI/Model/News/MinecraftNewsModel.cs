@@ -1,8 +1,8 @@
-﻿using ColorMC.Gui.UI.Model.Items;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.News;
 
@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.News;
 /// Minecraft news窗口
 /// </summary>
 /// <param name="model"></param>
-public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
+public partial class MinecraftNewsModel : TopModel
 {
     /// <summary>
     /// 新闻列表
@@ -22,7 +22,12 @@ public partial class MinecraftNewsModel(BaseModel model) : TopModel(model)
     /// </summary>
     private int _newsPage = 0;
 
-    private readonly string _use = "MinecraftNewsModel";
+    private readonly string _use;
+
+    public MinecraftNewsModel(BaseModel model) : base(model)
+    {
+        _use = ToString() ?? "MinecraftNewsModel";
+    }
 
     /// <summary>
     /// 加载新闻列表

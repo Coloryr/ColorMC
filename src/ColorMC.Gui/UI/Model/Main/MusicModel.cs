@@ -1,4 +1,6 @@
-﻿using Avalonia.Animation;
+﻿using System;
+using System.IO;
+using Avalonia.Animation;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
@@ -7,8 +9,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Model.Main;
 

@@ -1,15 +1,15 @@
-using ColorMC.Core.Helpers;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Nbt;
-using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 

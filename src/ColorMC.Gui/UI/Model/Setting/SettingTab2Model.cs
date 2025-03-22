@@ -1,4 +1,8 @@
-﻿using Avalonia.Media;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Media;
 using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -9,10 +13,6 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Live2DCSharpSDK.Framework.Core;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -255,7 +255,6 @@ public partial class SettingModel
 
     /// <summary>
     /// 图标
-    ///    
     /// </summary>
     public string IconHead
     {
@@ -272,6 +271,7 @@ public partial class SettingModel
         }
     }
 
+    //配置修改
     partial void OnSimpleChanged(bool value)
     {
         if (_load)
@@ -371,17 +371,17 @@ public partial class SettingModel
 
     partial void OnEnableAmChanged(bool value)
     {
-        SetStyle();
+        SetAm();
     }
 
     partial void OnAmFadeChanged(bool value)
     {
-        SetStyle();
+        SetAm();
     }
 
     partial void OnAmTimeChanged(int value)
     {
-        SetStyle();
+        SetAm();
     }
 
     partial void OnL2dWidthChanged(int value)
@@ -521,6 +521,10 @@ public partial class SettingModel
         SetLogColor();
     }
 
+    /// <summary>
+    /// 导入Live2d core
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task InstallCore()
     {
@@ -545,19 +549,25 @@ public partial class SettingModel
             }
         }
     }
-
+    /// <summary>
+    /// 打开运行路径
+    /// </summary>
     [RelayCommand]
     public void OpenRunDir()
     {
         PathBinding.OpenPath(PathType.RunPath);
     }
-
+    /// <summary>
+    /// 打开下载live2d core
+    /// </summary>
     [RelayCommand]
     public void DownloadCore()
     {
         WebBinding.OpenWeb(WebType.Live2DCore);
     }
-
+    /// <summary>
+    /// 重载颜色设置
+    /// </summary>
     [RelayCommand]
     public void ColorReset()
     {
@@ -567,24 +577,30 @@ public partial class SettingModel
         _load = false;
         Model.Notify(App.Lang("SettingWindow.Tab2.Info4"));
     }
-
+    /// <summary>
+    /// 设置背景图片大小
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SetPicSize()
     {
         Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         Model.ProgressClose();
-
         Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
-
+    /// <summary>
+    /// 设置背景图片透明
+    /// </summary>
     [RelayCommand]
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
         Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
-
+    /// <summary>
+    /// 删除背景图
+    /// </summary>
     [RelayCommand]
     public void DeletePic()
     {
@@ -592,7 +608,10 @@ public partial class SettingModel
 
         ConfigBinding.DeleteGuiImageConfig();
     }
-
+    /// <summary>
+    /// 选中背景图
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task OpenPic()
     {
@@ -612,12 +631,17 @@ public partial class SettingModel
             await SetPic();
         }
     }
-
+    /// <summary>
+    /// 设置背景图
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task SetPic()
     {
         if (_load)
+        {
             return;
+        }
 
         Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
@@ -625,7 +649,9 @@ public partial class SettingModel
 
         Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
-
+    /// <summary>
+    /// 删除Live2d模型
+    /// </summary>
     [RelayCommand]
     public void DeleteLive2D()
     {
@@ -633,7 +659,10 @@ public partial class SettingModel
 
         ConfigBinding.DeleteLive2D();
     }
-
+    /// <summary>
+    /// 选中Live2d模型
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task OpenLive2D()
     {
@@ -653,7 +682,9 @@ public partial class SettingModel
             SetLive2D();
         }
     }
-
+    /// <summary>
+    /// 设置Live2d模型
+    /// </summary>
     [RelayCommand]
     public void SetLive2D()
     {
@@ -671,7 +702,9 @@ public partial class SettingModel
 
         Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
-
+    /// <summary>
+    /// 加载UI设置
+    /// </summary>
     public void LoadUISetting()
     {
         _load = true;
@@ -801,7 +834,9 @@ public partial class SettingModel
 
         _load = false;
     }
-
+    /// <summary>
+    /// 主题色修改
+    /// </summary>
     private void ColorChange()
     {
         if (_load)
@@ -809,7 +844,9 @@ public partial class SettingModel
 
         ConfigBinding.SetColor(MainColor.ToString());
     }
-
+    /// <summary>
+    /// 设置窗口设置
+    /// </summary>
     private void SaveWindowSetting()
     {
         if (_load)
@@ -819,7 +856,9 @@ public partial class SettingModel
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         Model.ProgressClose();
     }
-
+    /// <summary>
+    /// 设置RGB模式
+    /// </summary>
     private void SetRgb()
     {
         if (_load)
@@ -827,7 +866,9 @@ public partial class SettingModel
 
         ConfigBinding.SetRgb(RgbV1, RgbV2);
     }
-
+    /// <summary>
+    /// 设置日志颜色
+    /// </summary>
     private void SetLogColor()
     {
         if (_load)
@@ -835,15 +876,19 @@ public partial class SettingModel
 
         ConfigBinding.SetLogColor(WarnColor.ToString(), ErrorColor.ToString(), DebugColor.ToString());
     }
-
-    private void SetStyle()
+    /// <summary>
+    /// 这是动画样式
+    /// </summary>
+    private void SetAm()
     {
         if (_load)
             return;
 
         ConfigBinding.SetStyle(AmTime, AmFade, EnableAm);
     }
-
+    /// <summary>
+    /// 设置卡片
+    /// </summary>
     private void SetCard()
     {
         if (_load)

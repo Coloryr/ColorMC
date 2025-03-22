@@ -1,13 +1,12 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using System.Collections.ObjectModel;
+using System.IO;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.IO;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 

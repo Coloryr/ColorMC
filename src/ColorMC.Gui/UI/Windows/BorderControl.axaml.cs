@@ -4,6 +4,10 @@ using Avalonia.Input;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 带有边框的窗口
+/// 用于某些系统
+/// </summary>
 public partial class BorderControl : UserControl
 {
     public BorderControl()
@@ -20,6 +24,11 @@ public partial class BorderControl : UserControl
         SouthEast.PointerPressed += SizeC;
     }
 
+    /// <summary>
+    /// 选中边框后可以拉伸窗口大小
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void SizeC(object? sender, PointerPressedEventArgs e)
     {
         if (TopLevel.GetTopLevel(this) is Window window

@@ -1,12 +1,16 @@
-﻿using ColorMC.Gui.Objs;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 游戏日志处理
+/// </summary>
 public partial class GameLog
 {
+    //正则
     private const string s_pattern = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:? \[(.*?)\](?: (.*))?";
     private const string s_pattern1 = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?";
 
@@ -19,13 +23,24 @@ public partial class GameLog
     private static readonly Regex s_regex = MyRegex();
     private static readonly Regex s_regex1 = MyRegex1();
 
+    /// <summary>
+    /// 当前进程游戏日志
+    /// </summary>
     public ConcurrentBag<GameLogItemObj> Logs { get; init; } = [];
 
+    /// <summary>
+    /// 清理当前进程游戏日志
+    /// </summary>
     public void Clear()
     {
         Logs.Clear();
     }
 
+    /// <summary>
+    /// 添加日志
+    /// </summary>
+    /// <param name="log"></param>
+    /// <returns></returns>
     public GameLogItemObj? AddLog(string? log)
     {
         if (log == null)
@@ -33,6 +48,7 @@ public partial class GameLog
             return null;
         }
 
+        //正则拆分
         var data = log.Trim();
         var match = s_regex.Match(data);
         GameLogItemObj? item1 = null;
@@ -88,6 +104,11 @@ public partial class GameLog
         return item1;
     }
 
+    /// <summary>
+    /// 获取某个等级的日志列表
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public List<GameLogItemObj> GetLog(LogLevel type)
     {
         var list = new List<GameLogItemObj>();
@@ -104,6 +125,11 @@ public partial class GameLog
         return list;
     }
 
+    /// <summary>
+    /// 判断日志等级
+    /// </summary>
+    /// <param name="level"></param>
+    /// <returns></returns>
     private static LogLevel GetLevel(string level)
     {
         level = level.ToLower();

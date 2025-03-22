@@ -67,7 +67,7 @@ public partial class MainModel
             }
 
             UserId = user.UserName;
-
+            //锁定用户切换
             if (GuiConfigUtils.Config.ServerCustom.LockLogin && user.AuthType != AuthType.OAuth)
             {
                 bool find = false;

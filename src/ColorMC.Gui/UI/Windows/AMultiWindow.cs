@@ -1,4 +1,6 @@
-﻿using Avalonia;
+﻿using System;
+using System.ComponentModel;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Controls.Primitives;
@@ -10,8 +12,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
 using ColorMC.Gui.UI.Model;
-using System;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -20,18 +20,38 @@ namespace ColorMC.Gui.UI.Windows;
 /// </summary>
 public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 {
-    private WindowNotificationManager windowNotification;
+    /// <summary>
+    /// 右上角通知
+    /// </summary>
+    private WindowNotificationManager _windowNotification;
 
     public override BaseUserControl ICon => _con;
 
+    /// <summary>
+    /// 基础页面
+    /// 真正显示的部分
+    /// </summary>
     private BaseUserControl _con;
 
+    /// <summary>
+    /// 窗口模型
+    /// </summary>
     public BaseModel Model => (DataContext as BaseModel)!;
 
+    /// <summary>
+    /// 窗口上方控制栏
+    /// </summary>
     public abstract HeadControl Head { get; }
 
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
     private bool _isClose;
 
+    /// <summary>
+    /// 初始化窗口
+    /// </summary>
+    /// <param name="con"></param>
     protected void InitMultiWindow(BaseUserControl con)
     {
         InitBaseWindow();
@@ -69,6 +89,10 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         AMultiWindow_PicUpdate();
     }
 
+    /// <summary>
+    /// 设置内容
+    /// </summary>
+    /// <param name="control"></param>
     protected abstract void SetChild(Control control);
 
     private void AMultiWindow_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -81,6 +105,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         ICon.IPointerReleased(e);
     }
 
+    /// <summary>
+    /// 监听属性
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (ColorMCGui.IsClose)
@@ -89,7 +118,8 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         }
         if (e.PropertyName == BaseModel.NameInfoShow)
         {
-            windowNotification.Show(new TextBlock()
+            //弹出一个提示
+            _windowNotification.Show(new TextBlock()
             {
                 Margin = new Thickness(20, 0, 20, 0),
                 TextWrapping = TextWrapping.Wrap,
@@ -107,7 +137,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         base.OnApplyTemplate(e);
 
-        windowNotification = new WindowNotificationManager(this)
+        _windowNotification = new WindowNotificationManager(this)
         {
             Position = NotificationPosition.TopRight,
             MaxItems = 3,
@@ -115,6 +145,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         };
     }
 
+    /// <summary>
+    /// 窗口属性
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void AMultiWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Property == WindowStateProperty)
@@ -143,11 +178,18 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         });
     }
 
+    /// <summary>
+    /// 设置标题
+    /// </summary>
+    /// <param name="temp"></param>
     public void SetTitle(string temp)
     {
         Model.Title = temp;
     }
 
+    /// <summary>
+    /// 查找一个好的位置
+    /// </summary>
     private void FindGoodPos()
     {
         if (SetWindowState())
@@ -189,6 +231,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         Position = new(x, y);
     }
 
+    /// <summary>
+    /// 窗口关闭
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void AMultiWindow_Closed(object? sender, EventArgs e)
     {
         WindowManager.ClosedWindow(this);
@@ -203,11 +250,19 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         App.TestClose();
     }
 
+    /// <summary>
+    /// 窗口最前
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void AMultiWindow_Activated(object? sender, EventArgs e)
     {
         WindowManager.ActivatedWindow(this);
     }
 
+    /// <summary>
+    /// 更新背景图
+    /// </summary>
     private void AMultiWindow_PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
@@ -215,17 +270,18 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         ICon.Update();
     }
 
+    /// <summary>
+    /// 设置图标
+    /// </summary>
+    /// <param name="icon"></param>
     public void SetIcon(Bitmap icon)
     {
         Model.SetIcon(icon);
     }
 
-    //public void SetSize(int width, int height)
-    //{
-    //    Width = width;
-    //    Height = height;
-    //}
-
+    /// <summary>
+    /// 重载图标
+    /// </summary>
     public void ReloadIcon()
     {
         Model.SetIcon(_con.GetIcon());

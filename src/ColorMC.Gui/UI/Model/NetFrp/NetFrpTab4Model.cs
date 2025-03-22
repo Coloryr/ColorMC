@@ -1,4 +1,7 @@
-﻿using ColorMC.Core.LaunchPath;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
@@ -6,9 +9,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -42,6 +42,10 @@ public partial class NetFrpModel
     /// </summary>
     public List<string> Versions { get; init; } = [];
 
+    /// <summary>
+    /// 游戏版本切换
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnVersionChanged(string value)
     {
         GetCloud();

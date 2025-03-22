@@ -1,8 +1,7 @@
-using Avalonia.Media.Imaging;
+using System;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
-using System;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 

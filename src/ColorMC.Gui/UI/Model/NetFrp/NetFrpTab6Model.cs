@@ -1,12 +1,12 @@
-﻿using ColorMC.Gui.UI.Model.Dialog;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -44,7 +44,6 @@ public partial class NetFrpModel
 
         IsSelfFrpEmpty = RemoteSelfFrp.Count == 0;
     }
-
     /// <summary>
     /// 添加自定义映射
     /// </summary>

@@ -6,6 +6,9 @@ using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// 带边框的多窗口
+/// </summary>
 public partial class MultiBorderWindow : AMultiWindow
 {
     public override HeadControl Head => HeadControl;

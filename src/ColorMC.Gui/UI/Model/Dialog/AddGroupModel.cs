@@ -1,10 +1,10 @@
-﻿using ColorMC.Gui.UI.Controls.Main;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 

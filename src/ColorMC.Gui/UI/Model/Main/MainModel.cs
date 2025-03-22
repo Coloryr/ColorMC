@@ -1,12 +1,10 @@
-﻿using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
+﻿using System.Threading.Tasks;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -107,9 +105,7 @@ public partial class MainModel : TopModel, IMutTop
     /// 是否获取新的数据
     /// </summary>
     private bool _isGetNewInfo;
-    /// <summary>
-    /// 
-    /// </summary>
+
     private int _helloClick;
 
     public MainModel(BaseModel model) : base(model)
@@ -130,7 +126,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         WindowManager.ShowCollect();
     }
-
     /// <summary>
     /// 打开统计
     /// </summary>
@@ -139,7 +134,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         WindowManager.ShowCount();
     }
-
     /// <summary>
     /// 显示皮肤
     /// </summary>
@@ -148,7 +142,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         WindowManager.ShowSkin();
     }
-
     /// <summary>
     /// 显示用户列表
     /// </summary>
@@ -157,7 +150,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         WindowManager.ShowUser();
     }
-
     /// <summary>
     /// 显示启动器设置
     /// </summary>
@@ -166,7 +158,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         WindowManager.ShowSetting(SettingType.Normal);
     }
-
     /// <summary>
     /// 打开指南手册
     /// </summary>
@@ -182,7 +173,6 @@ public partial class MainModel : TopModel, IMutTop
         }
         WebBinding.OpenWeb(res.Index == 0 ? WebType.Guide1 : WebType.Guide);
     }
-
     /// <summary>
     /// 打开映射大厅
     /// </summary>
@@ -198,7 +188,6 @@ public partial class MainModel : TopModel, IMutTop
             Model.Show(App.Lang("MainWindow.Error6"));
         }
     }
-
     /// <summary>
     /// 打开新闻列表
     /// </summary>

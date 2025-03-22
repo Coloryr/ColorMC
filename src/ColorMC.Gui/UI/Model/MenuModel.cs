@@ -1,16 +1,20 @@
-﻿using ColorMC.Gui.UI.Model.Items;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model;
 
+/// <summary>
+/// 带菜单窗口
+/// </summary>
+/// <param name="model">基础窗口</param>
 public abstract partial class MenuModel(BaseModel model) : TopModel(model)
 {
-    public const string SideOpen = "SideOpen";
-    public const string SideClose = "SideClose";
-    public const string NowViewName = "NowView";
+    public const string NameSideOpen = "SideOpen";
+    public const string NameSideClose = "SideClose";
+    public const string NameNowView = "NowView";
 
     /// <summary>
     /// 菜单项
@@ -35,6 +39,11 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private bool _topSide;
 
+    /// <summary>
+    /// 菜单项切换
+    /// </summary>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
     partial void OnNowViewChanged(int oldValue, int newValue)
     {
         CloseSide();
@@ -46,6 +55,11 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
         Title = TabItems[newValue].Text;
     }
 
+    /// <summary>
+    /// 窗口宽度切换
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="width"></param>
     public override void WidthChange(int index, double width)
     {
         if (index != 0)
@@ -62,6 +76,10 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
         }
     }
 
+    /// <summary>
+    /// 设置菜单
+    /// </summary>
+    /// <param name="items"></param>
     public void SetMenu(MenuItemModel[] items)
     {
         int a = 0;
@@ -73,6 +91,11 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
         }
     }
 
+    /// <summary>
+    /// 菜单项目切换
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Item_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is MenuItemModel model)
@@ -90,7 +113,7 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public void OpenSide()
     {
-        OnPropertyChanged("SideOpen");
+        OnPropertyChanged(NameSideOpen);
     }
 
     /// <summary>
@@ -99,6 +122,6 @@ public abstract partial class MenuModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public void CloseSide()
     {
-        OnPropertyChanged("SideClose");
+        OnPropertyChanged(NameSideClose);
     }
 }

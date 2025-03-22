@@ -1,25 +1,25 @@
-﻿using AvaloniaEdit.Utils;
-using ColorMC.Core.Downloader;
-using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Windows;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using AvaloniaEdit.Utils;
+using ColorMC.Core.Downloader;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Collect;
 
 /// <summary>
 /// 收藏界面
 /// </summary>
-public partial class CollectModel : TopModel, ICollectWindow
+public partial class CollectModel : TopModel, ICollectControl
 {
     /// <summary>
     /// 收藏项目

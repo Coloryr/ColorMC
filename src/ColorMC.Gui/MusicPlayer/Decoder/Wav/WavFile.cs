@@ -1,7 +1,7 @@
-﻿using ColorMC.Gui.Objs;
-using System;
+﻿using System;
 using System.Buffers.Binary;
 using System.IO;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.MusicPlayer.Decoder.Wav;
 

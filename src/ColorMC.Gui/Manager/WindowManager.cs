@@ -1,4 +1,7 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform;
 using Avalonia.Styling;
@@ -36,10 +39,6 @@ using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Manager;
 
@@ -1150,7 +1149,7 @@ public static class WindowManager
     public static void ReloadIcon()
     {
         foreach (var item in _windows)
-        { 
+        {
             item.ReloadIcon();
         }
     }
@@ -1176,5 +1175,77 @@ public static class WindowManager
     public static void ActivatedWindow(Window window)
     {
         LastWindow = window;
+    }
+
+    /// <summary>
+    /// 重载窗口标题
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void ReloadTitle(GameSettingObj obj)
+    {
+        if (GameEditWindows.TryGetValue(obj.UUID, out var window))
+        {
+            window.ReloadTitle();
+        }
+        if (GameExportWindows.TryGetValue(obj.UUID, out var window1))
+        {
+            window1.ReloadTitle();
+        }
+        if (GameCloudWindows.TryGetValue(obj.UUID, out var window2))
+        {
+            window2.ReloadTitle();
+        }
+        if (GameLogWindows.TryGetValue(obj.UUID, out var window3))
+        {
+            window3.ReloadTitle();
+        }
+        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
+        {
+            window4.ReloadTitle();
+        }
+        if (GameAddWindows.TryGetValue(obj.UUID, out var window5))
+        {
+            window5.ReloadTitle();
+        }
+        if (ServerPackWindows.TryGetValue(obj.UUID, out var window6))
+        {
+            window6.ReloadTitle();
+        }
+    }
+
+    /// <summary>
+    /// 重载窗口图标
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void ReloadIcon(GameSettingObj obj)
+    {
+        if (GameEditWindows.TryGetValue(obj.UUID, out var window))
+        {
+            window.ReloadIcon();
+        }
+        if (GameExportWindows.TryGetValue(obj.UUID, out var window1))
+        {
+            window1.ReloadIcon();
+        }
+        if (GameCloudWindows.TryGetValue(obj.UUID, out var window2))
+        {
+            window2.ReloadIcon();
+        }
+        if (GameLogWindows.TryGetValue(obj.UUID, out var window3))
+        {
+            window3.ReloadIcon();
+        }
+        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
+        {
+            window4.ReloadIcon();
+        }
+        if (GameAddWindows.TryGetValue(obj.UUID, out var window5))
+        {
+            window5.ReloadIcon();
+        }
+        if (ServerPackWindows.TryGetValue(obj.UUID, out var window6))
+        {
+            window6.ReloadIcon();
+        }
     }
 }

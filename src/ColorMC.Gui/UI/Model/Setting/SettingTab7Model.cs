@@ -1,19 +1,35 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.Threading.Tasks;
+using Avalonia.Media.Imaging;
 using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置页面
+/// </summary>
 public partial class SettingModel
 {
+    /// <summary>
+    /// 图标
+    /// </summary>
     public Bitmap Bitmap => ImageManager.GameIcon;
+    /// <summary>
+    /// 版本
+    /// </summary>
     public string Version => ColorMCCore.Version;
+    /// <summary>
+    /// 运行方式
+    /// </summary>
     public string RunType => GetRunType();
 
+    /// <summary>
+    /// 获取运行方式
+    /// </summary>
+    /// <returns></returns>
     private string GetRunType()
     {
         if (ColorMCGui.IsAot)
@@ -27,8 +43,9 @@ public partial class SettingModel
         return App.Lang("SettingWindow.Tab7.Info2");
     }
 
+    //打开网页
     [RelayCommand]
-    public void OpenUrl1(object urls)
+    public void OpenUrl1()
     {
         WebBinding.OpenWeb(WebType.Web);
     }

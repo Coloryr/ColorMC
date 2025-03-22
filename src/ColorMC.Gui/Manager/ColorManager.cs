@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
 using Avalonia.Media;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.Utils;
-using System;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.Manager;
 

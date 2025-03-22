@@ -1,13 +1,12 @@
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Skin;
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 
@@ -100,7 +99,7 @@ public partial class SkinControl : BaseUserControl
         return false;
     }
 
-    public override void WindowStateChange(WindowState state)
+    public override void ControlStateChange(WindowState state)
     {
         _renderTimer.Pause = state != WindowState.Minimized;
     }

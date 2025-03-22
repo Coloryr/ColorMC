@@ -1,10 +1,13 @@
-﻿using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using System;
+﻿using System;
 using System.Threading;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 界面RGB模式
+/// </summary>
 public static class RgbColorUtils
 {
     private static readonly Thread t_tick = new(Tick)
@@ -42,11 +45,19 @@ public static class RgbColorUtils
         }
     }
 
+    /// <summary>
+    /// 是否启用
+    /// </summary>
+    /// <returns></returns>
     public static bool IsEnable()
     {
         return s_rgb;
     }
 
+    /// <summary>
+    /// 获取当前颜色
+    /// </summary>
+    /// <returns></returns>
     public static IBrush GetColor()
     {
         return s_color;

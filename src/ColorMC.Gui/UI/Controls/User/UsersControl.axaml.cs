@@ -1,5 +1,4 @@
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.User;
@@ -31,7 +30,7 @@ public partial class UsersControl : BaseUserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        var model = (DataContext as UsersControlModel)!;
+        var model = (DataContext as UsersModel)!;
         if (model.LockLogin)
         {
             return;
@@ -49,13 +48,13 @@ public partial class UsersControl : BaseUserControl
 
     private void Drop(object? sender, DragEventArgs e)
     {
-        var model = (DataContext as UsersControlModel)!;
+        var model = (DataContext as UsersModel)!;
         if (model.LockLogin)
         {
             return;
         }
         Grid2.IsVisible = false;
-        (DataContext as UsersControlModel)!.Drop(e.Data);
+        (DataContext as UsersModel)!.Drop(e.Data);
     }
 
     /// <summary>
@@ -64,7 +63,7 @@ public partial class UsersControl : BaseUserControl
     /// <param name="url">·þÎñÆ÷µØÖ·</param>
     public void AddUrl(string url)
     {
-        (DataContext as UsersControlModel)?.AddUrl(url);
+        (DataContext as UsersModel)?.AddUrl(url);
     }
 
     /// <summary>
@@ -72,12 +71,12 @@ public partial class UsersControl : BaseUserControl
     /// </summary>
     public void Add()
     {
-        (DataContext as UsersControlModel)?.SetAdd();
+        (DataContext as UsersModel)?.SetAdd();
     }
 
-    protected override UsersControlModel GenModel(BaseModel model)
+    protected override UsersModel GenModel(BaseModel model)
     {
-        return new UsersControlModel(model);
+        return new UsersModel(model);
     }
 
     /// <summary>
@@ -85,7 +84,7 @@ public partial class UsersControl : BaseUserControl
     /// </summary>
     public void Relogin()
     {
-        (DataContext as UsersControlModel)?.ReLogin();
+        (DataContext as UsersModel)?.ReLogin();
     }
 
     /// <summary>
@@ -93,6 +92,6 @@ public partial class UsersControl : BaseUserControl
     /// </summary>
     public void LoadUsers()
     {
-        (DataContext as UsersControlModel)?.LoadUsers();
+        (DataContext as UsersModel)?.LoadUsers();
     }
 }

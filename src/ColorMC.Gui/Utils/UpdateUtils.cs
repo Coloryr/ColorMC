@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -5,10 +9,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 
@@ -21,14 +21,17 @@ public static class UpdateUtils
     public static readonly string[] Sha1s = ["", "", "", ""];
     public static readonly string[] LocalPath = ["", "", "", ""];
 
-    public static readonly string[] LaunchFiles = 
+    public static readonly string[] LaunchFiles =
     ["av_libglesv2.dll", "ColorMC.Core.pdb", "ColorMC.Gui.pdb",
     "ColorMC.Launcher.exe", "ColorMC.Launcher.pdb",
-    "libHarfBuzzSharp.dll", "libSkiaSharp.dll", 
-    "Live2DCSharpSDK.App.pdb", "Live2DCSharpSDK.Framework.pdb", 
-    "Live2DCSharpSDK.OpenGL.pdb", "MinecraftSkinRender.OpenGL.pdb", 
+    "libHarfBuzzSharp.dll", "libSkiaSharp.dll",
+    "Live2DCSharpSDK.App.pdb", "Live2DCSharpSDK.Framework.pdb",
+    "Live2DCSharpSDK.OpenGL.pdb", "MinecraftSkinRender.OpenGL.pdb",
     "MinecraftSkinRender.pdb", "SDL2.dll"];
 
+    /// <summary>
+    /// 初始化更新器
+    /// </summary>
     public static void Init()
     {
         if (ColorMCGui.BaseSha1 == null)
@@ -55,6 +58,10 @@ public static class UpdateUtils
         }
     }
 
+    /// <summary>
+    /// 检查更新
+    /// </summary>
+    /// <returns></returns>
     public static async Task<(bool, bool, string?)> Check()
     {
         if (ColorMCGui.BaseSha1 == null)
@@ -91,6 +98,9 @@ public static class UpdateUtils
         return (false, false, null);
     }
 
+    /// <summary>
+    /// 开始更新
+    /// </summary>
     public static async void StartUpdate()
     {
         if (ColorMCGui.BaseSha1 == null)
@@ -143,6 +153,10 @@ public static class UpdateUtils
         }
     }
 
+    /// <summary>
+    /// 检测更新
+    /// </summary>
+    /// <returns></returns>
     public static async Task<(bool?, string?)> CheckOne()
     {
         if (ColorMCGui.BaseSha1 == null)
@@ -188,6 +202,9 @@ public static class UpdateUtils
         return (null, null);
     }
 
+    /// <summary>
+    /// 检测更新失败
+    /// </summary>
     public static void UpdateCheckFail()
     {
         var window = WindowManager.GetMainWindow();

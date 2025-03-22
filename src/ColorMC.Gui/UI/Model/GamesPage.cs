@@ -1,13 +1,22 @@
-﻿using Avalonia.Controls.Models.TreeDataGrid;
+﻿using System.Collections.Generic;
 using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using ColorMC.Gui.UI.Model.Items;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 
+/// <summary>
+/// 游戏实例树
+/// </summary>
 public class GamesPage
 {
+    /// <summary>
+    /// 根路径
+    /// </summary>
     private readonly GameFileTreeNodeModel _root;
+    /// <summary>
+    /// 显示内容
+    /// </summary>
     public HierarchicalTreeDataGridSource<GameFileTreeNodeModel> Source { get; init; }
 
     public GamesPage()
@@ -62,39 +71,22 @@ public class GamesPage
         Source.RowSelection!.SingleSelect = false;
     }
 
-    public void SetUnSelectItems(List<string> config)
-    {
-        foreach (var item in config)
-        {
-            _root.UnSelect(item);
-        }
-    }
-
-    public List<string> GetUnSelectItems()
-    {
-        return _root.GetUnSelectItems();
-    }
-
+    /// <summary>
+    /// 获取所有选中的文件
+    /// </summary>
+    /// <returns></returns>
     public List<string> GetSelectItems()
     {
         return _root.GetSelectItems(false);
     }
 
-    public void SetSelectItems(List<string> config)
-    {
-        foreach (var item in config)
-        {
-            _root.Select(item);
-        }
-    }
+    //public void SetSelectItems()
+    //{
+    //    _root.Select();
+    //}
 
-    public void SetSelectItems()
-    {
-        _root.Select();
-    }
-
-    public void SetUnSelectItems()
-    {
-        _root.UnSelect();
-    }
+    //public void SetUnSelectItems()
+    //{
+    //    _root.UnSelect();
+    //}
 }

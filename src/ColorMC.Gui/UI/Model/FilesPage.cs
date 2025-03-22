@@ -1,13 +1,22 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using ColorMC.Gui.UI.Model.Items;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model;
 
+/// <summary>
+/// 文件列表树
+/// </summary>
 public class FilesPage
 {
+    /// <summary>
+    /// 根路径
+    /// </summary>
     private readonly FileTreeNodeModel _root;
+    /// <summary>
+    /// 显示内容
+    /// </summary>
     public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; init; }
 
     public FilesPage(string obj, bool check, List<string>? unselect = null)
@@ -76,6 +85,10 @@ public class FilesPage
         }
     }
 
+    /// <summary>
+    /// 设置未选择的文件
+    /// </summary>
+    /// <param name="config"></param>
     public void SetUnSelectItems(List<string> config)
     {
         foreach (var item in config)
@@ -83,17 +96,27 @@ public class FilesPage
             _root.UnSelect(item);
         }
     }
-
+    /// <summary>
+    /// 获取所有未选择的文件
+    /// </summary>
+    /// <returns></returns>
     public List<string> GetUnSelectItems()
     {
         return _root.GetUnSelectItems();
     }
-
+    /// <summary>
+    /// 获取所有选中的文件
+    /// </summary>
+    /// <param name="getdir">是否获取目录</param>
+    /// <returns></returns>
     public List<string> GetSelectItems(bool getdir = false)
     {
         return _root.GetSelectItems(getdir);
     }
-
+    /// <summary>
+    /// 设置选中的文件
+    /// </summary>
+    /// <param name="config"></param>
     public void SetSelectItems(List<string> config)
     {
         foreach (var item in config)
@@ -101,12 +124,16 @@ public class FilesPage
             _root.Select(item);
         }
     }
-
+    /// <summary>
+    /// 设置所有文件选中
+    /// </summary>
     public void SetSelectItems()
     {
         _root.Select();
     }
-
+    /// <summary>
+    /// 设置所有文件不选中
+    /// </summary>
     public void SetUnSelectItems()
     {
         _root.UnSelect();

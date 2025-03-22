@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -35,14 +43,6 @@ using ColorMC.Gui.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using SkiaSharp;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -58,7 +58,10 @@ public static class GameBinding
     /// </summary>
     private static CancellationTokenSource s_launchCancel = new();
 
-    private static Dictionary<string, bool> s_gameConnect = [];
+    /// <summary>
+    /// 游戏是否链接到ColorMC
+    /// </summary>
+    private readonly static Dictionary<string, bool> s_gameConnect = [];
 
     /// <summary>
     /// 获取游戏实例列表
@@ -82,9 +85,9 @@ public static class GameBinding
     /// <summary>
     /// 添加游戏实例
     /// </summary>
-    /// <param name="game"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
+    /// <param name="game">游戏实例</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
@@ -106,12 +109,12 @@ public static class GameBinding
     /// <summary>
     /// 导入文件夹
     /// </summary>
-    /// <param name="name"></param>
-    /// <param name="local"></param>
-    /// <param name="unselect"></param>
-    /// <param name="group"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
+    /// <param name="name">实例名字</param>
+    /// <param name="local">文件夹路径</param>
+    /// <param name="unselect">不导入的文件列表</param>
+    /// <param name="group">游戏分组</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> AddGame(string? name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
@@ -144,15 +147,15 @@ public static class GameBinding
     /// <summary>
     /// 导入压缩包
     /// </summary>
-    /// <param name="dir"></param>
-    /// <param name="type"></param>
-    /// <param name="name"></param>
-    /// <param name="group"></param>
-    /// <param name="zip"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
-    /// <param name="update"></param>
-    /// <param name="update2"></param>
+    /// <param name="dir">压缩包路径</param>
+    /// <param name="type">压缩包类型</param>
+    /// <param name="name">实例名字</param>
+    /// <param name="group">游戏分组</param>
+    /// <param name="zip">UI相关</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
+    /// <param name="update">UI相关</param>
+    /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static Task<GameRes> AddPack(string dir, PackType type, string? name,
         string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
@@ -223,14 +226,14 @@ public static class GameBinding
     /// <summary>
     /// 安装CF整合包
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="data1"></param>
-    /// <param name="group"></param>
-    /// <param name="zip"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
-    /// <param name="update"></param>
-    /// <param name="update2"></param>
+    /// <param name="data">整合包信息</param>
+    /// <param name="data1">整合包信息</param>
+    /// <param name="group">游戏分组</param>
+    /// <param name="zip">UI相关</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
+    /// <param name="update">UI相关</param>
+    /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.DataObj data,
         CurseForgeObjList.DataObj data1, string? group, ColorMCCore.ZipUpdate zip,
@@ -253,14 +256,14 @@ public static class GameBinding
     /// <summary>
     /// 安装MO整合包
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="data1"></param>
-    /// <param name="group"></param>
-    /// <param name="zip"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
-    /// <param name="update"></param>
-    /// <param name="update2"></param>
+    /// <param name="data">整合包信息</param>
+    /// <param name="data1">整合包信息</param>
+    /// <param name="group">游戏分组</param>
+    /// <param name="zip">UI相关</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
+    /// <param name="update">UI相关</param>
+    /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallModrinth(ModrinthVersionObj data,
         ModrinthSearchObj.HitObj data1, string? group, ColorMCCore.ZipUpdate zip,
@@ -283,8 +286,9 @@ public static class GameBinding
     /// <summary>
     /// 设置游戏实例图标
     /// </summary>
-    /// <param name="model"></param>
-    /// <param name="obj"></param>
+    /// <param name="top">窗口</param>
+    /// <param name="model">基础窗口模型</param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static async Task SetGameIconFromFile(TopLevel top, BaseModel model, GameSettingObj obj)
     {
@@ -328,8 +332,8 @@ public static class GameBinding
     /// <summary>
     /// 启动多个实例
     /// </summary>
-    /// <param name="model"></param>
-    /// <param name="objs"></param>
+    /// <param name="model">基础窗口模型</param>
+    /// <param name="objs">游戏实例列表</param>
     /// <returns></returns>
     public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> objs)
     {
@@ -406,6 +410,7 @@ public static class GameBinding
 
         var list1 = new Dictionary<string, LaunchState>();
         var list2 = new List<string>();
+        //逐一启动
         foreach (var item in res1)
         {
             if (item.Value.Handel is { } pr)
@@ -420,7 +425,7 @@ public static class GameBinding
 
                 if (pr is DesktopGameHandel handel)
                 {
-                    GameHandel(model, item.Key, handel);
+                    GameHandel(item.Key, handel);
                 }
 
                 list2.Add(item.Key.UUID);
@@ -456,6 +461,7 @@ public static class GameBinding
             }
         }
 
+        //游戏实例只要有一个启动成功了就不解锁账户
         if (list2.Count == 0)
         {
             UserBinding.UnLockUser(user);
@@ -472,10 +478,10 @@ public static class GameBinding
     /// <summary>
     /// 启动游戏
     /// </summary>
-    /// <param name="model"></param>
-    /// <param name="obj"></param>
-    /// <param name="world"></param>
-    /// <param name="hide"></param>
+    /// <param name="model">基础窗口模型</param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="world">进入的存档</param>
+    /// <param name="hide">是否隐藏启动器</param>
     /// <returns></returns>
     public static async Task<GameLaunchOneRes> Launch(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
@@ -500,6 +506,7 @@ public static class GameBinding
 
         if (count > 0)
         {
+            //检测加载器有没有启用
             if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
             {
                 var res2 = await model.ShowAsync(string.Format(App.Lang("GameBinding.Info19"), obj.Name));
@@ -516,6 +523,7 @@ public static class GameBinding
                 }
             }
 
+            //检测内存分配是否够
             if (GuiConfigUtils.Config.LaunchCheck.CheckMemory && obj.Loader != Loaders.Normal)
             {
                 var mem = obj.JvmArg?.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory;
@@ -553,6 +561,7 @@ public static class GameBinding
             }
         }
 
+        //获取选中的账户
         var res = await UserBinding.GetLaunchUser(model);
         if (res.User is not { } user)
         {
@@ -627,13 +636,15 @@ public static class GameBinding
         model.SubTitle = "";
         FuntionUtils.RunGC();
 
+        //是否取消启动
         if (s_launchCancel.IsCancellationRequested)
         {
             UserBinding.UnLockUser(user);
             GameManager.GameExit(obj);
             return new() { Res = true };
         }
-
+        
+        //是否成功启动
         if (res1 is { } pr)
         {
             if (GuiConfigUtils.Config.ServerCustom.RunPause)
@@ -651,7 +662,7 @@ public static class GameBinding
 
             if (pr is DesktopGameHandel handel)
             {
-                GameHandel(model, obj, handel);
+                GameHandel(obj, handel);
 
                 if (hide)
                 {
@@ -681,6 +692,13 @@ public static class GameBinding
         };
     }
 
+    /// <summary>
+    /// 创建启动参数
+    /// </summary>
+    /// <param name="user">登录的账户</param>
+    /// <param name="model">基础窗口模型</param>
+    /// <param name="port">ColorMC ASM端口</param>
+    /// <returns></returns>
     private static GameLaunchArg MakeArg(LoginObj user, BaseModel model, int port)
     {
         return new GameLaunchArg
@@ -902,6 +920,11 @@ public static class GameBinding
         return list;
     }
 
+    /// <summary>
+    /// 快速获取游戏实例模组列表
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
     public static Task<List<ModObj>> GetModFastAsync(GameSettingObj obj)
     {
         return obj.GetModFastAsync();
@@ -910,7 +933,7 @@ public static class GameBinding
     /// <summary>
     /// 启用/禁用模组
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static MessageRes ModEnableDisable(ModObj obj)
     {
@@ -943,7 +966,7 @@ public static class GameBinding
     /// <summary>
     /// 删除模组
     /// </summary>
-    /// <param name="mod"></param>
+    /// <param name="mod">模组</param>
     public static void DeleteMod(ModObj mod)
     {
         string name = new FileInfo(mod.Local).Name;
@@ -962,8 +985,8 @@ public static class GameBinding
     /// <summary>
     /// 添加模组
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
     /// <returns></returns>
     public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
@@ -982,7 +1005,7 @@ public static class GameBinding
     /// <summary>
     /// 获取所有配置文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static List<string> GetAllConfig(GameSettingObj obj)
     {
@@ -1008,9 +1031,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 获取世界所有配置文件
+    /// 获取存档所有配置文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">存档</param>
     /// <returns></returns>
     public static List<string> GetAllConfig(WorldObj obj)
     {
@@ -1031,7 +1054,7 @@ public static class GameBinding
     /// <summary>
     /// 获取根目录所有配置文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static List<string> GetAllTopConfig(GameSettingObj obj)
     {
@@ -1059,8 +1082,8 @@ public static class GameBinding
     /// <summary>
     /// 读取区块信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="name">区块文件名</param>
     /// <returns></returns>
     public static async Task<ChunkDataObj?> ReadMca(WorldObj obj, string name)
     {
@@ -1072,8 +1095,8 @@ public static class GameBinding
     /// <summary>
     /// 读取区块信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">区块文件名</param>
     /// <returns></returns>
     public static async Task<ChunkDataObj?> ReadMca(GameSettingObj obj, string name)
     {
@@ -1085,8 +1108,8 @@ public static class GameBinding
     /// <summary>
     /// 读取Nbt信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="name">文件名</param>
     /// <returns></returns>
     public static async Task<NbtBase?> ReadNbt(WorldObj obj, string name)
     {
@@ -1098,8 +1121,8 @@ public static class GameBinding
     /// <summary>
     /// 读取Nbt信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">文件名</param>
     /// <returns></returns>
     public static async Task<NbtBase?> ReadNbt(GameSettingObj obj, string name)
     {
@@ -1111,8 +1134,8 @@ public static class GameBinding
     /// <summary>
     /// 读取配置文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="name">文件名</param>
     /// <returns></returns>
     public static string ReadConfigFile(WorldObj obj, string name)
     {
@@ -1124,8 +1147,8 @@ public static class GameBinding
     /// <summary>
     /// 读取配置文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">文件名</param>
     /// <returns></returns>
     public static string ReadConfigFile(GameSettingObj obj, string name)
     {
@@ -1137,9 +1160,9 @@ public static class GameBinding
     /// <summary>
     /// 保存配置文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
-    /// <param name="text"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="name">文件名</param>
+    /// <param name="text">文件内容</param>
     public static void SaveConfigFile(WorldObj obj, string name, string? text)
     {
         var dir = obj.Local;
@@ -1150,9 +1173,9 @@ public static class GameBinding
     /// <summary>
     /// 保存配置文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
-    /// <param name="text"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">文件名</param>
+    /// <param name="text">文件内容</param>
     public static void SaveConfigFile(GameSettingObj obj, string name, string? text)
     {
         var dir = obj.GetGamePath();
@@ -1163,9 +1186,9 @@ public static class GameBinding
     /// <summary>
     /// 保存Nbt文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
-    /// <param name="nbt"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="file">文件名</param>
+    /// <param name="nbt">文件内容</param>
     public static void SaveNbtFile(WorldObj obj, string file, NbtBase nbt)
     {
         var dir = obj.Local;
@@ -1176,9 +1199,9 @@ public static class GameBinding
     /// <summary>
     /// 保存Nbt文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
-    /// <param name="nbt"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件名</param>
+    /// <param name="nbt">文件内容</param>
     public static void SaveNbtFile(GameSettingObj obj, string file, NbtBase nbt)
     {
         var dir = obj.GetGamePath();
@@ -1189,9 +1212,9 @@ public static class GameBinding
     /// <summary>
     /// 保存区块文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
-    /// <param name="data"></param>
+    /// <param name="obj">存档</param>
+    /// <param name="file">文件名</param>
+    /// <param name="data">文件内容</param>
     public static void SaveMcaFile(WorldObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.Local;
@@ -1202,9 +1225,9 @@ public static class GameBinding
     /// <summary>
     /// 保存区块文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
-    /// <param name="data"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件名</param>
+    /// <param name="data">文件内容</param>
     public static void SaveMcaFile(GameSettingObj obj, string file, ChunkDataObj data)
     {
         var dir = obj.GetGamePath();
@@ -1213,9 +1236,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 获取世界列表
+    /// 获取存档列表
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static Task<List<WorldObj>> GetWorldsAsync(GameSettingObj obj)
     {
@@ -1223,9 +1246,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 添加世界
+    /// 添加存档
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="file"></param>
     /// <returns></returns>
     public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
@@ -1244,19 +1267,19 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 删除世界
+    /// 删除存档
     /// </summary>
-    /// <param name="world"></param>
+    /// <param name="world">存档</param>
     public static void DeleteWorld(WorldObj world)
     {
         world.Remove();
     }
 
     /// <summary>
-    /// 导出世界
+    /// 导出存档
     /// </summary>
-    /// <param name="world"></param>
-    /// <param name="file"></param>
+    /// <param name="world">存档</param>
+    /// <param name="file">导出路径</param>
     /// <returns></returns>
     public static Task ExportWorld(WorldObj world, string? file)
     {
@@ -1269,8 +1292,8 @@ public static class GameBinding
     /// <summary>
     /// 获取资源包列表
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="sha256"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="sha256">是否获取SHA256</param>
     /// <returns></returns>
     public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj,
         bool sha256 = false)
@@ -1281,7 +1304,7 @@ public static class GameBinding
     /// <summary>
     /// 删除资源包
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">资源包</param>
     public static void DeleteResourcepack(ResourcepackObj obj)
     {
         obj.Delete();
@@ -1290,8 +1313,8 @@ public static class GameBinding
     /// <summary>
     /// 导入资源包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
     /// <returns></returns>
     public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
@@ -1310,7 +1333,7 @@ public static class GameBinding
     /// <summary>
     /// 删除截图
     /// </summary>
-    /// <param name="file"></param>
+    /// <param name="file">截图</param>
     public static void DeleteScreenshot(ScreenshotObj file)
     {
         Screenshots.Delete(file);
@@ -1319,7 +1342,7 @@ public static class GameBinding
     /// <summary>
     /// 删除所有截图
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     public static void ClearScreenshots(GameSettingObj obj)
     {
         obj.ClearScreenshots();
@@ -1328,7 +1351,7 @@ public static class GameBinding
     /// <summary>
     /// 获取所有截图
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static List<ScreenshotObj> GetScreenshots(GameSettingObj obj)
     {
@@ -1338,7 +1361,7 @@ public static class GameBinding
     /// <summary>
     /// 获取游戏实例
     /// </summary>
-    /// <param name="uuid"></param>
+    /// <param name="uuid">游戏实例</param>
     /// <returns></returns>
     public static GameSettingObj? GetGame(string? uuid)
     {
@@ -1348,7 +1371,7 @@ public static class GameBinding
     /// <summary>
     /// 获取服务器列表
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
     {
@@ -1358,9 +1381,9 @@ public static class GameBinding
     /// <summary>
     /// 添加服务器
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
-    /// <param name="ip"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">名字</param>
+    /// <param name="ip">地址</param>
     /// <returns></returns>
     public static Task AddServer(GameSettingObj obj, string name, string ip)
     {
@@ -1370,8 +1393,8 @@ public static class GameBinding
     /// <summary>
     /// 删除服务器
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="server"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="server">服务器信息</param>
     /// <returns></returns>
     public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
     {
@@ -1381,7 +1404,7 @@ public static class GameBinding
     /// <summary>
     /// 删除配置文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     public static void DeleteConfig(GameSettingObj obj)
     {
         obj.JvmArg = null;
@@ -1398,7 +1421,7 @@ public static class GameBinding
     /// <summary>
     /// 获取光影包列表
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
     {
@@ -1408,8 +1431,8 @@ public static class GameBinding
     /// <summary>
     /// 添加光影包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
     /// <returns></returns>
     public static Task<bool> AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
@@ -1429,7 +1452,7 @@ public static class GameBinding
     /// <summary>
     /// 删除光影包
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">光影包</param>
     public static void DeleteShaderpack(ShaderpackObj obj)
     {
         obj.Delete();
@@ -1438,7 +1461,7 @@ public static class GameBinding
     /// <summary>
     /// 获取结构文件列表
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static async Task<List<SchematicObj>> GetSchematics(GameSettingObj obj)
     {
@@ -1466,8 +1489,8 @@ public static class GameBinding
     /// <summary>
     /// 添加结构文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="file"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="file">文件列表</param>
     /// <returns></returns>
     public static bool AddSchematic(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
@@ -1487,7 +1510,7 @@ public static class GameBinding
     /// <summary>
     /// 删除结构文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">结构文件</param>
     public static void DeleteSchematic(SchematicObj obj)
     {
         obj.Delete();
@@ -1496,8 +1519,8 @@ public static class GameBinding
     /// <summary>
     /// 设置模组信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="data"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="data">信息</param>
     public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.DataObj? data)
     {
         if (data == null)
@@ -1526,8 +1549,8 @@ public static class GameBinding
     /// <summary>
     /// 设置模组信息
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="data"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="data">信息</param>
     public static void SetModInfo(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
@@ -1554,9 +1577,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 备份世界
+    /// 备份存档
     /// </summary>
-    /// <param name="world"></param>
+    /// <param name="world">存档</param>
     /// <returns></returns>
     public static async Task<bool> BackupWorld(WorldObj world)
     {
@@ -1577,9 +1600,9 @@ public static class GameBinding
     /// <summary>
     /// 还原世界
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="item1"></param>
-    /// <param name="request"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="item1">文件</param>
+    /// <param name="request">UI相关</param>
     /// <returns></returns>
     public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
     {
@@ -1589,83 +1612,24 @@ public static class GameBinding
     /// <summary>
     /// 设置游戏名字
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="data"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="data">名字</param>
     public static void SetGameName(GameSettingObj obj, string data)
     {
         obj.Name = data;
         obj.Save();
 
         WindowManager.MainWindow?.LoadGameItem();
-        if (WindowManager.GameEditWindows.TryGetValue(obj.UUID, out var window))
-        {
-            window.ReloadTitle();
-        }
-        if (WindowManager.GameExportWindows.TryGetValue(obj.UUID, out var window1))
-        {
-            window1.ReloadTitle();
-        }
-        if (WindowManager.GameCloudWindows.TryGetValue(obj.UUID, out var window2))
-        {
-            window2.ReloadTitle();
-        }
-        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var window3))
-        {
-            window3.ReloadTitle();
-        }
-        if (WindowManager.GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
-        {
-            window4.ReloadTitle();
-        }
-        if (WindowManager.GameAddWindows.TryGetValue(obj.UUID, out var window5))
-        {
-            window5.ReloadTitle();
-        }
-        if (WindowManager.ServerPackWindows.TryGetValue(obj.UUID, out var window6))
-        {
-            window6.ReloadTitle();
-        }
-    }
-
-    public static void ReloadIcon(GameSettingObj obj)
-    {
-        if (WindowManager.GameEditWindows.TryGetValue(obj.UUID, out var window))
-        {
-            window.ReloadIcon();
-        }
-        if (WindowManager.GameExportWindows.TryGetValue(obj.UUID, out var window1))
-        {
-            window1.ReloadIcon();
-        }
-        if (WindowManager.GameCloudWindows.TryGetValue(obj.UUID, out var window2))
-        {
-            window2.ReloadIcon();
-        }
-        if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var window3))
-        {
-            window3.ReloadIcon();
-        }
-        if (WindowManager.GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
-        {
-            window4.ReloadIcon();
-        }
-        if (WindowManager.GameAddWindows.TryGetValue(obj.UUID, out var window5))
-        {
-            window5.ReloadIcon();
-        }
-        if (WindowManager.ServerPackWindows.TryGetValue(obj.UUID, out var window6))
-        {
-            window6.ReloadIcon();
-        }
+        WindowManager.ReloadTitle(obj);
     }
 
     /// <summary>
     /// 复制游戏实例
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="data"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="data">实例名字</param>
+    /// <param name="request">UI相关</param>
+    /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<bool> CopyGame(GameSettingObj obj, string data,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
@@ -1691,7 +1655,7 @@ public static class GameBinding
     /// <summary>
     /// 保存服务器包
     /// </summary>
-    /// <param name="obj1"></param>
+    /// <param name="obj1">服务器包</param>
     public static void SaveServerPack(ServerPackObj obj1)
     {
         obj1.Save();
@@ -1700,7 +1664,7 @@ public static class GameBinding
     /// <summary>
     /// 获取服务器包
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static ServerPackObj? GetServerPack(GameSettingObj obj)
     {
@@ -1710,9 +1674,9 @@ public static class GameBinding
     /// <summary>
     /// 生成服务器包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="local"></param>
-    /// <param name="request"></param>
+    /// <param name="obj">服务器包</param>
+    /// <param name="local">生成路径</param>
+    /// <param name="request">UI相关</param>
     /// <returns></returns>
     public static Task<bool> GenServerPack(ServerPackObj obj, string local,
         ColorMCCore.Request request)
@@ -1727,16 +1691,17 @@ public static class GameBinding
     /// <summary>
     /// 复制服务器地址到剪贴板
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="top">窗口</param>
+    /// <param name="obj">服务器信息</param>
     public static async void CopyServer(TopLevel top, ServerInfoObj obj)
     {
-        await BaseBinding.CopyTextClipboard(top, $"{obj.Name}\n{obj.IP}");
+        await BaseBinding.CopyTextClipboard(top, obj.IP);
     }
 
     /// <summary>
     /// 模组检测
     /// </summary>
-    /// <param name="list"></param>
+    /// <param name="list">检测列表</param>
     /// <returns></returns>
     public static Task<bool> ModCheck(List<ModDisplayModel> list)
     {
@@ -1865,7 +1830,7 @@ public static class GameBinding
     /// <summary>
     /// 获取日志文件列表
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static List<string> GetLogList(GameSettingObj obj)
     {
@@ -1875,8 +1840,8 @@ public static class GameBinding
     /// <summary>
     /// 读取日志文件
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="name"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="name">文件名</param>
     /// <returns></returns>
     public static async Task<string?> ReadLog(GameSettingObj obj, string name)
     {
@@ -1892,10 +1857,10 @@ public static class GameBinding
     /// <summary>
     /// 升级整合包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="fid"></param>
-    /// <param name="update"></param>
-    /// <param name="update2"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="fid">整合包信息</param>
+    /// <param name="update">UI相关</param>
+    /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static Task<bool> ModPackUpgrade(GameSettingObj obj, CurseForgeModObj.DataObj fid,
         ColorMCCore.PackUpdate update,
@@ -1913,10 +1878,10 @@ public static class GameBinding
     /// <summary>
     /// 升级整合包
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="fid"></param>
-    /// <param name="update"></param>
-    /// <param name="update2"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="fid">整合包信息</param>
+    /// <param name="update">UI相关</param>
+    /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static Task<bool> ModPackUpgrade(GameSettingObj obj, ModrinthVersionObj fid,
         ColorMCCore.PackUpdate update,
@@ -1934,8 +1899,8 @@ public static class GameBinding
     /// <summary>
     /// 启用/禁用模组
     /// </summary>
-    /// <param name="item"></param>
-    /// <param name="items"></param>
+    /// <param name="item">模组</param>
+    /// <param name="items">依赖的模组</param>
     /// <returns></returns>
     public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
     {
@@ -1970,7 +1935,7 @@ public static class GameBinding
     /// <summary>
     /// 游戏实例状态发生改变
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     public static void GameStateUpdate(GameSettingObj obj)
     {
         if (WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win1))
@@ -1982,7 +1947,7 @@ public static class GameBinding
     /// <summary>
     /// 拖拽添加文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="data"></param>
     /// <param name="type"></param>
     /// <returns></returns>
@@ -2669,13 +2634,12 @@ public static class GameBinding
     /// <summary>
     /// 游戏进程启动后
     /// </summary>
-    /// <param name="model"></param>
     /// <param name="obj"></param>
     /// <param name="handel"></param>
-    private static void GameHandel(BaseModel model, GameSettingObj obj, DesktopGameHandel handel)
+    private static void GameHandel(GameSettingObj obj, DesktopGameHandel handel)
     {
         var pr = handel.Process;
-        Task.Run(async () =>
+        Task.Run(() =>
         {
             try
             {
@@ -2694,13 +2658,12 @@ public static class GameBinding
 
                 if (pr.HasExited)
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 //启用手柄支持
                 if (GuiConfigUtils.Config.Input.Enable)
                 {
-                    var run = true;
                     var uuid = GuiConfigUtils.Config.Input.NowConfig;
 
                     GameJoystick.Start(obj, handel);
@@ -2710,7 +2673,7 @@ public static class GameBinding
 
                 if (string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 var ran = new Random();
@@ -2730,7 +2693,7 @@ public static class GameBinding
                 }
                 if (list.Count == 0)
                 {
-                    return;
+                    return Task.CompletedTask;
                 }
 
                 Thread.Sleep(1000);
@@ -2767,20 +2730,26 @@ public static class GameBinding
             {
 
             }
+
+            return Task.CompletedTask;
         });
     }
 
+    /// <summary>
+    /// 获取存档数据包列表
+    /// </summary>
+    /// <param name="world"></param>
+    /// <returns></returns>
     public static Task<List<DataPackObj>> GetWorldDataPackAsync(WorldObj world)
     {
         return world.GetDataPacksAsync();
     }
 
-    public static void DeleteMod(GameSettingObj obj, ModInfoObj mod)
-    {
-        var file = Path.GetFullPath($"{obj.GetModsPath()}/{mod.File}");
-        PathHelper.Delete(file);
-    }
-
+    /// <summary>
+    /// 导出启动参数
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="model"></param>
     public static async void ExportCmd(GameSettingObj obj, BaseModel model)
     {
         var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
@@ -2880,11 +2849,21 @@ public static class GameBinding
         }
     }
 
+    /// <summary>
+    /// 获取最后崩溃日志
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static string? GetLastCrash(GameSettingObj obj)
     {
         return obj.GetLastCrash();
     }
 
+    /// <summary>
+    /// 启用云同步
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task<MessageRes> StartCloud(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
@@ -2917,6 +2896,11 @@ public static class GameBinding
         };
     }
 
+    /// <summary>
+    /// 关闭云同步
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static async Task<MessageRes> StopCloud(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
@@ -2955,7 +2939,7 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 上传配置
+    /// 上传云同步配置
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="files">选中的配置</param>
@@ -3018,10 +3002,10 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 下载配置压缩包
+    /// 下载云同步配置压缩包
     /// </summary>
     /// <param name="game">游戏实例</param>
-    /// <param name="local">压缩包位置</param>
+    /// <param name="model">UI相关</param>
     /// <returns></returns>
     public static async Task<MessageRes> DownloadConfig(GameSettingObj game, ProcessUpdateArg model)
     {
@@ -3065,6 +3049,11 @@ public static class GameBinding
         return new() { State = true };
     }
 
+    /// <summary>
+    /// 是否有云同步
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
     public static async Task<CloudRes> HaveCloud(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
@@ -3078,6 +3067,11 @@ public static class GameBinding
         return await ColorMCCloudAPI.HaveCloud(obj);
     }
 
+    /// <summary>
+    /// 获取云同步存档列表
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns></returns>
     public static async Task<CloudWorldRes> GetCloudWorldListAsync(GameSettingObj game)
     {
         if (!ColorMCCloudAPI.Connect)
@@ -3205,8 +3199,8 @@ public static class GameBinding
     /// <summary>
     /// 下载存档
     /// </summary>
-    /// <param name="game"></param>
-    /// <param name="world"></param>
+    /// <param name="game">游戏实例</param>
+    /// <param name="world">云存档</param>
     /// <param name="model"></param>
     /// <returns></returns>
     public static async Task<MessageRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)

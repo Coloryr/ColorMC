@@ -1,19 +1,13 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Silk.NET.SDL;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -48,6 +42,9 @@ public partial class MainModel
     [ObservableProperty]
     private bool _haveGame;
 
+    /// <summary>
+    /// 是否为简易模式
+    /// </summary>
     public bool IsSimple { get; private set; }
 
     partial void OnMaxWindowChanged(bool value)
@@ -109,6 +106,9 @@ public partial class MainModel
         obj.Save();
     }
 
+    /// <summary>
+    /// 启动选中的游戏实例
+    /// </summary>
     [RelayCommand]
     public void Launch()
     {
@@ -119,7 +119,9 @@ public partial class MainModel
 
         Game.Launch();
     }
-
+    /// <summary>
+    /// 编辑游戏实例
+    /// </summary>
     [RelayCommand]
     public void EditGame()
     {
@@ -131,6 +133,9 @@ public partial class MainModel
         WindowManager.ShowGameEdit(Game.Obj);
     }
 
+    /// <summary>
+    /// 加载游戏实例
+    /// </summary>
     private void LoadSimple()
     {
         GameName = Game?.Name ?? App.Lang("MainWindow.Info44");
@@ -150,7 +155,9 @@ public partial class MainModel
         GameWidth = Game.Obj.Window?.Width ?? conf.Window.Width;
         GameHeight = Game.Obj.Window?.Height ?? conf.Window.Height;
     }
-
+    /// <summary>
+    /// 加载游戏实例
+    /// </summary>
     public void LoadSimpleGames()
     {
         var temp = Game;

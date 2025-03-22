@@ -1,12 +1,12 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.UIBinding;
 
 public static class LanguageBinding
 {
+    //获取一些文本
     public static string[] GetDisplayList()
     {
         return

@@ -1,4 +1,9 @@
-﻿using Avalonia.Media.Imaging;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -11,11 +16,6 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Threading;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -97,6 +97,10 @@ public partial class MainModel
     /// </summary>
     public bool IsMut { get; private set; }
 
+    /// <summary>
+    /// 实例搜索
+    /// </summary>
+    /// <param name="value"></param>
     partial void OnGameSearchTextChanged(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -114,7 +118,11 @@ public partial class MainModel
             }
         }
     }
-
+    /// <summary>
+    /// 游戏实例切换
+    /// </summary>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
     partial void OnGameChanged(GameItemModel? oldValue, GameItemModel? newValue)
     {
         oldValue?.Unselect();

@@ -1,23 +1,28 @@
+using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Windows;
-using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Controls;
 
 /// <summary>
-/// 基础窗口
+/// 基础页面
 /// </summary>
-public abstract class BaseUserControl : UserControl, ITopWindow
+public abstract class BaseUserControl : UserControl, IBaseControl
 {
     /// <summary>
     /// 实际窗口
     /// </summary>
     public IBaseWindow? Window => WindowManager.FindRoot(VisualRoot);
+
+    /// <summary>
+    /// 标题
+    /// </summary>
+    private string _title;
     /// <summary>
     /// 标题
     /// </summary>
@@ -33,8 +38,6 @@ public abstract class BaseUserControl : UserControl, ITopWindow
             Window?.SetTitle(value);
         }
     }
-
-    private string _title;
 
     /// <summary>
     /// 窗口Id
@@ -69,7 +72,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     /// 窗口状态修改
     /// </summary>
     /// <param name="state"></param>
-    public virtual void WindowStateChange(WindowState state) { }
+    public virtual void ControlStateChange(WindowState state) { }
     /// <summary>
     /// 按钮按下
     /// </summary>
@@ -93,7 +96,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     /// <summary>
     /// 窗口打开
     /// </summary>
-    public void WindowOpened()
+    public void ControlOpened()
     {
         Window?.SetTitle(_title);
         Window?.ReloadIcon();
@@ -121,7 +124,7 @@ public abstract class BaseUserControl : UserControl, ITopWindow
     /// <summary>
     /// 重载图标
     /// </summary>
-    public virtual void ReloadIcon() 
+    public virtual void ReloadIcon()
     {
         Window?.ReloadIcon();
     }

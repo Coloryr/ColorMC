@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -6,12 +8,10 @@ using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Windows;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -23,7 +23,7 @@ public partial class FileItemModel : SelectItemModel
     /// <summary>
     /// œ¬‘ÿ
     /// </summary>
-    public IAddWindow Add { get; set; }
+    public IAddControl Add { get; set; }
 
     /// <summary>
     /// Õº±Í

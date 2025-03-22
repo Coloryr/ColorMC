@@ -1,11 +1,16 @@
+using System.Runtime.InteropServices;
+using System.Text;
 using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Live2DCSharpSDK.OpenGL;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ColorMC.Gui.UI;
 
+/// <summary>
+/// Opengl∂‘Ω””√
+/// </summary>
+/// <param name="con"></param>
+/// <param name="gl"></param>
 public class AvaloniaApi(OpenGlControlBase con, GlInterface gl) : OpenGLApi
 {
     public override bool IsES2 => true;

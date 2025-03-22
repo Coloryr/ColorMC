@@ -1,6 +1,6 @@
-﻿using ColorMC.Core.Objs.Minecraft;
+﻿using System.Collections.Generic;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
-using System.Collections.Generic;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

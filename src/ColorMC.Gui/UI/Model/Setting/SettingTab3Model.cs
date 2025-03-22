@@ -1,4 +1,8 @@
-﻿using ColorMC.Core.Config;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -8,64 +12,128 @@ using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
+/// <summary>
+/// 设置页面
+/// </summary>
 public partial class SettingModel
 {
     public const string NameNetSetting = "NetworkSetting";
 
+    /// <summary>
+    /// 是否在加载中
+    /// </summary>
     private bool _httpLoad = true;
 
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
     public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
+    /// <summary>
+    /// Dns类型列表
+    /// </summary>
     public string[] DnsList { get; init; } = LanguageBinding.GetDns();
-
+    /// <summary>
+    /// Dns列表
+    /// </summary>
     public ObservableCollection<DnsItemModel> Dns { get; init; } = [];
 
+    /// <summary>
+    /// 下载源
+    /// </summary>
     [ObservableProperty]
     private SourceLocal _source;
+    /// <summary>
+    /// 下载线程
+    /// </summary>
     [ObservableProperty]
     private int? _thread = 5;
+    /// <summary>
+    /// Dns类型
+    /// </summary>
     [ObservableProperty]
     private DnsType _dnsType;
-
+    /// <summary>
+    /// 选中的Dns项目
+    /// </summary>
     [ObservableProperty]
     private DnsItemModel _dnsItem;
 
+    /// <summary>
+    /// 代理地址
+    /// </summary>
     [ObservableProperty]
     private string _iP;
+    /// <summary>
+    /// 代理端口
+    /// </summary>
     [ObservableProperty]
     private ushort? _port = 1080;
+    /// <summary>
+    /// 代理用户
+    /// </summary>
     [ObservableProperty]
     private string _user;
+    /// <summary>
+    /// 代理密码
+    /// </summary>
     [ObservableProperty]
     private string _password;
+    /// <summary>
+    /// 云同步密钥
+    /// </summary>
     [ObservableProperty]
     private string _serverKey;
+    /// <summary>
+    /// 云同步信息
+    /// </summary>
     [ObservableProperty]
     private string _serverInfo;
 
+    /// <summary>
+    /// 是否代理登录过程
+    /// </summary>
     [ObservableProperty]
     private bool _loginProxy;
+    /// <summary>
+    /// 是否代理下载过程
+    /// </summary>
     [ObservableProperty]
     private bool _downloadProxy;
+    /// <summary>
+    /// 是否代理游戏
+    /// </summary>
     [ObservableProperty]
     private bool _gameProxy;
+    /// <summary>
+    /// 是否检测下载文件完整性
+    /// </summary>
     [ObservableProperty]
     private bool _checkFile;
+    /// <summary>
+    /// 是否检测启动器更新
+    /// </summary>
     [ObservableProperty]
     private bool _checkUpdate;
+    /// <summary>
+    /// 是否自动更新启动器
+    /// </summary>
     [ObservableProperty]
     private bool _autoDownload;
+    /// <summary>
+    /// 是否启用自定义DNS
+    /// </summary>
     [ObservableProperty]
     private bool _dnsEnable;
+    /// <summary>
+    /// 代理是否启用自定义DNS
+    /// </summary>
     [ObservableProperty]
     private bool _dnsProxy;
 
+    //设置修改
     partial void OnServerKeyChanged(string value)
     {
         if (_httpLoad)
@@ -147,6 +215,10 @@ public partial class SettingModel
         ConfigBinding.SetDownloadSource(value);
     }
 
+    /// <summary>
+    /// 链接云同步服务器
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task GameCloudConnect()
     {
@@ -161,13 +233,18 @@ public partial class SettingModel
             Model.Show(App.Lang("SettingWindow.Tab3.Error1"));
         }
     }
-
+    /// <summary>
+    /// 开始更新
+    /// </summary>
     [RelayCommand]
     public void StartUpdate()
     {
         UpdateUtils.StartUpdate();
     }
-
+    /// <summary>
+    /// 开始检测更新
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task StartCheck()
     {
@@ -192,7 +269,9 @@ public partial class SettingModel
             Model.Show(App.Lang("SettingWindow.Tab3.Info3"));
         }
     }
-
+    /// <summary>
+    /// 设置代理
+    /// </summary>
     [RelayCommand]
     public void SetProxy()
     {
@@ -204,7 +283,10 @@ public partial class SettingModel
 
         ConfigBinding.SetDownloadProxy(IP, Port ?? 1080, User, Password);
     }
-
+    /// <summary>
+    /// 添加DNS项目
+    /// </summary>
+    /// <returns></returns>
     [RelayCommand]
     public async Task AddDnsItem()
     {
@@ -240,8 +322,7 @@ public partial class SettingModel
             Dns.Add(new(url, DnsType.DnsOver));
             ConfigBinding.AddDns(url, DnsType.DnsOver);
         }
-
-        if (model.IsHttps)
+        else if (model.IsHttps)
         {
             if (!url.StartsWith("https://"))
             {
@@ -262,6 +343,10 @@ public partial class SettingModel
         Model.Notify(App.Lang("UserWindow.Info12"));
     }
 
+    /// <summary>
+    /// 删除Dns项目
+    /// </summary>
+    /// <param name="model"></param>
     public void DeleteDns(DnsItemModel model)
     {
         if (BaseBinding.IsDownload)
@@ -274,6 +359,9 @@ public partial class SettingModel
         ConfigBinding.RemoveDns(model.Url, model.Dns);
     }
 
+    /// <summary>
+    /// 测试云同步服务器
+    /// </summary>
     public async void TestGameCloudConnect()
     {
         await GameCloudUtils.StartConnect();
@@ -284,6 +372,9 @@ public partial class SettingModel
         }
     }
 
+    /// <summary>
+    /// 加载联网设置
+    /// </summary>
     public void LoadHttpSetting()
     {
         _httpLoad = true;
@@ -330,6 +421,7 @@ public partial class SettingModel
         _httpLoad = false;
     }
 
+    //配置保存
     private void SetCheckUpdate()
     {
         if (_httpLoad)

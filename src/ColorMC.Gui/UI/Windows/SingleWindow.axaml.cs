@@ -1,11 +1,15 @@
-using Avalonia.Controls;
 using System;
+using Avalonia.Controls;
+using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Windows;
 
+/// <summary>
+/// µ¥´°¿Ú
+/// </summary>
 public partial class SingleWindow : ABaseWindow
 {
-    public override ITopWindow ICon => Win;
+    public override IBaseControl ICon => Win;
 
     public override int DefaultWidth => 760;
     public override int DefaultHeight => 450;

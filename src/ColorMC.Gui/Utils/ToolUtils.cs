@@ -1,10 +1,10 @@
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Utils;
 

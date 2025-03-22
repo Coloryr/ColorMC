@@ -1,11 +1,11 @@
-﻿using Avalonia.Threading;
+﻿using System.Timers;
+using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System.Timers;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -216,6 +216,11 @@ public partial class SettingModel : MenuModel
         LoadUISetting();
     }
 
+    /// <summary>
+    /// 更新系统内存
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Timer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         Dispatcher.UIThread.Post(() =>
