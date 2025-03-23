@@ -33,8 +33,6 @@ internal static class GuiLoad
 
 public static class Program
 {
-    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
-
 #if !DEBUG
 
 #if MIN
@@ -52,14 +50,12 @@ public static class Program
     /// <summary>
     /// 加载路径
     /// </summary>
-    public const string TopVersion = "A35";
+    public const string TopVersion = "A36";
 
     public static readonly string[] BaseSha1 =
     [
         "f37874fcee09ae133c6dfd09c5b7b81683a26f8b",
-        "8302c4ac5d71c7064dc1606924e40c3be1d60f4a",
-        "698960f388d171f4a9683bae54f746af96adfd39",
-        "3a081933a003f6576332b75600593125c59a6710"
+        "8302c4ac5d71c7064dc1606924e40c3be1d60f4a"
     ];
 
     public delegate void IN(string[] args);
@@ -114,7 +110,7 @@ public static class Program
             }
             else
             {
-                _inputDir = AppContext.BaseDirectory;
+                _inputDir = AppContext.BaseDirectory + "colormc\\";
             }
         }
 
@@ -186,9 +182,7 @@ public static class Program
     private static void LoadError(string[] args)
     {
         File.Delete($"{_loadDir}/ColorMC.Gui.dll");
-        File.Delete($"{_loadDir}/ColorMC.Gui.pdb");
         File.Delete($"{_loadDir}/ColorMC.Core.dll");
-        File.Delete($"{_loadDir}/ColorMC.Core.pdb");
 
         GuiLoad.Load();
         GuiLoad.Run(args, true);
@@ -198,9 +192,7 @@ public static class Program
     private static bool NotHaveDll()
     {
         return File.Exists($"{_loadDir}/ColorMC.Core.dll")
-            && File.Exists($"{_loadDir}/ColorMC.Core.pdb")
-            && File.Exists($"{_loadDir}/ColorMC.Gui.dll")
-            && File.Exists($"{_loadDir}/ColorMC.Gui.pdb");
+            && File.Exists($"{_loadDir}/ColorMC.Gui.dll");
     }
 
     private static bool Load()
@@ -215,13 +207,11 @@ public static class Program
             var context = new AssemblyLoadContext("ColorMC", true);
             {
                 using var file = File.OpenRead($"{_loadDir}/ColorMC.Core.dll");
-                using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Core.pdb");
-                context.LoadFromStream(file, file1);
+                context.LoadFromStream(file);
             }
             {
                 using var file = File.OpenRead($"{_loadDir}/ColorMC.Gui.dll");
-                using var file1 = File.OpenRead($"{_loadDir}/ColorMC.Gui.pdb");
-                context.LoadFromStream(file, file1);
+                context.LoadFromStream(file);
             }
 
             var item = context.Assemblies

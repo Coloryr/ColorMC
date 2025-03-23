@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Logging;
 using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
@@ -119,8 +120,7 @@ public static class ColorMCGui
         {
             if (SystemInfo.Os == OsType.Windows)
             {
-                var dir = BaseDir;
-                BaseDir += "colormc\\";
+                var dir = AppContext.BaseDirectory;
                 Directory.CreateDirectory(BaseDir);
                 string[] list = ["download", "frpc", "image", "inputs", "java", "minecraft", "music", "tools", "dll"];
                 foreach (var item in list)
@@ -291,7 +291,7 @@ public static class ColorMCGui
                 DefaultFamilyName = Font,
             })
 #if DEBUG
-            //.LogToTrace(LogEventLevel.Information)
+            .LogToTrace(LogEventLevel.Information)
 #else
             .LogToTrace()
 #endif
