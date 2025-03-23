@@ -114,8 +114,6 @@ public partial class MainModel : TopModel, IMutTop
         UserBinding.UserEdit += LoadUser;
 
         MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
-
-        ShowHello();
     }
 
     /// <summary>
@@ -203,30 +201,6 @@ public partial class MainModel : TopModel, IMutTop
         {
             item.SetMinMode(MinMode);
         }
-    }
-
-    /// <summary>
-    /// 显示欢迎信息
-    /// </summary>
-    public void HelloClick()
-    {
-        _helloClick++;
-        if (_helloClick == 25)
-        {
-            HelloText = "锟斤拷锟斤拷烫烫烫烫烫烫烫烫烫";
-        }
-        else
-        {
-            HelloText = App.Lang("Hello.Text1");
-        }
-    }
-
-    /// <summary>
-    /// 显示欢迎信息
-    /// </summary>
-    private void ShowHello()
-    {
-        HelloText = App.Lang("Hello.Text1");
     }
 
     /// <summary>

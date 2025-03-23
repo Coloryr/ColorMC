@@ -300,6 +300,11 @@ public static class ImageManager
             BackBitmap = await MakeBackImage(file, config.BackEffect,
                 config.BackLimit ? config.BackLimitValue : 100);
         }
+        else
+        {
+            BackBitmap = await MakeBackImage(ThemeManager.NowTheme is PlatformThemeVariant.Light ? "ColorMC.Gui.Resource.Pic.back1.png" : "ColorMC.Gui.Resource.Pic.back2.png", config.BackEffect,
+                config.BackLimit ? config.BackLimitValue : 100);
+        }
 
         OnPicUpdate();
         ThemeManager.Init();

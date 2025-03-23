@@ -166,6 +166,8 @@
     <None Remove="Resource\Pic\3.png" />
     <None Remove="Resource\Pic\4.png" />
     <None Remove="Resource\Pic\5.png" />
+    <None Remove="Resource\Pic\back1.png" />
+    <None Remove="Resource\Pic\back2.png" />
     <None Remove="Resource\Pic\game.png" />
     <None Remove="Resource\Pic\launch.png" />
     <None Remove="Resource\Pic\load.png" />
@@ -307,6 +309,8 @@
     <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <AvaloniaResource Include="Resource\Icon\pause.svg" />
     <AvaloniaResource Include="Resource\Icon\collection.svg" />
+    <EmbeddedResource Include="Resource\Pic\back1.png" />
+    <EmbeddedResource Include="Resource\Pic\back2.png" />
     <EmbeddedResource Include="Resource\Pic\update.png" />
     <EmbeddedResource Include="Resource\Pic\1.png" />
     <EmbeddedResource Include="Resource\Pic\2.png" />

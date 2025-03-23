@@ -497,7 +497,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         ThemeManager.Init();
-        ImageManager.OnPicUpdate();
+        _ = ImageManager.LoadBGImage();
     }
 
     /// <summary>

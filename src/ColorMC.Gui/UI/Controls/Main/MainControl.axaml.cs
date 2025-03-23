@@ -54,13 +54,7 @@ public partial class MainControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         SizeChanged += MainControl_SizeChanged;
-        HelloText.PointerPressed += HelloText_PointerPressed;
         BaseBinding.LoadDone += LoadDone;
-    }
-
-    private void HelloText_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as MainModel)?.HelloClick();
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -404,19 +398,16 @@ public partial class MainControl : BaseUserControl
                     {
                         model.SideDisplay = false;
                     }
-                    ContentOut.Margin = new(0, 0, 20, 0);
                 }
                 else
                 {
                     if (!model.MinMode)
                     {
                         model.SideDisplay = true;
-                        ContentOut.Margin = new(0, 0, 10, 0);
                     }
                     else
                     {
                         model.SideDisplay = false;
-                        ContentOut.Margin = new(0, 0, 20, 0);
                     }
                 }
             }
@@ -427,47 +418,29 @@ public partial class MainControl : BaseUserControl
             {
                 if (model.MinMode)
                 {
-                    TopRight.IsVisible = false;
-
-                    Head.Children.Remove(HeadTop);
-                    ContentTop.Children.Add(HeadTop);
-                    HeadTop.Margin = new(0, 0, 0, 10);
-
-                    TopRight.Child = null;
-                    ContentTop.Children.Add(UserButton);
-                    UserButton.Margin = new(0, 0, 0, 10);
-
-                    Right.Child = null;
-                    ContentTop.Children.Add(RightSide);
-
-                    model.SideDisplay = false;
-                    ContentOut.Margin = new(0, 0, 20, 0);
+                    Scroll.Children.Remove(GameViews);
+                    Stack.Children.Add(GameViews);
+                    Cards.Content = null;
+                    Stack.Children.Insert(0, RightSide);
+                    Side.Children.Remove(UserButton);
+                    Stack.Children.Insert(0, UserButton);
+                    Side.Children.Remove(Buttons);
+                    Stack.Children.Insert(0, Buttons);
+                    Side.IsVisible = false;
+                    Stack.Margin = new(0, 0, 10, 0);
                 }
                 else
                 {
-                    TopRight.IsVisible = true;
-
-                    ContentTop.Children.Remove(HeadTop);
-                    Head.Children.Add(HeadTop);
-                    HeadTop.Margin = new(0, 0, 10, 0);
-
-                    ContentTop.Children.Remove(UserButton);
-                    TopRight.Child = UserButton;
-                    UserButton.Margin = new(0);
-
-                    ContentTop.Children.Remove(RightSide);
-                    Right.Child = RightSide;
-
-                    if (!model.HaveCard)
-                    {
-                        model.SideDisplay = false;
-                        ContentOut.Margin = new(0, 0, 20, 0);
-                    }
-                    else
-                    {
-                        model.SideDisplay = true;
-                        ContentOut.Margin = new(0, 0, 10, 0);
-                    }
+                    Stack.Children.Remove(GameViews);
+                    Scroll.Children.Add(GameViews);
+                    Stack.Children.Remove(RightSide);
+                    Cards.Content = RightSide;
+                    Stack.Children.Remove(UserButton);
+                    Side.Children.Insert(0, UserButton);
+                    Stack.Children.Remove(Buttons);
+                    Side.Children.Insert(0, Buttons);
+                    Side.IsVisible = true;
+                    Stack.Margin = new(0, 0, 0, 0);
                 }
             }
         }

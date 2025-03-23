@@ -528,7 +528,7 @@ public static class ThemeManager
         {
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FF000000"),
-            WindowBG = Brush.Parse("#FFf3f3f3"),
+            WindowBG = Brush.Parse("#65CCCCCC"),
             WindowTranColor = Brush.Parse("#80FFFFFF"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
@@ -553,7 +553,7 @@ public static class ThemeManager
         {
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FFFFFFFF"),
-            WindowBG = Brush.Parse("#FF18181b"),
+            WindowBG = Brush.Parse("#22141417"),
             WindowTranColor = Brush.Parse("#80202020"),
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
             MainGroupBG = Brush.Parse("#FF27272a"),
