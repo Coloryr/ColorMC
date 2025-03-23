@@ -130,7 +130,8 @@ public static class Program
             {
                 Directory.CreateDirectory(_inputDir);
             }
-            File.Create(_inputDir + "temp").Close();
+            File.Create(_inputDir + "test").Close();
+            File.Delete(_inputDir + "test");
         }
         catch
         {
