@@ -1,8 +1,8 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using System.Collections.Concurrent;
 
 namespace ColorMC.Core.Downloader;
 

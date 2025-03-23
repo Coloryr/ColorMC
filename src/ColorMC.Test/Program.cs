@@ -1,5 +1,4 @@
 ﻿using ColorMC.Core;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -63,15 +62,6 @@ internal class Program
             Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
         }
         {
-            using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.pdb");
-            var sha1 = GenSha1(file); ;
-            if (!obj.TryAdd("core.pdb", sha1))
-            {
-                obj["core.pdb"] = sha1;
-            }
-            Console.WriteLine($"ColorMC.Core.pdb:{obj["core.pdb"]}");
-        }
-        {
             using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
             var sha1 = GenSha1(file); ;
             if (!obj.TryAdd("gui.dll", sha1))
@@ -79,15 +69,6 @@ internal class Program
                 obj["gui.dll"] = sha1;
             }
             Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
-        }
-        {
-            using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.pdb");
-            var sha1 = GenSha1(file); ;
-            if (!obj.TryAdd("gui.pdb", sha1))
-            {
-                obj["gui.pdb"] = sha1;
-            }
-            Console.WriteLine($"ColorMC.Gui.pdb:{obj["gui.pdb"]}");
         }
         File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString(Formatting.Indented));
     }

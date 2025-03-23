@@ -1,7 +1,7 @@
+using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using System.Text;
 
 namespace ColorMC.Core.Game;
 

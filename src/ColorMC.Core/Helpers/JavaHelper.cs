@@ -1,7 +1,7 @@
+using System.Diagnostics;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using Microsoft.Win32;
-using System.Diagnostics;
 
 namespace ColorMC.Core.Helpers;
 

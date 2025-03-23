@@ -1,13 +1,13 @@
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using Ae.Dns.Protocol.Enums;
 using Ae.Dns.Protocol.Records;
 using ColorMC.Core.Objs.MinecraftAPI;
 using Newtonsoft.Json;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
-using System.Text;
 
 namespace ColorMC.Core.Net.Motd;
 

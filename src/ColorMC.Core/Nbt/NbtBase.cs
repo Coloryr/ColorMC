@@ -1,7 +1,7 @@
+using System.IO.Compression;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Helpers;
 using K4os.Compression.LZ4.Streams;
-using System.IO.Compression;
 
 namespace ColorMC.Core.Nbt;
 

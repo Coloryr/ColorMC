@@ -143,8 +143,8 @@ public static class ColorMCGui
             }
         }
         catch
-        { 
-            
+        {
+
         }
 
         Console.WriteLine($"RunDir: {BaseDir}");
