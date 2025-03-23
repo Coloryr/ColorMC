@@ -1,8 +1,8 @@
+using System.Reflection;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using System.Reflection;
 
 namespace ColorMC.Core.Helpers;
 

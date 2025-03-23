@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
@@ -7,8 +8,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 
 namespace ColorMC.Core;
 
@@ -16,7 +15,7 @@ public static class ColorMCCore
 {
     public const int VersionNum = 35;
     public const string TopVersion = "A35";
-    public const string DateVersion = "20250316";
+    public const string DateVersion = "20250323";
 
     /// <summary>
     /// 版本号

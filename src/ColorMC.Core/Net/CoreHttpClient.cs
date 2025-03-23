@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http.Headers;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using ColorMC.Core.Config;
@@ -6,8 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net;
-using System.Net.Http.Headers;
 
 namespace ColorMC.Core.Net;
 

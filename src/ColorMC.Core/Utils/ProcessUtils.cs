@@ -1,6 +1,6 @@
-﻿using ColorMC.Core.Objs;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Security.Principal;
+using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Utils;
 

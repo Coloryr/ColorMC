@@ -643,7 +643,7 @@ public static class GameBinding
             GameManager.GameExit(obj);
             return new() { Res = true };
         }
-        
+
         //是否成功启动
         if (res1 is { } pr)
         {

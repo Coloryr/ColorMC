@@ -1,4 +1,5 @@
-﻿using ColorMC.Core.Downloader;
+﻿using System.Text;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -7,7 +8,6 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
-using System.Text;
 
 namespace ColorMC.Core.Helpers;
 

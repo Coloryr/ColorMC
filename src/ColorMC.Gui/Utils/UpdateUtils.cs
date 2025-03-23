@@ -17,17 +17,13 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UpdateUtils
 {
-    public static readonly string[] WebSha1s = ["", "", "", ""];
-    public static readonly string[] Sha1s = ["", "", "", ""];
-    public static readonly string[] LocalPath = ["", "", "", ""];
+    public static readonly string[] WebSha1s = ["", ""];
+    public static readonly string[] Sha1s = ["", ""];
+    public static readonly string[] LocalPath = ["", ""];
 
     public static readonly string[] LaunchFiles =
-    ["av_libglesv2.dll", "ColorMC.Core.pdb", "ColorMC.Gui.pdb",
-    "ColorMC.Launcher.exe", "ColorMC.Launcher.pdb",
-    "libHarfBuzzSharp.dll", "libSkiaSharp.dll",
-    "Live2DCSharpSDK.App.pdb", "Live2DCSharpSDK.Framework.pdb",
-    "Live2DCSharpSDK.OpenGL.pdb", "MinecraftSkinRender.OpenGL.pdb",
-    "MinecraftSkinRender.pdb", "SDL2.dll"];
+    ["av_libglesv2.dll", "ColorMC.Launcher.exe",
+    "libHarfBuzzSharp.dll", "libSkiaSharp.dll", "SDL2.dll"];
 
     /// <summary>
     /// 初始化更新器
@@ -40,9 +36,7 @@ public static class UpdateUtils
         }
 
         LocalPath[0] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Core.dll");
-        LocalPath[1] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Core.pdb");
-        LocalPath[2] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.dll");
-        LocalPath[3] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.pdb");
+        LocalPath[1] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.dll");
 
         for (int a = 0; a < 4; a++)
         {
@@ -118,26 +112,10 @@ public static class UpdateUtils
             },
             new()
             {
-                Name = "ColorMC.Core.pdb",
-                Sha1 = WebSha1s[1],
-                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.pdb",
-                Local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Core.pdb"),
-                Overwrite = true
-            },
-            new()
-            {
                 Name = "ColorMC.Gui.dll",
-                Sha1 = WebSha1s[2],
+                Sha1 = WebSha1s[1],
                 Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.dll",
                 Local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.dll"),
-                Overwrite = true
-            },
-            new()
-            {
-                Name = "ColorMC.Gui.pdb",
-                Sha1 = WebSha1s[3],
-                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.pdb",
-                Local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.pdb"),
                 Overwrite = true
             }
         };
@@ -174,16 +152,12 @@ public static class UpdateUtils
             }
 
             WebSha1s[0] = obj["core.dll"]!.ToString();
-            WebSha1s[1] = obj["core.pdb"]!.ToString();
-            WebSha1s[2] = obj["gui.dll"]!.ToString();
-            WebSha1s[3] = obj["gui.pdb"]!.ToString();
+            WebSha1s[1] = obj["gui.dll"]!.ToString();
 
             Logs.Info($"ColorMC.Core.dll:{Sha1s[0]} Web:{WebSha1s[0]}");
-            Logs.Info($"ColorMC.Core.pdb:{Sha1s[1]} Web:{WebSha1s[1]}");
-            Logs.Info($"ColorMC.Gui.dll:{Sha1s[2]} Web:{WebSha1s[2]}");
-            Logs.Info($"ColorMC.Gui.pdb:{Sha1s[3]} Web:{WebSha1s[3]}");
+            Logs.Info($"ColorMC.Gui.dll:{Sha1s[1]} Web:{WebSha1s[1]}");
 
-            for (int a = 0; a < 4; a++)
+            for (int a = 0; a < 2; a++)
             {
                 if (WebSha1s[a] != Sha1s[a])
                 {

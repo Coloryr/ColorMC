@@ -1,3 +1,5 @@
+using System.Collections.Concurrent;
+using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -5,8 +7,6 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
-using System.Collections.Concurrent;
-using System.Text;
 using Tomlyn;
 using Tomlyn.Model;
 

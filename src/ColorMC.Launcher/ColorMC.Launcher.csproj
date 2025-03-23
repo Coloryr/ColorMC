@@ -8,6 +8,7 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
+		<DebugType>embedded</DebugType>
 		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
 	</PropertyGroup>
 	
