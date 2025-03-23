@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using Silk.NET.Core.Loader;
 using Tmds.DBus.Protocol;
 
 namespace ColorMC.Gui;
@@ -92,6 +94,12 @@ public static class ColorMCGui
     [STAThread]
     public static void Main(string[] args)
     {
+        ((DefaultPathResolver)PathResolver.Default).Resolvers.Add(file =>
+            AppContext.GetData("NATIVE_DLL_SEARCH_DIRECTORIES") is string nativeDllSearchDirectories
+                ? nativeDllSearchDirectories.Split(";").Select(directory => Path.Combine(directory, file))
+                : []
+        );
+
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
         TaskScheduler.UnobservedTaskException += (object? sender, UnobservedTaskExceptionEventArgs e) =>
@@ -105,9 +113,41 @@ public static class ColorMCGui
 
         RunType = RunType.Program;
 
-        Console.WriteLine($"RunDir: {BaseDir}");
-
         SystemInfo.Init();
+
+        try
+        {
+            if (SystemInfo.Os == OsType.Windows)
+            {
+                var dir = BaseDir;
+                BaseDir += "colormc\\";
+                Directory.CreateDirectory(BaseDir);
+                string[] list = ["download", "frpc", "image", "inputs", "java", "minecraft", "music", "tools", "dll"];
+                foreach (var item in list)
+                {
+                    var temp = dir + item;
+                    if (Directory.Exists(temp))
+                    {
+                        Directory.Move(temp, BaseDir + item);
+                    }
+                }
+                list = ["cloud.json", "collect.json", "config.json", "count.dat", "frp.json", "gui.json", "logs.log", "window.json", "maven.json", "star.json"];
+                foreach (var item in list)
+                {
+                    var temp = dir + item;
+                    if (File.Exists(temp))
+                    {
+                        File.Move(temp, BaseDir + item, true);
+                    }
+                }
+            }
+        }
+        catch
+        { 
+            
+        }
+
+        Console.WriteLine($"RunDir: {BaseDir}");
 
         try
         {
