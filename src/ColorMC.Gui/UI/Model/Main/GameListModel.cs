@@ -130,7 +130,7 @@ public partial class MainModel
 
         HaveGame = newValue != null;
 
-        if (IsSimple)
+        if (SimpleMode)
         {
             LoadSimple();
         }
@@ -487,7 +487,7 @@ public partial class MainModel
         }
 
         OnPropertyChanged(SwitchView);
-        if (IsSimple)
+        if (SimpleMode)
         {
             Dispatcher.UIThread.Post(() =>
             {

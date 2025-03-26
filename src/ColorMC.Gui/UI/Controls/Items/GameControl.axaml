@@ -64,36 +64,6 @@
                             IsVisible="{Binding IsLoad}"
                             Source="resm:ColorMC.Gui.Resource.Pic.load.png"
                             Stretch="UniformToFill" />
-                        <Button
-                            Width="31"
-                            Height="31"
-                            Margin="34,0,0,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            BorderThickness="0"
-                            ClipToBounds="False"
-                            Command="{Binding EditGame}"
-                            CornerRadius="20"
-                            IsEnabled="{Binding !OneGame}"
-                            IsVisible="{Binding ButtonShow}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text12}">
-                            <svg:SvgControl Path="/Resource/Icon/edit.svg" />
-                        </Button>
-                        <Button
-                            Width="31"
-                            Height="31"
-                            Margin="0,0,34,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            BorderThickness="0"
-                            ClipToBounds="False"
-                            Command="{Binding Launch}"
-                            CornerRadius="20"
-                            IsEnabled="{Binding !IsLaunching}"
-                            IsVisible="{Binding ButtonShow}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text11}">
-                            <svg:SvgControl Path="/Resource/Icon/launch.svg" />
-                        </Button>
                     </Panel>
                     <TextBlock
                         HorizontalAlignment="Center"

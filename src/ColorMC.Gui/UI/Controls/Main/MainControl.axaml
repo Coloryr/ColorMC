@@ -39,68 +39,132 @@
                     HorizontalAlignment="{Binding L2dPos}"
                     VerticalAlignment="{Binding L2dPos1}" />
                 <DockPanel Margin="10">
+                    <DockPanel Margin="10,0,10,10" DockPanel.Dock="Top">
+                        <Button
+                            Name="User"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding ShowUser}">
+                            <DockPanel Margin="2,0,2,0">
+                                <Panel HorizontalAlignment="Left">
+                                    <Border
+                                        Width="40"
+                                        Height="40"
+                                        VerticalAlignment="Center">
+                                        <Border.Background>
+                                            <ImageBrush Source="{Binding Head}" Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                    <ProgressBar
+                                        Width="38"
+                                        Height="10"
+                                        MinWidth="38"
+                                        CornerRadius="20"
+                                        IsIndeterminate="{Binding IsHeadLoad}"
+                                        IsVisible="{Binding IsHeadLoad}" />
+                                </Panel>
+                                <StackPanel
+                                    Margin="5,0,0,0"
+                                    VerticalAlignment="Center"
+                                    DockPanel.Dock="Left"
+                                    RenderOptions.TextRenderingMode="Antialias">
+                                    <TextBlock
+                                        FontSize="17"
+                                        Foreground="White"
+                                        Text="{Binding UserId, FallbackValue=User Name}"
+                                        TextTrimming="CharacterEllipsis"
+                                        TextWrapping="NoWrap" />
+                                    <TextBlock
+                                        HorizontalAlignment="Left"
+                                        FontSize="12"
+                                        Foreground="White"
+                                        Text="{Binding UserType, FallbackValue=456}" />
+                                </StackPanel>
+                            </DockPanel>
+                        </Button>
+                        <Button
+                            Name="Skin"
+                            Width="30"
+                            Height="30"
+                            Margin="10,0,5,0"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding ShowSkin}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text9}">
+                            <svg:SvgControl Path="/Resource/Icon/skin.svg" Stroke="White" />
+                        </Button>
+                        <Decorator
+                            Width="200"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Right"
+                            DockPanel.Dock="Right">
+                            <StackPanel
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Button
+                                    Height="30"
+                                    Margin="0,0,5,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding OpenCollect}"
+                                    CornerRadius="5"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text133}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <svg:SvgControl Path="/Resource/Icon/collection.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <Button
+                                    Height="30"
+                                    Margin="0,0,5,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding OpenGuide}"
+                                    CornerRadius="5"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text70}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <svg:SvgControl Path="/Resource/Icon/book.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <Button
+                                    Height="30"
+                                    Margin="0,0,5,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding ShowCount}"
+                                    CornerRadius="5"
+                                    IsVisible="{Binding !IsPhone}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text92}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <svg:SvgControl Path="/Resource/Icon/count.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <Button
+                                    Height="30"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding ShowSetting}"
+                                    CornerRadius="5"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text13}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <svg:SvgControl Path="/Resource/Icon/setting.svg" />
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Decorator>
+                        <ToggleSwitch
+                            HorizontalAlignment="Right"
+                            IsChecked="{Binding SimpleMode}"
+                            OffContent="简易模式"
+                            OnContent="简易模式" />
+                    </DockPanel>
                     <StackPanel
                         Name="Side"
                         Width="200"
                         Margin="10,0,10,0"
                         DockPanel.Dock="Right">
-                        <StackPanel
-                            Name="Buttons"
-                            Margin="0,0,0,10"
-                            HorizontalAlignment="Right"
-                            IsVisible="{Binding MenuDisplay}"
-                            Orientation="Horizontal">
-                            <Button
-                                Height="30"
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Top"
-                                Background="Transparent"
-                                Command="{Binding OpenCollect}"
-                                CornerRadius="5"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text133}">
-                                <StackPanel Orientation="Horizontal">
-                                    <svg:SvgControl Path="/Resource/Icon/collection.svg" />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                Height="30"
-                                Margin="0,0,5,0"
-                                VerticalAlignment="Top"
-                                Background="Transparent"
-                                Command="{Binding OpenGuide}"
-                                CornerRadius="5"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text70}">
-                                <StackPanel Orientation="Horizontal">
-                                    <svg:SvgControl Path="/Resource/Icon/book.svg" />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                Height="30"
-                                Margin="0,0,5,0"
-                                Background="Transparent"
-                                Command="{Binding ShowCount}"
-                                CornerRadius="5"
-                                IsVisible="{Binding !IsPhone}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text92}">
-                                <StackPanel Orientation="Horizontal">
-                                    <svg:SvgControl Path="/Resource/Icon/count.svg" />
-                                </StackPanel>
-                            </Button>
-                            <Button
-                                Height="30"
-                                Background="Transparent"
-                                Command="{Binding ShowSetting}"
-                                CornerRadius="5"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text13}">
-                                <StackPanel Orientation="Horizontal">
-                                    <svg:SvgControl Path="/Resource/Icon/setting.svg" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                        <views2:MainUserControl
-                            Name="UserButton"
-                            Margin="0,0,0,10"
-                            IsVisible="{Binding PlayerDisplay}" />
                         <ScrollViewer Name="Cards" IsVisible="{Binding SideDisplay}">
                             <StackPanel Name="RightSide">
                                 <cards:NewsControl Margin="0,0,0,10" IsVisible="{Binding CardNews}" />
@@ -111,7 +175,7 @@
                             </StackPanel>
                         </ScrollViewer>
                     </StackPanel>
-                    <ScrollViewer>
+                    <ScrollViewer Margin="0,0,0,10">
                         <Panel Name="Scroll" Margin="10,0,0,0">
                             <DockPanel Name="GameViews">
                                 <views:ServerMotdControl
@@ -119,7 +183,7 @@
                                     DockPanel.Dock="Top"
                                     IPPort="{Binding Server}"
                                     IsVisible="{Binding MotdDisplay}" />
-                                <Decorator Name="Content1" Margin="0,0,0,10" />
+                                <Decorator Name="Content1" />
                             </DockPanel>
                             <StackPanel Name="Stack" />
                         </Panel>

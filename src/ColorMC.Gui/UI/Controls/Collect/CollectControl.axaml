@@ -93,7 +93,7 @@
                     </ItemsControl>
                     <Border
                         Margin="10,5,10,10"
-                        Classes="t1"
+                        Classes="t2"
                         IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
                             Margin="20,0,20,0"

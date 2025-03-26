@@ -23,7 +23,7 @@
                     <Setter Property="Background" Value="Transparent" />
                 </Style>
             </Panel.Styles>
-            <StackPanel IsVisible="{Binding MinMode}">
+            <StackPanel IsVisible="{Binding MinMode, FallbackValue=true}">
                 <Button
                     Width="200"
                     Margin="10"
@@ -40,23 +40,6 @@
                             HorizontalAlignment="Center"
                             FontSize="20"
                             Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Width="200"
-                    Margin="10"
-                    BorderThickness="0"
-                    Command="{Binding GoDownload}"
-                    CornerRadius="5">
-                    <StackPanel Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="50"
-                            Height="50"
-                            Path="/Resource/Icon/AddMenu/item5.svg" />
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="20"
-                            Text="{setting:Localize AddGameWindow.Tab1.Text20}" />
                     </StackPanel>
                 </Button>
                 <Button
@@ -97,61 +80,142 @@
                             Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
                     </StackPanel>
                 </Button>
-            </StackPanel>
-            <WrapPanel IsVisible="{Binding !MinMode, FallbackValue=true}">
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
+                    Width="200"
+                    Margin="10"
                     BorderThickness="0"
-                    Command="{Binding GoTab}"
-                    CommandParameter=":1"
+                    Command="{Binding GoModPack}"
                     CornerRadius="5">
-                    <StackPanel>
-                        <svg:SvgControl Path="/Resource/Icon/AddMenu/item1.svg" />
-                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                    <StackPanel Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="50"
+                            Height="50"
+                            Path="/Resource/Icon/AddMenu/item4.svg" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            Text="{setting:Localize AddGameWindow.Tab1.Text19}" />
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
+                    Width="200"
+                    Margin="10"
                     BorderThickness="0"
-                    Command="{Binding GoDownload}"
-                    CornerRadius="5">
-                    <StackPanel>
-                        <svg:SvgControl Path="/Resource/Icon/AddMenu/item5.svg" />
-                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text20}" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    BorderThickness="0"
-                    Command="{Binding GoTab}"
-                    CommandParameter=":2"
-                    CornerRadius="5">
-                    <StackPanel>
-                        <svg:SvgControl Path="/Resource/Icon/AddMenu/item2.svg" />
-                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    BorderThickness="0"
-                    Command="{Binding GoTab}"
-                    CommandParameter=":3"
+                    Command="{Binding GoCloud}"
                     CornerRadius="5"
-                    IsVisible="{Binding !IsPhone}">
-                    <StackPanel>
-                        <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item3.svg" />
-                        <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                    IsEnabled="{Binding CloudEnable}">
+                    <StackPanel Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="50"
+                            Height="50"
+                            Path="/Resource/Icon/AddMenu/item6.svg" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            Text="{setting:Localize AddGameWindow.Tab1.Text13}" />
                     </StackPanel>
                 </Button>
-            </WrapPanel>
+                <Button
+                    Width="200"
+                    Margin="10"
+                    BorderThickness="0"
+                    Command="{Binding GoServer}"
+                    CornerRadius="5">
+                    <StackPanel Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="50"
+                            Height="50"
+                            Path="/Resource/Icon/AddMenu/item7.svg" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="20"
+                            Text="{setting:Localize AddGameWindow.Tab1.Text14}" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel IsVisible="{Binding !MinMode, FallbackValue=true}" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoTab}"
+                        CommandParameter=":1"
+                        CornerRadius="5">
+                        <StackPanel>
+                            <svg:SvgControl Path="/Resource/Icon/AddMenu/item1.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text1}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoTab}"
+                        CommandParameter=":2"
+                        CornerRadius="5">
+                        <StackPanel>
+                            <svg:SvgControl Path="/Resource/Icon/AddMenu/item2.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text2}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoTab}"
+                        CommandParameter=":3"
+                        CornerRadius="5"
+                        IsVisible="{Binding !IsPhone}">
+                        <StackPanel>
+                            <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item3.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tabs.Text3}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <StackPanel IsVisible="{Binding !MinMode, FallbackValue=true}" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoModPack}"
+                        CornerRadius="5">
+                        <StackPanel>
+                            <svg:SvgControl Path="/Resource/Icon/AddMenu/item4.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text19}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoCloud}"
+                        CornerRadius="5"
+                        IsEnabled="{Binding CloudEnable}">
+                        <StackPanel>
+                            <svg:SvgControl Path="/Resource/Icon/AddMenu/item6.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text13}" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Width="100"
+                        Height="130"
+                        Margin="20"
+                        BorderThickness="0"
+                        Command="{Binding GoServer}"
+                        CornerRadius="5">
+                        <StackPanel>
+                            <svg:SvgControl Fill="{setting:Theme FontColor}" Path="/Resource/Icon/AddMenu/item7.svg" />
+                            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddGameWindow.Tab1.Text14}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
         </Panel>
 
         <Decorator Name="Content1" />

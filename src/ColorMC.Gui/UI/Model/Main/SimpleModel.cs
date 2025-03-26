@@ -6,6 +6,7 @@ using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -42,10 +43,24 @@ public partial class MainModel
     [ObservableProperty]
     private bool _haveGame;
 
-    /// <summary>
-    /// 是否为简易模式
-    /// </summary>
-    public bool IsSimple { get; private set; }
+    [ObservableProperty]
+    private bool _simpleMode;
+
+    private bool _isload;
+
+    partial void OnSimpleModeChanged(bool value)
+    {
+        if (_isload)
+        {
+            return;
+        }
+
+        var config = GuiConfigUtils.Config;
+        config.Simple = value;
+        GuiConfigUtils.Save();
+
+        LoadGameItem();
+    }
 
     partial void OnMaxWindowChanged(bool value)
     {

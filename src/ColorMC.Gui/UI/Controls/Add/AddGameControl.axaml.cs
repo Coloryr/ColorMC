@@ -20,7 +20,6 @@ public partial class AddGameControl : BaseUserControl
     private AddGameTab1Control _tab1;
     private AddGameTab2Control _tab2;
     private AddGameTab3Control _tab3;
-    private AddGameTab4Control _tab4;
 
     public AddGameControl() : base(nameof(AddGameControl))
     {
@@ -91,10 +90,6 @@ public partial class AddGameControl : BaseUserControl
         else if (e.PropertyName == AddGameModel.NameTab3)
         {
             Content1.Child = _tab3 ??= new();
-        }
-        else if (e.PropertyName == AddGameModel.NameTab4)
-        {
-            Content1.Child = _tab4 ??= new();
         }
         else if (e.PropertyName == AddGameModel.NameBack)
         {

@@ -134,7 +134,7 @@
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"
-                        Classes="t1"
+                        Classes="t2"
                         IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
                             HorizontalAlignment="Center"

@@ -227,8 +227,10 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     public void LoadDone()
     {
+        _isload = true;
+
         var config = GuiConfigUtils.Config;
-        IsSimple = config.Simple;
+        SimpleMode = config.Simple;
         if (config.Live2D?.LowFps == true)
         {
             LowFps = true;
@@ -244,6 +246,8 @@ public partial class MainModel : TopModel, IMutTop
         LoadNews();
         LoadMusic();
         LoadCard();
+
+        _isload = false;
     }
 
     /// <summary>

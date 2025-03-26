@@ -194,7 +194,7 @@ public partial class MainControl : BaseUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.IsSimple)
+        if (model.SimpleMode)
         {
             _simple ??= new();
             Content1.Child = _simple;
@@ -422,10 +422,6 @@ public partial class MainControl : BaseUserControl
                     Stack.Children.Add(GameViews);
                     Cards.Content = null;
                     Stack.Children.Insert(0, RightSide);
-                    Side.Children.Remove(UserButton);
-                    Stack.Children.Insert(0, UserButton);
-                    Side.Children.Remove(Buttons);
-                    Stack.Children.Insert(0, Buttons);
                     Side.IsVisible = false;
                     Stack.Margin = new(0, 0, 10, 0);
                 }
@@ -435,10 +431,6 @@ public partial class MainControl : BaseUserControl
                     Scroll.Children.Add(GameViews);
                     Stack.Children.Remove(RightSide);
                     Cards.Content = RightSide;
-                    Stack.Children.Remove(UserButton);
-                    Side.Children.Insert(0, UserButton);
-                    Stack.Children.Remove(Buttons);
-                    Side.Children.Insert(0, Buttons);
                     Side.IsVisible = true;
                     Stack.Margin = new(0, 0, 0, 0);
                 }
