@@ -1,17 +1,12 @@
-<?xml version="1.0" ?>
-<svg viewBox="-12 -12 56 56" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-        <style>
-            .cls-1 {
-                fill: none;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                stroke-width: 2px;
-            }
-        </style>
-    </defs>
-    <g id="cross">
-        <line class="cls-1" x1="7" x2="25" y1="7" y2="25" />
-        <line class="cls-1" x1="7" x2="25" y1="25" y2="7" />
-    </g>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M26.67,26.67h6.67v6.67h-6.67v-6.67h0ZM66.67,26.67v6.67h6.67v-6.67h-6.67ZM33.33,33.33v6.67h6.67v-6.67h-6.67ZM60,33.33v6.67h6.67v-6.67h-6.67ZM40,40v6.67h6.67v-6.67h-6.67ZM53.33,40v6.67h6.67v-6.67h-6.67ZM46.67,46.67v6.67h6.67v-6.67h-6.67ZM40,53.33v6.67h6.67v-6.67h-6.67ZM53.33,53.33v6.67h6.67v-6.67h-6.67ZM33.33,60v6.67h6.67v-6.67h-6.67ZM60,60v6.67h6.67v-6.67h-6.67ZM26.67,66.67v6.67h6.67v-6.67h-6.67ZM66.67,66.67v6.67h6.67v-6.67h-6.67Z"/>
 </svg>
