@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -15,15 +15,13 @@ namespace ColorMC.Gui.Utils;
 /// <summary>
 /// 启动器更新器
 /// </summary>
-public static class UpdateUtils
+internal static class LauncherUpgrade
 {
     public static readonly string[] WebSha1s = ["", ""];
     public static readonly string[] Sha1s = ["", ""];
     public static readonly string[] LocalPath = ["", ""];
 
-    public static readonly string[] LaunchFiles =
-    ["av_libglesv2.dll", "ColorMC.Launcher.exe",
-    "libHarfBuzzSharp.dll", "libSkiaSharp.dll", "SDL2.dll"];
+    public static readonly string[] LaunchFiles = ["ColorMC.Launcher.exe"];
 
     /// <summary>
     /// 初始化更新器
@@ -187,5 +185,40 @@ public static class UpdateUtils
             return;
         }
         window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
+    }
+
+    /// <summary>
+    /// 启动器升级移动文件
+    /// </summary>
+    public static void GameDirMove()
+    {
+        try
+        {
+            var dir = AppContext.BaseDirectory;
+            Directory.CreateDirectory(ColorMCGui.BaseDir);
+            string[] list = ["download", "frpc", "image", "inputs", "java", "minecraft", "music", "tools", "dll"];
+            foreach (var item in list)
+            {
+                var temp = dir + item;
+                if (Directory.Exists(temp))
+                {
+                    Directory.Move(temp, ColorMCGui.BaseDir + item);
+                }
+            }
+            list = ["cloud.json", "collect.json", "config.json", "count.dat", "frp.json", "gui.json",
+                    "logs.log", "window.json", "maven.json", "star.json", "lock", "ColorMC.CustomGui.dll"];
+            foreach (var item in list)
+            {
+                var temp = dir + item;
+                if (File.Exists(temp))
+                {
+                    File.Move(temp, ColorMCGui.BaseDir + item, true);
+                }
+            }
+        }
+        catch
+        {
+
+        }
     }
 }

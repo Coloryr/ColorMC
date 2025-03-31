@@ -457,7 +457,7 @@ public static class PathBinding
             {
                 new(name)
                 {
-                     Patterns = new List<string>(ext)
+                     Patterns = [.. ext]
                 }
             }
         });

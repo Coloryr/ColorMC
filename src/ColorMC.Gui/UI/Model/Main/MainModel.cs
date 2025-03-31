@@ -106,8 +106,6 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     private bool _isGetNewInfo;
 
-    private int _helloClick;
-
     public MainModel(BaseModel model) : base(model)
     {
         ImageManager.SkinChange += SkinChange;

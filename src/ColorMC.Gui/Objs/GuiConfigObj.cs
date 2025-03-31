@@ -168,7 +168,7 @@ public record ServerCustomSetting
     /// <summary>
     /// 自定义图标
     /// </summary>
-    public string IconFile { get; set; }
+    public string? IconFile { get; set; }
     /// <summary>
     /// 是否使用自定义开始界面
     /// </summary>
@@ -176,7 +176,7 @@ public record ServerCustomSetting
     /// <summary>
     /// 自定义开始界面文件
     /// </summary>
-    public string StartIconFile { get; set; }
+    public string? StartIconFile { get; set; }
     /// <summary>
     /// 自定义开始界面显示类型
     /// </summary>

@@ -817,15 +817,21 @@ public static class BaseBinding
                 {
                     await PutFile(crc, stream, GuiNames.NameCustomUIFile, uiFile);
                 }
-                uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.IconFile);
-                if (File.Exists(uiFile))
+                if (conf2.IconFile != null)
                 {
-                    await PutFile(crc, stream, conf2.IconFile, uiFile);
+                    uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.IconFile);
+                    if (File.Exists(uiFile))
+                    {
+                        await PutFile(crc, stream, conf2.IconFile, uiFile);
+                    }
                 }
-                uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.StartIconFile);
-                if (File.Exists(uiFile))
+                if (conf2.StartIconFile != null)
                 {
-                    await PutFile(crc, stream, conf2.StartIconFile, uiFile);
+                    uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.StartIconFile);
+                    if (File.Exists(uiFile))
+                    {
+                        await PutFile(crc, stream, conf2.StartIconFile, uiFile);
+                    }
                 }
 
                 obj.Add(nameof(BuildPackModel.ServerUi), JObject.FromObject(new ServerUiConfigObj()
@@ -862,21 +868,21 @@ public static class BaseBinding
 
             if (model.PackUpdate)
             {
-                if (File.Exists(UpdateUtils.LocalPath[0]))
+                if (File.Exists(LauncherUpgrade.LocalPath[0]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", LauncherUpgrade.LocalPath[0]);
                 }
-                if (File.Exists(UpdateUtils.LocalPath[1]))
+                if (File.Exists(LauncherUpgrade.LocalPath[1]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", UpdateUtils.LocalPath[1]);
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", LauncherUpgrade.LocalPath[1]);
                 }
-                if (File.Exists(UpdateUtils.LocalPath[2]))
+                if (File.Exists(LauncherUpgrade.LocalPath[2]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", LauncherUpgrade.LocalPath[2]);
                 }
-                if (File.Exists(UpdateUtils.LocalPath[3]))
+                if (File.Exists(LauncherUpgrade.LocalPath[3]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", UpdateUtils.LocalPath[3]);
+                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", LauncherUpgrade.LocalPath[3]);
                 }
             }
 
@@ -913,7 +919,7 @@ public static class BaseBinding
             //打包启动器
             if (model.PackLaunch)
             {
-                foreach (var item in UpdateUtils.LaunchFiles)
+                foreach (var item in LauncherUpgrade.LaunchFiles)
                 {
                     var fileitem = Path.Combine(ColorMCGui.BaseDir,
                     item);

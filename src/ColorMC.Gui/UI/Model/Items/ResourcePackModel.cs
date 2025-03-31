@@ -48,7 +48,7 @@ public partial class ResourcePackModel : SelectItemModel
     {
         _top = top;
         Obj = pack;
-        Pic = Obj.Icon == null ? ImageManager.GameIcon : GetImage();
+        Pic = GetImage();
     }
 
     /// <summary>
@@ -57,6 +57,10 @@ public partial class ResourcePackModel : SelectItemModel
     /// <returns></returns>
     public Bitmap GetImage()
     {
+        if (Obj.Icon == null)
+        { 
+            return ImageManager.GameIcon;
+        }
         using var stream = new MemoryStream(Obj.Icon);
         return new Bitmap(stream);
     }

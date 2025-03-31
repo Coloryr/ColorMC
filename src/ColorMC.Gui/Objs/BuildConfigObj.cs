@@ -63,9 +63,9 @@ public record ServerUiConfigObj
 {
     public bool EnableUI { get; set; }
     public bool CustomIcon { get; set; }
-    public string IconFile { get; set; }
+    public string? IconFile { get; set; }
     public bool CustomStart { get; set; }
-    public string StartIconFile { get; set; }
+    public string? StartIconFile { get; set; }
     public DisplayType DisplayType { get; set; }
     public string? StartText { get; set; }
 }

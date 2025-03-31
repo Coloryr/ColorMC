@@ -239,7 +239,7 @@ public partial class SettingModel
     [RelayCommand]
     public void StartUpdate()
     {
-        UpdateUtils.StartUpdate();
+        LauncherUpgrade.StartUpdate();
     }
     /// <summary>
     /// 开始检测更新
@@ -249,7 +249,7 @@ public partial class SettingModel
     public async Task StartCheck()
     {
         Model.Progress(App.Lang("SettingWindow.Tab3.Info1"));
-        var res = await UpdateUtils.CheckOne();
+        var res = await LauncherUpgrade.CheckOne();
         Model.ProgressClose();
         if (res.Item1 == null)
         {
@@ -261,7 +261,7 @@ public partial class SettingModel
             var res1 = await Model.TextAsync(App.Lang("SettingWindow.Tab3.Info2"), res.Item2!);
             if (res1)
             {
-                UpdateUtils.StartUpdate();
+                LauncherUpgrade.StartUpdate();
             }
         }
         else

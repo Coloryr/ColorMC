@@ -68,7 +68,7 @@ public partial class MainModel
             }
             else
             {
-                UpdateUtils.StartUpdate();
+                LauncherUpgrade.StartUpdate();
             }
         }
 #endif
@@ -82,7 +82,7 @@ public partial class MainModel
 #if DEBUG
         HaveUpdate = false;
 #else
-        var data = await UpdateUtils.Check();
+        var data = await LauncherUpgrade.Check();
         if (!data.Item1)
         {
             return;

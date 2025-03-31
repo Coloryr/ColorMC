@@ -29,6 +29,29 @@ public static class Resourcepacks
             return [];
         }
         var list = new List<ResourcepackObj>();
+
+        var dirs = info.GetDirectories();
+
+        await Parallel.ForEachAsync(dirs, (item, cancel) =>
+        {
+            try
+            {
+                var obj = ReadResourcepack(item, cancel);
+                if (obj != null)
+                {
+                    obj.IsDir = true;
+                    obj.Local = item.FullName;
+                    list.Add(obj);
+                }
+            }
+            catch
+            {
+
+            }
+
+            return ValueTask.CompletedTask;
+        });
+
         var files = info.GetFiles();
 #if false
         await Parallel.ForEachAsync(files, new ParallelOptions()
@@ -121,7 +144,17 @@ public static class Resourcepacks
     /// <param name="obj">材质包</param>
     public static void Delete(this ResourcepackObj obj)
     {
-        PathHelper.Delete(obj.Local);
+        if (obj.IsDir)
+        {
+            _ = PathHelper.DeleteFilesAsync(new DeleteFilesArg()
+            { 
+                Local = obj.Local 
+            });
+        }
+        else
+        {
+            PathHelper.Delete(obj.Local);
+        }
     }
 
     /// <summary>
@@ -147,6 +180,53 @@ public static class Resourcepacks
             return null;
         }
 
+        var obj = ReadObj(obj1);
+        item1 = zFile.GetEntry(Names.NamePackIconFile);
+        if (item1 != null)
+        {
+            using var stream2 = zFile.GetInputStream(item1);
+            using var stream3 = new MemoryStream();
+            await stream2.CopyToAsync(stream3, cancel);
+            obj.Icon = stream3.ToArray();
+        }
+        return obj;
+    }
+
+    /// <summary>
+    /// 获取材质包
+    /// </summary>
+    /// <param name="file">文件流</param>
+    /// <param name="file">取消Token</param>
+    /// <returns>材质包</returns>
+    private static ResourcepackObj? ReadResourcepack(DirectoryInfo dir, CancellationToken cancel)
+    {
+        var file = Path.Combine(dir.FullName, Names.NamePackMetaFile);
+        if (!File.Exists(file))
+        {
+            return null;
+        }
+        var data = PathHelper.ReadText(file);
+        if (data == null)
+        {
+            return null;
+        }
+        var obj1 = JObject.Parse(data);
+        if (obj1 == null)
+        {
+            return null;
+        }
+        var obj = ReadObj(obj1);
+
+        file = Path.Combine(dir.FullName, Names.NamePackIconFile);
+        if (File.Exists(file))
+        {
+            obj.Icon = PathHelper.ReadByte(file);
+        }
+        return obj;
+    }
+
+    private static ResourcepackObj ReadObj(JObject obj1)
+    {
         var obj = new ResourcepackObj();
         if (obj1.ContainsKey("pack"))
         {
@@ -168,14 +248,7 @@ public static class Resourcepacks
                 }
             }
         }
-        item1 = zFile.GetEntry(Names.NamePackIconFile);
-        if (item1 != null)
-        {
-            using var stream2 = zFile.GetInputStream(item1);
-            using var stream3 = new MemoryStream();
-            await stream2.CopyToAsync(stream3, cancel);
-            obj.Icon = stream3.ToArray();
-        }
+
         return obj;
     }
 }

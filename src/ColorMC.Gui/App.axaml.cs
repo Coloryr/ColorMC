@@ -127,7 +127,7 @@ public partial class App : Application
         ToolUtils.Init();
         SdlUtils.Init();
         Media.Init();
-        UpdateUtils.Init();
+        LauncherUpgrade.Init();
 #endif
         GameCloudUtils.Init();
 

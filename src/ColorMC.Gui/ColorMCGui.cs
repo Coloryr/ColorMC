@@ -116,35 +116,9 @@ public static class ColorMCGui
 
         SystemInfo.Init();
 
-        try
+        if (SystemInfo.Os == OsType.Windows)
         {
-            if (SystemInfo.Os == OsType.Windows)
-            {
-                var dir = AppContext.BaseDirectory;
-                Directory.CreateDirectory(BaseDir);
-                string[] list = ["download", "frpc", "image", "inputs", "java", "minecraft", "music", "tools", "dll"];
-                foreach (var item in list)
-                {
-                    var temp = dir + item;
-                    if (Directory.Exists(temp))
-                    {
-                        Directory.Move(temp, BaseDir + item);
-                    }
-                }
-                list = ["cloud.json", "collect.json", "config.json", "count.dat", "frp.json", "gui.json", "logs.log", "window.json", "maven.json", "star.json"];
-                foreach (var item in list)
-                {
-                    var temp = dir + item;
-                    if (File.Exists(temp))
-                    {
-                        File.Move(temp, BaseDir + item, true);
-                    }
-                }
-            }
-        }
-        catch
-        {
-
+            LauncherUpgrade.GameDirMove();
         }
 
         Console.WriteLine($"RunDir: {BaseDir}");
