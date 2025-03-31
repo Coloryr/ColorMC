@@ -36,7 +36,7 @@ public static class Resourcepacks
         {
             try
             {
-                var obj = ReadResourcepack(item, cancel);
+                var obj = ReadResourcepack(item);
                 if (obj != null)
                 {
                     obj.IsDir = true;
@@ -198,7 +198,7 @@ public static class Resourcepacks
     /// <param name="file">文件流</param>
     /// <param name="file">取消Token</param>
     /// <returns>材质包</returns>
-    private static ResourcepackObj? ReadResourcepack(DirectoryInfo dir, CancellationToken cancel)
+    private static ResourcepackObj? ReadResourcepack(DirectoryInfo dir)
     {
         var file = Path.Combine(dir.FullName, Names.NamePackMetaFile);
         if (!File.Exists(file))
@@ -225,6 +225,11 @@ public static class Resourcepacks
         return obj;
     }
 
+    /// <summary>
+    /// 读取材质包信息
+    /// </summary>
+    /// <param name="obj1">json信息</param>
+    /// <returns></returns>
     private static ResourcepackObj ReadObj(JObject obj1)
     {
         var obj = new ResourcepackObj();
