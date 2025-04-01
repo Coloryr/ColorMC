@@ -1,12 +1,171 @@
-<?xml version="1.0" ?>
-<svg viewBox="-16 -16 288 288" xmlns="http://www.w3.org/2000/svg">
-    <path
-        d="M224,177.3V78.7a8.1,8.1,0,0,0-4.1-7l-88-49.5a7.8,7.8,0,0,0-7.8,0l-88,49.5a8.1,8.1,0,0,0-4.1,7v98.6a8.1,8.1,0,0,0,4.1,7l88,49.5a7.8,7.8,0,0,0,7.8,0l88-49.5A8.1,8.1,0,0,0,224,177.3Z"
-        fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-    <polyline fill="none" points="177 152.5 177 100.5 80 47" stroke-linecap="round" stroke-linejoin="round"
-        stroke-width="16" />
-    <polyline fill="none" points="222.9 74.6 128.9 128 33.1 74.6" stroke-linecap="round" stroke-linejoin="round"
-        stroke-width="16" />
-    <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" x1="128.9" x2="128" y1="128"
-        y2="234.8" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #955bea;
+        stroke: #955bea;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        fill-rule: evenodd;
+      }
+
+      .cls-2 {
+        fill: #b37df7;
+        stroke: #b37df7;
+      }
+
+      .cls-10, .cls-11 {
+        fill: #fff;
+      }
+
+      .cls-12, .cls-11 {
+        opacity: .3;
+      }
+
+      .cls-3 {
+        fill: #a667f3;
+        stroke: #a667f3;
+      }
+
+      .cls-13, .cls-14, .cls-15 {
+        fill: none;
+      }
+
+      .cls-4 {
+        fill: #ac66f2;
+        stroke: #ac66f2;
+      }
+
+      .cls-16 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-5 {
+        fill: #8b38f2;
+        stroke: #8b38f2;
+      }
+
+      .cls-6 {
+        fill: #975ae8;
+        stroke: #975ae8;
+      }
+
+      .cls-14, .cls-15 {
+        clip-rule: evenodd;
+      }
+
+      .cls-7 {
+        fill: #a264f2;
+        stroke: #a264f2;
+      }
+
+      .cls-8 {
+        fill: #ca9cfd;
+        stroke: #ca9cfd;
+      }
+
+      .cls-17 {
+        clip-path: url(#clippath-2);
+      }
+
+      .cls-9 {
+        fill: #a563f1;
+        stroke: #a563f1;
+      }
+
+      .cls-15 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <polygon class="cls-14" points="166.5 310.3 356.54 310.3 356.54 97.79 166.5 97.79 166.5 310.3 166.5 310.3"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <polygon class="cls-15" points="166.5 97.79 356.54 97.79 356.54 310.3 166.5 310.3 166.5 97.79 166.5 97.79"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <polygon class="cls-13" points="166.5 310.3 356.54 310.3 356.54 97.79 166.5 97.79 166.5 310.3 166.5 310.3"/>
+    </clipPath>
+  </defs>
+  <g id="item4">
+    <g>
+      <polygon class="cls-6" points="0 0 64 0 64 64 0 64 0 0 0 0"/>
+      <polygon class="cls-9" points="64 0 128 0 128 64 64 64 64 0 64 0"/>
+      <polygon class="cls-9" points="128 0 192 0 192 64 128 64 128 0 128 0"/>
+      <polygon class="cls-3" points="192 0 256 0 256 64 192 64 192 0 192 0"/>
+      <polygon class="cls-3" points="256 0 320 0 320 64 256 64 256 0 256 0"/>
+      <polygon class="cls-6" points="320 0 384 0 384 64 320 64 320 0 320 0"/>
+      <polygon class="cls-6" points="384 0 448 0 448 64 384 64 384 0 384 0"/>
+      <polygon class="cls-8" points="448 0 512 0 512 64 448 64 448 0 448 0"/>
+      <polygon class="cls-3" points="0 64 64 64 64 128 0 128 0 64 0 64"/>
+      <polygon class="cls-9" points="64 64 128 64 128 128 64 128 64 64 64 64"/>
+      <polygon class="cls-9" points="128 64 192 64 192 128 128 128 128 64 128 64"/>
+      <polygon class="cls-3" points="192 64 256 64 256 128 192 128 192 64 192 64"/>
+      <polygon class="cls-3" points="256 64 320 64 320 128 256 128 256 64 256 64"/>
+      <polygon class="cls-6" points="320 64 384 64 384 128 320 128 320 64 320 64"/>
+      <polygon class="cls-3" points="384 64 448 64 448 128 384 128 384 64 384 64"/>
+      <polygon class="cls-3" points="448 64 512 64 512 128 448 128 448 64 448 64"/>
+      <polygon class="cls-3" points="0 128 64 128 64 192 0 192 0 128 0 128"/>
+      <polygon class="cls-9" points="64 128 128 128 128 192 64 192 64 128 64 128"/>
+      <polygon class="cls-9" points="128 128 192 128 192 192 128 192 128 128 128 128"/>
+      <polygon class="cls-3" points="192 128 256 128 256 192 192 192 192 128 192 128"/>
+      <polygon class="cls-3" points="256 128 320 128 320 192 256 192 256 128 256 128"/>
+      <polygon class="cls-3" points="320 128 384 128 384 192 320 192 320 128 320 128"/>
+      <polygon class="cls-6" points="384 128 448 128 448 192 384 192 384 128 384 128"/>
+      <polygon class="cls-6" points="448 128 512 128 512 192 448 192 448 128 448 128"/>
+      <polygon class="cls-5" points="0 192 64 192 64 256 0 256 0 192 0 192"/>
+      <polygon class="cls-3" points="64 192 128 192 128 256 64 256 64 192 64 192"/>
+      <polygon class="cls-3" points="128 192 192 192 192 256 128 256 128 192 128 192"/>
+      <polygon class="cls-3" points="192 192 256 192 256 256 192 256 192 192 192 192"/>
+      <polygon class="cls-3" points="256 192 320 192 320 256 256 256 256 192 256 192"/>
+      <polygon class="cls-3" points="320 192 384 192 384 256 320 256 320 192 320 192"/>
+      <polygon class="cls-3" points="384 192 448 192 448 256 384 256 384 192 384 192"/>
+      <polygon class="cls-3" points="448 192 512 192 512 256 448 256 448 192 448 192"/>
+      <polygon class="cls-5" points="0 256 64 256 64 320 0 320 0 256 0 256"/>
+      <polygon class="cls-4" points="64 256 128 256 128 320 64 320 64 256 64 256"/>
+      <polygon class="cls-3" points="128 256 192 256 192 320 128 320 128 256 128 256"/>
+      <polygon class="cls-4" points="192 256 256 256 256 320 192 320 192 256 192 256"/>
+      <polygon class="cls-4" points="256 256 320 256 320 320 256 320 256 256 256 256"/>
+      <polygon class="cls-3" points="320 256 384 256 384 320 320 320 320 256 320 256"/>
+      <polygon class="cls-3" points="384 256 448 256 448 320 384 320 384 256 384 256"/>
+      <polygon class="cls-3" points="448 256 512 256 512 320 448 320 448 256 448 256"/>
+      <polygon class="cls-4" points="0 320 64 320 64 384 0 384 0 320 0 320"/>
+      <polygon class="cls-4" points="64 320 128 320 128 384 64 384 64 320 64 320"/>
+      <polygon class="cls-3" points="128 320 192 320 192 384 128 384 128 320 128 320"/>
+      <polygon class="cls-3" points="192 320 256 320 256 384 192 384 192 320 192 320"/>
+      <polygon class="cls-4" points="256 320 320 320 320 384 256 384 256 320 256 320"/>
+      <polygon class="cls-4" points="320 320 384 320 384 384 320 384 320 320 320 320"/>
+      <polygon class="cls-3" points="384 320 448 320 448 384 384 384 384 320 384 320"/>
+      <polygon class="cls-5" points="448 320 512 320 512 384 448 384 448 320 448 320"/>
+      <polygon class="cls-3" points="0 384 64 384 64 448 0 448 0 384 0 384"/>
+      <polygon class="cls-3" points="64 384 128 384 128 448 64 448 64 384 64 384"/>
+      <polygon class="cls-2" points="128 384 192 384 192 448 128 448 128 384 128 384"/>
+      <polygon class="cls-4" points="192 384 256 384 256 448 192 448 192 384 192 384"/>
+      <polygon class="cls-3" points="256 384 320 384 320 448 256 448 256 384 256 384"/>
+      <polygon class="cls-3" points="320 384 384 384 384 448 320 448 320 384 320 384"/>
+      <polygon class="cls-3" points="384 384 448 384 448 448 384 448 384 384 384 384"/>
+      <polygon class="cls-3" points="448 384 512 384 512 448 448 448 448 384 448 384"/>
+      <polygon class="cls-7" points="0 448 64 448 64 512 0 512 0 448 0 448"/>
+      <polygon class="cls-2" points="64 448 128 448 128 512 64 512 64 448 64 448"/>
+      <polygon class="cls-2" points="128 448 192 448 192 512 128 512 128 448 128 448"/>
+      <polygon class="cls-7" points="192 448 256 448 256 512 192 512 192 448 192 448"/>
+      <polygon class="cls-7" points="256 448 320 448 320 512 256 512 256 448 256 448"/>
+      <polygon class="cls-1" points="320 448 384 448 384 512 320 512 320 448 320 448"/>
+      <polygon class="cls-7" points="384 448 448 448 448 512 384 512 384 448 384 448"/>
+      <polygon class="cls-1" points="448 448 512 448 512 512 448 512 448 448 448 448"/>
+    </g>
+    <g class="cls-16">
+      <g class="cls-17">
+        <path class="cls-10" d="M259.48,108.78c1.55-.87,3.38-.87,4.94,0l80.62,45.08s.08.04.11.06h.02s.04.04.04.04h.01s.02.02.02.02h.02s.04.04.04.04c1.29.8,2.14,2.04,2.56,3.41.01.03.02.07.03.1.06.22.11.45.15.68h0c.01.09.03.18.04.26h0c.02.14.03.27.04.4v.13c.02.13.02.27.02.41v90.22s0,.06,0,.09v-.09c0,1.52-.49,2.9-1.3,3.98-.12.16-.24.31-.38.45h-.01s-.03.05-.04.06c-.06.07-.13.13-.19.19h-.01c-.07.07-.13.14-.2.19l-.02.02c-.31.27-.64.5-1,.68l-80.49,45c-.71.41-1.48.65-2.28.7h-.02s-.07,0-.07,0h-.03s-.02,0-.04,0h-.02c-.05,0-.11,0-.16,0h.05c-.93,0-1.8-.26-2.57-.71l-80.58-45.05c-1.87-1.05-3.05-3.18-3.05-5.52v-90.22c0-.7.1-1.37.29-1.98.41-1.39,1.27-2.63,2.58-3.43l.05-.03s.09-.05.13-.08l-.11.06c.06-.03.11-.06.17-.1l80.62-45.08ZM186.79,169.41v76.42l69.64,38.94v-76.42l-69.64-38.94h0ZM337.11,169.41l-30.02,16.79c-.14.09-.29.17-.44.25l-39.17,21.9v76.42l69.64-38.94v-76.42h0ZM224.91,141.92l-31.3,17.5,68.34,38.21,30.25-16.91-67.29-38.8h0ZM261.95,121.21l-24.81,13.87,67.29,38.8,25.86-14.46-68.34-38.21h0Z"/>
+      </g>
+    </g>
+  </g>
+  <g id="_图层_7" data-name="图层 7">
+    <rect class="cls-11" width="32" height="512"/>
+    <rect class="cls-11" x="256" y="-224" width="32" height="480" transform="translate(256 288) rotate(-90)"/>
+    <rect class="cls-12" x="224" y="256" width="32" height="480" transform="translate(-256 736) rotate(-90)"/>
+    <rect class="cls-12" x="480" width="32" height="512"/>
+  </g>
 </svg>

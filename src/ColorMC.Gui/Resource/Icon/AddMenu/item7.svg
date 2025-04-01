@@ -1,20 +1,185 @@
-<?xml version="1.0" ?>
-<svg viewBox="-5 -5 42 42" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" stroke-linejoin="round" stroke-width="2">
-        <rect height="10" width="30" x="1" y="1" />
-        <polyline points="1 21 1 11 31 11 31 21" />
-        <polyline points="17 31 1 31 1 21 18 21" />
-        <line x1="10" x2="4" y1="6" y2="6" />
-        <line x1="5" x2="23" y1="16" y2="16" />
-        <line x1="25" x2="27" y1="16" y2="16" />
-        <line x1="5" x2="7" y1="26" y2="26" />
-        <line x1="9" x2="11" y1="26" y2="26" />
-        <line x1="13" x2="15" y1="26" y2="26" />
-        <line x1="12" x2="14" y1="6" y2="6" />
-        <line x1="16" x2="18" y1="6" y2="6" />
-        <line x1="20" x2="22" y1="6" y2="6" />
-        <line x1="24" x2="26" y1="6" y2="6" />
-        <polyline points="28 27 24 31 20 27" />
-        <line x1="24" x2="24" y1="31" y2="19" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #f26cc1;
+        stroke: #f26cc1;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
+        fill-rule: evenodd;
+      }
+
+      .cls-10, .cls-11 {
+        fill: #fff;
+      }
+
+      .cls-12, .cls-11 {
+        opacity: .3;
+      }
+
+      .cls-2 {
+        fill: #f281be;
+        stroke: #f281be;
+      }
+
+      .cls-3 {
+        fill: #ea75c7;
+        stroke: #ea75c7;
+      }
+
+      .cls-13, .cls-14, .cls-15 {
+        fill: none;
+      }
+
+      .cls-4 {
+        fill: #f798d5;
+        stroke: #f798d5;
+      }
+
+      .cls-5 {
+        fill: #f382c9;
+        stroke: #f382c9;
+      }
+
+      .cls-6 {
+        fill: #f27fca;
+        stroke: #f27fca;
+      }
+
+      .cls-16 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-7 {
+        fill: #f17ec3;
+        stroke: #f17ec3;
+      }
+
+      .cls-14, .cls-15 {
+        clip-rule: evenodd;
+      }
+
+      .cls-8 {
+        fill: #e874c1;
+        stroke: #e874c1;
+      }
+
+      .cls-9 {
+        fill: #fdb8e1;
+        stroke: #fdb8e1;
+      }
+
+      .cls-17 {
+        clip-path: url(#clippath-2);
+      }
+
+      .cls-15 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <polygon class="cls-14" points="124.52 331 382 331 382 73.52 124.52 73.52 124.52 331 124.52 331"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <polygon class="cls-15" points="124.52 73.52 382 73.52 382 331 124.52 331 124.52 73.52 124.52 73.52"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <polygon class="cls-13" points="124.52 331 382 331 382 73.52 124.52 73.52 124.52 331 124.52 331"/>
+    </clipPath>
+  </defs>
+  <g id="item7">
+    <g>
+      <polygon class="cls-8" points="0 0 64 0 64 64 0 64 0 0 0 0"/>
+      <polygon class="cls-7" points="64 0 128 0 128 64 64 64 64 0 64 0"/>
+      <polygon class="cls-7" points="128 0 192 0 192 64 128 64 128 0 128 0"/>
+      <polygon class="cls-5" points="192 0 256 0 256 64 192 64 192 0 192 0"/>
+      <polygon class="cls-5" points="256 0 320 0 320 64 256 64 256 0 256 0"/>
+      <polygon class="cls-8" points="320 0 384 0 384 64 320 64 320 0 320 0"/>
+      <polygon class="cls-8" points="384 0 448 0 448 64 384 64 384 0 384 0"/>
+      <polygon class="cls-9" points="448 0 512 0 512 64 448 64 448 0 448 0"/>
+      <polygon class="cls-5" points="0 64 64 64 64 128 0 128 0 64 0 64"/>
+      <polygon class="cls-7" points="64 64 128 64 128 128 64 128 64 64 64 64"/>
+      <polygon class="cls-7" points="128 64 192 64 192 128 128 128 128 64 128 64"/>
+      <polygon class="cls-5" points="192 64 256 64 256 128 192 128 192 64 192 64"/>
+      <polygon class="cls-5" points="256 64 320 64 320 128 256 128 256 64 256 64"/>
+      <polygon class="cls-8" points="320 64 384 64 384 128 320 128 320 64 320 64"/>
+      <polygon class="cls-5" points="384 64 448 64 448 128 384 128 384 64 384 64"/>
+      <polygon class="cls-5" points="448 64 512 64 512 128 448 128 448 64 448 64"/>
+      <polygon class="cls-5" points="0 128 64 128 64 192 0 192 0 128 0 128"/>
+      <polygon class="cls-7" points="64 128 128 128 128 192 64 192 64 128 64 128"/>
+      <polygon class="cls-7" points="128 128 192 128 192 192 128 192 128 128 128 128"/>
+      <polygon class="cls-5" points="192 128 256 128 256 192 192 192 192 128 192 128"/>
+      <polygon class="cls-5" points="256 128 320 128 320 192 256 192 256 128 256 128"/>
+      <polygon class="cls-5" points="320 128 384 128 384 192 320 192 320 128 320 128"/>
+      <polygon class="cls-8" points="384 128 448 128 448 192 384 192 384 128 384 128"/>
+      <polygon class="cls-8" points="448 128 512 128 512 192 448 192 448 128 448 128"/>
+      <polygon class="cls-1" points="0 192 64 192 64 256 0 256 0 192 0 192"/>
+      <polygon class="cls-5" points="64 192 128 192 128 256 64 256 64 192 64 192"/>
+      <polygon class="cls-5" points="128 192 192 192 192 256 128 256 128 192 128 192"/>
+      <polygon class="cls-5" points="192 192 256 192 256 256 192 256 192 192 192 192"/>
+      <polygon class="cls-5" points="256 192 320 192 320 256 256 256 256 192 256 192"/>
+      <polygon class="cls-5" points="320 192 384 192 384 256 320 256 320 192 320 192"/>
+      <polygon class="cls-5" points="384 192 448 192 448 256 384 256 384 192 384 192"/>
+      <polygon class="cls-5" points="448 192 512 192 512 256 448 256 448 192 448 192"/>
+      <polygon class="cls-1" points="0 256 64 256 64 320 0 320 0 256 0 256"/>
+      <polygon class="cls-2" points="64 256 128 256 128 320 64 320 64 256 64 256"/>
+      <polygon class="cls-5" points="128 256 192 256 192 320 128 320 128 256 128 256"/>
+      <polygon class="cls-2" points="192 256 256 256 256 320 192 320 192 256 192 256"/>
+      <polygon class="cls-2" points="256 256 320 256 320 320 256 320 256 256 256 256"/>
+      <polygon class="cls-5" points="320 256 384 256 384 320 320 320 320 256 320 256"/>
+      <polygon class="cls-5" points="384 256 448 256 448 320 384 320 384 256 384 256"/>
+      <polygon class="cls-5" points="448 256 512 256 512 320 448 320 448 256 448 256"/>
+      <polygon class="cls-2" points="0 320 64 320 64 384 0 384 0 320 0 320"/>
+      <polygon class="cls-2" points="64 320 128 320 128 384 64 384 64 320 64 320"/>
+      <polygon class="cls-5" points="128 320 192 320 192 384 128 384 128 320 128 320"/>
+      <polygon class="cls-5" points="192 320 256 320 256 384 192 384 192 320 192 320"/>
+      <polygon class="cls-2" points="256 320 320 320 320 384 256 384 256 320 256 320"/>
+      <polygon class="cls-2" points="320 320 384 320 384 384 320 384 320 320 320 320"/>
+      <polygon class="cls-5" points="384 320 448 320 448 384 384 384 384 320 384 320"/>
+      <polygon class="cls-1" points="448 320 512 320 512 384 448 384 448 320 448 320"/>
+      <polygon class="cls-5" points="0 384 64 384 64 448 0 448 0 384 0 384"/>
+      <polygon class="cls-5" points="64 384 128 384 128 448 64 448 64 384 64 384"/>
+      <polygon class="cls-4" points="128 384 192 384 192 448 128 448 128 384 128 384"/>
+      <polygon class="cls-2" points="192 384 256 384 256 448 192 448 192 384 192 384"/>
+      <polygon class="cls-5" points="256 384 320 384 320 448 256 448 256 384 256 384"/>
+      <polygon class="cls-5" points="320 384 384 384 384 448 320 448 320 384 320 384"/>
+      <polygon class="cls-5" points="384 384 448 384 448 448 384 448 384 384 384 384"/>
+      <polygon class="cls-5" points="448 384 512 384 512 448 448 448 448 384 448 384"/>
+      <polygon class="cls-6" points="0 448 64 448 64 512 0 512 0 448 0 448"/>
+      <polygon class="cls-4" points="64 448 128 448 128 512 64 512 64 448 64 448"/>
+      <polygon class="cls-4" points="128 448 192 448 192 512 128 512 128 448 128 448"/>
+      <polygon class="cls-6" points="192 448 256 448 256 512 192 512 192 448 192 448"/>
+      <polygon class="cls-6" points="256 448 320 448 320 512 256 512 256 448 256 448"/>
+      <polygon class="cls-3" points="320 448 384 448 384 512 320 512 320 448 320 448"/>
+      <polygon class="cls-6" points="384 448 448 448 448 512 384 512 384 448 384 448"/>
+      <polygon class="cls-3" points="448 448 512 448 512 512 448 512 448 448 448 448"/>
     </g>
+    <g class="cls-16">
+      <g class="cls-17">
+        <path class="cls-10" d="M345.81,181.18h-179.43c-3.3,0-5.98-2.68-5.98-5.98v-59.81c0-3.31,2.68-5.98,5.98-5.98h179.43c3.3,0,5.98,2.68,5.98,5.98v59.81c0,3.31-2.68,5.98-5.98,5.98ZM172.37,169.22h167.47v-47.85h-167.47v47.85Z"/>
+        <path class="cls-10" d="M351.79,235.01h-11.96v-53.83h-167.47v53.83h-11.96v-59.81c0-3.31,2.68-5.98,5.98-5.98h179.43c3.3,0,5.98,2.68,5.98,5.98v59.81Z"/>
+        <path class="cls-10" d="M262.08,300.8h-95.69c-3.3,0-5.98-2.68-5.98-5.98v-59.81c0-3.31,2.68-5.98,5.98-5.98h101.68v11.97h-95.69v47.85h89.71v11.97Z"/>
+        <rect class="cls-10" x="184.33" y="139.31" width="35.88" height="11.97"/>
+        <rect class="cls-10" x="190.31" y="199.12" width="107.66" height="11.97"/>
+        <rect class="cls-10" x="309.93" y="199.12" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="190.31" y="258.93" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="214.23" y="258.93" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="238.16" y="258.93" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="232.18" y="139.31" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="256.1" y="139.31" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="280.02" y="139.31" width="11.96" height="11.97"/>
+        <rect class="cls-10" x="303.95" y="139.31" width="11.96" height="11.97"/>
+        <path class="cls-10" d="M303.95,300.8c-1.53,0-3.06-.59-4.23-1.76l-23.92-23.92,8.46-8.46,19.69,19.69,19.69-19.69,8.46,8.46-23.92,23.92c-1.17,1.17-2.7,1.76-4.23,1.76Z"/>
+        <rect class="cls-10" x="297.97" y="223.05" width="11.96" height="71.77"/>
+      </g>
+    </g>
+  </g>
+  <g id="_图层_7" data-name="图层 7">
+    <rect class="cls-11" width="32" height="512"/>
+    <rect class="cls-11" x="256" y="-224" width="32" height="480" transform="translate(256 288) rotate(-90)"/>
+    <rect class="cls-12" x="224" y="256" width="32" height="480" transform="translate(-256 736) rotate(-90)"/>
+    <rect class="cls-12" x="480" width="32" height="512"/>
+  </g>
 </svg>
