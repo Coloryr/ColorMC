@@ -9,7 +9,13 @@
                     Width="80"
                     Height="40"
                     Margin="20"
-                    Classes="top"
+                    Classes="t1"
+                    Content="123" />
+
+                <Button
+                    Width="80"
+                    Height="40"
+                    Margin="20"
                     Content="123" />
                 <Button
                     Width="80"
@@ -24,6 +30,7 @@
                     Margin="20"
                     Classes="items"
                     Content="123" />
+
             </StackPanel>
         </Border>
     </Design.PreviewWith>
@@ -34,19 +41,22 @@
         <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="0" />
         <Setter Property="Padding" Value="0" />
 
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(0.95)" />
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Theme ButtonOver}" />
-            <Setter Property="BorderBrush" Value="{setting:Theme ButtonBorder}" />
+            <Setter Property="BorderBrush" Value="#FFFFFF" />
+            <Setter Property="Background" Value="Transparent" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#FFAAAAAA" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#000000" />
         </Style>
         <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FF666666" />
@@ -75,40 +85,6 @@
         </Setter>
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(1)" />
-        </Style>
-    </Style>
-
-    <Style Selector="Button.top">
-        <Setter Property="Template">
-            <ControlTemplate>
-                <Border
-                    x:Name="PART_Border"
-                    Margin="3"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    CornerRadius="{TemplateBinding CornerRadius}">
-                    <ContentPresenter
-                        x:Name="PART_ContentPresenter"
-                        Padding="{TemplateBinding Padding}"
-                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                        Background="{TemplateBinding Background}"
-                        Content="{TemplateBinding Content}"
-                        ContentTemplate="{TemplateBinding ContentTemplate}"
-                        CornerRadius="{TemplateBinding CornerRadius}"
-                        RecognizesAccessKey="True" />
-                </Border>
-            </ControlTemplate>
-        </Setter>
-        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Theme ButtonOver}" />
-        </Style>
-        <Style Selector="^ /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="0 1 2 0 #1A000000" />
-        </Style>
-        <Style Selector="^:pointerover /template/ Border#PART_Border">
-            <Setter Property="BoxShadow" Value="{setting:Style ButtonTopBoxShadow}" />
-            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
     </Style>
 
@@ -173,6 +149,31 @@
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{setting:Theme SelectItemOver}" />
+        </Style>
+    </Style>
+
+    <Style Selector="Button.t1">
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Setter Property="BorderBrush" Value="#555555" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="0" />
+
+        <Style Selector="^:pressed">
+            <Setter Property="RenderTransform" Value="scale(0.95)" />
+        </Style>
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="BorderBrush" Value="#FFFFFF" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#000000" />
         </Style>
     </Style>
 </Styles>

@@ -29,6 +29,7 @@
                     Command="{Binding ChoiseClick}"
                     Content="{Binding HeadChoiseContent}"
                     CornerRadius="0"
+                    Foreground="White"
                     IsEnabled="{Binding ChoiseEnable}"
                     IsVisible="{Binding HeadChoiseDisplay}" />
                 <Button
@@ -40,6 +41,7 @@
                     Command="{Binding Choise1Click}"
                     Content="{Binding HeadChoise1Content}"
                     CornerRadius="0"
+                    Foreground="White"
                     IsEnabled="{Binding Choise1Enable}"
                     IsVisible="{Binding HeadChoise1Display}" />
                 <Button
@@ -51,6 +53,7 @@
                     Command="{Binding BackClick}"
                     Content="{setting:Localize HeadControl.Text1}"
                     CornerRadius="0"
+                    Foreground="White"
                     IsEnabled="{Binding HeadBackEnable}"
                     IsVisible="{Binding HeadBack}" />
             </StackPanel>
@@ -73,12 +76,14 @@
                     Name="TitleShow1"
                     Margin="5,0,5,0"
                     DockPanel.Dock="Right"
+                    Foreground="White"
                     IsHitTestVisible="False"
                     Text="{Binding SubTitle}"
                     TextTrimming="CharacterEllipsis" />
                 <TextBlock
                     Name="TitleShow"
                     Margin="5,0,5,0"
+                    Foreground="White"
                     IsHitTestVisible="False"
                     Text="{Binding Title}"
                     TextTrimming="CharacterEllipsis" />

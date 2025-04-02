@@ -1,171 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #955bea;
-        stroke: #955bea;
-      }
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+	<defs>
+		<style>
+			.cls-1, .cls-2 {
+			fill: #a563f1;
+			}
 
-      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
-        fill-rule: evenodd;
-      }
+			.cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9, .cls-10, .cls-2 {
+			fill-rule: evenodd;
+			}
 
-      .cls-2 {
-        fill: #b37df7;
-        stroke: #b37df7;
-      }
+			.cls-3, .cls-11 {
+			fill: #955bea;
+			}
 
-      .cls-10, .cls-11 {
-        fill: #fff;
-      }
+			.cls-4, .cls-12 {
+			fill: #b37df7;
+			}
 
-      .cls-12, .cls-11 {
-        opacity: .3;
-      }
+			.cls-13, .cls-5 {
+			fill: #a667f3;
+			}
 
-      .cls-3 {
-        fill: #a667f3;
-        stroke: #a667f3;
-      }
+			.cls-14, .cls-15 {
+			opacity: .3;
+			}
 
-      .cls-13, .cls-14, .cls-15 {
-        fill: none;
-      }
+			.cls-6, .cls-16 {
+			fill: #ac66f2;
+			}
 
-      .cls-4 {
-        fill: #ac66f2;
-        stroke: #ac66f2;
-      }
+			.cls-17, .cls-10 {
+			fill: #ca9cfd;
+			}
 
-      .cls-16 {
-        clip-path: url(#clippath-1);
-      }
+			.cls-15 {
+			fill: #fff;
+			}
 
-      .cls-5 {
-        fill: #8b38f2;
-        stroke: #8b38f2;
-      }
+			.cls-7, .cls-18 {
+			fill: #8b38f2;
+			}
 
-      .cls-6 {
-        fill: #975ae8;
-        stroke: #975ae8;
-      }
+			.cls-19, .cls-8 {
+			fill: #975ae8;
+			}
 
-      .cls-14, .cls-15 {
-        clip-rule: evenodd;
-      }
-
-      .cls-7 {
-        fill: #a264f2;
-        stroke: #a264f2;
-      }
-
-      .cls-8 {
-        fill: #ca9cfd;
-        stroke: #ca9cfd;
-      }
-
-      .cls-17 {
-        clip-path: url(#clippath-2);
-      }
-
-      .cls-9 {
-        fill: #a563f1;
-        stroke: #a563f1;
-      }
-
-      .cls-15 {
-        clip-path: url(#clippath);
-      }
-    </style>
-    <clipPath id="clippath">
-      <polygon class="cls-14" points="166.5 310.3 356.54 310.3 356.54 97.79 166.5 97.79 166.5 310.3 166.5 310.3"/>
-    </clipPath>
-    <clipPath id="clippath-1">
-      <polygon class="cls-15" points="166.5 97.79 356.54 97.79 356.54 310.3 166.5 310.3 166.5 97.79 166.5 97.79"/>
-    </clipPath>
-    <clipPath id="clippath-2">
-      <polygon class="cls-13" points="166.5 310.3 356.54 310.3 356.54 97.79 166.5 97.79 166.5 310.3 166.5 310.3"/>
-    </clipPath>
-  </defs>
-  <g id="item4">
-    <g>
-      <polygon class="cls-6" points="0 0 64 0 64 64 0 64 0 0 0 0"/>
-      <polygon class="cls-9" points="64 0 128 0 128 64 64 64 64 0 64 0"/>
-      <polygon class="cls-9" points="128 0 192 0 192 64 128 64 128 0 128 0"/>
-      <polygon class="cls-3" points="192 0 256 0 256 64 192 64 192 0 192 0"/>
-      <polygon class="cls-3" points="256 0 320 0 320 64 256 64 256 0 256 0"/>
-      <polygon class="cls-6" points="320 0 384 0 384 64 320 64 320 0 320 0"/>
-      <polygon class="cls-6" points="384 0 448 0 448 64 384 64 384 0 384 0"/>
-      <polygon class="cls-8" points="448 0 512 0 512 64 448 64 448 0 448 0"/>
-      <polygon class="cls-3" points="0 64 64 64 64 128 0 128 0 64 0 64"/>
-      <polygon class="cls-9" points="64 64 128 64 128 128 64 128 64 64 64 64"/>
-      <polygon class="cls-9" points="128 64 192 64 192 128 128 128 128 64 128 64"/>
-      <polygon class="cls-3" points="192 64 256 64 256 128 192 128 192 64 192 64"/>
-      <polygon class="cls-3" points="256 64 320 64 320 128 256 128 256 64 256 64"/>
-      <polygon class="cls-6" points="320 64 384 64 384 128 320 128 320 64 320 64"/>
-      <polygon class="cls-3" points="384 64 448 64 448 128 384 128 384 64 384 64"/>
-      <polygon class="cls-3" points="448 64 512 64 512 128 448 128 448 64 448 64"/>
-      <polygon class="cls-3" points="0 128 64 128 64 192 0 192 0 128 0 128"/>
-      <polygon class="cls-9" points="64 128 128 128 128 192 64 192 64 128 64 128"/>
-      <polygon class="cls-9" points="128 128 192 128 192 192 128 192 128 128 128 128"/>
-      <polygon class="cls-3" points="192 128 256 128 256 192 192 192 192 128 192 128"/>
-      <polygon class="cls-3" points="256 128 320 128 320 192 256 192 256 128 256 128"/>
-      <polygon class="cls-3" points="320 128 384 128 384 192 320 192 320 128 320 128"/>
-      <polygon class="cls-6" points="384 128 448 128 448 192 384 192 384 128 384 128"/>
-      <polygon class="cls-6" points="448 128 512 128 512 192 448 192 448 128 448 128"/>
-      <polygon class="cls-5" points="0 192 64 192 64 256 0 256 0 192 0 192"/>
-      <polygon class="cls-3" points="64 192 128 192 128 256 64 256 64 192 64 192"/>
-      <polygon class="cls-3" points="128 192 192 192 192 256 128 256 128 192 128 192"/>
-      <polygon class="cls-3" points="192 192 256 192 256 256 192 256 192 192 192 192"/>
-      <polygon class="cls-3" points="256 192 320 192 320 256 256 256 256 192 256 192"/>
-      <polygon class="cls-3" points="320 192 384 192 384 256 320 256 320 192 320 192"/>
-      <polygon class="cls-3" points="384 192 448 192 448 256 384 256 384 192 384 192"/>
-      <polygon class="cls-3" points="448 192 512 192 512 256 448 256 448 192 448 192"/>
-      <polygon class="cls-5" points="0 256 64 256 64 320 0 320 0 256 0 256"/>
-      <polygon class="cls-4" points="64 256 128 256 128 320 64 320 64 256 64 256"/>
-      <polygon class="cls-3" points="128 256 192 256 192 320 128 320 128 256 128 256"/>
-      <polygon class="cls-4" points="192 256 256 256 256 320 192 320 192 256 192 256"/>
-      <polygon class="cls-4" points="256 256 320 256 320 320 256 320 256 256 256 256"/>
-      <polygon class="cls-3" points="320 256 384 256 384 320 320 320 320 256 320 256"/>
-      <polygon class="cls-3" points="384 256 448 256 448 320 384 320 384 256 384 256"/>
-      <polygon class="cls-3" points="448 256 512 256 512 320 448 320 448 256 448 256"/>
-      <polygon class="cls-4" points="0 320 64 320 64 384 0 384 0 320 0 320"/>
-      <polygon class="cls-4" points="64 320 128 320 128 384 64 384 64 320 64 320"/>
-      <polygon class="cls-3" points="128 320 192 320 192 384 128 384 128 320 128 320"/>
-      <polygon class="cls-3" points="192 320 256 320 256 384 192 384 192 320 192 320"/>
-      <polygon class="cls-4" points="256 320 320 320 320 384 256 384 256 320 256 320"/>
-      <polygon class="cls-4" points="320 320 384 320 384 384 320 384 320 320 320 320"/>
-      <polygon class="cls-3" points="384 320 448 320 448 384 384 384 384 320 384 320"/>
-      <polygon class="cls-5" points="448 320 512 320 512 384 448 384 448 320 448 320"/>
-      <polygon class="cls-3" points="0 384 64 384 64 448 0 448 0 384 0 384"/>
-      <polygon class="cls-3" points="64 384 128 384 128 448 64 448 64 384 64 384"/>
-      <polygon class="cls-2" points="128 384 192 384 192 448 128 448 128 384 128 384"/>
-      <polygon class="cls-4" points="192 384 256 384 256 448 192 448 192 384 192 384"/>
-      <polygon class="cls-3" points="256 384 320 384 320 448 256 448 256 384 256 384"/>
-      <polygon class="cls-3" points="320 384 384 384 384 448 320 448 320 384 320 384"/>
-      <polygon class="cls-3" points="384 384 448 384 448 448 384 448 384 384 384 384"/>
-      <polygon class="cls-3" points="448 384 512 384 512 448 448 448 448 384 448 384"/>
-      <polygon class="cls-7" points="0 448 64 448 64 512 0 512 0 448 0 448"/>
-      <polygon class="cls-2" points="64 448 128 448 128 512 64 512 64 448 64 448"/>
-      <polygon class="cls-2" points="128 448 192 448 192 512 128 512 128 448 128 448"/>
-      <polygon class="cls-7" points="192 448 256 448 256 512 192 512 192 448 192 448"/>
-      <polygon class="cls-7" points="256 448 320 448 320 512 256 512 256 448 256 448"/>
-      <polygon class="cls-1" points="320 448 384 448 384 512 320 512 320 448 320 448"/>
-      <polygon class="cls-7" points="384 448 448 448 448 512 384 512 384 448 384 448"/>
-      <polygon class="cls-1" points="448 448 512 448 512 512 448 512 448 448 448 448"/>
-    </g>
-    <g class="cls-16">
-      <g class="cls-17">
-        <path class="cls-10" d="M259.48,108.78c1.55-.87,3.38-.87,4.94,0l80.62,45.08s.08.04.11.06h.02s.04.04.04.04h.01s.02.02.02.02h.02s.04.04.04.04c1.29.8,2.14,2.04,2.56,3.41.01.03.02.07.03.1.06.22.11.45.15.68h0c.01.09.03.18.04.26h0c.02.14.03.27.04.4v.13c.02.13.02.27.02.41v90.22s0,.06,0,.09v-.09c0,1.52-.49,2.9-1.3,3.98-.12.16-.24.31-.38.45h-.01s-.03.05-.04.06c-.06.07-.13.13-.19.19h-.01c-.07.07-.13.14-.2.19l-.02.02c-.31.27-.64.5-1,.68l-80.49,45c-.71.41-1.48.65-2.28.7h-.02s-.07,0-.07,0h-.03s-.02,0-.04,0h-.02c-.05,0-.11,0-.16,0h.05c-.93,0-1.8-.26-2.57-.71l-80.58-45.05c-1.87-1.05-3.05-3.18-3.05-5.52v-90.22c0-.7.1-1.37.29-1.98.41-1.39,1.27-2.63,2.58-3.43l.05-.03s.09-.05.13-.08l-.11.06c.06-.03.11-.06.17-.1l80.62-45.08ZM186.79,169.41v76.42l69.64,38.94v-76.42l-69.64-38.94h0ZM337.11,169.41l-30.02,16.79c-.14.09-.29.17-.44.25l-39.17,21.9v76.42l69.64-38.94v-76.42h0ZM224.91,141.92l-31.3,17.5,68.34,38.21,30.25-16.91-67.29-38.8h0ZM261.95,121.21l-24.81,13.87,67.29,38.8,25.86-14.46-68.34-38.21h0Z"/>
-      </g>
-    </g>
-  </g>
-  <g id="_图层_7" data-name="图层 7">
-    <rect class="cls-11" width="32" height="512"/>
-    <rect class="cls-11" x="256" y="-224" width="32" height="480" transform="translate(256 288) rotate(-90)"/>
-    <rect class="cls-12" x="224" y="256" width="32" height="480" transform="translate(-256 736) rotate(-90)"/>
-    <rect class="cls-12" x="480" width="32" height="512"/>
-  </g>
+			.cls-9, .cls-20 {
+			fill: #a264f2;
+			}
+		</style>
+	</defs>
+	<g id="item4">
+		<g>
+			<g>
+				<polygon class="cls-10" points="448 0 512 0 512 64 448 64 448 0 448 0"/>
+				<path class="cls-17" d="M513.5,65.5h-67V-1.5h67v67ZM449.5,62.5h61V1.5h-61v61Z"/>
+			</g>
+			<g>
+				<path class="cls-2" d="M64,0h64v64h-64V0h0ZM128,0v64h64V0h-64ZM64,64v64h64v-64h-64ZM128,64v64h64v-64h-64ZM64,128v64h64v-64h-64ZM128,128v64h64v-64h-64Z"/>
+				<path class="cls-1" d="M193.5,193.5H62.5V-1.5h131v195ZM129.5,190.5h61v-61h-61v61ZM65.5,190.5h61v-61h-61v61ZM129.5,126.5h61v-61h-61v61ZM65.5,126.5h61v-61h-61v61ZM129.5,62.5h61V1.5h-61v61ZM65.5,62.5h61V1.5h-61v61Z"/>
+			</g>
+			<g>
+				<path class="cls-8" d="M0,0h64v64H0V0h0ZM320,0v64h64V0h-64ZM384,0v64h64V0h-64ZM320,64v64h64v-64h-64ZM384,128v64h64v-64h-64ZM448,128v64h64v-64h-64Z"/>
+				<path class="cls-19" d="M513.5,193.5h-131v-64h-64V-1.5h131v67h-64v61h128v67ZM449.5,190.5h61v-61h-61v61ZM385.5,190.5h61v-61h-61v61ZM321.5,126.5h61v-61h-61v61ZM385.5,62.5h61V1.5h-61v61ZM321.5,62.5h61V1.5h-61v61ZM65.5,65.5H-1.5V-1.5h67v67ZM1.5,62.5h61V1.5H1.5v61Z"/>
+			</g>
+			<g>
+				<path class="cls-7" d="M0,192h64v64H0v-64h0ZM0,256v64h64v-64H0ZM448,320v64h64v-64h-64Z"/>
+				<path class="cls-18" d="M513.5,385.5h-67v-67h67v67ZM449.5,382.5h61v-61h-61v61ZM65.5,321.5H-1.5v-131h67v131ZM1.5,318.5h61v-61H1.5v61ZM1.5,254.5h61v-61H1.5v61Z"/>
+			</g>
+			<g>
+				<path class="cls-6" d="M64,256h64v64h-64v-64h0ZM192,256v64h64v-64h-64ZM256,256v64h64v-64h-64ZM0,320v64h64v-64H0ZM64,320v64h64v-64h-64ZM256,320v64h64v-64h-64ZM320,320v64h64v-64h-64ZM192,384v64h64v-64h-64Z"/>
+				<path class="cls-16" d="M257.5,449.5h-67v-67h64v-61h-64v-67h131v64h64v67h-128v64ZM193.5,446.5h61v-61h-61v61ZM321.5,382.5h61v-61h-61v61ZM257.5,382.5h61v-61h-61v61ZM257.5,318.5h61v-61h-61v61ZM193.5,318.5h61v-61h-61v61ZM129.5,385.5H-1.5v-67H62.5v-64h67v131ZM65.5,382.5h61v-61h-61v61ZM1.5,382.5h61v-61H1.5v61ZM65.5,318.5h61v-61h-61v61Z"/>
+			</g>
+			<g>
+				<path class="cls-5" d="M192,0h64v64h-64V0h0ZM256,0v64h64V0h-64ZM0,64v64h64v-64H0ZM192,64v64h64v-64h-64ZM256,64v64h64v-64h-64ZM384,64v64h64v-64h-64ZM448,64v64h64v-64h-64ZM0,128v64h64v-64H0ZM192,128v64h64v-64h-64ZM256,128v64h64v-64h-64ZM320,128v64h64v-64h-64ZM64,192v64h64v-64h-64ZM128,192v64h64v-64h-64ZM192,192v64h64v-64h-64ZM256,192v64h64v-64h-64ZM320,192v64h64v-64h-64ZM384,192v64h64v-64h-64ZM448,192v64h64v-64h-64ZM128,256v64h64v-64h-64ZM320,256v64h64v-64h-64ZM384,256v64h64v-64h-64ZM448,256v64h64v-64h-64ZM128,320v64h64v-64h-64ZM192,320v64h64v-64h-64ZM384,320v64h64v-64h-64ZM0,384v64h64v-64H0ZM64,384v64h64v-64h-64ZM256,384v64h64v-64h-64ZM320,384v64h64v-64h-64ZM384,384v64h64v-64h-64ZM448,384v64h64v-64h-64Z"/>
+				<path class="cls-13" d="M513.5,449.5H254.5v-64h-125v64H-1.5v-67H126.5v-125H62.5v-64H-1.5V62.5h67v128h125V-1.5h131V126.5h61V62.5h131v67h-128v61h128v131h-64v61h64v67ZM449.5,446.5h61v-61h-61v61ZM385.5,446.5h61v-61h-61v61ZM321.5,446.5h61v-61h-61v61ZM257.5,446.5h61v-61h-61v61ZM65.5,446.5h61v-61h-61v61ZM1.5,446.5h61v-61H1.5v61ZM385.5,382.5h61v-61h-61v61ZM318.5,382.5h64v-61h-64v-64h-125v61h64v64h61ZM193.5,382.5h61v-61h-61v61ZM129.5,382.5h61v-61h-61v61ZM449.5,318.5h61v-61h-61v61ZM385.5,318.5h61v-61h-61v61ZM321.5,318.5h61v-61h-61v61ZM129.5,318.5h61v-61h-61v61ZM449.5,254.5h61v-61h-61v61ZM385.5,254.5h61v-61h-61v61ZM321.5,254.5h61v-61h-61v61ZM257.5,254.5h61v-61h-61v61ZM193.5,254.5h61v-61h-61v61ZM129.5,254.5h61v-61h-61v61ZM65.5,254.5h61v-61h-61v61ZM321.5,190.5h61v-61h-61v61ZM257.5,190.5h61v-61h-61v61ZM193.5,190.5h61v-61h-61v61ZM1.5,190.5h61v-61H1.5v61ZM449.5,126.5h61v-61h-61v61ZM385.5,126.5h61v-61h-61v61ZM257.5,126.5h61v-61h-61v61ZM193.5,126.5h61v-61h-61v61ZM1.5,126.5h61v-61H1.5v61ZM257.5,62.5h61V1.5h-61v61ZM193.5,62.5h61V1.5h-61v61Z"/>
+			</g>
+			<g>
+				<path class="cls-9" d="M0,448h64v64H0v-64h0ZM192,448v64h64v-64h-64ZM256,448v64h64v-64h-64ZM384,448v64h64v-64h-64Z"/>
+				<path class="cls-20" d="M449.5,513.5h-67v-67h67v67ZM385.5,510.5h61v-61h-61v61ZM321.5,513.5h-131v-67h131v67ZM257.5,510.5h61v-61h-61v61ZM193.5,510.5h61v-61h-61v61ZM65.5,513.5H-1.5v-67h67v67ZM1.5,510.5h61v-61H1.5v61Z"/>
+			</g>
+			<g>
+				<path class="cls-3" d="M320,448h64v64h-64v-64h0ZM448,448v64h64v-64h-64Z"/>
+				<path class="cls-11" d="M513.5,513.5h-67v-67h67v67ZM449.5,510.5h61v-61h-61v61ZM385.5,513.5h-67v-67h67v67ZM321.5,510.5h61v-61h-61v61Z"/>
+			</g>
+			<g>
+				<path class="cls-4" d="M128,384h64v64h-64v-64h0ZM64,448v64h64v-64h-64ZM128,448v64h64v-64h-64Z"/>
+				<path class="cls-12" d="M193.5,513.5H62.5v-67h64v-64h67v131ZM129.5,510.5h61v-61h-61v61ZM65.5,510.5h61v-61h-61v61ZM129.5,446.5h61v-61h-61v61Z"/>
+			</g>
+		</g>
+	</g>
+	<g id="Topped">
+		<rect class="cls-15" width="32" height="512"/>
+		<rect class="cls-15" x="256" y="-224" width="32" height="480" transform="translate(256 288) rotate(-90)"/>
+		<rect class="cls-14" x="224" y="256" width="32" height="480" transform="translate(-256 736) rotate(-90)"/>
+		<rect class="cls-14" x="480" width="32" height="512"/>
+	</g>
 </svg>

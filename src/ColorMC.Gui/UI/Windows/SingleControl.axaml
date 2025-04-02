@@ -21,17 +21,19 @@
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
-    <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
-        <Image
-            IsVisible="{Binding BgVisible}"
-            Opacity="{Binding BgOpacity}"
-            Source="{Binding BackImage}"
-            Stretch="UniformToFill" />
-        <DockPanel Background="{setting:Theme WindowBG}">
-            <view:HeadControl
-                Name="Head"
-                DockPanel.Dock="Top"
-                IsVisible="{Binding EnableHead}" />
+
+    <DockPanel Background="{setting:Theme WindowBG}">
+        <view:HeadControl
+            Name="Head"
+            Background="#47494b"
+            DockPanel.Dock="Top"
+            IsVisible="{Binding EnableHead}" />
+        <Panel Background="{setting:Theme WindowTranColor}">
+            <Image
+                IsVisible="{Binding BgVisible}"
+                Opacity="{Binding BgOpacity}"
+                Source="{Binding BackImage}"
+                Stretch="UniformToFill" />
             <dialog:DialogHost
                 Background="{setting:Theme ButtonBG}"
                 DisableOpeningAnimation="True"
@@ -69,6 +71,6 @@
                     </Panel>
                 </Panel>
             </dialog:DialogHost>
-        </DockPanel>
-    </Panel>
+        </Panel>
+    </DockPanel>
 </UserControl>
