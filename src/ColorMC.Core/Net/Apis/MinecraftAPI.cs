@@ -36,12 +36,12 @@ public static class MinecraftAPI
     /// <returns>账户信息</returns>
     public static async Task<MinecraftProfileObj?> GetMinecraftProfileAsync(string accessToken)
     {
-        HttpRequestMessage message = new(HttpMethod.Get, Profile);
+        var message = new HttpRequestMessage(HttpMethod.Get, Profile);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
         var data = await CoreHttpClient.LoginClient.SendAsync(message);
         var data1 = await data.Content.ReadAsStringAsync();
 
-        return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1); ;
+        return JsonConvert.DeserializeObject<MinecraftProfileObj>(data1);
     }
 
     /// <summary>
