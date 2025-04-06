@@ -113,7 +113,7 @@
                                     CornerRadius="5"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                                     <StackPanel Orientation="Horizontal">
-                                        <svg:SvgControl Path="/Resource/Icon/collection.svg" />
+                                        <Svg Path="/Resource/NewIcon/Main/loveGold.svg" />
                                     </StackPanel>
                                 </Button>
                                 <Button
@@ -125,7 +125,7 @@
                                     CornerRadius="5"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                                     <StackPanel Orientation="Horizontal">
-                                        <svg:SvgControl Path="/Resource/Icon/book.svg" />
+                                        <Svg Path="/Resource/NewIcon/Main/handbook.svg" />
                                     </StackPanel>
                                 </Button>
                                 <Button
@@ -138,7 +138,7 @@
                                     IsVisible="{Binding !IsPhone}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                                     <StackPanel Orientation="Horizontal">
-                                        <svg:SvgControl Path="/Resource/Icon/count.svg" />
+                                        <Svg Path="/Resource/NewIcon/Main/clock.svg" />
                                     </StackPanel>
                                 </Button>
                                 <Button
@@ -149,7 +149,7 @@
                                     CornerRadius="5"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                                     <StackPanel Orientation="Horizontal">
-                                        <svg:SvgControl Path="/Resource/Icon/setting.svg" />
+                                        <Svg Path="/Resource/NewIcon/Main/setting.svg" />
                                     </StackPanel>
                                 </Button>
                             </StackPanel>
