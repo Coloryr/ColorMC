@@ -106,6 +106,8 @@ public static class ImageManager
     /// 最大化最小化图标
     /// </summary>
     public static readonly string[] MaxIcon = ["/Resource/Icon/Head/max1.svg", "/Resource/Icon/Head/max.svg"];
+    
+    public static readonly string[] MaxHeadIcon = ["/Resource/NewIcon/TopBar/maxim.svg", "/Resource/NewIcon/TopBar/minus.svg"];
 
     /// <summary>
     /// 运行路径

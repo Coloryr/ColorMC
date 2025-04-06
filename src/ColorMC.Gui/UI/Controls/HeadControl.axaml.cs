@@ -71,6 +71,7 @@ public partial class HeadControl : UserControl
         DataContextChanged += HeadControl_DataContextChanged;
 
         var time = DateTime.Now;
+#if !DEBUG
         //macos风格
         if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
         {
@@ -196,11 +197,12 @@ public partial class HeadControl : UserControl
         //Windows风格
         else
         {
+#endif
             _buttonMin = new Button()
             {
                 Width = 40,
                 Height = 35,
-                Content = new HeadImg() { Path = "/Resource/Icon/Head/min.svg" },
+                Content = new HeadImg() { Path = "/Resource/NewIcon/TopBar/minus.svg" },
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
                 CornerRadius = new CornerRadius(0),
@@ -217,13 +219,13 @@ public partial class HeadControl : UserControl
             };
             var max = new HeadImg();
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
-            MaxObservale.Notify(ImageManager.MaxIcon[0]);
+            MaxObservale.Notify(ImageManager.MaxHeadIcon[0]);
             _buttonMax.Content = max;
             _buttonClose = new Button()
             {
                 Width = 40,
                 Height = 35,
-                Content = new HeadImg() { Path = "/Resource/Icon/Head/close.svg" },
+                Content = new HeadImg() { Path = "/Resource/NewIcon/TopBar/close.svg" },
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
                 CornerRadius = new CornerRadius(0),
@@ -233,7 +235,9 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
+#if !DEBUG
         }
+#endif
 
         _buttonMin.Click += ButtonMin_Click;
         _buttonMax.Click += ButtonMax_Click;
@@ -302,11 +306,11 @@ public partial class HeadControl : UserControl
     {
         if (state == WindowState.Maximized)
         {
-            MaxObservale.Notify(ImageManager.MaxIcon[1]);
+            MaxObservale.Notify(ImageManager.MaxHeadIcon[1]);
         }
         else
         {
-            MaxObservale.Notify(ImageManager.MaxIcon[0]);
+            MaxObservale.Notify(ImageManager.MaxHeadIcon[0]);
         }
     }
 }
