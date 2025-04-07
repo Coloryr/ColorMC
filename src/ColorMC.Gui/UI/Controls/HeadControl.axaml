@@ -6,15 +6,18 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    Height="35"
+    Height="40"
     d:DesignWidth="800"
     x:DataType="model:BaseModel"
-    Background="Transparent"
     mc:Ignorable="d">
     <Panel RenderOptions.TextRenderingMode="Antialias">
-        <Border Name="Border1" Background="Transparent" />
+        <Border
+            Name="Border1"
+            Background="#47494b"
+            BorderBrush="#242426"
+            BorderThickness="0,0,0,2" />
         <Panel Name="Panel1" />
-        <DockPanel Name="Pandl2">
+        <DockPanel Name="Pandl2" Margin="0,0,0,2">
             <StackPanel
                 Name="StackPanel1"
                 DockPanel.Dock="Right"
@@ -22,7 +25,7 @@
                 <Button
                     Name="Choise"
                     Width="80"
-                    Height="35"
+                    Height="38"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
@@ -34,7 +37,7 @@
                     IsVisible="{Binding HeadChoiseDisplay}" />
                 <Button
                     Width="80"
-                    Height="35"
+                    Height="38"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
@@ -46,16 +49,20 @@
                     IsVisible="{Binding HeadChoise1Display}" />
                 <Button
                     Width="80"
-                    Height="35"
+                    Height="38"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"
-                    Content="{setting:Localize HeadControl.Text1}"
                     CornerRadius="0"
                     Foreground="White"
                     IsEnabled="{Binding HeadBackEnable}"
-                    IsVisible="{Binding HeadBack}" />
+                    IsVisible="{Binding HeadBack}">
+                    <StackPanel Orientation="Horizontal">
+                        <Svg Height="25" Path="/Resource/NewIcon/TopBar/back.svg" />
+                        <TextBlock Foreground="#FFFFFF" Text="{setting:Localize HeadControl.Text1}" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
             <Border
                 Name="Icons"
@@ -64,7 +71,8 @@
                 Margin="10,0,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                CornerRadius="5"
+                BorderBrush="#311f13"
+                BorderThickness="2"
                 DockPanel.Dock="Left"
                 IsHitTestVisible="False">
                 <Border.Background>

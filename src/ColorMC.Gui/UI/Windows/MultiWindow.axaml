@@ -35,7 +35,6 @@
     <DockPanel Background="{setting:Theme WindowBG}">
         <view:HeadControl
             Name="HeadControl"
-            Background="#47494b"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
         <Panel Background="{setting:Theme WindowTranColor}">
