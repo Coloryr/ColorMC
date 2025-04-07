@@ -58,7 +58,10 @@
                     Foreground="White"
                     IsEnabled="{Binding HeadBackEnable}"
                     IsVisible="{Binding HeadBack}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal">
                         <Svg Height="25" Path="/Resource/NewIcon/TopBar/back.svg" />
                         <TextBlock Foreground="#FFFFFF" Text="{setting:Localize HeadControl.Text1}" />
                     </StackPanel>
