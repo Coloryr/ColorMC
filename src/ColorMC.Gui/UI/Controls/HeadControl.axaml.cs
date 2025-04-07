@@ -200,9 +200,9 @@ public partial class HeadControl : UserControl
 #endif
             _buttonMin = new Button()
             {
-                Width = 40,
-                Height = 35,
-                Content = new HeadImg() { Path = "/Resource/NewIcon/TopBar/minus.svg" },
+                Width = 38,
+                Height = 38,
+                Content = new HeadImg() { Height = 20, Path = "/Resource/NewIcon/TopBar/minus.svg" },
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
                 CornerRadius = new CornerRadius(0),
@@ -210,22 +210,22 @@ public partial class HeadControl : UserControl
             };
             _buttonMax = new Button()
             {
-                Width = 40,
-                Height = 35,
+                Width = 38,
+                Height = 38,
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
                 CornerRadius = new CornerRadius(0),
                 Background = Brushes.Transparent
             };
-            var max = new HeadImg();
+            var max = new HeadImg() { Height = 20 };
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
             MaxObservale.Notify(ImageManager.MaxHeadIcon[0]);
             _buttonMax.Content = max;
             _buttonClose = new Button()
             {
-                Width = 40,
-                Height = 35,
-                Content = new HeadImg() { Path = "/Resource/NewIcon/TopBar/close.svg" },
+                Width = 38,
+                Height = 38,
+                Content = new HeadImg() { Height = 20, Path = "/Resource/NewIcon/TopBar/close.svg" },
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
                 CornerRadius = new CornerRadius(0),

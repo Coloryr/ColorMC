@@ -107,7 +107,7 @@ public static class ImageManager
     /// </summary>
     public static readonly string[] MaxIcon = ["/Resource/Icon/Head/max1.svg", "/Resource/Icon/Head/max.svg"];
     
-    public static readonly string[] MaxHeadIcon = ["/Resource/NewIcon/TopBar/maxim.svg", "/Resource/NewIcon/TopBar/minus.svg"];
+    public static readonly string[] MaxHeadIcon = ["/Resource/NewIcon/TopBar/maxim.svg", "/Resource/NewIcon/TopBar/restore.svg"];
 
     /// <summary>
     /// 运行路径
@@ -304,8 +304,8 @@ public static class ImageManager
         }
         else
         {
-            BackBitmap = await MakeBackImage(ThemeManager.NowTheme is PlatformThemeVariant.Light ? "ColorMC.Gui.Resource.Pic.back1.png" : "ColorMC.Gui.Resource.Pic.back2.png", config.BackEffect,
-                config.BackLimit ? config.BackLimitValue : 100);
+            //BackBitmap = await MakeBackImage(ThemeManager.NowTheme is PlatformThemeVariant.Light ? "ColorMC.Gui.Resource.Pic.back1.png" : "ColorMC.Gui.Resource.Pic.back2.png", config.BackEffect,
+            //    config.BackLimit ? config.BackLimitValue : 100);
         }
 
         OnPicUpdate();

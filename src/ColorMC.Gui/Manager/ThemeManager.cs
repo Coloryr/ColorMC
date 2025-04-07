@@ -179,16 +179,9 @@ public static class ThemeManager
         {
             if (GuiConfigUtils.Config.WindowTran)
             {
-                return NowThemeColor.WindowTranColor;
+                return new SolidColorBrush(NowThemeColor.WindowTranColor.ToColor(), 0.75);
             }
-            else if (NowTheme == PlatformThemeVariant.Light)
-            {
-                return Brushes.White;
-            }
-            else
-            {
-                return Brushes.Black;
-            }
+            return NowThemeColor.WindowTranColor;
         }
         else if (key == "WindowBase")
         {
@@ -529,7 +522,7 @@ public static class ThemeManager
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FF000000"),
             WindowBG = Brush.Parse("#65CCCCCC"),
-            WindowTranColor = Brush.Parse("#80FFFFFF"),
+            WindowTranColor = Brush.Parse("#d9d9d9"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
@@ -554,7 +547,7 @@ public static class ThemeManager
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FFFFFFFF"),
             WindowBG = Brush.Parse("#22141417"),
-            WindowTranColor = Brush.Parse("#80202020"),
+            WindowTranColor = Brush.Parse("#404040"),
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
             MainGroupBG = Brush.Parse("#FF27272a"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
