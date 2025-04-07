@@ -35,20 +35,20 @@
     </Design.DataContext>
     <Panel>
         <view1:BorderControl />
-        <Panel
+        <DockPanel
             Name="MainView"
             Margin="5"
-            Background="{setting:Theme WindowTranColor}">
-            <Image
-                IsVisible="{Binding BgVisible}"
-                Opacity="{Binding BgOpacity}"
-                Source="{Binding BackImage}"
-                Stretch="UniformToFill" />
-            <DockPanel Background="{setting:Theme WindowBG}">
-                <view:HeadControl
-                    Name="HeadControl"
-                    DockPanel.Dock="Top"
-                    IsVisible="{Binding EnableHead}" />
+            Background="{setting:Theme WindowBG}">
+            <view:HeadControl
+                Name="HeadControl"
+                DockPanel.Dock="Top"
+                IsVisible="{Binding EnableHead}" />
+            <Panel Background="{setting:Theme WindowTranColor}">
+                <Image
+                    IsVisible="{Binding BgVisible}"
+                    Opacity="{Binding BgOpacity}"
+                    Source="{Binding BackImage}"
+                    Stretch="UniformToFill" />
                 <dialog:DialogHost
                     Background="{setting:Theme ButtonBG}"
                     DisableOpeningAnimation="True"
@@ -73,7 +73,7 @@
                     </dialog:DialogHost.DataTemplates>
                     <Decorator Name="MainControl" />
                 </dialog:DialogHost>
-            </DockPanel>
-        </Panel>
+            </Panel>
+        </DockPanel>
     </Panel>
 </Window>

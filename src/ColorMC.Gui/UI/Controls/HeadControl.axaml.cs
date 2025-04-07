@@ -200,7 +200,7 @@ public partial class HeadControl : UserControl
 #endif
             _buttonMin = new Button()
             {
-                Width = 38,
+                Width = 45,
                 Height = 38,
                 Content = new HeadImg() { Height = 20, Path = "/Resource/NewIcon/TopBar/minus.svg" },
                 BorderThickness = new Thickness(0),
@@ -210,7 +210,7 @@ public partial class HeadControl : UserControl
             };
             _buttonMax = new Button()
             {
-                Width = 38,
+                Width = 45,
                 Height = 38,
                 BorderThickness = new Thickness(0),
                 BorderBrush = Brushes.Transparent,
@@ -223,7 +223,7 @@ public partial class HeadControl : UserControl
             _buttonMax.Content = max;
             _buttonClose = new Button()
             {
-                Width = 38,
+                Width = 45,
                 Height = 38,
                 Content = new HeadImg() { Height = 20, Path = "/Resource/NewIcon/TopBar/close.svg" },
                 BorderThickness = new Thickness(0),
