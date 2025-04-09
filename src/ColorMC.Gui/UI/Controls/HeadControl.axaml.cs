@@ -71,7 +71,6 @@ public partial class HeadControl : UserControl
         DataContextChanged += HeadControl_DataContextChanged;
 
         var time = DateTime.Now;
-#if !DEBUG
         //macos风格
         if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
         {
@@ -91,8 +90,6 @@ public partial class HeadControl : UserControl
             };
             _buttonMin.Classes.Add("none");
             var select1 = new ButtonBack(_buttonMin, Brush.Parse("#febb2c"));
-            _buttonMin.PointerEntered += (a, b) => { img1.IsVisible = true; };
-            _buttonMin.PointerExited += (a, b) => { img1.IsVisible = false; };
 
             var max = new HeadImg()
             {
@@ -113,8 +110,6 @@ public partial class HeadControl : UserControl
             };
             _buttonMax.Classes.Add("none");
             var select2 = new ButtonBack(_buttonMax, Brush.Parse("#29c73f"));
-            _buttonMax.PointerEntered += (a, b) => { max.IsVisible = true; };
-            _buttonMax.PointerExited += (a, b) => { max.IsVisible = false; };
 
             var img2 = new HeadImg() { IsVisible = false, Path = "/Resource/Icon/Head/close.svg" };
             _buttonClose = new Button()
@@ -130,8 +125,12 @@ public partial class HeadControl : UserControl
             };
             _buttonClose.Classes.Add("none");
             var select3 = new ButtonBack(_buttonClose, Brush.Parse("#fe5f59"));
-            _buttonClose.PointerEntered += (a, b) => { img2.IsVisible = true; };
-            _buttonClose.PointerExited += (a, b) => { img2.IsVisible = false; };
+            _buttonClose.PointerEntered += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = true; };
+            _buttonClose.PointerExited += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = false; };
+            _buttonMax.PointerEntered += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = true; };
+            _buttonMax.PointerExited += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = false; };
+            _buttonMin.PointerEntered += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = true; };
+            _buttonMin.PointerExited += (a, b) => { img2.IsVisible = max.IsVisible = img1.IsVisible = false; };
 
             var panel3 = new Panel()
             {
@@ -197,7 +196,6 @@ public partial class HeadControl : UserControl
         //Windows风格
         else
         {
-#endif
             _buttonMin = new Button()
             {
                 Width = 45,
@@ -235,9 +233,7 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
-#if !DEBUG
         }
-#endif
 
         _buttonMin.Click += ButtonMin_Click;
         _buttonMax.Click += ButtonMax_Click;
