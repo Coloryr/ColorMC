@@ -130,11 +130,7 @@
                             <TextBlock Margin="0,0,0,5" Text="{setting:Localize GameEditWindow.Tab1.Text15}" />
                             <TextBlock Margin="0,0,0,5" Text="{Binding LoaderInfo}" />
                         </StackPanel>
-                        <Panel>
-                            <ToggleSwitch
-                                IsChecked="{Binding OffLib}"
-                                OffContent="{setting:Localize AddGameWindow.Tab1.Text16}"
-                                OnContent="{setting:Localize AddGameWindow.Tab1.Text16}" />
+                        <DockPanel>
                             <Button
                                 Width="100"
                                 Height="35"
@@ -144,8 +140,20 @@
                                 Classes="top"
                                 Command="{Binding SelectLoader}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text21}"
+                                DockPanel.Dock="Right"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text127}" />
-                        </Panel>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleSwitch
+                                    Margin="0,0,10,0"
+                                    IsChecked="{Binding OffLib}"
+                                    OffContent="{setting:Localize AddGameWindow.Tab1.Text16}"
+                                    OnContent="{setting:Localize AddGameWindow.Tab1.Text16}" />
+                                <ToggleSwitch
+                                    IsChecked="{Binding RemoveLib}"
+                                    OffContent="{setting:Localize AddGameWindow.Tab1.Text23}"
+                                    OnContent="{setting:Localize AddGameWindow.Tab1.Text23}" />
+                            </StackPanel>
+                        </DockPanel>
                     </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl

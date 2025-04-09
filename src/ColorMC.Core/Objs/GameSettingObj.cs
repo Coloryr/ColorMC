@@ -92,6 +92,10 @@ public record CustomLoader
     /// 后加载原版运行库
     /// </summary>
     public bool OffLib { get; set; }
+    /// <summary>
+    /// 删除原版运行库
+    /// </summary>
+    public bool RemoveLib { get; set; }
 }
 
 /// <summary>
