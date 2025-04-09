@@ -1,11 +1,15 @@
 # 更新日志 Changelog
 
-## 计划中 Planning
+## 不在计划中 No plan
 - 添加vulkan渲染器
 - 加入OpenP2P
 - 加入hal映射
+
+## 计划中 Planning
 - 调整代码
 - 自定义json启动
+- 添加json patch
+- 修复游戏启动问题
 
 ## 已知问题
 
