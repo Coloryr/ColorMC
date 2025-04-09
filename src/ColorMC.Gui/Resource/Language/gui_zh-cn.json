@@ -722,6 +722,7 @@
 	"AddGameWindow.Tab1.Text20": "下载实例",
 	"AddGameWindow.Tab1.Text21": "选取加载器",
 	"AddGameWindow.Tab1.Text22": "完成",
+	"AddGameWindow.Tab1.Text23": "不加载原版运行库",
 	"AddGameWindow.Tab1.Info1": "正在获取Forge版本信息",
 	"AddGameWindow.Tab1.Info2": "正在获取Fabric版本信息",
 	"AddGameWindow.Tab1.Info3": "正在获取Quilt版本信息",

@@ -137,6 +137,11 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool _offLib;
     /// <summary>
+    /// 是否后删除原版运行库
+    /// </summary>
+    [ObservableProperty]
+    private bool _removeLib;
+    /// <summary>
     /// 是否在加载信息中
     /// </summary>
     [ObservableProperty]
@@ -955,6 +960,7 @@ public partial class GameEditModel
         PID = _obj.PID;
 
         OffLib = _obj.CustomLoader?.OffLib ?? false;
+        RemoveLib = _obj.CustomLoader?.RemoveLib ?? false;
 
         GameRun = GameManager.IsGameRun(_obj);
 

@@ -221,20 +221,26 @@ public static class LibrariesPath
             {
                 output.AddOrUpdate(item.Key, item.Value);
             }
-            foreach (var item in gameList)
+            if (obj.CustomLoader?.RemoveLib != true)
             {
-                if (output.ContainsKey(item.Key))
+                foreach (var item in gameList)
                 {
-                    continue;
+                    if (output.ContainsKey(item.Key))
+                    {
+                        continue;
+                    }
+                    output.Add(item.Key, item.Value);
                 }
-                output.Add(item.Key, item.Value);
             }
         }
         else
         {
-            foreach (var item in gameList)
+            if (obj.CustomLoader?.RemoveLib != true)
             {
-                output.AddOrUpdate(item.Key, item.Value);
+                foreach (var item in gameList)
+                {
+                    output.AddOrUpdate(item.Key, item.Value);
+                }
             }
             foreach (var item in loaderList)
             {

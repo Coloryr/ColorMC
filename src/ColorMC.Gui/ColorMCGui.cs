@@ -278,7 +278,7 @@ public static class ColorMCGui
     {
         if (RunType == RunType.AppBuilder)
         {
-            BaseDir = AppContext.BaseDirectory;
+            BaseDir = AppContext.BaseDirectory + "colormc\\";
 
             SystemInfo.Init();
         }
