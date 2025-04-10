@@ -115,7 +115,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     private static async Task<MessageRes> DownloadAsync(string name, string sha256, string url)
     {
-        var item = new DownloadItemObj()
+        var item = new FileItemObj()
         {
             Name = name,
             Sha256 = sha256,

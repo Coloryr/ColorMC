@@ -37,7 +37,7 @@ public record GameLaunchUserRes
 
 public record ModDownloadRes
 {
-    public DownloadItemObj Item;
+    public FileItemObj Item;
     public ModInfoObj Info;
     public List<FileModVersionModel> List;
 }

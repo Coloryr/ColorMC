@@ -110,7 +110,7 @@ public static class UrlHelper
     /// <param name="url">原始下载地址</param>
     /// <param name="source">下载源</param>
     /// <returns>下载地址</returns>
-    public static string Download(string url, SourceLocal? source)
+    public static string DownloadSourceChange(string url, SourceLocal? source)
     {
         string? to = source switch
         {
@@ -589,7 +589,7 @@ public static class UrlHelper
 
         else
         {
-            return MakeDownloadUrl(DownloadItemHelper.TestSourceType(item.Projcet, item.FileId), item.Projcet,
+            return MakeDownloadUrl(GameDownloadHelper.TestSourceType(item.Projcet, item.FileId), item.Projcet,
                 item.FileId, item.File);
         }
     }

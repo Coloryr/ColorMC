@@ -169,7 +169,7 @@ public static class OptifineAPI
     /// <returns>结果</returns>
     public static async Task<MessageRes> DownloadOptifine(GameSettingObj obj, OptifineObj item)
     {
-        DownloadItemObj item1;
+        FileItemObj item1;
         var data = await GetOptifineDownloadUrl(item);
         if (data == null)
         {

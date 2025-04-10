@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -12,7 +7,6 @@ namespace ColorMC.Core.Objs.Minecraft;
 /// </summary>
 public record CustomGameArgObj : GameArgObj
 {
-
     [JsonProperty("compatibleJavaMajors")]
     public List<int> CompatibleJavaMajors { get; set; }
     [JsonProperty("name")]
@@ -29,6 +23,8 @@ public record CustomGameArgObj : GameArgObj
     public string Version { get; set; }
     [JsonProperty("mainJar")]
     public LibrariesObj MainJar { get; set; }
+    [JsonProperty("_minecraftVersion")]
+    public string MinecraftVersion { get; set; }
 
     [JsonIgnore]
     public string File { get; set; }

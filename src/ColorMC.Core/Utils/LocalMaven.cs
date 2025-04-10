@@ -98,7 +98,7 @@ public static class LocalMaven
     /// <param name="name"></param>
     /// <param name="dir"></param>
     /// <returns></returns>
-    public static async Task<DownloadItemObj?> MakeItemAsync(string name, string dir)
+    public static async Task<FileItemObj?> MakeItemAsync(string name, string dir)
     {
         var item2 = GetItem(name);
         if (item2 != null)
@@ -118,7 +118,7 @@ public static class LocalMaven
         {
             try
             {
-                DownloadItemObj? item3 = null;
+                FileItemObj? item3 = null;
                 var maven = new MavenItemObj()
                 {
                     Name = name
@@ -131,7 +131,7 @@ public static class LocalMaven
                     HttpCompletionOption.ResponseHeadersRead);
                 if (res.IsSuccessStatusCode)
                 {
-                    item3 = new DownloadItemObj()
+                    item3 = new FileItemObj()
                     {
                         Name = name,
                         Url = url,

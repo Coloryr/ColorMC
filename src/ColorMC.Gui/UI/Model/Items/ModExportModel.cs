@@ -91,7 +91,7 @@ public partial class ModExportModel : ObservableObject
         }
         else
         {
-            Source = DownloadItemHelper.TestSourceType(PID, FID);
+            Source = GameDownloadHelper.TestSourceType(PID, FID);
         }
 
         Reload();

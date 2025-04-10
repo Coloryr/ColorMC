@@ -112,8 +112,8 @@ public static class VersionPath
                 }
             }
             catch
-            { 
-                
+            {
+
             }
         }
     }
@@ -197,7 +197,7 @@ public static class VersionPath
     /// <param name="obj">游戏数据</param>
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
-        var url = UrlHelper.Download(obj.Url, CoreHttpClient.Source);
+        var url = UrlHelper.DownloadSourceChange(obj.Url, CoreHttpClient.Source);
         (var obj1, var data) = await GameAPI.GetGame(url);
         if (obj1 == null)
         {

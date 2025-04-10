@@ -451,14 +451,10 @@ public partial class GameEditModel
         Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info9");
         var list = await Task.Run(() =>
         {
-            var version = VersionPath.GetVersion(_obj.Version);
-            if (version != null)
+            var ass = _obj.FindAsset();
+            if (ass != null)
             {
-                var ass = AssetsPath.GetIndex(version);
-                if (ass != null)
-                {
-                    return ass.GetLangs();
-                }
+                return ass.GetIndex().GetLangs();
             }
 
             return GameLang.GetLangs(null);
@@ -501,7 +497,7 @@ public partial class GameEditModel
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info2"));
         //尝试通过ID获取版本号
-        if (DownloadItemHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
+        if (GameDownloadHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);
             Model.ProgressClose();
@@ -1026,7 +1022,7 @@ public partial class GameEditModel
                 var version = VersionPath.GetVersion(_obj.Version);
                 if (version != null)
                 {
-                    var ass = AssetsPath.GetIndex(version);
+                    var ass = AssetsPath.GetIndex(version.AssetIndex);
                     if (ass != null)
                     {
                         return ass.GetLang(lang);

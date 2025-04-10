@@ -646,7 +646,7 @@ public static class WindowManager
     /// <param name="obj1">模组项目</param>
     public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
-        var type1 = DownloadItemHelper.TestSourceType(obj1.PID, obj1.FID);
+        var type1 = GameDownloadHelper.TestSourceType(obj1.PID, obj1.FID);
 
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))
         {

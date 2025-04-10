@@ -4,12 +4,8 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -897,7 +893,7 @@ public static class Launch
             jvm = JvmPath.GetInfo(obj.JvmName);
             if (jvm == null)
             {
-                foreach (var item in arg1.JavaVersions)
+                foreach (var item in arg1.JavaVersions.OrderDescending())
                 {
                     jvm = JvmPath.FindJava(item);
                     if (jvm != null)

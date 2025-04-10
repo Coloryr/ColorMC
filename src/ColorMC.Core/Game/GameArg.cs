@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -242,8 +238,8 @@ public static class GameArg
                 {
                     list.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
                     list.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-                        DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
-                        DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
+                        GameDownloadHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
+                        GameDownloadHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
                     list.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
 
                     var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
@@ -576,14 +572,6 @@ public static class GameArg
             jvm.Add("-Dauthlibinjector.side=client");
         }
 
-        //log4j2-xml
-        var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.Logging != null && ConfigUtils.Config.SafeLog4j)
-        {
-            var obj1 = DownloadItemHelper.BuildLog4jItem(game);
-            jvm.Add(game.Logging.Client.Argument.Replace("${path}", obj1.Local));
-        }
-
         jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
         jvm.Add($"-Dcolormc.game.uuid={obj.UUID}");
         jvm.Add($"-Dcolormc.game.name={obj.Name}");
@@ -600,12 +588,13 @@ public static class GameArg
     /// <param name="login">登录的账户</param>
     /// <param name="args">所有参数参数</param>
     /// <param name="classpath">classpath</param>
-    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath)
+    /// <param name="native">native路径</param>
+    /// <param name="native">native路径</param>
+    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath, string native, string asset)
     {
-        var version = VersionPath.GetVersion(obj.Version)!;
         var assetsPath = AssetsPath.BaseDir;
         var gameDir = InstancesPath.GetGamePath(obj);
-        var assetsIndexName = version.AssetIndex.Id ?? "legacy";
+        var assetsIndexName = asset ?? "legacy";
 
         var version_name = obj.Loader switch
         {
@@ -633,9 +622,9 @@ public static class GameArg
             {"${version_type}", "release" },
 #if Phone
             {"${natives_directory}", SystemInfo.Os == OsType.Android
-                ? "%natives_directory%" : LibrariesPath.GetNativeDir(obj.Version) },
+                ? "%natives_directory%" : native },
 #else
-            {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
+            {"${natives_directory}", native },
 #endif
             {"${library_directory}",LibrariesPath.BaseDir },
             {"${classpath_separator}", sep },
@@ -664,7 +653,7 @@ public static class GameArg
 
         if (larg.Mixinport > 0)
         {
-            arg.GameLibs.Add(new() { Local = GameHelper.ColorMCASM });
+            arg.GameLibs.Add(GameHelper.ColorMCASM);
         }
 
         var libraries = obj.GetLibs(arg);
@@ -703,8 +692,8 @@ public static class GameArg
         var list1 = new List<string>();
 
         var cp = classpath.ToString().Trim();
-        obj.ReplaceAll(larg.Auth, arg.JvmArgs, cp);
-        obj.ReplaceAll(larg.Auth, arg.GameArgs, cp);
+        obj.ReplaceAll(larg.Auth, arg.JvmArgs, cp, arg.NativeDir, arg.Assets.Id);
+        obj.ReplaceAll(larg.Auth, arg.GameArgs, cp, arg.NativeDir, arg.Assets.Id);
         //jvm
         list1.AddRange(arg.JvmArgs);
 
@@ -799,9 +788,12 @@ public static class GameArg
             //处理运行库
             var task1 = Task.Run(async () =>
             {
+                arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
+                arg.GameJar = GameDownloadHelper.BuildGameItem(game.Id);
+
                 if (obj.Loader != Loaders.Custom || obj.CustomLoader?.RemoveLib != true)
                 {
-                    foreach (var item in await game.BuildGameLibsAsync())
+                    foreach (var item in await game.BuildGameLibsAsync(arg.NativeDir))
                     {
                         if (!string.IsNullOrWhiteSpace(item.Local))
                         {
@@ -810,7 +802,7 @@ public static class GameArg
                     }
                 }
 
-                IEnumerable<DownloadItemObj>? list3 = null;
+                IEnumerable<FileItemObj>? list3 = null;
                 //根据加载器处理
                 switch (obj.Loader)
                 {
@@ -861,7 +853,7 @@ public static class GameArg
                         {
                             return;
                         }
-                        var res1 = await DownloadItemHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
+                        var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
                         ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         list3 = res1.List;
                         break;
@@ -920,32 +912,63 @@ public static class GameArg
             }, cancel);
 
             //材质与主类
-            var task3 = Task.Run(async () =>
+            var assets = game.AssetIndex.GetIndex();
+            if (assets == null)
             {
-                var assets = game.GetIndex();
-                if (assets == null)
-                {
-                    //不存在json文件
-                    var res = await GameAPI.GetAssets(game.AssetIndex.Url)
-                        ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
-                    assets = res.Assets;
-                    game.AddIndex(res.Text);
-                }
+                //不存在json文件
+                var res = await GameAPI.GetAssets(game.AssetIndex.Url)
+                    ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
+                assets = res.Assets;
+                game.AddIndex(res.Text);
+            }
 
-                arg.Assets = assets;
-                arg.MainClass = MakeMainClass(obj);
-            }, cancel);
+            arg.Assets = game.AssetIndex;
+            arg.MainClass = MakeMainClass(obj);
 
-            await Task.WhenAll(task1, task2, task3);
+            await Task.WhenAll(task1, task2);
         }
         else
         {
+            GameArgObj.LoggingObj? logging = null;
             foreach (var item in obj.CustomJson)
             {
+                //安全log4j
+                if (item.Logging != null)
+                {
+                    logging = item.Logging;
+                }
+
+                if (item.Downloads != null)
+                {
+                    if (item.MinecraftVersion != null)
+                    {
+                        var file = LibrariesPath.GetGameFile(item.MinecraftVersion);
+                        arg.NativeDir ??= LibrariesPath.GetNativeDir(obj.Version);
+                        arg.GameJar = new()
+                        {
+                            Url = CoreHttpClient.Source == SourceLocal.Offical ? item.Downloads.Client.Url
+                                : UrlHelper.DownloadGame(item.MinecraftVersion, CoreHttpClient.Source),
+                            Sha1 = item.Downloads.Client.Sha1,
+                            Local = file,
+                            Name = $"{item.MinecraftVersion}.jar"
+                        };
+                    }
+                    else
+                    {
+                        arg.GameJar = new()
+                        {
+                            Url = UrlHelper.DownloadSourceChange(item.Downloads.Client.Url, CoreHttpClient.Source),
+                            Sha1 = item.Downloads.Client.Sha1,
+                            Local = LibrariesPath.GetGameFileWithDir(item.Id),
+                            Name = $"{item.MinecraftVersion}.jar"
+                        };
+                    }
+                }
+
                 //材质
                 if (item.AssetIndex != null)
                 {
-                    var assets = item.GetIndex();
+                    var assets = item.AssetIndex.GetIndex();
                     if (assets == null)
                     {
                         var res = await GameAPI.GetAssets(item.AssetIndex.Url)
@@ -953,13 +976,14 @@ public static class GameArg
                         assets = res.Assets;
                         item.AddIndex(res.Text);
                     }
-                    arg.Assets = assets;
+                    arg.Assets = item.AssetIndex;
                 }
 
                 //运行库
                 if (item.Libraries != null)
                 {
-                    var list = await item.BuildGameLibsAsync();
+                    arg.NativeDir ??= LibrariesPath.GetNativeDir(null);
+                    var list = await item.BuildGameLibsAsync(arg.NativeDir, obj);
                     foreach (var item1 in list)
                     {
                         if (!string.IsNullOrWhiteSpace(item1.Local))
@@ -1003,23 +1027,19 @@ public static class GameArg
                     bool download = CheckHelpers.CheckAllow(lib.Rules);
                     if (download)
                     {
-                        string file;
-                        if (string.IsNullOrEmpty(lib.Downloads.Artifact.Path))
+                        var file = lib.Downloads.Artifact.Path;
+                        if (string.IsNullOrEmpty(file))
                         {
-                            file = FuntionUtils.VersionNameToPath(item.Name);
-                        }
-                        else
-                        {
-                            file = $"{LibrariesPath.BaseDir}/{lib.Downloads.Artifact.Path}";
+                            file = FuntionUtils.VersionNameToPath(lib.Name);
                         }
 
-                        arg.GameLibs.Add(new()
+                        arg.GameJar = new()
                         {
                             Name = lib.Name,
                             Url = UrlHelper.DownloadLibraries(lib.Downloads.Artifact.Url, CoreHttpClient.Source),
-                            Local = file,
+                            Local = $"{LibrariesPath.BaseDir}/{file}",
                             Sha1 = lib.Downloads.Artifact.Sha1
-                        });
+                        };
                     }
                 }
 
@@ -1040,8 +1060,52 @@ public static class GameArg
 
                     arg.JvmArgs.AddRange(item.AddJvmArgs);
                 }
+
+                if (item.AddTweakers != null)
+                {
+                    arg.GameArgs.Add("--tweakClass");
+                    foreach (var item1 in item.AddTweakers)
+                    {
+                        arg.GameArgs.Add(item1);
+                    }
+                }
+            }
+
+            //log4j2-xml
+            if (logging != null && ConfigUtils.Config.SafeLog4j)
+            {
+                var obj1 = GameDownloadHelper.BuildLog4jItem(logging);
+                arg.Log4JXml = obj1;
+                arg.JvmArgs.Add(logging.Client.Argument.Replace("${path}", obj1.Local));
             }
         }
         return arg;
+    }
+
+    public static GameArgObj.AssetIndexObj? FindAsset(this GameSettingObj obj)
+    {
+        if (obj.CustomLoader?.CustomJson != true)
+        {
+            var version = VersionPath.GetVersion(obj.Version);
+            if (version != null)
+            {
+                return version.AssetIndex;
+            }
+        }
+        else
+        {
+            GameArgObj.AssetIndexObj? assetIndex = null;
+            foreach (var item in obj.CustomJson)
+            {
+                //材质
+                if (item.AssetIndex != null)
+                {
+                    assetIndex = item.AssetIndex;
+                }
+            }
+            return assetIndex;
+        }
+
+        return null;
     }
 }

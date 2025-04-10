@@ -25,7 +25,7 @@ public static class ModPackHelper
     {
         arg.Data.FixDownloadUrl();
 
-        var item = new DownloadItemObj()
+        var item = new FileItemObj()
         {
             Url = arg.Data.DownloadUrl,
             Name = arg.Data.FileName,
@@ -62,7 +62,7 @@ public static class ModPackHelper
     public static async Task<bool> UpgradeModPack(UpdateModrinthModPackArg arg)
     {
         var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
-        var item = new DownloadItemObj()
+        var item = new FileItemObj()
         {
             Url = file.Url,
             Name = file.Filename,
@@ -191,7 +191,7 @@ public static class ModPackHelper
 
         var path = arg.Game.GetGamePath();
 
-        var list1 = new List<DownloadItemObj>();
+        var list1 = new List<FileItemObj>();
 
         int b = 0;
 
@@ -623,7 +623,7 @@ public static class ModPackHelper
             Info = info,
             Update = arg.Update
         });
-        var list1 = new List<DownloadItemObj>();
+        var list1 = new List<FileItemObj>();
 
         string path = arg.Game.GetGamePath();
 

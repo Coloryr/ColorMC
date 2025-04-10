@@ -175,7 +175,7 @@ public static class FrpLaunchUtils
         else
         {
 #endif
-        DownloadItemObj? obj = null;
+        FileItemObj? obj = null;
         string? local = "";
         if (item1.FrpType == FrpType.SakuraFrp)
         {

@@ -345,6 +345,7 @@ public partial class GameLogModel : GameModel
         var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
+            IsGameRun = false;
             Model.Show(res.Message!);
             return;
         }
