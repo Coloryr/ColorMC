@@ -106,7 +106,7 @@ public enum SourceType
 public enum PathType
 {
     BasePath, GamePath, ModPath, ConfigPath, ShaderpacksPath, ResourcepackPath, WorldBackPath,
-    SavePath, SchematicsPath, ScreenshotsPath, RunPath, DownloadPath, JavaPath, PicPath, ServerPackPath, RunDir
+    SavePath, SchematicsPath, ScreenshotsPath, RunPath, DownloadPath, JavaPath, PicPath, ServerPackPath, RunDir, JsonDir
 }
 
 /// <summary>

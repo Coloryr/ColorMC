@@ -148,11 +148,9 @@ public static class OptifineAPI
                 var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
                 if (list1 == null)
                     return null;
-                return UrlHelper.OptiFine + list1[0].Attributes["href"].Value;
-            }
-            else
-            {
-                return obj.Url1;
+                obj.Url1 = UrlHelper.OptiFine + list1[0].Attributes["href"].Value;
+                obj.Url2 = "";
+                obj.Local = SourceLocal.BMCLAPI;
             }
         }
         catch (Exception e)
@@ -185,6 +183,8 @@ public static class OptifineAPI
             Overwrite = true,
             Url = data
         };
+
+        VersionPath.AddOptifine(item);
 
         var res = await DownloadManager.StartAsync([item1]);
         if (!res)

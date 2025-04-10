@@ -1140,7 +1140,7 @@ public static class WindowManager
     /// <returns>ID</returns>
     public static string GetUseName<T>(GameSettingObj obj) where T : BaseUserControl
     {
-        return typeof(T).FullName ?? typeof(T).Name + ":" + obj.UUID;
+        return (typeof(T).FullName ?? typeof(T).Name) + ":" + obj.UUID;
     }
 
     /// <summary>

@@ -459,6 +459,32 @@ public static class UrlHelper
     /// </summary>
     /// <param name="old">旧的地址</param>
     /// <returns>下载地址</returns>
+    public static string SwitchSource(string old)
+    {
+        if (CoreHttpClient.Source == SourceLocal.BMCLAPI)
+        {
+            if (old.StartsWith(Forge))
+            {
+                return old.Replace(Forge, $"{BMCLAPI}maven");
+            }
+            else if (old.StartsWith(MinecraftLib))
+            {
+                return old.Replace(MinecraftLib, $"{BMCLAPI}maven");
+            }
+            else if (old.StartsWith(Fabric))
+            {
+                return old.Replace(Fabric, $"{BMCLAPI}maven");
+            }
+        }
+
+        return old;
+    }
+
+    /// <summary>
+    /// 下载地址变换
+    /// </summary>
+    /// <param name="old">旧的地址</param>
+    /// <returns>下载地址</returns>
     public static string? UrlChange(string old)
     {
         if (CoreHttpClient.Source == SourceLocal.Offical)

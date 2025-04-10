@@ -27,6 +27,7 @@ public static class Names
     public const string NameGameConfigDir = "config";
     public const string NameGameSchematicsDir = "schematics";
     public const string NameJavaDir = "java";
+    public const string NameJsonDir = "patches";
 
     public const string NameModInfoFile = "modfileinfo.json";
     public const string NameGameFile = "game.json";
@@ -56,6 +57,7 @@ public static class Names
     public const string NameLogFile = "logs.log";
     public const string NameJavaFile = "java";
     public const string NameJavawFile = "javaw.exe";
+    public const string NameOptifineFile = "optifine.json";
 
     public const string NameMinecraftKey = "minecraft";
     public const string NameLangKey1 = "minecraft/lang/";

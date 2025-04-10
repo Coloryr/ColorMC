@@ -2,6 +2,7 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
@@ -203,6 +204,7 @@ public static class InstancesPath
                 }
                 game.ReadModInfo();
                 game.ReadLaunchData();
+                game.ReadCustomJson();
                 game.AddToGroup();
             }
         }
@@ -546,6 +548,26 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 游戏附加json路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string GetGameJsonPath(this GameSettingObj obj)
+    {
+        return Path.Combine(s_baseDir, obj.DirName, Names.NameJsonDir);
+    }
+
+    /// <summary>
+    /// 游戏附加json路径
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static string GetGameLibPath(this GameSettingObj obj)
+    {
+        return Path.Combine(s_baseDir, obj.DirName, Names.NameLibDir);
+    }
+
+    /// <summary>
     /// 获取自定义加载器路径
     /// </summary>
     /// <param name="obj"></param>
@@ -665,6 +687,7 @@ public static class InstancesPath
             obj.DirName = game.DirName;
             obj.ReadModInfo(false);
             obj.ReadLaunchData();
+            obj.ReadCustomJson();
             obj.AddToGroup();
             obj.Save();
         }
@@ -934,6 +957,48 @@ public static class InstancesPath
     }
 
     /// <summary>
+    /// 读取自定义游戏启动配置
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void ReadCustomJson(this GameSettingObj obj)
+    {
+        var dir = obj.GetGameJsonPath();
+        if (!Directory.Exists(dir))
+        {
+            return;
+        }
+
+        obj.CustomJson ??= [];
+        obj.CustomJson.Clear();
+
+        foreach (var item in Directory.GetFiles(dir))
+        {
+            try
+            {
+                var data = PathHelper.ReadText(item);
+                if (data == null)
+                {
+                    continue;
+                }
+                var obj1 = JsonConvert.DeserializeObject<CustomGameArgObj>(data);
+                if (obj1 == null)
+                {
+                    continue;
+                }
+                obj1.File = item;
+                obj1.Name ??= obj1.Id;
+                obj.CustomJson.Add(obj1);
+            }
+            catch
+            { 
+                
+            }
+        }
+
+        obj.CustomJson.Sort(CustomGameArgObjComparer.Instance);
+    }
+
+    /// <summary>
     /// 读取游戏运行时间
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1025,7 +1090,7 @@ public static class InstancesPath
             }
             var name = res.Name;
 
-            if (VersionPath.GetCustomLoaderObj(obj.UUID) == null)
+            if (obj.GetCustomLoaderObj() == null)
             {
                 return null;
             }

@@ -8,6 +8,22 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 光影包比较器
 /// </summary>
+public class CustomGameArgObjComparer : IComparer<CustomGameArgObj>
+{
+    public static readonly CustomGameArgObjComparer Instance = new();
+    public int Compare(CustomGameArgObj? x, CustomGameArgObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return x.Order.CompareTo(y.Order);
+    }
+}
+
+/// <summary>
+/// 光影包比较器
+/// </summary>
 public class ShaderpackObjComparer : IComparer<ShaderpackObj>
 {
     public static readonly ShaderpackObjComparer Instance = new();

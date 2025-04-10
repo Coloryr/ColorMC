@@ -149,6 +149,9 @@ public static class ImageManager
         LoadStartIcon();
     }
 
+    /// <summary>
+    /// 加载自定义启动器图标
+    /// </summary>
     public static void LoadIcon()
     {
         var path = GuiConfigUtils.Config.ServerCustom.IconFile;
@@ -169,6 +172,9 @@ public static class ImageManager
         WindowManager.ReloadIcon();
     }
 
+    /// <summary>
+    /// 加载自定义启动界面图标
+    /// </summary>
     public static void LoadStartIcon()
     {
         var path = GuiConfigUtils.Config.ServerCustom.StartIconFile;

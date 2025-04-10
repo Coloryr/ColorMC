@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ColorMC.Core.Objs.Minecraft;
+using Newtonsoft.Json;
 
 namespace ColorMC.Core.Objs;
 
@@ -96,6 +97,14 @@ public record CustomLoader
     /// 删除原版运行库
     /// </summary>
     public bool RemoveLib { get; set; }
+    /// <summary>
+    /// 是否启用自定义启动配置
+    /// </summary>
+    public bool CustomJson { get; set; }
+    /// <summary>
+    /// 删除原有启动配置
+    /// </summary>
+    public bool RemoveJson { get; set; }
 }
 
 /// <summary>
@@ -201,10 +210,15 @@ public partial record GameSettingObj
     /// Mod信息
     /// </summary>
     [JsonIgnore]
-    public Dictionary<string, ModInfoObj> Mods { get; set; }
+    public Dictionary<string, ModInfoObj> Mods;
     /// <summary>
     /// 游玩统计
     /// </summary>
     [JsonIgnore]
-    public LaunchDataObj LaunchData { get; set; }
+    public LaunchDataObj LaunchData;
+    /// <summary>
+    /// 自定义启动配置
+    /// </summary>
+    [JsonIgnore]
+    public List<CustomGameArgObj> CustomJson;
 }

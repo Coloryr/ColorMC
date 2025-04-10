@@ -126,6 +126,9 @@ public static class PathBinding
     {
         switch (type)
         {
+            case PathType.JsonDir:
+                OpenPathWithExplorer(obj.GetGameJsonPath());
+                break;
             case PathType.ShaderpacksPath:
                 OpenPathWithExplorer(obj.GetShaderpacksPath());
                 break;

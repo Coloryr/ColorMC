@@ -1,9 +1,14 @@
+using System.Collections.Concurrent;
 using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 
@@ -389,6 +394,11 @@ public static class GameHelper
             {
                 game.Loader = Loaders.Quilt;
                 game.LoaderVersion = item.Version;
+            }
+            else
+            {
+                game.CustomLoader ??= new();
+                game.CustomLoader.CustomJson = true;
             }
         }
         game.JvmArg = new();
@@ -874,5 +884,130 @@ public static class GameHelper
         }
 
         return list;
+    }
+
+    /// <summary>
+    /// 获取Forge的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<DownloadItemObj>? GetForgeLibs(this GameSettingObj obj)
+    {
+        var neo = obj.Loader == Loaders.NeoForge;
+        var version1 = VersionPath.GetVersion(obj.Version)!;
+        var v2 = version1.IsGameVersionV2();
+        if (v2)
+        {
+            ReadyForgeWrapper();
+        }
+
+        var forge = neo ?
+            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
+        if (forge == null)
+        {
+            return null;
+        }
+
+        //forge本体
+        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
+
+        var forgeinstall = neo ?
+            VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
+        if (forgeinstall == null && v2)
+            return null;
+
+        //forge安装器
+        if (forgeinstall != null)
+        {
+            var list2 = DownloadItemHelper.BuildForgeLibs(forgeinstall, obj.Version,
+                obj.LoaderVersion!, neo, v2);
+            list1.AddRange(list2);
+        }
+
+        return list1;
+    }
+
+    /// <summary>
+    /// 获取Fabric的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<DownloadItemObj>? GetFabricLibs(this GameSettingObj obj)
+    {
+        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
+        if (fabric == null)
+        {
+            return null;
+        }
+
+        var list = new List<DownloadItemObj>();
+
+        foreach (var item in fabric.Libraries)
+        {
+            var name = FuntionUtils.VersionNameToPath(item.Name);
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadFabric(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 获取Quilt的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<DownloadItemObj>? GetQuiltLibs(this GameSettingObj obj)
+    {
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
+        if (quilt == null)
+        {
+            return null;
+        }
+
+        var list = new List<DownloadItemObj>();
+
+        foreach (var item in quilt.Libraries)
+        {
+            var name = FuntionUtils.VersionNameToPath(item.Name);
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 获取高清修复所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<DownloadItemObj>? GetOptifineLibs(this GameSettingObj obj)
+    {
+        var optifine = obj.GetOptifine();
+        if (optifine == null)
+        {
+            return null;
+        }
+        return [new()
+        {
+            Name = optifine.FileName,
+            Local = LibrariesPath.GetOptifineFile(obj.Version, obj.LoaderVersion!),
+            Overwrite = true,
+            Url = optifine.Url1
+        }];
     }
 }
