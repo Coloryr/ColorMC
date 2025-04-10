@@ -3320,4 +3320,13 @@ public static class GameBinding
             Message = App.Lang("GameCloudWindow.Error3")
         };
     }
+
+    /// <summary>
+    /// 重读自定义启动配置
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void ReloadJson(GameSettingObj obj)
+    {
+        obj.ReadCustomJson();
+    }
 }

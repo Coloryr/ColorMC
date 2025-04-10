@@ -11,39 +11,49 @@ public record GameArgObj
 {
     public record ArgumentsObj
     {
-        public record Jvm
+        public record JvmObj
         {
-            public List<LibrariesObj.RulesObj> rules { get; set; }
-            public object value { get; set; }
+            [JsonProperty("rules")]
+            public List<LibrariesObj.RulesObj> Rules { get; set; }
+            [JsonProperty("value")]
+            public object Value { get; set; }
         }
-        public List<object> game { get; set; }
-        public List<object> jvm { get; set; }
+        [JsonProperty("game")]
+        public List<object> Game { get; set; }
+        [JsonProperty("jvm")]
+        public List<object> Jvm { get; set; }
     }
     public record AssetIndexObj
     {
-        public string id { get; set; }
-        public string sha1 { get; set; }
-        public long size { get; set; }
-        public long totalSize { get; set; }
-        public string url { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
+        //public string sha1 { get; set; }
+        //public long size { get; set; }
+        //public long totalSize { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
     public record DownloadsObj
     {
         public record Download
         {
-            public string sha1 { get; set; }
-            public long size { get; set; }
-            public string url { get; set; }
+            [JsonProperty("sha1")]
+            public string Sha1 { get; set; }
+            //public long size { get; set; }
+            [JsonProperty("url")]
+            public string Url { get; set; }
         }
-        public Download client { get; set; }
-        public Download client_mappings { get; set; }
-        public Download server { get; set; }
-        public Download server_mappings { get; set; }
+        [JsonProperty("client")]
+        public Download Client { get; set; }
+        //public Download client_mappings { get; set; }
+        //public Download server { get; set; }
+        //public Download server_mappings { get; set; }
     }
     public record JavaVersionObj
     {
-        public string component { get; set; }
-        public int majorVersion { get; set; }
+        //public string component { get; set; }
+        [JsonProperty("majorVersion")]
+        public int MajorVersion { get; set; }
     }
     public record LibrariesObj
     {
@@ -105,6 +115,11 @@ public record GameArgObj
         public string Name { get; set; }
         [JsonProperty("rules")]
         public List<RulesObj> Rules { get; set; }
+        //decode mmc pack use
+        //[JsonProperty("MMC-hint")]
+        //public string MMCHint { get; set; }
+        [JsonProperty("url")]
+        public string Url { get; set; }
     }
     public record LoggingObj
     {
@@ -131,8 +146,8 @@ public record GameArgObj
 
     [JsonProperty("assetIndex")]
     public AssetIndexObj AssetIndex { get; set; }
-    [JsonProperty("assets")]
-    public string Assets { get; set; }
+    //[JsonProperty("assets")]
+    //public string Assets { get; set; }
     //public int complianceLevel { get; set; }
     [JsonProperty("downloads")]
     public DownloadsObj Downloads { get; set; }

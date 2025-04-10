@@ -194,6 +194,7 @@
     <AvaloniaResource Include="Resource\Icon\GameCount\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameCount\svg3.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\item1.svg" />
+    <AvaloniaResource Include="Resource\Icon\GameEdit\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\GameEdit\item4.svg" />

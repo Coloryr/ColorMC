@@ -320,6 +320,7 @@ public partial class AddGameModel : TopModel
 
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
+        model?.GetGame(uuid)?.ReloadIcon();
 
         var res = await Model.ShowAsync(App.Lang("AddGameWindow.Tab1.Info25"));
         if (res != true)

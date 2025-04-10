@@ -682,9 +682,13 @@ public partial class MainModel
     /// 获取游戏实例
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
-    /// <returns></returns>
-    public GameItemModel? GetGame(string uuid)
+    /// <returns>游戏实例显示模型</returns>
+    public GameItemModel? GetGame(string? uuid)
     {
+        if (uuid == null)
+        {
+            return null;
+        }
         foreach (var item in GameGroups)
         {
             if (item.Find(uuid) is { } game)
