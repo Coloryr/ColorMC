@@ -2212,7 +2212,7 @@ public static class GameBinding
 
         if (game.Mods != null)
         {
-            var list = new List<DownloadItemObj>();
+            var list = new List<FileItemObj>();
             foreach (var item in game.Mods.Values)
             {
                 list.Add(new()
@@ -2546,7 +2546,7 @@ public static class GameBinding
                         if (obj.Mods.Values.FirstOrDefault(item => item.Sha1 == item.Sha1) is { } item1)
                         {
                             info.AppendLine(string.Format(App.Lang("GameBinding.Info11"),
-                                DownloadItemHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
+                                GameDownloadHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
                         }
                     }
                 }

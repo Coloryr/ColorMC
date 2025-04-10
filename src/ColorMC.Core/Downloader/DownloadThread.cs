@@ -128,7 +128,7 @@ internal class DownloadThread
     /// 检查是否需要暂停
     /// </summary>
     /// <param name="item">下载项目</param>
-    private void CheckPause(DownloadItemObj item)
+    private void CheckPause(FileItemObj item)
     {
         if (_pause)
         {
@@ -143,7 +143,7 @@ internal class DownloadThread
     /// </summary>
     /// <param name="item">下载项目</param>
     /// <returns>是否完整</returns>
-    private bool CheckFile(DownloadItemObj item)
+    private bool CheckFile(FileItemObj item)
     {
         using var stream2 = PathHelper.OpenRead(item.Local)!;
         item.State = DownloadItemState.Action;
@@ -190,7 +190,7 @@ internal class DownloadThread
         {
             return;
         }
-        DownloadItemObj? item;
+        FileItemObj? item;
         while ((item = _task.GetItem()) != null)
         {
             CheckPause(item);

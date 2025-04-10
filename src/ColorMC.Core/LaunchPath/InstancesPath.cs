@@ -658,6 +658,7 @@ public static class InstancesPath
                 LastPlay = new()
             };
 
+            game.ReadCustomJson();
             game.Save();
             game.SaveLaunchData();
             game.AddToGroup();
@@ -990,8 +991,8 @@ public static class InstancesPath
                 obj.CustomJson.Add(obj1);
             }
             catch
-            { 
-                
+            {
+
             }
         }
 
@@ -1083,7 +1084,7 @@ public static class InstancesPath
         var file = obj.GetGameLoaderFile();
         if (File.Exists(file))
         {
-            var res = await DownloadItemHelper.DecodeLoaderJarAsync(obj);
+            var res = await GameDownloadHelper.DecodeLoaderJarAsync(obj);
             if (res == null)
             {
                 return null;
@@ -1114,7 +1115,7 @@ public static class InstancesPath
             return new() { Message = LanguageHelper.Get("Core.Game.Error16") };
         }
 
-        var list = await DownloadItemHelper.DecodeLoaderJarAsync(obj, path);
+        var list = await GameDownloadHelper.DecodeLoaderJarAsync(obj, path);
 
         if (list == null)
         {

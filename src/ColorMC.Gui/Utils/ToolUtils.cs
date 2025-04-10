@@ -22,7 +22,7 @@ public static class ToolUtils
     /// 存档编辑器下载项目
     /// </summary>
     /// <returns></returns>
-    public static DownloadItemObj BuildMcaselectorItem()
+    public static FileItemObj BuildMcaselectorItem()
     {
         return new()
         {

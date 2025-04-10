@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Objs.Minecraft;
+﻿using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Objs;
 
@@ -12,11 +7,14 @@ namespace ColorMC.Core.Objs;
 /// </summary>
 public record GameLaunchObj
 {
-    public List<DownloadItemObj> GameLibs = [];
-    public List<DownloadItemObj> LoaderLibs = [];
+    public List<FileItemObj> GameLibs = [];
+    public List<FileItemObj> LoaderLibs = [];
     public List<string> JvmArgs = [];
     public List<string> GameArgs = [];
     public HashSet<int> JavaVersions = [];
     public string MainClass;
-    public AssetsObj Assets;
+    public string NativeDir;
+    public GameArgObj.AssetIndexObj Assets;
+    public FileItemObj GameJar;
+    public FileItemObj Log4JXml;
 }

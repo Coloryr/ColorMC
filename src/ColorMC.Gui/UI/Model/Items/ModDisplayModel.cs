@@ -99,7 +99,7 @@ public partial class ModDisplayModel : ObservableObject
         }
         else
         {
-            Source = DownloadItemHelper.TestSourceType(PID, FID).GetName();
+            Source = GameDownloadHelper.TestSourceType(PID, FID).GetName();
         }
     }
 

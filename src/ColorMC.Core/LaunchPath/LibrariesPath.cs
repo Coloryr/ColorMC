@@ -1,4 +1,3 @@
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
@@ -37,9 +36,17 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns>路径</returns>
-    public static string GetNativeDir(string version)
+    public static string GetNativeDir(string? version)
     {
-        var dir = Path.Combine(NativeDir, version);
+        string dir;
+        if (version == null)
+        {
+            dir = Path.Combine(NativeDir, Names.NameDefaultDir);
+        }
+        else
+        {
+            dir = Path.Combine(NativeDir, version);
+        }
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -52,6 +59,16 @@ public static class LibrariesPath
     public static string GetGameFile(string version)
     {
         return Path.Combine(BaseDir, "net", "minecraft", "client", version, $"client-{version}.jar");
+    }
+
+    /// <summary>
+    /// 获取游戏核心路径
+    /// </summary>
+    /// <param name="name">保存的名字</param>
+    /// <returns></returns>
+    public static string GetGameFileWithDir(string name)
+    {
+        return Path.Combine(BaseDir, "net", "minecraft", "client", $"{name}.jar");
     }
 
     /// <summary>
@@ -168,7 +185,7 @@ public static class LibrariesPath
                 output.AddOrUpdate(item.Key, item.Value);
             }
 
-            return [.. output.Values];
+            return [.. output.Values, arg.GameJar.Local];
         }
 
         var loaderList = new Dictionary<LibVersionObj, string>();
@@ -212,7 +229,7 @@ public static class LibrariesPath
         //游戏核心
         if (obj.Loader != Loaders.NeoForge)
         {
-            output1.Add(GetGameFile(obj.Version));
+            output1.Add(arg.GameJar.Local);
         }
 
         return output1;

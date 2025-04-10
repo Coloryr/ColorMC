@@ -6,7 +6,7 @@ namespace ColorMC.Gui.Objs;
 
 public record DownloadModArg
 {
-    public DownloadItemObj Item;
+    public FileItemObj Item;
     public ModInfoObj Info;
     public ModObj? Old;
 }
