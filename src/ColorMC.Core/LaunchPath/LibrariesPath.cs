@@ -190,6 +190,14 @@ public static class LibrariesPath
 
         var loaderList = new Dictionary<LibVersionObj, string>();
 
+        foreach (var item in arg.LoaderLibs)
+        {
+            if (item.Later == null)
+            {
+                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+            }
+        }
+
         //拼接运行库列表
         if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
         {

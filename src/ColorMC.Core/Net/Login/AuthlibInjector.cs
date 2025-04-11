@@ -26,11 +26,12 @@ public static class AuthlibInjector
         obj.Auth!.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
 
+        bool needselect = false;
         if (obj.Logins != null)
         {
             if (select != null)
             {
-                var index = await select(LanguageHelper.Get("Core.Login.Info1"), obj.Logins.Select(item => item.UserName).ToList());
+                var index = await select(LanguageHelper.Get("Core.Login.Info1"), [.. obj.Logins.Select(item => item.UserName)]);
                 if (index >= obj.Logins.Count || index < 0)
                 {
                     return new()
@@ -49,9 +50,10 @@ public static class AuthlibInjector
                 obj.Auth!.UUID = item.UUID;
                 obj.Auth.UserName = item.UserName;
             }
+            needselect = true;
         }
 
-        return await LegacyLogin.RefreshAsync(server, obj.Auth, true);
+        return await LegacyLogin.RefreshAsync(server, obj.Auth, needselect);
     }
 
     /// <summary>
