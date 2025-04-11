@@ -744,12 +744,15 @@ public static class Launch
     {
         var stopwatch = new Stopwatch();
 
-        //版本号检测
-        if (string.IsNullOrWhiteSpace(obj.Version)
-            || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
-            || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+        if (obj.CustomLoader?.CustomJson != true)
         {
-            throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+            //版本号检测
+            if (string.IsNullOrWhiteSpace(obj.Version)
+                || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+                || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+            {
+                throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+            }
         }
 
         //登录账户

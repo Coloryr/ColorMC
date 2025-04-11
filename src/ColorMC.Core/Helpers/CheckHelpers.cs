@@ -223,7 +223,7 @@ public static partial class CheckHelpers
             return true;
         }
 
-        if (sha1)
+        if (sha1 && !string.IsNullOrEmpty(obj.Sha1))
         {
             using var data = PathHelper.OpenRead(obj.Local)!;
             return HashHelper.GenSha1(data) != obj.Sha1;

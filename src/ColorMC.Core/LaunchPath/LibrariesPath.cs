@@ -185,7 +185,7 @@ public static class LibrariesPath
                 output.AddOrUpdate(item.Key, item.Value);
             }
 
-            return [.. output.Values, arg.GameJar.Local];
+            return [.. output.Values, Path.GetFullPath(arg.GameJar.Local)];
         }
 
         var loaderList = new Dictionary<LibVersionObj, string>();
@@ -229,7 +229,7 @@ public static class LibrariesPath
         //游戏核心
         if (obj.Loader != Loaders.NeoForge)
         {
-            output1.Add(arg.GameJar.Local);
+            output1.Add(Path.GetFullPath(arg.GameJar.Local));
         }
 
         return output1;
