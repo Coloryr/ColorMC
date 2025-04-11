@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -22,9 +23,14 @@ public partial class BuildPackModel
     /// <summary>
     /// 加载游戏列表
     /// </summary>
-    private void LoadGames()
+    private async Task LoadGames()
     {
-        _gamesPage = new();
+        Model.Progress(App.Lang("UserWindow.Info1"));
+        await Task.Run(() =>
+        {
+            _gamesPage = new();
+        });
+        Model.ProgressClose();
         Games = _gamesPage.Source;
     }
 
