@@ -143,7 +143,7 @@ public static class Program
         try
         {
 #if DEBUG
-            Gui.ColorMCGui.SetInputDir(AppContext.BaseDirectory);
+            Gui.ColorMCGui.SetInputDir(AppContext.BaseDirectory + "colormc\\");
             Gui.ColorMCGui.Main(args);
 #else
 

@@ -160,7 +160,7 @@ public record LangRes
 public record MakeDownloadItemRes
 {
     public bool State;
-    public DownloadItemObj? Item;
+    public FileItemObj? Item;
 }
 
 /// <summary>
@@ -169,7 +169,7 @@ public record MakeDownloadItemRes
 public record MakeDownloadItemsRes
 {
     public bool State;
-    public ConcurrentBag<DownloadItemObj>? List;
+    public ConcurrentBag<FileItemObj>? List;
 }
 
 /// <summary>
@@ -188,7 +188,7 @@ public record ItemPathRes
 public record MakeDownloadNameItemsRes
 {
     public string Name;
-    public ConcurrentBag<DownloadItemObj>? List;
+    public ConcurrentBag<FileItemObj>? List;
 }
 
 /// <summary>

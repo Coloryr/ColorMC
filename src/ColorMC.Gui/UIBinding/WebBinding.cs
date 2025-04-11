@@ -479,7 +479,7 @@ public static class WebBinding
     /// <returns></returns>
     public static async Task<bool> DownloadMod(GameSettingObj obj, ICollection<DownloadModArg> list)
     {
-        var list1 = new List<DownloadItemObj>();
+        var list1 = new List<FileItemObj>();
         var setting = GameGuiSetting.ReadConfig(obj);
         foreach (var item in list)
         {
@@ -528,11 +528,11 @@ public static class WebBinding
 
         data.FixDownloadUrl();
         bool res;
-        DownloadItemObj item;
+        FileItemObj item;
         switch (type)
         {
             case FileType.World:
-                item = new DownloadItemObj()
+                item = new FileItemObj()
                 {
                     Name = data.DisplayName,
                     Url = data.DownloadUrl,
@@ -734,7 +734,7 @@ public static class WebBinding
                     return;
                 }
 
-                var type1 = DownloadItemHelper.TestSourceType(item.PID, item.FID);
+                var type1 = GameDownloadHelper.TestSourceType(item.PID, item.FID);
 
                 var res = await GetFileList(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
@@ -1717,7 +1717,7 @@ public static class WebBinding
     /// <param name="model">需要下载的内容</param>
     /// <param name="model1">窗口</param>
     /// <returns></returns>
-    public static async Task<DownloadItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
+    public static async Task<FileItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
     {
         ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))

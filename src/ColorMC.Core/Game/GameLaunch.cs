@@ -4,12 +4,8 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -26,13 +22,6 @@ public static class Launch
     public const string GAME_DIR = "%GAME_DIR%";
     public const string GAME_BASE_DIR = "%GAME_BASE_DIR%";
 
-    /// <summary>
-    /// V1版Jvm参数
-    /// </summary>
-    private static readonly string[] s_v1JvmArg =
-    [
-        "-Djava.library.path=${natives_directory}", "-cp", "${classpath}"
-    ];
 #if Phone
     /// <summary>
     /// 获取Forge安装参数
@@ -235,757 +224,6 @@ public static class Launch
     }
 
     /// <summary>
-    /// 创建V2版Jvm参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>参数</returns>
-    private static List<string> MakeV2JvmArg(this GameSettingObj obj)
-    {
-        var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.Arguments == null)
-        {
-            return [.. s_v1JvmArg];
-        }
-
-        var arg = new List<string>();
-        //添加原版参数
-        foreach (object item in game.Arguments.jvm)
-        {
-            if (item is string str)
-            {
-#if Phone
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    if (str.StartsWith("-Djava.library.path")
-                        || str.StartsWith("-Djna.tmpdir")
-                        || str.StartsWith("-Dorg.lwjgl.system.SharedLibraryExtractPath")
-                        || str.StartsWith("-Dio.netty.native.workdir"))
-                    {
-                        continue;
-                    }
-                }
-#endif
-                arg.Add(str);
-            }
-            else if (item is JObject obj1)
-            {
-                var obj2 = obj1.ToObject<GameArgObj.ArgumentsObj.Jvm>();
-                if (obj2 == null)
-                {
-                    continue;
-                }
-                //检查是否需要使用
-                if (!CheckHelpers.CheckAllow(obj2.rules))
-                {
-                    continue;
-                }
-
-                if (obj2.value is string item2)
-                {
-                    arg.Add(item2!);
-                }
-                else if (obj2.value is JArray list)
-                {
-                    var list1 = list.ToObject<List<string>>()!;
-                    arg.AddRange(list1);
-                }
-            }
-        }
-
-        //添加Mod加载器的参数
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            var forge = obj.Loader == Loaders.NeoForge ?
-                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            if (forge.Arguments.Jvm != null)
-            {
-                foreach (var item in forge.Arguments.Jvm)
-                {
-                    arg.Add(item);
-                }
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.Arguments.Jvm)
-            {
-                arg.Add(item);
-            }
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            arg.AddRange(obj.GetLoaderGameArg());
-        }
-
-        return arg;
-    }
-
-    /// <summary>
-    /// 创建V1版游戏参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>启动参数</returns>
-    private static List<string> MakeV1GameArg(this GameSettingObj obj)
-    {
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            var forge = obj.Loader == Loaders.NeoForge ?
-                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            return [.. forge.MinecraftArguments.Split(' ')];
-        }
-        //使用OptiFine启动方式
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            var version = VersionPath.GetVersion(obj.Version)!;
-            return
-            [
-                .. version.MinecraftArguments.Split(' '),
-                "--tweakClass",
-                "optifine.OptiFineTweaker"
-            ];
-        }
-        //使用自定义加载器
-        else if (obj.Loader == Loaders.Custom)
-        {
-            return obj.GetLoaderGameArg();
-        }
-        else
-        {
-            var version = VersionPath.GetVersion(obj.Version)!;
-            return [.. version.MinecraftArguments.Split(' ')];
-        }
-    }
-
-    /// <summary>
-    /// 创建V2版游戏参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    private static List<string> MakeV2GameArg(this GameSettingObj obj)
-    {
-        var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.Arguments == null)
-        {
-            return obj.MakeV1GameArg();
-        }
-
-        var arg = new List<string>();
-        foreach (object item in game.Arguments.game)
-        {
-            if (item is string str)
-            {
-                arg.Add(str);
-            }
-            //else if (item is JObject)
-            //{
-            //    JObject obj1 = item as JObject;
-            //    var obj2 = obj1.ToObject<GameArgObj.Arguments.Jvm>();
-            //    bool use = CheckRule.CheckAllow(obj2.rules);
-            //    if (!use)
-            //        continue;
-
-            //    if (obj2.value is string)
-            //    {
-            //        string? item2 = obj2.value as string;
-            //        arg.Append(item2).Append(' ');
-            //    }
-            //    else if (obj2.value is JArray)
-            //    {
-            //        foreach (string item1 in obj2.value)
-            //        {
-            //            arg.Append(item1).Append(' ');
-            //        }
-            //    }
-            //}
-        }
-
-        //Mod加载器参数
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            var forge = obj.Loader == Loaders.NeoForge
-                ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            foreach (var item in forge.Arguments.Game)
-            {
-                arg.Add(item);
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.Arguments.Game)
-            {
-                arg.Add(item);
-            }
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.Arguments.Game)
-            {
-                arg.Add(item);
-            }
-        }
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            arg.Add("--tweakClass");
-            arg.Add("optifine.OptiFineTweaker");
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            arg.AddRange(obj.GetLoaderGameArg());
-        }
-
-        return arg;
-    }
-
-    /// <summary>
-    /// 创建Jvm参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
-    /// <param name="jvm1">选择的Java</param>
-    /// <param name="mixinport">注入通信端口</param>
-    /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> MakeJvmArgAsync(this GameSettingObj obj,
-        LoginObj login, JavaInfo jvm1, int? mixinport = null)
-    {
-        RunArgObj args;
-
-        var v2 = obj.IsGameVersionV2();
-
-        if (obj.JvmArg == null)
-        {
-            args = ConfigUtils.Config.DefaultJvmArg;
-        }
-        else
-        {
-            args = new()
-            {
-                JvmArgs = obj.JvmArg.JvmArgs
-                    ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
-                GCArgument = obj.JvmArg.GCArgument
-                    ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
-                GC = obj.JvmArg.GC
-                    ?? ConfigUtils.Config.DefaultJvmArg.GC,
-                JavaAgent = obj.JvmArg.JavaAgent
-                    ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
-                MaxMemory = obj.JvmArg.MaxMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
-                MinMemory = obj.JvmArg.MinMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg.MinMemory,
-                ColorASM = obj.JvmArg != null ? obj.JvmArg.ColorASM
-                    : ConfigUtils.Config.DefaultJvmArg.ColorASM
-            };
-        }
-
-        var jvm = new List<string>();
-
-        //javaagent
-        if (!string.IsNullOrWhiteSpace(args.JavaAgent))
-        {
-            jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
-        }
-
-        if (args.ColorASM == false && mixinport > 0 && jvm1.MajorVersion >= 8)
-        {
-            GameHelper.ReadyColorMCASM();
-            jvm.Add("-Dcolormc.mixin.port=" + mixinport);
-            jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
-            jvm.Add($"-javaagent:{GameHelper.ColorMCASM}");
-        }
-
-        //gc
-        switch (args.GC)
-        {
-            case GCType.G1GC:
-                jvm.Add("-XX:+UseG1GC");
-                break;
-            case GCType.SerialGC:
-                jvm.Add("-XX:+UseSerialGC");
-                break;
-            case GCType.ParallelGC:
-                jvm.Add("-XX:+UseParallelGC");
-                break;
-            case GCType.CMSGC:
-                jvm.Add("-XX:+UseConcMarkSweepGC");
-                break;
-            case GCType.User:
-                if (!string.IsNullOrWhiteSpace(args.GCArgument))
-                    jvm.Add(args.GCArgument.Trim());
-                break;
-            default:
-                break;
-        }
-
-        //mem
-        if (args.MinMemory is { } min && min != 0)
-        {
-            jvm.Add($"-Xms{min}m");
-        }
-        if (args.MaxMemory is { } max && max != 0)
-        {
-            jvm.Add($"-Xmx{max}m");
-        }
-        if (!string.IsNullOrWhiteSpace(args.JvmArgs))
-        {
-            foreach (var item in args.JvmArgs.Split("\n"))
-            {
-                jvm.Add(item.Trim());
-            }
-        }
-
-        if (obj.JvmArg?.RemoveJvmArg != true)
-        {
-            //loader
-            if (v2 && obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-            {
-                jvm.Add($"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}");
-                jvm.Add($"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-                    DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
-                    DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}");
-                jvm.Add($"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}");
-#if Phone
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    jvm.Add("-Dforgewrapper.justLaunch=true");
-                }
-#endif
-            }
-            else if (obj.Loader == Loaders.OptiFine)
-            {
-                jvm.Add($"-Dlibdir={LibrariesPath.BaseDir}");
-                jvm.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-                jvm.Add($"-Doptifine={LibrariesPath.GetOptiFineLib(obj)}");
-                if (v2)
-                {
-                    jvm.Add("--add-opens");
-                    jvm.Add("java.base/java.lang=ALL-UNNAMED");
-                    jvm.Add("--add-opens");
-                    jvm.Add("java.base/java.util=ALL-UNNAMED");
-                    jvm.Add("--add-opens");
-                    jvm.Add("java.base/java.net=ALL-UNNAMED");
-                    jvm.Add("--add-opens");
-                    jvm.Add("java.base/jdk.internal.loader=ALL-UNNAMED");
-                }
-            }
-
-            //jvmHead.Add("-Djava.rmi.server.useCodebaseOnly=true");
-            //jvmHead.Add("-XX:+UnlockExperimentalVMOptions");
-            //jvm.Add("-Dfml.ignoreInvalidMinecraftCertificates=true");
-            //jvm.Add("-Dfml.ignorePatchDiscrepancies=true");
-            //jvm.Add("-Dlog4j2.formatMsgNoLookups=true");
-            //jvmHead.Add("-Dcom.sun.jndi.rmi.object.trustURLCodebase=false");
-            //jvmHead.Add("-Dcom.sun.jndi.cosnaming.object.trustURLCodebase=false");
-            //jvmHead.Add($"-Dminecraft.client.jar={VersionPath.BaseDir}/{obj.Version}.jar");
-
-            jvm.AddRange(v2 ? obj.MakeV2JvmArg() : s_v1JvmArg);
-        }
-
-        //外置登陆器相关
-        if (login.AuthType == AuthType.Nide8)
-        {
-            jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
-            jvm.Add("-Dnide8auth.client=true");
-        }
-        else if (login.AuthType == AuthType.AuthlibInjector)
-        {
-            var res = await CoreHttpClient.GetStringAsync(login.Text1);
-            if (!res.State)
-            {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-            }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
-        }
-        else if (login.AuthType == AuthType.LittleSkin)
-        {
-            var res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
-            if (!res.State)
-            {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-            }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
-        }
-        else if (login.AuthType == AuthType.SelfLittleSkin)
-        {
-            var res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
-            if (!res.State)
-            {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-            }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
-        }
-
-        //log4j2-xml
-        var game = VersionPath.GetVersion(obj.Version)!;
-        if (game.Logging != null && ConfigUtils.Config.SafeLog4j)
-        {
-            var obj1 = DownloadItemHelper.BuildLog4jItem(game);
-            jvm.Add(game.Logging.Client.Argument.Replace("${path}", obj1.Local));
-        }
-
-        jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
-        jvm.Add($"-Dcolormc.game.uuid={obj.UUID}");
-        jvm.Add($"-Dcolormc.game.name={obj.Name}");
-        jvm.Add($"-Dcolormc.game.version={obj.Version}");
-        jvm.Add($"-Dcolormc.game.dir={obj.GetGamePath()}");
-
-        return jvm;
-    }
-
-    /// <summary>
-    /// 创建游戏启动参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="world">启动的世界</param>
-    /// <param name="server">加入的服务器</param>
-    /// <returns>游戏启动参数</returns>
-    private static List<string> MakeGameArg(this GameSettingObj obj, WorldObj? world, ServerObj? server)
-    {
-        var gameArg = new List<string>();
-        if (obj.JvmArg?.RemoveGameArg != true)
-        {
-            var v2 = obj.IsGameVersionV2();
-            gameArg.AddRange(v2 ? obj.MakeV2GameArg() : obj.MakeV1GameArg());
-        }
-#if !Phone
-        //设置游戏窗口大小
-        WindowSettingObj window;
-        if (obj.Window == null)
-        {
-            window = ConfigUtils.Config.Window;
-        }
-        else
-        {
-            window = new()
-            {
-                FullScreen = obj.Window.FullScreen
-                    ?? ConfigUtils.Config.Window.FullScreen,
-                Width = obj.Window.Width
-                    ?? ConfigUtils.Config.Window.Width,
-                Height = obj.Window.Height
-                    ?? ConfigUtils.Config.Window.Height,
-            };
-        }
-        if (window.FullScreen == true)
-        {
-            gameArg.Add("--fullscreen");
-        }
-        else
-        {
-            if (window.Width > 0)
-            {
-                gameArg.Add($"--width");
-                gameArg.Add($"{window.Width}");
-            }
-            if (window.Height > 0)
-            {
-                gameArg.Add($"--height");
-                gameArg.Add($"{window.Height}");
-            }
-        }
-#endif
-
-        //--quickPlayMultiplayer
-        //快速加入
-        if (world != null)
-        {
-            gameArg.Add($"--quickPlaySingleplayer");
-            gameArg.Add($"{world.LevelName}");
-        }
-        else
-        {
-            if (obj.StartServer != null)
-            {
-                server = obj.StartServer;
-            }
-            if (server != null && !string.IsNullOrWhiteSpace(server.IP) && server.Port != null)
-            {
-                if (CheckHelpers.IsGameVersion120(obj.Version))
-                {
-                    gameArg.Add($"--quickPlayMultiplayer");
-                    if (server.Port > 0)
-                    {
-                        gameArg.Add($"{server.IP}:{server.Port}");
-                    }
-                    else
-                    {
-                        gameArg.Add($"{server.IP}:25565");
-                    }
-                }
-                else
-                {
-                    gameArg.Add($"--server");
-                    gameArg.Add(server.IP);
-                    if (server.Port > 0)
-                    {
-                        gameArg.Add($"--port");
-                        gameArg.Add(server.Port.ToString()!);
-                    }
-                    else
-                    {
-                        gameArg.Add($"--port");
-                        gameArg.Add("25565");
-                    }
-                }
-            }
-        }
-
-        //游戏代理
-        if (obj.ProxyHost != null)
-        {
-            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
-            {
-                gameArg.Add($"--proxyHost");
-                gameArg.Add(obj.ProxyHost.IP);
-            }
-            if (obj.ProxyHost.Port != null && obj.ProxyHost.Port != 0)
-            {
-                gameArg.Add($"--proxyPort");
-                gameArg.Add(obj.ProxyHost.Port.ToString()!);
-            }
-            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.User))
-            {
-                gameArg.Add($"--proxyUser");
-                gameArg.Add(obj.ProxyHost.User);
-            }
-            if (!string.IsNullOrWhiteSpace(obj.ProxyHost.Password))
-            {
-                gameArg.Add($"--proxyPass");
-                gameArg.Add(obj.ProxyHost.Password);
-            }
-        }
-        else if (ConfigUtils.Config.Http.GameProxy)
-        {
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
-            {
-                gameArg.Add($"--proxyHost");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyIP);
-            }
-            if (ConfigUtils.Config.Http.ProxyPort != 0)
-            {
-                gameArg.Add($"--proxyPort");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyPort.ToString());
-            }
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyUser))
-            {
-                gameArg.Add($"--proxyUser");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyUser);
-            }
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyPassword))
-            {
-                gameArg.Add($"--proxyPass");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyPassword);
-            }
-        }
-
-        //自定义游戏参数
-        if (!string.IsNullOrWhiteSpace(obj.JvmArg?.GameArgs))
-        {
-            gameArg.AddRange(obj.JvmArg.GameArgs.Split("\n"));
-        }
-
-        return gameArg;
-    }
-
-    /// <summary>
-    /// 创建Classpath
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="enableasm">是否添加注入</param>
-    /// <returns>classpath</returns>
-    private static async Task<string> MakeClassPathAsync(this GameSettingObj obj, bool enableasm, bool checklocal)
-    {
-        var libraries = await obj.GetLibsAsync();
-        var classpath = new StringBuilder();
-        var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
-
-        if (enableasm)
-        {
-            libraries.Add(GameHelper.ColorMCASM);
-        }
-
-        //附加的classpath
-        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.ClassPath))
-        {
-            var list = obj.AdvanceJvm.ClassPath.Split(';');
-            var dir1 = obj.GetGamePath();
-            var dir2 = obj.GetBasePath();
-            foreach (var item1 in list)
-            {
-                var path = item1
-                    .Replace(GAME_DIR, dir1)
-                    .Replace(GAME_BASE_DIR, dir2)
-                    .Trim();
-                path = Path.GetFullPath(path);
-                if (!checklocal || File.Exists(path))
-                {
-                    libraries.Add(path);
-                }
-            }
-        }
-
-        //添加lib路径到classpath
-        foreach (var item in libraries)
-        {
-            if (!checklocal || File.Exists(item))
-            {
-                classpath.Append($"{item}{sep}");
-                ColorMCCore.OnGameLog(obj, $"    {item}");
-            }
-        }
-        classpath.Remove(classpath.Length - 1, 1);
-
-        return classpath.ToString().Trim();
-    }
-
-    /// <summary>
-    /// 替换参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="login">登录的账户</param>
-    /// <param name="args">所有参数参数</param>
-    /// <param name="classpath">classpath</param>
-    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath)
-    {
-        var version = VersionPath.GetVersion(obj.Version)!;
-        var assetsPath = AssetsPath.BaseDir;
-        var gameDir = InstancesPath.GetGamePath(obj);
-        var assetsIndexName = version.Assets ?? "legacy";
-
-        var version_name = obj.Loader switch
-        {
-            Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
-            Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
-            Loaders.Quilt => $"quilt-{obj.Version}-{obj.LoaderVersion}",
-            Loaders.NeoForge => $"neoforge-{obj.Version}-{obj.LoaderVersion}",
-            _ => obj.Version
-        };
-
-        var sep = SystemInfo.Os == OsType.Windows ? ";" : ":";
-
-        var argDic = new Dictionary<string, string>()
-        {
-            {"${auth_player_name}", login.UserName },
-            {"${version_name}", version_name },
-            {"${game_directory}", gameDir },
-            {"${assets_root}", assetsPath },
-            {"${assets_index_name}", assetsIndexName },
-            {"${auth_uuid}", login.UUID },
-            {"${auth_access_token}", string.IsNullOrWhiteSpace(login.AccessToken) ? "0" : login.AccessToken },
-            {"${game_assets}", assetsPath },
-            {"${user_properties}", "{}" },
-            {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "mojang" },
-            {"${version_type}", "release" },
-#if Phone
-            {"${natives_directory}", SystemInfo.Os == OsType.Android
-                ? "%natives_directory%" : LibrariesPath.GetNativeDir(obj.Version) },
-#else
-            {"${natives_directory}", LibrariesPath.GetNativeDir(obj.Version) },
-#endif
-            {"${library_directory}",LibrariesPath.BaseDir },
-            {"${classpath_separator}", sep },
-            {"${launcher_name}","ColorMC" },
-            {"${launcher_version}", ColorMCCore.Version  },
-            {"${classpath}", classpath },
-        };
-
-        for (int a = 0; a < args.Count; a++)
-        {
-            args[a] = argDic.Aggregate(args[a], (a, b) => a.Replace(b.Key, b.Value));
-        }
-    }
-
-    /// <summary>
-    /// 创建主类
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="version">游戏数据</param>
-    /// <param name="v2">是否为v2版本</param>
-    /// <returns>主类</returns>
-    public static string MakeMainClass(this GameSettingObj obj)
-    {
-        var version = VersionPath.GetVersion(obj.Version)
-            ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version));
-        var v2 = version.IsGameVersionV2();
-        if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
-        {
-            return obj.AdvanceJvm.MainClass;
-        }
-        else if (obj.Loader == Loaders.Normal)
-        {
-            return version.MainClass;
-        }
-        //forgewrapper
-        else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            if (v2)
-            {
-                return "io.github.zekerzhayard.forgewrapper.installer.Main";
-            }
-            else
-            {
-                var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-                return forge.MainClass;
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            return fabric.MainClass;
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            return quilt.MainClass;
-        }
-        //optifinewrapper
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            return "com.coloryr.optifinewrapper.OptifineWrapper";
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            return obj.GetLoaderMainClass();
-        }
-
-        return version.MainClass;
-    }
-
-    /// <summary>
-    /// 创建所有启动参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="arg">游戏启动参数</param>
-    /// <returns>参数列表</returns>
-    private static async Task<List<string>> MakeArgAsync(this GameSettingObj obj, GameMakeArg arg)
-    {
-        var list = new List<string>();
-        var jvmarg = await obj.MakeJvmArgAsync(arg.Login, arg.Jvm, arg.Mixinport);
-        var classpath = await obj.MakeClassPathAsync(arg.Mixinport > 0, arg.CheckLocal);
-        var gamearg = obj.MakeGameArg(arg.World, arg.Server);
-        obj.ReplaceAll(arg.Login, jvmarg, classpath);
-        obj.ReplaceAll(arg.Login, gamearg, classpath);
-        //jvm
-        list.AddRange(jvmarg);
-
-        //mainclass
-        list.Add(obj.MakeMainClass());
-
-        //gamearg
-        list.AddRange(gamearg);
-
-        return list;
-    }
-
-    /// <summary>
     /// 同时启动多个实例
     /// </summary>
     /// <param name="objs">启动的游戏列表</param>
@@ -1102,7 +340,9 @@ public static class Launch
                 //检查游戏文件
                 stopwatch.Restart();
                 stopwatch.Start();
-                var res = await obj.CheckGameFileAsync(token);
+
+                var arg1 = await GameArg.MakeArgAsync(obj, larg, token);
+                var res = await obj.CheckGameFileAsync(arg1, token);
                 var res3 = await larg.Auth.CheckLoginCoreAsync();
                 stopwatch.Stop();
                 temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
@@ -1158,7 +398,7 @@ public static class Launch
                         var list1 = await JavaHelper.FindJava();
                         list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
                     }
-                    var jv = game.JavaVersion.majorVersion;
+                    var jv = game.JavaVersion.MajorVersion;
                     jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
                     if (jvm == null)
                     {
@@ -1177,15 +417,7 @@ public static class Launch
 
                 //准备Jvm参数
                 larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
-                var arg = await obj.MakeArgAsync(new GameMakeArg
-                {
-                    Jvm = jvm!,
-                    Login = larg.Auth,
-                    World = larg.World,
-                    Server = larg.Server,
-                    Mixinport = larg.Mixinport,
-                    CheckLocal = true
-                });
+                var arg = obj.MakeRunArg(larg, arg1, true);
                 ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
                 bool hidenext = false;
                 foreach (var item in arg)
@@ -1407,13 +639,7 @@ public static class Launch
         larg.Update2?.Invoke(obj, LaunchState.Check);
 
         //检查游戏文件
-        var res = await obj.CheckGameFileAsync(CancellationToken.None);
-        var res3 = await larg.Auth.CheckLoginCoreAsync();
-
-        if (res3 != null)
-        {
-            res.Add(res3);
-        }
+        var arg1 = await GameArg.MakeArgAsync(obj, larg, CancellationToken.None);
 
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
@@ -1425,7 +651,7 @@ public static class Launch
                 var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
-            var jv = game.JavaVersion.majorVersion;
+            var jv = game.JavaVersion.MajorVersion;
             jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
             {
@@ -1444,14 +670,7 @@ public static class Launch
 
         //准备Jvm参数
         larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
-        var arg = await obj.MakeArgAsync(new GameMakeArg
-        {
-            Jvm = jvm!,
-            Login = larg.Auth,
-            World = larg.World,
-            Server = larg.Server,
-            Mixinport = larg.Mixinport
-        });
+        var arg = obj.MakeRunArg(larg, arg1, false);
 
         //自定义启动参数
         var env = new Dictionary<string, string>();
@@ -1525,12 +744,15 @@ public static class Launch
     {
         var stopwatch = new Stopwatch();
 
-        //版本号检测
-        if (string.IsNullOrWhiteSpace(obj.Version)
-            || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
-            || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+        if (obj.CustomLoader?.CustomJson != true)
         {
-            throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+            //版本号检测
+            if (string.IsNullOrWhiteSpace(obj.Version)
+                || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+                || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
+            {
+                throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+            }
         }
 
         //登录账户
@@ -1614,7 +836,9 @@ public static class Launch
         //检查游戏文件
         stopwatch.Restart();
         stopwatch.Start();
-        var res = await obj.CheckGameFileAsync(token);
+
+        var arg1 = await GameArg.MakeArgAsync(obj, larg, token);
+        var res = await obj.CheckGameFileAsync(arg1, token);
         var res3 = await larg.Auth.CheckLoginCoreAsync();
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
@@ -1662,7 +886,6 @@ public static class Launch
         stopwatch.Start();
         var path = obj.JvmLocal;
         JavaInfo? jvm = null;
-        var game = VersionPath.GetVersion(obj.Version)!;
         if (string.IsNullOrWhiteSpace(path))
         {
             if (JvmPath.Jvms.Count == 0)
@@ -1670,10 +893,21 @@ public static class Launch
                 var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
-            var jv = game.JavaVersion.majorVersion;
-            jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
+            jvm = JvmPath.GetInfo(obj.JvmName);
             if (jvm == null)
             {
+                foreach (var item in arg1.JavaVersions.OrderDescending())
+                {
+                    jvm = JvmPath.FindJava(item);
+                    if (jvm != null)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (jvm == null)
+            {
+                var jv = arg1.JavaVersions.First();
                 larg.Update2?.Invoke(obj, LaunchState.JavaError);
                 larg.Nojava?.Invoke(jv);
                 throw new LaunchException(LaunchState.JavaError,
@@ -1695,15 +929,7 @@ public static class Launch
 
         //准备Jvm参数
         larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
-        var arg = await obj.MakeArgAsync(new GameMakeArg
-        {
-            Jvm = jvm!,
-            Login = larg.Auth,
-            World = larg.World,
-            Server = larg.Server,
-            Mixinport = larg.Mixinport,
-            CheckLocal = true
-        });
+        var arg = obj.MakeRunArg(larg, arg1, true);
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
         bool hidenext = false;
         foreach (var item in arg)

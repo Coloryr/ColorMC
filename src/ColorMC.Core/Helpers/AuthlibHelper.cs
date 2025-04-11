@@ -38,7 +38,7 @@ public static class AuthlibHelper
     /// </summary>
     /// <param name="version">版本</param>
     /// <returns>下载实例</returns>
-    private static DownloadItemObj BuildNide8Item(string version)
+    private static FileItemObj BuildNide8Item(string version)
     {
         return new()
         {
@@ -52,7 +52,7 @@ public static class AuthlibHelper
     /// </summary>
     /// <param name="obj">AuthlibInjector信息</param>
     /// <returns>下载实例</returns>
-    private static DownloadItemObj BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
+    private static FileItemObj BuildAuthlibInjectorItem(AuthlibInjectorObj obj)
     {
         return new()
         {

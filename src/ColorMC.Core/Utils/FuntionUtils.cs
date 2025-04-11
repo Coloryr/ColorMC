@@ -95,6 +95,28 @@ public static class FuntionUtils
     }
 
     /// <summary>
+    /// 通过MavenId获取文件路径
+    /// </summary>
+    /// <param name="input">MavenId</param>
+    /// <returns>路径</returns>
+    public static string VersionNameToFile(string input)
+    {
+        var arg = input.Split(':');
+        if (arg.Length > 3)
+        {
+            return $"{arg[1]}-{arg[2]}-{arg[3]}.jar";
+        }
+        else if (arg.Length > 2)
+        {
+            return $"{arg[1]}-{arg[2]}.jar";
+        }
+        else
+        {
+            return arg[0];
+        }
+    }
+
+    /// <summary>
     /// 执行内存回收
     /// </summary>
     public static void RunGC()

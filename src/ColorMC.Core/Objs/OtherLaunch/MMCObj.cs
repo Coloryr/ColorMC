@@ -13,7 +13,8 @@ public record MMCObj
         //    public string uid { get; set; }
         //}
         //public string cachedName { get; set; }
-        //public string cachedVersion { get; set; }
+        [JsonProperty("cachedVersion")]
+        public string CachedVersion { get; set; }
         //public bool cachedVolatile { get; set; }
         //public bool dependencyOnly { get; set; }
         [JsonProperty("uid")]

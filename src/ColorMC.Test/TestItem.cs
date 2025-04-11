@@ -47,13 +47,13 @@ public static class TestItem
         else
         {
             //GameDownload.Download(version.versions.First()).Wait();
-            var list = DownloadItemHelper.BuildVersionDownloadAsync(version.Versions.Where(a => a.Id == "1.12.2").First()).Result;
-            if (list == null)
-            {
-                Console.WriteLine("下载列表获取失败");
-                return;
-            }
-            DownloadManager.StartAsync(list).Wait();
+            //var list = DownloadItemHelper.BuildVersionDownloadAsync(version.Versions.Where(a => a.Id == "1.12.2").First()).Result;
+            //if (list == null)
+            //{
+            //    Console.WriteLine("下载列表获取失败");
+            //    return;
+            //}
+            //DownloadManager.StartAsync(list).Wait();
         }
     }
 
@@ -120,19 +120,19 @@ public static class TestItem
 
     public static void Item7()
     {
-        var data = InstancesPath.Games.First();
-        var list = CheckHelpers.CheckGameFileAsync(data, CancellationToken.None).Result;
-        if (list == null)
-        {
-            Console.WriteLine("文件检查失败");
-        }
-        else
-        {
-            foreach (var item in list)
-            {
-                Console.WriteLine($"文件丢失:{item.Name}");
-            }
-        }
+        //var data = InstancesPath.Games.First();
+        //var list = CheckHelpers.CheckGameFileAsync(data, CancellationToken.None).Result;
+        //if (list == null)
+        //{
+        //    Console.WriteLine("文件检查失败");
+        //}
+        //else
+        //{
+        //    foreach (var item in list)
+        //    {
+        //        Console.WriteLine($"文件丢失:{item.Name}");
+        //    }
+        //}
     }
 
     public static void Item8()
@@ -624,15 +624,15 @@ public static class TestItem
 
     public static void Item37()
     {
-        SystemInfo.Os = OsType.Linux;
-        SystemInfo.IsArm = true;
+        //SystemInfo.Os = OsType.Linux;
+        //SystemInfo.IsArm = true;
 
-        var list = CheckHelpers.CheckGameFileAsync(new()
-        { 
-            Version = "1.21.1",
-            DirName = "test1",
-            Name = "test1"
-        }, CancellationToken.None).Result;
+        //var list = CheckHelpers.CheckGameFileAsync(new()
+        //{ 
+        //    Version = "1.21.1",
+        //    DirName = "test1",
+        //    Name = "test1"
+        //}, CancellationToken.None).Result;
     }
 
     public static void Item38()

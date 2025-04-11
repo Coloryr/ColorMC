@@ -174,7 +174,7 @@ public partial class CollectModel : TopModel, ICollectControl
             return;
         }
 
-        var list = new ConcurrentBag<DownloadItemObj>();
+        var list = new ConcurrentBag<FileItemObj>();
 
         //获取下载项目
         await Parallel.ForEachAsync(DownloadList, async (item, cancel) =>

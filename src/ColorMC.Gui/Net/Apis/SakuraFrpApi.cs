@@ -96,7 +96,7 @@ public static class SakuraFrpApi
     /// 创建Frp下载项目
     /// </summary>
     /// <returns></returns>
-    public static DownloadItemObj? BuildFrpItem(SakuraFrpDownloadObj data)
+    public static FileItemObj? BuildFrpItem(SakuraFrpDownloadObj data)
     {
         SakuraFrpDownloadObj.DownloadItemObj.Arch.ArchItem data1;
 

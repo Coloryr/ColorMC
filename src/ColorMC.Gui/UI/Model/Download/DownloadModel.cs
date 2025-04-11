@@ -166,7 +166,7 @@ public partial class DownloadModel : TopModel
     /// </summary>
     /// <param name="thread">下载线程</param>
     /// <param name="item">项目</param>
-    public void DownloadItemUpdate(int thread, DownloadItemObj item)
+    public void DownloadItemUpdate(int thread, FileItemObj item)
     {
         if (!_downloadList.TryGetValue(thread, out DownloadItemModel? value))
         {

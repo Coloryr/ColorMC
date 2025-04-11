@@ -97,10 +97,10 @@ public static class ModrinthHelper
     /// <param name="data">数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this ModrinthVersionObj data, GameSettingObj obj)
+    public static FileItemObj MakeModDownloadObj(this ModrinthVersionObj data, GameSettingObj obj)
     {
         var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
-        return new DownloadItemObj()
+        return new FileItemObj()
         {
             Name = data.Name,
             Url = file.Url,
@@ -115,9 +115,9 @@ public static class ModrinthHelper
     /// <param name="data">数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeDownloadObj(this ModrinthPackObj.FileObj data, GameSettingObj obj)
+    public static FileItemObj MakeDownloadObj(this ModrinthPackObj.FileObj data, GameSettingObj obj)
     {
-        return new DownloadItemObj()
+        return new FileItemObj()
         {
             Url = data.Downloads[0],
             Name = data.Path,
@@ -213,9 +213,9 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>下载列表</returns>
-    public static List<DownloadItemObj> GetModrinthModInfo(GetModrinthModInfoArg arg)
+    public static List<FileItemObj> GetModrinthModInfo(GetModrinthModInfoArg arg)
     {
-        var list = new List<DownloadItemObj>();
+        var list = new List<FileItemObj>();
 
         var size = arg.Info.Files.Count;
         var now = 0;

@@ -1,9 +1,11 @@
+using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
 
@@ -23,8 +25,10 @@ public static class VersionPath
     private static readonly Dictionary<string, FabricLoaderObj> s_fabricLoaders = [];
     private static readonly Dictionary<string, QuiltLoaderObj> s_quiltLoaders = [];
     private static readonly Dictionary<string, CustomLoaderObj> s_customLoader = [];
+    private static readonly Dictionary<string, OptifineObj> s_optifineLoader = [];
 
     private static VersionObj? _version;
+    private static string s_optifineFile;
 
     /// <summary>
     /// 版本缓存路径
@@ -81,6 +85,50 @@ public static class VersionPath
         Directory.CreateDirectory(NeoForgeDir);
         Directory.CreateDirectory(FabricDir);
         Directory.CreateDirectory(QuiltDir);
+
+        s_optifineFile = Path.Combine(BaseDir, Names.NameOptifineFile);
+
+        LoadOptifine();
+    }
+
+    /// <summary>
+    /// 读取高清修复信息
+    /// </summary>
+    private static void LoadOptifine()
+    {
+        if (File.Exists(s_optifineFile))
+        {
+            s_optifineLoader.Clear();
+            try
+            {
+                var data = PathHelper.ReadText(s_optifineFile);
+                var obj = JsonConvert.DeserializeObject<Dictionary<string, OptifineObj>>(data!);
+                if (obj != null)
+                {
+                    foreach (var item in obj)
+                    {
+                        s_optifineLoader.Add(item.Key, item.Value);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+    }
+
+    /// <summary>
+    /// 保存高清修复信息
+    /// </summary>
+    private static void SaveOptifine()
+    {
+        ConfigSave.AddItem(new()
+        {
+            Name = Names.NameOptifineFile,
+            Obj = s_optifineLoader,
+            File = s_optifineFile
+        });
     }
 
     /// <summary>
@@ -149,7 +197,7 @@ public static class VersionPath
     /// <param name="obj">游戏数据</param>
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
-        var url = UrlHelper.Download(obj.Url, CoreHttpClient.Source);
+        var url = UrlHelper.DownloadSourceChange(obj.Url, CoreHttpClient.Source);
         (var obj1, var data) = await GameAPI.GetGame(url);
         if (obj1 == null)
         {
@@ -284,6 +332,19 @@ public static class VersionPath
         {
             s_customLoader[uuid] = obj;
         }
+    }
+
+    /// <summary>
+    /// 添加高清修复信息
+    /// </summary>
+    /// <param name="obj">高清修复信息</param>
+    public static void AddOptifine(OptifineObj obj)
+    {
+        if (!s_optifineLoader.TryAdd(obj.Version, obj))
+        {
+            s_optifineLoader[obj.Version] = obj;
+        }
+        SaveOptifine();
     }
 
     /// <summary>
@@ -542,15 +603,45 @@ public static class VersionPath
     /// <summary>
     /// 获取自定义加载器数据
     /// </summary>
-    /// <param name="uuid"></param>
+    /// <param name="uuid">游戏实例</param>
     /// <returns></returns>
-    public static CustomLoaderObj? GetCustomLoaderObj(string uuid)
+    public static CustomLoaderObj? GetCustomLoaderObj(this GameSettingObj obj)
     {
-        if (s_customLoader.TryGetValue(uuid, out var temp))
+        if (s_customLoader.TryGetValue(obj.UUID, out var temp))
         {
             return temp;
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 获取高清修复信息
+    /// </summary>
+    /// <param name="version">版本号</param>
+    /// <returns></returns>
+    public static OptifineObj? GetOptifine(string version)
+    {
+        if (s_optifineLoader.TryGetValue(version, out var temp))
+        {
+            return temp;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取高清修复信息
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static OptifineObj? GetOptifine(this GameSettingObj obj)
+    {
+        if (obj.LoaderVersion == null || obj.Loader != Loaders.OptiFine)
+        {
+            return null;
+        }
+
+        return GetOptifine(obj.LoaderVersion);
     }
 }

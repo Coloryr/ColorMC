@@ -497,7 +497,7 @@ public partial class GameExportModel : MenuModel
                 continue;
             }
 
-            var type = DownloadItemHelper.TestSourceType(item.Obj1.ModId, item.Obj1.FileId);
+            var type = GameDownloadHelper.TestSourceType(item.Obj1.ModId, item.Obj1.FileId);
             if ((type == SourceType.CurseForge && Type == PackType.CurseForge)
                 || (type == SourceType.Modrinth && Type == PackType.Modrinth))
             {

@@ -10,6 +10,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -49,6 +50,10 @@ public partial class GameEditModel
     /// 语言列表
     /// </summary>
     public ObservableCollection<string> LangList { get; init; } = [];
+    /// <summary>
+    /// 自定义游戏启动配置列表
+    /// </summary>
+    public ObservableCollection<CustomJsonModel> JsonList { get; init; } = [];
 
     /// <summary>
     /// 加载器类型
@@ -137,6 +142,11 @@ public partial class GameEditModel
     [ObservableProperty]
     private bool _offLib;
     /// <summary>
+    /// 是否后删除原版运行库
+    /// </summary>
+    [ObservableProperty]
+    private bool _removeLib;
+    /// <summary>
     /// 是否在加载信息中
     /// </summary>
     [ObservableProperty]
@@ -151,11 +161,28 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private bool _logAutoShow;
+    /// <summary>
+    /// 是否启用自定义启动配置
+    /// </summary>
+    [ObservableProperty]
+    private bool _customJson;
 
     /// <summary>
     /// 游戏配置是否在加载
     /// </summary>
     private bool _gameLoad;
+
+    partial void OnCustomJsonChanged(bool value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        _obj.CustomLoader ??= new();
+        _obj.CustomLoader.CustomJson = value;
+        _obj.Save();
+    }
 
     /// <summary>
     /// 日志相关修改
@@ -386,6 +413,27 @@ public partial class GameEditModel
     }
 
     /// <summary>
+    /// 重新读取自定义启动配置
+    /// </summary>
+    [RelayCommand]
+    public void ReloadJson()
+    {
+        GameBinding.ReloadJson(_obj);
+        JsonList.Clear();
+        foreach (var item in _obj.CustomJson)
+        {
+            JsonList.Add(new(item));
+        }
+    }
+    /// <summary>
+    /// 打开自定义启动配置文件夹
+    /// </summary>
+    [RelayCommand]
+    public void OpenJsonPath()
+    {
+        PathBinding.OpenPath(_obj, PathType.JsonDir);
+    }
+    /// <summary>
     /// 重新获取语言列表
     /// </summary>
     /// <returns></returns>
@@ -403,14 +451,10 @@ public partial class GameEditModel
         Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info9");
         var list = await Task.Run(() =>
         {
-            var version = VersionPath.GetVersion(_obj.Version);
-            if (version != null)
+            var ass = _obj.FindAsset();
+            if (ass != null)
             {
-                var ass = AssetsPath.GetIndex(version);
-                if (ass != null)
-                {
-                    return ass.GetLangs();
-                }
+                return ass.GetIndex().GetLangs();
             }
 
             return GameLang.GetLangs(null);
@@ -453,7 +497,7 @@ public partial class GameEditModel
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info2"));
         //尝试通过ID获取版本号
-        if (DownloadItemHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
+        if (GameDownloadHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);
             Model.ProgressClose();
@@ -955,6 +999,14 @@ public partial class GameEditModel
         PID = _obj.PID;
 
         OffLib = _obj.CustomLoader?.OffLib ?? false;
+        RemoveLib = _obj.CustomLoader?.RemoveLib ?? false;
+        CustomJson = _obj.CustomLoader?.CustomJson ?? false;
+
+        JsonList.Clear();
+        foreach (var item in _obj.CustomJson)
+        {
+            JsonList.Add(new(item));
+        }
 
         GameRun = GameManager.IsGameRun(_obj);
 
@@ -970,7 +1022,7 @@ public partial class GameEditModel
                 var version = VersionPath.GetVersion(_obj.Version);
                 if (version != null)
                 {
-                    var ass = AssetsPath.GetIndex(version);
+                    var ass = AssetsPath.GetIndex(version.AssetIndex);
                     if (ass != null)
                     {
                         return ass.GetLang(lang);

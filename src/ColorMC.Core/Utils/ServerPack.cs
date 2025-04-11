@@ -43,7 +43,7 @@ public static class ServerPack
         //替换旧的实例
         obj.Game.CopyObj(obj.Game);
 
-        var list5 = new ConcurrentBag<DownloadItemObj>();
+        var list5 = new ConcurrentBag<FileItemObj>();
 
         var path = obj.Game.GetModsPath();
 

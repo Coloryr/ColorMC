@@ -106,7 +106,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>是否成功</returns>
-    public static async Task<bool> StartAsync(ICollection<DownloadItemObj> list)
+    public static async Task<bool> StartAsync(ICollection<FileItemObj> list)
     {
         if (s_stop)
         {
@@ -122,7 +122,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="item">下载项目</param>
     /// <param name="e">错误内容</param>
-    internal static void Error(DownloadItemObj item, Exception e)
+    internal static void Error(FileItemObj item, Exception e)
     {
         Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
     }
@@ -186,7 +186,7 @@ public static class DownloadManager
     /// <param name="list">下载列表</param>
     /// <param name="arg">下载参数</param>
     /// <returns>是否完成</returns>
-    private static Task<bool> StartAsync(ICollection<DownloadItemObj> list, DownloadArg arg)
+    private static Task<bool> StartAsync(ICollection<FileItemObj> list, DownloadArg arg)
     {
         var task = new DownloadTask(list, arg);
         s_tasks.Enqueue(task);

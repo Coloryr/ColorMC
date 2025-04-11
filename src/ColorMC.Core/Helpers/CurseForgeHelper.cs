@@ -31,11 +31,11 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">下载路径</param>
     /// <returns>下载项目</returns>
-    public static DownloadItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, GameSettingObj obj)
+    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
 
-        return new DownloadItemObj()
+        return new FileItemObj()
         {
             Url = data.DownloadUrl,
             Name = data.DisplayName,
@@ -188,7 +188,7 @@ public static class CurseForgeHelper
     {
         var size = arg.Info.Files.Count;
         var now = 0;
-        var list = new ConcurrentBag<DownloadItemObj>();
+        var list = new ConcurrentBag<FileItemObj>();
 
         //获取模组下载信息
 

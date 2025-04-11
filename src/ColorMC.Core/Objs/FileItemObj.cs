@@ -3,7 +3,7 @@ namespace ColorMC.Core.Objs;
 /// <summary>
 /// 下载项目
 /// </summary>
-public record DownloadItemObj
+public record FileItemObj
 {
     /// <summary>
     /// 项目名

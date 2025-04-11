@@ -19,7 +19,7 @@ internal class DownloadTask
     /// <summary>
     /// 下载项目队列
     /// </summary>
-    private readonly ConcurrentQueue<DownloadItemObj> _items = [];
+    private readonly ConcurrentQueue<FileItemObj> _items = [];
     /// <summary>
     /// 总下载数量
     /// </summary>
@@ -47,7 +47,7 @@ internal class DownloadTask
     /// </summary>
     /// <param name="list">下载项目列表</param>
     /// <param name="arg">GUI下载参数</param>
-    public DownloadTask(ICollection<DownloadItemObj> list, DownloadArg arg)
+    public DownloadTask(ICollection<FileItemObj> list, DownloadArg arg)
     {
         var names = new List<string>();
 
@@ -112,7 +112,7 @@ internal class DownloadTask
     /// 获取下载项目
     /// </summary>
     /// <returns>下载项目</returns>
-    public DownloadItemObj? GetItem()
+    public FileItemObj? GetItem()
     {
         if (_items.TryDequeue(out var item))
         {
