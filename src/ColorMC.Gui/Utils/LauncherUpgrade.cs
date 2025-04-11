@@ -98,7 +98,7 @@ internal static class LauncherUpgrade
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        var list = new List<DownloadItemObj>()
+        var list = new List<FileItemObj>()
         {
             new()
             {

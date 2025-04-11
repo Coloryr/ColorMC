@@ -94,7 +94,7 @@ public partial class ServerPackItemModel : ObservableObject
         }
         else
         {
-            SourceType = DownloadItemHelper.TestSourceType(PID, FID);
+            SourceType = GameDownloadHelper.TestSourceType(PID, FID);
         }
     }
 }

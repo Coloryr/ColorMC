@@ -70,7 +70,7 @@ public static class OpenFrpApi
     /// 创建Frp下载项目
     /// </summary>
     /// <returns></returns>
-    public static async Task<(DownloadItemObj?, string?)> BuildFrpItem()
+    public static async Task<(FileItemObj?, string?)> BuildFrpItem()
     {
         var data = await GetDownload();
         if (data == null || data.data == null)

@@ -11,6 +11,7 @@ using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -141,25 +142,14 @@ public static class ColorMCGui
                 return;
             }
 
-            //快捷启动
-            if (args.Length > 0)
-            {
-                if (args[0] == "-game" && args.Length < 2)
-                {
-                    return;
-                }
-                else
-                {
-                    BaseBinding.SetLaunch(args[1..]);
-                }
-            }
-
             //是否已经启动过了
             if (IsLock(out var port))
             {
-                LaunchSocketUtils.SendMessage(port).Wait();
+                LaunchSocketUtils.SendMessage(port, args).Wait();
                 return;
             }
+
+            StartArg(args);
 
             s_arg.Local = BaseDir;
             ColorMCCore.Init(s_arg);
@@ -182,6 +172,27 @@ public static class ColorMCGui
         {
             s_lock.Close();
             s_lock.Dispose();
+        }
+    }
+
+    public static void StartArg(string[] args)
+    {
+        //快捷启动
+        if (args.Length > 0)
+        {
+            if (args[0] == "-game" && args.Length >= 2)
+            {
+                BaseBinding.SetLaunch(args[1..]);
+            }
+            else if (args[0] == "-install" && args.Length == 2)
+            {
+                WindowManager.ShowAddGame(null, file: args[1]);
+            }
+            //MMC for labymod
+            else if (args[0] == "--import" && args.Length == 2)
+            {
+                WindowManager.ShowAddGame(null, file: args[1]);
+            }
         }
     }
 
@@ -252,7 +263,7 @@ public static class ColorMCGui
     {
         if (RunType == RunType.AppBuilder)
         {
-            BaseDir = AppContext.BaseDirectory;
+            BaseDir = AppContext.BaseDirectory + "colormc\\";
 
             SystemInfo.Init();
         }

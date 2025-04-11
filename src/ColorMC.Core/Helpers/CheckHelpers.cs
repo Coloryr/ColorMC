@@ -3,7 +3,6 @@ using System.Text.RegularExpressions;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -217,14 +216,14 @@ public static partial class CheckHelpers
     /// <param name="obj">下载项目</param>
     /// <param name="sha1">是否比较SHA1值</param>
     /// <returns>是否需要添加</returns>
-    public static bool CheckToAdd(this DownloadItemObj obj, bool sha1)
+    public static bool CheckToAdd(this FileItemObj obj, bool sha1)
     {
         if (!File.Exists(obj.Local))
         {
             return true;
         }
 
-        if (sha1)
+        if (sha1 && !string.IsNullOrEmpty(obj.Sha1))
         {
             using var data = PathHelper.OpenRead(obj.Local)!;
             return HashHelper.GenSha1(data) != obj.Sha1;
@@ -239,10 +238,10 @@ public static partial class CheckHelpers
     /// <param name="obj">资源数据</param>
     /// <param name="cancel">取消Token</param>
     /// <returns>下载列表</returns>
-    public static ConcurrentBag<DownloadItemObj> CheckAssets(this AssetsObj obj, CancellationToken cancel)
+    public static ConcurrentBag<FileItemObj> CheckAssets(this AssetsObj obj, CancellationToken cancel)
     {
         var list1 = new ConcurrentBag<string>();
-        var list = new ConcurrentBag<DownloadItemObj>();
+        var list = new ConcurrentBag<FileItemObj>();
         Parallel.ForEach(obj.Objects, (item) =>
         {
             if (cancel.IsCancellationRequested)
@@ -251,7 +250,7 @@ public static partial class CheckHelpers
             if (list1.Contains(item.Value.Hash))
                 return;
 
-            var obj1 = DownloadItemHelper.BuildAssetsItem(item.Key, item.Value.Hash);
+            var obj1 = GameDownloadHelper.BuildAssetsItem(item.Key, item.Value.Hash);
             if (obj1.CheckToAdd(ConfigUtils.Config.GameCheck.CheckAssetsSha1))
             {
                 list.Add(obj1);
@@ -263,36 +262,38 @@ public static partial class CheckHelpers
     }
 
     /// <summary>
+    /// 更新游戏arg文件
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static async Task<GameArgObj> CheckGameArgFile(this GameSettingObj obj)
+    {
+        var game = await VersionPath.CheckUpdateAsync(obj.Version);
+        //不存在游戏
+        if (game == null)
+        {
+            var var = await VersionPath.GetVersionsAsync();
+            var version = var?.Versions.Where(a => a.Id == obj.Version).FirstOrDefault()
+                ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+            var res1 = await VersionPath.AddGameAsync(version)
+                ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+            game = VersionPath.GetVersion(obj.Version)
+                ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+        }
+
+        return game;
+    }
+
+    /// <summary>
     /// 检查游戏文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="cancel">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>下载列表</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>> CheckGameFileAsync(this GameSettingObj obj, CancellationToken cancel)
+    public static async Task<ConcurrentBag<FileItemObj>> CheckGameFileAsync(this GameSettingObj obj, GameLaunchObj arg, CancellationToken cancel)
     {
-        var list = new ConcurrentBag<DownloadItemObj>();
-
-        //检查游戏启动json
-        var game = await VersionPath.CheckUpdateAsync(obj.Version);
-        if (game == null)
-        {
-            //不存在游戏
-            var var = await VersionPath.GetVersionsAsync();
-            var version = var?.Versions.Where(a => a.Id == obj.Version).FirstOrDefault()
-                ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
-            var res1 = await DownloadItemHelper.BuildVersionDownloadAsync(version)
-                ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
-
-            res1.ForEach(list.Add);
-
-            game = VersionPath.GetVersion(obj.Version);
-        }
-
-        if (game == null)
-        {
-            throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
-        }
+        var list = new ConcurrentBag<FileItemObj>();
 
         var list1 = new List<Task>();
 
@@ -301,18 +302,16 @@ public static partial class CheckHelpers
         {
             list1.Add(Task.Run(() =>
             {
-                var obj1 = DownloadItemHelper.BuildGameItem(game.Id);
-                if (obj1.CheckToAdd(ConfigUtils.Config.GameCheck.CheckCoreSha1))
+                if (arg.GameJar.CheckToAdd(ConfigUtils.Config.GameCheck.CheckCoreSha1))
                 {
-                    list.Add(obj1);
+                    list.Add(arg.GameJar);
                 }
 
-                if (game.Logging != null)
+                if (arg.Log4JXml != null)
                 {
-                    obj1 = DownloadItemHelper.BuildLog4jItem(game);
-                    if (obj1.CheckToAdd(true))
+                    if (arg.Log4JXml.CheckToAdd(true))
                     {
-                        list.Add(obj1);
+                        list.Add(arg.Log4JXml);
                     }
                 }
             }, cancel));
@@ -321,26 +320,20 @@ public static partial class CheckHelpers
         //检查游戏资源文件
         if (ConfigUtils.Config.GameCheck.CheckAssets)
         {
-            list1.Add(Task.Run(async () =>
+            list1.Add(Task.Run(() =>
             {
-                var assets = game.GetIndex();
-                if (assets == null)
+                var assets = arg.Assets.GetIndex();
+                if (assets != null)
                 {
-                    //不存在json文件
-                    var res = await GameAPI.GetAssets(game.AssetIndex.url)
-                        ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
-                    assets = res.Assets;
-                    game.AddIndex(res.Text);
-                }
-
-                var list1 = assets.CheckAssets(cancel);
-                foreach (var item in list1)
-                {
-                    if (cancel.IsCancellationRequested)
+                    var list1 = assets.CheckAssets(cancel);
+                    foreach (var item in list1)
                     {
-                        return;
+                        if (cancel.IsCancellationRequested)
+                        {
+                            return;
+                        }
+                        list.Add(item);
                     }
-                    list.Add(item);
                 }
             }, cancel));
         }
@@ -348,129 +341,23 @@ public static partial class CheckHelpers
         //检查运行库
         if (ConfigUtils.Config.GameCheck.CheckLib)
         {
-            list1.Add(Task.Run(async () =>
+            //检查游戏启动json
+            list1.Add(Task.Run(() =>
             {
-                if (obj.Loader != Loaders.Custom || obj.CustomLoader?.OffLib != true)
+                Parallel.ForEach(arg.GameLibs, (item) =>
                 {
-                    var list2 = await game.CheckGameLibAsync(cancel);
-                    if (list2.Count != 0)
+                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
                     {
-                        foreach (var item in list2)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Url))
-                            {
-                                list.Add(item);
-                            }
-                        }
+                        list.Add(item);
                     }
-                }
-
-                //检查加载器运行库
-                if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+                });
+                Parallel.ForEach(arg.LoaderLibs, (item) =>
                 {
-                    var list3 = await obj.CheckForgeLibAsync(cancel);
-                    if (cancel.IsCancellationRequested)
+                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
                     {
-                        return;
+                        list.Add(item);
                     }
-                    if (list3 == null)
-                    {
-                        var list4 = await DownloadItemHelper.BuildForge(obj)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-
-                        list4.ForEach(list.Add);
-                    }
-                    else
-                    {
-                        foreach (var item in list3)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Url))
-                            {
-                                list.Add(item);
-                            }
-                        }
-                    }
-                }
-                else if (obj.Loader == Loaders.Fabric)
-                {
-                    var list3 = obj.CheckFabricLib(cancel);
-                    if (cancel.IsCancellationRequested)
-                    {
-                        return;
-                    }
-                    if (list3 == null)
-                    {
-                        var list4 = await DownloadItemHelper.BuildFabric(obj)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-
-                        list4.ForEach(list.Add);
-                    }
-                    else
-                    {
-                        foreach (var item in list3)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Url))
-                            {
-                                list.Add(item);
-                            }
-                        }
-                    }
-                }
-                else if (obj.Loader == Loaders.Quilt)
-                {
-                    var list3 = obj.CheckQuiltLib(cancel);
-                    if (cancel.IsCancellationRequested)
-                    {
-                        return;
-                    }
-                    if (list3 == null)
-                    {
-                        var list4 = await DownloadItemHelper.BuildQuilt(obj)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-                        list4.ForEach(list.Add);
-                    }
-                    else
-                    {
-                        foreach (var item in list3)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.Url))
-                            {
-                                list.Add(item);
-                            }
-                        }
-                    }
-                }
-                else if (obj.Loader == Loaders.OptiFine)
-                {
-                    if (obj.CheckOptifineLib() == false)
-                    {
-                        var list4 = await DownloadItemHelper.BuildOptifine(obj)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-
-                        list.Add(list4);
-                    }
-                }
-                else if (obj.Loader == Loaders.Custom)
-                {
-                    if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
-                    {
-                        throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-                    }
-                    var list3 = await DownloadItemHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
-                    ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-                    if (cancel.IsCancellationRequested)
-                    {
-                        return;
-                    }
-
-                    foreach (var item in list3.List!)
-                    {
-                        if (!string.IsNullOrWhiteSpace(item.Url))
-                        {
-                            list.Add(item);
-                        }
-                    }
-                }
+                });
             }, cancel));
         }
 
@@ -578,7 +465,7 @@ public static partial class CheckHelpers
     /// <param name="login">保存的账户</param>
     /// <returns>下载项目</returns>
     /// <exception cref="LaunchException">启动失败</exception>
-    public static async Task<DownloadItemObj?> CheckLoginCoreAsync(this LoginObj login)
+    public static async Task<FileItemObj?> CheckLoginCoreAsync(this LoginObj login)
     {
         var item1 = login.AuthType switch
         {
@@ -687,42 +574,14 @@ public static partial class CheckHelpers
     /// <param name="obj">游戏实例</param>
     /// <param name="cancel">取消Token</param>
     /// <returns>下载列表</returns>
-    public static async Task<ConcurrentBag<DownloadItemObj>?> CheckForgeLibAsync(this GameSettingObj obj, CancellationToken cancel)
+    public static async Task<ConcurrentBag<FileItemObj>?> CheckForgeLibAsync(this GameSettingObj obj, CancellationToken cancel)
     {
-        var neo = obj.Loader == Loaders.NeoForge;
-        var version1 = VersionPath.GetVersion(obj.Version)!;
-        var v2 = version1.IsGameVersionV2();
-        if (v2)
-        {
-            GameHelper.ReadyForgeWrapper();
-        }
-
-        var forge = neo ?
-            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
-            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
-        if (forge == null)
+        var list1 = obj.GetForgeLibs();
+        if (list1 == null)
         {
             return null;
         }
-
-        //forge本体
-        var list1 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
-
-        var forgeinstall = neo ?
-            VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
-            VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
-        if (forgeinstall == null && v2)
-            return null;
-
-        //forge安装器
-        if (forgeinstall != null)
-        {
-            var list2 = DownloadItemHelper.BuildForgeLibs(forgeinstall, obj.Version,
-                obj.LoaderVersion!, neo, v2);
-            list1.AddRange(list2);
-        }
-
-        var list = new ConcurrentBag<DownloadItemObj>();
+        var list = new ConcurrentBag<FileItemObj>();
 
         await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
         {
@@ -763,7 +622,7 @@ public static partial class CheckHelpers
     /// <param name="obj">游戏实例</param>
     /// <param name="cancel">取消Token</param>
     /// <returns>下载列表</returns>
-    public static List<DownloadItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
+    public static List<FileItemObj>? CheckFabricLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
         if (fabric == null)
@@ -771,7 +630,7 @@ public static partial class CheckHelpers
             return null;
         }
 
-        var list = new List<DownloadItemObj>();
+        var list = new List<FileItemObj>();
 
         foreach (var item in fabric.Libraries)
         {
@@ -804,7 +663,7 @@ public static partial class CheckHelpers
     /// <param name="obj">游戏实例</param>
     /// <param name="cancel">取消Token</param>
     /// <returns>下载列表</returns>
-    public static List<DownloadItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
+    public static List<FileItemObj>? CheckQuiltLib(this GameSettingObj obj, CancellationToken cancel)
     {
         var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
         if (quilt == null)
@@ -812,7 +671,7 @@ public static partial class CheckHelpers
             return null;
         }
 
-        var list = new List<DownloadItemObj>();
+        var list = new List<FileItemObj>();
 
         foreach (var item in quilt.Libraries)
         {
@@ -839,50 +698,50 @@ public static partial class CheckHelpers
         return list;
     }
 
-    /// <summary>
-    /// 检查游戏运行库
-    /// </summary>
-    /// <param name="obj">游戏数据</param>
-    /// <param name="cancel">取消Token</param>
-    /// <returns>下载列表</returns>
-    public static async Task<List<DownloadItemObj>> CheckGameLibAsync(this GameArgObj obj, CancellationToken cancel)
-    {
-        var list = new List<DownloadItemObj>();
-        var list1 = await DownloadItemHelper.BuildGameLibsAsync(obj);
+    ///// <summary>
+    ///// 检查游戏运行库
+    ///// </summary>
+    ///// <param name="obj">游戏数据</param>
+    ///// <param name="cancel">取消Token</param>
+    ///// <returns>下载列表</returns>
+    //public static async Task<List<DownloadItemObj>> CheckGameLibAsync(this GameArgObj obj, CancellationToken cancel)
+    //{
+    //    var list = new List<DownloadItemObj>();
+    //    var list1 = await DownloadItemHelper.BuildGameLibsAsync(obj);
 
-        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
-        {
-            if (cancel.IsCancellationRequested)
-                return;
+    //    await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
+    //    {
+    //        if (cancel.IsCancellationRequested)
+    //            return;
 
-            if (!File.Exists(item.Local))
-            {
-                list.Add(item);
-                return;
-            }
-            if (ConfigUtils.Config.GameCheck.CheckLibSha1)
-            {
-                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
-                    FileShare.Read);
-                var sha1 = await HashHelper.GenSha1Async(stream);
-                if (!string.IsNullOrWhiteSpace(item.Sha1) && item.Sha1 != sha1)
-                {
-                    list.Add(item);
-                    return;
-                }
-            }
-            if (item.Later != null)
-            {
-                using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
-                        FileShare.Read);
-                item.Later.Invoke(stream);
-            }
+    //        if (!File.Exists(item.Local))
+    //        {
+    //            list.Add(item);
+    //            return;
+    //        }
+    //        if (ConfigUtils.Config.GameCheck.CheckLibSha1)
+    //        {
+    //            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+    //                FileShare.Read);
+    //            var sha1 = await HashHelper.GenSha1Async(stream);
+    //            if (!string.IsNullOrWhiteSpace(item.Sha1) && item.Sha1 != sha1)
+    //            {
+    //                list.Add(item);
+    //                return;
+    //            }
+    //        }
+    //        if (item.Later != null)
+    //        {
+    //            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.Read,
+    //                    FileShare.Read);
+    //            item.Later.Invoke(stream);
+    //        }
 
-            return;
-        });
+    //        return;
+    //    });
 
-        return list;
-    }
+    //    return list;
+    //}
 
     /// <summary>
     /// 检测OptiFine是否存在
@@ -891,7 +750,7 @@ public static partial class CheckHelpers
     /// <returns>是否存在</returns>
     public static bool CheckOptifineLib(this GameSettingObj obj)
     {
-        return File.Exists(LibrariesPath.GetOptiFineLib(obj));
+        return File.Exists(LibrariesPath.GetOptifineFile(obj));
     }
 }
 

@@ -10,15 +10,6 @@ namespace ColorMC.Setup.Wix
             return new Dir(@"%ProgramFiles%\ColorMC",
                             new File(@"..\build_out\win-x64-dotnet\ColorMC.Launcher.exe",
                                 new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
-                            new File(@"..\build_out\win-x64-dotnet\ColorMC.Core.pdb"),
-                            new File(@"..\build_out\win-x64-dotnet\ColorMC.Gui.pdb"),
-                            new File(@"..\build_out\win-x64-dotnet\Live2DCSharpSDK.App.pdb"),
-                            new File(@"..\build_out\win-x64-dotnet\Live2DCSharpSDK.Framework.pdb"),
-                            new File(@"..\build_out\win-x64-dotnet\ColorMC.Launcher.pdb"),
-                            new File(@"..\build_out\win-x64-dotnet\av_libglesv2.dll"),
-                            new File(@"..\build_out\win-x64-dotnet\libHarfBuzzSharp.dll"),
-                            new File(@"..\build_out\win-x64-dotnet\libSkiaSharp.dll"),
-                            new File(@"..\build_out\win-x64-dotnet\SDL2.dll"),
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
@@ -27,15 +18,6 @@ namespace ColorMC.Setup.Wix
             return new Dir(@"%ProgramFiles%\ColorMC",
                             new File(@"..\build_out\win-x64-min\ColorMC.Launcher.exe",
                                 new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
-                            new File(@"..\build_out\win-x64-min\ColorMC.Core.pdb"),
-                            new File(@"..\build_out\win-x64-min\ColorMC.Gui.pdb"),
-                            new File(@"..\build_out\win-x64-min\Live2DCSharpSDK.App.pdb"),
-                            new File(@"..\build_out\win-x64-min\Live2DCSharpSDK.Framework.pdb"),
-                            new File(@"..\build_out\win-x64-min\ColorMC.Launcher.pdb"),
-                            new File(@"..\build_out\win-x64-min\av_libglesv2.dll"),
-                            new File(@"..\build_out\win-x64-min\libHarfBuzzSharp.dll"),
-                            new File(@"..\build_out\win-x64-min\libSkiaSharp.dll"),
-                            new File(@"..\build_out\win-x64-min\SDL2.dll"),
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
@@ -97,7 +79,7 @@ namespace ColorMC.Setup.Wix
                 Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
-                Version = new Version(1, 34),
+                Version = new Version(1, 36),
                 Description = "A Minecraft Launcher",
                 OutFileName = file,
                 Scope = InstallScope.perUser

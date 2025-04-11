@@ -741,7 +741,7 @@ public static class ColorMCCloudAPI
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static (string?, DownloadItemObj?) BuildFrpItem(string key, FrpDownloadObj value)
+    public static (string?, FileItemObj?) BuildFrpItem(string key, FrpDownloadObj value)
     {
         string data1;
         string sha1;

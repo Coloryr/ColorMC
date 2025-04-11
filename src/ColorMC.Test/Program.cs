@@ -113,7 +113,7 @@ internal class Program
     //    Console.WriteLine($"下载项目:{DownloadManager.AllSize}/{DownloadManager.DoneSize} {obj.Name} {obj.NowSize}/{obj.AllSize}");
     //}
 
-    public static void Update(int index, DownloadItemObj item)
+    public static void Update(int index, FileItemObj item)
     {
         if (item.State == DownloadItemState.Error)
         {

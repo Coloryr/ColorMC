@@ -296,6 +296,13 @@ public static class AddGameHelper
                     }
                 }
 
+                game.ReadCustomJson();
+                if (game.CustomJson.Count > 0)
+                {
+                    game.CustomLoader ??= new();
+                    game.CustomLoader.CustomJson = true;
+                }
+
                 arg.Update2?.Invoke(CoreRunState.End);
                 return true;
             }
@@ -543,7 +550,7 @@ public static class AddGameHelper
     public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
         var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
-        var item = new DownloadItemObj()
+        var item = new FileItemObj()
         {
             Url = file.Url,
             Name = file.Filename,
@@ -593,7 +600,7 @@ public static class AddGameHelper
     {
         arg.Data.FixDownloadUrl();
 
-        var item = new DownloadItemObj()
+        var item = new FileItemObj()
         {
             Url = arg.Data.DownloadUrl,
             Name = arg.Data.FileName,

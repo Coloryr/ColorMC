@@ -1,9 +1,11 @@
 using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
 
@@ -17,31 +19,31 @@ public static class GameHelper
     /// <summary>
     /// ForgeWrapper位置
     /// </summary>
-    public static string ForgeWrapper { get; private set; }
+    public static FileItemObj ForgeWrapper { get; private set; }
 
     /// <summary>
     /// OptifineWrapper位置
     /// </summary>
-    public static string OptifineWrapper { get; private set; }
+    public static FileItemObj OptifineWrapper { get; private set; }
 
     /// <summary>
     /// ColorMCASM位置
     /// </summary>
-    public static string ColorMCASM { get; private set; }
+    public static FileItemObj ColorMCASM { get; private set; }
 
     /// <summary>
     /// Forge运行库修改映射
     /// </summary>
     /// <param name="item">运行库项目</param>
     /// <returns>运行库项目</returns>
-    public static ForgeLaunchObj.LibrariesObj? MakeLibObj(ForgeInstallNewObj.VersionInfoObj.LibrariesObj item)
+    public static ForgeLaunchObj.LibrariesObj? MakeLibObj(string item)
     {
-        var args = item.Name.Split(":");
+        var args = item.Split(":");
         if (args[0] == "net.minecraftforge" && args[1] == "forge")
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -55,7 +57,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -70,7 +72,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -85,7 +87,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -100,7 +102,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -115,7 +117,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -130,7 +132,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -145,7 +147,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -160,7 +162,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -175,7 +177,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -190,7 +192,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -205,7 +207,7 @@ public static class GameHelper
         {
             return new()
             {
-                Name = item.Name,
+                Name = item,
                 Downloads = new()
                 {
                     Artifact = new()
@@ -225,9 +227,13 @@ public static class GameHelper
     /// </summary>
     public static void ReadyForgeWrapper()
     {
-        ForgeWrapper = Path.Combine(LibrariesPath.BaseDir, "io", "github", "zekerzhayard", "ForgeWrapper",
-            "colormc-1.6.0", "ForgeWrapper-colormc-1.6.0.jar");
-        var file = new FileInfo(ForgeWrapper);
+        ForgeWrapper = new()
+        {
+            Name = "io.github.zekerzhayard:forgewrapper:colormc-1.6.0",
+            Local = Path.Combine(LibrariesPath.BaseDir, "io", "github", "zekerzhayard", "forgewrapper",
+            "colormc-1.6.0", "forgewrapper-colormc-1.6.0.jar")
+        };
+        var file = new FileInfo(ForgeWrapper.Local);
         if (!file.Exists)
         {
             if (!Directory.Exists(file.DirectoryName))
@@ -243,8 +249,12 @@ public static class GameHelper
     /// </summary>
     public static void ReadyOptifineWrapper()
     {
-        OptifineWrapper = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "OptifineWrapper", "1.1", "OptifineWrapper-1.1.jar");
-        var file = new FileInfo(OptifineWrapper);
+        OptifineWrapper = new()
+        {
+            Name = "com.coloryr:optifinewrapper:1.1",
+            Local = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "optifinewrapper", "1.1", "optifinewrapper-1.1.jar")
+        };
+        var file = new FileInfo(OptifineWrapper.Local);
         if (!file.Exists)
         {
             if (!Directory.Exists(file.DirectoryName))
@@ -260,8 +270,12 @@ public static class GameHelper
     /// </summary>
     public static void ReadyColorMCASM()
     {
-        ColorMCASM = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "colormc", "ColorMCASM", "1.1", "ColorMCASM-1.1-all.jar");
-        var file = new FileInfo(ColorMCASM);
+        ColorMCASM = new()
+        {
+            Name = "com.coloryr.colormc:colormcasm:1.1:all",
+            Local = Path.Combine(LibrariesPath.BaseDir, "com", "coloryr", "colormc", "colormcasm", "1.1", "colormcasm-1.1-all.jar")
+        };
+        var file = new FileInfo(ColorMCASM.Local);
         if (!file.Exists)
         {
             if (!Directory.Exists(file.DirectoryName))
@@ -323,9 +337,9 @@ public static class GameHelper
     /// <summary>
     /// 解压native
     /// </summary>
-    /// <param name="version">游戏版本</param>
+    /// <param name="native">解压路径</param>
     /// <param name="stream">文件流</param>
-    public static void UnpackNative(string version, Stream stream)
+    public static void UnpackNative(string native, Stream stream)
     {
         using var zFile = new ZipFile(stream);
         foreach (ZipEntry e in zFile)
@@ -336,7 +350,7 @@ public static class GameHelper
             }
             else if (e.IsFile)
             {
-                var file = Path.Combine(LibrariesPath.GetNativeDir(version), e.Name);
+                var file = Path.Combine(native, e.Name);
                 if (File.Exists(file))
                 {
                     continue;
@@ -369,6 +383,10 @@ public static class GameHelper
             if (item.Uid == "net.minecraft")
             {
                 game.Version = item.Version;
+                if (string.IsNullOrEmpty(game.Version))
+                {
+                    game.Version = item.CachedVersion;
+                }
             }
             else if (item.Uid == "net.minecraftforge")
             {
@@ -390,6 +408,11 @@ public static class GameHelper
                 game.Loader = Loaders.Quilt;
                 game.LoaderVersion = item.Version;
             }
+            else
+            {
+                game.CustomLoader ??= new();
+                game.CustomLoader.CustomJson = true;
+            }
         }
         game.JvmArg = new();
         game.Window = new();
@@ -404,7 +427,7 @@ public static class GameHelper
         }
         if (list.TryGetValue("JvmArgs", out item1))
         {
-            game.JvmArg.JvmArgs = item1;
+            game.JvmArg.JvmArgs = item1.Replace(' ', '\n').Replace("\"", "");
         }
         if (list.TryGetValue("MaxMemAlloc", out item1)
             && uint.TryParse(item1, out var item2))
@@ -874,5 +897,133 @@ public static class GameHelper
         }
 
         return list;
+    }
+
+    /// <summary>
+    /// 获取Forge的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<FileItemObj>? GetForgeLibs(this GameSettingObj obj)
+    {
+        var neo = obj.Loader == Loaders.NeoForge;
+        var version1 = VersionPath.GetVersion(obj.Version)!;
+        var v2 = version1.IsGameVersionV2();
+
+        var forge = neo ?
+            VersionPath.GetNeoForgeObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
+        if (forge == null)
+        {
+            return null;
+        }
+
+        //forge本体
+        var list1 = GameDownloadHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
+
+        var forgeinstall = neo ?
+            VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
+            VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
+        if (forgeinstall == null && v2)
+            return null;
+
+        //forge安装器
+        if (forgeinstall != null)
+        {
+            var list2 = GameDownloadHelper.BuildForgeLibs(forgeinstall, obj.Version,
+                obj.LoaderVersion!, neo, v2);
+            list1.AddRange(list2);
+        }
+
+        if (v2)
+        {
+            ReadyForgeWrapper();
+            list1.Add(ForgeWrapper);
+        }
+
+        return list1;
+    }
+
+    /// <summary>
+    /// 获取Fabric的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<FileItemObj>? GetFabricLibs(this GameSettingObj obj)
+    {
+        var fabric = VersionPath.GetFabricObj(obj.Version, obj.LoaderVersion!);
+        if (fabric == null)
+        {
+            return null;
+        }
+
+        var list = new List<FileItemObj>();
+
+        foreach (var item in fabric.Libraries)
+        {
+            var name = FuntionUtils.VersionNameToPath(item.Name);
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadFabric(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 获取Quilt的所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<FileItemObj>? GetQuiltLibs(this GameSettingObj obj)
+    {
+        var quilt = VersionPath.GetQuiltObj(obj.Version, obj.LoaderVersion!);
+        if (quilt == null)
+        {
+            return null;
+        }
+
+        var list = new List<FileItemObj>();
+
+        foreach (var item in quilt.Libraries)
+        {
+            var name = FuntionUtils.VersionNameToPath(item.Name);
+            string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
+
+            list.Add(new()
+            {
+                Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
+                Name = item.Name,
+                Local = file
+            });
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 获取高清修复所有运行库
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns></returns>
+    public static List<FileItemObj>? GetOptifineLibs(this GameSettingObj obj)
+    {
+        ReadyOptifineWrapper();
+        var optifine = obj.GetOptifine();
+        if (optifine == null)
+        {
+            return null;
+        }
+        return [OptifineWrapper, new()
+        {
+            Name = optifine.FileName,
+            Local = LibrariesPath.GetOptifineFile(obj.Version, obj.LoaderVersion!),
+            Overwrite = true,
+            Url = optifine.Url1
+        }];
     }
 }

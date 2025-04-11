@@ -1,4 +1,3 @@
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
@@ -37,9 +36,17 @@ public static class LibrariesPath
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns>路径</returns>
-    public static string GetNativeDir(string version)
+    public static string GetNativeDir(string? version)
     {
-        var dir = Path.Combine(NativeDir, version);
+        string dir;
+        if (version == null)
+        {
+            dir = Path.Combine(NativeDir, Names.NameDefaultDir);
+        }
+        else
+        {
+            dir = Path.Combine(NativeDir, version);
+        }
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -55,13 +62,23 @@ public static class LibrariesPath
     }
 
     /// <summary>
+    /// 获取游戏核心路径
+    /// </summary>
+    /// <param name="name">保存的名字</param>
+    /// <returns></returns>
+    public static string GetGameFileWithDir(string name)
+    {
+        return Path.Combine(BaseDir, "net", "minecraft", "client", $"{name}.jar");
+    }
+
+    /// <summary>
     /// 获取OptiFine路径
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static string GetOptiFineLib(this GameSettingObj obj)
+    public static string GetOptifineFile(this GameSettingObj obj)
     {
-        return GetOptiFineLib(obj.Version, obj.LoaderVersion!);
+        return GetOptifineFile(obj.Version, obj.LoaderVersion!);
     }
 
     /// <summary>
@@ -70,7 +87,7 @@ public static class LibrariesPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">optifine版本</param>
     /// <returns></returns>
-    public static string GetOptiFineLib(string mc, string version)
+    public static string GetOptifineFile(string mc, string version)
     {
         return Path.Combine(BaseDir, "optifine", "installer", $"OptiFine-{mc}-{version}.jar");
     }
@@ -82,7 +99,7 @@ public static class LibrariesPath
     /// <returns></returns>
     public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
     {
-        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
+        if (obj.GetCustomLoaderObj() is { } obj1)
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
@@ -106,7 +123,7 @@ public static class LibrariesPath
     /// <returns></returns>
     public static List<string> GetLoaderGameArg(this GameSettingObj obj)
     {
-        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
+        if (obj.GetCustomLoaderObj() is { } obj1)
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
@@ -117,9 +134,14 @@ public static class LibrariesPath
         return [];
     }
 
+    /// <summary>
+    /// 获取自定义加载器主类
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static string GetLoaderMainClass(this GameSettingObj obj)
     {
-        if (VersionPath.GetCustomLoaderObj(obj.UUID) is { } obj1)
+        if (obj.GetCustomLoaderObj() is { } obj1)
         {
             if (obj1.Loader is ForgeLaunchObj obj2)
             {
@@ -136,15 +158,11 @@ public static class LibrariesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="v2">V2模式</param>
     /// <returns>Lib地址列表</returns>
-    public static async Task<List<string>> GetLibsAsync(this GameSettingObj obj)
+    public static List<string> GetLibs(this GameSettingObj obj, GameLaunchObj arg)
     {
-        var v2 = obj.IsGameVersionV2();
-        var loaderList = new Dictionary<LibVersionObj, string>();
         var gameList = new Dictionary<LibVersionObj, string>();
-        var version = VersionPath.GetVersion(obj.Version)!;
 
-        var list4 = await DownloadItemHelper.BuildGameLibsAsync(version);
-        foreach (var item in list4)
+        foreach (var item in arg.GameLibs)
         {
             if (item.Later == null)
             {
@@ -158,61 +176,19 @@ public static class LibrariesPath
                 gameList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }
-
-        //获取加载器的运行库
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            var forge = obj.Loader == Loaders.NeoForge ?
-                obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-
-            var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
-                obj.Loader == Loaders.NeoForge, v2, false);
-
-            foreach (var item in list2)
-            {
-                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
-            }
-
-            if (v2)
-            {
-                loaderList.AddOrUpdate(new(), GameHelper.ForgeWrapper);
-            }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.Libraries)
-            {
-                var name = FuntionUtils.VersionNameToPath(item.Name);
-                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
-                    Path.GetFullPath($"{BaseDir}/{name}"));
-            }
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.Libraries)
-            {
-                var name = FuntionUtils.VersionNameToPath(item.Name);
-                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name),
-                    Path.GetFullPath($"{BaseDir}/{name}"));
-            }
-        }
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            GameHelper.ReadyOptifineWrapper();
-            loaderList.AddOrUpdate(new(), GameHelper.OptifineWrapper);
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            var list2 = obj.GetCustomLoaderLibs();
-            foreach (var (Name, Local) in list2)
-            {
-                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(Name), Local);
-            }
-        }
-
         var output = new Dictionary<LibVersionObj, string>();
+
+        if (obj.CustomLoader?.CustomJson == true)
+        {
+            foreach (var item in gameList)
+            {
+                output.AddOrUpdate(item.Key, item.Value);
+            }
+
+            return [.. output.Values, Path.GetFullPath(arg.GameJar.Local)];
+        }
+
+        var loaderList = new Dictionary<LibVersionObj, string>();
 
         //拼接运行库列表
         if (obj.Loader == Loaders.Custom && obj.CustomLoader?.OffLib == true)
@@ -221,20 +197,26 @@ public static class LibrariesPath
             {
                 output.AddOrUpdate(item.Key, item.Value);
             }
-            foreach (var item in gameList)
+            if (obj.CustomLoader?.RemoveLib != true)
             {
-                if (output.ContainsKey(item.Key))
+                foreach (var item in gameList)
                 {
-                    continue;
+                    if (output.ContainsKey(item.Key))
+                    {
+                        continue;
+                    }
+                    output.Add(item.Key, item.Value);
                 }
-                output.Add(item.Key, item.Value);
             }
         }
         else
         {
-            foreach (var item in gameList)
+            if (obj.CustomLoader?.RemoveLib != true)
             {
-                output.AddOrUpdate(item.Key, item.Value);
+                foreach (var item in gameList)
+                {
+                    output.AddOrUpdate(item.Key, item.Value);
+                }
             }
             foreach (var item in loaderList)
             {
@@ -247,7 +229,7 @@ public static class LibrariesPath
         //游戏核心
         if (obj.Loader != Loaders.NeoForge)
         {
-            output1.Add(GetGameFile(obj.Version));
+            output1.Add(Path.GetFullPath(arg.GameJar.Local));
         }
 
         return output1;
