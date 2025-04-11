@@ -652,13 +652,13 @@ public static class InstancesPath
             }
 
             game.Mods ??= [];
+            game.CustomJson ??= [];
             game.LaunchData ??= new()
             {
                 AddTime = DateTime.Now,
                 LastPlay = new()
             };
 
-            game.ReadCustomJson();
             game.Save();
             game.SaveLaunchData();
             game.AddToGroup();
@@ -963,14 +963,14 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void ReadCustomJson(this GameSettingObj obj)
     {
+        obj.CustomJson ??= [];
+        obj.CustomJson.Clear();
+
         var dir = obj.GetGameJsonPath();
         if (!Directory.Exists(dir))
         {
             return;
         }
-
-        obj.CustomJson ??= [];
-        obj.CustomJson.Clear();
 
         foreach (var item in Directory.GetFiles(dir))
         {

@@ -383,6 +383,10 @@ public static class GameHelper
             if (item.Uid == "net.minecraft")
             {
                 game.Version = item.Version;
+                if (string.IsNullOrEmpty(game.Version))
+                {
+                    game.Version = item.CachedVersion;
+                }
             }
             else if (item.Uid == "net.minecraftforge")
             {
@@ -423,7 +427,7 @@ public static class GameHelper
         }
         if (list.TryGetValue("JvmArgs", out item1))
         {
-            game.JvmArg.JvmArgs = item1;
+            game.JvmArg.JvmArgs = item1.Replace(' ', '\n').Replace("\"", "");
         }
         if (list.TryGetValue("MaxMemAlloc", out item1)
             && uint.TryParse(item1, out var item2))

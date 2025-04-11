@@ -296,6 +296,13 @@ public static class AddGameHelper
                     }
                 }
 
+                game.ReadCustomJson();
+                if (game.CustomJson.Count > 0)
+                {
+                    game.CustomLoader ??= new();
+                    game.CustomLoader.CustomJson = true;
+                }
+
                 arg.Update2?.Invoke(CoreRunState.End);
                 return true;
             }

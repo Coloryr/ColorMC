@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -225,7 +226,7 @@ public static class LaunchSocketUtils
     /// </summary>
     /// <param name="port"></param>
     /// <returns></returns>
-    public static async Task SendMessage(int port)
+    public static async Task SendMessage(int port, string[] data)
     {
         if (port <= 0)
         {
@@ -247,11 +248,11 @@ public static class LaunchSocketUtils
 
             IChannel clientChannel = await bootstrap.ConnectAsync(IPAddress.Parse("127.0.0.1"), port);
 
-            if (BaseBinding.StartLaunch != null)
+            if (data != null && data.Length != 0)
             {
                 var buf = Unpooled.Buffer();
                 buf.WriteInt(TypeLaunchStart)
-                    .WriteStringList(BaseBinding.StartLaunch);
+                    .WriteStringList(data);
                 await clientChannel.WriteAndFlushAsync(buf);
             }
             else
@@ -362,7 +363,11 @@ public static class LaunchSocketUtils
                     //启动游戏实例
                     else if (type == TypeLaunchStart)
                     {
-                        BaseBinding.Launch(buffer.ReadStringList());
+                        var data = buffer.ReadStringList();
+                        Dispatcher.UIThread.Post(() =>
+                        {
+                            ColorMCGui.StartArg(data);
+                        });
                     }
                     //游戏实例绑定
                     else if (type == TypeGameChannel)

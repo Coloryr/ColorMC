@@ -489,7 +489,7 @@ public static class GameArg
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
             jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
-            jvm.Add($"-javaagent:{GameHelper.ColorMCASM}");
+            jvm.Add($"-javaagent:{GameHelper.ColorMCASM.Local}");
         }
 
         //gc
@@ -1070,6 +1070,14 @@ public static class GameArg
                     }
                 }
             }
+
+            if (arg.JvmArgs.Count == 0)
+            {
+                arg.JvmArgs.AddRange(s_v1JvmArg);
+            }
+
+            arg.JvmArgs.AddRange(jvmarg);
+            arg.GameArgs.AddRange(gamearg);
 
             //log4j2-xml
             if (logging != null && ConfigUtils.Config.SafeLog4j)
