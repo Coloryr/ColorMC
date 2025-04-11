@@ -36,7 +36,7 @@ internal static class LauncherUpgrade
         LocalPath[0] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Core.dll");
         LocalPath[1] = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.dll");
 
-        for (int a = 0; a < 4; a++)
+        for (int a = 0; a < 2; a++)
         {
             if (File.Exists(LocalPath[a]))
             {
