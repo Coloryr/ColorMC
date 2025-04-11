@@ -786,7 +786,7 @@ public static class GameArg
             arg.JavaVersions.Add(game.JavaVersion.MajorVersion);
 
             //处理运行库
-            var task1 = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
                 arg.GameJar = GameDownloadHelper.BuildGameItem(game.Id);
@@ -870,46 +870,42 @@ public static class GameArg
                 }
             }, cancel);
 
-            //处理启动参数
-            var task2 = Task.Run(() =>
+            if (obj.JvmArg?.RemoveGameArg != true)
             {
-                if (obj.JvmArg?.RemoveGameArg != true)
+                if (v2)
                 {
-                    if (v2)
+                    arg.JvmArgs.AddRange(MakeV2JvmArg(game));
+                }
+                else
+                {
+                    arg.JvmArgs.AddRange(s_v1JvmArg);
+                }
+                arg.JvmArgs.AddRange(MakeLoaderJvmArg(v2, obj));
+            }
+
+            arg.JvmArgs.AddRange(jvmarg);
+
+            if (obj.JvmArg?.RemoveGameArg != true)
+            {
+                if (v2)
+                {
+                    arg.GameArgs.AddRange(MakeV2GameArg(game));
+                    arg.GameArgs.AddRange(MakeLoaderV2GameArg(obj));
+                }
+                else
+                {
+                    if (obj.Loader != Loaders.Normal)
                     {
-                        arg.JvmArgs.AddRange(MakeV2JvmArg(game));
+                        arg.GameArgs.AddRange(MakeLoaderV1GameArg(obj, game));
                     }
                     else
                     {
-                        arg.JvmArgs.AddRange(s_v1JvmArg);
-                    }
-                    arg.JvmArgs.AddRange(MakeLoaderJvmArg(v2, obj));
-                }
-
-                arg.JvmArgs.AddRange(jvmarg);
-
-                if (obj.JvmArg?.RemoveGameArg != true)
-                {
-                    if (v2)
-                    {
-                        arg.GameArgs.AddRange(MakeV2GameArg(game));
-                        arg.GameArgs.AddRange(MakeLoaderV2GameArg(obj));
-                    }
-                    else
-                    {
-                        if (obj.Loader != Loaders.Normal)
-                        {
-                            arg.GameArgs.AddRange(MakeLoaderV1GameArg(obj, game));
-                        }
-                        else
-                        {
-                            arg.GameArgs.AddRange(MakeV1GameArg(game));
-                        }
+                        arg.GameArgs.AddRange(MakeV1GameArg(game));
                     }
                 }
+            }
 
-                arg.GameArgs.AddRange(gamearg);
-            }, cancel);
+            arg.GameArgs.AddRange(gamearg);
 
             //材质与主类
             var assets = game.AssetIndex.GetIndex();
@@ -923,9 +919,8 @@ public static class GameArg
             }
 
             arg.Assets = game.AssetIndex;
-            arg.MainClass = MakeMainClass(obj);
 
-            await Task.WhenAll(task1, task2);
+            arg.MainClass = MakeMainClass(obj);
         }
         else
         {
