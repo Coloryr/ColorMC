@@ -443,10 +443,9 @@ public static class GameArg
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
-    /// <param name="jvm1">选择的Java</param>
     /// <param name="mixinport">注入通信端口</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<List<string>> MakeJvmArgAsync(this GameSettingObj obj, LoginObj login, int? mixinport = null)
+    private static async Task<(List<string>, bool)> MakeJvmArgAsync(this GameSettingObj obj, LoginObj login, int? mixinport = null)
     {
         RunArgObj args;
 
@@ -476,7 +475,7 @@ public static class GameArg
         }
 
         var jvm = new List<string>();
-
+        bool useasm = false;
         //javaagent
         if (!string.IsNullOrWhiteSpace(args.JavaAgent))
         {
@@ -486,6 +485,7 @@ public static class GameArg
         //colorasm
         if (args.ColorASM == false && mixinport > 0)
         {
+            useasm = true;
             GameHelper.ReadyColorMCASM();
             jvm.Add("-Dcolormc.mixin.port=" + mixinport);
             jvm.Add("-Dcolormc.mixin.uuid=" + obj.UUID);
@@ -578,7 +578,7 @@ public static class GameArg
         jvm.Add($"-Dcolormc.game.version={obj.Version}");
         jvm.Add($"-Dcolormc.game.dir={obj.GetGamePath()}");
 
-        return jvm;
+        return (jvm, useasm);
     }
 
     /// <summary>
@@ -651,7 +651,7 @@ public static class GameArg
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
 
-        if (larg.Mixinport > 0)
+        if (arg.UseColorMCASM)
         {
             arg.GameLibs.Add(GameHelper.ColorMCASM);
         }
@@ -779,6 +779,8 @@ public static class GameArg
         //创建启动器自定义gamearg
         var gamearg = obj.MakeGameArg(arg1.World, arg1.Server);
 
+        arg.UseColorMCASM = jvmarg.Item2;
+
         if (obj.CustomLoader?.CustomJson != true)
         {
             var game = await CheckHelpers.CheckGameArgFile(obj);
@@ -883,7 +885,7 @@ public static class GameArg
                 arg.JvmArgs.AddRange(MakeLoaderJvmArg(v2, obj));
             }
 
-            arg.JvmArgs.AddRange(jvmarg);
+            arg.JvmArgs.AddRange(jvmarg.Item1);
 
             if (obj.JvmArg?.RemoveGameArg != true)
             {
@@ -1071,7 +1073,7 @@ public static class GameArg
                 arg.JvmArgs.AddRange(s_v1JvmArg);
             }
 
-            arg.JvmArgs.AddRange(jvmarg);
+            arg.JvmArgs.AddRange(jvmarg.Item1);
             arg.GameArgs.AddRange(gamearg);
 
             //log4j2-xml
