@@ -439,6 +439,8 @@
 	"SettingWindow.Tab8.Text30": "摇杆降速",
 	"SettingWindow.Tab8.Text31": "导出",
 	"SettingWindow.Tab8.Text32": "重命名",
+	"SettingWindow.Tab8.Text33": "完全禁用手柄映射功能",
+	"SettingWindow.Tab8.Text34": "注意：如果你自己有相应的软件，可以开启这个选项，修改后会重启",
 	"SettingWindow.Tab8.Info1": "是否要删除手柄方案 {0}",
 	"SettingWindow.Tab8.Info2": "配置名字",
 	"SettingWindow.Tab8.Info3": "请按下手柄扳机来绑定",

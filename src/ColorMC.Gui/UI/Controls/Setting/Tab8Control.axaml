@@ -29,6 +29,13 @@
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding InputEnable}"
+                            OffContent="{setting:Localize SettingWindow.Tab8.Text33}"
+                            OnContent="{setting:Localize SettingWindow.Tab8.Text33}" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text34}" TextWrapping="Wrap" />
+                        <ToggleSwitch
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding InputEnable}"
                             OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
                             OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
@@ -202,7 +209,7 @@
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text16}"
                         TextWrapping="Wrap" />
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" DockPanel.Dock="Bottom">
+                    <panel:WrapPanelWithStretch DockPanel.Dock="Bottom" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="260">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
                             <TextBlock
