@@ -12,7 +12,7 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
-    <ScrollViewer IsEnabled="{Binding IsInputEnable}">
+    <ScrollViewer>
         <StackPanel Margin="0,0,10,15">
             <Panel Margin="10,5,10,3">
                 <Border Classes="t2">
@@ -28,85 +28,87 @@
                         <ToggleSwitch
                             Margin="0,0,10,0"
                             VerticalAlignment="Center"
-                            IsChecked="{Binding InputEnable}"
+                            IsChecked="{Binding InputDisable}"
                             OffContent="{setting:Localize SettingWindow.Tab8.Text33}"
                             OnContent="{setting:Localize SettingWindow.Tab8.Text33}" />
                         <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text34}" TextWrapping="Wrap" />
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            VerticalAlignment="Center"
-                            IsChecked="{Binding InputEnable}"
-                            OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
-                            OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
-                            <TextBlock Text="{Binding InputNum}" />
-                        </DockPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
-                            <DockPanel MinWidth="230">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
-                                <ComboBox
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding InputNames}"
-                                    SelectedIndex="{Binding InputIndex}" />
-                            </DockPanel>
-                        </panel:WrapPanelWithStretch>
-                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                        <StackPanel IsEnabled="{Binding IsInputEnable}">
+                            <ToggleSwitch
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center"
+                                IsChecked="{Binding InputEnable}"
+                                OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
+                                OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
-                                <ComboBox
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding Configs}"
-                                    SelectedIndex="{Binding SelectConfig}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
+                                <TextBlock Text="{Binding InputNum}" />
                             </DockPanel>
-                            <DockPanel MinWidth="230" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
-                                <ComboBox
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding Configs}"
-                                    SelectedIndex="{Binding NowConfig}" />
-                            </DockPanel>
-                        </panel:WrapPanelWithStretch>
-                        <WrapPanel Margin="0,0,10,-5">
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,3,3"
-                                Classes="top"
-                                Command="{Binding NewInputConfig}"
-                                Content="{setting:Localize Button.Add}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,3,3"
-                                Classes="top"
-                                Command="{Binding RenameInputConfig}"
-                                Content="{setting:Localize SettingWindow.Tab8.Text32}"
-                                IsEnabled="{Binding InputExist}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,3,3"
-                                Classes="top"
-                                Command="{Binding DeleteInputConfig}"
-                                Content="{setting:Localize Button.Delete}"
-                                IsEnabled="{Binding InputExist}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,3,3"
-                                Classes="top"
-                                Command="{Binding ImportInputConfig}"
-                                Content="{setting:Localize Button.Input}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-2,3,3"
-                                Classes="top"
-                                Command="{Binding ExportInputConfig}"
-                                Content="{setting:Localize SettingWindow.Tab8.Text31}"
-                                IsEnabled="{Binding InputExist}" />
-                        </WrapPanel>
+                            <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
+                                <DockPanel MinWidth="230">
+                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
+                                    <ComboBox
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding InputNames}"
+                                        SelectedIndex="{Binding InputIndex}" />
+                                </DockPanel>
+                            </panel:WrapPanelWithStretch>
+                            <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                                <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
+                                    <ComboBox
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding Configs}"
+                                        SelectedIndex="{Binding SelectConfig}" />
+                                </DockPanel>
+                                <DockPanel MinWidth="230" Margin="0,0,10,10">
+                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
+                                    <ComboBox
+                                        HorizontalAlignment="Stretch"
+                                        ItemsSource="{Binding Configs}"
+                                        SelectedIndex="{Binding NowConfig}" />
+                                </DockPanel>
+                            </panel:WrapPanelWithStretch>
+                            <WrapPanel Margin="0,0,10,-5">
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,3"
+                                    Classes="top"
+                                    Command="{Binding NewInputConfig}"
+                                    Content="{setting:Localize Button.Add}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,3"
+                                    Classes="top"
+                                    Command="{Binding RenameInputConfig}"
+                                    Content="{setting:Localize SettingWindow.Tab8.Text32}"
+                                    IsEnabled="{Binding InputExist}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,3"
+                                    Classes="top"
+                                    Command="{Binding DeleteInputConfig}"
+                                    Content="{setting:Localize Button.Delete}"
+                                    IsEnabled="{Binding InputExist}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,3"
+                                    Classes="top"
+                                    Command="{Binding ImportInputConfig}"
+                                    Content="{setting:Localize Button.Input}" />
+                                <Button
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-2,-2,3,3"
+                                    Classes="top"
+                                    Command="{Binding ExportInputConfig}"
+                                    Content="{setting:Localize SettingWindow.Tab8.Text31}"
+                                    IsEnabled="{Binding InputExist}" />
+                            </WrapPanel>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
                 <Border Classes="t4" IsVisible="{Binding !InputInit, FallbackValue=false}">

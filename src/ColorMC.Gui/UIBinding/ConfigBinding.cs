@@ -777,6 +777,7 @@ public static class ConfigBinding
     {
         GuiConfigUtils.Config.Input ??= new();
         GuiConfigUtils.Config.Input.Enable = item;
+        GuiConfigUtils.Config.Input.Disable = item1;
         GuiConfigUtils.Save();
     }
 
