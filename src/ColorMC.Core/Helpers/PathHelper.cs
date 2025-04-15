@@ -466,7 +466,35 @@ public static class PathHelper
         var builder = new StringBuilder();
         foreach (var item in name)
         {
-            if (chars.Contains(item))
+            if (chars.Contains(item) || item == 0x3F)
+            {
+                builder.Append('_');
+            }
+            else
+            {
+                builder.Append(item);
+            }
+        }
+
+        return builder.ToString();
+    }
+
+    /// <summary>
+    /// 替换文件名非法字符
+    /// </summary>
+    /// <param name="name">输入名字</param>
+    /// <returns>替换结果</returns>
+    public static string ReplacePathName(string? name)
+    {
+        if (name == null)
+        {
+            return "";
+        }
+        var chars = Path.GetInvalidPathChars().ToList();
+        var builder = new StringBuilder();
+        foreach (var item in name)
+        {
+            if (chars.Contains(item) || item == 0x3F)
             {
                 builder.Append('_');
             }
