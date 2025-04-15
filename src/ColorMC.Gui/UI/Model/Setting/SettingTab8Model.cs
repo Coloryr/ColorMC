@@ -77,6 +77,11 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _itemCycle;
+    /// <summary>
+    /// 是否启用物品循环
+    /// </summary>
+    [ObservableProperty]
+    private bool _inputDisable;
 
     /// <summary>
     /// 手柄数量
@@ -376,7 +381,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SaveInputInfo(InputEnable);
+        ConfigBinding.SaveInputInfo(InputEnable, InputDisable);
     }
 
     /// <summary>
