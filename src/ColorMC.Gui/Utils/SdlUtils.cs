@@ -21,10 +21,21 @@ public static class SdlUtils
             try
             {
                 Sdl = Sdl.GetApi();
-                if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+                var config = GuiConfigUtils.Config.Input.Disable;
+                if (config)
                 {
-                    JoystickInput.Init(Sdl);
-                    SdlInit = true;
+                    if (Sdl.Init(Sdl.InitAudio) == 0)
+                    {
+                        SdlInit = true;
+                    }
+                }
+                else
+                {
+                    if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+                    {
+                        JoystickInput.Init(Sdl);
+                        SdlInit = true;
+                    }
                 }
             }
             catch (Exception e)

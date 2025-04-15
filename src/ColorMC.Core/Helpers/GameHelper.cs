@@ -266,7 +266,7 @@ public static class GameHelper
     }
 
     /// <summary>
-    /// Optifine加载器
+    /// ColorMCASM加载器
     /// </summary>
     public static void ReadyColorMCASM()
     {

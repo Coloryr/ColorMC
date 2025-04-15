@@ -14,7 +14,7 @@ public static class JoystickInput
     /// <summary>
     /// 是否在从SDL读取事件
     /// </summary>
-    private static bool _isRun;
+    public static bool IsRun { get; set; }
     /// <summary>
     /// SDL句柄
     /// </summary>
@@ -35,11 +35,11 @@ public static class JoystickInput
     {
         _sdl = sdl;
         App.OnClose += App_OnClose;
-        _isRun = true;
+        IsRun = true;
         new Thread(() =>
         {
             var sdlEvent = new Event();
-            while (_isRun)
+            while (IsRun)
             {
                 _sdl.WaitEvent(ref sdlEvent);
                 OnEvent?.Invoke(sdlEvent);
@@ -52,7 +52,7 @@ public static class JoystickInput
 
     private static void App_OnClose()
     {
-        _isRun = false;
+        IsRun = false;
     }
 
     /// <summary>
@@ -66,6 +66,10 @@ public static class JoystickInput
     /// <returns></returns>
     public static List<string> GetNames()
     {
+        if (!IsRun)
+        {
+            return [];
+        }
         var list = new List<string>();
         for (int i = 0; i < Count; i++)
         {
@@ -103,6 +107,10 @@ public static class JoystickInput
     /// <returns></returns>
     public static nint Open(int index)
     {
+        if (!IsRun)
+        {
+            return 0;
+        }
         unsafe
         {
             return new nint(_sdl.GameControllerOpen(index));
@@ -115,6 +123,10 @@ public static class JoystickInput
     /// <param name="index"></param>
     public static void Close(nint index)
     {
+        if (!IsRun)
+        {
+            return;
+        }
         unsafe
         {
             _sdl.GameControllerClose((GameController*)index);
@@ -128,6 +140,10 @@ public static class JoystickInput
     /// <returns>编号</returns>
     public static unsafe int GetJoystickInstanceID(nint ptr)
     {
+        if (!IsRun)
+        {
+            return 0;
+        }
         var instanceID = _sdl.GameControllerGetJoystick((GameController*)ptr);
         return _sdl.JoystickInstanceID(instanceID);
     }

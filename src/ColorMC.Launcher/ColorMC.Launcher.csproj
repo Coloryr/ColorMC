@@ -8,8 +8,13 @@
 		<PlatformTarget>AnyCPU</PlatformTarget>
 		<Platforms>AnyCPU</Platforms>
 		<ApplicationIcon>icon.ico</ApplicationIcon>
-		<DebugType>embedded</DebugType>
 		<IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>embedded</DebugType>
 	</PropertyGroup>
 	
 	<ItemGroup>

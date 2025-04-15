@@ -341,9 +341,9 @@ public static class Launch
                 stopwatch.Restart();
                 stopwatch.Start();
 
+                var res3 = await larg.Auth.CheckLoginCoreAsync();
                 var arg1 = await GameArg.MakeArgAsync(obj, larg, token);
                 var res = await obj.CheckGameFileAsync(arg1, token);
-                var res3 = await larg.Auth.CheckLoginCoreAsync();
                 stopwatch.Stop();
                 temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
                     obj.Name, stopwatch.Elapsed.ToString());
@@ -837,9 +837,9 @@ public static class Launch
         stopwatch.Restart();
         stopwatch.Start();
 
+        var res3 = await larg.Auth.CheckLoginCoreAsync();
         var arg1 = await GameArg.MakeArgAsync(obj, larg, token);
         var res = await obj.CheckGameFileAsync(arg1, token);
-        var res3 = await larg.Auth.CheckLoginCoreAsync();
         stopwatch.Stop();
         temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
             obj.Name, stopwatch.Elapsed.ToString());

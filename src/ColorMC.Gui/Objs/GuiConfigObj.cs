@@ -257,28 +257,65 @@ public record Live2DSetting
 
 public record InputSetting
 {
+    /// <summary>
+    /// 启用手柄映射
+    /// </summary>
     public bool Enable { get; set; }
+    /// <summary>
+    /// 完全禁用手柄功能
+    /// </summary>
+    public bool Disable { get; set; }
+    /// <summary>
+    /// 当前使用的映射配置
+    /// </summary>
     public string? NowConfig { get; set; }
 }
 
 public record HeadSetting
 {
+    /// <summary>
+    /// 头像类型
+    /// </summary>
     public HeadType Type { get; set; }
+    /// <summary>
+    /// 旋转X
+    /// </summary>
     public int X { get; set; }
+    /// <summary>
+    /// 旋转Y
+    /// </summary>
     public int Y { get; set; }
 }
 
 public record LogColorSetting
 {
+    /// <summary>
+    /// 警告颜色
+    /// </summary>
     public string Warn { get; set; }
+    /// <summary>
+    /// 错误颜色
+    /// </summary>
     public string Error { get; set; }
+    /// <summary>
+    /// 调试颜色
+    /// </summary>
     public string Debug { get; set; }
 }
 
 public record CardSetting
 {
+    /// <summary>
+    /// 新闻卡片
+    /// </summary>
     public bool News { get; set; }
+    /// <summary>
+    /// 联机卡片
+    /// </summary>
     public bool Online { get; set; }
+    /// <summary>
+    /// 上次启动卡片
+    /// </summary>
     public bool Last { get; set; }
 }
 

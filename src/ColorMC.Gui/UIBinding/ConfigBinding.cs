@@ -773,10 +773,11 @@ public static class ConfigBinding
     /// 设置启用手柄支持
     /// </summary>
     /// <param name="item"></param>
-    public static void SaveInputInfo(bool item)
+    public static void SaveInputInfo(bool item, bool item1)
     {
         GuiConfigUtils.Config.Input ??= new();
         GuiConfigUtils.Config.Input.Enable = item;
+        GuiConfigUtils.Config.Input.Disable = item1;
         GuiConfigUtils.Save();
     }
 

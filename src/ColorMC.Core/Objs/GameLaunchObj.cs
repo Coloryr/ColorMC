@@ -17,4 +17,5 @@ public record GameLaunchObj
     public GameArgObj.AssetIndexObj Assets;
     public FileItemObj GameJar;
     public FileItemObj Log4JXml;
+    public bool UseColorMCASM;
 }

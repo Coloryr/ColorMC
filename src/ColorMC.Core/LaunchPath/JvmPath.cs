@@ -48,6 +48,15 @@ public static class JvmPath
         Directory.CreateDirectory(JavaDir);
 
         AddList(ConfigUtils.Config.JavaList);
+
+        if (Jvms.Count == 0)
+        {
+            Task.Run(() =>
+            {
+                var list1 = JavaHelper.FindJava().Result;
+                list1?.ForEach(item => AddItem(item.Type + "_" + item.Version, item.Path));
+            });
+        }
     }
 
     /// <summary>

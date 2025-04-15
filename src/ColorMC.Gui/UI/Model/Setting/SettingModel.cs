@@ -21,7 +21,7 @@ public partial class SettingModel : MenuModel
     /// <summary>
     /// 是否启用手柄
     /// </summary>
-    public bool IsInputEnable { get; init; }
+    public bool IsInputEnable { get; private set; }
 
     /// <summary>
     /// 
@@ -40,10 +40,6 @@ public partial class SettingModel : MenuModel
         Phone = true;
         _enableWindowMode = false;
 #endif
-        if (SystemInfo.Os is OsType.Windows)
-        {
-            IsInputEnable = true;
-        }
 
         //更新定制器用于内存
         _timer = new Timer(1000);
