@@ -2661,11 +2661,10 @@ public static class GameBinding
                     return Task.CompletedTask;
                 }
 
+                var config = GuiConfigUtils.Config.Input;
                 //启用手柄支持
-                if (GuiConfigUtils.Config.Input.Enable)
+                if (config.Enable && !config.Disable)
                 {
-                    var uuid = GuiConfigUtils.Config.Input.NowConfig;
-
                     GameJoystick.Start(obj, handel);
                 }
 

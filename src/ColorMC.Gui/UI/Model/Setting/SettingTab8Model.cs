@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -230,7 +231,14 @@ public partial class SettingModel
 
     partial void OnSelectConfigChanged(int value)
     {
-        InputExist = value != -1;
+        if (InputDisable)
+        {
+            InputExist = false;
+        }
+        else
+        {
+            InputExist = value != -1;
+        }
         if (_isInputLoad || value == -1)
         {
             return;
@@ -374,9 +382,20 @@ public partial class SettingModel
         }
     }
 
+    partial void OnInputDisableChanged(bool value)
+    {
+        if (_isInputLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SaveInputInfo(InputEnable, InputDisable);
+        ColorMCGui.Reboot();
+    }
+
     partial void OnInputEnableChanged(bool value)
     {
-        if (_isInputConfigLoad)
+        if (_isInputLoad)
         {
             return;
         }
@@ -668,10 +687,12 @@ public partial class SettingModel
     /// </summary>
     private void StartRead()
     {
-        if (SdlUtils.SdlInit)
+        if (GuiConfigUtils.Config.Input.Disable)
         {
-            JoystickInput.OnEvent += InputControl_OnEvent;
+            return;
         }
+
+        JoystickInput.OnEvent += InputControl_OnEvent;
     }
     /// <summary>
     /// ¸üÐÂÒ¡¸ËÖµ
@@ -716,7 +737,18 @@ public partial class SettingModel
         _isInputLoad = true;
         Configs.Clear();
         _controlUUIDs.Clear();
+
         InputEnable = GuiConfigUtils.Config.Input.Enable;
+        InputDisable = GuiConfigUtils.Config.Input.Disable;
+
+        if (SystemInfo.Os is OsType.Windows && !InputDisable)
+        {
+            IsInputEnable = true;
+        } 
+        else
+        {
+            IsInputEnable = false;
+        }
 
         foreach (var item in JoystickConfig.Configs)
         {
@@ -791,7 +823,7 @@ public partial class SettingModel
     /// </summary>
     public void ReloadInput()
     {
-        if (!InputInit)
+        if (!InputInit || GuiConfigUtils.Config.Input.Disable)
         {
             return;
         }
@@ -1144,9 +1176,6 @@ public partial class SettingModel
     /// </summary>
     private void StopRead()
     {
-        if (SdlUtils.SdlInit)
-        {
-            JoystickInput.OnEvent -= InputControl_OnEvent;
-        }
+        JoystickInput.OnEvent -= InputControl_OnEvent;
     }
 }
