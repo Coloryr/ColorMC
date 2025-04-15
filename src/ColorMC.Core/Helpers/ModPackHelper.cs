@@ -477,7 +477,8 @@ public static class ModPackHelper
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.GetFullPath(game.GetGamePath() + e.Name[info.Overrides.Length..]);
-                FileInfo info2 = new(file);
+                file = PathHelper.ReplacePathName(file);
+                var info2 = new FileInfo(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
                     FileAccess.ReadWrite, FileShare.ReadWrite);
@@ -590,9 +591,9 @@ public static class ModPackHelper
             {
                 using var stream = zFile.GetInputStream(e);
                 string file = Path.Combine(arg.Game.GetGamePath(), e.Name[length..]);
-                FileInfo info2 = new(file);
+                var info2 = new FileInfo(file);
                 info2.Directory?.Create();
-                using FileStream stream2 = new(file, FileMode.Create,
+                using var stream2 = new FileStream(file, FileMode.Create,
                     FileAccess.ReadWrite, FileShare.ReadWrite);
                 await stream.CopyToAsync(stream2);
             }
@@ -879,11 +880,11 @@ public static class ModPackHelper
             if (e.IsFile && e.Name.StartsWith(dir))
             {
                 using var stream = zFile.GetInputStream(e);
-                string file = Path.GetFullPath(game.GetGamePath() +
-                    e.Name[length..]);
-                FileInfo info2 = new(file);
+                string file = Path.GetFullPath(game.GetGamePath() + e.Name[length..]);
+                file = PathHelper.ReplacePathName(file);
+                var info2 = new FileInfo(file);
                 info2.Directory?.Create();
-                using FileStream stream2 = new(file, FileMode.Create,
+                using var stream2 = new FileStream(file, FileMode.Create,
                     FileAccess.ReadWrite, FileShare.ReadWrite);
                 await stream.CopyToAsync(stream2);
             }
