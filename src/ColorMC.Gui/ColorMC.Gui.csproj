@@ -12,9 +12,14 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <Authors>Coloryr</Authors>
     <Company>Coloryr</Company>
-	  <DebugType>embedded</DebugType>
     <Product>ColorMC</Product>
     <Title>ColorMC</Title>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -373,18 +378,18 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.1.0" />
-    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.0.2" />
+    <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.2.0" />
+    <PackageReference Include="Avalonia.Svg.Skia" Version="11.2.7" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.9.2" />
     <PackageReference Include="Silk.NET.SDL" Version="2.22.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.9" />
-	<PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
-	<PackageReference Include="DotNetty.Common" Version="0.7.6" />
-	<PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
-	<PackageReference Include="System.IO.Hashing" Version="9.0.3" />
-	<PackageReference Include="System.Text.Json" Version="9.0.3" />
+    <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
+    <PackageReference Include="DotNetty.Common" Version="0.7.6" />
+    <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
+    <PackageReference Include="System.IO.Hashing" Version="9.0.4" />
+    <PackageReference Include="System.Text.Json" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
@@ -392,28 +397,5 @@
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.OpenGL\MinecraftSkinRender.OpenGL.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\BuildPack\Tab1Control.axaml.cs">
-      <DependentUpon>Tab1Control.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\NetFrpAddControl.axaml.cs">
-      <DependentUpon>NetFrpAddControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Items\FileVersionItemControl.axaml.cs">
-      <DependentUpon>FileVersionItemControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Items\NetFrpSelfItemControl.axaml.cs">
-      <DependentUpon>NetFrpSelfItemControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Items\OptifineVersionItemControl.axaml.cs">
-      <DependentUpon>OptifineVersionItemControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\AddDnsControl.axaml.cs">
-      <DependentUpon>AddDnsControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\NetFrp\NetFrpTab6Control.axaml.cs">
-      <DependentUpon>NetFrpTab6Control.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

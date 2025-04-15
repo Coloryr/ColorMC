@@ -33,22 +33,22 @@ public static class ProcessUtils
             return false;
 
             // 检查当前用户是否属于 sudo 组
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "groups",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                }
-            };
+            //var process = new Process
+            //{
+            //    StartInfo = new ProcessStartInfo
+            //    {
+            //        FileName = "groups",
+            //        RedirectStandardOutput = true,
+            //        UseShellExecute = false,
+            //        CreateNoWindow = true
+            //    }
+            //};
 
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
+            //process.Start();
+            //string output = process.StandardOutput.ReadToEnd();
+            //process.WaitForExit();
 
-            return output.Contains("sudo");
+            //return output.Contains("sudo");
         }
     }
 
