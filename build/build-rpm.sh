@@ -26,7 +26,7 @@ build_rpm()
 
     mkdir -p $base_dir/{BUILD,RPMS,SOURCES,SPECS,SRPMS,BUILDROOT}
 
-    pdbs=("ColorMC.Launcher.pdb" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
+    pdbs=("ColorMC.Launcher" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
 
     bindir=$base_dir/BUILDROOT/colormc-$version-1.$2/usr/share
 
@@ -67,7 +67,7 @@ build_rpm_aot()
 
     mkdir -p $base_dir/{BUILD,RPMS,SOURCES,SPECS,SRPMS,BUILDROOT}
 
-    pdbs=("ColorMC.Launcher.pdb" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
+    pdbs=("ColorMC.Launcher" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
 
     bindir=$base_dir/BUILDROOT/colormc-$version-1.$2/usr/share
 
@@ -108,7 +108,7 @@ build_rpm_min()
 
     mkdir -p $base_dir/{BUILD,RPMS,SOURCES,SPECS,SRPMS,BUILDROOT}
 
-    pdbs=("ColorMC.Launcher.pdb" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
+    pdbs=("ColorMC.Launcher" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
 
     bindir=$base_dir/BUILDROOT/colormc-$version-1.$2/usr/share
 

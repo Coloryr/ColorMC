@@ -728,4 +728,16 @@ public static class TestItem
             Console.WriteLine($"General error: {ex.Message}");
         }
     }
+
+    public static void Item42()
+    {
+        char c = (char)0x3F;
+        var v1 = char.IsControl(c);
+        var v2 = char.IsLetter(c);
+        var v3 = char.IsPunctuation(c);
+        var v4 = char.IsSeparator(c);
+        var v5 = char.IsSurrogate(c);
+        var v6 = char.IsSymbol(c);
+
+    }
 }
