@@ -15,7 +15,15 @@ ColorMC启动器的核心
   - 支持大部分游戏版本启动  
   - 支持模组加载器Forge/Fabric/NeoForge/Quilt/Optifine
   - 支持自定义模组加载器
+  - 支持自定义json启动(MMC格式)
+  - 支持同时启动多个游戏实例
+  - 支持生成游戏启动参数
+  - 支持启动前执行与启动后执行
+  - 支持管理员方式启动
   - 完整的游戏启动参数控制
+  - 启动前自动补全所有资源
+  - 使用ForgeWrapper与OptifineWrapper启动游戏
+  - 支持使用自定义加载器
 - 游戏资源
   - 支持自动下载整合包 从 CurseForge/Modrinth 平台
   - 支持升级整合包 从 CurseForge/Modrinth 平台
@@ -25,9 +33,11 @@ ColorMC启动器的核心
 - 游戏管理
   - 支持导入 CurseForge/Modrinth 平台整合包 MMC实例 Minecraft原版游戏版本
   - 支持导出 CurseForge/Modrinth 平台整合包 ColorMC整合包
+  - 支持导入文件夹，自动扫描实例，自动分析版本
   - 支持游戏实例 模组/世界/材质包/光影包/结构文件/服务器列表 解析
   - 支持各类资源导入与删除
   - 支持获取 游戏内截图列表/游戏日志
+  - 游戏日志有分级与分类
 - 内置网络API
   - OAuth 账户登录API
   - Nide8 账户登录API
@@ -47,6 +57,12 @@ ColorMC启动器的核心
   - 内置可设置下载线程数的下载器
   - 自动文件判断，校验
   - 异步方式下载阻塞
+- 自定义服务器包
+  - 支持服务器包打包
+  - 支持启动前更新服务器包
+- ColorASM(需要手写netty服务器)
+  - 支持修改客户端窗口标题
+  - 支持客户端本地网络游戏注入
 - 其他功能
   - Java压缩包解压校验
   - 游戏内时间统计
@@ -130,6 +146,8 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Utils;
 using ColorMC.Core.Objs;
 
+using System.Threading;
+
 //创建游戏实例
 var game = await InstancesPath.CreateGame(new()
 {
@@ -149,5 +167,5 @@ var auth = AuthDatabase.Auths.First().Value;
 var handel = await game.StartGameAsync(new()
 {
     Auth = auth
-});
+}, CancellationToken.None);
 ```

@@ -7,6 +7,7 @@
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
+                Background=""
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>
@@ -21,6 +22,11 @@
 
     <Style Selector="DataGrid">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+
+        <Style Selector="^:disabled">
+            <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundDisabled}" />
+        </Style>
+
         <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
             <Setter Property="Fill" Value="Transparent" />
         </Style>
