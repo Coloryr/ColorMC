@@ -16,6 +16,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;
+using ColorMC.Gui.UI.Controls.AddGame;
 using ColorMC.Gui.UI.Controls.BuildPack;
 using ColorMC.Gui.UI.Controls.Collect;
 using ColorMC.Gui.UI.Controls.Count;

@@ -52,6 +52,7 @@ public static class ThemeManager
         Brush.Parse("#f97316"), Brush.Parse("#06b6d4"), Brush.Parse("#84cc16")];
 
     public static readonly SelfCrossFade CrossFade = new(TimeSpan.FromMilliseconds(300));
+    public static readonly SelfPageSlideX SelfPageSlideX = new(TimeSpan.FromMilliseconds(500));
     public static readonly SelfPageSlideY SelfPageSlideY = new(TimeSpan.FromMilliseconds(500));
 
     private static FontFamily s_font = new(FontFamily.DefaultFontFamilyName);
@@ -110,6 +111,8 @@ public static class ThemeManager
     public static void LoadPageSlide()
     {
         var style = GuiConfigUtils.Config.Style;
+        SelfPageSlideX.Duration = TimeSpan.FromMilliseconds(style.AmTime);
+        SelfPageSlideX.Fade = style.AmFade;
         SelfPageSlideY.Duration = TimeSpan.FromMilliseconds(style.AmTime);
         SelfPageSlideY.Fade = style.AmFade;
     }

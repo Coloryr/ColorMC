@@ -2,24 +2,29 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Add;
+using ColorMC.Gui.UI.Model.AddGame;
 using ColorMC.Gui.Utils;
 
-namespace ColorMC.Gui.UI.Controls.Add;
+namespace ColorMC.Gui.UI.Controls.AddGame;
 
 /// <summary>
 /// 添加游戏实例窗口
 /// </summary>
 public partial class AddGameControl : BaseUserControl
 {
+    private CancellationTokenSource _cancel = new();
+
     private AddGameTab1Control _tab1;
     private AddGameTab2Control _tab2;
     private AddGameTab3Control _tab3;
+    private AddGameTab4Control _tab4;
 
     public AddGameControl() : base(nameof(AddGameControl))
     {
@@ -30,6 +35,8 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+        _tab4 = new();
+        Content1.Content1.Child = _tab4;
     }
 
     protected override TopModel GenModel(BaseModel model)
@@ -81,20 +88,43 @@ public partial class AddGameControl : BaseUserControl
     {
         if (e.PropertyName == AddGameModel.NameTab1)
         {
-            Content1.Child = _tab1 ??= new();
+            _tab1 ??= new();
+            Go(_tab1);
         }
         else if (e.PropertyName == AddGameModel.NameTab2)
         {
-            Content1.Child = _tab2 ??= new();
+            _tab2 ??= new();
+            Go(_tab2);
         }
         else if (e.PropertyName == AddGameModel.NameTab3)
         {
-            Content1.Child = _tab3 ??= new();
+            _tab3 ??= new();
+            Go(_tab3);
         }
         else if (e.PropertyName == AddGameModel.NameBack)
         {
-            Content1.Child = null;
+            Back();
         }
+    }
+
+    private void Go(Control to)
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+
+        _cancel = new();
+
+        Content1.SwitchTo(false, to, true, _cancel.Token);
+    }
+
+    private void Back()
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+
+        _cancel = new();
+
+        Content1.SwitchTo(true, _tab4, false, _cancel.Token);
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

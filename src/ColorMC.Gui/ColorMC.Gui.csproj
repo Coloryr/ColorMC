@@ -398,4 +398,15 @@
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\AddGame\AddGameTab4Control.axaml.cs">
+      <DependentUpon>AddGameTab4Control.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\MenuControl.axaml.cs">
+      <DependentUpon>MenuControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\ChangeControl.axaml.cs">
+      <DependentUpon>ChangeControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

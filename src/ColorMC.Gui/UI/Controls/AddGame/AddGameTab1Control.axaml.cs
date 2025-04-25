@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace ColorMC.Gui.UI.Controls.Add;
+namespace ColorMC.Gui.UI.Controls.AddGame;
 
 /// <summary>
 /// 添加游戏实例窗口

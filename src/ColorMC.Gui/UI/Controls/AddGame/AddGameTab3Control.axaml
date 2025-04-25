@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Add.AddGameTab3Control"
+    x:Class="ColorMC.Gui.UI.Controls.AddGame.AddGameTab3Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.AddGame"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
@@ -25,8 +25,7 @@
                         Content="{setting:Localize Button.Input}"
                         DockPanel.Dock="Right"
                         IsEnabled="{Binding CanInput}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text89}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text89}" />
                     <TextBox
                         Height="30"
                         Margin="0,0,10,10"
@@ -53,8 +52,7 @@
                             Classes="top"
                             Command="{Binding SelectLocal}"
                             Content="{setting:Localize AddGameWindow.Tab3.Text2}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text87}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text87}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -62,8 +60,7 @@
                             Classes="top"
                             Command="{Binding RefashFiles}"
                             Content="{setting:Localize AddGameWindow.Tab3.Text3}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text88}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text88}" />
                     </StackPanel>
                 </panel:WrapPanelWithStretch>
                 <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
@@ -94,8 +91,7 @@
                         Command="{Binding AddGroup}"
                         Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                         DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
                 </panel:WrapPanelWithStretch>
             </StackPanel>
             <TreeDataGrid Margin="0,0,10,0" Source="{Binding Files}" />
