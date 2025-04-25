@@ -14,7 +14,7 @@ public static class MinecraftAPI
     public const string Profile = "https://api.minecraftservices.com/minecraft/profile";
     public const string UserProfile = "https://sessionserver.mojang.com/session/minecraft/profile";
     public const string LoginXbox = "https://api.minecraftservices.com/authentication/login_with_xbox";
-    public const string News = "https://www.minecraft.net/content/minecraftnet/language-masters/zh-hans/articles/jcr:content/root/container/image_grid_a.articles.page-{0}.json";
+    public const string News = "https://net-secondary.web.minecraft-services.net/api/v1.0/zh-cn/search?page={0}&pageSize=24&sortType=Recent&category=News";
 
     /// <summary>
     /// 从游戏名字获取UUID

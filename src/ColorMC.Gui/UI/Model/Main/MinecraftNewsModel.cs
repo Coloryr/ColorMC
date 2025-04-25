@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Utils;
@@ -59,11 +60,12 @@ public partial class MainModel
             return;
         }
 
-        if (data.ArticleCount > 0)
+        if (data?.Result?.Results?.Count > 0)
         {
-            DisplayNews = data.ArticleGrid[0].DefaultTile.Title.ToUpper();
+            var item = data.Result.Results.First(item => item.Type != "Game");
+            DisplayNews = item.Title;
             var temp1 = NewsImage;
-            NewsImage = await GetImage(data.ArticleGrid[0].DefaultTile.Image.ImageURL);
+            NewsImage = await GetImage(item.Image);
             temp1?.Dispose();
             IsHaveNews = true;
         }
@@ -93,7 +95,7 @@ public partial class MainModel
         {
             await Task.Run(() =>
             {
-                _img = ImageManager.Load("https://www.minecraft.net" + url, false).Result;
+                _img = ImageManager.Load(url, false).Result;
             });
             return _img;
         }

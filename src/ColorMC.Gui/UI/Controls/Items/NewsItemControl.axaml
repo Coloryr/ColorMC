@@ -7,18 +7,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    Width="360"
     x:DataType="model:NewsItemModel"
     mc:Ignorable="d">
     <Panel>
         <Image
-            Width="230"
-            Height="230"
+            Height="180"
             Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}"
             Stretch="UniformToFill" />
         <DockPanel VerticalAlignment="Bottom">
             <Border
                 Name="Border1"
-                Width="230"
                 Padding="20"
                 Background="#B2000000"
                 DockPanel.Dock="Bottom">
@@ -38,22 +37,14 @@
                             VerticalAlignment="Center"
                             Foreground="White"
                             IsVisible="False"
-                            Text="{Binding SubTitle}"
+                            MaxLines="3"
+                            Text="{Binding Description}"
                             TextAlignment="Center"
+                            TextTrimming="CharacterEllipsis"
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Panel>
             </Border>
-            <TextBlock
-                Margin="0,0,0,-15"
-                Padding="5"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="White"
-                FontSize="16"
-                Foreground="Black"
-                Text="{Binding Category, FallbackValue=123}"
-                TextWrapping="Wrap" />
         </DockPanel>
     </Panel>
 </UserControl>
