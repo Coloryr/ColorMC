@@ -10,21 +10,21 @@ using ColorMC.Gui.UI.Windows;
 namespace ColorMC.Gui.UI.Controls;
 
 /// <summary>
-/// »ù´¡Ò³Ãæ
+/// åŸºç¡€é¡µé¢
 /// </summary>
 public abstract class BaseUserControl : UserControl, IBaseControl
 {
     /// <summary>
-    /// Êµ¼Ê´°¿Ú
+    /// å®é™…çª—å£
     /// </summary>
     public IBaseWindow? Window => WindowManager.FindRoot(VisualRoot);
 
     /// <summary>
-    /// ±êÌâ
+    /// æ ‡é¢˜
     /// </summary>
     private string _title;
     /// <summary>
-    /// ±êÌâ
+    /// æ ‡é¢˜
     /// </summary>
     public string Title
     {
@@ -40,7 +40,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     }
 
     /// <summary>
-    /// ´°¿ÚId
+    /// çª—å£Id
     /// </summary>
     public string WindowId { get; private init; }
 
@@ -52,9 +52,9 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     }
 
     /// <summary>
-    /// ÉèÖÃÄ£ĞÍ
+    /// è®¾ç½®æ¨¡å‹
     /// </summary>
-    /// <param name="model">»ù´¡´°¿ÚÄ£ĞÍ</param>
+    /// <param name="model">åŸºç¡€çª—å£æ¨¡å‹</param>
     public void SetBaseModel(BaseModel model)
     {
         var topmodel = GenModel(model);
@@ -63,18 +63,18 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     }
 
     /// <summary>
-    /// Éú³ÉÄ£ĞÍ
+    /// ç”Ÿæˆæ¨¡å‹
     /// </summary>
-    /// <param name="model">»ù´¡´°¿ÚÄ£ĞÍ</param>
+    /// <param name="model">åŸºç¡€çª—å£æ¨¡å‹</param>
     /// <returns></returns>
     protected abstract TopModel GenModel(BaseModel model);
     /// <summary>
-    /// ´°¿Ú×´Ì¬ĞŞ¸Ä
+    /// çª—å£çŠ¶æ€ä¿®æ”¹
     /// </summary>
     /// <param name="state"></param>
     public virtual void ControlStateChange(WindowState state) { }
     /// <summary>
-    /// °´Å¥°´ÏÂ
+    /// æŒ‰é’®æŒ‰ä¸‹
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -84,17 +84,17 @@ public abstract class BaseUserControl : UserControl, IBaseControl
         return Task.FromResult(false);
     }
     /// <summary>
-    /// Êó±ê°´ÏÂ
+    /// é¼ æ ‡æŒ‰ä¸‹
     /// </summary>
     /// <param name="e"></param>
     public virtual void IPointerPressed(PointerPressedEventArgs e) { }
     /// <summary>
-    /// Êó±êÊÍ·Å
+    /// é¼ æ ‡é‡Šæ”¾
     /// </summary>
     /// <param name="e"></param>
     public virtual void IPointerReleased(PointerReleasedEventArgs e) { }
     /// <summary>
-    /// ´°¿Ú´ò¿ª
+    /// çª—å£æ‰“å¼€
     /// </summary>
     public void ControlOpened()
     {
@@ -104,32 +104,32 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     }
 
     /// <summary>
-    /// ´°¿Ú´ò¿ª
+    /// çª—å£æ‰“å¼€
     /// </summary>
     public virtual void Opened() { }
     /// <summary>
-    /// ´°¿Ú¹Ø±Õ
+    /// çª—å£å…³é—­
     /// </summary>
     public virtual void Closed() { }
     /// <summary>
-    /// ´°¿Ú¸üĞÂ
+    /// çª—å£æ›´æ–°
     /// </summary>
     public virtual void Update() { }
     /// <summary>
-    /// ´°¿ÚÒª¹Ø±ÕÊ±
+    /// çª—å£è¦å…³é—­æ—¶
     /// </summary>
-    /// <returns>ÊÇ·ñ×èÖ¹¹Ø±Õ</returns>
+    /// <returns>æ˜¯å¦é˜»æ­¢å…³é—­</returns>
     public virtual Task<bool> Closing() { return Task.FromResult(false); }
 
     /// <summary>
-    /// ÖØÔØÍ¼±ê
+    /// é‡è½½å›¾æ ‡
     /// </summary>
     public virtual void ReloadIcon()
     {
         Window?.ReloadIcon();
     }
     /// <summary>
-    /// »ñÈ¡Í¼±ê
+    /// è·å–å›¾æ ‡
     /// </summary>
     /// <returns></returns>
     public virtual Bitmap GetIcon()

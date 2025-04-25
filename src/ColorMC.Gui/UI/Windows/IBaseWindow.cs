@@ -8,30 +8,30 @@ using ColorMC.Gui.UIBinding;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// 实际窗口
+/// 瀹為檯绐楀彛
 /// </summary>
 public interface IBaseWindow
 {
     /// <summary>
-    /// 窗口基础模型
+    /// 绐楀彛鍩虹妯″瀷
     /// </summary>
     public BaseModel Model { get; }
     /// <summary>
-    /// 显示内容
+    /// 鏄剧ず鍐呭
     /// </summary>
     public BaseUserControl ICon { get; }
     /// <summary>
-    /// 设置窗口标题
+    /// 璁剧疆绐楀彛鏍囬
     /// </summary>
     /// <param name="data"></param>
     public void SetTitle(string data);
     /// <summary>
-    /// 设置图标
+    /// 璁剧疆鍥炬爣
     /// </summary>
     /// <param name="icon"></param>
     public void SetIcon(Bitmap icon);
     /// <summary>
-    /// 关闭窗口
+    /// 鍏抽棴绐楀彛
     /// </summary>
     virtual public void Close()
     {
@@ -45,7 +45,7 @@ public interface IBaseWindow
         }
     }
     /// <summary>
-    /// 显示窗口
+    /// 鏄剧ず绐楀彛
     /// </summary>
     virtual public void Show()
     {
@@ -59,7 +59,7 @@ public interface IBaseWindow
         }
     }
     /// <summary>
-    /// 转到最顶层
+    /// 杞埌鏈�椤跺眰
     /// </summary>
     virtual public void WindowActivate()
     {
@@ -78,7 +78,7 @@ public interface IBaseWindow
         }
     }
     /// <summary>
-    /// 重载图标
+    /// 閲嶈浇鍥炬爣
     /// </summary>
     void ReloadIcon();
 }

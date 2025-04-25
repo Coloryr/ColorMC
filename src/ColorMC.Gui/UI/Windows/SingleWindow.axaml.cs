@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Controls;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// µ¥´°¿Ú
+/// å•çª—å£
 /// </summary>
 public partial class SingleWindow : ABaseWindow
 {

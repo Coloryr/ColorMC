@@ -5,8 +5,8 @@ using Avalonia.Input;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// ´øÓĞ±ß¿òµÄ´°¿Ú
-/// ÓÃÓÚÄ³Ğ©ÏµÍ³
+/// å¸¦æœ‰è¾¹æ¡†çš„çª—å£
+/// ç”¨äºæŸäº›ç³»ç»Ÿ
 /// </summary>
 public partial class BorderControl : UserControl
 {
@@ -25,7 +25,7 @@ public partial class BorderControl : UserControl
     }
 
     /// <summary>
-    /// Ñ¡ÖĞ±ß¿òºó¿ÉÒÔÀ­Éì´°¿Ú´óĞ¡
+    /// é€‰ä¸­è¾¹æ¡†åå¯ä»¥æ‹‰ä¼¸çª—å£å¤§å°
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

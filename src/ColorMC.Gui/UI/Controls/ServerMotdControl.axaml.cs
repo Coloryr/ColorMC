@@ -14,7 +14,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls;
 
 /// <summary>
-/// ·şÎñÆ÷MotdÏÔÊ¾
+/// æœåŠ¡å™¨Motdæ˜¾ç¤º
 /// </summary>
 public partial class ServerMotdControl : UserControl
 {
@@ -84,7 +84,7 @@ public partial class ServerMotdControl : UserControl
     }
 
     /// <summary>
-    /// Ë¢ĞÂMotdÏÔÊ¾ÄÚÈİ
+    /// åˆ·æ–°Motdæ˜¾ç¤ºå†…å®¹
     /// </summary>
     private async void Update()
     {
@@ -137,9 +137,9 @@ public partial class ServerMotdControl : UserControl
     }
 
     /// <summary>
-    /// Éú³ÉÎÄ×ÖÏÔÊ¾
+    /// ç”Ÿæˆæ–‡å­—æ˜¾ç¤º
     /// </summary>
-    /// <param name="chat">ÎÄ±¾</param>
+    /// <param name="chat">æ–‡æœ¬</param>
     private void MakeText(Chat chat)
     {
         if (chat.Text == "\n")
@@ -205,7 +205,7 @@ public partial class ServerMotdControl : UserControl
     }
 
     /// <summary>
-    /// Ìí¼ÓÎÄ±¾µ½ÏÔÊ¾
+    /// æ·»åŠ æ–‡æœ¬åˆ°æ˜¾ç¤º
     /// </summary>
     /// <param name="text"></param>
     private void AddText(Inline text)
