@@ -57,7 +57,8 @@
                     </DataTemplate>
                 </dialog:DialogHost.DataTemplates>
                 <Panel>
-                    <Decorator Name="Controls" />
+                    <Decorator Name="Control1" />
+                    <Decorator Name="Control2" />
                     <Panel
                         Name="Grid2"
                         Margin="20"

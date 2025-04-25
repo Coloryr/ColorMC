@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -19,39 +20,42 @@ using ColorMC.Gui.UI.Model;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// µ¥´°¿ÚÄ£Ê½Ö÷½çÃæ
+/// å•çª—å£æ¨¡å¼ä¸»ç•Œé¢
 /// </summary>
 public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 {
     /// <summary>
-    /// ×îµ×²ã½çÃæ
+    /// æœ€åº•å±‚ç•Œé¢
     /// </summary>
     private BaseUserControl _baseControl;
     /// <summary>
-    /// µ±Ç°²ã½çÃæ
+    /// å½“å‰å±‚ç•Œé¢
     /// </summary>
     private BaseUserControl _nowControl;
 
     /// <summary>
-    /// ½çÃæÁĞ±í
+    /// ç•Œé¢åˆ—è¡¨
     /// </summary>
     private readonly List<Control> controls = [];
     /// <summary>
-    /// µ±Ç°ÏÔÊ¾µÄ½çÃæ
+    /// å½“å‰æ˜¾ç¤ºçš„ç•Œé¢
     /// </summary>
     public BaseUserControl ICon => _nowControl;
     /// <summary>
-    /// »ù´¡´°¿ÚÄ£ĞÍ
+    /// åŸºç¡€çª—å£æ¨¡å‹
     /// </summary>
     public BaseModel Model => (DataContext as BaseModel)!;
     /// <summary>
-    /// ´°¿ÚID
+    /// çª—å£ID
     /// </summary>
     public string WindowId { get; init; }
     /// <summary>
-    /// ´°¿ÚÓÒÉÏ½ÇÌáÊ¾
+    /// çª—å£å³ä¸Šè§’æç¤º
     /// </summary>
     private WindowNotificationManager _windowNotification;
+
+    private CancellationTokenSource _cancel = new();
+    private bool _switch;
 
     public SingleControl()
     {
@@ -124,7 +128,8 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 
     public void Closed()
     {
-        Controls.Child = null;
+        Control1.Child = null;
+        Control1.Child = null;
     }
 
     public void ControlOpened()
@@ -132,18 +137,65 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
         PicUpdate();
     }
 
+    private async Task Switch(Control control, bool isback)
+    {
+        if (_switch)
+        {
+            if (Control1.Child == control)
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (Control2.Child == control)
+            {
+                return;
+            }
+        }
+
+        _cancel.Cancel();
+        _cancel.Dispose();
+
+        _cancel = new();
+
+        _switch = !_switch;
+        if (_switch)
+        {
+            Control1.Child = control;
+            await ThemeManager.SelfPageSlideX.Start(Control2, Control1, !isback, _cancel.Token);
+        }
+        else
+        {
+            Control2.Child = control;
+            await ThemeManager.SelfPageSlideX.Start(Control1, Control2, !isback, _cancel.Token);
+        }
+    }
+
+    private Control? GetNow()
+    {
+        if (_switch)
+        {
+            return Control1.Child;
+        }
+        else
+        {
+            return Control2.Child;
+        }
+    }
+
     /// <summary>
-    /// Ìí¼ÓÒ»¸öÏÔÊ¾Ò³Ãæ
+    /// æ·»åŠ ä¸€ä¸ªæ˜¾ç¤ºé¡µé¢
     /// </summary>
     /// <param name="con"></param>
     public void Add(BaseUserControl con)
     {
-        //ÊÇ·ñÎªµ×²ãÒ³Ãæ
+        //æ˜¯å¦ä¸ºåº•å±‚é¡µé¢
         if (_baseControl == null)
         {
             _baseControl = con;
             var con1 = (_baseControl as Control)!;
-            Controls.Child = con1;
+            Control1.Child = con1;
             Dispatcher.UIThread.Post(() =>
             {
                 _baseControl.ControlOpened();
@@ -151,28 +203,26 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
         }
         else
         {
-            var con1 = Controls.Child;
+            var con1 = GetNow();
             var con2 = (con as Control)!;
-            Controls.Child = null;
             if (con1 is { } con3)
             {
                 controls.Add(con3);
             }
-            Controls.Child = con2;
-            ThemeManager.CrossFade.Start(null, con2);
+            _ = Switch(con2, false);
 
             Model.PushBack(Back);
             con.ControlOpened();
         }
 
-        //ÉèÖÃ¶ÔÓ¦ĞÅÏ¢
+        //è®¾ç½®å¯¹åº”ä¿¡æ¯
         _nowControl = con;
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
     }
 
     /// <summary>
-    /// ÈÃÒ³ÃæÏÔÊ¾ÔÚ×îÉÏÃæ
+    /// è®©é¡µé¢æ˜¾ç¤ºåœ¨æœ€ä¸Šé¢
     /// </summary>
     /// <param name="con"></param>
     public void Active(BaseUserControl con)
@@ -180,9 +230,9 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
         var con1 = (con as Control)!;
 
         controls.Remove(con1);
-        var con2 = Controls.Child;
+        var con2 = GetNow();
         controls.Add(con2!);
-        Controls.Child = con1;
+        _ = Switch(con1, false);
 
         _nowControl = con;
         SetTitle(_nowControl.Title);
@@ -190,7 +240,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ¹Ø±ÕÒ»¸öÒ³Ãæ
+    /// å…³é—­ä¸€ä¸ªé¡µé¢
     /// </summary>
     /// <param name="con"></param>
     public async void Close(BaseUserControl con)
@@ -201,14 +251,12 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
             return;
         }
 
-        var con1 = Controls.Child;
+        var con1 = GetNow();
         var con2 = (con as Control)!;
-        if (con1 == con2)
-        {
-            Controls.Child = null;
-        }
+
         controls.Remove(con2);
-        if (Controls.Child == null)
+
+        if (con1 == con2)
         {
             if (controls.Count > 0)
             {
@@ -221,11 +269,19 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
                 con1 = _baseControl;
                 _nowControl = _baseControl;
             }
-            Controls.Child = con1;
-        }
+            SetTitle(_nowControl.Title);
+            SetIcon(_nowControl.GetIcon());
 
-        SetTitle(_nowControl.Title);
-        SetIcon(_nowControl.GetIcon());
+            await Switch(con1, true);
+            if (_switch)
+            {
+                Control2.Child = null;
+            }
+            else
+            {
+                Control1.Child = null;
+            }
+        }
 
         ((con as UserControl)?.DataContext as TopModel)?.Close();
         con.Closed();
@@ -236,7 +292,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// »Øµ½ÉÏÒ»¸öÒ³Ãæ
+    /// å›åˆ°ä¸Šä¸€ä¸ªé¡µé¢
     /// </summary>
     private void Back()
     {
@@ -252,14 +308,14 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ¸üĞÂ±³¾°Í¼
+    /// æ›´æ–°èƒŒæ™¯å›¾
     /// </summary>
     private void PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
     }
     /// <summary>
-    /// ÉèÖÃ±êÌâ
+    /// è®¾ç½®æ ‡é¢˜
     /// </summary>
     /// <param name="data"></param>
     public void SetTitle(string data)
@@ -283,7 +339,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ÉèÖÃÍ¼±ê
+    /// è®¾ç½®å›¾æ ‡
     /// </summary>
     /// <param name="icon"></param>
     public void SetIcon(Bitmap icon)
@@ -292,7 +348,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ÉèÖÃ´°¿Ú×´Ì¬
+    /// è®¾ç½®çª—å£çŠ¶æ€
     /// </summary>
     /// <param name="windowState"></param>
     public void ControlStateChange(WindowState windowState)

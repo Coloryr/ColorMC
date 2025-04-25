@@ -7,7 +7,7 @@ using Live2DCSharpSDK.OpenGL;
 namespace ColorMC.Gui.UI;
 
 /// <summary>
-/// Opengl¶Ô½ÓÓÃ
+/// Openglå¯¹æŽ¥ç”¨
 /// </summary>
 /// <param name="con"></param>
 /// <param name="gl"></param>

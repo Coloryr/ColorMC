@@ -11,7 +11,7 @@ public partial class ChangeControl : UserControl
         AvaloniaProperty.Register<ChangeControl, bool>(nameof(IsHorizontal));
 
     /// <summary>
-    /// ÇĞ»»·½Ïò
+    /// åˆ‡æ¢æ–¹å‘
     /// </summary>
     public bool IsHorizontal
     {

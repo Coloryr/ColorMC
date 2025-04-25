@@ -7,7 +7,7 @@ using ColorMC.Gui.UI.Controls;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// ´ø±ß¿òµÄ¶à´°¿Ú
+/// å¸¦è¾¹æ¡†çš„å¤šçª—å£
 /// </summary>
 public partial class MultiBorderWindow : AMultiWindow
 {

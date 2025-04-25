@@ -24,7 +24,7 @@ public partial class AddGameControl : BaseUserControl
     private AddGameTab1Control _tab1;
     private AddGameTab2Control _tab2;
     private AddGameTab3Control _tab3;
-    private AddGameTab4Control _tab4;
+    private readonly AddGameTab4Control _tab4 = new();
 
     public AddGameControl() : base(nameof(AddGameControl))
     {
@@ -35,7 +35,6 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
-        _tab4 = new();
         Content1.Content1.Child = _tab4;
     }
 

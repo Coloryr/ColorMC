@@ -9,7 +9,7 @@ using Avalonia.Styling;
 namespace ColorMC.Gui.UI.Controls.Setting;
 
 /// <summary>
-/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// å¯åŠ¨å™¨è®¾ç½®çª—å£
 /// </summary>
 public partial class Tab7Control : UserControl
 {

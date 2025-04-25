@@ -4,7 +4,7 @@ using ColorMC.Gui.UI.Controls;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// 不带边框的多窗口
+/// 涓嶅甫杈规鐨勫绐楀彛
 /// </summary>
 public partial class MultiWindow : AMultiWindow
 {

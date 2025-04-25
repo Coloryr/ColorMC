@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Skin;
 
 /// <summary>
-/// Æ¤·ôÏÔÊ¾´°¿Ú
+/// çš®è‚¤æ˜¾ç¤ºçª—å£
 /// </summary>
 public partial class SkinSideControl : UserControl
 {

@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Model.Setting;
 namespace ColorMC.Gui.UI.Controls.Setting;
 
 /// <summary>
-/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// å¯åŠ¨å™¨è®¾ç½®çª—å£
 /// </summary>
 public partial class Tab8Control : UserControl
 {
