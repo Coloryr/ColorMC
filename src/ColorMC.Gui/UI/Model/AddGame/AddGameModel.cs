@@ -10,7 +10,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.AddGame;
 
 /// <summary>
 /// 添加游戏实例
@@ -43,11 +43,6 @@ public partial class AddGameModel : TopModel
     /// </summary>
     [ObservableProperty]
     private bool _cloudEnable;
-    /// <summary>
-    /// 是否为主界面
-    /// </summary>
-    [ObservableProperty]
-    private bool _main = true;
 
 #if Phone
     /// <summary>
@@ -124,7 +119,6 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoTab(object? arg)
     {
-        Main = false;
         Model.PushBack(Back);
         OnPropertyChanged(arg as string);
     }
@@ -135,7 +129,6 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoModPack()
     {
-        Main = false;
         Model.PushBack(BackMain);
         OnPropertyChanged(NameTab1);
         if (!ConfigBinding.WindowMode())
@@ -152,7 +145,6 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoCloud()
     {
-        Main = false;
         Model.PushBack(BackMain);
         GameCloudDownload();
     }
@@ -163,7 +155,6 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoServer()
     {
-        Main = false;
         Model.PushBack(BackMain);
         ServerPackDownload();
     }
@@ -175,7 +166,6 @@ public partial class AddGameModel : TopModel
     {
         Model.PopBack();
         OnPropertyChanged(NameBack);
-        Main = true;
     }
 
     /// <summary>
@@ -199,7 +189,6 @@ public partial class AddGameModel : TopModel
         SelectPath = null;
         Files = null;
         OnPropertyChanged("Back");
-        Main = true;
     }
 
     public override void Close()

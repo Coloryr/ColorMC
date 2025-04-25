@@ -10,7 +10,7 @@ using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace ColorMC.Gui.UI.Model.Add;
+namespace ColorMC.Gui.UI.Model.AddGame;
 
 /// <summary>
 /// 添加游戏实例

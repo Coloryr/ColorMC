@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.BaseMenuControl"
+    x:Class="ColorMC.Gui.UI.Controls.MenuControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,6 +8,7 @@
     xmlns:model1="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:MenuModel"
@@ -38,10 +39,7 @@
                     RenderOptions.TextRenderingMode="Antialias"
                     Text="{Binding Title, FallbackValue=Title}" />
             </StackPanel>
-            <Panel Name="TabPanel" ClipToBounds="True">
-                <Decorator Name="Content1" />
-                <Decorator Name="Content2" />
-            </Panel>
+            <view:ChangeControl Name="TabPanel" />
         </DockPanel>
         <Border
             Name="SidePanel3"

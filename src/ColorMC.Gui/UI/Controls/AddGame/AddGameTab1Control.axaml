@@ -1,10 +1,10 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Add.AddGameTab1Control"
+    x:Class="ColorMC.Gui.UI.Controls.AddGame.AddGameTab1Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.AddGame"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
@@ -24,8 +24,7 @@
                     Content="{setting:Localize AddGameWindow.Tab1.Text22}"
                     DockPanel.Dock="Bottom"
                     IsEnabled="{Binding !IsLoad}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text69}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text69}" />
                 <StackPanel>
                     <TextBox
                         Height="30"
@@ -42,7 +41,7 @@
                             Path="/Resource/Icon/GameEdit/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}" IsEnabled="{Binding !IsLoad}">
+                    <panel:WrapPanelWithStretch IsEnabled="{Binding !IsLoad}" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
                             <ComboBox
@@ -65,8 +64,7 @@
                             Classes="top"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize GameEditWindow.Tab1.Text2}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text81}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
                     </panel:WrapPanelWithStretch>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -109,8 +107,7 @@
                                 Classes="top"
                                 Command="{Binding VersionSelect}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text11}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text83}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text83}" />
                             <Button
                                 Width="100"
                                 Height="35"
@@ -118,8 +115,7 @@
                                 Classes="top"
                                 Command="{Binding GetLoader}"
                                 Content="{setting:Localize AddGameWindow.Tab1.Text12}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text82}"
-                                 />
+                                ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>
                     <TextBox
@@ -142,8 +138,7 @@
                             Classes="top"
                             Command="{Binding SelectLoader}"
                             Content="{setting:Localize Button.Select}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text127}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text127}" />
                     </Panel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -170,8 +165,7 @@
                             Classes="top"
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
                     </panel:WrapPanelWithStretch>
                 </StackPanel>
             </DockPanel>
