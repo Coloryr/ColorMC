@@ -11,19 +11,22 @@
     mc:Ignorable="d">
     <Border BorderThickness="0" Classes="t2">
         <Panel>
-            <Border MaxHeight="115" CornerRadius="5">
+            <Border Height="155" CornerRadius="5">
                 <Border.Background>
                     <ImageBrush Source="{Binding NewsImage}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
             <Border Background="#77000000" CornerRadius="5" />
-            <StackPanel Margin="15">
-                <StackPanel.Styles>
+            <DockPanel Margin="15">
+                <DockPanel.Styles>
                     <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                         <Setter Property="Background" Value="Transparent" />
                     </Style>
-                </StackPanel.Styles>
-                <Panel Margin="0,0,0,5">
+                </DockPanel.Styles>
+                <Panel
+                    Margin="0,0,0,5"
+                    VerticalAlignment="Top"
+                    DockPanel.Dock="Top">
                     <TextBlock
                         Margin="0,0,0,5"
                         FontSize="16"
@@ -82,7 +85,7 @@
                             Text="{setting:Localize MainWindow.Text22}" />
                     </Border>
                 </Panel>
-            </StackPanel>
+            </DockPanel>
         </Panel>
     </Border>
 </UserControl>
