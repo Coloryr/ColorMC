@@ -96,7 +96,7 @@ public class SelfPageSlideX(TimeSpan duration) : IPageTransition
                                 Value = 0d
                             }
                         },
-                        Cue = new Cue(0.3d)
+                        Cue = new Cue(0.2d)
                     },
                     new KeyFrame
                     {
