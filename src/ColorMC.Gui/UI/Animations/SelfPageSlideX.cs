@@ -96,7 +96,7 @@ public class SelfPageSlideX(TimeSpan duration) : IPageTransition
                                 Value = 0d
                             }
                         },
-                        Cue = new Cue(0.5d)
+                        Cue = new Cue(0.3d)
                     },
                     new KeyFrame
                     {
@@ -200,7 +200,7 @@ public class SelfPageSlideX(TimeSpan duration) : IPageTransition
                                 Value = 0d
                             }
                         },
-                        Cue = new Cue(0.8d)
+                        Cue = new Cue(0.7d)
                     },
                     new KeyFrame
                     {
