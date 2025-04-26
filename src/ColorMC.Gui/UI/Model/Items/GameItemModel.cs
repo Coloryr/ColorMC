@@ -487,6 +487,7 @@ public partial class GameItemModel : GameModel
         }
 
         GameBinding.SetGameName(Obj, res.Text1);
+        OnPropertyChanged(nameof(Name));
     }
 
     /// <summary>

@@ -51,13 +51,13 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">路径名字</param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string name)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string path)
     {
         data.FixDownloadUrl();
 
         return new ModInfoObj()
         {
-            Path = name,
+            Path = path,
             Name = data.DisplayName,
             File = data.FileName,
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
@@ -193,7 +193,7 @@ public static class CurseForgeHelper
         //获取模组下载信息
 
         //一次性获取
-        var res = await CurseForgeAPI.GetMods(arg.Info.Files);
+        var res = await CurseForgeAPI.GetFiles(arg.Info.Files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
@@ -208,16 +208,16 @@ public static class CurseForgeHelper
                 var modid = item.ModId.ToString();
                 mods.TryRemove(modid, out _);
 
-                if (path.FileType == FileType.Mod)
-                {
-                    mods.TryAdd(modid, item.MakeModInfo(path.Name));
-                }
-                else if (path.FileType == FileType.World)
+                if (path.FileType == FileType.World)
                 {
                     item1.Later = (test) =>
                     {
                         arg.Game.AddWorldZipAsync(item1.Local, test).Wait();
                     };
+                }
+                else
+                {
+                    mods.TryAdd(modid, item.MakeModInfo(path.Name));
                 }
 
                 now++;

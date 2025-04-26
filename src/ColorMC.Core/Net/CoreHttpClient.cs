@@ -143,7 +143,7 @@ public static class CoreHttpClient
         DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
         DownloadClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-        DownloadClient.Timeout = TimeSpan.FromSeconds(10);
+        DownloadClient.Timeout = TimeSpan.FromSeconds(20);
 
         LoginClient.DefaultRequestVersion = HttpVersion.Version11;
         LoginClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
@@ -151,7 +151,7 @@ public static class CoreHttpClient
         LoginClient.DefaultRequestHeaders.UserAgent.Clear();
         LoginClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-        LoginClient.Timeout = TimeSpan.FromSeconds(10);
+        LoginClient.Timeout = TimeSpan.FromSeconds(20);
     }
 
     /// <summary>
