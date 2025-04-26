@@ -639,7 +639,7 @@ public static class GameDownloadHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static Task<List<FileItemObj>?> GetDownloadForgeLibs(this GameSettingObj obj)
+    public static Task<(List<FileItemObj>?, List<FileItemObj>?)> GetDownloadForgeLibs(this GameSettingObj obj)
     {
         return BuildForgeAsync(obj.Version, obj.LoaderVersion!, obj.Loader == Loaders.NeoForge);
     }
@@ -651,7 +651,7 @@ public static class GameDownloadHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    private static async Task<List<FileItemObj>?> BuildForgeAsync(string mc, string version, bool neo)
+    private static async Task<(List<FileItemObj>?, List<FileItemObj>?)> BuildForgeAsync(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = version1.IsGameVersionV2();
@@ -664,13 +664,13 @@ public static class GameDownloadHelper
             var res = await DownloadManager.StartAsync([down]);
             if (!res)
             {
-                return null;
+                return (null, null);
             }
         }
         catch (Exception e)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
-            return null;
+            return (null, null);
         }
 
         using var zFile = new ZipFile(down.Local);
@@ -709,10 +709,10 @@ public static class GameDownloadHelper
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error1"), e);
-                return null;
+                return (null, null);
             }
 
-            list.AddRange(BuildForgeLibs(info, mc, version, neo, v2, true));
+            var list1 = BuildForgeLibs(info, mc, version, neo, v2, true);
 
             ForgeInstallObj info1;
             try
@@ -725,10 +725,11 @@ public static class GameDownloadHelper
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error2"), e);
-                return null;
+                return (null, null);
             }
 
-            list.AddRange(BuildForgeLibs(info1, mc, version, neo, v2));
+            var list2 = BuildForgeLibs(info1, mc, version, neo, v2);
+            return (list1.ToList(), list2.ToList());
         }
         //旧forge
         else
@@ -774,16 +775,14 @@ public static class GameDownloadHelper
                 VersionPath.AddGame(info,
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
 
-                list.AddRange(BuildForgeLibs(info, mc, version, neo, v2, true));
+                return (BuildForgeLibs(info, mc, version, neo, v2, true).ToList(), null);
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
-                return null;
+                return (null, null);
             }
         }
-
-        return list;
     }
 
     /// <summary>
