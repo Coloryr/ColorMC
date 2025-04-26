@@ -17,6 +17,7 @@ using SkiaSharp;
 using System.IO.Compression;
 using System.Net;
 using System.Security.Authentication;
+using System.Threading.Tasks;
 using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
 
 namespace ColorMC.Test;
@@ -739,5 +740,12 @@ public static class TestItem
         var v5 = char.IsSurrogate(c);
         var v6 = char.IsSymbol(c);
 
+    }
+
+    public static async Task Item43()
+    {
+        using var temp = new HttpClient();
+        var res = await temp.GetAsync("https://edge.forgecdn.net/files/4351/224/wolf-armor-compat-1.0.3-1.19.2.jar", HttpCompletionOption.ResponseHeadersRead);
+        var data = res.Content.ReadAsStream();
     }
 }
