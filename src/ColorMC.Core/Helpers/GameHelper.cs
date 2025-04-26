@@ -904,7 +904,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static List<FileItemObj>? GetForgeLibs(this GameSettingObj obj)
+    public static (List<FileItemObj>?, List<FileItemObj>?) GetForgeLibs(this GameSettingObj obj)
     {
         var neo = obj.Loader == Loaders.NeoForge;
         var version1 = VersionPath.GetVersion(obj.Version)!;
@@ -915,7 +915,7 @@ public static class GameHelper
             VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
         if (forge == null)
         {
-            return null;
+            return (null, null);
         }
 
         //forge本体
@@ -925,23 +925,19 @@ public static class GameHelper
             VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
             VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
         if (forgeinstall == null && v2)
-            return null;
+        {
+            return (null, null);
+        }
 
         //forge安装器
         if (forgeinstall != null)
         {
             var list2 = GameDownloadHelper.BuildForgeLibs(forgeinstall, obj.Version,
                 obj.LoaderVersion!, neo, v2);
-            list1.AddRange(list2);
+            return (list1, list2.ToList());
         }
 
-        if (v2)
-        {
-            ReadyForgeWrapper();
-            list1.Add(ForgeWrapper);
-        }
-
-        return list1;
+        return (list1, null);
     }
 
     /// <summary>
@@ -1012,13 +1008,12 @@ public static class GameHelper
     /// <returns></returns>
     public static List<FileItemObj>? GetOptifineLibs(this GameSettingObj obj)
     {
-        ReadyOptifineWrapper();
         var optifine = obj.GetOptifine();
         if (optifine == null)
         {
             return null;
         }
-        return [OptifineWrapper, new()
+        return [new()
         {
             Name = optifine.FileName,
             Local = LibrariesPath.GetOptifineFile(obj.Version, obj.LoaderVersion!),
