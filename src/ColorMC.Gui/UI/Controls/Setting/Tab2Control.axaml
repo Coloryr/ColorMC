@@ -2,7 +2,9 @@
     x:Class="ColorMC.Gui.UI.Controls.Setting.Tab2Control"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:head="clr-namespace:ColorMC.Gui.Objs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
@@ -12,6 +14,9 @@
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <cov:EnumToBooleanConverter x:Key="EnumToBool" />
+    </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="0,0,10,15">
             <Border
@@ -453,20 +458,25 @@
                             Margin="0,0,20,0"
                             Content="{setting:Localize SettingWindow.Tab2.Text55}"
                             GroupName="Group2"
-                            IsChecked="{Binding IsHead1}" />
+                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_A}}" />
+                        <RadioButton
+                            Margin="0,0,20,0"
+                            Content="{setting:Localize SettingWindow.Tab2.Text69}"
+                            GroupName="Group2"
+                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_B}}" />
                         <RadioButton
                             Margin="0,0,20,0"
                             Content="{setting:Localize SettingWindow.Tab2.Text56}"
                             GroupName="Group2"
-                            IsChecked="{Binding IsHead2}" />
+                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_A}}" />
                         <RadioButton
                             Content="{setting:Localize SettingWindow.Tab2.Text57}"
                             GroupName="Group2"
-                            IsChecked="{Binding IsHead3}" />
+                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}" />
                     </WrapPanel>
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,-10"
-                        IsEnabled="{Binding IsHead3}"
+                        IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}"
                         RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />

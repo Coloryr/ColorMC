@@ -19,7 +19,7 @@ public static class PlayerSkinAPI
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>皮肤路径, 披风路径</returns>
-    public static async Task<(bool, bool)> DownloadSkin(LoginObj obj)
+    public static async Task<DownloadSkinRes> DownloadSkin(LoginObj obj)
     {
         var url = obj.AuthType switch
         {
@@ -33,21 +33,24 @@ public static class PlayerSkinAPI
         };
 
         if (url == null)
-            return (false, false);
+        {
+            return new();
+        }
 
-        bool skin = false, cape = false;
+        string? skin = null, cape = null;
+        bool isslim = false;
         if (!string.IsNullOrWhiteSpace(url.Textures.Skin?.Url))
         {
             try
             {
-                var file = Path.GetFullPath(obj.GetSkinFile());
-                FileInfo info = new(file);
-                info.Directory?.Create();
+                isslim = url.Textures.Skin.Metadata?.Model == "slim";
+                var file = AssetsPath.GetSkinFile(url.Textures.Skin.Url);
                 var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Skin.Url);
+
                 if (data2.State)
                 {
                     PathHelper.WriteBytes(file, data2.Data!);
-                    skin = true;
+                    skin = file;
                 }
             }
             catch (Exception e)
@@ -60,14 +63,12 @@ public static class PlayerSkinAPI
         {
             try
             {
-                var file = Path.GetFullPath(obj.GetCapeFile());
-                FileInfo info = new(file);
-                info.Directory?.Create();
+                var file = AssetsPath.GetSkinFile(url.Textures.Cape.Url);
                 var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Cape.Url);
                 if (data2.State)
                 {
                     PathHelper.WriteBytes(file, data2.Data!);
-                    cape = true;
+                    cape = file;
                 }
             }
             catch (Exception e)
@@ -76,7 +77,7 @@ public static class PlayerSkinAPI
             }
         }
 
-        return (skin, cape);
+        return new() { Skin = skin, Cape = cape, IsNewSlim = isslim };
     }
 
     /// <summary>

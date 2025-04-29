@@ -221,18 +221,7 @@ public static class UserBinding
             return;
         }
 
-        string? file = null, file1 = null;
-        var temp = await PlayerSkinAPI.DownloadSkin(obj);
-        if (temp.Item1)
-        {
-            file = AssetsPath.GetSkinFile(obj);
-        }
-        if (temp.Item2)
-        {
-            file1 = AssetsPath.GetCapeFile(obj);
-        }
-
-        ImageManager.LoadSkinHead(file, file1);
+        await ImageManager.LoadSkinHead(obj);
     }
 
     /// <summary>

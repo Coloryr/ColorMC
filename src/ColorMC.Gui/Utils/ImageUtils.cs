@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using ColorMC.Gui.UI.Controls;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
@@ -10,6 +11,11 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class ImageUtils
 {
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <param name="colorType"></param>
+    /// <returns></returns>
     public static PixelFormat ToPixelFormat(this SKColorType colorType)
     {
         return colorType switch
@@ -21,6 +27,11 @@ public static class ImageUtils
         };
     }
 
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <param name="alphaType"></param>
+    /// <returns></returns>
     public static AlphaFormat ToAlphaFormat(this SKAlphaType alphaType)
     {
         return alphaType switch
@@ -31,6 +42,11 @@ public static class ImageUtils
         };
     }
 
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <param name="bitmap"></param>
+    /// <returns></returns>
     public static Bitmap ToBitmap(this SKBitmap bitmap)
     {
         return new Bitmap(bitmap.ColorType.ToPixelFormat(), 
@@ -38,11 +54,16 @@ public static class ImageUtils
         new(bitmap.Width, bitmap.Height), new(96, 96), bitmap.RowBytes);
     }
 
+    /// <summary>
+    /// 转换
+    /// </summary>
+    /// <param name="image"></param>
+    /// <returns></returns>
     public static Bitmap ToBitmap(this SKImage image)
     {
         var temp = Marshal.AllocHGlobal(image.Height * image.Info.RowBytes);
-        var bitmap = new Bitmap(image.ColorType.ToPixelFormat(),
-        image.AlphaType.ToAlphaFormat(), temp,
+        image.ReadPixels(new(image.Width, image.Height, image.ColorType, image.AlphaType), temp);
+        var bitmap = new Bitmap(image.ColorType.ToPixelFormat(),image.AlphaType.ToAlphaFormat(), temp,
         new(image.Width, image.Height), new(96, 96), image.Info.RowBytes);
         Marshal.FreeHGlobal(temp);
         return bitmap;

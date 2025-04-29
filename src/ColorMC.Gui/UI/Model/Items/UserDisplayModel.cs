@@ -7,42 +7,46 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.UI.Model.User;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SkiaSharp;
+using ColorMC.Gui.Utils;
+using ColorMC.Gui.Manager;
+using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 账户显示
 /// </summary>
-public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItemModel
+public partial class UserDisplayModel : SelectItemModel
 {
+    public const string NameReload = "Reload";
+
     public const double DefaultWidth = 350;
 
-    public LoginObj Obj => obj;
+    public LoginObj Obj => _obj;
 
     /// <summary>
     /// 用户名
     /// </summary>
-    public string Name => obj.UserName;
+    public string Name => _obj.UserName;
     /// <summary>
     /// UUID
     /// </summary>
-    public string UUID => obj.UUID;
+    public string UUID => _obj.UUID;
     /// <summary>
     /// 类型
     /// </summary>
-    public string Type => obj.AuthType.GetName();
+    public string Type => _obj.AuthType.GetName();
     /// <summary>
     /// 附加信息
     /// </summary>
-    public string Text1 => obj.Text1;
+    public string Text1 => _obj.Text1;
     /// <summary>
     /// 附加信息
     /// </summary>
-    public string Text2 => obj.Text2;
+    public string Text2 => _obj.Text2;
 
     /// <summary>
     /// 宽度
@@ -51,50 +55,64 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     private double _width = DefaultWidth;
 
     /// <summary>
+    /// 是否有皮肤文件
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveSkin;
+
+    /// <summary>
     /// 账户类型
     /// </summary>
-    public AuthType AuthType => obj.AuthType;
+    public AuthType AuthType => _obj.AuthType;
 
     /// <summary>
     /// 头像
     /// </summary>
-    public Task<Bitmap?> Image => GetImage();
+    [ObservableProperty]
+    public Bitmap? image = ImageManager.LoadBitmap;
+
     /// <summary>
-    /// 头像
+    /// 皮肤
     /// </summary>
-    private Bitmap? _img;
+    [ObservableProperty]
+    public Bitmap? _skin = ImageManager.LoadBitmap;
+
     /// <summary>
-    /// 获取头像
+    /// 头像 皮肤
     /// </summary>
-    /// <returns></returns>
-    private async Task<Bitmap?> GetImage()
+    private Bitmap? _img, _img1;
+
+    private readonly UsersModel _top;
+    private readonly LoginObj _obj;
+
+    public UserDisplayModel(UsersModel top, LoginObj obj)
     {
-        if (_img != null)
-        {
-            return _img;
-        }
+        _top = top;
+        _obj = obj;
 
         try
         {
-            await Task.Run(async () =>
+            Task.Run(async () =>
             {
-                var temp = await PlayerSkinAPI.DownloadSkin(obj);
-                if (temp.Item1)
+                var temp = await ImageManager.GetUserSkin(obj);
+                if (temp.Item1 != null)
                 {
-                    var file = AssetsPath.GetSkinFile(obj);
-                    var skin = SKBitmap.Decode(file);
-                    using var data = Skin2DHead.MakeHeadImage(skin);
-                    _img = new Bitmap(data);
+                    using var skin = SKBitmap.Decode(temp.Item1);
+                    _img = ImageManager.GenHeadImage(skin);
+                    _img1 = ImageManager.GenSkinImage(skin, temp.Item2);
                 }
+                Dispatcher.UIThread.Post(() =>
+                {
+                    HaveSkin = _img != null;
+                    Image = _img;
+                    Skin = _img1;
+                });
             });
-            return _img;
         }
         catch (Exception e)
         {
             Logs.Error(App.Lang("AddModPackWindow.Error5"), e);
         }
-
-        return null;
     }
 
     /// <summary>
@@ -118,7 +136,7 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     /// </summary>
     public void Select()
     {
-        top.Select(this);
+        _top.Select(this);
     }
 
     /// <summary>
@@ -126,7 +144,7 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     /// </summary>
     public void Refresh()
     {
-        top.Refresh(this);
+        _top.Refresh(this);
     }
 
     /// <summary>
@@ -134,7 +152,7 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     /// </summary>
     public void Relogin()
     {
-        top.Relogin(this);
+        _top.Relogin(this);
     }
 
     /// <summary>
@@ -142,7 +160,7 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     /// </summary>
     public void Remove()
     {
-        top.Remove(this);
+        _top.Remove(this);
     }
 
     /// <summary>
@@ -150,6 +168,39 @@ public partial class UserDisplayModel(UsersModel top, LoginObj obj) : SelectItem
     /// </summary>
     public void Edit()
     {
-        top.Edit(this);
+        _top.Edit(this);
+    }
+
+    /// <summary>
+    /// 清理资源
+    /// </summary>
+    public void Close()
+    {
+        _img?.Dispose();
+        _img1?.Dispose();
+    }
+
+    /// <summary>
+    /// 重载头像
+    /// </summary>
+    public void ReloadHead()
+    {
+        OnPropertyChanged(NameReload);
+
+        Image = null;
+        _img?.Dispose();
+        Task.Run(async () =>
+        {
+            var temp = await ImageManager.GetUserSkin(_obj);
+            if (temp.Item1 != null)
+            {
+                using var skin = SKBitmap.Decode(temp.Item1);
+                _img = ImageManager.GenHeadImage(skin);
+            }
+            Dispatcher.UIThread.Post(() =>
+            {
+                Image = _img;
+            });
+        });
     }
 }

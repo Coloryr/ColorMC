@@ -1,6 +1,5 @@
 ﻿using Ae.Dns.Client;
 using Ae.Dns.Protocol;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -10,14 +9,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer;
-using ColorMC.Gui.MusicPlayer.Decoder.Flac;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
 using System.IO.Compression;
-using System.Net;
-using System.Security.Authentication;
-using System.Threading.Tasks;
 using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
 
 namespace ColorMC.Test;
@@ -618,9 +612,9 @@ public static class TestItem
     }
     public static void Item36()
     {
-        var image = Skin3DHeadB.MakeHeadImage(SKBitmap.Decode("D:\\skin\\Skins\\color_yr.png"));
-        using var stream = File.OpenWrite("output.png");
-        image.CopyTo(stream);
+        //var image = Skin3DHeadB.MakeHeadImage(SKBitmap.Decode("D:\\skin\\Skins\\color_yr.png"));
+        //using var stream = File.OpenWrite("output.png");
+        //image.CopyTo(stream);
     }
 
     public static void Item37()

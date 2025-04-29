@@ -40,6 +40,7 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private FontDisplayModel? _fontItem;
+
     /// <summary>
     /// 主要颜色
     /// </summary>
@@ -60,6 +61,7 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private Color _debugColor;
+
     /// <summary>
     /// 是否启用单窗口模式
     /// </summary>
@@ -145,21 +147,6 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _cardOnline;
-    /// <summary>
-    /// 是否启用头像1
-    /// </summary>
-    [ObservableProperty]
-    private bool _isHead1;
-    /// <summary>
-    /// 是否启用头像1
-    /// </summary>
-    [ObservableProperty]
-    private bool _isHead2;
-    /// <summary>
-    /// 是否启用头像1
-    /// </summary>
-    [ObservableProperty]
-    private bool _isHead3;
     /// <summary>
     /// 简易主界面
     /// </summary>
@@ -249,6 +236,12 @@ public partial class SettingModel
     private string _live2DCoreState;
 
     /// <summary>
+    /// 头像模式
+    /// </summary>
+    [ObservableProperty]
+    private HeadType _headType;
+
+    /// <summary>
     /// 是否在加载中
     /// </summary>
     private bool _load = true;
@@ -297,28 +290,12 @@ public partial class SettingModel
         SetCard();
     }
 
-    partial void OnIsHead1Changed(bool value)
+    partial void OnHeadTypeChanged(HeadType value)
     {
-        if (_load || !value)
+        if (_load)
             return;
 
-        ConfigBinding.SetHeadType(HeadType.Head2D_A);
-    }
-
-    partial void OnIsHead2Changed(bool value)
-    {
-        if (_load || !value)
-            return;
-
-        ConfigBinding.SetHeadType(HeadType.Head3D_A);
-    }
-
-    partial void OnIsHead3Changed(bool value)
-    {
-        if (_load || !value)
-            return;
-
-        ConfigBinding.SetHeadType(HeadType.Head3D_B);
+        ConfigBinding.SetHeadType(value);
     }
 
     partial void OnHeadXChanged(int value)
@@ -772,25 +749,7 @@ public partial class SettingModel
             EnableLive2D = con.Live2D.Enable;
             L2dPos = con.Live2D.Pos;
             LowFps = con.Live2D.LowFps;
-
-            switch (con.Head.Type)
-            {
-                case HeadType.Head2D_A:
-                    IsHead1 = true;
-                    IsHead2 = false;
-                    IsHead3 = false;
-                    break;
-                case HeadType.Head3D_A:
-                    IsHead1 = false;
-                    IsHead2 = true;
-                    IsHead3 = false;
-                    break;
-                case HeadType.Head3D_B:
-                    IsHead1 = false;
-                    IsHead2 = false;
-                    IsHead3 = true;
-                    break;
-            }
+            HeadType = con.Head.Type;
 
             HeadX = con.Head.X;
             HeadY = con.Head.Y;

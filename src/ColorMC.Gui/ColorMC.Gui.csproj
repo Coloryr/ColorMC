@@ -360,6 +360,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
     <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.OpenGL\Live2DCSharpSDK.OpenGL.csproj" />
+    <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.Image\MinecraftSkinRender.Image.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.OpenGL\MinecraftSkinRender.OpenGL.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />

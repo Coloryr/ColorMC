@@ -8,13 +8,15 @@ public record MinecraftTexturesObj
     {
         public record SkinObj
         {
-            //public record Metadata
-            //{
-            //    public string model { get; set; }
-            //}
+            public record MetadataObj
+            {
+                [JsonProperty("model")]
+                public string Model { get; set; }
+            }
             [JsonProperty("url")]
             public string Url { get; set; }
-            //public Metadata metadata { get; set; }
+            [JsonProperty("metadata")]
+            public MetadataObj Metadata { get; set; }
         }
         public record CapeObj
         {

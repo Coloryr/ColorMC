@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Input;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
@@ -93,5 +94,13 @@ public partial class UsersControl : BaseUserControl
     public void LoadUsers()
     {
         (DataContext as UsersModel)?.LoadUsers();
+    }
+
+    /// <summary>
+    /// ÷ÿ‘ÿÕ∑œÒ
+    /// </summary>
+    public void ReloadHead()
+    {
+        (DataContext as UsersModel)?.ReloadHead();
     }
 }

@@ -117,4 +117,15 @@ public static class AssetsPath
     {
         return PathHelper.ReadText(Path.Combine(ObjectsDir, $"{hash[0..2]}", hash));
     }
+
+    /// <summary>
+    /// 获取皮肤存储文件
+    /// </summary>
+    /// <param name="url">获取的网址</param>
+    /// <returns></returns>
+    public static string GetSkinFile(string url)
+    {
+        var name = Path.GetFileName(url);
+        return Path.Combine(SkinDir, name[..2], name);
+    }
 }

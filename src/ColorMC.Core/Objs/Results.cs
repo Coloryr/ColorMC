@@ -304,12 +304,53 @@ public record MMCToColorMCRes
     public string Icon;
 }
 
+/// <summary>
+/// 创建启动命令参数结果
+/// </summary>
 public record CreateCmdRes
 {
+    /// <summary>
+    /// 是否创建成功
+    /// </summary>
     public bool Res;
+    /// <summary>
+    /// 失败原因
+    /// </summary>
     public string? Message;
+    /// <summary>
+    /// Java路径
+    /// </summary>
     public string Java;
+    /// <summary>
+    /// 工作目录
+    /// </summary>
     public string Dir;
+    /// <summary>
+    /// 参数列表
+    /// </summary>
     public List<string> Args;
+    /// <summary>
+    /// 环境列表
+    /// </summary>
     public Dictionary<string, string> Envs;
+}
+
+/// <summary>
+/// 皮肤下载结果
+/// </summary>
+public record DownloadSkinRes
+{
+    /// <summary>
+    /// 皮肤
+    /// </summary>
+    public string? Skin;
+    /// <summary>
+    /// 披风
+    /// </summary>
+    public string? Cape;
+
+    /// <summary>
+    /// 是否为新版纤细
+    /// </summary>
+    public bool IsNewSlim;
 }

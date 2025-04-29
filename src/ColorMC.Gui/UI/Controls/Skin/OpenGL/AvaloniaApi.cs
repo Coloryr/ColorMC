@@ -7,15 +7,13 @@ namespace ColorMC.Gui.UI.Controls.Skin.OpenGL;
 
 public class AvaloniaApi(GlInterface gl) : OpenGLApi
 {
-    public override bool IsES2 => true;
-    public override bool AlwaysClear => true;
-    public override bool IsPhoneES2 => false;
-
     public delegate void Func1(int a, int b);
     public delegate void Func2(int target, int samples, int internalformat, int width, int height);
     public delegate void Func3(bool flag);
     public delegate void Func5(int a);
     public delegate void Func6(int a, int b, int c, int d, int e);
+    public delegate void Func7(int a, int b, int c, int d, int e, bool f);
+    public delegate void Func8(int a, float b, float c);
 
     public Func5 GLCullFace = Marshal.GetDelegateForFunctionPointer<Func5>(gl.GetProcAddress("glCullFace"));
     public Func3 GLDepthMask = Marshal.GetDelegateForFunctionPointer<Func3>(gl.GetProcAddress("glDepthMask"));
@@ -25,6 +23,9 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
     public Func5 GLDisable = Marshal.GetDelegateForFunctionPointer<Func5>(gl.GetProcAddress("glDisable"));
     public Func5 GLDisableVertexAttribArray = Marshal.GetDelegateForFunctionPointer<Func5>(gl.GetProcAddress("glDisableVertexAttribArray"));
     public Func1 GLUniform1i = Marshal.GetDelegateForFunctionPointer<Func1>(gl.GetProcAddress("glUniform1i"));
+    public Func7 GLTexImage2DMultisample = Marshal.GetDelegateForFunctionPointer<Func7>(gl.GetProcAddress("glTexImage2DMultisample"));
+    public Func6 GLFramebufferTexture2D = Marshal.GetDelegateForFunctionPointer<Func6>(gl.GetProcAddress("glFramebufferTexture2D"));
+    public Func8 GLUniform2f = Marshal.GetDelegateForFunctionPointer<Func8>(gl.GetProcAddress("glUniform2f"));
 
     public override void ActiveTexture(int bit)
     {
@@ -322,5 +323,40 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
     public override void DeleteVertexArray(int arrays)
     {
         gl.DeleteVertexArray(arrays);
+    }
+
+    public override void TexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
+    {
+        GLTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+    }
+
+    public override void FramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
+    {
+        GLFramebufferTexture2D(target, attachment, textarget, texture, level);
+    }
+
+    public override void ClearDepth(float v)
+    {
+        gl.ClearDepth(v);
+    }
+
+    public override void RenderbufferStorage(int target, int internalformat, int width, int height)
+    {
+        gl.RenderbufferStorage(target, internalformat, width, height);
+    }
+
+    public override void Uniform2f(int v, float width, float height)
+    {
+        GLUniform2f(v, width, height);
+    }
+
+    public override void DrawArrays(int type, int v1, int v2)
+    {
+        gl.DrawArrays(type, v1, v2);
+    }
+
+    public override void Uniform1f(int loc, float v)
+    {
+        gl.Uniform1f(loc, v);
     }
 }

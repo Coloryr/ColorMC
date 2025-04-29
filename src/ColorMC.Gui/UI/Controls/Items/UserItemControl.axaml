@@ -10,6 +10,18 @@
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     x:DataType="model:UserDisplayModel"
     mc:Ignorable="d">
+    <ToolTip.Tip>
+        <Panel>
+            <TextBlock
+                Margin="5"
+                IsVisible="{Binding !HaveSkin}"
+                Text="{setting:Localize UserWindow.Error10}" />
+            <Image
+                Width="100"
+                IsVisible="{Binding HaveSkin}"
+                Source="{Binding Skin}" />
+        </Panel>
+    </ToolTip.Tip>
     <Border
         Width="{Binding Width}"
         Margin="10,5,10,5"
@@ -19,13 +31,13 @@
         <Panel Margin="15">
             <Panel>
                 <Border
+                    Name="Border1"
                     Width="50"
                     Height="50"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    CornerRadius="5">
+                    VerticalAlignment="Center">
                     <Border.Background>
-                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                        <ImageBrush Source="{Binding Image}" Stretch="UniformToFill" />
                     </Border.Background>
                 </Border>
                 <DockPanel Margin="60,0,0,0">

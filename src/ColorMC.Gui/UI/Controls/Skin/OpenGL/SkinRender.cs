@@ -41,23 +41,23 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         var model = (sender as SkinModel)!;
         if (e.PropertyName == nameof(SkinModel.SteveModelType))
         {
-            skin.SetSkinType(model.SteveModelType);
+            skin.SkinType = model.SteveModelType;
         }
         else if (e.PropertyName == nameof(SkinModel.EnableAnimation))
         {
-            skin.SetAnimation(model.EnableAnimation);
+            skin.Animation = model.EnableAnimation;
         }
         else if (e.PropertyName == nameof(SkinModel.EnableCape))
         {
-            skin.SetCape(model.EnableCape);
+            skin.EnableCape = model.EnableCape;
         }
         else if (e.PropertyName == nameof(SkinModel.EnableTop))
         {
-            skin.SetTopModel(model.EnableTop);
+            skin.EnableTop = model.EnableTop;
         }
         else if (e.PropertyName == nameof(SkinModel.EnableMSAA))
         {
-            skin.SetMSAA(model.EnableMSAA);
+            //skin.SetMSAA(model.EnableMSAA);
         }
         else if (e.PropertyName == SkinModel.RotateName)
         {
@@ -85,8 +85,8 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
     public void ChangeSkin()
     {
-        skin.SetSkin(ImageManager.SkinBitmap);
-        skin.SetCape(ImageManager.CapeBitmap);
+        skin.SetSkinTex(ImageManager.SkinBitmap);
+        skin.SetCapeTex(ImageManager.CapeBitmap);
 
         var model = (DataContext as SkinModel)!;
         model.Type = (int)skin.SkinType;
@@ -194,15 +194,16 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         CheckError(gl);
 
-        skin = new(new AvaloniaApi(gl));
-        skin.SetBackColor(new(0, 0, 0, 0));
-        skin.SetCape(model.EnableCape);
-        skin.SetTopModel(model.EnableTop);
-        skin.SetMSAA(model.EnableMSAA);
-        skin.SetAnimation(model.EnableAnimation);
-        skin.SetSkin(ImageManager.SkinBitmap);
-        skin.SetCape(ImageManager.CapeBitmap);
-        skin.IsGLES = GlVersion.Type == GlProfileType.OpenGLES;
+        skin = new(new AvaloniaApi(gl))
+        {
+            IsGLES = GlVersion.Type == GlProfileType.OpenGLES,
+            BackColor = new(0, 0, 0, 0),
+            EnableCape = model.EnableCape,
+            EnableTop = model.EnableTop,
+            Animation = model.EnableAnimation
+        };
+        skin.SetSkinTex(ImageManager.SkinBitmap);
+        skin.SetCapeTex(ImageManager.CapeBitmap);
         skin.OpenGlInit();
 
         model.SteveModelType = skin.SkinType;

@@ -10,10 +10,13 @@ using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
+using MinecraftSkinRender;
 using MinecraftSkinRender.Image;
 using SkiaSharp;
 
@@ -83,7 +86,19 @@ public static class ImageManager
     /// <summary>
     /// 游戏实例图标
     /// </summary>
-    private static readonly Dictionary<string, Bitmap> s_gameIcon = [];
+    private static readonly Dictionary<string, Bitmap> s_gameIcons = [];
+    /// <summary>
+    /// 角色皮肤
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, (string?, bool)> s_userSkins = [];
+    /// <summary>
+    /// 角色披风
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, string?> s_userCapes = [];
+    /// <summary>
+    /// 角色皮肤获取锁
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, TaskCompletionSource> s_userGets = [];
 
     /// <summary>
     /// 背景图片更新
@@ -193,41 +208,136 @@ public static class ImageManager
     }
 
     /// <summary>
+    /// 从网络获取皮肤
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="login"></param>
+    /// <returns></returns>
+    private static async Task GetSkin(UserKeyObj key, LoginObj login)
+    {
+        var task = new TaskCompletionSource();
+        s_userGets[key] = task;
+        var temp1 = await PlayerSkinAPI.DownloadSkin(login);
+        if (temp1.Skin != null)
+        {
+            s_userSkins[key] = (temp1.Skin, temp1.IsNewSlim);
+        }
+        else
+        {
+            s_userSkins[key] = (null, false);
+        }
+        if (temp1.Cape != null)
+        {
+            s_userCapes[key] = temp1.Cape;
+        }
+        task.SetResult();
+    }
+
+    /// <summary>
+    /// 获取用户披风
+    /// </summary>
+    /// <param name="login"></param>
+    /// <returns></returns>
+    public static async Task<string?> GetUserCape(LoginObj login)
+    {
+        var key = login.GetKey();
+        if (s_userGets.TryGetValue(key, out var temp))
+        {
+            await temp.Task;
+        }
+
+        if (s_userCapes.TryGetValue(key, out var file))
+        {
+            return file;
+        }
+
+        await GetSkin(key, login);
+
+        if (s_userCapes.TryGetValue(key, out file))
+        {
+            return file;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取皮肤
+    /// </summary>
+    /// <param name="login"></param>
+    /// <returns></returns>
+    public static async Task<(string?, bool)> GetUserSkin(LoginObj login)
+    {
+        var key = login.GetKey();
+        if (s_userGets.TryGetValue(key, out var temp))
+        {
+            await temp.Task; 
+        }
+
+        if (s_userSkins.TryGetValue(key, out var file))
+        {
+            return file;
+        }
+
+        await GetSkin(key, login);
+
+        if (s_userSkins.TryGetValue(key, out file))
+        {
+            return file;
+        }
+
+        return (null, false);
+    }
+
+    /// <summary>
+    /// 生成皮肤图片
+    /// </summary>
+    /// <param name="bitmap">皮肤图片</param>
+    /// <param name="issim">是否为纤细</param>
+    /// <returns></returns>
+    public static Bitmap GenSkinImage(SKBitmap bitmap, bool issim)
+    {
+        using var img = Skin2DTypeB.MakeSkinImage(bitmap, issim ? SkinType.NewSlim : null);
+        return img.ToBitmap();
+    }
+
+    /// <summary>
     /// 生成头像图片
     /// </summary>
-    private static void GenHeadImage(SKBitmap bitmap)
+    public static Bitmap GenHeadImage(SKBitmap bitmap)
     {
         var config = GuiConfigUtils.Config.Head;
         if (config.Type == HeadType.Head3D_A)
         {
             using var img = Skin3DHeadTypeA.MakeHeadImage(bitmap);
-            HeadBitmap = img.ToBitmap();
+            return img.ToBitmap();
         }
         else if (config.Type == HeadType.Head3D_B)
         {
             using var img = Skin3DHeadTypeB.MakeHeadImage(bitmap, config.X, config.Y);
-            HeadBitmap = img.ToBitmap();
+            return img.ToBitmap();
         }
         else if (config.Type == HeadType.Head2D_B)
         {
             using var img = Skin2DHeadTypeB.MakeHeadImage(bitmap);
-            HeadBitmap = img.ToBitmap();
+            return img.ToBitmap();
         }
         else
         {
             using var img = Skin2DHeadTypeA.MakeHeadImage(bitmap);
-            HeadBitmap = img.ToBitmap();
+            return img.ToBitmap();
         }
     }
 
     /// <summary>
     /// 生成皮肤头像
     /// </summary>
-    /// <param name="file">皮肤</param>
-    /// <param name="file1">披风</param>
-    public static void LoadSkinHead(string? file, string? file1)
+    /// <param name="login">登录的账户</param>
+    public static async Task LoadSkinHead(LoginObj login)
     {
-        if (file == null || !File.Exists(file))
+        var file = await GetUserSkin(login);
+        var file1 = await GetUserCape(login);
+        if (file.Item1 == null || !File.Exists(file.Item1))
         {
             SetDefaultHead();
         }
@@ -237,8 +347,8 @@ public static class ImageManager
             {
                 var old = SkinBitmap;
                 var old1 = HeadBitmap;
-                SkinBitmap = SKBitmap.Decode(file);
-                GenHeadImage(SkinBitmap);
+                SkinBitmap = SKBitmap.Decode(file.Item1);
+                HeadBitmap = GenHeadImage(SkinBitmap);
                 old?.Dispose();
                 old1?.Dispose();
             }
@@ -272,7 +382,7 @@ public static class ImageManager
             return;
         }
         var old = HeadBitmap;
-        GenHeadImage(SkinBitmap);
+        HeadBitmap = GenHeadImage(SkinBitmap);
         old?.Dispose();
         OnSkinLoad();
     }
@@ -345,7 +455,7 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? ReloadImage(GameSettingObj obj)
     {
-        if (s_gameIcon.Remove(obj.UUID, out var temp))
+        if (s_gameIcons.Remove(obj.UUID, out var temp))
         {
             Dispatcher.UIThread.Post(temp.Dispose);
         }
@@ -361,7 +471,7 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? GetGameIcon(GameSettingObj obj)
     {
-        if (s_gameIcon.TryGetValue(obj.UUID, out var image))
+        if (s_gameIcons.TryGetValue(obj.UUID, out var image))
         {
             return image;
         }
@@ -369,7 +479,7 @@ public static class ImageManager
         if (File.Exists(file))
         {
             var icon = new Bitmap(file);
-            s_gameIcon.Add(obj.UUID, icon);
+            s_gameIcons.Add(obj.UUID, icon);
 
             return icon;
         }

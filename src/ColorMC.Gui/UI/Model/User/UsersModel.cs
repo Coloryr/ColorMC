@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -501,6 +502,10 @@ public partial class UsersModel : TopModel
     public void Load()
     {
         var item1 = UserBinding.GetLastUser();
+        foreach (var item in UserList)
+        {
+            item.Close();
+        }
         UserList.Clear();
         foreach (var item in UserBinding.GetAllUser())
         {
@@ -579,6 +584,10 @@ public partial class UsersModel : TopModel
 
     public override void Close()
     {
+        foreach (var item in UserList)
+        {
+            item.Close();
+        }
         UserList.Clear();
         if (_isOAuth)
         {
@@ -667,6 +676,14 @@ public partial class UsersModel : TopModel
         foreach (var item in UserList)
         {
             item.SetMin(MinMode);
+        }
+    }
+
+    public void ReloadHead()
+    {
+        foreach (var item in UserList)
+        {
+            item.ReloadHead();
         }
     }
 }

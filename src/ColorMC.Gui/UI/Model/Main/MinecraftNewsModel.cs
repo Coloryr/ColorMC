@@ -5,6 +5,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -62,7 +63,7 @@ public partial class MainModel
 
         if (data?.Result?.Results?.Count > 0)
         {
-            var item = data.Result.Results.First(item => item.Type != "Game");
+            var item = data.Result.Results.First(item => item.IsNews());
             DisplayNews = item.Title;
             var temp1 = NewsImage;
             NewsImage = await GetImage(item.Image);
