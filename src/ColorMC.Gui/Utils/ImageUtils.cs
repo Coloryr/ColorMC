@@ -1,3 +1,6 @@
+using System.Runtime.InteropServices;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
@@ -7,20 +10,42 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class ImageUtils
 {
-    /// <summary>
-    /// 混合像素
-    /// </summary>
-    /// <param name="rgba">源</param>
-    /// <param name="mix">目标</param>
-    /// <returns>结果</returns>
-    public static SKColor Mix(SKColor rgba, SKColor mix)
+    public static PixelFormat ToPixelFormat(this SKColorType colorType)
     {
-        double ap = mix.Alpha / 255;
-        double dp = 1 - ap;
+        return colorType switch
+        {
+            SKColorType.Bgra8888 => PixelFormats.Bgra8888,
+            SKColorType.Rgb565 => PixelFormats.Rgb565,
+            SKColorType.Gray8 => PixelFormats.Gray8,
+            _ => PixelFormats.Rgba8888
+        };
+    }
 
-        return new SKColor((byte)(mix.Red * ap + rgba.Red * dp),
-            (byte)(mix.Green * ap + rgba.Green * dp),
-            (byte)(mix.Blue * ap + rgba.Blue * dp));
+    public static AlphaFormat ToAlphaFormat(this SKAlphaType alphaType)
+    {
+        return alphaType switch
+        {
+            SKAlphaType.Opaque => AlphaFormat.Opaque,
+            SKAlphaType.Premul => AlphaFormat.Premul,
+            _ => AlphaFormat.Unpremul
+        };
+    }
+
+    public static Bitmap ToBitmap(this SKBitmap bitmap)
+    {
+        return new Bitmap(bitmap.ColorType.ToPixelFormat(), 
+        bitmap.AlphaType.ToAlphaFormat(), bitmap.GetPixels(), 
+        new(bitmap.Width, bitmap.Height), new(96, 96), bitmap.RowBytes);
+    }
+
+    public static Bitmap ToBitmap(this SKImage image)
+    {
+        var temp = Marshal.AllocHGlobal(image.Height * image.Info.RowBytes);
+        var bitmap = new Bitmap(image.ColorType.ToPixelFormat(),
+        image.AlphaType.ToAlphaFormat(), temp,
+        new(image.Width, image.Height), new(96, 96), image.Info.RowBytes);
+        Marshal.FreeHGlobal(temp);
+        return bitmap;
     }
 
     /// <summary>

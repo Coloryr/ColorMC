@@ -88,6 +88,9 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         skin.SetSkin(ImageManager.SkinBitmap);
         skin.SetCape(ImageManager.CapeBitmap);
 
+        var model = (DataContext as SkinModel)!;
+        model.Type = (int)skin.SkinType;
+
         RequestNextFrameRendering();
     }
 

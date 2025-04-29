@@ -13,8 +13,8 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Skin;
 using ColorMC.Gui.Utils;
+using MinecraftSkinRender.Image;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Manager;
@@ -193,6 +193,34 @@ public static class ImageManager
     }
 
     /// <summary>
+    /// 生成头像图片
+    /// </summary>
+    private static void GenHeadImage(SKBitmap bitmap)
+    {
+        var config = GuiConfigUtils.Config.Head;
+        if (config.Type == HeadType.Head3D_A)
+        {
+            using var img = Skin3DHeadTypeA.MakeHeadImage(bitmap);
+            HeadBitmap = img.ToBitmap();
+        }
+        else if (config.Type == HeadType.Head3D_B)
+        {
+            using var img = Skin3DHeadTypeB.MakeHeadImage(bitmap, config.X, config.Y);
+            HeadBitmap = img.ToBitmap();
+        }
+        else if (config.Type == HeadType.Head2D_B)
+        {
+            using var img = Skin2DHeadTypeB.MakeHeadImage(bitmap);
+            HeadBitmap = img.ToBitmap();
+        }
+        else
+        {
+            using var img = Skin2DHeadTypeA.MakeHeadImage(bitmap);
+            HeadBitmap = img.ToBitmap();
+        }
+    }
+
+    /// <summary>
     /// 生成皮肤头像
     /// </summary>
     /// <param name="file">皮肤</param>
@@ -209,16 +237,8 @@ public static class ImageManager
             {
                 var old = SkinBitmap;
                 var old1 = HeadBitmap;
-                var config = GuiConfigUtils.Config.Head;
                 SkinBitmap = SKBitmap.Decode(file);
-                //根据模式生成
-                using var data = config.Type switch
-                {
-                    HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
-                    HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
-                    _ => Skin2DHead.MakeHeadImage(SkinBitmap)
-                };
-                HeadBitmap = new Bitmap(data);
+                GenHeadImage(SkinBitmap);
                 old?.Dispose();
                 old1?.Dispose();
             }
@@ -252,15 +272,7 @@ public static class ImageManager
             return;
         }
         var old = HeadBitmap;
-        var config = GuiConfigUtils.Config.Head;
-        //根据模式生成
-        using var data = config.Type switch
-        {
-            HeadType.Head3D_A => Skin3DHeadA.MakeHeadImage(SkinBitmap),
-            HeadType.Head3D_B => Skin3DHeadB.MakeHeadImage(SkinBitmap),
-            _ => Skin2DHead.MakeHeadImage(SkinBitmap)
-        };
-        HeadBitmap = new Bitmap(data);
+        GenHeadImage(SkinBitmap);
         old?.Dispose();
         OnSkinLoad();
     }

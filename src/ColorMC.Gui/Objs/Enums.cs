@@ -152,7 +152,7 @@ public enum FrpType
 /// </summary>
 public enum HeadType
 {
-    Head2D, Head3D_A, Head3D_B
+    Head2D_A, Head3D_A, Head3D_B, Head2D_B
 }
 
 /// <summary>

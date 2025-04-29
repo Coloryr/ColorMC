@@ -302,7 +302,7 @@ public partial class SettingModel
         if (_load || !value)
             return;
 
-        ConfigBinding.SetHeadType(HeadType.Head2D);
+        ConfigBinding.SetHeadType(HeadType.Head2D_A);
     }
 
     partial void OnIsHead2Changed(bool value)
@@ -775,7 +775,7 @@ public partial class SettingModel
 
             switch (con.Head.Type)
             {
-                case HeadType.Head2D:
+                case HeadType.Head2D_A:
                     IsHead1 = true;
                     IsHead2 = false;
                     IsHead3 = false;

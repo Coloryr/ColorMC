@@ -219,6 +219,7 @@ public partial class HeadControl : UserControl
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
             MaxObservale.Notify(ImageManager.MaxIcon[0]);
             _buttonMax.Content = max;
+            
             _buttonClose = new Button()
             {
                 Width = 40,
@@ -233,6 +234,10 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
+
+            Win32Properties.SetNonClientHitTestResult(_buttonMax, Win32Properties.Win32HitTestValue.MaxButton);
+            Win32Properties.SetNonClientHitTestResult(_buttonMin, Win32Properties.Win32HitTestValue.MinButton);
+            Win32Properties.SetNonClientHitTestResult(_buttonClose, Win32Properties.Win32HitTestValue.Close);
         }
 
         _buttonMin.Click += ButtonMin_Click;

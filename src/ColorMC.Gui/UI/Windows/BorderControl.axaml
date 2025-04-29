@@ -15,7 +15,6 @@
             Height="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
-            Cursor="TopLeftCorner"
             Fill="Transparent" />
         <Rectangle
             Name="North"
@@ -23,7 +22,6 @@
             Margin="5,0,5,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
-            Cursor="TopSide"
             Fill="Transparent" />
         <Rectangle
             Name="NorthEast"
@@ -31,7 +29,6 @@
             Height="5"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
-            Cursor="TopRightCorner"
             Fill="Transparent" />
         <Rectangle
             Name="West"
@@ -39,7 +36,6 @@
             Margin="0,5,0,5"
             HorizontalAlignment="Left"
             VerticalAlignment="Stretch"
-            Cursor="LeftSide"
             Fill="Transparent" />
         <Rectangle
             Name="East"
@@ -47,7 +43,6 @@
             Margin="0,5,0,5"
             HorizontalAlignment="Right"
             VerticalAlignment="Stretch"
-            Cursor="RightSide"
             Fill="Transparent" />
         <Rectangle
             Name="SouthWest"
@@ -55,7 +50,6 @@
             Height="5"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
-            Cursor="BottomLeftCorner"
             Fill="Transparent" />
         <Rectangle
             Name="South"
@@ -63,7 +57,6 @@
             Margin="5,0,5,0"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Bottom"
-            Cursor="BottomSide"
             Fill="Transparent" />
         <Rectangle
             Name="SouthEast"
@@ -71,7 +64,6 @@
             Height="5"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Cursor="BottomRightCorner"
             Fill="Transparent" />
     </Panel>
 </UserControl>
