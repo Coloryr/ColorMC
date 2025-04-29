@@ -358,6 +358,13 @@ public static partial class CheckHelpers
                         list.Add(item);
                     }
                 });
+                Parallel.ForEach(arg.InstallerLibs, (item) =>
+                {
+                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
+                    {
+                        list.Add(item);
+                    }
+                });
             }, cancel));
         }
 
@@ -568,53 +575,53 @@ public static partial class CheckHelpers
         //return sha1 != obj.data.MC_EXTRA_SHA.client[1..^1];
     }
 #endif
-    /// <summary>
-    /// 检查Forge的运行库
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="cancel">取消Token</param>
-    /// <returns>下载列表</returns>
-    public static async Task<ConcurrentBag<FileItemObj>?> CheckForgeLibAsync(this GameSettingObj obj, CancellationToken cancel)
-    {
-        var list1 = obj.GetForgeLibs();
-        if (list1 == null)
-        {
-            return null;
-        }
-        var list = new ConcurrentBag<FileItemObj>();
+    ///// <summary>
+    ///// 检查Forge的运行库
+    ///// </summary>
+    ///// <param name="obj">游戏实例</param>
+    ///// <param name="cancel">取消Token</param>
+    ///// <returns>下载列表</returns>
+    //public static async Task<ConcurrentBag<FileItemObj>?> CheckForgeLibAsync(this GameSettingObj obj, CancellationToken cancel)
+    //{
+    //    var list1 = obj.GetForgeLibs();
+    //    if (list1 == null)
+    //    {
+    //        return null;
+    //    }
+    //    var list = new ConcurrentBag<FileItemObj>();
 
-        await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
-        {
-            if (cancel.IsCancellationRequested)
-            {
-                return;
-            }
+    //    await Parallel.ForEachAsync(list1, cancel, async (item, cancel) =>
+    //    {
+    //        if (cancel.IsCancellationRequested)
+    //        {
+    //            return;
+    //        }
 
-            if (!File.Exists(item.Local))
-            {
-                list.Add(item);
-                return;
-            }
-            if (item.Sha1 == null)
-            {
-                return;
-            }
+    //        if (!File.Exists(item.Local))
+    //        {
+    //            list.Add(item);
+    //            return;
+    //        }
+    //        if (item.Sha1 == null)
+    //        {
+    //            return;
+    //        }
 
-            if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
-            {
-                return;
-            }
-            using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
-                FileShare.ReadWrite);
-            var sha1 = await HashHelper.GenSha1Async(stream);
-            if (item.Sha1 != sha1)
-            {
-                list.Add(item);
-            }
-        });
+    //        if (!ConfigUtils.Config.GameCheck.CheckLibSha1)
+    //        {
+    //            return;
+    //        }
+    //        using var stream = new FileStream(item.Local, FileMode.Open, FileAccess.ReadWrite,
+    //            FileShare.ReadWrite);
+    //        var sha1 = await HashHelper.GenSha1Async(stream);
+    //        if (item.Sha1 != sha1)
+    //        {
+    //            list.Add(item);
+    //        }
+    //    });
 
-        return list;
-    }
+    //    return list;
+    //}
 
     /// <summary>
     /// 检查Fabric的运行库

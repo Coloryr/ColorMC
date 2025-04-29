@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -47,7 +48,7 @@ public partial class MinecraftNewsModel : TopModel
             return;
         }
 
-        foreach (var item in data.ArticleGrid)
+        foreach (var item in data.Result.Results.Where(item => item.Type != "Game"))
         {
             News.Add(new(item));
         }
@@ -70,7 +71,7 @@ public partial class MinecraftNewsModel : TopModel
             return;
         }
 
-        foreach (var item in data.ArticleGrid)
+        foreach (var item in data.Result.Results.Where(item => item.Type != "Game"))
         {
             News.Add(new(item));
         }

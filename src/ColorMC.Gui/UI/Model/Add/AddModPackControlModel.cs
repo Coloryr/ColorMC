@@ -478,7 +478,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     private async void Load()
     {
         //MO不允许少文字搜索
-        if (Source == 2 && Categorie == 4 && Text?.Length < 3)
+        if (Source == 1 && Categorie == 4 && Text?.Length < 3)
         {
             Model.Show(App.Lang("AddModPackWindow.Error6"));
             return;
@@ -490,14 +490,16 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
         //制作分页
-        MaxPage = res.Count / 20;
-        var page = 0;
-        if (Source == 1)
+        if (Source == 0)
         {
-            page = Page ?? 0;
+            MaxPage = res.Count / 20;
+            EnableNextPage = (MaxPage - Page) > 0;
         }
-
-        EnableNextPage = (MaxPage - Page) > 0;
+        else
+        {
+            MaxPage = int.MaxValue;
+            EnableNextPage = true;
+        }
 
         var data = res.List;
 
@@ -512,7 +514,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         //一页20
         int b = 0;
-        for (int a = page * 20; a < data.Count; a++, b++)
+        for (int a = 0; a < data.Count; a++, b++)
         {
             if (b >= 20)
             {

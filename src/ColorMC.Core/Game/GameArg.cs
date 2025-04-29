@@ -804,19 +804,31 @@ public static class GameArg
                     }
                 }
 
-                IEnumerable<FileItemObj>? list3 = null;
+                List<FileItemObj>? list3 = null;
+                List<FileItemObj>? list4 = null;
                 //根据加载器处理
                 switch (obj.Loader)
                 {
                     case Loaders.Forge:
                     case Loaders.NeoForge:
-                        list3 = obj.GetForgeLibs();
+                        (list3, list4) = obj.GetForgeLibs();
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        list3 ??= await obj.GetDownloadForgeLibs()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                        if (list3 == null)
+                        {
+                            (list3, list4) = await obj.GetDownloadForgeLibs();
+                            if (list3 == null)
+                            {
+                                throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                            }
+                        }
+                        if (v2)
+                        {
+                            GameHelper.ReadyForgeWrapper();
+                            list3.Add(GameHelper.ForgeWrapper);
+                        }
                         break;
                     case Loaders.Fabric:
                         list3 = obj.GetFabricLibs();
@@ -844,6 +856,8 @@ public static class GameArg
                         }
                         list3 ??= await obj.GetDownloadOptifineLibs()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                        GameHelper.ReadyOptifineWrapper();
+                        list3.Add(GameHelper.OptifineWrapper);
                         break;
                     case Loaders.Custom:
                         if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
@@ -857,7 +871,7 @@ public static class GameArg
                         }
                         var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
                         ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-                        list3 = res1.List;
+                        list3 = res1.List?.ToList();
                         break;
                 }
                 if (list3 != null)
@@ -867,6 +881,16 @@ public static class GameArg
                         if (!string.IsNullOrWhiteSpace(item.Local))
                         {
                             arg.LoaderLibs.Add(item);
+                        }
+                    }
+                }
+                if (list4 != null)
+                {
+                    foreach (var item in list4)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.Local))
+                        {
+                            arg.InstallerLibs.Add(item);
                         }
                     }
                 }

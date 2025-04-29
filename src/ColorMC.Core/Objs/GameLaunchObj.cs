@@ -9,6 +9,7 @@ public record GameLaunchObj
 {
     public List<FileItemObj> GameLibs = [];
     public List<FileItemObj> LoaderLibs = [];
+    public List<FileItemObj> InstallerLibs = [];
     public List<string> JvmArgs = [];
     public List<string> GameArgs = [];
     public HashSet<int> JavaVersions = [];
