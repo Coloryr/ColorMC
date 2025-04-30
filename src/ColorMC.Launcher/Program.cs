@@ -148,14 +148,15 @@ public static class Program
 #else
 
 #if !AOT
-            if (!Load())
-            {
-                LoadError(args);
-                return;
-            }
+            //if (!Load())
+            //{
+            //    LoadError(args);
+            //    return;
+            //}
 #else
             GuiLoad.Load();
 #endif
+            GuiLoad.Load();
             SetInputDir(_inputDir);
             SetRuntimeState(Aot, IsMin);
             SetBaseSha1(BaseSha1);

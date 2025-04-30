@@ -5,6 +5,7 @@ public static class GuiNames
     public const string NameJoyDir = "inputs";
     public const string NameImageDir = "image";
     public const string NameDllDir = "dll";
+    public const string NameDllNewDir = "dllnew";
     public const string NameTooslDir = "tools";
     public const string NameFrpDir = "frp";
     public const string NameOpenFrpDir = "openfrp";

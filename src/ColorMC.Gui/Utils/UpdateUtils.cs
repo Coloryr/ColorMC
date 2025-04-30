@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
+using Newtonsoft.Json.Linq;
+using SharpHDiffPatch.Core;
+using SharpHDiffPatch.Core.Event;
 
 namespace ColorMC.Gui.Utils;
 
@@ -18,7 +26,7 @@ namespace ColorMC.Gui.Utils;
 public static class UpdateUtils
 {
     public static readonly string[] WebSha1s = ["", ""];
-    public static readonly string[] Sha1s = ["", ""];
+    public static readonly string[] LocalSha1s = ["", ""];
     public static readonly string[] LocalPath = ["", ""];
 
     public static readonly string[] LaunchFiles =
@@ -43,11 +51,11 @@ public static class UpdateUtils
             if (File.Exists(LocalPath[a]))
             {
                 using var file = PathHelper.OpenRead(LocalPath[a])!;
-                Sha1s[a] = HashHelper.GenSha1(file);
+                LocalSha1s[a] = HashHelper.GenSha1(file);
             }
             else
             {
-                Sha1s[a] = ColorMCGui.BaseSha1[a];
+                LocalSha1s[a] = ColorMCGui.BaseSha1[a];
             }
         }
     }
@@ -56,7 +64,7 @@ public static class UpdateUtils
     /// 检查更新
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool, bool, string?)> Check()
+    public static async Task<(bool, bool, string?)> CheckMain()
     {
         if (ColorMCGui.BaseSha1 == null)
         {
@@ -65,7 +73,7 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCCloudAPI.GetUpdateIndex();
+            var obj = await ColorMCCloudAPI.GetMainIndex();
             if (obj == null)
             {
                 UpdateCheckFail();
@@ -77,7 +85,7 @@ public static class UpdateUtils
             {
                 return (true, true, obj["Text"]?.ToString());
             }
-            var data1 = await CheckOne();
+            var data1 = await CheckNowVersion();
             if (data1.Item1 == true)
             {
                 return (true, false, data1.Item2!);
@@ -95,39 +103,128 @@ public static class UpdateUtils
     /// <summary>
     /// 开始更新
     /// </summary>
-    public static async void StartUpdate()
+    public static void StartUpdate(BaseModel model)
     {
         if (ColorMCGui.BaseSha1 == null)
             return;
 
+        if (!File.Exists(LocalPath[0]) || !File.Exists(LocalPath[1]))
+        {
+            StartDownloadUpdate(model);
+        }
+        else
+        {
+            StartPatchUpdate(model);
+        }
+    }
+
+    /// <summary>
+    /// 开始修补更新
+    /// </summary>
+    private static async void StartPatchUpdate(BaseModel model)
+    {
+        if (ColorMCGui.BaseSha1 == null)
+            return;
+
+        model.Progress(App.Lang("UpdateChecker.Info2"));
+        var obj = await ColorMCCloudAPI.GetUpdateIndex();
+        if (obj == null || obj.TryGetValue("res", out _))
+        {
+            model.Show(App.Lang("UpdateChecker.Error3"));
+            return;
+        }
+
+        if (!obj.TryGetValue("update", out var list) || list?.ToObject<List<UpdateObj>>() is not { } update)
+        {
+            model.Show(App.Lang("UpdateChecker.Error3"));
+            return;
+        }
+        bool find = false;
+        var diffs = new List<string>();
+        var down = new List<FileItemObj>();
+        foreach (var item in update)
+        {
+            if (find || item.Core == LocalSha1s[0] && item.Gui == LocalSha1s[1])
+            {
+                find = true;
+                string file = Path.Combine(DownloadManager.DownloadDir, item.Diff);
+                diffs.Add(file);
+                down.Add(new()
+                {
+                    Name = "colormc_" + item.Diff,
+                    Local = file,
+                    Sha1 = item.Sha1,
+                    Url = ColorMCCloudAPI.UpdateUrl + item.Diff
+                });
+            }
+        }
+        if (find)
+        {
+            var res = await DownloadManager.StartAsync(down);
+            if (res)
+            {
+                model.ProgressUpdate(App.Lang("UpdateChecker.Info3"));
+                res = await StartPatch(diffs);
+                model.ProgressClose();
+                if (res)
+                {
+                    ColorMCGui.Reboot();
+                }
+                else
+                {
+                    model.Show(App.Lang("UpdateChecker.Error2"));
+                }
+            }
+            else
+            {
+                model.ProgressClose();
+                model.Show(App.Lang("UpdateChecker.Error1"));
+            }
+        }
+        else
+        {
+            StartDownloadUpdate(model);
+        }
+    }
+
+    /// <summary>
+    /// 开始基文件更新
+    /// </summary>
+    private static async void StartDownloadUpdate(BaseModel model)
+    {
+        if (ColorMCGui.BaseSha1 == null)
+            return;
+
+        model.Progress(App.Lang("UpdateChecker.Info2"));
         var list = new List<FileItemObj>()
         {
             new()
             {
                 Name = "ColorMC.Core.dll",
                 Sha1 = WebSha1s[0],
-                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Core.dll",
-                Local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Core.dll"),
+                Url = $"{ColorMCCloudAPI.UpdateUrl}ColorMC.Core.dll",
+                Local = LocalPath[0],
                 Overwrite = true
             },
             new()
             {
                 Name = "ColorMC.Gui.dll",
                 Sha1 = WebSha1s[1],
-                Url = $"{ColorMCCloudAPI.CheckUrl}ColorMC.Gui.dll",
-                Local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir, "ColorMC.Gui.dll"),
+                Url = $"{ColorMCCloudAPI.UpdateUrl}ColorMC.Gui.dll",
+                Local = LocalPath[1],
                 Overwrite = true
             }
         };
 
         var res = await DownloadManager.StartAsync(list);
+        model.ProgressClose();
         if (res)
         {
             ColorMCGui.Reboot();
         }
         else
         {
-            WindowManager.ShowError(App.Lang("UpdateChecker.Error1"), "");
+            model.Show(App.Lang("UpdateChecker.Error1"));
         }
     }
 
@@ -135,7 +232,7 @@ public static class UpdateUtils
     /// 检测更新
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool?, string?)> CheckOne()
+    public static async Task<(bool?, string?)> CheckNowVersion()
     {
         if (ColorMCGui.BaseSha1 == null)
         {
@@ -144,24 +241,30 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCCloudAPI.GetUpdateSha1();
+            var obj = await ColorMCCloudAPI.GetUpdateIndex();
             if (obj == null || obj.TryGetValue("res", out _))
             {
                 WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
                 return (false, null);
             }
 
-            WebSha1s[0] = obj["core.dll"]!.ToString();
-            WebSha1s[1] = obj["gui.dll"]!.ToString();
+            if (!obj.TryGetValue("index", out var index)
+                || index is not JObject index1)
+            {
+                return (false, null);
+            }
 
-            Logs.Info($"ColorMC.Core.dll:{Sha1s[0]} Web:{WebSha1s[0]}");
-            Logs.Info($"ColorMC.Gui.dll:{Sha1s[1]} Web:{WebSha1s[1]}");
+            WebSha1s[0] = index1["core"]!.ToString();
+            WebSha1s[1] = index1["gui"]!.ToString();
+
+            Logs.Info($"ColorMC.Core.dll:{LocalSha1s[0]} Web:{WebSha1s[0]}");
+            Logs.Info($"ColorMC.Gui.dll:{LocalSha1s[1]} Web:{WebSha1s[1]}");
 
             for (int a = 0; a < 2; a++)
             {
-                if (WebSha1s[a] != Sha1s[a])
+                if (WebSha1s[a] != LocalSha1s[a])
                 {
-                    obj.TryGetValue("text", out var data1);
+                    index1.TryGetValue("info", out var data1);
                     return (true, data1?.ToString() ?? App.Lang("UpdateChecker.Info1"));
                 }
             }
@@ -179,7 +282,7 @@ public static class UpdateUtils
     /// <summary>
     /// 检测更新失败
     /// </summary>
-    public static void UpdateCheckFail()
+    private static void UpdateCheckFail()
     {
         var window = WindowManager.GetMainWindow();
         if (window == null)
@@ -187,5 +290,31 @@ public static class UpdateUtils
             return;
         }
         window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
+    }
+
+    private static async Task<bool> StartPatch(List<string> files)
+    {
+        return await Task.Run(() =>
+        {
+            try
+            {
+                var patcher = new HDiffPatch();
+                var dir1 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir);
+                var dir2 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllNewDir);
+                foreach (var item in files)
+                {
+                    patcher.Initialize(item);
+                    patcher.Patch(dir1, dir2, true, default, false, true);
+                    Directory.Delete(dir1, true);
+                    Directory.Move(dir2, dir1);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Logs.Error(App.Lang("UpdateChecker.Error1"), e);
+                return false;
+            }
+        });
     }
 }

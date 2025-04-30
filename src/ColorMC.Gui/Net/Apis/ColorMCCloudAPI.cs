@@ -61,7 +61,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 更新检查网址
     /// </summary>
-    public const string CheckUrl = $"{ColorMCAPI.BaseUrl}update/{ColorMCCore.TopVersion}/";
+    public const string UpdateUrl = $"{ColorMCAPI.BaseUrl}update/{ColorMCCore.TopVersion}/";
 
     public static async Task<Dictionary<string, FrpDownloadObj>?> GetFrpList()
     {
@@ -104,25 +104,20 @@ public static class ColorMCCloudAPI
     /// 获取主版本号
     /// </summary>
     /// <returns></returns>
-    public static async Task<JObject> GetUpdateIndex()
+    public static async Task<JObject> GetMainIndex()
     {
-        var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "update/index.json");
-        req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
-        return JObject.Parse(await data.Content.ReadAsStringAsync());
+        var data = await CoreHttpClient.DownloadClient.GetStringAsync(ColorMCAPI.BaseUrl + "update/index.json");
+        return JObject.Parse(data);
     }
 
     /// <summary>
-    /// 获取文件Sha1
+    /// 获取文件修补
     /// </summary>
     /// <returns></returns>
-    public static async Task<JObject> GetUpdateSha1()
+    public static async Task<JObject> GetUpdateIndex()
     {
-        var req = new HttpRequestMessage(HttpMethod.Get, CheckUrl + "sha1.json");
-        req.Headers.Add("ColorMC", ColorMCCore.Version);
-        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
-        string text = await data.Content.ReadAsStringAsync();
-        return JObject.Parse(text);
+        var data = await CoreHttpClient.DownloadClient.GetStringAsync(UpdateUrl + "index.json");
+        return JObject.Parse(data);
     }
 
     /// <summary>

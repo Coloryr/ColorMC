@@ -43,9 +43,12 @@ public static class OpenJ9Api
         }
 
         var node = nodes.ToList()[0];
-        var nodes1 = node.SelectNodes("option")
+        var nodes1 = node.SelectNodes("option")?
             .Where(x => x.Attributes["class"]?.Value == "bx--select-option");
-
+        if (nodes1 == null)
+        {
+            return null;
+        }
         var mainversion = new List<string>()
         {
             ""
@@ -63,11 +66,15 @@ public static class OpenJ9Api
         }
         node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
-
+        if (nodes1 == null)
+        {
+            return null;
+        }
         var system = new List<string>()
         {
             ""
         };
+        
         foreach (var item in nodes1)
         {
             string value = item.Attributes["value"].Value;
@@ -86,7 +93,10 @@ public static class OpenJ9Api
         }
         node = nodes.ToList()[0];
         nodes1 = node.SelectNodes("option");
-
+        if (nodes1 == null)
+        {
+            return null;
+        }
         var arch = new List<string>()
         {
             ""

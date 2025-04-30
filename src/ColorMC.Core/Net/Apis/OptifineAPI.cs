@@ -40,7 +40,7 @@ public static class OptifineAPI
                 HtmlDocument html = new();
                 html.LoadHtml(data.Message!);
                 var list2 = html.DocumentNode.SelectNodes("//tr");
-                var list1 = list2.Where(item => item?.GetClasses()?.Contains("downloadLine") == true);
+                var list1 = list2?.Where(item => item?.GetClasses()?.Contains("downloadLine") == true);
                 if (list1 == null)
                 {
                     return null;
