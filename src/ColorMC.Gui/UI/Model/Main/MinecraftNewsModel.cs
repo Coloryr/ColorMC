@@ -60,12 +60,12 @@ public partial class MainModel
             return;
         }
 
-        if (data?.Result?.Results?.Count > 0)
+        if (data?.ArticleGrid.Count > 0)
         {
-            var item = data.Result.Results.First(item => item.Type != "Game");
-            DisplayNews = item.Title;
+            var item = data.ArticleGrid.First();
+            DisplayNews = item.DefaultTile.Title;
             var temp1 = NewsImage;
-            NewsImage = await GetImage(item.Image);
+            NewsImage = await GetImage("https://www.minecraft.net" + item.DefaultTile.Image.ImageURL);
             temp1?.Dispose();
             IsHaveNews = true;
         }

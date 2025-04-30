@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Headers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.MinecraftAPI;
@@ -14,7 +15,17 @@ public static class MinecraftAPI
     public const string Profile = "https://api.minecraftservices.com/minecraft/profile";
     public const string UserProfile = "https://sessionserver.mojang.com/session/minecraft/profile";
     public const string LoginXbox = "https://api.minecraftservices.com/authentication/login_with_xbox";
-    public const string News = "https://net-secondary.web.minecraft-services.net/api/v1.0/zh-cn/search?page={0}&pageSize=24&sortType=Recent&category=News";
+    public const string News = "https://www.minecraft.net/content/minecraftnet/language-masters/zh-hans/jcr:content/root/container/image_grid_a_copy_64.articles.page-{0}.json";
+
+    private static readonly HttpClient _client = new();
+
+    static MinecraftAPI()
+    {
+        _client.DefaultRequestVersion = HttpVersion.Version11;
+        _client.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+        _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+        _client.Timeout = TimeSpan.FromSeconds(20);
+    }
 
     /// <summary>
     /// 从游戏名字获取UUID
@@ -95,8 +106,7 @@ public static class MinecraftAPI
     {
         var url = string.Format(News, page + 1);
         var req = new HttpRequestMessage(HttpMethod.Get, url);
-        req.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-        var data = await CoreHttpClient.DownloadClient.SendAsync(req);
+        var data = await _client.SendAsync(req);
         var data1 = await data.Content.ReadAsStringAsync();
 
         return JsonConvert.DeserializeObject<MinecraftNewObj>(data1);

@@ -48,7 +48,7 @@ public partial class MinecraftNewsModel : TopModel
             return;
         }
 
-        foreach (var item in data.Result.Results.Where(item => item.Type != "Game"))
+        foreach (var item in data.ArticleGrid)
         {
             News.Add(new(item));
         }
@@ -71,7 +71,7 @@ public partial class MinecraftNewsModel : TopModel
             return;
         }
 
-        foreach (var item in data.Result.Results.Where(item => item.Type != "Game"))
+        foreach (var item in data.ArticleGrid)
         {
             News.Add(new(item));
         }
