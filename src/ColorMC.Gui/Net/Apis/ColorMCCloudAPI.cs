@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,9 +17,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
-using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -31,11 +27,6 @@ namespace ColorMC.Gui.Net.Apis;
 /// </summary>
 public static class ColorMCCloudAPI
 {
-    private static readonly HttpClient s_client = new()
-    {
-        Timeout = Timeout.InfiniteTimeSpan
-    };
-
     /// <summary>
     /// 服务器地址
     /// </summary>
@@ -61,17 +52,36 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 更新检查网址
     /// </summary>
-    public const string UpdateUrl = $"{ColorMCAPI.BaseUrl}update/{ColorMCCore.TopVersion}/";
+    public const string UpdateUrl = $"{ColorMCAPI.BaseWebUrl}colormc/update/{ColorMCCore.TopVersion}/";
 
+    /// <summary>
+    /// 获取frp列表
+    /// </summary>
+    /// <returns></returns>
     public static async Task<Dictionary<string, FrpDownloadObj>?> GetFrpList()
     {
         try
         {
-            var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseWebUrl + "frp/version.json");
-            req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
-            var data1 = await data.Content.ReadAsStringAsync();
-            return JsonConvert.DeserializeObject<Dictionary<string, FrpDownloadObj>>(data1);
+            var data = await ColorMCAPI.Client.GetStringAsync(ColorMCAPI.BaseWebUrl + "frp/version.json");
+            return JsonConvert.DeserializeObject<Dictionary<string, FrpDownloadObj>>(data);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error2"), e);
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 获取hdiff列表
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<Dictionary<string, HdiffDownloadObj>?> GetHdiffList()
+    {
+        try
+        {
+            var data = await ColorMCAPI.Client.GetStringAsync(ColorMCAPI.BaseWebUrl + "hdiff/version.json");
+            return JsonConvert.DeserializeObject<Dictionary<string, HdiffDownloadObj>>(data);
         }
         catch (Exception e)
         {
@@ -88,10 +98,7 @@ public static class ColorMCCloudAPI
     {
         try
         {
-            var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "update/log");
-            req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
-            return await data.Content.ReadAsStringAsync();
+            return await ColorMCAPI.Client.GetStringAsync(ColorMCAPI.BaseWebUrl + "colormc/update/log");
         }
         catch (Exception e)
         {
@@ -106,7 +113,7 @@ public static class ColorMCCloudAPI
     /// <returns></returns>
     public static async Task<JObject> GetMainIndex()
     {
-        var data = await CoreHttpClient.DownloadClient.GetStringAsync(ColorMCAPI.BaseUrl + "update/index.json");
+        var data = await CoreHttpClient.DownloadClient.GetStringAsync(ColorMCAPI.BaseUrl + "colormc/update/index.json");
         return JObject.Parse(data);
     }
 
@@ -203,7 +210,7 @@ public static class ColorMCCloudAPI
         requ.Headers.Add("serverkey", Serverkey);
         requ.Headers.Add("clientkey", Clientkey);
 
-        var res = await s_client.SendAsync(requ);
+        var res = await ColorMCAPI.Client.SendAsync(requ);
         if (res.IsSuccessStatusCode)
         {
             var data = await res.Content.ReadAsStringAsync();
@@ -731,6 +738,65 @@ public static class ColorMCCloudAPI
     }
 
     /// <summary>
+    /// 获取Hdiff
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static (string?, FileItemObj?) BuildHdiffItem(string key, HdiffDownloadObj value)
+    {
+        string data1;
+        string sha1;
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            if (SystemInfo.IsArm)
+            {
+                data1 = $"hdiffpatch_v{key}_bin_windows_arm64.zip";
+                sha1 = value.windows_arm64;
+            }
+            else
+            {
+                data1 = $"hdiffpatch_v{key}_bin_windows64.zip";
+                sha1 = value.windows_amd64;
+            }
+        }
+        else if (SystemInfo.Os == OsType.Linux)
+        {
+            if (SystemInfo.IsArm)
+            {
+                data1 = $"hdiffpatch_v{key}_bin_linux_arm64.zip";
+                sha1 = value.linux_arm64;
+            }
+            else
+            {
+                data1 = $"hdiffpatch_v{key}_bin_linux64.zip";
+                sha1 = value.linux_amd64;
+            }
+        }
+        else if (SystemInfo.Os == OsType.MacOS)
+        {
+            data1 = $"hdiffpatch_v{key}_bin_macos.zip";
+            sha1 = value.macos;
+        }
+        else
+        {
+            return (null, null);
+        }
+
+        return (Path.Combine(ToolUtils.GetHdiffLocal(key), ToolUtils.GetHdiffName()), new()
+        {
+            Name = $"Hdiff {data1}",
+            Local = ToolUtils.GetHdiffLocal(key, data1),
+            Url = $"{ColorMCAPI.BaseWebUrl}hdiff/{key}/{data1}",
+            Sha1 = sha1,
+            Later = (stream) =>
+            {
+                ToolUtils.Unzip(stream, ToolUtils.GetHdiffLocal(key), data1);
+            }
+        });
+    }
+
+    /// <summary>
     /// 获取上游Frp
     /// </summary>
     /// <param name="key"></param>
@@ -784,7 +850,7 @@ public static class ColorMCCloudAPI
             return (null, null);
         }
 
-        return (FrpLaunchUtils.GetFrpLocal(key), new()
+        return (Path.Combine(FrpLaunchUtils.GetFrpLocal(key), FrpLaunchUtils.GetFrpcName()), new()
         {
             Name = $"Frp {data1}",
             Local = FrpLaunchUtils.GetFrpLocal(key, data1),
@@ -792,53 +858,8 @@ public static class ColorMCCloudAPI
             Sha1 = sha1,
             Later = (stream) =>
             {
-                Unzip(stream, key, data1);
+                ToolUtils.Unzip(stream, FrpLaunchUtils.GetFrpLocal(key), data1);
             }
         });
-    }
-
-    /// <summary>
-    /// 解压Frp
-    /// </summary>
-    /// <param name="stream"></param>
-    /// <param name="version"></param>
-    /// <param name="file"></param>
-    private static void Unzip(Stream stream, string version, string file)
-    {
-        if (file.EndsWith(Names.NameTarGzExt))
-        {
-            using var gzipStream = new GZipInputStream(stream);
-            var tarArchive = new TarInputStream(gzipStream, TarBuffer.DefaultBlockFactor, Encoding.UTF8);
-            do
-            {
-                TarEntry entry1 = tarArchive.GetNextEntry();
-                if (entry1.IsDirectory || !entry1.Name.EndsWith("frpc"))
-                {
-                    continue;
-                }
-
-                using var filestream = PathHelper.OpenWrite(FrpLaunchUtils.GetFrpLocal(version), true);
-                tarArchive.CopyEntryContents(filestream);
-
-                break;
-            }
-            while (true);
-
-            tarArchive.Close();
-        }
-        else
-        {
-            using var s = new ZipFile(stream);
-            foreach (ZipEntry item in s)
-            {
-                if (item.IsDirectory || !item.Name.EndsWith("frpc.exe"))
-                {
-                    continue;
-                }
-
-                PathHelper.WriteBytes(FrpLaunchUtils.GetFrpLocal(version), s.GetInputStream(item));
-                break;
-            }
-        }
     }
 }

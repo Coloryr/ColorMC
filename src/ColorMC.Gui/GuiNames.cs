@@ -10,6 +10,7 @@ public static class GuiNames
     public const string NameFrpDir = "frp";
     public const string NameOpenFrpDir = "openfrp";
     public const string NameSakuraFrpDir = "sakurafrp";
+    public const string NameHdiffDir = "hdiff";
 
     public const string NameWindowFile = "window.json";
     public const string NameCloudConfigFile = "config.zip";
@@ -20,6 +21,8 @@ public static class GuiNames
     public const string NameGameCloudFile = "cloud.json";
     public const string NameFrpFile = "frpc";
     public const string NameFrpFile1 = "frpc.exe";
+    public const string NameHdiffFile = "hpatchz";
+    public const string NameHdiffFile1 = "hpatchz.exe";
     public const string NameFrpConfigFile = "frp.json";
     public const string NameCollectFile = "collect.json";
     public const string NameCustomUIFile = "ColorMC.CustomGui.dll";

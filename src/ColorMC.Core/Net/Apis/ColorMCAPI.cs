@@ -1,6 +1,5 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Utils;
 using Newtonsoft.Json;
@@ -13,9 +12,14 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ColorMCAPI
 {
-    public const string BaseUrl = $"http://localhost:80/";
-    //public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
+    //public const string BaseUrl = $"http://localhost:80/";
+    public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
     public const string BaseWebUrl = $"https://www.coloryr.com/";
+
+    public static readonly HttpClient Client = new()
+    {
+        Timeout = Timeout.InfiniteTimeSpan
+    };
 
     /// <summary>
     /// 获取Mod列表
@@ -35,7 +39,7 @@ public static class ColorMCAPI
                 Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }))
             };
 
-            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
+            var data = await Client.SendAsync(httpRequest);
             var data1 = await data.Content.ReadAsStringAsync();
             if (string.IsNullOrWhiteSpace(data1))
                 return null;
@@ -95,7 +99,7 @@ public static class ColorMCAPI
         try
         {
             var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
-            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
+            var data = await Client.SendAsync(req);
             var data1 = await data.Content.ReadAsStringAsync();
             var obj = JObject.Parse(data1);
             if (!obj.TryGetValue("res", out var value) || value.Type != JTokenType.Integer
@@ -112,12 +116,10 @@ public static class ColorMCAPI
             return null;
         }
     }
-
+#if Phone
     /// <summary>
     /// 获取列表
     /// </summary>
-    /// <param name="version">版本</param>
-    /// <param name="os">系统</param>
     /// <returns></returns>
     public static async Task<AndroidJavaObj?> GetJavaList()
     {
@@ -126,4 +128,5 @@ public static class ColorMCAPI
 
         return JsonConvert.DeserializeObject<AndroidJavaObj>(str);
     }
+#endif
 }

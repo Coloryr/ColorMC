@@ -29,7 +29,11 @@ public static class FrpLaunchUtils
         Directory.CreateDirectory(BaseDir);
     }
 
-    private static string GetFrpcName()
+    /// <summary>
+    /// 获取Frp文件名
+    /// </summary>
+    /// <returns></returns>
+    public static string GetFrpcName()
     {
         return SystemInfo.Os == OsType.Windows ? GuiNames.NameFrpFile1 : GuiNames.NameFrpFile;
     }
@@ -63,7 +67,7 @@ public static class FrpLaunchUtils
     public static string GetFrpLocal(string ver, string? filename = null)
     {
         return filename != null ? Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, filename)
-            : Path.Combine(BaseDir, GuiNames.NameFrpDir, ver, GetFrpcName());
+            : Path.Combine(BaseDir, GuiNames.NameFrpDir, ver);
     }
 
     /// <summary>

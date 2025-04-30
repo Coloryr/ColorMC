@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -15,8 +16,6 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using Newtonsoft.Json.Linq;
-using SharpHDiffPatch.Core;
-using SharpHDiffPatch.Core.Event;
 
 namespace ColorMC.Gui.Utils;
 
@@ -160,11 +159,22 @@ public static class UpdateUtils
         }
         if (find)
         {
+            var info = await ToolUtils.InitHdiff();
+            if (info.Item1 == null)
+            {
+                model.ProgressClose();
+                model.Show(App.Lang("UpdateChecker.Error1"));
+                return;
+            }
+            if (info.Item2 != null)
+            {
+                down.Add(info.Item2);
+            }
             var res = await DownloadManager.StartAsync(down);
             if (res)
             {
                 model.ProgressUpdate(App.Lang("UpdateChecker.Info3"));
-                res = await StartPatch(diffs);
+                res = await StartPatch(info.Item1, diffs);
                 model.ProgressClose();
                 if (res)
                 {
@@ -292,19 +302,30 @@ public static class UpdateUtils
         window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
     }
 
-    private static async Task<bool> StartPatch(List<string> files)
+    private static async Task<bool> StartPatch(string file, List<string> files)
     {
         return await Task.Run(() =>
         {
             try
             {
-                var patcher = new HDiffPatch();
                 var dir1 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir);
                 var dir2 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllNewDir);
                 foreach (var item in files)
                 {
-                    patcher.Initialize(item);
-                    patcher.Patch(dir1, dir2, true, default, false, true);
+                    var patcher = new ProcessStartInfo(file);
+                    patcher.ArgumentList.Add(dir1);
+                    patcher.ArgumentList.Add(item);
+                    patcher.ArgumentList.Add(dir2);
+                    var p = Process.Start(patcher);
+                    if (p == null)
+                    {
+                        return false;
+                    }
+                    p?.WaitForExit();
+                    if (p?.ExitCode != 0)
+                    {
+                        return false;
+                    }
                     Directory.Delete(dir1, true);
                     Directory.Move(dir2, dir1);
                 }
