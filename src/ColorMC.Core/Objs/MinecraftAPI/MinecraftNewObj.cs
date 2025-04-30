@@ -4,35 +4,38 @@ namespace ColorMC.Core.Objs.MinecraftAPI;
 
 public record MinecraftNewObj
 {
-    public record ResultObj
+    public record ArticleGridObj
     {
-        public record ResultsObj
+        public record DefaultTileObj
         {
+            public record ImageObj
+            {
+                [JsonProperty("content_type")]
+                public string ContentType { get; set; }
+                [JsonProperty("imageURL")]
+                public string ImageURL { get; set; }
+                [JsonProperty("alt")]
+                public string Alt { get; set; }
+            }
+
             [JsonProperty("title")]
             public string Title { get; set; }
-            [JsonProperty("neutralTitle")]
-            public string NeutralTitle { get; set; }
-            [JsonProperty("url")]
-            public string Url { get; set; }
-            [JsonProperty("superhead")]
-            public string Superhead { get; set; }
-            [JsonProperty("description")]
-            public string Description { get; set; }
-            [JsonProperty("author")]
-            public string Author { get; set; }
+            [JsonProperty("sub_header")]
+            public string SubHeader { get; set; }
+            [JsonProperty("tile_size")]
+            public string TileSize { get; set; }
             [JsonProperty("image")]
-            public string Image { get; set; }
-            [JsonProperty("imageAltText")]
-            public string ImageAltText { get; set; }
-            [JsonProperty("type")]
-            public string Type { get; set; }
-            [JsonProperty("productId")]
-            public string ProductId { get; set; }
+            public ImageObj Image { get; set; }
+            
         }
-        [JsonProperty("results")]
-        public List<ResultsObj> Results { get; set; }
+        [JsonProperty("default_tile")]
+        public DefaultTileObj DefaultTile { get; set; }
+        [JsonProperty("primary_category")]
+        public string PrimaryCategory { get; set; }
+        [JsonProperty("article_url")]
+        public string ArticleUrl { get; set; }
     }
 
-    [JsonProperty("result")]
-    public ResultObj Result { get; set; }
+    [JsonProperty("article_grid")]
+    public List<ArticleGridObj> ArticleGrid { get; set; }
 }

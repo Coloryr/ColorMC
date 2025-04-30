@@ -13,7 +13,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// Minecraft news项目
 /// </summary>
 /// <param name="item"></param>
-public partial class NewsItemModel(MinecraftNewObj.ResultObj.ResultsObj item) : ObservableObject
+public partial class NewsItemModel(MinecraftNewObj.ArticleGridObj item) : ObservableObject
 {
     /// <summary>
     /// 背景图片
@@ -27,18 +27,20 @@ public partial class NewsItemModel(MinecraftNewObj.ResultObj.ResultsObj item) : 
     /// <summary>
     /// 标题
     /// </summary>
-    public string Title => item.Title;
+    public string Title => item.DefaultTile.Title;
     /// <summary>
     /// 内容
     /// </summary>
-    public string Description => item.Description;
+    public string Description => item.DefaultTile.Image.Alt;
+
+    public string Category => item.PrimaryCategory;
 
     /// <summary>
     /// 打开连接
     /// </summary>
     public void OpenUrl()
     {
-        BaseBinding.OpenUrl(item.Url);
+        BaseBinding.OpenUrl("https://www.minecraft.net" + item.ArticleUrl);
     }
 
     /// <summary>
@@ -51,7 +53,7 @@ public partial class NewsItemModel(MinecraftNewObj.ResultObj.ResultsObj item) : 
         {
             return _img;
         }
-        if (item.Image == null)
+        if (item.DefaultTile.Image.ImageURL == null)
         {
             return null;
         }
@@ -59,7 +61,7 @@ public partial class NewsItemModel(MinecraftNewObj.ResultObj.ResultsObj item) : 
         {
             await Task.Run(() =>
             {
-                _img = ImageManager.Load(item.Image, false).Result;
+                _img = ImageManager.Load("https://www.minecraft.net" + item.DefaultTile.Image.ImageURL, false).Result;
             });
             return _img;
         }
