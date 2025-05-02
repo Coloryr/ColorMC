@@ -332,10 +332,8 @@ public partial class AddControlModel : GameModel
         else
         {
             //其他搜索源
-            var res = await WebBinding.GetList(_now, type,
-                GameVersion, Name, Page ?? 0,
-                SortType, Categorie < 0 ? "" :
-                    _categories[Categorie], Obj.Loader);
+            var res = await WebBinding.GetList(_now, type, GameVersion, Name, Page ?? 0,
+                SortType, Categorie < 0 ? "" : _categories[Categorie], Obj.Loader);
 
             var data = res.List;
 

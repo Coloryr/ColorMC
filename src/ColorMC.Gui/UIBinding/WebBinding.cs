@@ -79,9 +79,16 @@ public static class WebBinding
                 return new();
             }
             var list1 = new List<FileItemModel>();
+            var modlist = new List<string>();
             list.Data.ForEach(item =>
             {
-                list1.Add(new(item, FileType.ModPack));
+                modlist.Add(item.Id.ToString());
+            });
+            var list2 = await ColorMCAPI.GetMcModFromCF(modlist);
+            list.Data.ForEach(item =>
+            {
+                var id = item.Id.ToString();
+                list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
             });
 
             return new()
@@ -98,9 +105,15 @@ public static class WebBinding
                 return new();
             }
             var list1 = new List<FileItemModel>();
+            var modlist = new List<string>();
             list.Hits.ForEach(item =>
             {
-                list1.Add(new(item, FileType.ModPack));
+                modlist.Add(item.ProjectId);
+            });
+            var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
+            list.Hits.ForEach(item =>
+            {
+                list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
             });
 
             return new()
@@ -320,10 +333,7 @@ public static class WebBinding
             list.Data.ForEach(item =>
             {
                 var id = item.Id.ToString();
-                list1.Add(new(item, now)
-                {
-                    McMod = list2?.TryGetValue(id, out var data1) == true ? data1 : null
-                });
+                list1.Add(new(item, now, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
             });
 
             return new()
@@ -353,11 +363,7 @@ public static class WebBinding
             var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
             list.Hits.ForEach(item =>
             {
-                list1.Add(new(item, now)
-                {
-                    McMod = list2?.TryGetValue(item.ProjectId, out var data1) == true
-                        ? data1 : null
-                });
+                list1.Add(new(item, now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
             });
 
             return new()
@@ -692,7 +698,7 @@ public static class WebBinding
     /// <returns></returns>
     public static string? GetUrl(this McModSearchItemObj obj)
     {
-        return $"https://www.mcmod.cn/class/{obj.McmodId}.html";
+        return $"https://www.mcmod.cn/{(obj.McmodType == 0 ? "class" : "modpack")}/{obj.McmodId}.html";
     }
 
     /// <summary>

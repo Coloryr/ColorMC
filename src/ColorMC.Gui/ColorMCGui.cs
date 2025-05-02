@@ -196,8 +196,8 @@ public static class ColorMCGui
         }
         finally
         {
-            s_lock.Close();
-            s_lock.Dispose();
+            s_lock?.Close();
+            s_lock?.Dispose();
         }
     }
 

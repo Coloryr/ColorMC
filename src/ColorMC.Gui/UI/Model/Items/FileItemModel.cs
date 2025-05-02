@@ -140,13 +140,14 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     private bool _close;
 
-    public FileItemModel(CurseForgeObjList.DataObj data, FileType type)
+    public FileItemModel(CurseForgeObjList.DataObj data, FileType type, McModSearchItemObj? mcmod)
     {
+        McMod = mcmod;
         Data = data;
 
         ID = data.Id.ToString();
-        Name = data.Name;
-        Summary = data.Summary;
+        Name = mcmod?.McmodName ?? data.Name;
+        Summary = mcmod?.McmodText ?? data.Summary;
         Author = data.Authors.GetString();
         DownloadCount = data.DownloadCount;
         ModifiedDate = DateTime.Parse(data.DateModified);
@@ -165,8 +166,9 @@ public partial class FileItemModel : SelectItemModel
         }
     }
 
-    public FileItemModel(ModrinthSearchObj.HitObj data, FileType type)
+    public FileItemModel(ModrinthSearchObj.HitObj data, FileType type, McModSearchItemObj? mcmod)
     {
+        McMod = mcmod;
         Data = data;
 
         ID = data.ProjectId;
