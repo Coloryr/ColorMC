@@ -248,7 +248,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -291,7 +291,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", obj.UUID);
             requ.Headers.Add("name", obj.Name);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -328,7 +328,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -367,7 +367,7 @@ public static class ColorMCCloudAPI
             using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -410,7 +410,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", uuid);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
@@ -456,7 +456,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -495,7 +495,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -531,7 +531,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", game.UUID);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -579,7 +579,7 @@ public static class ColorMCCloudAPI
             using var stream = PathHelper.OpenRead(local)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -621,7 +621,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -670,7 +670,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.Name));
             requ.Content = new StringContent(JsonConvert.SerializeObject(list));
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.StatusCode == HttpStatusCode.BadRequest)
             {
                 var data = await res.Content.ReadAsStringAsync();
@@ -716,7 +716,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
 
-            var res = await s_client.SendAsync(requ);
+            var res = await ColorMCAPI.Client.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 var data = await res.Content.ReadAsStringAsync();

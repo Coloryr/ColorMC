@@ -59,6 +59,11 @@ public partial class UserDisplayModel : SelectItemModel
     /// </summary>
     [ObservableProperty]
     private bool _haveSkin;
+    /// <summary>
+    /// 是否有披风文件
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveCape;
 
     /// <summary>
     /// 账户类型
@@ -78,9 +83,15 @@ public partial class UserDisplayModel : SelectItemModel
     public Bitmap? _skin = ImageManager.LoadBitmap;
 
     /// <summary>
-    /// 头像 皮肤
+    /// 披风
     /// </summary>
-    private Bitmap? _img, _img1;
+    [ObservableProperty]
+    public Bitmap? _cape = ImageManager.LoadBitmap;
+
+    /// <summary>
+    /// 头像 皮肤 披风
+    /// </summary>
+    private Bitmap? _img, _img1, _img2;
 
     private readonly UsersModel _top;
     private readonly LoginObj _obj;
@@ -101,11 +112,19 @@ public partial class UserDisplayModel : SelectItemModel
                     _img = ImageManager.GenHeadImage(skin);
                     _img1 = ImageManager.GenSkinImage(skin, temp.Item2);
                 }
+                var temp1 = await ImageManager.GetUserCape(obj);
+                if (temp1 != null)
+                {
+                    using var cape = SKBitmap.Decode(temp1);
+                    _img2 = ImageManager.GenCapeImage(cape);
+                }
                 Dispatcher.UIThread.Post(() =>
                 {
                     HaveSkin = _img != null;
+                    HaveCape = _img2 != null;
                     Image = _img;
                     Skin = _img1;
+                    Cape = _img2;
                 });
             });
         }

@@ -16,10 +16,22 @@
                 Margin="5"
                 IsVisible="{Binding !HaveSkin}"
                 Text="{setting:Localize UserWindow.Error10}" />
-            <Image
-                Width="100"
-                IsVisible="{Binding HaveSkin}"
-                Source="{Binding Skin}" />
+            <StackPanel Orientation="Horizontal">
+                <Image
+                    Width="100"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding HaveSkin}"
+                    Source="{Binding Skin}" />
+                <Image
+                    Width="80"
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    IsVisible="{Binding HaveCape}"
+                    Source="{Binding Cape}" />
+            </StackPanel>
         </Panel>
     </ToolTip.Tip>
     <Border

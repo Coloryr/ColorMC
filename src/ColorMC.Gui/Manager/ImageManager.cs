@@ -650,4 +650,10 @@ public static class ImageManager
     {
         return _startIcon;
     }
+
+    public static Bitmap? GenCapeImage(SKBitmap cape)
+    {
+        using var temp = Cape2DTypaA.MakeCapeImage(cape);
+        return temp.ToBitmap();
+    }
 }
