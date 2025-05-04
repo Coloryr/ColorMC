@@ -712,7 +712,7 @@ public static class GameDownloadHelper
                 return (null, null);
             }
 
-            var list1 = BuildForgeLibs(info, mc, version, neo, v2, true);
+            var list1 = BuildForgeLibs(info, mc, version, neo, v2, false);
 
             ForgeInstallObj info1;
             try
@@ -775,7 +775,7 @@ public static class GameDownloadHelper
                 VersionPath.AddGame(info,
                     Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
 
-                return (BuildForgeLibs(info, mc, version, neo, v2, true).ToList(), null);
+                return ([.. BuildForgeLibs(info, mc, version, neo, v2, true)], null);
             }
             catch (Exception e)
             {
