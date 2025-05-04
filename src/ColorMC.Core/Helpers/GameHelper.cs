@@ -919,7 +919,7 @@ public static class GameHelper
         }
 
         //forge本体
-        var list1 = GameDownloadHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, true).ToList();
+        var list1 = GameDownloadHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!, neo, v2, false).ToList();
 
         var forgeinstall = neo ?
             VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!) :
