@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     x:DataType="model:SkinModel"
     mc:Ignorable="d">
-    <ScrollViewer Margin="15">
+    <ScrollViewer Width="150" Margin="15">
         <StackPanel>
             <UniformGrid>
                 <Button
@@ -20,8 +20,7 @@
                     Classes="top"
                     Command="{Binding Load}"
                     Content="{setting:Localize Button.Refash}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text14}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text14}" />
                 <Button
                     Height="35"
                     Margin="0,0,-2,0"
@@ -30,8 +29,7 @@
                     Command="{Binding ResetPos}"
                     Content="{setting:Localize SkinWindow.Text1}"
                     IsEnabled="{Binding HaveSkin}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text15}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text15}" />
                 <Button
                     Height="35"
                     Margin="-2,0,0,0"
@@ -39,8 +37,7 @@
                     Classes="top"
                     Command="{Binding Edit}"
                     Content="{setting:Localize SkinWindow.Text3}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text16}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text16}" />
                 <Button
                     Height="35"
                     Margin="0,0,-2,0"
@@ -49,8 +46,7 @@
                     Command="{Binding Save}"
                     Content="{setting:Localize SkinWindow.Text4}"
                     IsEnabled="{Binding HaveSkin}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text17}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text17}" />
             </UniformGrid>
             <StackPanel IsEnabled="{Binding HaveSkin}">
                 <ComboBox
@@ -75,7 +71,7 @@
                     OnContent="{setting:Localize SkinWindow.Text7}" />
                 <ToggleSwitch
                     Margin="0,0,0,-5"
-                    IsChecked="{Binding EnableMSAA}"
+                    IsChecked="{Binding EnableFXAA}"
                     OffContent="{setting:Localize SkinWindow.Text9}"
                     OnContent="{setting:Localize SkinWindow.Text9}" />
                 <StackPanel IsEnabled="{Binding !EnableAnimation}">
@@ -107,8 +103,7 @@
                         Classes="top"
                         Command="{Binding Reset}"
                         Content="{setting:Localize SkinWindow.Text8}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text18}"
-                         />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text18}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

@@ -55,9 +55,9 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         {
             skin.EnableTop = model.EnableTop;
         }
-        else if (e.PropertyName == nameof(SkinModel.EnableMSAA))
+        else if (e.PropertyName == nameof(SkinModel.EnableFXAA))
         {
-            //skin.SetMSAA(model.EnableMSAA);
+            skin.RenderType = model.EnableFXAA ? SkinRenderType.FXAA : SkinRenderType.Normal;
         }
         else if (e.PropertyName == SkinModel.RotateName)
         {

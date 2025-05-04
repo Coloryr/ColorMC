@@ -79,10 +79,10 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [ObservableProperty]
     private bool _enableZ;
     /// <summary>
-    /// 是否启用MSAA
+    /// 是否启用FXAA
     /// </summary>
     [ObservableProperty]
-    private bool _enableMSAA = false;
+    private bool _enableFXAA = false;
 
     /// <summary>
     /// 皮肤类型

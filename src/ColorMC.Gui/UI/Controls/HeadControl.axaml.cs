@@ -235,9 +235,9 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
 
-            //Win32Properties.SetNonClientHitTestResult(_buttonMax, Win32Properties.Win32HitTestValue.MaxButton);
-            //Win32Properties.SetNonClientHitTestResult(_buttonMin, Win32Properties.Win32HitTestValue.MinButton);
-            //Win32Properties.SetNonClientHitTestResult(_buttonClose, Win32Properties.Win32HitTestValue.Close);
+            Win32Properties.SetNonClientHitTestResult(_buttonMax, Win32Properties.Win32HitTestValue.MaxButton);
+            Win32Properties.SetNonClientHitTestResult(_buttonMin, Win32Properties.Win32HitTestValue.MinButton);
+            Win32Properties.SetNonClientHitTestResult(_buttonClose, Win32Properties.Win32HitTestValue.Close);
         }
 
         _buttonMin.Click += ButtonMin_Click;
