@@ -35,7 +35,6 @@ public static class WebBinding
 {
     private static readonly List<string> PCJavaType = ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
 #if Phone
-
     private static readonly List<string> PhoneJavaType = ["PojavLauncherTeam"];
 #endif
 

@@ -90,6 +90,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
         var model = (DataContext as SkinModel)!;
         model.Type = (int)skin.SkinType;
+        model.HaveSkin = skin.HaveSkin;
 
         RequestNextFrameRendering();
     }

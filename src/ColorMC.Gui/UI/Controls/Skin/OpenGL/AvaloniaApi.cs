@@ -23,7 +23,7 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
     public Func5 GLDisable = Marshal.GetDelegateForFunctionPointer<Func5>(gl.GetProcAddress("glDisable"));
     public Func5 GLDisableVertexAttribArray = Marshal.GetDelegateForFunctionPointer<Func5>(gl.GetProcAddress("glDisableVertexAttribArray"));
     public Func1 GLUniform1i = Marshal.GetDelegateForFunctionPointer<Func1>(gl.GetProcAddress("glUniform1i"));
-    public Func7 GLTexImage2DMultisample = Marshal.GetDelegateForFunctionPointer<Func7>(gl.GetProcAddress("glTexImage2DMultisample"));
+    public Func7 GLTexStorage2DMultisample = Marshal.GetDelegateForFunctionPointer<Func7>(gl.GetProcAddress("glTexStorage2DMultisample"));
     public Func6 GLFramebufferTexture2D = Marshal.GetDelegateForFunctionPointer<Func6>(gl.GetProcAddress("glFramebufferTexture2D"));
     public Func8 GLUniform2f = Marshal.GetDelegateForFunctionPointer<Func8>(gl.GetProcAddress("glUniform2f"));
 
@@ -325,11 +325,6 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
         gl.DeleteVertexArray(arrays);
     }
 
-    public override void TexImage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
-    {
-        GLTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
-    }
-
     public override void FramebufferTexture2D(int target, int attachment, int textarget, int texture, int level)
     {
         GLFramebufferTexture2D(target, attachment, textarget, texture, level);
@@ -358,5 +353,10 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
     public override void Uniform1f(int loc, float v)
     {
         gl.Uniform1f(loc, v);
+    }
+
+    public override void TexStorage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
+    {
+        GLTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
     }
 }
