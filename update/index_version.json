@@ -1,0 +1,15 @@
+{
+    "index": {
+        "core": "88fd838654229b003c03907dafe30c82fff10828",
+        "gui": "ca0da93cd56511d5b298d24c6b81f844f84ca9a2",
+        "info": "new update"
+    },
+    "update": [
+        {
+            "diff": "0001.hdiff",
+            "sha1": "a34fe7704cea6f536da26340f96652569fab675f",
+            "core": "88fd838654229b003c03907dafe30c82fff10828",
+            "gui": "e506c9577ac979b2247dfb9298f470abebc1294a"
+        }
+    ]
+}
