@@ -1,8 +1,9 @@
+using System.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Jint;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -17,13 +18,13 @@ public static class OpenJ9Api
     /// </summary>
     public static async Task<GetOpenJ9ListRes?> GetJavaList()
     {
-        var data = await CoreHttpClient.GetStringAsync(Url);
-        if (!data.State)
+        using var data = await CoreHttpClient.GetAsync(Url);
+        if (data.StatusCode != HttpStatusCode.OK)
         {
             return null;
         }
-
-        var obj = JsonConvert.DeserializeObject<OpenJ9Obj>(data.Message!);
+        using var stream = await data.Content.ReadAsStreamAsync();
+        var obj = JsonUtils.ToObj(stream, JsonType.OpenJ9Obj);
         if (obj == null || obj.Error)
         {
             return null;
@@ -123,7 +124,7 @@ public static class OpenJ9Api
             return null;
         }
 
-        var obj2 = JsonConvert.DeserializeObject<OpenJ9FileObj>(obj1.ToString()!);
+        var obj2 = JsonUtils.ToObj(obj1.ToString(), JsonType.OpenJ9FileObj);
         if (obj2 == null)
         {
             return null;

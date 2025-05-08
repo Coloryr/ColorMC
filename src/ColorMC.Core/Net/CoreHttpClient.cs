@@ -1,13 +1,12 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json.Nodes;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Net;
 
@@ -24,11 +23,11 @@ public static class CoreHttpClient
     /// <summary>
     /// 下载用http客户端
     /// </summary>
-    public static HttpClient DownloadClient { get; private set; }
+    private static HttpClient _downloadClient;
     /// <summary>
     /// 登录用http客户端
     /// </summary>
-    public static HttpClient LoginClient { get; private set; }
+    private static HttpClient _loginClient;
     /// <summary>
     /// Dns列表
     /// </summary>
@@ -51,11 +50,11 @@ public static class CoreHttpClient
 
         Source = http.Source;
 
-        DownloadClient?.CancelPendingRequests();
-        DownloadClient?.Dispose();
+        _downloadClient?.CancelPendingRequests();
+        _downloadClient?.Dispose();
 
-        LoginClient?.CancelPendingRequests();
-        LoginClient?.Dispose();
+        _loginClient?.CancelPendingRequests();
+        _loginClient?.Dispose();
 
         foreach (var item in _dnsClients)
         {
@@ -110,14 +109,14 @@ public static class CoreHttpClient
 
         if (dnsClient != null)
         {
-            DownloadClient = new(new DnsDelegatingHandler(dnsClient)
+            _downloadClient = new(new DnsDelegatingHandler(dnsClient)
             {
                 InnerHandler = new SocketsHttpHandler()
                 {
                     Proxy = http.DownloadProxy ? proxy : null
                 }
             });
-            LoginClient = new(new DnsDelegatingHandler(dnsClient)
+            _loginClient = new(new DnsDelegatingHandler(dnsClient)
             {
                 InnerHandler = new SocketsHttpHandler()
                 {
@@ -127,31 +126,51 @@ public static class CoreHttpClient
         }
         else
         {
-            DownloadClient = new(new HttpClientHandler()
+            _downloadClient = new(new HttpClientHandler()
             {
                 Proxy = http.DownloadProxy ? proxy : null
             });
-            LoginClient = new(new HttpClientHandler()
+            _loginClient = new(new HttpClientHandler()
             {
                 Proxy = http.LoginProxy ? proxy : null
             });
         }
 
-        DownloadClient.DefaultRequestVersion = HttpVersion.Version11;
-        DownloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
-        DownloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-        DownloadClient.DefaultRequestHeaders.UserAgent.Clear();
-        DownloadClient.DefaultRequestHeaders.UserAgent
+        _downloadClient.DefaultRequestVersion = HttpVersion.Version11;
+        _downloadClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+        _downloadClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+        _downloadClient.DefaultRequestHeaders.UserAgent.Clear();
+        _downloadClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-        DownloadClient.Timeout = TimeSpan.FromSeconds(20);
+        _downloadClient.Timeout = TimeSpan.FromSeconds(20);
 
-        LoginClient.DefaultRequestVersion = HttpVersion.Version11;
-        LoginClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
-        LoginClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-        LoginClient.DefaultRequestHeaders.UserAgent.Clear();
-        LoginClient.DefaultRequestHeaders.UserAgent
+        _loginClient.DefaultRequestVersion = HttpVersion.Version11;
+        _loginClient.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionOrHigher;
+        _loginClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+        _loginClient.DefaultRequestHeaders.UserAgent.Clear();
+        _loginClient.DefaultRequestHeaders.UserAgent
             .Add(new ProductInfoHeaderValue("ColorMC", ColorMCCore.Version));
-        LoginClient.Timeout = TimeSpan.FromSeconds(20);
+        _loginClient.Timeout = TimeSpan.FromSeconds(20);
+    }
+
+    /// <summary>
+    /// 进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseMessage> GetAsync(string url)
+    { 
+        return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+    }
+
+    public static Task<HttpResponseMessage> GetAsync(string url, CancellationToken token)
+    {
+        return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
+    }
+
+    public static Task<HttpResponseMessage> LoginGetAsync(string url)
+    {
+        return _loginClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
     }
 
     /// <summary>
@@ -161,7 +180,7 @@ public static class CoreHttpClient
     /// <returns></returns>
     public static async Task<MessageRes> GetStringAsync(string url)
     {
-        var data = await DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        using var data = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
         if (data.StatusCode != HttpStatusCode.OK)
         {
             return new();
@@ -178,7 +197,7 @@ public static class CoreHttpClient
     /// <returns></returns>
     public static async Task<BytesRes> GetBytesAsync(string url)
     {
-        var data = await DownloadClient.GetAsync(url);
+        using var data = await _downloadClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
             return new();
@@ -189,61 +208,48 @@ public static class CoreHttpClient
     }
 
     /// <summary>
-    /// GET 获取二进制
-    /// </summary>
-    /// <param name="url">地址</param>
-    /// <returns></returns>
-    public static async Task<StreamRes> GetStreamAsync(string url)
-    {
-        var data = await DownloadClient.GetAsync(url);
-        if (data.StatusCode != HttpStatusCode.OK)
-        {
-            return new();
-        }
-
-        var data1 = await data.Content.ReadAsStreamAsync();
-        return new() { State = true, Stream = data1 };
-    }
-
-    /// <summary>
     /// 请求数据
     /// </summary>
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    public static async Task<string> LoginPostStringAsync(string url, Dictionary<string, string> arg)
-    {
-        FormUrlEncodedContent content = new(arg);
-        using var message = await LoginClient.PostAsync(url, content);
-
-        return await message.Content.ReadAsStringAsync();
-    }
-    /// <summary>
-    /// 请求数据
-    /// </summary>
-    /// <param name="url">网址</param>
-    /// <param name="arg">参数</param>
-    /// <returns>数据</returns>
-    public static async Task<JObject?> LoginPostJsonAsync(string url, object arg)
-    {
-        var data1 = JsonConvert.SerializeObject(arg);
-        var content = new StringContent(data1, MediaTypeHeaderValue.Parse("application/json"));
-        using var message = await LoginClient.PostAsync(url, content);
-        var data = await message.Content.ReadAsStringAsync();
-        return JObject.Parse(data);
-    }
-
-    /// <summary>
-    /// 请求数据
-    /// </summary>
-    /// <param name="url">网址</param>
-    /// <param name="arg">参数</param>
-    /// <returns>数据</returns>
-    public static async Task<JObject?> LoginPostAsync(string url, Dictionary<string, string> arg)
+    public static async Task<Stream> LoginPostStreamAsync(string url, Dictionary<string, string> arg)
     {
         var content = new FormUrlEncodedContent(arg);
-        using var message = await LoginClient.PostAsync(url, content);
-        var data = await message.Content.ReadAsStringAsync();
-        return JObject.Parse(data);
+        var message = await _loginClient.PostAsync(url, content);
+        return await message.Content.ReadAsStreamAsync();
+    }
+    /// <summary>
+    /// 请求数据
+    /// </summary>
+    /// <param name="url">网址</param>
+    /// <param name="arg">参数</param>
+    /// <returns>数据</returns>
+    public static async Task<JsonObject?> LoginPostJsonAsync(string url, string arg)
+    {
+        var content = new StringContent(arg, MediaTypeHeaderValue.Parse("application/json"));
+        using var message = await _loginClient.PostAsync(url, content);
+        using var data = await message.Content.ReadAsStreamAsync();
+        return await JsonUtils.ReadAsObjAsync(data);
+    }
+
+    /// <summary>
+    /// 发送请求
+    /// </summary>
+    /// <param name="httpRequest"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest)
+    {
+        return _downloadClient.SendAsync(httpRequest);
+    }
+
+    /// <summary>
+    /// 发送请求
+    /// </summary>
+    /// <param name="httpRequest"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage httpRequest)
+    {
+        return _loginClient.SendAsync(httpRequest);
     }
 }

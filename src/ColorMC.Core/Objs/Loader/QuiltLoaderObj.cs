@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -9,26 +9,26 @@ public record QuiltLoaderObj
 {
     public record ArgumentsObj
     {
-        [JsonProperty("game")]
+        [JsonPropertyName("game")]
         public List<string> Game { get; set; }
     }
     public record LibrariesObj
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
     }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
     //public string inheritsFrom { get; set; }
     //public string releaseTime { get; set; }
     //public string time { get; set; }
     //public string type { get; set; }
-    [JsonProperty("mainClass")]
+    [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
-    [JsonProperty("arguments")]
+    [JsonPropertyName("arguments")]
     public ArgumentsObj Arguments { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<LibrariesObj> Libraries { get; set; }
 }

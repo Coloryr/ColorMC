@@ -1,7 +1,6 @@
 ﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Mclo;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -31,12 +30,10 @@ public static class McloAPI
                 })
             };
 
-            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
-                return null;
-            var obj = JsonConvert.DeserializeObject<McloResObj>(data1)!;
-            if (!obj.Success)
+            using var data = await CoreHttpClient.SendAsync(httpRequest);
+            using var stream = await data.Content.ReadAsStreamAsync();
+            var obj = JsonUtils.ToObj(stream, JsonType.McloResObj);
+            if (obj?.Success != true)
             {
                 return null;
             }

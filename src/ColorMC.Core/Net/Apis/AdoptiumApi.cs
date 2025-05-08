@@ -1,5 +1,5 @@
 using ColorMC.Core.Objs.Java;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -55,13 +55,17 @@ public static class AdoptiumApi
             return s_javaVersion;
         }
         string url = $"{AdoptiumUrl}v3/info/available_releases";
-        var data = await CoreHttpClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-        if (data == null)
+        using var data = await CoreHttpClient.GetAsync(url);
+        if (data.IsSuccessStatusCode == false)
+        {
             return null;
-        var str = await data.Content.ReadAsStringAsync();
-        var obj = JsonConvert.DeserializeObject<AdoptiumJavaVersionObj>(str);
+        }
+        using var str = await data.Content.ReadAsStreamAsync();
+        var obj = JsonUtils.ToObj(str, JsonType.AdoptiumJavaVersionObj);
         if (obj == null || obj.AvailableReleases == null)
+        {
             return null;
+        }
         var list = new List<string>();
         obj.AvailableReleases.ForEach(item =>
         {
@@ -88,11 +92,12 @@ public static class AdoptiumApi
         {
             url = $"{AdoptiumUrl}v3/assets/latest/{version}/hotspot?os={GetOs(os)}";
         }
-        var data = await CoreHttpClient.DownloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        using var data = await CoreHttpClient.GetAsync(url);
         if (data == null)
+        {
             return null;
-        var str = await data.Content.ReadAsStringAsync();
-
-        return JsonConvert.DeserializeObject<List<AdoptiumObj>>(str);
+        }
+        using var str = await data.Content.ReadAsStreamAsync();
+        return JsonUtils.ToObj(str, JsonType.ListAdoptiumObj);
     }
 }

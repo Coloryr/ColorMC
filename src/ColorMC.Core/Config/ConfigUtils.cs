@@ -1,7 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Config;
 
@@ -39,26 +39,29 @@ public static class ConfigUtils
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info1"));
 
-        var data = PathHelper.ReadText(local);
+        using var data = PathHelper.OpenRead(local);
         ConfigObj? obj = null;
-        if (data != null)
+        if (data == null)
+        {
+            if (!quit)
+            {
+                ColorMCCore.NewStart = true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
         {
             try
             {
-                obj = JsonConvert.DeserializeObject<ConfigObj>(data);
+                obj = JsonUtils.ToObj(data, JsonType.ConfigObj);
             }
             catch (Exception e)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Config.Error1"), e, true);
             }
-        }
-        else if (!quit)
-        {
-            ColorMCCore.NewStart = true;
-        }
-        else
-        {
-            return false;
         }
 
         if (obj == null)
@@ -104,12 +107,7 @@ public static class ConfigUtils
     public static void Save()
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
-        ConfigSave.AddItem(new()
-        {
-            Name = Names.NameConfigFile,
-            File = s_local,
-            Obj = Config
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameConfigFile, s_local, Config, JsonType.ConfigObj));
     }
 
     /// <summary>
@@ -118,7 +116,7 @@ public static class ConfigUtils
     public static void SaveNow()
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
-        File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
+        File.WriteAllText(s_local, JsonUtils.ToString(Config, JsonType.ConfigObj));
     }
 
     /// <summary>

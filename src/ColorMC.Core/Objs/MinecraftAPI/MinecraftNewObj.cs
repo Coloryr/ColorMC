@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.MinecraftAPI;
 
@@ -10,32 +10,32 @@ public record MinecraftNewObj
         {
             public record ImageObj
             {
-                [JsonProperty("content_type")]
+                [JsonPropertyName("content_type")]
                 public string ContentType { get; set; }
-                [JsonProperty("imageURL")]
+                [JsonPropertyName("imageURL")]
                 public string ImageURL { get; set; }
-                [JsonProperty("alt")]
+                [JsonPropertyName("alt")]
                 public string Alt { get; set; }
             }
 
-            [JsonProperty("title")]
+            [JsonPropertyName("title")]
             public string Title { get; set; }
-            [JsonProperty("sub_header")]
+            [JsonPropertyName("sub_header")]
             public string SubHeader { get; set; }
-            [JsonProperty("tile_size")]
+            [JsonPropertyName("tile_size")]
             public string TileSize { get; set; }
-            [JsonProperty("image")]
+            [JsonPropertyName("image")]
             public ImageObj Image { get; set; }
             
         }
-        [JsonProperty("default_tile")]
+        [JsonPropertyName("default_tile")]
         public DefaultTileObj DefaultTile { get; set; }
-        [JsonProperty("primary_category")]
+        [JsonPropertyName("primary_category")]
         public string PrimaryCategory { get; set; }
-        [JsonProperty("article_url")]
+        [JsonPropertyName("article_url")]
         public string ArticleUrl { get; set; }
     }
 
-    [JsonProperty("article_grid")]
+    [JsonPropertyName("article_grid")]
     public List<ArticleGridObj> ArticleGrid { get; set; }
 }

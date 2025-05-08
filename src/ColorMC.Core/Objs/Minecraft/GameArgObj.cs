@@ -1,6 +1,4 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -13,37 +11,37 @@ public record GameArgObj
     {
         public record JvmObj
         {
-            [JsonProperty("rules")]
+            [JsonPropertyName("rules")]
             public List<LibrariesObj.RulesObj> Rules { get; set; }
-            [JsonProperty("value")]
+            [JsonPropertyName("value")]
             public object Value { get; set; }
         }
-        [JsonProperty("game")]
+        [JsonPropertyName("game")]
         public List<object> Game { get; set; }
-        [JsonProperty("jvm")]
+        [JsonPropertyName("jvm")]
         public List<object> Jvm { get; set; }
     }
     public record AssetIndexObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
         //public string sha1 { get; set; }
         //public long size { get; set; }
         //public long totalSize { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
     }
     public record DownloadsObj
     {
         public record Download
         {
-            [JsonProperty("sha1")]
+            [JsonPropertyName("sha1")]
             public string Sha1 { get; set; }
             //public long size { get; set; }
-            [JsonProperty("url")]
+            [JsonPropertyName("url")]
             public string Url { get; set; }
         }
-        [JsonProperty("client")]
+        [JsonPropertyName("client")]
         public Download Client { get; set; }
         //public Download client_mappings { get; set; }
         //public Download server { get; set; }
@@ -52,7 +50,7 @@ public record GameArgObj
     public record JavaVersionObj
     {
         //public string component { get; set; }
-        [JsonProperty("majorVersion")]
+        [JsonPropertyName("majorVersion")]
         public int MajorVersion { get; set; }
     }
     public record LibrariesObj
@@ -61,45 +59,45 @@ public record GameArgObj
         {
             public record OsObj
             {
-                [JsonProperty("name")]
+                [JsonPropertyName("name")]
                 public string Name { get; set; }
                 //public string version { get; set; }
-                [JsonProperty("arch")]
+                [JsonPropertyName("arch")]
                 public string Arch { get; set; }
             }
-            [JsonProperty("action")]
+            [JsonPropertyName("action")]
             public string Action { get; set; }
-            [JsonProperty("os")]
+            [JsonPropertyName("os")]
             public OsObj Os { get; set; }
         }
         public record DownloadsObj
         {
             public record ArtifactObj
             {
-                [JsonProperty("path")]
+                [JsonPropertyName("path")]
                 public string Path { get; set; }
-                [JsonProperty("sha1")]
+                [JsonPropertyName("sha1")]
                 public string Sha1 { get; set; }
                 //public long size { get; set; }
-                [JsonProperty("url")]
+                [JsonPropertyName("url")]
                 public string Url { get; set; }
             }
             public record ClassifiersObj
             {
-                [JsonProperty("natives-linux")]
+                [JsonPropertyName("natives-linux")]
                 public ArtifactObj NativesLinux { get; set; }
-                [JsonProperty("natives-osx")]
+                [JsonPropertyName("natives-osx")]
                 public ArtifactObj NativesOsx { get; set; }
-                [JsonProperty("natives-windows")]
+                [JsonPropertyName("natives-windows")]
                 public ArtifactObj NativesWindows { get; set; }
-                [JsonProperty("natives-windows-32")]
+                [JsonPropertyName("natives-windows-32")]
                 public ArtifactObj NativesWindows32 { get; set; }
-                [JsonProperty("natives-windows-64")]
+                [JsonPropertyName("natives-windows-64")]
                 public ArtifactObj NativesWindows64 { get; set; }
             }
-            [JsonProperty("classifiers")]
+            [JsonPropertyName("classifiers")]
             public ClassifiersObj Classifiers { get; set; }
-            [JsonProperty("artifact")]
+            [JsonPropertyName("artifact")]
             public ArtifactObj Artifact { get; set; }
         }
         //public record Natives
@@ -109,16 +107,16 @@ public record GameArgObj
         //    public string windows { get; set; }
         //}
         //public Natives natives { get; set; }
-        [JsonProperty("downloads")]
+        [JsonPropertyName("downloads")]
         public DownloadsObj Downloads { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("rules")]
+        [JsonPropertyName("rules")]
         public List<RulesObj> Rules { get; set; }
         //decode mmc pack use
         //[JsonProperty("MMC-hint")]
         //public string MMCHint { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
     }
     public record LoggingObj
@@ -128,47 +126,47 @@ public record GameArgObj
             public record FileObj
             {
                 //public string id { get; set; }
-                [JsonProperty("sha1")]
+                [JsonPropertyName("sha1")]
                 public string Sha1 { get; set; }
                 //public long size { get; set; }
-                [JsonProperty("url")]
+                [JsonPropertyName("url")]
                 public string Url { get; set; }
             }
-            [JsonProperty("argument")]
+            [JsonPropertyName("argument")]
             public string Argument { get; set; }
-            [JsonProperty("file")]
+            [JsonPropertyName("file")]
             public FileObj File { get; set; }
             //public string type { get; set; }
         }
-        [JsonProperty("client")]
+        [JsonPropertyName("client")]
         public ClientObj Client { get; set; }
     }
 
-    [JsonProperty("assetIndex")]
+    [JsonPropertyName("assetIndex")]
     public AssetIndexObj AssetIndex { get; set; }
     //[JsonProperty("assets")]
     //public string Assets { get; set; }
     //public int complianceLevel { get; set; }
-    [JsonProperty("downloads")]
+    [JsonPropertyName("downloads")]
     public DownloadsObj Downloads { get; set; }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    [JsonProperty("javaVersion")]
+    [JsonPropertyName("javaVersion")]
     public JavaVersionObj JavaVersion { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<LibrariesObj> Libraries { get; set; }
-    [JsonProperty("logging")]
+    [JsonPropertyName("logging")]
     public LoggingObj Logging { get; set; }
-    [JsonProperty("mainClass")]
+    [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
-    [JsonProperty("minecraftArguments")]
+    [JsonPropertyName("minecraftArguments")]
     public string MinecraftArguments { get; set; }
-    [JsonProperty("minimumLauncherVersion")]
+    [JsonPropertyName("minimumLauncherVersion")]
     public int MinimumLauncherVersion { get; set; }
-    [JsonProperty("releaseTime")]
+    [JsonPropertyName("releaseTime")]
     public string ReleaseTime { get; set; }
     //public string time { get; set; }
     //public string type { get; set; }
-    [JsonProperty("arguments")]
+    [JsonPropertyName("arguments")]
     public ArgumentsObj Arguments { get; set; }
 }

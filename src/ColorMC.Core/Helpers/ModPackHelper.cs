@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
@@ -6,8 +7,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -99,41 +98,32 @@ public static class ModPackHelper
     /// <returns>是否升级完成</returns>
     private static async Task<bool> UpgradeCurseForgeModPackAsync(UpdateModPackArg arg)
     {
-        using var zFile = new ZipFile(arg.Zip);
-        using var stream1 = new MemoryStream();
-        bool find = false;
+        using var zFile = ZipFile.OpenRead(arg.Zip);
+        CurseForgePackObj? info = null;
         //获取主信息
-        foreach (ZipEntry e in zFile)
+        if (zFile.GetEntry(Names.NameManifestFile) is { } ent)
         {
-            if (e.IsFile && e.Name == Names.NameManifestFile)
+            try
             {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1);
-                find = true;
-                break;
+                using var stream = ent.Open();
+                info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                return false;
             }
         }
-
-        if (!find)
+        else
+        {
+            return false;
+        }
+        if (info == null)
         {
             return false;
         }
 
         arg.Update2?.Invoke(CoreRunState.Init);
-        CurseForgePackObj info;
-        byte[] array1 = stream1.ToArray();
-        try
-        {
-            var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data)!;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
-            return false;
-        }
-        if (info == null)
-            return false;
 
         //获取版本数据
         foreach (var item in info.Minecraft.ModLoaders)
@@ -161,11 +151,11 @@ public static class ModPackHelper
         }
 
         //解压文件
-        foreach (ZipEntry e in zFile)
+        foreach (var e in zFile.Entries)
         {
-            if (e.IsFile && e.Name.StartsWith(info.Overrides + "/"))
+            if (e.Name.StartsWith(info.Overrides + "/"))
             {
-                using var stream = zFile.GetInputStream(e);
+                using var stream = e.Open();
                 string file = Path.Combine(arg.Game.GetGamePath(), e.Name[info.Overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
@@ -181,7 +171,8 @@ public static class ModPackHelper
         {
             try
             {
-                info3 = JsonConvert.DeserializeObject<CurseForgePackObj>(PathHelper.ReadText(json)!);
+                using var stream = PathHelper.OpenRead(json);
+                info3 = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
             }
             catch
             {
@@ -277,6 +268,7 @@ public static class ModPackHelper
         }
         else
         {
+            //没有筛选信息通过sha1筛选
             var addlist = new List<ModInfoObj>();
             var removelist = new List<ModInfoObj>();
 
@@ -343,7 +335,8 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(json, array1);
+        using var stream1 = ent.Open();
+        PathHelper.WriteBytes(json, stream1);
 
         await DownloadManager.StartAsync(list1);
 
@@ -358,43 +351,34 @@ public static class ModPackHelper
     public static async Task<GameRes> InstallCurseForgeModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
-        using var zFile = new ZipFile(arg.Zip);
-        using var stream1 = new MemoryStream();
-        bool find = false;
+        using var zFile = new ZipArchive(arg.Zip);
+
         //获取主信息
-        foreach (ZipEntry e in zFile)
+        CurseForgePackObj? info = null;
+        if (zFile.GetEntry(Names.NameManifestFile) is { } ent)
         {
-            if (e.IsFile && e.Name == Names.NameManifestFile)
+            try
             {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1);
-                find = true;
-                break;
+                using var stream = ent.Open();
+                info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                return new();
             }
         }
+        else
+        {
+            return new();
+        }
 
-        if (!find)
+        if (info == null)
         {
             return new();
         }
 
         arg.Update2?.Invoke(CoreRunState.Init);
-        CurseForgePackObj info;
-        byte[] array1 = stream1.ToArray();
-        try
-        {
-            var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<CurseForgePackObj>(data)!;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
-            return new();
-        }
-        if (info == null)
-        {
-            return new();
-        }
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -471,11 +455,11 @@ public static class ModPackHelper
         string dir = info.Overrides;
 
         //解压文件
-        foreach (ZipEntry e in zFile)
+        foreach (var e in zFile.Entries)
         {
-            if (e.IsFile && e.Name.StartsWith(dir))
+            if (e.Name.StartsWith(dir))
             {
-                using var stream = zFile.GetInputStream(e);
+                using var stream = e.Open();
                 string file = Path.GetFullPath(game.GetGamePath() + e.Name[info.Overrides.Length..]);
                 file = PathHelper.ReplacePathName(file);
                 var info2 = new FileInfo(file);
@@ -486,7 +470,8 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(game.GetModPackJsonFile(), array1);
+        using var stream1 = ent.Open();
+        PathHelper.WriteBytes(game.GetModPackJsonFile(), stream1);
 
         arg.Update2?.Invoke(CoreRunState.GetInfo);
 
@@ -520,37 +505,24 @@ public static class ModPackHelper
     /// <returns>升级结果</returns>
     private static async Task<bool> UpgradeModrinthModPackAsync(UpdateModPackArg arg)
     {
-        using var zFile = new ZipFile(PathHelper.OpenRead(arg.Zip));
-        using var stream1 = new MemoryStream();
-        bool find = false;
+        using var zFile = ZipFile.OpenRead(arg.Zip);
+        ModrinthPackObj? info = null;
         //获取主信息
-        foreach (ZipEntry e in zFile)
+        if (zFile.GetEntry(Names.NameModrinthFile) is { } ent)
         {
-            if (e.IsFile && e.Name == Names.NameModrinthFile)
+            try
             {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1);
-                find = true;
-                break;
+                using var stream = ent.Open();
+                info = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                return false;
             }
         }
-
-        if (!find)
+        else
         {
-            return false;
-        }
-
-        arg.Update2?.Invoke(CoreRunState.Init);
-        ModrinthPackObj info;
-        byte[] array1 = stream1.ToArray();
-        try
-        {
-            var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<ModrinthPackObj>(data)!;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
             return false;
         }
         if (info == null)
@@ -558,6 +530,7 @@ public static class ModPackHelper
             return false;
         }
 
+        arg.Update2?.Invoke(CoreRunState.Init);
         //获取版本数据
 
         if (info.Dependencies.TryGetValue(Names.NameForgeKey, out var version))
@@ -585,11 +558,11 @@ public static class ModPackHelper
         string dir = Names.NameOverrideDir + "/";
 
         //解压文件
-        foreach (ZipEntry e in zFile)
+        foreach (var e in zFile.Entries)
         {
-            if (e.IsFile && e.Name.StartsWith(dir))
+            if (e.Name.StartsWith(dir))
             {
-                using var stream = zFile.GetInputStream(e);
+                using var stream = e.Open();
                 string file = Path.Combine(arg.Game.GetGamePath(), e.Name[length..]);
                 var info2 = new FileInfo(file);
                 info2.Directory?.Create();
@@ -606,7 +579,8 @@ public static class ModPackHelper
         {
             try
             {
-                info3 = JsonConvert.DeserializeObject<ModrinthPackObj>(PathHelper.ReadText(json)!);
+                using var stream = PathHelper.OpenRead(json);
+                info3 = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
             }
             catch
             {
@@ -758,7 +732,8 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(json, array1);
+        using var stream1 = ent.Open();
+        PathHelper.WriteBytes(json, stream1);
 
         await DownloadManager.StartAsync(list1);
 
@@ -773,43 +748,33 @@ public static class ModPackHelper
     public static async Task<GameRes> InstallModrinthModPackAsync(InstallModPackZipArg arg)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
-        using var zFile = new ZipFile(arg.Zip);
-        using var stream1 = new MemoryStream();
-        bool find = false;
+        using var zFile = new ZipArchive(arg.Zip);
         //获取主信息
-        foreach (ZipEntry e in zFile)
+        ModrinthPackObj? info = null;
+        if (zFile.GetEntry(Names.NameModrinthFile) is { } ent)
         {
-            if (e.IsFile && e.Name == Names.NameModrinthFile)
+            try
             {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1);
-                find = true;
-                break;
+                using var stream = ent.Open();
+                info = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                return new();
             }
         }
+        else
+        {
+            return new();
+        }
 
-        if (!find)
+        if (info == null)
         {
             return new();
         }
 
         arg.Update2?.Invoke(CoreRunState.Init);
-        ModrinthPackObj info;
-        byte[] array1 = stream1.ToArray();
-        try
-        {
-            var data = Encoding.UTF8.GetString(array1);
-            info = JsonConvert.DeserializeObject<ModrinthPackObj>(data)!;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
-            return new();
-        }
-        if (info == null)
-        {
-            return new();
-        }
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -875,11 +840,11 @@ public static class ModPackHelper
         string dir = Names.NameOverrideDir;
 
         //解压文件
-        foreach (ZipEntry e in zFile)
+        foreach (var e in zFile.Entries)
         {
-            if (e.IsFile && e.Name.StartsWith(dir))
+            if (e.Name.StartsWith(dir))
             {
-                using var stream = zFile.GetInputStream(e);
+                using var stream = e.Open();
                 string file = Path.GetFullPath(game.GetGamePath() + e.Name[length..]);
                 file = PathHelper.ReplacePathName(file);
                 var info2 = new FileInfo(file);
@@ -890,7 +855,8 @@ public static class ModPackHelper
             }
         }
 
-        PathHelper.WriteBytes(game.GetModPackJsonFile(), array1);
+        using var stream1 = ent.Open();
+        PathHelper.WriteBytes(game.GetModPackJsonFile(), stream1);
 
         arg.Update2?.Invoke(CoreRunState.GetInfo);
 

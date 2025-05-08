@@ -20,7 +20,7 @@ public static class Options
         var file = obj.GetOptionsFile();
         if (File.Exists(file))
         {
-            return ReadOptions(PathHelper.ReadText(file)!);
+            return ReadOptions(PathHelper.OpenRead(file)!);
         }
 
         return [];
@@ -46,15 +46,19 @@ public static class Options
     /// <summary>
     /// 读取配置文件
     /// </summary>
-    /// <param name="file">文件</param>
+    /// <param name="stream">内容</param>
     /// <param name="sp">分隔符</param>
     /// <returns>配置文件组</returns>
-    public static Dictionary<string, string> ReadOptions(string file, string sp = ":")
+    public static Dictionary<string, string> ReadOptions(Stream? stream, string sp = ":")
     {
+        if (stream == null)
+        {
+            return [];
+        }
         var options = new Dictionary<string, string>();
+        using var reader = new StreamReader(stream);
 
-        var lines = file.Split('\n');
-        foreach (var item in lines)
+        while(reader.ReadLine() is { } item)
         {
             if (string.IsNullOrWhiteSpace(item))
             {

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -12,9 +12,9 @@ public record ModrinthVersionFileObj
         //    public string sha512 { get; set; }
         //}
         //public HashesObj hashes { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
-        [JsonProperty("filename")]
+        [JsonPropertyName("filename")]
         public string Filename { get; set; }
         //public object file_type { get; set; }
         //public bool primary { get; set; }
@@ -22,9 +22,9 @@ public record ModrinthVersionFileObj
     }
     //public List<string> game_versions { get; set; }
     //public List<string> loaders { get; set; }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    [JsonProperty("project_id")]
+    [JsonPropertyName("project_id")]
     public string ProjectId { get; set; }
     //public string author_id { get; set; }
     //public bool featured { get; set; }
@@ -37,6 +37,6 @@ public record ModrinthVersionFileObj
     //public string version_type { get; set; }
     //public string status { get; set; }
     //public object requested_status { get; set; }
-    [JsonProperty("files")]
+    [JsonPropertyName("files")]
     public List<FileObj> Files { get; set; }
 }

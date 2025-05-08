@@ -73,7 +73,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="authors">作者列表</param>
     /// <returns>作者名字</returns>
-    public static string GetString(this List<CurseForgeObjList.DataObj.AuthorsObj> authors)
+    public static string GetString(this List<CurseForgeListObj.DataObj.AuthorsObj> authors)
     {
         if (authors == null || authors.Count == 0)
         {
@@ -142,7 +142,7 @@ public static class CurseForgeHelper
             return !a.Name.StartsWith("Minecraft ");
         });
 
-        var list111 = new List<CurseForgeVersionType.DataObj>();
+        var list111 = new List<CurseForgeVersionTypeObj.DataObj>();
         list111.AddRange(from item in list.Data
                          where item.Id > 17
                          orderby item.Id descending

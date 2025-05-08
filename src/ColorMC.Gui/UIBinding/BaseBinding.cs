@@ -447,7 +447,7 @@ public static class BaseBinding
 
         if (model.SourceType == SourceType.CurseForge)
         {
-            var obj1 = (model.Data as CurseForgeObjList.DataObj)!;
+            var obj1 = (model.Data as CurseForgeListObj.DataObj)!;
             obj.Pid = obj1.Id.ToString();
 
         }

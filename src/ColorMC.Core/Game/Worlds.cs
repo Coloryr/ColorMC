@@ -1,14 +1,13 @@
 using System.Collections.Concurrent;
+using System.IO.Compression;
 using System.Text;
+using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -69,44 +68,42 @@ public static class Worlds
         var info = new FileInfo(name);
         dir = Path.Combine(dir, info.Name[..^info.Extension.Length]);
         Directory.CreateDirectory(dir);
-        try
+        return await Task.Run(() =>
         {
-            using var zFile = new ZipFile(file);
-            var dir1 = "";
-            var find = false;
-            foreach (ZipEntry e in zFile)
+            try
             {
-                if (e.IsFile && e.Name.EndsWith(Names.NameLevelFile))
+                using var zFile = new ZipArchive(file);
+                var dir1 = "";
+                var find = false;
+                foreach (var e in zFile.Entries)
                 {
-                    dir1 = e.Name.Replace(Names.NameLevelFile, "");
-                    find = true;
-                    break;
+                    if (e.Name.EndsWith(Names.NameLevelFile))
+                    {
+                        dir1 = e.Name.Replace(Names.NameLevelFile, "");
+                        find = true;
+                        break;
+                    }
                 }
-            }
 
-            if (!find)
-            {
-                return false;
-            }
-
-            foreach (ZipEntry e in zFile)
-            {
-                if (e.IsFile)
+                if (!find)
                 {
-                    using var stream = zFile.GetInputStream(e);
+                    return false;
+                }
+
+                foreach (var e in zFile.Entries)
+                {
                     var file1 = Path.Combine(dir, e.Name[dir1.Length..]);
-                    await PathHelper.WriteBytesAsync(file1, stream);
+                    e.ExtractToFile(file1, true);
                 }
+
+                return true;
             }
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
-        }
-
-        return false;
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
+            }
+            return false;
+        });
     }
 
     /// <summary>
@@ -160,14 +157,6 @@ public static class Worlds
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         await new ZipUtils().ZipFileAsync(world.Local, file);
-        using var s = new ZipFile(PathHelper.OpenWrite(file, false));
-        var info = new { name = world.LevelName };
-        var data = JsonConvert.SerializeObject(info);
-        var data1 = Encoding.UTF8.GetBytes(data);
-        using var stream = new ZipFileStream(data1);
-        s.BeginUpdate();
-        s.Add(stream, Names.NameColorMcInfoFile);
-        s.CommitUpdate();
     }
 
     /// <summary>
@@ -178,51 +167,15 @@ public static class Worlds
     /// <returns>是否成功还原</returns>
     public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, UnzipBackupWorldArg arg)
     {
-        var local = "";
-        var res = false;
-
-        using var s = new ZipInputStream(PathHelper.OpenRead(arg.File));
-        using var stream1 = new MemoryStream();
-        ZipEntry theEntry;
-        while ((theEntry = s.GetNextEntry()) != null)
+        var local = Path.Combine(obj.GetSavesPath(), Path.GetFileName(arg.File));
+        if (Directory.Exists(local))
         {
-            if (theEntry.Name == Names.NameColorMcInfoFile)
-            {
-                await s.CopyToAsync(stream1);
-                res = true;
-                break;
-            }
-        }
-        if (!res)
-        {
-            return false;
-        }
-        var data = stream1.ToArray();
-        var data1 = Encoding.UTF8.GetString(data);
-        var info = JObject.Parse(data1);
-        var name = info?["name"]?.ToString();
-        if (name == null)
-        {
-            return false;
-        }
-
-        var list1 = await obj.GetWorldsAsync();
-        var item = list1.FirstOrDefault(a => a.LevelName == name);
-
-        if (item != null)
-        {
-            local = item.Local;
             await PathHelper.DeleteFilesAsync(new DeleteFilesArg
             {
-                Local = item.Local,
+                Local = local,
                 Request = arg.Request
             });
         }
-        else
-        {
-            local = Path.Combine(obj.GetSavesPath(), name);
-        }
-
         try
         {
             await new ZipUtils().UnzipAsync(local, arg.File,

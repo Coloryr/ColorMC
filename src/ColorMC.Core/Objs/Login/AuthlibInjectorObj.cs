@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Login;
 
@@ -6,13 +6,13 @@ public record AuthlibInjectorMetaObj
 {
     public record ArtifactsObj
     {
-        [JsonProperty("build_number")]
+        [JsonPropertyName("build_number")]
         public int BuildNumber { get; set; }
         //public string version { get; set; }
     }
-    [JsonProperty("latest_build_number")]
+    [JsonPropertyName("latest_build_number")]
     public int LatestBuildNumber { get; set; }
-    [JsonProperty("artifacts")]
+    [JsonPropertyName("artifacts")]
     public List<ArtifactsObj> Artifacts { get; set; }
 }
 
@@ -20,15 +20,15 @@ public record AuthlibInjectorObj
 {
     public record ChecksumsObj
     {
-        [JsonProperty("sha256")]
+        [JsonPropertyName("sha256")]
         public string Sha256 { get; set; }
     }
-    [JsonProperty("build_number")]
+    [JsonPropertyName("build_number")]
     public int BuildNumber { get; set; }
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
-    [JsonProperty("download_url")]
+    [JsonPropertyName("download_url")]
     public string DownloadUrl { get; set; }
-    [JsonProperty("checksums")]
+    [JsonPropertyName("checksums")]
     public ChecksumsObj Checksums { get; set; }
 }

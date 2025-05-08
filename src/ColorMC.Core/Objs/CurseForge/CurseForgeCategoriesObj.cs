@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
@@ -9,20 +9,20 @@ public record CurseForgeCategoriesObj
 {
     public record DataObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
         //public int gameId { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
         //public string slug { get; set; }
         //public string url { get; set; }
         //public string iconUrl { get; set; }
         //public string dateModified { get; set; }
-        [JsonProperty("classId")]
+        [JsonPropertyName("classId")]
         public int ClassId { get; set; }
         //public int parentCategoryId { get; set; }
         //public int displayIndex { get; set; }
     }
-    [JsonProperty("data")]
+    [JsonPropertyName("data")]
     public List<DataObj> Data { get; set; }
 }

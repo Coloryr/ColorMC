@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -8,48 +8,48 @@ public record ModrinthVersionObj
     {
         public record HasheObj
         {
-            [JsonProperty("sha1")]
+            [JsonPropertyName("sha1")]
             public string Sha1 { get; set; }
             //public string sha512 { get; set; }
         }
-        [JsonProperty("hashes")]
+        [JsonPropertyName("hashes")]
         public HasheObj Hashes { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
-        [JsonProperty("filename")]
+        [JsonPropertyName("filename")]
         public string Filename { get; set; }
-        [JsonProperty("primary")]
+        [JsonPropertyName("primary")]
         public bool Primary { get; set; }
-        [JsonProperty("size")]
+        [JsonPropertyName("size")]
         public long Size { get; set; }
     }
     public record DependencieObj
     {
-        [JsonProperty("version_id")]
+        [JsonPropertyName("version_id")]
         public string VersionId { get; set; }
-        [JsonProperty("project_id")]
+        [JsonPropertyName("project_id")]
         public string ProjectId { get; set; }
         //public string file_name { get; set; }
         //public string dependency_type { get; set; }
     }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    [JsonProperty("project_id")]
+    [JsonPropertyName("project_id")]
     public string ProjectId { get; set; }
     //public string iauthor_idd { get; set; }
     //public bool featured { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
-    [JsonProperty("version_number")]
+    [JsonPropertyName("version_number")]
     public string VersionNumber { get; set; }
-    [JsonProperty("date_published")]
+    [JsonPropertyName("date_published")]
     public string DatePublished { get; set; }
-    [JsonProperty("downloads")]
+    [JsonPropertyName("downloads")]
     public int Downloads { get; set; }
     //public string version_type { get; set; }
     //public string status { get; set; }
-    [JsonProperty("files")]
+    [JsonPropertyName("files")]
     public List<FileObj> Files { get; set; }
-    [JsonProperty("dependencies")]
+    [JsonPropertyName("dependencies")]
     public List<DependencieObj> Dependencies { get; set; }
 }

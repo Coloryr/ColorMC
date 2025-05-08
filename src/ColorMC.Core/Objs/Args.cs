@@ -293,7 +293,7 @@ public record DownloadModrinthArg : UnpackGameZipArg
 public record DownloadCurseForgeArg : UnpackGameZipArg
 {
     public required CurseForgeModObj.DataObj Data;
-    public required CurseForgeObjList.DataObj Data1;
+    public required CurseForgeListObj.DataObj Data1;
 }
 
 /// <summary>

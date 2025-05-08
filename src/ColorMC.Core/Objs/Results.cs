@@ -261,8 +261,17 @@ public record GetOpenJ9ListRes
 /// </summary>
 public record GetAssetsRes
 {
-    public AssetsObj Assets;
-    public string Text;
+    public AssetsObj? Assets;
+    public MemoryStream Text;
+}
+
+/// <summary>
+/// 获取游戏启动信息
+/// </summary>
+public record GetGameArgRes
+{
+    public GameArgObj? Arg;
+    public MemoryStream Text;
 }
 
 /// <summary>
@@ -270,8 +279,8 @@ public record GetAssetsRes
 /// </summary>
 public record GetVersionsRes
 {
-    public VersionObj Version;
-    public string Text;
+    public VersionObj? Version;
+    public MemoryStream Text;
 }
 
 /// <summary>
@@ -353,4 +362,19 @@ public record DownloadSkinRes
     /// 是否为新版纤细
     /// </summary>
     public bool IsNewSlim;
+}
+
+/// <summary>
+/// Forge获取文件列表结果
+/// </summary>
+public record ForgeGetFilesRes
+{
+    /// <summary>
+    /// 加载器文件列表
+    /// </summary>
+    public List<FileItemObj>? Loaders;
+    /// <summary>
+    /// 安装器文件列表
+    /// </summary>
+    public List<FileItemObj>? Installs;
 }

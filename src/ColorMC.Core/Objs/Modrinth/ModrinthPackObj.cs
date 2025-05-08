@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -8,31 +8,31 @@ public record ModrinthPackObj
     {
         public record HashObj
         {
-            [JsonProperty("sha1")]
+            [JsonPropertyName("sha1")]
             public string Sha1 { get; set; }
-            [JsonProperty("sha512")]
+            [JsonPropertyName("sha512")]
             public string Sha512 { get; set; }
         }
-        [JsonProperty("path")]
+        [JsonPropertyName("path")]
         public string Path { get; set; }
-        [JsonProperty("hashes")]
+        [JsonPropertyName("hashes")]
         public HashObj Hashes { get; set; }
-        [JsonProperty("downloads")]
+        [JsonPropertyName("downloads")]
         public List<string> Downloads { get; set; }
-        [JsonProperty("fileSize")]
+        [JsonPropertyName("fileSize")]
         public long FileSize { get; set; }
     }
-    [JsonProperty("formatVersion")]
+    [JsonPropertyName("formatVersion")]
     public int FormatVersion { get; set; }
     //public string game { get; set; }
-    [JsonProperty("versionId")]
+    [JsonPropertyName("versionId")]
     public string VersionId { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
-    [JsonProperty("summary")]
+    [JsonPropertyName("summary")]
     public string Summary { get; set; }
-    [JsonProperty("files")]
+    [JsonPropertyName("files")]
     public List<FileObj> Files { get; set; }
-    [JsonProperty("dependencies")]
+    [JsonPropertyName("dependencies")]
     public Dictionary<string, string> Dependencies { get; set; }
 }

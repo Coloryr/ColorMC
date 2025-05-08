@@ -1,3 +1,6 @@
+using System.Text.Json.Serialization.Metadata;
+using ColorMC.Core.Utils;
+
 namespace ColorMC.Core.Objs.Config;
 
 /// <summary>
@@ -10,11 +13,32 @@ public record ConfigSaveObj
     /// </summary>
     public required string Name;
     /// <summary>
-    /// 内容
-    /// </summary>
-    public required object Obj;
-    /// <summary>
-    /// 路径
+    /// 文件名
     /// </summary>
     public required string File;
+    /// <summary>
+    /// 执行方式
+    /// </summary>
+    public required Func<string> Run;
+
+    /// <summary>
+    /// 创建保存项目
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name"></param>
+    /// <param name="data"></param>
+    /// <param name="info"></param>
+    /// <returns></returns>
+    public static ConfigSaveObj Build<T>(string name, string file, T data, JsonTypeInfo<T> info)
+    {
+        return new()
+        {
+            Name = name,
+            File = file,
+            Run = () => 
+            {
+                return JsonUtils.ToString(data, info);
+            }
+        };
+    }
 }

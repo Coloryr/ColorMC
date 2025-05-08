@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.IO.Compression;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -6,8 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -38,10 +36,11 @@ public static class AddGameHelper
         {
             try
             {
-                var mmc = JsonConvert.DeserializeObject<MMCObj>(PathHelper.ReadText(Path.Combine(arg.Local, Names.NameMMCJsonFile))!);
+                using var stream = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCJsonFile));
+                var mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                 if (mmc != null)
                 {
-                    var mmc1 = PathHelper.ReadText(Path.Combine(arg.Local, Names.NameMMCCfgFile))!;
+                    var mmc1 = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCCfgFile));
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
                     game.Icon = res.Icon + ".png";
@@ -68,7 +67,8 @@ public static class AddGameHelper
 
                 try
                 {
-                    var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
+                    using var stream = PathHelper.OpenRead(item);
+                    var obj1 = JsonUtils.ToObj(stream, JsonType.OfficialObj);
                     if (obj1 != null && obj1.Id != null)
                     {
                         game = obj1.ToColorMC();
@@ -137,16 +137,24 @@ public static class AddGameHelper
             //如果是http则下载
             if (arg.Dir.StartsWith("http"))
             {
-                using var st1 = await CoreHttpClient.DownloadClient.GetStreamAsync(arg.Dir);
-                var memoryStream = new MemoryStream();
-                await st1.CopyToAsync(memoryStream);
-                st = memoryStream;
+                var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+                var res = await DownloadManager.StartAsync([new()
+                {
+                    Url = arg.Dir,
+                    Overwrite = true,
+                    Local = file,
+                    Name = "网络整合包"
+                }]);
+                if (!res)
+                {
+                    return new();
+                }
+                st = PathHelper.OpenRead(file);
             }
             else
             {
                 st = PathHelper.OpenRead(arg.Dir);
             }
-
             if (st == null)
             {
                 return new();
@@ -156,27 +164,12 @@ public static class AddGameHelper
             async Task<bool> ColorMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipFile(st);
-                using var stream1 = new MemoryStream();
-                bool find = false;
-                foreach (ZipEntry e in zFile)
+                using var zFile = new ZipArchive(st);
+                if (zFile.GetEntry(Names.NameGameFile) is { } item)
                 {
-                    if (e.IsFile && e.Name == Names.NameGameFile)
-                    {
-                        using var stream = zFile.GetInputStream(e);
-                        await stream.CopyToAsync(stream1);
-                        find = true;
-                        break;
-                    }
+                    using var stream = item.Open();
+                    game = JsonUtils.ToObj(stream, JsonType.GameSettingObj);
                 }
-
-                if (!find)
-                {
-                    return false;
-                }
-
-                game = JsonConvert.DeserializeObject<GameSettingObj>
-                    (Encoding.UTF8.GetString(stream1.ToArray()));
 
                 if (game == null)
                 {
@@ -195,15 +188,12 @@ public static class AddGameHelper
                     return false;
                 }
 
-                foreach (ZipEntry e in zFile)
+                foreach (var e in zFile.Entries)
                 {
-                    if (e.IsFile)
-                    {
-                        using var stream = zFile.GetInputStream(e);
-                        var path = game.GetBasePath();
-                        string file = Path.Combine(path, e.Name);
-                        await PathHelper.WriteBytesAsync(file, stream);
-                    }
+                    using var stream = e.Open();
+                    var path = game.GetBasePath();
+                    string file = Path.Combine(path, e.Name);
+                    await PathHelper.WriteBytesAsync(file, stream);
                 }
 
                 arg.Update2?.Invoke(CoreRunState.End);
@@ -214,48 +204,36 @@ public static class AddGameHelper
             async Task<bool> MMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipFile(st);
-                using var stream1 = new MemoryStream();
-                using var stream2 = new MemoryStream();
-                bool find = false;
-                bool find1 = false;
+                using var zFile = new ZipArchive(st);
                 string path = "";
-                foreach (ZipEntry e in zFile)
+                MMCObj? mmc = null;
+                ZipArchiveEntry? mmc1 = null;
+                foreach (var e in zFile.Entries)
                 {
-                    if (e.IsFile && !find && e.Name.EndsWith(Names.NameMMCJsonFile))
+                    if (mmc == null && e.Name.EndsWith(Names.NameMMCJsonFile))
                     {
-                        using var stream = zFile.GetInputStream(e);
-                        await stream.CopyToAsync(stream1);
+                        using var stream = e.Open();
                         path = e.Name[..^Path.GetFileName(e.Name).Length];
-                        find = true;
+                        mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                     }
-
-                    if (e.IsFile && !find1 && e.Name.EndsWith(Names.NameMMCCfgFile))
+                    else if (mmc1 != null && e.Name.EndsWith(Names.NameMMCCfgFile))
                     {
-                        using var stream = zFile.GetInputStream(e);
-                        await stream.CopyToAsync(stream2);
-                        find1 = true;
+                        mmc1 = e;
                     }
 
-                    if (find && find1)
+                    if (mmc != null && mmc1 != null)
+                    {
                         break;
+                    }
                 }
 
-                if (!find || !find1)
+                if (mmc == null || mmc1 == null)
                 {
                     return false;
                 }
 
-                var mmc = JsonConvert.DeserializeObject<MMCObj>
-                    (Encoding.UTF8.GetString(stream1.ToArray()));
-                if (mmc == null)
-                {
-                    return false;
-                }
-
-                var mmc1 = Encoding.UTF8.GetString(stream2.ToArray());
-
-                var res = mmc.ToColorMC(mmc1);
+                using var stream1 = mmc1.Open();
+                var res = mmc.ToColorMC(stream1);
                 game = res.Game;
 
                 if (!string.IsNullOrWhiteSpace(arg.Name))
@@ -286,11 +264,11 @@ public static class AddGameHelper
                     return false;
                 }
 
-                foreach (ZipEntry e in zFile)
+                foreach (var e in zFile.Entries)
                 {
-                    if (e.IsFile && e.Name.StartsWith(path))
+                    if (e.Name.StartsWith(path))
                     {
-                        using var stream = zFile.GetInputStream(e);
+                        using var stream = e.Open();
                         string file = Path.GetFullPath($"{game.GetBasePath()}/{e.Name[path.Length..]}");
                         await PathHelper.WriteBytesAsync(file, stream);
                     }
@@ -311,40 +289,19 @@ public static class AddGameHelper
             async Task<bool> HMCL()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipFile(st);
-                using var stream1 = new MemoryStream();
-                using var stream2 = new MemoryStream();
-                bool find = false;
-                bool find1 = false;
-                foreach (ZipEntry e in zFile)
+                using var zFile = new ZipArchive(st);
+                HMCLObj? obj = null;
+                CurseForgePackObj? obj1 = null;
+                if (zFile.GetEntry(Names.NameHMCLFile) is { } item)
                 {
-                    if (e.IsFile && e.Name == Names.NameHMCLFile)
-                    {
-                        using var stream = zFile.GetInputStream(e);
-                        await stream.CopyToAsync(stream1);
-                        find = true;
-                    }
-
-                    if (e.IsFile && e.Name == Names.NameManifestFile)
-                    {
-                        using var stream = zFile.GetInputStream(e);
-                        await stream.CopyToAsync(stream2);
-                        find1 = true;
-                    }
-
-                    if (find && find1)
-                    {
-                        break;
-                    }
+                    using var stream = item.Open();
+                    obj = JsonUtils.ToObj(stream, JsonType.HMCLObj);
                 }
-
-                if (!find)
+                if (zFile.GetEntry(Names.NameManifestFile) is { } item1)
                 {
-                    return false;
+                    using var stream = item1.Open();
+                    obj1 = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
                 }
-
-                var obj = JsonConvert.DeserializeObject<HMCLObj>
-                    (Encoding.UTF8.GetString(stream1.ToArray()));
 
                 if (obj == null)
                 {
@@ -375,26 +332,21 @@ public static class AddGameHelper
 
                 string overrides = Names.NameOverrideDir;
 
-                if (find1)
+                if (obj1 != null)
                 {
-                    var obj1 = JsonConvert.DeserializeObject<CurseForgePackObj>
-                        (Encoding.UTF8.GetString(stream2.ToArray()));
-                    if (obj1 != null)
-                    {
-                        overrides = obj1.Overrides;
-                    }
+                    overrides = obj1.Overrides;
                 }
 
-                foreach (ZipEntry e in zFile)
+                foreach (var e in zFile.Entries)
                 {
-                    if (e.IsFile && e.Name.StartsWith(overrides))
+                    if (e.Name.StartsWith(overrides))
                     {
                         string file = Path.GetFullPath(game.GetGamePath() + e.Name[overrides.Length..]);
                         if (e.Name.EndsWith(Names.NameIconFile))
                         {
                             file = game.GetIconFile();
                         }
-                        using var stream = zFile.GetInputStream(e);
+                        using var stream = e.Open();
                         await PathHelper.WriteBytesAsync(file, stream);
                     }
                 }
@@ -444,7 +396,8 @@ public static class AddGameHelper
 
                     try
                     {
-                        var obj1 = JsonConvert.DeserializeObject<OfficialObj>(PathHelper.ReadText(item)!);
+                        using var stream = PathHelper.OpenRead(item);
+                        var obj1 = JsonUtils.ToObj(stream, JsonType.OfficialObj);
                         if (obj1 == null || obj1.Id == null)
                         {
                             continue;

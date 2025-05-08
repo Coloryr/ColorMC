@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.MinecraftAPI;
 
@@ -24,9 +24,9 @@ public record MinecraftProfileObj
     //    public string url { get; set; }
     //    public string alias { get; set; }
     //}
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
     //public List<MinecraftSkin> skins { get; set; }
     //public List<Capes> capes { get; set; }

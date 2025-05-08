@@ -1,39 +1,39 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
 /// <summary>
 /// CF 版本数据
 /// </summary>
-public record CurseForgeVersion
+public record CurseForgeVersionObj
 {
     public record DataObj
     {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public int Type { get; set; }
-        [JsonProperty("versions")]
+        [JsonPropertyName("versions")]
         public List<string> Versions { get; set; }
     }
 
-    [JsonProperty("data")]
+    [JsonPropertyName("data")]
     public List<DataObj> Data { get; set; }
 }
 
 /// <summary>
 /// CF 版本类型
 /// </summary>
-public record CurseForgeVersionType
+public record CurseForgeVersionTypeObj
 {
     public record DataObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
         //public int gameId { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
         //public string slug { get; set; }
     }
 
-    [JsonProperty("data")]
+    [JsonPropertyName("data")]
     public List<DataObj> Data { get; set; }
 }

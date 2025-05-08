@@ -1,13 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Mclo;
 
 public record McloResObj
 {
-    [JsonProperty("success")]
+    [JsonPropertyName("success")]
     public bool Success { get; set; }
     //public string id { get; set; }
-    [JsonProperty("url")]
+    [JsonPropertyName("url")]
     public string Url { get; set; }
     //public string raw { get; set; }
 }

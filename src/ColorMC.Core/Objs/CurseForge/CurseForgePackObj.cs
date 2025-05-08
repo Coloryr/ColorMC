@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
@@ -11,39 +11,39 @@ public record CurseForgePackObj
     {
         public record ModLoadersObj
         {
-            [JsonProperty("id")]
+            [JsonPropertyName("id")]
             public string Id { get; set; }
-            [JsonProperty("primary")]
+            [JsonPropertyName("primary")]
             public bool Primary { get; set; }
         }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
-        [JsonProperty("modLoaders")]
+        [JsonPropertyName("modLoaders")]
         public List<ModLoadersObj> ModLoaders { get; set; }
     }
     public record FilesObj
     {
-        [JsonProperty("projectID")]
+        [JsonPropertyName("projectID")]
         public int ProjectID { get; set; }
-        [JsonProperty("fileID")]
+        [JsonPropertyName("fileID")]
         public int FileID { get; set; }
-        [JsonProperty("required")]
+        [JsonPropertyName("required")]
         public bool Required { get; set; }
     }
-    [JsonProperty("minecraft")]
+    [JsonPropertyName("minecraft")]
     public MinecraftObj Minecraft { get; set; }
-    [JsonProperty("manifestType")]
+    [JsonPropertyName("manifestType")]
     public string ManifestType { get; set; }
-    [JsonProperty("manifestVersion")]
+    [JsonPropertyName("manifestVersion")]
     public int ManifestVersion { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
-    [JsonProperty("author")]
+    [JsonPropertyName("author")]
     public string Author { get; set; }
-    [JsonProperty("files")]
+    [JsonPropertyName("files")]
     public List<FilesObj> Files { get; set; }
-    [JsonProperty("overrides")]
+    [JsonPropertyName("overrides")]
     public string Overrides { get; set; }
 }

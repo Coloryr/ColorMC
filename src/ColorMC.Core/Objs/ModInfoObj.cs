@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs;
 
@@ -22,7 +22,7 @@ public record ModInfoObj
     /// <summary>
     /// 校验值
     /// </summary>
-    [JsonProperty("SHA1")]
+    [JsonPropertyName("SHA1")]
     public string Sha1 { get; set; }
     /// <summary>
     /// 下载连接

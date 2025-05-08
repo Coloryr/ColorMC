@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -40,17 +40,17 @@ public record ForgeInstallObj
 
     //public List<string> _comment_ { get; set; }
     //public int spec { get; set; }
-    [JsonProperty("profile")]
+    [JsonPropertyName("profile")]
     public string Profile { get; set; }
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
     //public string path { get; set; }
-    [JsonProperty("minecraft")]
+    [JsonPropertyName("minecraft")]
     public string Minecraft { get; set; }
     //public string serverJarPath { get; set; }
     //public Data data { get; set; }
     //public List<ProcessorsItem> processors { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<ForgeLaunchObj.LibrariesObj> Libraries { get; set; }
     //public string icon { get; set; }
     //public string json { get; set; }
@@ -60,7 +60,7 @@ public record ForgeInstallObj
 }
 
 
-public record ForgeInstallNewObj
+public record ForgeInstallOldObj
 {
     //public record Install
     //{
@@ -78,9 +78,9 @@ public record ForgeInstallNewObj
     {
         public record LibrariesObj
         {
-            [JsonProperty("name")]
+            [JsonPropertyName("name")]
             public string Name { get; set; }
-            [JsonProperty("url")]
+            [JsonPropertyName("url")]
             public string Url { get; set; }
             //public bool serverreq { get; set; }
             //public bool clientreq { get; set; }
@@ -94,9 +94,9 @@ public record ForgeInstallNewObj
         //public string ReleaseTime { get; set; }
         //[JsonProperty("type")]
         //public string Type { get; set; }
-        [JsonProperty("minecraftArguments")]
+        [JsonPropertyName("minecraftArguments")]
         public string MinecraftArguments { get; set; }
-        [JsonProperty("mainClass")]
+        [JsonPropertyName("mainClass")]
         public string MainClass { get; set; }
         //public int minimumLauncherVersion { get; set; }
         //public string assets { get; set; }
@@ -104,11 +104,11 @@ public record ForgeInstallNewObj
         //public string InheritsFrom { get; set; }
         //public string jar { get; set; }
 
-        [JsonProperty("libraries")]
+        [JsonPropertyName("libraries")]
         public List<LibrariesObj> Libraries { get; set; }
     }
 
     //public Install install { get; set; }
-    [JsonProperty("versionInfo")]
+    [JsonPropertyName("versionInfo")]
     public VersionInfoObj VersionInfo { get; set; }
 }

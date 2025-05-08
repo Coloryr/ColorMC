@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
@@ -8,7 +8,7 @@ public record ModrinthProjectObj
     //public string slug { get; set; }
     //public string project_type { get; set; }
     //public string team { get; set; }
-    [JsonProperty("title")]
+    [JsonPropertyName("title")]
     public string Title { get; set; }
     //public string description { get; set; }
     //public string published { get; set; }

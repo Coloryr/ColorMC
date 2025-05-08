@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
@@ -11,9 +11,9 @@ public record CurseForgeModObj
     {
         public record HashesObj
         {
-            [JsonProperty("value")]
+            [JsonPropertyName("value")]
             public string Value { get; set; }
-            [JsonProperty("algo")]
+            [JsonPropertyName("algo")]
             public int Algo { get; set; }
         }
         //public record SortableGameVersions
@@ -26,9 +26,9 @@ public record CurseForgeModObj
         //}
         public record DependenciesObj
         {
-            [JsonProperty("modId")]
+            [JsonPropertyName("modId")]
             public long ModId { get; set; }
-            [JsonProperty("relationType")]
+            [JsonPropertyName("relationType")]
             public int RelationType { get; set; }
         }
         //public record Modules
@@ -36,37 +36,37 @@ public record CurseForgeModObj
         //    public string name { get; set; }
         //    public long fingerprint { get; set; }
         //}
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int Id { get; set; }
         //public int gameId { get; set; }
-        [JsonProperty("modId")]
+        [JsonPropertyName("modId")]
         public int ModId { get; set; }
         //public bool isAvailable { get; set; }
-        [JsonProperty("displayName")]
+        [JsonPropertyName("displayName")]
         public string DisplayName { get; set; }
-        [JsonProperty("fileName")]
+        [JsonPropertyName("fileName")]
         public string FileName { get; set; }
         //public int releaseType { get; set; }
         //public int fileStatus { get; set; }
-        [JsonProperty("hashes")]
+        [JsonPropertyName("hashes")]
         public List<HashesObj> Hashes { get; set; }
-        [JsonProperty("fileDate")]
+        [JsonPropertyName("fileDate")]
         public string FileDate { get; set; }
-        [JsonProperty("fileLength")]
+        [JsonPropertyName("fileLength")]
         public long FileLength { get; set; }
-        [JsonProperty("downloadCount")]
+        [JsonPropertyName("downloadCount")]
         public long DownloadCount { get; set; }
-        [JsonProperty("downloadUrl")]
+        [JsonPropertyName("downloadUrl")]
         public string DownloadUrl { get; set; }
         //public List<string> gameVersions { get; set; }
         //public List<SortableGameVersions> sortableGameVersions { get; set; }
-        [JsonProperty("dependencies")]
+        [JsonPropertyName("dependencies")]
         public List<DependenciesObj> Dependencies { get; set; }
         //public int alternateFileId { get; set; }
         //public bool isServerPack { get; set; }
         //public long fileFingerprint { get; set; }
         //public List<Modules> modules { get; set; }
     }
-    [JsonProperty("data")]
+    [JsonPropertyName("data")]
     public DataObj Data { get; set; }
 }

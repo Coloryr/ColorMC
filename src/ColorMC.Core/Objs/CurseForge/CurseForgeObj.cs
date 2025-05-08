@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
@@ -16,20 +16,28 @@ public enum CurseForgeSortField
 
 public record CurseForgeObj
 {
-    [JsonProperty("data")]
-    public CurseForgeObjList.DataObj Data { get; set; }
+    [JsonPropertyName("data")]
+    public CurseForgeListObj.DataObj Data { get; set; }
+}
+
+public record CurseForgeModsInfoObj
+{
+    [JsonPropertyName("modIds")]
+    public List<long> ModIds { get; set; }
+    [JsonPropertyName("filterPcOnly")]
+    public bool FilterPcOnly { get; set; }
 }
 
 /// <summary>
 /// CF 数据列表
 /// </summary>
-public record CurseForgeObjList
+public record CurseForgeListObj
 {
     public record DataObj
     {
         public record LinksObj
         {
-            [JsonProperty("websiteUrl")]
+            [JsonPropertyName("websiteUrl")]
             public string WebsiteUrl { get; set; }
             //public string wikiUrl { get; set; }
             //public string issuesUrl { get; set; }
@@ -45,14 +53,14 @@ public record CurseForgeObjList
             //public string iconUrl { get; set; }
             //public string dateModified { get; set; }
             //public bool isClass { get; set; }
-            [JsonProperty("classId")]
+            [JsonPropertyName("classId")]
             public long ClassId { get; set; }
             //public long parentCategoryId { get; set; }
         }
         public record AuthorsObj
         {
             //public long id { get; set; }
-            [JsonProperty("name")]
+            [JsonPropertyName("name")]
             public string Name { get; set; }
             //public string url { get; set; }
         }
@@ -63,7 +71,7 @@ public record CurseForgeObjList
             //public string title { get; set; }
             //public string description { get; set; }
             //public string thumbnailUrl { get; set; }
-            [JsonProperty("url")]
+            [JsonPropertyName("url")]
             public string Url { get; set; }
         }
         //public record Screenshots
@@ -84,35 +92,35 @@ public record CurseForgeObjList
         //    public long? gameVersionTypeId { get; set; }
         //    public object modLoader { get; set; }
         //}
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
         //public long gameId { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
         //public string slug { get; set; }
-        [JsonProperty("links")]
+        [JsonPropertyName("links")]
         public LinksObj Links { get; set; }
-        [JsonProperty("summary")]
+        [JsonPropertyName("summary")]
         public string Summary { get; set; }
         //public long status { get; set; }
-        [JsonProperty("downloadCount")]
+        [JsonPropertyName("downloadCount")]
         public long DownloadCount { get; set; }
         //public bool isFeatured { get; set; }
         //public long primaryCategoryId { get; set; }
-        [JsonProperty("categories")]
+        [JsonPropertyName("categories")]
         public List<CategoriesObj> Categories { get; set; }
-        [JsonProperty("classId")]
+        [JsonPropertyName("classId")]
         public long ClassId { get; set; }
-        [JsonProperty("authors")]
+        [JsonPropertyName("authors")]
         public List<AuthorsObj> Authors { get; set; }
-        [JsonProperty("logo")]
+        [JsonPropertyName("logo")]
         public LogoObj Logo { get; set; }
         //public List<Screenshots> screenshots { get; set; }
         //public long mainFileId { get; set; }
         //public List<CurseForgeModObj.DataObj> latestFiles { get; set; }
         //public List<LatestFilesIndexes> latestFilesIndexes { get; set; }
         //public string dateCreated { get; set; }
-        [JsonProperty("dateModified")]
+        [JsonPropertyName("dateModified")]
         public string DateModified { get; set; }
         //public string dateReleased { get; set; }
         //public bool? allowModDistribution { get; set; }
@@ -125,12 +133,12 @@ public record CurseForgeObjList
         //public int index { get; set; }
         //public int pageSize { get; set; }
         //public int resultCount { get; set; }
-        [JsonProperty("totalCount")]
+        [JsonPropertyName("totalCount")]
         public int TotalCount { get; set; }
     }
 
-    [JsonProperty("data")]
+    [JsonPropertyName("data")]
     public List<DataObj> Data { get; set; }
-    [JsonProperty("pagination")]
+    [JsonPropertyName("pagination")]
     public PaginationObj Pagination { get; set; }
 }

@@ -1,3 +1,4 @@
+using System.Net;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -5,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -28,17 +28,18 @@ public static class OptifineAPI
         try
         {
             var list = new List<OptifineObj>();
-            var data = await CoreHttpClient.GetStringAsync(url);
-            if (data.State == false)
+            var data = await CoreHttpClient.GetAsync(url);
+            if (data.StatusCode != HttpStatusCode.OK)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
+            using var stream = await data.Content.ReadAsStreamAsync();
             if (CoreHttpClient.Source == SourceLocal.Offical)
             {
-                HtmlDocument html = new();
-                html.LoadHtml(data.Message!);
+                var html = new HtmlDocument();
+                html.Load(stream);
                 var list2 = html.DocumentNode.SelectNodes("//tr");
                 var list1 = list2?.Where(item => item?.GetClasses()?.Contains("downloadLine") == true);
                 if (list1 == null)
@@ -94,7 +95,7 @@ public static class OptifineAPI
             }
             else
             {
-                var list1 = JsonConvert.DeserializeObject<List<OptifineListObj>>(data.Message!);
+                var list1 = JsonUtils.ToObj(stream, JsonType.ListOptifineListObj);
 
                 if (list1 == null)
                 {

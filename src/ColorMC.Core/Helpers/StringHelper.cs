@@ -234,30 +234,30 @@ public static partial class StringHelper
     /// <returns>字符串</returns>
     public static async Task<string> GetStringAsync(Stream stream1)
     {
-        var head = Encoding.UTF8.GetPreamble();
+        //var head = Encoding.UTF8.GetPreamble();
         using var stream = new MemoryStream();
         await stream1.CopyToAsync(stream);
         stream.Seek(0, SeekOrigin.Begin);
-        if (head.Length == 0)
-        {
-            return Encoding.UTF8.GetString(stream.ToArray());
-        }
-        else
-        {
-            var temp = new byte[head.Length];
-            await stream.ReadExactlyAsync(temp);
-            for (int a = 0; a < temp.Length; a++)
-            {
-                if (temp[a] != head[a])
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    return Encoding.UTF8.GetString(stream.ToArray());
-                }
-            }
+        //if (head.Length == 0)
+        //{
+        return Encoding.UTF8.GetString(stream.ToArray());
+        //}
+        //else
+        //{
+        //    var temp = new byte[head.Length];
+        //    await stream.ReadExactlyAsync(temp);
+        //    for (int a = 0; a < temp.Length; a++)
+        //    {
+        //        if (temp[a] != head[a])
+        //        {
+        //            stream.Seek(0, SeekOrigin.Begin);
+        //            return Encoding.UTF8.GetString(stream.ToArray());
+        //        }
+        //    }
 
-            var temp1 = stream.ToArray();
-            return Encoding.UTF8.GetString(temp1, head.Length, temp1.Length - head.Length);
-        }
+        //    var temp1 = stream.ToArray();
+        //    return Encoding.UTF8.GetString(temp1, head.Length, temp1.Length - head.Length);
+        //}
     }
 
     /// <summary>

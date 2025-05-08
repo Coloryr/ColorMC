@@ -45,7 +45,7 @@ public static class LegacyLogin
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        var res = await CoreHttpClient.LoginClient.SendAsync(message);
+        var res = await CoreHttpClient._loginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -207,7 +207,7 @@ public static class LegacyLogin
             }),
             MediaTypeHeaderValue.Parse("application/json"));
         }
-        var res = await CoreHttpClient.LoginClient.SendAsync(message);
+        var res = await CoreHttpClient._loginClient.SendAsync(message);
         var data = await res.Content.ReadAsStringAsync();
         if (string.IsNullOrWhiteSpace(data))
         {
@@ -270,7 +270,7 @@ public static class LegacyLogin
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        var res = await CoreHttpClient.LoginClient.SendAsync(message);
+        var res = await CoreHttpClient._loginClient.SendAsync(message);
         if (res.StatusCode == HttpStatusCode.NoContent)
         {
             return true;

@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
 public record LangObj
 {
-    [JsonProperty("language.name")]
+    [JsonPropertyName("language.name")]
     public string Name { get; set; }
-    [JsonProperty("language.region")]
+    [JsonPropertyName("language.region")]
     public string Region { get; set; }
 }

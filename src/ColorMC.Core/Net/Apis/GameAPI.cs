@@ -1,9 +1,9 @@
+using System.Net;
 using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -12,6 +12,19 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class GameAPI
 {
+    private static async Task<Stream?> SendAsync(string url)
+    {
+        var data = await CoreHttpClient.GetAsync(url);
+        if (data.StatusCode != HttpStatusCode.OK)
+        {
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+                new Exception(url), false);
+            return null;
+        }
+
+        return await data.Content.ReadAsStreamAsync();
+    }
+
     /// <summary>
     /// 下载资源文件
     /// </summary>
@@ -20,17 +33,20 @@ public static class GameAPI
     {
         try
         {
-            var data = await CoreHttpClient.GetStringAsync(url);
-            if (data.State == false)
+            using var stream = await SendAsync(url);
+            if (stream == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                    new Exception(url), false);
                 return null;
             }
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var obj = JsonUtils.ToObj(mem, JsonType.AssetsObj);
+            mem.Seek(0, SeekOrigin.Begin);
             return new()
             {
-                Assets = JsonConvert.DeserializeObject<AssetsObj>(data.Message!)!,
-                Text = data.Message!
+                Assets = obj,
+                Text = mem
             };
         }
         catch (Exception e)
@@ -44,25 +60,30 @@ public static class GameAPI
     /// 下载游戏数据
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<(GameArgObj?, byte[]?)> GetGame(string url)
+    public static async Task<GetGameArgRes?> GetGame(string url)
     {
         try
         {
-            var data = await CoreHttpClient.GetBytesAsync(url);
-            if (data.State == false)
+            using var stream = await SendAsync(url);
+            if (stream == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                    new Exception(url), false);
-                return (null, null);
+                return null;
             }
-            return (JsonConvert
-                .DeserializeObject<GameArgObj>(Encoding.UTF8.GetString(data.Data!)),
-                data.Data);
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var obj = JsonUtils.ToObj(stream, JsonType.GameArgObj);
+            mem.Seek(0, SeekOrigin.Begin);
+            return new()
+            {
+                Arg = obj,
+                Text = mem
+            };
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.Error5"), e);
-            return (null, null);
+            return null;
         }
     }
 
@@ -74,17 +95,20 @@ public static class GameAPI
         try
         {
             string url = UrlHelper.GameVersion(local);
-            var data = await CoreHttpClient.GetStringAsync(url);
-            if (data.State == false)
+            using var stream = await SendAsync(url);
+            if (stream == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                    new Exception(url), false);
                 return null;
             }
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var obj = JsonUtils.ToObj(stream, JsonType.VersionObj);
+            mem.Seek(0, SeekOrigin.Begin);
             return new()
             {
-                Version = JsonConvert.DeserializeObject<VersionObj>(data.Message!)!,
-                Text = data.Message!
+                Version = obj,
+                Text = mem
             };
         }
         catch (Exception e)

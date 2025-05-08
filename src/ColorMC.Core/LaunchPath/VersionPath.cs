@@ -3,11 +3,11 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -101,8 +101,8 @@ public static class VersionPath
             s_optifineLoader.Clear();
             try
             {
-                var data = PathHelper.ReadText(s_optifineFile);
-                var obj = JsonConvert.DeserializeObject<Dictionary<string, OptifineObj>>(data!);
+                using var stream = PathHelper.OpenRead(s_optifineFile);
+                var obj = JsonUtils.ToObj(stream, JsonType.DictionaryStringOptifineObj);
                 if (obj != null)
                 {
                     foreach (var item in obj)
@@ -123,12 +123,7 @@ public static class VersionPath
     /// </summary>
     private static void SaveOptifine()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = Names.NameOptifineFile,
-            Obj = s_optifineLoader,
-            File = s_optifineFile
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameOptifineFile, s_optifineFile, s_optifineLoader, JsonType.DictionaryStringOptifineObj));
     }
 
     /// <summary>
@@ -173,8 +168,8 @@ public static class VersionPath
         string file = Path.Combine(BaseDir, Names.NameVersionFile);
         if (File.Exists(file))
         {
-            string data = PathHelper.ReadText(file)!;
-            _version = JsonConvert.DeserializeObject<VersionObj>(data);
+            using var stream = PathHelper.OpenRead(file);
+            _version = JsonUtils.ToObj(stream, JsonType.VersionObj);
         }
         else
         {
@@ -185,10 +180,11 @@ public static class VersionPath
     /// <summary>
     /// 保存版本信息
     /// </summary>
-    public static void SaveVersions(string data)
+    public static void SaveVersions(MemoryStream data)
     {
-        string file = Path.Combine(BaseDir, Names.NameVersionFile);
-        File.WriteAllText(file, data);
+        var file = Path.Combine(BaseDir, Names.NameVersionFile);
+        PathHelper.WriteBytes(file, data);
+        data.Dispose();
     }
 
     /// <summary>
@@ -198,13 +194,14 @@ public static class VersionPath
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
         var url = UrlHelper.DownloadSourceChange(obj.Url, CoreHttpClient.Source);
-        (var obj1, var data) = await GameAPI.GetGame(url);
-        if (obj1 == null)
+        var res = await GameAPI.GetGame(url);
+        if (res == null)
         {
             return null;
         }
-        PathHelper.WriteBytes(Path.Combine(BaseDir, $"{obj.Id}.json"), data!);
-        return obj1;
+        PathHelper.WriteBytes(Path.Combine(BaseDir, $"{obj.Id}.json"), res.Text);
+        res.Text.Dispose();
+        return res.Arg;
     }
 
     /// <summary>
@@ -213,9 +210,9 @@ public static class VersionPath
     /// <param name="obj">信息</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
-    public static void AddGame(FabricLoaderObj obj, string array, string mc, string version)
+    public static void AddGame(FabricLoaderObj obj, Stream array, string mc, string version)
     {
-        PathHelper.WriteText(Path.Combine(FabricDir, $"{obj.Id}.json"), array);
+        PathHelper.WriteBytes(Path.Combine(FabricDir, $"{obj.Id}.json"), array);
 
         var key = $"{mc}-{version}";
         if (!s_fabricLoaders.TryAdd(key, obj))
@@ -232,7 +229,7 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
     /// <param name="neo">是否为NeoForge</param>
-    public static void AddGame(ForgeLaunchObj obj, byte[] array, string mc, string version, bool neo)
+    public static void AddGame(ForgeLaunchObj obj, Stream array, string mc, string version, bool neo)
     {
         var v2222 = CheckHelpers.IsGameVersion1202(mc);
         string name;
@@ -271,7 +268,7 @@ public static class VersionPath
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
     /// <param name="neo">是否为NeoForge</param>
-    public static void AddGame(ForgeInstallObj obj, byte[] array, string mc, string version, bool neo)
+    public static void AddGame(ForgeInstallObj obj, Stream array, string mc, string version, bool neo)
     {
         var v2222 = CheckHelpers.IsGameVersion1202(mc);
         string name;
@@ -310,9 +307,9 @@ public static class VersionPath
     /// <param name="data">数据内容</param>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">加载器版本</param>
-    public static void AddGame(QuiltLoaderObj obj, string data, string mc, string version)
+    public static void AddGame(QuiltLoaderObj obj, Stream data, string mc, string version)
     {
-        PathHelper.WriteText(Path.Combine(QuiltDir, $"{obj.Id}.json"), data);
+        PathHelper.WriteBytes(Path.Combine(QuiltDir, $"{obj.Id}.json"), data);
 
         var key = $"{mc}-{version}";
         if (!s_quiltLoaders.TryAdd(key, obj))
@@ -365,7 +362,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<GameArgObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.GameArgObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_gameArgs.Add(version, obj);
         return obj;
     }
@@ -427,7 +429,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
@@ -465,7 +472,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_neoForgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -490,7 +502,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeInstallObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_neoForgeInstalls.Add(key, obj);
         return obj;
     }
@@ -525,7 +542,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<ForgeLaunchObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_forgeLaunchs.Add(key, obj);
         return obj;
     }
@@ -560,7 +582,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<FabricLoaderObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.FabricLoaderObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_fabricLoaders.Add(key, obj);
         return obj;
     }
@@ -595,7 +622,12 @@ public static class VersionPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<QuiltLoaderObj>(PathHelper.ReadText(file)!)!;
+        using var stream = PathHelper.OpenRead(file);
+        var obj = JsonUtils.ToObj(stream, JsonType.QuiltLoaderObj);
+        if (obj == null)
+        {
+            return null;
+        }
         s_quiltLoaders.Add(key, obj);
         return obj;
     }

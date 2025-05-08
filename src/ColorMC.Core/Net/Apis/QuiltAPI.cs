@@ -1,8 +1,8 @@
+using System.Net;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -27,15 +27,15 @@ public static class QuiltAPI
                 return s_supportVersion;
 
             string url = $"{UrlHelper.GetQuiltMeta(local)}/game";
-            var data = await CoreHttpClient.GetStringAsync(url);
-            if (data.State == false)
+            using var data = await CoreHttpClient.GetAsync(url);
+            if (data.StatusCode != HttpStatusCode.OK)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
-
-            var list = JsonConvert.DeserializeObject<List<QuiltMetaObj.GameObj>>(data.Message!);
+            using var stream = await data.Content.ReadAsStreamAsync();
+            var list = JsonUtils.ToObj(stream, JsonType.ListQuiltGameObj);
             if (list == null)
                 return null;
 
@@ -120,19 +120,19 @@ public static class QuiltAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<string?> GetLoader(string mc, string version, SourceLocal? local = null)
+    public static async Task<Stream?> GetLoader(string mc, string version, SourceLocal? local = null)
     {
         try
         {
             string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
-            var data = await CoreHttpClient.GetStringAsync(url);
+            var data = await CoreHttpClient.GetStreamAsync(url);
             if (data.State == false)
             {
                 ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
                     new Exception(url), false);
                 return null;
             }
-            return data.Message;
+            return data.Stream;
         }
         catch (Exception e)
         {

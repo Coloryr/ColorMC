@@ -1,4 +1,7 @@
+using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -6,8 +9,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Helpers;
 
@@ -341,24 +342,21 @@ public static class GameHelper
     /// <param name="stream">文件流</param>
     public static void UnpackNative(string native, Stream stream)
     {
-        using var zFile = new ZipFile(stream);
-        foreach (ZipEntry e in zFile)
+        using var zFile = new ZipArchive(stream);
+        foreach (var e in zFile.Entries)
         {
             if (e.Name.StartsWith("META-INF"))
             {
                 continue;
             }
-            else if (e.IsFile)
+            var file = Path.Combine(native, e.Name);
+            if (File.Exists(file))
             {
-                var file = Path.Combine(native, e.Name);
-                if (File.Exists(file))
-                {
-                    continue;
-                }
-
-                using var stream2 = zFile.GetInputStream(e);
-                PathHelper.WriteBytes(file, stream2);
+                continue;
             }
+
+            using var stream2 = e.Open();
+            PathHelper.WriteBytes(file, stream2);
         }
     }
 
@@ -368,7 +366,7 @@ public static class GameHelper
     /// <param name="mmc">MMC储存</param>
     /// <param name="mmc1">MMC储存</param>
     /// <returns>游戏设置</returns>
-    public static MMCToColorMCRes ToColorMC(this MMCObj mmc, string mmc1)
+    public static MMCToColorMCRes ToColorMC(this MMCObj mmc, Stream? mmc1)
     {
         var res = new MMCToColorMCRes();
         var list = Options.ReadOptions(mmc1, "=");
@@ -790,35 +788,35 @@ public static class GameHelper
     /// <returns>是否存在版本</returns>
     public static bool IsMinecraftVersion(string dir)
     {
-        bool find = false;
         var files = PathHelper.GetFiles(dir);
         foreach (var item3 in files)
         {
-            if (find)
+            if (!item3.Name.EndsWith(Names.NameJsonExt))
             {
-                break;
+                continue;
             }
-            if (item3.Name.EndsWith(Names.NameJsonExt))
+            try
             {
-                try
+                using var stream = PathHelper.OpenRead(item3.FullName);
+                var obj = JsonUtils.ReadAsObj(stream);
+                if (obj == null)
                 {
-                    var obj = JObject.Parse(PathHelper.ReadText(item3.FullName)!);
-                    if (obj.ContainsKey("id")
-                        && (obj.ContainsKey("arguments") || obj.ContainsKey("minecraftArguments"))
-                        && obj.ContainsKey("mainClass"))
-                    {
-                        find = true;
-                        break;
-                    }
+                    continue;
                 }
-                catch
+                if (obj.ContainsKey("id")
+                    && (obj.ContainsKey("arguments") || obj.ContainsKey("minecraftArguments"))
+                    && obj.ContainsKey("mainClass"))
                 {
+                    return true;
+                }
+            }
+            catch
+            {
 
-                }
             }
         }
 
-        return find;
+        return false;
     }
 
     /// <summary>
@@ -904,7 +902,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static (List<FileItemObj>?, List<FileItemObj>?) GetForgeLibs(this GameSettingObj obj)
+    public static ForgeGetFilesRes? GetForgeLibs(this GameSettingObj obj)
     {
         var neo = obj.Loader == Loaders.NeoForge;
         var version1 = VersionPath.GetVersion(obj.Version)!;
@@ -915,7 +913,7 @@ public static class GameHelper
             VersionPath.GetForgeObj(obj.Version, obj.LoaderVersion!);
         if (forge == null)
         {
-            return (null, null);
+            return null;
         }
 
         //forge本体
@@ -926,7 +924,7 @@ public static class GameHelper
             VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!);
         if (forgeinstall == null && v2)
         {
-            return (null, null);
+            return null;
         }
 
         //forge安装器
@@ -934,10 +932,17 @@ public static class GameHelper
         {
             var list2 = GameDownloadHelper.BuildForgeLibs(forgeinstall, obj.Version,
                 obj.LoaderVersion!, neo, v2);
-            return (list1, list2.ToList());
+            return new() 
+            { 
+                Loaders = list1,
+                Installs = [.. list2]
+            };
         }
 
-        return (list1, null);
+        return new()
+        {
+            Loaders = list1
+        };
     }
 
     /// <summary>

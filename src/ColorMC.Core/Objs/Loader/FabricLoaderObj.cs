@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -6,29 +6,29 @@ public record FabricLoaderObj
 {
     public record ArgumentsObj
     {
-        [JsonProperty("game")]
+        [JsonPropertyName("game")]
         public List<string> Game { get; set; }
-        [JsonProperty("jvm")]
+        [JsonPropertyName("jvm")]
         public List<string> Jvm { get; set; }
     }
     public record LibrariesObj
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
     }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
     //public string inheritsFrom { get; set; }
     //public string releaseTime { get; set; }
     //public string time { get; set; }
     //public string type { get; set; }
-    [JsonProperty("mainClass")]
+    [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
-    [JsonProperty("arguments")]
+    [JsonPropertyName("arguments")]
     public ArgumentsObj Arguments { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<LibrariesObj> Libraries { get; set; }
 }
 
@@ -39,7 +39,7 @@ public record FabricLoaderVersionObj
         //public string separator { get; set; }
         //public int build { get; set; }
         //public string maven { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
         //public bool stable { get; set; }
     }
@@ -49,7 +49,7 @@ public record FabricLoaderVersionObj
     //    public string version { get; set; }
     //    public bool stable { get; set; }
     //}
-    [JsonProperty("loader")]
+    [JsonPropertyName("loader")]
     public LoaderObj Loader { get; set; }
     //public Intermediary intermediary { get; set; }
 }

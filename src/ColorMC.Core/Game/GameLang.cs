@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Game;
 
@@ -42,34 +42,46 @@ public static class GameLang
             Parallel.ForEach(obj.Objects, (item) =>
 #endif
             {
-                if (!item.Key.StartsWith(Names.NameLangKey1) || AssetsPath.ReadAssetsText(item.Value.Hash) is not { } str)
+                if (!item.Key.StartsWith(Names.NameLangKey1))
                 {
                     return;
                 }
 
                 try
                 {
-                    //json格式
-                    if (str.StartsWith('{'))
+                    using var stream = AssetsPath.ReadAssets(item.Value.Hash);
+                    if (stream == null)
                     {
-                        var data = JsonConvert.DeserializeObject<LangObj>(str)!;
+                        return;
+                    }
+                    using var reader = new StreamReader(stream);
+                    //json格式
+                    var datas = new char[1];
+                    var start = reader.ReadAsync(datas);
+                    if (datas[0] == '{')
+                    {
+                        stream.Seek(0, SeekOrigin.Begin);
+                        var data = JsonUtils.ToObj(stream, JsonType.LangObj);
+                        if (data == null)
+                        {
+                            return;
+                        }
                         list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
                                 data.Name + "-" + data.Region);
                     }
                     else
                     {
                         //key: value格式
-                        var temp1 = str.Split("\n");
                         string? name = null, region = null;
-                        foreach (var item1 in temp1)
+                        while (reader.ReadLine() is { } line)
                         {
-                            if (item1.StartsWith("language.name="))
+                            if (line.StartsWith("language.name="))
                             {
-                                name = item1[14..];
+                                name = line[14..].Trim();
                             }
-                            else if (item1.StartsWith("language.region="))
+                            else if (line.StartsWith("language.region="))
                             {
-                                region = item1[16..];
+                                region = line[16..].Trim();
                             }
                             if (name != null && region != null)
                             {
@@ -111,16 +123,25 @@ public static class GameLang
             {
                 try
                 {
-                    if (item.Key.StartsWith(Names.NameLangKey1) && item.Key.Contains(key)
-                        && AssetsPath.ReadAssetsText(item.Value.Hash) is { } str)
+                    if (!item.Key.StartsWith(Names.NameLangKey1) || !item.Key.Contains(key))
                     {
-                        var data = JsonConvert.DeserializeObject<LangObj>(str)!;
-                        return new LangRes
-                        {
-                            Key = item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
-                            Name = data.Name + "-" + data.Region
-                        };
+                        continue;
                     }
+                    using var stream = AssetsPath.ReadAssets(item.Value.Hash);
+                    if (stream == null)
+                    {
+                        continue;
+                    }
+                    var data = JsonUtils.ToObj(stream, JsonType.LangObj);
+                    if (data == null)
+                    {
+                        continue;
+                    }
+                    return new LangRes
+                    {
+                        Key = item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
+                        Name = data.Name + "-" + data.Region
+                    };
                 }
                 catch
                 {

@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
@@ -140,7 +140,7 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     private bool _close;
 
-    public FileItemModel(CurseForgeObjList.DataObj data, FileType type, McModSearchItemObj? mcmod)
+    public FileItemModel(CurseForgeListObj.DataObj data, FileType type, McModSearchItemObj? mcmod)
     {
         McMod = mcmod;
         Data = data;

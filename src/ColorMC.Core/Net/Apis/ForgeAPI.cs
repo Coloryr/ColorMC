@@ -1,9 +1,9 @@
+using System.Net;
 using System.Xml;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -18,6 +18,19 @@ public static class ForgeAPI
 
     private static List<string>? s_neoSupportVersion;
     private static readonly Dictionary<string, List<string>> s_neoForgeVersion = [];
+
+    private static async Task<Stream?> SendAsync(string url)
+    {
+        var data = await CoreHttpClient.GetAsync(url);
+        if (data.StatusCode != HttpStatusCode.OK)
+        {
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+                new Exception(url), false);
+            return null;
+        }
+
+        return await data.Content.ReadAsStreamAsync();
+    }
 
     /// <summary>
     /// 获取支持的版本
@@ -41,16 +54,12 @@ public static class ForgeAPI
                     return s_neoSupportVersion;
                 }
                 string url = UrlHelper.ForgeVersion(local);
-                var data = await CoreHttpClient.GetStringAsync(url);
-                if (data.State == false)
+                using var stream = await SendAsync(url);
+                var obj = JsonUtils.ToObj(stream, JsonType.ListString);
+                if (obj == null)
                 {
-                    ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                        new Exception(url), false);
                     return null;
                 }
-                var obj = JsonConvert.DeserializeObject<List<string>>(data.Message!);
-                if (obj == null)
-                    return null;
 
                 StringHelper.VersionSort(obj);
 
@@ -92,18 +101,12 @@ public static class ForgeAPI
                 string url = neo
                     ? UrlHelper.NeoForgeVersions(mc, v222, source)
                     : UrlHelper.ForgeVersions(mc, source);
-                var data = await CoreHttpClient.GetStringAsync(url);
-                if (data.State == false)
-                {
-                    ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                        new Exception(url), false);
-                    return null;
-                }
+                using var stream = await SendAsync(url);
+                
                 var list1 = new List<string>();
-
                 if (neo)
                 {
-                    var obj = JsonConvert.DeserializeObject<List<NeoForgeVersionBmclApiObj>>(data.Message!);
+                    var obj = JsonUtils.ToObj(stream, JsonType.ListNeoForgeVersionBmclApiObj);
                     if (obj == null)
                         return null;
 
@@ -114,7 +117,7 @@ public static class ForgeAPI
                 }
                 else
                 {
-                    var obj = JsonConvert.DeserializeObject<List<ForgeVersionBmclApiObj>>(data.Message!);
+                    var obj = JsonUtils.ToObj(stream, JsonType.ListForgeVersionBmclApiObj);
                     if (obj == null)
                         return null;
 
@@ -194,16 +197,13 @@ public static class ForgeAPI
     {
         var url = neo ? UrlHelper.NeoForgeVersions(mc, false, SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
-        var html = await CoreHttpClient.GetStringAsync(url);
-        if (html.State == false)
+        using var stream = await SendAsync(url);
+        if (stream == null)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                new Exception(url), false);
             return;
         }
-
         var xml = new XmlDocument();
-        xml.LoadXml(html.Message!);
+        xml.Load(stream);
 
         var list = new List<string>();
 
@@ -281,20 +281,19 @@ public static class ForgeAPI
             s_supportVersion = list;
         }
 
+        //新版neoforge
         if (neo)
         {
             url = UrlHelper.NeoForgeVersions(mc, true, SourceLocal.Offical);
 
-            html = await CoreHttpClient.GetStringAsync(url);
-            if (html.State == false)
+            using var stream1 = await SendAsync(url);
+            if (stream1 == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
-                    new Exception(url), false);
                 return;
             }
 
             xml = new XmlDocument();
-            xml.LoadXml(html.Message!);
+            xml.Load(stream1);
 
             node = xml.SelectNodes("//metadata/versioning/versions/version");
             if (node?.Count > 0)

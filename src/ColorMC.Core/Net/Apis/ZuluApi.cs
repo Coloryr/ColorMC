@@ -15,7 +15,7 @@ public static class ZuluApi
     /// </summary>
     public static async Task<List<ZuluObj>?> GetJavaList()
     {
-        var data = await CoreHttpClient.DownloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
+        var data = await CoreHttpClient._downloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
         if (data == null)
             return null;
         var str = await data.Content.ReadAsStringAsync();

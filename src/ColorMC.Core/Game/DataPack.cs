@@ -1,11 +1,11 @@
+using System.IO.Compression;
 using System.Text;
+using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -56,7 +56,7 @@ public static class DataPack
             MaxDegreeOfParallelism = 1
         }, (item) =>
 #else
-        Parallel.ForEach(files, (item) =>
+        Parallel.ForEach(files, async (item) =>
 #endif
         {
             if (!item.EndsWith(".zip"))
@@ -66,17 +66,18 @@ public static class DataPack
 
             try
             {
-                using var file = PathHelper.OpenRead(item)!;
-                using var zip = new ZipFile(file);
+                using var zip = ZipFile.OpenRead(item);
                 var ent = zip.GetEntry(Names.NamePackMetaFile);
                 if (ent == null)
                 {
                     return;
                 }
-                using var stream = new MemoryStream();
-                using var stream1 = zip.GetInputStream(ent);
-                stream1.CopyTo(stream);
-                var data = JObject.Parse(Encoding.UTF8.GetString(stream.ToArray()));
+                using var stream = ent.Open();
+                var data = await JsonUtils.ReadAsObjAsync(stream);
+                if (data == null)
+                {
+                    return;
+                }
                 //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
                 if (pack != null)
@@ -99,18 +100,18 @@ public static class DataPack
             MaxDegreeOfParallelism = 1
         }, (item) =>
 #else
-        Parallel.ForEach(paths, (item) =>
+        Parallel.ForEach(paths, async (item) =>
 #endif
         {
             try
             {
                 var file = Path.Combine(item, Names.NamePackMetaFile);
-                if (!File.Exists(file))
+                using var str = PathHelper.OpenRead(file);
+                var data = await JsonUtils.ReadAsObjAsync(str);
+                if (data == null)
                 {
                     return;
                 }
-                var str = PathHelper.ReadText(file)!;
-                var data = JObject.Parse(str);
                 //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
                 if (pack != null)
@@ -277,16 +278,16 @@ public static class DataPack
     /// <param name="dis">已禁用的数据包</param>
     /// <param name="data">数据包内容</param>
     /// <returns>数据包信息</returns>
-    private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JObject data)
+    private static DataPackObj? CheckPack(string path, NbtList? ens, NbtList? dis, JsonObject data)
     {
-        if (data.TryGetValue("pack", out var obj) && obj is JObject obj1)
+        if (data.GetObj("pack") is { } obj)
         {
             var item1 = new DataPackObj()
             {
                 Name = "file/" + Path.GetFileName(path),
                 Path = path,
-                Description = obj1["description"]?.ToString() ?? "",
-                PackFormat = obj1["pack_format"]?.Value<int>() ?? -1
+                Description = obj.GetString("description") ?? "",
+                PackFormat = obj.GetInt("pack_format") ?? -1
             };
 
             if (ens != null)

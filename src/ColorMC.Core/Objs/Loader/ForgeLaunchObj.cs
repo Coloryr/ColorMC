@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Objs.Minecraft;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -16,19 +16,19 @@ public record ForgeLaunchObj
     {
         public record DownloadsObj
         {
-            [JsonProperty("artifact")]
+            [JsonPropertyName("artifact")]
             public GameArgObj.LibrariesObj.DownloadsObj.ArtifactObj Artifact { get; set; }
         }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("downloads")]
+        [JsonPropertyName("downloads")]
         public DownloadsObj Downloads { get; set; }
     }
     public record ArgumentsObj
     {
-        [JsonProperty("game")]
+        [JsonPropertyName("game")]
         public List<string> Game { get; set; }
-        [JsonProperty("jvm")]
+        [JsonPropertyName("jvm")]
         public List<string> Jvm { get; set; }
     }
     //public List<string> _comment_ { get; set; }
@@ -40,15 +40,15 @@ public record ForgeLaunchObj
     //public string ReleaseTime { get; set; }
     //[JsonProperty("type")]
     //public string Type { get; set; }
-    [JsonProperty("mainClass")]
+    [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
     //[JsonProperty("inheritsFrom")]
     //public string InheritsFrom { get; set; }
     //public Logging logging { get; set; }
-    [JsonProperty("minecraftArguments")]
+    [JsonPropertyName("minecraftArguments")]
     public string MinecraftArguments { get; set; }
-    [JsonProperty("arguments")]
+    [JsonPropertyName("arguments")]
     public ArgumentsObj Arguments { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<LibrariesObj> Libraries { get; set; }
 }

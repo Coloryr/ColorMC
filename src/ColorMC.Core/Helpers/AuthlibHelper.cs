@@ -3,8 +3,6 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Helpers;
 
@@ -79,9 +77,9 @@ public static class AuthlibHelper
         }
         try
         {
-            var obj = JObject.Parse(data.Message!);
-            var sha1 = obj?["jarHash"]!.ToString().ToLower();
-            var item = BuildNide8Item(obj!["jarVersion"]!.ToString());
+            var obj = JsonUtils.ReadAsObj(data.Message!)!;
+            var sha1 = obj.GetString("jarHash")!;
+            var item = BuildNide8Item(obj.GetString("jarVersion")!);
             NowNide8Injector = item.Local;
 
             item.Sha1 = sha1;
@@ -137,7 +135,7 @@ public static class AuthlibHelper
             {
                 return LocalAuthLib;
             }
-            var obj = JsonConvert.DeserializeObject<AuthlibInjectorMetaObj>(meta.Message!);
+            var obj = JsonUtils.ToObj(meta.Message!, JsonType.AuthlibInjectorMetaObj);
             if (obj == null)
             {
                 return LocalAuthLib;
@@ -149,7 +147,7 @@ public static class AuthlibHelper
             {
                 return LocalAuthLib;
             }
-            return JsonConvert.DeserializeObject<AuthlibInjectorObj>(info.Message!) ?? LocalAuthLib;
+            return JsonUtils.ToObj(info.Message!, JsonType.AuthlibInjectorObj) ?? LocalAuthLib;
         }
         catch
         {

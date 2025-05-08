@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.IO.Compression;
 using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
@@ -8,8 +9,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Helpers;
 
@@ -639,7 +638,7 @@ public static class GameDownloadHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static Task<(List<FileItemObj>?, List<FileItemObj>?)> GetDownloadForgeLibs(this GameSettingObj obj)
+    public static Task<ForgeGetFilesRes?> GetDownloadForgeLibs(this GameSettingObj obj)
     {
         return BuildForgeAsync(obj.Version, obj.LoaderVersion!, obj.Loader == Loaders.NeoForge);
     }
@@ -651,7 +650,7 @@ public static class GameDownloadHelper
     /// <param name="version">forge版本</param>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    private static async Task<(List<FileItemObj>?, List<FileItemObj>?)> BuildForgeAsync(string mc, string version, bool neo)
+    private static async Task<ForgeGetFilesRes?> BuildForgeAsync(string mc, string version, bool neo)
     {
         var version1 = VersionPath.GetVersion(mc)!;
         var v2 = version1.IsGameVersionV2();
@@ -664,124 +663,138 @@ public static class GameDownloadHelper
             var res = await DownloadManager.StartAsync([down]);
             if (!res)
             {
-                return (null, null);
+                return null;
             }
         }
         catch (Exception e)
         {
             ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
-            return (null, null);
+            return null;
         }
 
-        using var zFile = new ZipFile(down.Local);
-        using var stream1 = new MemoryStream();
-        using var stream2 = new MemoryStream();
-        var find1 = false;
-        var find2 = false;
-        foreach (ZipEntry e in zFile)
+        using var zFile = ZipFile.OpenRead(down.Local);
+        ZipArchiveEntry? versionfile = null;
+        ZipArchiveEntry? installfile = null;
+        if (zFile.GetEntry(Names.NameVersionFile) is { } item)
         {
-            if (e.IsFile && e.Name == Names.NameVersionFile)
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1);
-                find1 = true;
-            }
-            else if (e.IsFile && e.Name == Names.NameForgeInstallFile)
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream2);
-                find2 = true;
-            }
+            versionfile = item;
+        }
+        if (zFile.GetEntry(Names.NameForgeInstallFile) is { } item1)
+        {
+            installfile = item1;
         }
 
         var list = new List<FileItemObj>();
         //1.12.2以上
-        if (find1 && find2)
+        if (versionfile != null && installfile != null)
         {
-            ForgeLaunchObj info;
+            ForgeLaunchObj? info;
             try
             {
-                var array = stream1.ToArray();
-                var data = Encoding.UTF8.GetString(stream1.ToArray());
-                info = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-                VersionPath.AddGame(info, array, mc, version, neo);
+                var stream = versionfile.Open();
+                info = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
+                if (info == null)
+                {
+                    return null;
+                }
+                stream.Dispose();
+                stream = versionfile.Open();
+                VersionPath.AddGame(info, stream, mc, version, neo);
+                stream.Dispose();
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error1"), e);
-                return (null, null);
+                return null;
             }
 
             var list1 = BuildForgeLibs(info, mc, version, neo, v2, false);
 
-            ForgeInstallObj info1;
+            ForgeInstallObj? info1;
             try
             {
-                var array = stream2.ToArray();
-                var data = Encoding.UTF8.GetString(array);
-                info1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
-                VersionPath.AddGame(info1, array, mc, version, neo);
+                var stream = installfile.Open();
+                info1 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
+                if (info1 == null)
+                {
+                    return null;
+                }
+                stream.Dispose();
+                stream = installfile.Open();
+                VersionPath.AddGame(info1, stream, mc, version, neo);
+                stream.Dispose();
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error2"), e);
-                return (null, null);
+                return null;
             }
 
             var list2 = BuildForgeLibs(info1, mc, version, neo, v2);
-            return (list1.ToList(), list2.ToList());
+            return new()
+            {
+                Loaders = [.. list1],
+                Installs = [.. list2]
+            };
         }
         //旧forge
-        else
+        if (installfile == null)
         {
-            ForgeInstallNewObj obj;
-            byte[] array1 = stream2.ToArray();
-            ForgeLaunchObj info;
-            try
+            return null;
+        }
+        try
+        {
+            using var stream = installfile.Open();
+            var obj = JsonUtils.ToObj(stream, JsonType.ForgeInstallOldObj);
+            if (obj == null)
             {
-                var data = Encoding.UTF8.GetString(array1);
-                obj = JsonConvert.DeserializeObject<ForgeInstallNewObj>(data)!;
-                info = new()
+                return null;
+            }
+            var info = new ForgeLaunchObj()
+            {
+                MainClass = obj.VersionInfo.MainClass,
+                MinecraftArguments = obj.VersionInfo.MinecraftArguments,
+                Libraries = []
+            };
+            foreach (var item2 in obj.VersionInfo.Libraries)
+            {
+                var item3 = GameHelper.MakeLibObj(item2.Name);
+                if (item3 != null)
                 {
-                    MainClass = obj.VersionInfo.MainClass,
-                    MinecraftArguments = obj.VersionInfo.MinecraftArguments,
-                    Libraries = []
-                };
-                foreach (var item in obj.VersionInfo.Libraries)
-                {
-                    var item1 = GameHelper.MakeLibObj(item.Name);
-                    if (item1 != null)
-                    {
-                        info.Libraries.Add(item1);
-                    }
-                    else if (!string.IsNullOrWhiteSpace(item.Url))
-                    {
-                        var path = FuntionUtils.VersionNameToPath(item.Name);
-                        info.Libraries.Add(new()
-                        {
-                            Name = item.Name,
-                            Downloads = new()
-                            {
-                                Artifact = new()
-                                {
-                                    Url = item.Url + path,
-                                    Path = path
-                                }
-                            }
-                        });
-                    }
+                    info.Libraries.Add(item3);
                 }
-
-                VersionPath.AddGame(info,
-                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(info)), mc, version, neo);
-
-                return ([.. BuildForgeLibs(info, mc, version, neo, v2, true)], null);
+                else if (!string.IsNullOrWhiteSpace(item2.Url))
+                {
+                    var path = FuntionUtils.VersionNameToPath(item2.Name);
+                    info.Libraries.Add(new()
+                    {
+                        Name = item2.Name,
+                        Downloads = new()
+                        {
+                            Artifact = new()
+                            {
+                                Url = item2.Url + path,
+                                Path = path
+                            }
+                        }
+                    });
+                }
             }
-            catch (Exception e)
+
+            using var mem = new MemoryStream();
+            JsonUtils.ToString(mem, info, JsonType.ForgeLaunchObj);
+            mem.Seek(0, SeekOrigin.Begin);
+            VersionPath.AddGame(info, mem, mc, version, neo);
+
+            return new()
             {
-                Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
-                return (null, null);
-            }
+                Loaders = [.. BuildForgeLibs(info, mc, version, neo, v2, true)]
+            };
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
+            return null;
         }
     }
 
@@ -827,18 +840,22 @@ public static class GameDownloadHelper
 
         version = fabric.Version;
 
-        var data = await FabricAPI.GetLoader(mc, version, CoreHttpClient.Source);
-        if (data == null)
+        using var stream = await FabricAPI.GetLoader(mc, version, CoreHttpClient.Source);
+        if (stream == null)
         {
             return null;
         }
-        var meta1 = JsonConvert.DeserializeObject<FabricLoaderObj>(data);
+        using var mem = new MemoryStream();
+        await stream.CopyToAsync(mem);
+        mem.Seek(0, SeekOrigin.Begin);
+        var meta1 = JsonUtils.ToObj(mem, JsonType.FabricLoaderObj);
         if (meta1 == null)
         {
             return null;
         }
 
-        VersionPath.AddGame(meta1, data, mc, version);
+        mem.Seek(0, SeekOrigin.Begin);
+        VersionPath.AddGame(meta1, mem, mc, version);
 
         foreach (var item in meta1.Libraries)
         {
@@ -901,7 +918,7 @@ public static class GameDownloadHelper
         {
             return null;
         }
-        var meta1 = JsonConvert.DeserializeObject<QuiltLoaderObj>(data);
+        var meta1 = JsonUtils.ToObj(data, JsonType.QuiltLoaderObj);
         if (meta1 == null)
         {
             return null;
@@ -1005,28 +1022,23 @@ public static class GameDownloadHelper
     /// <returns>下载项目列表</returns>
     public static async Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
     {
-        using var zFile = new ZipFile(PathHelper.OpenRead(path));
-        using var stream1 = new MemoryStream();
-        using var stream2 = new MemoryStream();
-        var find1 = false;
-        var find2 = false;
-        foreach (ZipEntry e in zFile)
+        using var zFile = ZipFile.OpenRead(path);
+
+        ForgeLaunchObj? obj1 = null;
+        ForgeInstallObj? obj2 = null;
+
+        if (zFile.GetEntry(Names.NameVersionFile) is { } item)
         {
-            if (e.IsFile && e.Name == Names.NameVersionFile)
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream1, cancel);
-                find1 = true;
-            }
-            else if (e.IsFile && e.Name == Names.NameForgeInstallFile)
-            {
-                using var stream = zFile.GetInputStream(e);
-                await stream.CopyToAsync(stream2, cancel);
-                find2 = true;
-            }
+            using var stream = item.Open();
+            obj1 = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
+        }
+        if (zFile.GetEntry(Names.NameForgeInstallFile) is { } item1)
+        {
+            using var stream = item1.Open();
+            obj2 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
         }
 
-        if (!find1 || !find2)
+        if (obj1 == null || obj2 == null)
         {
             return null;
         }
@@ -1086,7 +1098,7 @@ public static class GameDownloadHelper
                         }
 
                         {
-                            using var stream3 = zFile.GetInputStream(item1);
+                            using var stream3 = item1.Open();
                             await PathHelper.WriteBytesAsync(local, stream3);
                         }
                     }
@@ -1147,7 +1159,7 @@ public static class GameDownloadHelper
                         }
 
                         {
-                            using var stream3 = zFile.GetInputStream(item1);
+                            using var stream3 = item1.Open();
                             await PathHelper.WriteBytesAsync(local, stream3);
                         }
                     }
@@ -1159,27 +1171,20 @@ public static class GameDownloadHelper
 
         try
         {
-            byte[] array1 = stream2.ToArray();
-            var data = Encoding.UTF8.GetString(array1);
-            var obj1 = JsonConvert.DeserializeObject<ForgeInstallObj>(data)!;
-
-            await UnpackAsync(obj1);
-
+            await Unpack1Async(obj1);
             if (cancel.IsCancellationRequested)
             {
                 return null;
             }
-
-            array1 = stream1.ToArray();
-            data = Encoding.UTF8.GetString(array1);
-            var obj2 = JsonConvert.DeserializeObject<ForgeLaunchObj>(data)!;
-
-            await Unpack1Async(obj2);
-
-            name = obj1.Version;
-            if (!obj1.Version.StartsWith(obj1.Profile))
+            await UnpackAsync(obj2);
+            if (cancel.IsCancellationRequested)
             {
-                name = $"{obj1.Profile}-{obj1.Version}";
+                return null;
+            }
+            name = obj2.Version;
+            if (!obj2.Version.StartsWith(obj2.Profile))
+            {
+                name = $"{obj2.Profile}-{obj2.Version}";
             }
 
             obj.CustomLoader ??= new();

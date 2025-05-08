@@ -1,12 +1,13 @@
 using System.Collections.Concurrent;
+using System.IO.Compression;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -112,27 +113,22 @@ public static class Mods
         {
             return null;
         }
-
-        var sha1 = "";
+        string sha1 = "";
         try
         {
-            using var filestream = PathHelper.OpenRead(item.FullName)!;
-            sha1 = HashHelper.GenSha1(filestream);
-            filestream.Seek(0, SeekOrigin.Begin);
-
-            using var zFile = new ZipFile(filestream);
+            sha1 = HashHelper.GenSha1WithFile(item.FullName);
+            using var zFile = ZipFile.OpenRead(item.FullName);
             var mod = await ReadModAsync(zFile);
             if (mod != null)
             {
                 mod.Local = item.FullName;
                 mod.Disable = item.Extension is Names.NameDisableExt or Names.NameDisabledExt;
-                mod.Sha1 = sha1;
                 mod.Name ??= "";
                 mod.ModId ??= "";
+                mod.Sha1 = sha1;
                 if (sha256)
                 {
-                    filestream.Seek(0, SeekOrigin.Begin);
-                    mod.Sha256 = HashHelper.GenSha256(filestream);
+                    mod.Sha256 = HashHelper.GenSha256(item.FullName);
                 }
 
                 return mod;
@@ -324,18 +320,15 @@ public static class Mods
     /// </summary>
     /// <param name="obj">游戏Mod</param>
     /// <param name="zFile">Mod压缩包</param>
-    private static async Task CheckJarInJarAsync(ModObj obj, ZipFile zFile)
+    private static async Task CheckJarInJarAsync(ModObj obj, ZipArchive zFile)
     {
         obj.InJar ??= [];
-        foreach (ZipEntry item3 in zFile)
+        foreach (var item3 in zFile.Entries)
         {
             if (item3.Name.EndsWith(Names.NameJarExt) && item3.Name.StartsWith("META-INF/jarjar/"))
             {
-                using var filestream = zFile.GetInputStream(item3);
-                using var stream2 = new MemoryStream();
-                await filestream.CopyToAsync(stream2);
-                stream2.Seek(0, SeekOrigin.Begin);
-                using var zFile1 = new ZipFile(stream2);
+                using var stream = item3.Open();
+                using var zFile1 = new ZipArchive(stream);
                 var inmod = await ReadModAsync(zFile1);
                 if (inmod != null)
                 {
@@ -350,7 +343,7 @@ public static class Mods
     /// </summary>
     /// <param name="zFile">Mod压缩包</param>
     /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadModAsync(ZipFile zFile)
+    private static async Task<ModObj?> ReadModAsync(ZipArchive zFile)
     {
         bool istest = false;
         var mod = new ModObj()
@@ -366,63 +359,69 @@ public static class Mods
         {
             try
             {
-                using var stream1 = zFile.GetInputStream(item1);
-                using var stream2 = new MemoryStream();
-                await stream1.CopyToAsync(stream2);
-                var data = Encoding.UTF8.GetString(stream2.ToArray());
+                using var stream1 = item1.Open();
+                var data = await StringHelper.GetStringAsync(stream1);
                 var obj1 = Parse(data);
-                JObject obj3;
-                if (obj1 is JArray array)
+                JsonObject? obj3;
+                if (obj1 is JsonArray array)
                 {
-                    obj3 = (array[0] as JObject)!;
+                    obj3 = array[0]?.AsObject();
                 }
                 else
                 {
-                    obj3 = (obj1["modList"]![0] as JObject)!;
+                    obj3 = obj1?.AsObject()?.GetArray("modList")?[0]?.AsObject();
                 }
                 if (obj3 != null)
                 {
-                    mod.Name = obj3["name"]!.ToString();
-                    mod.ModId = obj3["modid"]!.ToString();
-                    mod.Description = obj3["description"]?.ToString();
-                    mod.Version = obj3["version"]?.ToString();
-                    mod.Url = obj3["url"]?.ToString();
+                    mod.ModId = obj3.GetString("modid") ?? "";
+                    mod.Name = obj3.GetString("name") ?? mod.ModId;
+                    mod.Description = obj3.GetString("description");
+                    mod.Version = obj3.GetString("version");
+                    mod.Url = obj3.GetString("url");
                     mod.Loaders.Add(Loaders.Forge);
                     mod.Side = SideType.None; //无法判断sideonly
 
-                    if (obj3.TryGetValue("authorList", out var value))
+                    if (obj3.GetArray("authorList") is { } list1)
                     {
-                        var list1 = value.ToObject<List<string>>()!;
                         foreach (var item in list1)
                         {
-                            mod.Author.Add(item);
+                            if (item?.GetValue<string>() is { } str)
+                            {
+                                mod.Author.Add(str);
+                            }
                         }
                     }
 
-                    if (obj3.TryGetValue("dependants", out value))
+                    if (obj3.GetArray("dependants") is { } list2)
                     {
-                        var list1 = value.ToObject<List<string>>()!;
-                        foreach (var item in list1)
+                        foreach (var item in list2)
                         {
-                            mod.Dependants.Add(item);
+                            if (item?.GetValue<string>() is { } str)
+                            {
+                                mod.Dependants.Add(str);
+                            }
                         }
                     }
 
-                    if (obj3.TryGetValue("dependencies", out value))
+                    if (obj3.GetArray("dependencies") is { } list3)
                     {
-                        var list1 = value.ToObject<List<string>>()!;
-                        foreach (var item in list1)
+                        foreach (var item in list3)
                         {
-                            mod.Dependants.Add(item);
+                            if (item?.GetValue<string>() is { } str)
+                            {
+                                mod.Dependants.Add(str);
+                            }
                         }
                     }
 
-                    if (obj3.TryGetValue("requiredMods", out value))
+                    if (obj3.GetArray("requiredMods") is { } list4)
                     {
-                        var list1 = value.ToObject<List<string>>()!;
-                        foreach (var item in list1)
+                        foreach (var item in list4)
                         {
-                            mod.Dependants.Add(item);
+                            if (item?.GetValue<string>() is { } str)
+                            {
+                                mod.Dependants.Add(str);
+                            }
                         }
                     }
 
@@ -452,10 +451,9 @@ public static class Mods
             {
                 try
                 {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream);
-                    var model = Toml.Parse(stream.ToArray()).ToModel();
+                    using var stream1 = item1.Open();
+                    var data = await StringHelper.GetStringAsync(stream1);
+                    var model = Toml.Parse(data).ToModel();
                     TomlTable? model2 = null;
                     if (model["mods"] is TomlArray array)
                     {
@@ -564,54 +562,54 @@ public static class Mods
             {
                 try
                 {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    mod.ModId = obj1["id"]!.ToString();
-                    mod.Name = obj1["name"]?.ToString() ?? mod.ModId;
-                    mod.Description = obj1["description"]?.ToString();
-                    mod.Version = obj1["version"]?.ToString();
-                    mod.Url = obj1["contact"]?["homepage"]?.ToString();
+                    using var stream = item1.Open();
+                    var obj1 = await JsonUtils.ReadAsObjAsync(stream);
+                    if (obj1 != null)
+                    {
+                        mod.ModId = obj1.GetString("id") ?? "";
+                        mod.Name = obj1.GetString("name") ?? mod.ModId;
+                        mod.Description = obj1.GetString("description");
+                        mod.Version = obj1.GetString("version");
+                        mod.Url = obj1.GetObj("contact")?.GetString("homepage");
 
-                    var side = obj1["environment"]?.ToString().ToLower();
-                    if (side == null)
-                    {
-                        mod.Side = SideType.None;
-                    }
-                    else if (side == "*")
-                    {
-                        mod.Side = SideType.Both;
-                    }
-                    else if (side == "client")
-                    {
-                        mod.Side = SideType.Client;
-                    }
-                    else if (side == "server")
-                    {
-                        mod.Side = SideType.Server;
-                    }
-
-                    if (obj1.TryGetValue("authors", out var list) && list is JArray array)
-                    {
-                        foreach (var item in array.ToStringList())
+                        var side = obj1.GetString("environment")?.ToString().ToLower();
+                        if (side == null)
                         {
-                            mod.Dependants.Add(item);
+                            mod.Side = SideType.None;
                         }
-                    }
-
-                    if (obj1.TryGetValue("depends", out var list1) && list1 is JObject array2)
-                    {
-                        foreach (var item3 in array2)
+                        else if (side == "*")
                         {
-                            mod.Dependants.Add(item3.Key);
+                            mod.Side = SideType.Both;
                         }
+                        else if (side == "client")
+                        {
+                            mod.Side = SideType.Client;
+                        }
+                        else if (side == "server")
+                        {
+                            mod.Side = SideType.Server;
+                        }
+
+                        if (obj1.GetArray("authors") is { } list1)
+                        {
+                            foreach (var item in list1.ToStringList())
+                            {
+                                mod.Dependants.Add(item);
+                            }
+                        }
+
+                        if (obj1.GetObj("depends") is { } array2)
+                        {
+                            foreach (var item3 in array2)
+                            {
+                                mod.Dependants.Add(item3.Key);
+                            }
+                        }
+
+                        await CheckJarInJarAsync(mod, zFile);
+
+                        istest = true;
                     }
-
-                    await CheckJarInJarAsync(mod, zFile);
-
-                    istest = true;
                 }
                 catch
                 {
@@ -629,34 +627,35 @@ public static class Mods
             {
                 try
                 {
-                    using var stream1 = zFile.GetInputStream(item1);
-                    using var stream = new MemoryStream();
-                    await stream1.CopyToAsync(stream);
-                    var data = Encoding.UTF8.GetString(stream.ToArray());
-                    var obj1 = JObject.Parse(data);
-                    if (obj1?["quilt_loader"] is not JObject obj4)
+                    using var stream = item1.Open();
+                    var obj = await JsonUtils.ReadAsObjAsync(stream);
+                    if (obj?.GetObj("quilt_loader") is not { } obj1)
                     {
                         return null;
                     }
-                    mod.ModId = obj4["id"]!.ToString();
-                    mod.Name = obj4["metadata"]!["name"]!.ToString();
-                    mod.Description = obj4["metadata"]?["description"]?.ToString();
-                    mod.Version = obj4["version"]?.ToString();
-                    mod.Url = obj4["contact"]?["homepage"]?.ToString();
-                    if (obj4["metadata"]?["contributors"] is JObject array)
+                    mod.ModId = obj1.GetString("id") ?? "";
+                    mod.Version = obj1.GetString("version");
+                    mod.Url = obj1.GetObj("contact")?.GetString("homepage");
+                    var meta = obj1.GetObj("metadata");
+                    if (meta != null)
                     {
-                        var list = array.ToStringList();
-                        foreach (var item in list)
+                        mod.Name = meta.GetString("name") ?? mod.ModId;
+                        mod.Description = meta.GetString("description");
+
+                        if (meta.GetObj("contributors") is { } array)
                         {
-                            mod.Author.Add(item);
+                            var list = array.ToStringList();
+                            foreach (var item in list)
+                            {
+                                mod.Author.Add(item);
+                            }
                         }
                     }
-
-                    if (obj4["depends"] is JArray obj5)
+                    if (obj1.GetArray("depends") is { } obj5)
                     {
                         foreach (var item3 in obj5)
                         {
-                            if (item3?["id"]?.ToString() is string str)
+                            if (item3?.AsObject().GetString("id") is { } str)
                             {
                                 mod.Dependants.Add(str);
                             }
@@ -680,9 +679,8 @@ public static class Mods
         var item6 = zFile.GetEntry("META-INF/MANIFEST.MF");
         if (item6 != null)
         {
-            using var stream12 = zFile.GetInputStream(item6);
-            using var reader = new StreamReader(stream12);
-            var con = Options.ReadOptions(reader.ReadToEnd());
+            using var stream = item6.Open();
+            var con = Options.ReadOptions(stream);
             if (item7 != null)
             {
                 mod.CoreMod = true;
@@ -747,52 +745,51 @@ public static class Mods
             }
         }
 
-
         item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
         //forge coremod
         if (item1 != null)
         {
-            using var stream1 = zFile.GetInputStream(item1);
-            using var stream2 = new MemoryStream();
-            await stream1.CopyToAsync(stream2);
-            var data = Encoding.UTF8.GetString(stream2.ToArray());
-            var obj1 = JObject.Parse(data);
-            var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
-            if (obj2 != null)
+            using var stream = item1.Open();
+            var obj1 = await JsonUtils.ReadAsObjAsync(stream);
+            if (obj1 != null)
             {
-                mod.CoreMod = true;
-                mod.Loaders.Add(Loaders.Forge);
-                if (!istest)
+                var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
+                if (obj2?.AsObject() is { } obj3)
                 {
-                    if (obj2["modId"]?["value"]?.ToString() is { } str)
+                    mod.CoreMod = true;
+                    mod.Loaders.Add(Loaders.Forge);
+                    if (!istest)
                     {
-                        mod.ModId = str;
-                    }
-                    else if (obj2["modid"]?["value"]?.ToString() is { } str1)
-                    {
-                        mod.ModId = str1;
-                    }
+                        if (obj3.GetObj("modId")?.GetString("value") is { } str)
+                        {
+                            mod.ModId = str;
+                        }
+                        else if (obj3.GetObj("modid")?.GetString("value") is { } str1)
+                        {
+                            mod.ModId = str1;
+                        }
 
-                    if (obj2["names"]?["value"]?.ToString() is { } str2)
-                    {
-                        mod.Name = str2;
-                    }
-                    else if (obj2["name"]?["value"]?.ToString() is { } str3)
-                    {
-                        mod.Name = str3;
-                    }
+                        if (obj3.GetObj("names")?.GetString("value") is { } str2)
+                        {
+                            mod.Name = str2;
+                        }
+                        else if (obj3.GetObj("name")?.GetString("value") is { } str3)
+                        {
+                            mod.Name = str3;
+                        }
 
-                    if (obj2["version"]?["value"]?.ToString() is { } str4)
-                    {
-                        mod.Version = str4;
-                    }
+                        if (obj3.GetObj("version")?.GetString("value") is { } str4)
+                        {
+                            mod.Version = str4;
+                        }
 
-                    if (obj2["dependencies"]?["value"]?.ToString() is { } str5)
-                    {
-                        mod.Dependants.Add(str5);
-                    }
+                        if (obj3.GetObj("dependencies")?.GetString("value") is { } str5)
+                        {
+                            mod.Dependants.Add(str5);
+                        }
 
-                    istest = true;
+                        istest = true;
+                    }
                 }
             }
         }
@@ -800,15 +797,12 @@ public static class Mods
         if (!istest)
         {
             //使用jarjar的内容
-            foreach (ZipEntry item3 in zFile)
+            foreach (var item3 in zFile.Entries)
             {
                 if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
                 {
-                    using var filestream = zFile.GetInputStream(item3);
-                    using var stream2 = new MemoryStream();
-                    await filestream.CopyToAsync(stream2);
-                    stream2.Seek(0, SeekOrigin.Begin);
-                    using var zFile1 = new ZipFile(stream2);
+                    using var stream = item3.Open();
+                    using var zFile1 = new ZipArchive(stream);
                     var inmod = await ReadModAsync(zFile1);
                     if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
                          && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)
@@ -832,30 +826,44 @@ public static class Mods
     /// </summary>
     /// <param name="data">Json数据</param>
     /// <returns>数据</returns>
-    private static JToken Parse(string data)
+    private static JsonNode? Parse(string data)
     {
+        //var options = new JsonSerializerOptions
+        //{
+        //    ReadCommentHandling = JsonCommentHandling.Skip,
+        //    AllowTrailingCommas = true
+        //};
+
         try
         {
-            return JToken.Parse(data);
+            return JsonNode.Parse(data);
         }
-        catch (Exception)
+        catch (JsonException)
         {
-            var lines = data.Split(s_separator, StringSplitOptions.None);
-            var token = new JObject();
+            var s_separator = new[] { "\r\n", "\n" };
+            var lines = data.Split(s_separator, StringSplitOptions.RemoveEmptyEntries);
+
+            var rootObject = new JsonObject();
             foreach (var line in lines)
             {
                 try
                 {
-                    JToken parsedLine = JToken.Parse("{" + line + "}");
-                    token.Add(parsedLine.First);
-                }
-                catch
-                {
+                    var wrappedLine = "{" + line + "}";
+                    var parsedLine = JsonNode.Parse(wrappedLine);
 
+                    if (parsedLine is JsonObject lineObj && lineObj.First() is KeyValuePair<string, JsonNode?> firstProp)
+                    {
+                        var copiedValue = JsonNode.Parse(firstProp.Value!.ToJsonString());
+                        rootObject[firstProp.Key] = copiedValue;
+                    }
+                }
+                catch (JsonException)
+                {
+                    
                 }
             }
 
-            return new JArray() { token };
+            return new JsonArray { rootObject };
         }
     }
 
@@ -883,14 +891,14 @@ public static class Mods
     /// </summary>
     /// <param name="array">数据</param>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JArray array)
+    private static List<string> ToStringList(this JsonArray array)
     {
         var list = new List<string>();
         foreach (var item in array)
         {
-            if (item is JObject obj && obj.ContainsKey("name"))
+            if (item is JsonObject obj && obj.GetString("name") is { } str)
             {
-                list.Add(item["name"]!.ToString());
+                list.Add(str);
             }
             else
             {
@@ -906,7 +914,7 @@ public static class Mods
     /// </summary>
     /// <param name="array">数据</param>
     /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JObject array)
+    private static List<string> ToStringList(this JsonObject array)
     {
         var list = new List<string>();
         foreach (var item in array)
@@ -923,7 +931,7 @@ public static class Mods
     /// <param name="obj">数据</param>
     /// <param name="key">键名</param>
     /// <returns>数据</returns>
-    private static JToken? FindKey(this JObject obj, string key)
+    private static JsonNode? FindKey(this JsonObject obj, string key)
     {
         foreach (var item in obj)
         {
@@ -932,12 +940,12 @@ public static class Mods
                 return obj;
             }
 
-            if (item.Value is JObject obj1
+            if (item.Value is JsonObject obj1
                 && FindKey(obj1, key) is { } obj2)
             {
                 return obj2;
             }
-            else if (item.Value is JArray arry
+            else if (item.Value is JsonArray arry
                 && FindKey(arry, key) is { } obj3)
             {
                 return obj3;
@@ -953,11 +961,11 @@ public static class Mods
     /// <param name="obj">数据</param>
     /// <param name="key">键名</param>
     /// <returns>数据</returns>
-    private static JToken? FindKey(this JArray obj, string key)
+    private static JsonNode? FindKey(this JsonArray obj, string key)
     {
         foreach (var item in obj)
         {
-            if (item is JObject obj1)
+            if (item is JsonObject obj1)
             {
                 var data = FindKey(obj1, key);
                 if (data != null)

@@ -136,7 +136,7 @@ public partial class AddModPackControlModel
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
 
             var res = await GameBinding.InstallCurseForge((data.Data as CurseForgeModObj.DataObj)!,
-                (select!.Data as CurseForgeObjList.DataObj)!, group,
+                (select!.Data as CurseForgeListObj.DataObj)!, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -185,7 +185,7 @@ public partial class AddModPackControlModel
         if (Source == 0)
         {
             var res = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), PageDownload ?? 0,
+                (_last!.Data as CurseForgeListObj.DataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
             MaxPageDownload = res.Count / 50;

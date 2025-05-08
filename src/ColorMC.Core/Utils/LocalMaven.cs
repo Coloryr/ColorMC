@@ -126,7 +126,7 @@ public static class LocalMaven
                 var url = (CoreHttpClient.Source == SourceLocal.Offical ?
                     UrlHelper.MavenUrl[0] :
                     UrlHelper.MavenUrl[1]) + dir;
-                var res = await CoreHttpClient.DownloadClient
+                var res = await CoreHttpClient._downloadClient
                     .GetAsync(url + Names.NameSha1Ext,
                     HttpCompletionOption.ResponseHeadersRead);
                 if (res.IsSuccessStatusCode)

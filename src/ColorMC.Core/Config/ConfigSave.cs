@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Config;
 
@@ -93,8 +92,7 @@ public static class ConfigSave
         {
             try
             {
-                PathHelper.WriteText(item.File,
-                    JsonConvert.SerializeObject(item.Obj, Formatting.Indented));
+                PathHelper.WriteText(item.File, item.Run());
             }
             catch (Exception e)
             {

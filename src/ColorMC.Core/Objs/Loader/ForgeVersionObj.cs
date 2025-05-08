@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -14,6 +14,6 @@ public record ForgeVersionBmclApiObj
     //public List<Files> files { get; set; }
     //public string mcversion { get; set; }
     //public string modified { get; set; }
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
 }

@@ -1,9 +1,8 @@
+using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.McMod;
+using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -16,10 +15,20 @@ public static class ColorMCAPI
     public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
     public const string BaseWebUrl = $"https://www.coloryr.com/";
 
-    public static readonly HttpClient Client = new()
+    private static readonly HttpClient _client = new()
     {
         Timeout = Timeout.InfiniteTimeSpan
     };
+
+    /// <summary>
+    /// 发送http请求
+    /// </summary>
+    /// <param name="message"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseMessage> SendAsync(HttpRequestMessage message)
+    {
+        return _client.SendAsync(message);
+    }
 
     /// <summary>
     /// 获取Mod列表
@@ -32,25 +41,27 @@ public static class ColorMCAPI
         try
         {
             string temp = $"{BaseUrl}findmod";
+            var obj = new McModSearchObj()
+            {
+                Type = type,
+                Ids = ids
+            };
             var httpRequest = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(temp),
-                Content = new StringContent(JsonConvert.SerializeObject(new { type, ids }))
+                Content = new StringContent(JsonUtils.ToString(obj, JsonType.McModSearchObj))
             };
 
-            var data = await Client.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
-                return null;
-            var obj = JObject.Parse(data1);
-            if (obj.TryGetValue("res", out var res) && ((int)res) != 100)
+            using var data = await _client.SendAsync(httpRequest);
+            using var data1 = await data.Content.ReadAsStreamAsync();
+            var obj1 = JsonUtils.ToObj(data1, JsonType.McModSearchResObj);
+            if (obj1 == null || obj1.Res != 100)
             {
                 return null;
             }
 
-            var data2 = obj.GetValue("data")!;
-            return data2.ToObject<Dictionary<string, McModSearchItemObj>>();
+            return obj1.Data;
         }
         catch (Exception e)
         {
@@ -99,16 +110,15 @@ public static class ColorMCAPI
         try
         {
             var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
-            var data = await Client.SendAsync(req);
-            var data1 = await data.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data1);
-            if (!obj.TryGetValue("res", out var value) || value.Type != JTokenType.Integer
-                || ((int)value) != 100)
+            using var data = await _client.SendAsync(req);
+            using var data1 = await data.Content.ReadAsStreamAsync();
+            var obj = JsonUtils.ToObj(data1, JsonType.McModTypsResObj);
+            if (obj == null || obj.Res != 100)
             {
                 return null;
             }
 
-            return obj["data"]?.ToObject<McModTypsObj>();
+            return obj.Data;
         }
         catch (Exception e)
         {

@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Objs.Minecraft;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Objs;
 

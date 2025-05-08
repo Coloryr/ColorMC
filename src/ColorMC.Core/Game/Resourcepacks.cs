@@ -1,10 +1,10 @@
+using System.IO.Compression;
+using System.Text.Json;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -39,8 +39,7 @@ public static class Resourcepacks
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            using var stream = PathHelper.OpenRead(item.FullName)!;
-            string sha1 = HashHelper.GenSha1(stream);
+            string sha1 = HashHelper.GenSha1WithFile(item.FullName);
             if (item.Extension is not Names.NameZipExt)
             {
                 return;
@@ -50,11 +49,9 @@ public static class Resourcepacks
                 string filesha256 = "";
                 if (sha256)
                 {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    filesha256 = HashHelper.GenSha256(stream);
+                    filesha256 = HashHelper.GenSha256WithFile(item.FullName);
                 }
-                stream.Seek(0, SeekOrigin.Begin);
-                var obj = await ReadResourcepackAsync(stream, cancel);
+                var obj = await ReadResourcepackAsync(item.FullName, cancel);
                 if (obj != null)
                 {
                     obj.Local = item.FullName;
@@ -127,51 +124,46 @@ public static class Resourcepacks
     /// <summary>
     /// 获取材质包
     /// </summary>
-    /// <param name="file">文件流</param>
+    /// <param name="file">文件</param>
     /// <param name="file">取消Token</param>
     /// <returns>材质包</returns>
-    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream file, CancellationToken cancel)
+    private static async Task<ResourcepackObj?> ReadResourcepackAsync(string file, CancellationToken cancel)
     {
-        using var zFile = new ZipFile(file);
+        using var zFile = ZipFile.OpenRead(file);
         var item1 = zFile.GetEntry(Names.NamePackMetaFile);
         if (item1 == null)
         {
             return null;
         }
 
-        using var stream1 = zFile.GetInputStream(item1);
-        var data = await StringHelper.GetStringAsync(stream1);
-        var obj1 = JObject.Parse(data);
+        using var stream = item1.Open();
+        var obj1 = await JsonUtils.ReadAsObjAsync(stream);
         if (obj1 == null)
         {
             return null;
         }
 
         var obj = new ResourcepackObj();
-        if (obj1.ContainsKey("pack"))
+        if (obj1.GetObj("pack") is { } obj2)
         {
-            var obj2 = obj1["pack"] as JObject;
-            if (obj2!["pack_format"] is { } item2)
+            obj.PackFormat = obj2.GetInt("pack_format") ?? -1;
+            if (obj2.TryGetPropertyValue("description", out var obj3)
+                && obj3 != null)
             {
-                obj.PackFormat = (int)item2;
-            }
-            if (obj2.ContainsKey("description"))
-            {
-                var obj3 = obj2["description"]!;
-                if (obj3.Type == JTokenType.String)
+                if (obj3.GetValueKind() == JsonValueKind.String)
                 {
-                    obj.Description = obj3.ToString();
+                    obj.Description = obj3.GetValue<string>();
                 }
-                else if (obj3.Type == JTokenType.Object)
+                else if (obj3.GetValueKind() == JsonValueKind.Object)
                 {
-                    obj.Description = obj3["fallback"]?.ToString() ?? "";
+                    obj.Description = obj3?.AsObject()?.GetString("fallback") ?? "";
                 }
             }
         }
         item1 = zFile.GetEntry(Names.NamePackIconFile);
         if (item1 != null)
         {
-            using var stream2 = zFile.GetInputStream(item1);
+            using var stream2 = item1.Open();
             using var stream3 = new MemoryStream();
             await stream2.CopyToAsync(stream3, cancel);
             obj.Icon = stream3.ToArray();

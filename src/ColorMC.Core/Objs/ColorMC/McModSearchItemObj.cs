@@ -1,39 +1,39 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
-namespace ColorMC.Core.Objs.McMod;
+namespace ColorMC.Core.Objs.ColorMC;
 
 public record McModSearchItemObj
 {
-    [JsonProperty("mcmod_id")]
+    [JsonPropertyName("mcmod_id")]
     public int McmodId { get; set; }
-    [JsonProperty("mcmod_icon")]
+    [JsonPropertyName("mcmod_icon")]
     public string McmodIcon { get; set; }
-    [JsonProperty("mcmod_name")]
+    [JsonPropertyName("mcmod_name")]
     public string McmodName { get; set; }
-    [JsonProperty("mcmod_author")]
+    [JsonPropertyName("mcmod_author")]
     public string McmodAuthor { get; set; }
-    [JsonProperty("mcmod_text")]
+    [JsonPropertyName("mcmod_text")]
     public string McmodText { get; set; }
-    [JsonProperty("mcmod_type")]
+    [JsonPropertyName("mcmod_type")]
     public int McmodType { get; set; }
-    [JsonProperty("mcmod_mod_type")]
+    [JsonPropertyName("mcmod_mod_type")]
     public string McmodModType { get; set; }
-    [JsonProperty("mcmod_mod_subtype")]
+    [JsonPropertyName("mcmod_mod_subtype")]
     public string McmodModSubtype { get; set; }
-    [JsonProperty("mcmod_game_version")]
+    [JsonPropertyName("mcmod_game_version")]
     public string McmodGameVersion { get; set; }
-    [JsonProperty("mcmod_create_time")]
+    [JsonPropertyName("mcmod_create_time")]
     public DateTime McmodCreateTime { get; set; }
-    [JsonProperty("mcmod_update_time")]
+    [JsonPropertyName("mcmod_update_time")]
     public DateTime McmodUpdateTime { get; set; }
-    [JsonProperty("mcmod_re_time")]
+    [JsonPropertyName("mcmod_re_time")]
     public DateTime McmodReTime { get; set; }
-    [JsonProperty("curseforge_url")]
+    [JsonPropertyName("curseforge_url")]
     public string? CurseforgeUrl { get; set; }
-    [JsonProperty("curseforge_id")]
+    [JsonPropertyName("curseforge_id")]
     public string? CurseforgeId { get; set; }
-    [JsonProperty("modrinth_url")]
+    [JsonPropertyName("modrinth_url")]
     public string? ModrinthUrl { get; set; }
-    [JsonProperty("modrinth_id")]
+    [JsonPropertyName("modrinth_id")]
     public string? ModrinthId { get; set; }
 }

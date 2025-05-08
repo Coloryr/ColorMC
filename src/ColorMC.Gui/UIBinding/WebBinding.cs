@@ -12,9 +12,9 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Java;
-using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
@@ -673,7 +673,7 @@ public static class WebBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string GetUrl(this CurseForgeObjList.DataObj obj)
+    public static string GetUrl(this CurseForgeListObj.DataObj obj)
     {
         return obj.Links.WebsiteUrl;
     }

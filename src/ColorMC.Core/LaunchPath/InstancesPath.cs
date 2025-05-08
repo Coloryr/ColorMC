@@ -2,9 +2,9 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -192,8 +192,8 @@ public static class InstancesPath
 
         try
         {
-            var data1 = PathHelper.ReadText(file)!;
-            var game = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+            using var stream = PathHelper.OpenRead(file)!;
+            var game = JsonUtils.ToObj(stream, JsonType.GameSettingObj);
             if (game != null)
             {
                 var path = Path.GetFileName(dir);
@@ -294,12 +294,8 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void Save(this GameSettingObj obj)
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = $"game-{obj.UUID}",
-            File = obj.GetGameJsonFile(),
-            Obj = obj
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-{obj.UUID}", 
+            obj.GetGameJsonFile(), obj, JsonType.GameSettingObj));
     }
 
     /// <summary>
@@ -678,8 +674,8 @@ public static class InstancesPath
     /// <returns>重载后的实例</returns>
     public static GameSettingObj Reload(this GameSettingObj game)
     {
-        var data1 = PathHelper.ReadText(game.GetGameJsonFile())!;
-        var obj = JsonConvert.DeserializeObject<GameSettingObj>(data1);
+        var stream = PathHelper.OpenRead(game.GetGameJsonFile());
+        var obj = JsonUtils.ToObj(stream, JsonType.GameSettingObj);
         if (obj != null)
         {
             game.RemoveFromGroup();
@@ -863,12 +859,7 @@ public static class InstancesPath
         if (obj.Mods == null)
             return;
 
-        ConfigSave.AddItem(new()
-        {
-            Name = $"game-mod-{obj.Name}",
-            File = obj.GetModInfoJsonFile(),
-            Obj = obj.Mods
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-mod-{obj.Name}", obj.GetModInfoJsonFile(), obj.Mods, JsonType.DictionaryStringModInfoObj));
     }
 
     /// <summary>
@@ -880,12 +871,7 @@ public static class InstancesPath
         if (obj.LaunchData == null)
             return;
 
-        ConfigSave.AddItem(new()
-        {
-            Name = $"game-launch-{obj.Name}",
-            File = obj.GetLaunchFile(),
-            Obj = obj.LaunchData
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-launch-{obj.Name}", obj.GetLaunchFile(), obj.LaunchData, JsonType.LaunchDataObj));
     }
 
     /// <summary>
@@ -904,8 +890,8 @@ public static class InstancesPath
 
         try
         {
-            var temp = PathHelper.ReadText(file)!;
-            var res = JsonConvert.DeserializeObject<Dictionary<string, ModInfoObj>>(temp);
+            using var stream = PathHelper.OpenRead(file);
+            var res = JsonUtils.ToObj(stream, JsonType.DictionaryStringModInfoObj);
             if (res == null)
             {
                 obj.Mods = [];
@@ -976,12 +962,8 @@ public static class InstancesPath
         {
             try
             {
-                var data = PathHelper.ReadText(item);
-                if (data == null)
-                {
-                    continue;
-                }
-                var obj1 = JsonConvert.DeserializeObject<CustomGameArgObj>(data);
+                using var stream = PathHelper.OpenRead(item);
+                var obj1 = JsonUtils.ToObj(stream, JsonType.CustomGameArgObj);
                 if (obj1 == null)
                 {
                     continue;
@@ -1017,8 +999,8 @@ public static class InstancesPath
 
         try
         {
-            var res = JsonConvert.DeserializeObject<LaunchDataObj>(
-            PathHelper.ReadText(file)!);
+            using var stream = PathHelper.OpenRead(file);
+            var res = JsonUtils.ToObj(stream, JsonType.LaunchDataObj);
             obj.LaunchData = res ?? new() { LastPlay = new() };
         }
         catch (Exception e)

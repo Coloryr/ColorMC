@@ -1,5 +1,6 @@
+using System.Net;
 using ColorMC.Core.Objs.Java;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -14,11 +15,12 @@ public static class Dragonwell
     /// </summary>
     public static async Task<DragonwellObj?> GetJavaList()
     {
-        var data = await CoreHttpClient.DownloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
-        if (data == null)
+        using var data = await CoreHttpClient.GetAsync(Url);
+        if (data.StatusCode != HttpStatusCode.OK)
+        {
             return null;
-        var str = await data.Content.ReadAsStringAsync();
-
-        return JsonConvert.DeserializeObject<DragonwellObj>(str);
+        }
+        using var str = await data.Content.ReadAsStreamAsync();
+        return JsonUtils.ToObj(str, JsonType.DragonwellObj);
     }
 }

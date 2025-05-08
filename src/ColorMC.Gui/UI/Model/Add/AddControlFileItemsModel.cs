@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -288,7 +288,7 @@ public partial class AddControlModel
         if (type == SourceType.CurseForge)
         {
             var res = await WebBinding.GetFileList(type, _lastId ??
-                (_last!.Data as CurseForgeObjList.DataObj)!.Id.ToString(), PageDownload ?? 0,
+                (_last!.Data as CurseForgeListObj.DataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Obj.Loader, _now);
             list = res.List;
             MaxPageDownload = res.Count / 50;

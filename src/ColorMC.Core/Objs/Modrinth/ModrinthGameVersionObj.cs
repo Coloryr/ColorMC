@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthGameVersionObj
 {
-    [JsonProperty("version")]
+    [JsonPropertyName("version")]
     public string Version { get; set; }
     //public string version_type { get; set; }
     //public string date { get; set; }

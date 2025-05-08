@@ -1,8 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -47,17 +46,9 @@ public static class OAuthApi
     /// </summary>
     public static async Task<OAuthGetCodeRes> GetCodeAsync()
     {
-        var data = await CoreHttpClient.LoginPostStringAsync(OAuthCode, Arg1);
-        if (data.Contains("error"))
-        {
-            return new OAuthGetCodeRes
-            {
-                State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Login.Error21")
-            };
-        }
-        var obj1 = JsonConvert.DeserializeObject<OAuthObj>(data);
-        if (obj1 == null)
+        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthCode, Arg1);
+        var obj = JsonUtils.ToObj(stream, JsonType.OAuthObj);
+        if (obj == null)
         {
             return new OAuthGetCodeRes
             {
@@ -65,10 +56,18 @@ public static class OAuthApi
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-        s_code = obj1.UserCode;
-        s_url = obj1.VerificationUri;
-        s_deviceCode = obj1.DeviceCode;
-        s_expiresIn = obj1.ExpiresIn;
+        else if (string.IsNullOrWhiteSpace(obj.Error))
+        {
+            return new OAuthGetCodeRes
+            {
+                State = LoginState.Error,
+                Message = LanguageHelper.Get("Core.Login.Error21")
+            };
+        }
+        s_code = obj.UserCode;
+        s_url = obj.VerificationUri;
+        s_deviceCode = obj.DeviceCode;
+        s_expiresIn = obj.ExpiresIn;
 
         return new OAuthGetCodeRes
         {
@@ -106,27 +105,26 @@ public static class OAuthApi
                     State = LoginState.TimeOut
                 };
             }
-            var data = await CoreHttpClient.LoginPostStringAsync(OAuthToken, Arg2);
-            var obj3 = JObject.Parse(data);
-            if (obj3 == null)
+            using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, Arg2);
+            var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj);
+            if (obj == null)
             {
                 return new OAuthGetTokenRes
                 {
                     State = LoginState.DataError
                 };
             }
-            if (obj3.ContainsKey("error"))
+            if (!string.IsNullOrWhiteSpace(obj.Error))
             {
-                string? error = obj3["error"]?.ToString();
-                if (error == "authorization_pending")
+                if (obj.Error == "authorization_pending")
                 {
                     continue;
                 }
-                else if (error == "slow_down")
+                else if (obj.Error == "slow_down")
                 {
                     delay += 5;
                 }
-                else if (error == "expired_token")
+                else if (obj.Error == "expired_token")
                 {
                     return new OAuthGetTokenRes
                     {
@@ -136,19 +134,10 @@ public static class OAuthApi
             }
             else
             {
-                var obj4 = JsonConvert.DeserializeObject<OAuthGetCodeObj>(data);
-                if (obj4 == null)
-                {
-                    return new OAuthGetTokenRes
-                    {
-                        State = LoginState.DataError
-                    };
-                }
-
                 return new OAuthGetTokenRes
                 {
                     State = LoginState.Done,
-                    Obj = obj4
+                    Obj = obj
                 };
             }
         } while (true);
@@ -164,15 +153,23 @@ public static class OAuthApi
             ["refresh_token"] = token
         };
 
-        var obj1 = await CoreHttpClient.LoginPostAsync(OAuthToken, dir);
-        if (obj1 == null)
+        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, dir);
+        if (stream == null)
         {
             return new OAuthRefreshTokenRes
             {
                 State = LoginState.DataError
             };
         }
-        if (obj1.ContainsKey("error"))
+        var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj);
+        if (obj == null)
+        {
+            return new OAuthRefreshTokenRes
+            {
+                State = LoginState.DataError
+            };
+        }
+        if (!string.IsNullOrWhiteSpace(obj.Error))
         {
             return new OAuthRefreshTokenRes
             {
@@ -180,19 +177,10 @@ public static class OAuthApi
             };
         }
 
-        var obj2 = obj1.ToObject<OAuthGetCodeObj>();
-        if (obj2 == null)
-        {
-            return new OAuthRefreshTokenRes
-            {
-                State = LoginState.DataError
-            };
-        }
-
         return new OAuthRefreshTokenRes
         {
             State = LoginState.Done,
-            Obj = obj2
+            Obj = obj
         };
     }
 
@@ -202,9 +190,9 @@ public static class OAuthApi
     /// <returns></returns>
     public static async Task<OAuthXboxLiveRes> GetXBLAsync(string token)
     {
-        var json = await CoreHttpClient.LoginPostJsonAsync(XboxLive, new
+        var obj = new OAuthLoginObj()
         {
-            Properties = new
+            Properties = new()
             {
                 AuthMethod = "RPS",
                 SiteName = "user.auth.xboxlive.com",
@@ -212,10 +200,25 @@ public static class OAuthApi
             },
             RelyingParty = "http://auth.xboxlive.com",
             TokenType = "JWT"
-        });
-        var xblToken = json?["Token"]?.ToString();
-        var list = json?["DisplayClaims"]?["xui"] as JArray;
-        var xblUhs = (list?[0] as JObject)?["uhs"]?.ToString();
+        };
+        var json = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj));
+        if (json == null)
+        { 
+            return new OAuthXboxLiveRes
+            {
+                State = LoginState.DataError
+            };
+        }
+        var xblToken = json.GetString("Token");
+        var list = json.GetObj("DisplayClaims")?.GetArray("xui");
+        if (list == null)
+        {
+            return new OAuthXboxLiveRes
+            {
+                State = LoginState.DataError
+            };
+        }
+        var xblUhs = list.FirstOrDefault()?.AsObject().GetString("uhs");
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
@@ -241,19 +244,34 @@ public static class OAuthApi
     /// <exception cref="FailedAuthenticationException"></exception>
     public static async Task<OAuthXSTSRes> GetXSTSAsync(string token)
     {
-        var json = await CoreHttpClient.LoginPostJsonAsync(XSTS, new
+        var obj = new OAuthLogin1Obj()
         {
-            Properties = new
+            Properties = new()
             {
                 SandboxId = "RETAIL",
-                UserTokens = new[] { token }
+                UserTokens = [token]
             },
             RelyingParty = "rp://api.minecraftservices.com/",
             TokenType = "JWT"
-        });
-        var xstsToken = json?["Token"]?.ToString();
-        var list = json?["DisplayClaims"]?["xui"] as JArray;
-        var xstsUhs = (list?[0] as JObject)?["uhs"]?.ToString();
+        };
+        var json = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj));
+        if (json == null)
+        {
+            return new OAuthXSTSRes
+            {
+                State = LoginState.DataError
+            };
+        }
+        var xstsToken = json.GetString("Token");
+        var list = json.GetObj("DisplayClaims")?.GetArray("xui");
+        if (list == null)
+        {
+            return new OAuthXSTSRes
+            {
+                State = LoginState.DataError
+            };
+        }
+        var xstsUhs = list.FirstOrDefault()?.AsObject().GetString("uhs");
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))

@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
 public record QuiltMetaObj
 {
-    public record GameObj
+    public record QuiltGameObj
     {
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
         //public bool stable { get; set; }
     }
@@ -29,7 +29,7 @@ public record QuiltMetaObj
         //public string separator { get; set; }
         //public int build { get; set; }
         //public string maven { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
     }
     //public record Installer
@@ -41,7 +41,7 @@ public record QuiltMetaObj
     //public List<Game> game { get; set; }
     //public List<Mappings> mappings { get; set; }
     //public List<Hashed> hashed { get; set; }
-    [JsonProperty("loader")]
+    [JsonPropertyName("loader")]
     public List<LoaderObj> Loader { get; set; }
     //public List<Installer> installer { get; set; }
 }

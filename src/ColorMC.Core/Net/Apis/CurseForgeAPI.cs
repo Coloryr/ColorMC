@@ -1,9 +1,9 @@
+using System.Net;
 using System.Net.Http.Headers;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -22,11 +22,22 @@ public static class CurseForgeAPI
 
     public const int CategoryIdDataPacks = 5193;
 
-    private static async Task<string> Send(HttpRequestMessage httpRequest)
+    /// <summary>
+    /// 添加CF KEY并发送请求
+    /// </summary>
+    /// <param name="httpRequest"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    private static async Task<Stream?> Send(HttpRequestMessage httpRequest)
     {
         httpRequest.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey ?? throw new Exception("CurseForge key is empty"));
-        var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
-        return await data.Content.ReadAsStringAsync();
+        var data = await CoreHttpClient.SendAsync(httpRequest);
+        if (data.StatusCode != HttpStatusCode.OK)
+        {
+            data.Dispose();
+            return null;
+        }
+        return await data.Content.ReadAsStreamAsync();
     }
 
     /// <summary>
@@ -35,12 +46,12 @@ public static class CurseForgeAPI
     /// <param name="classid">cid</param>
     /// <param name="version">版本</param>
     /// <param name="page">页数</param>
-    /// <param name="sort">排序</param>
+    /// <param name="sortField">排序</param>
     /// <param name="filter">过滤</param>
     /// <param name="pagesize">页大小</param>
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
-    private static async Task<CurseForgeObjList?> GetList(int classid, string version, int page,
+    private static async Task<CurseForgeListObj?> GetList(int classid, string version, int page,
         int sortField, string filter, int pagesize, int sortOrder, string categoryId,
         int modLoaderType)
     {
@@ -54,16 +65,12 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={modLoaderType}";
             }
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeObjList>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeListObj);
         }
         catch (Exception e)
         {
@@ -75,7 +82,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取整合包列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetModPackList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetModPackList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -85,7 +92,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetModList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetModList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
@@ -112,7 +119,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取世界列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetWorldList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetWorldList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -122,7 +129,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取资源包列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetResourcepackList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetResourcepackList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
@@ -132,7 +139,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetDataPacksList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetDataPacksList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
         return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
@@ -141,7 +148,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    public static Task<CurseForgeObjList?> GetShadersList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetShadersList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
         return GetList(ClassShaderpack, version, page, sortField, filter, pagesize, sortOrder, "", 0);
@@ -155,28 +162,18 @@ public static class CurseForgeAPI
         try
         {
             string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeModObj>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeModObj);
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error2"), e);
             return null;
         }
-    }
-
-    private record Arg2
-    {
-        [JsonProperty("data")]
-        public List<CurseForgeModObj.DataObj> Data { get; set; }
     }
 
     /// <summary>
@@ -186,19 +183,15 @@ public static class CurseForgeAPI
     {
         try
         {
-            var arg1 = new { fileIds = new List<long>() };
-            obj.ForEach(a => arg1.fileIds.Add(a.FileID));
-            var data = await Send(new()
+            var arg1 = new CurseForgeGetFilesObj { FileIds = [] };
+            obj.ForEach(a => arg1.FileIds.Add(a.FileID));
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods/files"),
-                Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
+                Content = new StringContent(JsonUtils.ToString(arg1, JsonType.CurseForgeGetFilesObj), MediaTypeHeaderValue.Parse("application/json"))
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<Arg2>(data)?.Data;
+            return JsonUtils.ToObj(data, JsonType.CurseForgeGetFilesResObj)?.Data;
         }
         catch (Exception e)
         {
@@ -215,16 +208,12 @@ public static class CurseForgeAPI
     {
         try
         {
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}categories?gameId={GameID}")
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeCategoriesObj>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeCategoriesObj);
         }
         catch (Exception e)
         {
@@ -236,20 +225,16 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取版本信息
     /// </summary>
-    public static async Task<CurseForgeVersion?> GetCurseForgeVersion()
+    public static async Task<CurseForgeVersionObj?> GetCurseForgeVersion()
     {
         try
         {
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/versions")
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeVersion>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeVersionObj);
         }
         catch (Exception e)
         {
@@ -261,20 +246,16 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取版本类型
     /// </summary>
-    public static async Task<CurseForgeVersionType?> GetCurseForgeVersionType()
+    public static async Task<CurseForgeVersionTypeObj?> GetCurseForgeVersionType()
     {
         try
         {
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/version-types")
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeVersionType>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeVersionTypeObj);
         }
         catch (Exception e)
         {
@@ -290,16 +271,12 @@ public static class CurseForgeAPI
     {
         try
         {
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeObj>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeObj);
         }
         catch (Exception e)
         {
@@ -311,23 +288,23 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeObjList?> GetModsInfo(List<CurseForgePackObj.FilesObj> obj)
+    public static async Task<CurseForgeListObj?> GetModsInfo(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {
-            var arg1 = new { modIds = new List<long>(), filterPcOnly = true };
-            obj.ForEach(a => arg1.modIds.Add(a.ProjectID));
-            var data = await Send(new()
+            var arg1 = new CurseForgeModsInfoObj()
+            { 
+                ModIds = [],
+                FilterPcOnly = true
+            };
+            obj.ForEach(a => arg1.ModIds.Add(a.ProjectID));
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods"),
-                Content = new StringContent(JsonConvert.SerializeObject(arg1), MediaTypeHeaderValue.Parse("application/json"))
+                Content = new StringContent(JsonUtils.ToString(arg1, JsonType.CurseForgeModsInfoObj), MediaTypeHeaderValue.Parse("application/json"))
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeObjList>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeListObj);
         }
         catch (Exception e)
         {
@@ -349,16 +326,12 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={Loader(loader)}";
             }
-            var data = await Send(new()
+            using var data = await Send(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
             });
-            if (string.IsNullOrWhiteSpace(data))
-            {
-                return null;
-            }
-            return JsonConvert.DeserializeObject<CurseForgeFileObj>(data);
+            return JsonUtils.ToObj(data, JsonType.CurseForgeFileObj);
         }
         catch (Exception e)
         {

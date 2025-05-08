@@ -8,7 +8,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Core.Game;
 
@@ -195,26 +194,21 @@ public static class GameArg
                 #endregion
                 list.Add(str);
             }
-            else if (item is JObject obj1)
+            else if (item is GameArgObj.ArgumentsObj.JvmObj obj1)
             {
-                var obj2 = obj1.ToObject<GameArgObj.ArgumentsObj.JvmObj>();
-                if (obj2 == null)
-                {
-                    continue;
-                }
                 //检查是否需要使用
-                if (!CheckHelpers.CheckAllow(obj2.Rules))
+                if (!CheckHelpers.CheckAllow(obj1.Rules))
                 {
                     continue;
                 }
 
-                if (obj2.Value is string item2)
+                if (obj1.Value is string item2)
                 {
                     list.Add(item2!);
                 }
-                else if (obj2.Value is JArray list1)
+                else if (obj1.Value is List<string> list1)
                 {
-                    list.AddRange(list1.ToObject<List<string>>()!);
+                    list.AddRange(list1);
                 }
             }
         }
@@ -804,60 +798,62 @@ public static class GameArg
                     }
                 }
 
-                List<FileItemObj>? list3 = null;
-                List<FileItemObj>? list4 = null;
+                List<FileItemObj>? loader = null;
+                List<FileItemObj>? install = null;
                 //根据加载器处理
                 switch (obj.Loader)
                 {
                     case Loaders.Forge:
                     case Loaders.NeoForge:
-                        (list3, list4) = obj.GetForgeLibs();
+                        var res2 = obj.GetForgeLibs();
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        if (list3 == null)
+                        if (res2 == null)
                         {
-                            (list3, list4) = await obj.GetDownloadForgeLibs();
-                            if (list3 == null)
+                            res2 = await obj.GetDownloadForgeLibs();
+                            if (res2 == null)
                             {
                                 throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                             }
                         }
+                        loader = res2.Loaders;
+                        install = res2.Installs;
                         if (v2)
                         {
                             GameHelper.ReadyForgeWrapper();
-                            list3.Add(GameHelper.ForgeWrapper);
+                            loader!.Add(GameHelper.ForgeWrapper);
                         }
                         break;
                     case Loaders.Fabric:
-                        list3 = obj.GetFabricLibs();
+                        loader = obj.GetFabricLibs();
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        list3 ??= await obj.GetDownloadFabricLibs()
+                        loader ??= await obj.GetDownloadFabricLibs()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         break;
                     case Loaders.Quilt:
-                        list3 = obj.GetQuiltLibs();
+                        loader = obj.GetQuiltLibs();
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        list3 ??= await obj.GetDownloadQuiltLibs()
+                        loader ??= await obj.GetDownloadQuiltLibs()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         break;
                     case Loaders.OptiFine:
-                        list3 = obj.GetOptifineLibs();
+                        loader = obj.GetOptifineLibs();
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        list3 ??= await obj.GetDownloadOptifineLibs()
+                        loader ??= await obj.GetDownloadOptifineLibs()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         GameHelper.ReadyOptifineWrapper();
-                        list3.Add(GameHelper.OptifineWrapper);
+                        loader.Add(GameHelper.OptifineWrapper);
                         break;
                     case Loaders.Custom:
                         if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
@@ -871,12 +867,12 @@ public static class GameArg
                         }
                         var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
                         ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
-                        list3 = res1.List?.ToList();
+                        loader = res1.List?.ToList();
                         break;
                 }
-                if (list3 != null)
+                if (loader != null)
                 {
-                    foreach (var item in list3)
+                    foreach (var item in loader)
                     {
                         if (!string.IsNullOrWhiteSpace(item.Local))
                         {
@@ -884,9 +880,9 @@ public static class GameArg
                         }
                     }
                 }
-                if (list4 != null)
+                if (install != null)
                 {
-                    foreach (var item in list4)
+                    foreach (var item in install)
                     {
                         if (!string.IsNullOrWhiteSpace(item.Local))
                         {

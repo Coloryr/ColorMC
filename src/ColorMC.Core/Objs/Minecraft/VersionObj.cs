@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -16,20 +16,20 @@ public record VersionObj
 
     public record VersionsObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url { get; set; }
         //public string time { get; set; }
         //public string releaseTime { get; set; }
-        [JsonProperty("sha1")]
+        [JsonPropertyName("sha1")]
         public string Sha1 { get; set; }
         //public int complianceLevel { get; set; }
     }
 
     //public Lastest lastest { get; set; }
-    [JsonProperty("versions")]
+    [JsonPropertyName("versions")]
     public List<VersionsObj> Versions { get; set; }
 }

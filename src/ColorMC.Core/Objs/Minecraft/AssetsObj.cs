@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -9,11 +9,11 @@ public record AssetsObj
 {
     public record ObjectsObj
     {
-        [JsonProperty("hash")]
+        [JsonPropertyName("hash")]
         public string Hash { get; set; }
         //public long size { get; set; }
     }
 
-    [JsonProperty("objects")]
+    [JsonPropertyName("objects")]
     public Dictionary<string, ObjectsObj> Objects { get; set; }
 }

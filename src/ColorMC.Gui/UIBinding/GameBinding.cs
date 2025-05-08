@@ -24,9 +24,9 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
+using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
-using ColorMC.Core.Objs.McMod;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
@@ -236,7 +236,7 @@ public static class GameBinding
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.DataObj data,
-        CurseForgeObjList.DataObj data1, string? group, ColorMCCore.ZipUpdate zip,
+        CurseForgeListObj.DataObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {

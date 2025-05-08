@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Java;
 
@@ -6,15 +6,15 @@ public record OpenJ9Obj
 {
     public record ResultsObj
     {
-        [JsonProperty("content")]
+        [JsonPropertyName("content")]
         public string Content { get; set; }
-        [JsonProperty("pagepost_custom_js_value")]
+        [JsonPropertyName("pagepost_custom_js_value")]
         public string PagepostCustomJsValue { get; set; }
     }
     //public int code { get; set; }
-    [JsonProperty("error")]
+    [JsonPropertyName("error")]
     public bool Error { get; set; }
-    [JsonProperty("results")]
+    [JsonPropertyName("results")]
     public List<ResultsObj> Results { get; set; }
 }
 
@@ -27,29 +27,29 @@ public record OpenJ9FileObj
             public record OptObj
             {
                 //public string displayName { get; set; }
-                [JsonProperty("downloadLink")]
+                [JsonPropertyName("downloadLink")]
                 public string DownloadLink { get; set; }
-                [JsonProperty("checksum")]
+                [JsonPropertyName("checksum")]
                 public string Checksum { get; set; }
                 //public string sig { get; set; }
             }
-            [JsonProperty("opt1")]
+            [JsonPropertyName("opt1")]
             public OptObj Opt1 { get; set; }
         }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public int Version { get; set; }
-        [JsonProperty("os")]
+        [JsonPropertyName("os")]
         public string Os { get; set; }
-        [JsonProperty("arch")]
+        [JsonPropertyName("arch")]
         public string Arch { get; set; }
-        [JsonProperty("jdk")]
+        [JsonPropertyName("jdk")]
         public JdkObj Jdk { get; set; }
-        [JsonProperty("jre")]
+        [JsonPropertyName("jre")]
         public JdkObj Jre { get; set; }
     }
 
-    [JsonProperty("downloads")]
+    [JsonPropertyName("downloads")]
     public List<Download> Downloads { get; set; }
 }

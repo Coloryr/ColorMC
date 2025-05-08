@@ -1,7 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.LaunchPath;
 
@@ -50,10 +50,11 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">资源数据</param>
     /// <param name="game">游戏数据</param>
-    public static void AddIndex(this GameArgObj game, string data)
+    public static void AddIndex(this GameArgObj game, MemoryStream data)
     {
         string file = Path.Combine(IndexDir, $"{game.AssetIndex.Id}.json");
-        PathHelper.WriteText(file, data);
+        PathHelper.WriteBytes(file, data);
+        data.Dispose();
     }
 
     /// <summary>
@@ -69,8 +70,8 @@ public static class AssetsPath
             return null;
         }
 
-        var obj = JsonConvert.DeserializeObject<AssetsObj>(PathHelper.ReadText(file)!)!;
-        return obj;
+        using var stream = PathHelper.OpenRead(file);
+        return JsonUtils.ToObj(stream, JsonType.AssetsObj);
     }
 
     /// <summary>
@@ -116,6 +117,16 @@ public static class AssetsPath
     public static string? ReadAssetsText(string hash)
     {
         return PathHelper.ReadText(Path.Combine(ObjectsDir, $"{hash[0..2]}", hash));
+    }
+
+    /// <summary>
+    /// 获取资源数据
+    /// </summary>
+    /// <param name="hash">资源名</param>
+    /// <returns>数据</returns>
+    public static Stream? ReadAssets(string hash)
+    {
+        return PathHelper.OpenRead(Path.Combine(ObjectsDir, $"{hash[0..2]}", hash));
     }
 
     /// <summary>

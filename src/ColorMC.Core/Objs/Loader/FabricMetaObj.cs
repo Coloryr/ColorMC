@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Loader;
 
@@ -6,7 +6,7 @@ public record FabricMetaObj
 {
     public record GameObj
     {
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
         //public bool stable { get; set; }
     }
@@ -30,9 +30,9 @@ public record FabricMetaObj
         //public string separator { get; set; }
         //public int build { get; set; }
         //public string maven { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
-        [JsonProperty("stable")]
+        [JsonPropertyName("stable")]
         public bool Stable { get; set; }
     }
     //public record Installer
@@ -45,7 +45,7 @@ public record FabricMetaObj
     //public List<GameObj> game { get; set; }
     //public List<Mappings> mappings { get; set; }
     //public List<Intermediary> intermediary { get; set; }
-    [JsonProperty("loader")]
+    [JsonPropertyName("loader")]
     public List<LoaderObj> Loader { get; set; }
     //public List<Installer> installer { get; set; }
 }

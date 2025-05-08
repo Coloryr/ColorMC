@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.OptiFine;
 
 public record OptifineListObj
 {
     //public string _id { get; set; }
-    [JsonProperty("mcversion")]
+    [JsonPropertyName("mcversion")]
     public string Mcversion { get; set; }
-    [JsonProperty("patch")]
+    [JsonPropertyName("patch")]
     public string Patch { get; set; }
-    [JsonProperty("type")]
+    [JsonPropertyName("type")]
     public string Type { get; set; }
-    [JsonProperty("filename")]
+    [JsonPropertyName("filename")]
     public string Filename { get; set; }
-    [JsonProperty("forge")]
+    [JsonPropertyName("forge")]
     public string Forge { get; set; }
 }
