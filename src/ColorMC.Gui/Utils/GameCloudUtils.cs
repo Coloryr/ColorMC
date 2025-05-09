@@ -140,15 +140,15 @@ public static class GameCloudUtils
                 return;
             }
             var json = obj.RootElement;
-            if (json.TryGetProperty("server", out var server) && server.ValueKind is JsonValueKind.String)
+            if (json.TryGetProperty(GuiNames.NameServerKey, out var server) && server.ValueKind is JsonValueKind.String)
             {
                 ColorMCCloudAPI.Server = server.GetString()!;
             }
-            if (json.TryGetProperty("serverkey", out var serverkey) && serverkey.ValueKind is JsonValueKind.String)
+            if (json.TryGetProperty(GuiNames.NameServerKey1, out var serverkey) && serverkey.ValueKind is JsonValueKind.String)
             {
                 ColorMCCloudAPI.Serverkey = serverkey.GetString()!;
             }
-            if (json.TryGetProperty("clientkey", out var clientkey) && clientkey.ValueKind is JsonValueKind.String)
+            if (json.TryGetProperty(GuiNames.NameServerKey2, out var clientkey) && clientkey.ValueKind is JsonValueKind.String)
             {
                 ColorMCCloudAPI.Clientkey = clientkey.GetString()!;
             }

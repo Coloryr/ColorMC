@@ -31,12 +31,17 @@ public static class GuiNames
     public const string NameClientConfigFile = "colormc.info.json";
     public const string NameLockFile = "lock";
     public const string NameClientFile = "client";
+    public const string NameServerTomlFile = "server.toml";
+    public const string NameServerIniFile = "server.ini";
 
     public const string NameColorMCExt = ".colormc";
 
     public const string NameAuthlibKey = "authlib-injector:yggdrasil-server:";
     public const string NameColorMCCloudKey = "cloudkey:";
     public const string NameLangKey = "lang";
+    public const string NameServerKey = "server";
+    public const string NameServerKey1 = "serverkey";
+    public const string NameServerKey2 = "clientkey";
 
     public const string NameSakuraFrpVersion = "0.51.0-sakura-9.3";
 

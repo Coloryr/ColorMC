@@ -228,7 +228,8 @@ public static class CollectUtils
     /// </summary>
     private static void Save()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build("Collect", s_local, Collect, JsonGuiType.CollectObj));
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameCollectFile, 
+            s_local, Collect, JsonGuiType.CollectObj));
     }
 
     private static CollectObj Make()

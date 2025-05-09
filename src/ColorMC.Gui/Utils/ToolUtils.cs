@@ -72,16 +72,16 @@ public static class ToolUtils
         {
             using var gzipStream = new GZipStream(stream, CompressionMode.Decompress);
             var tarArchive = new TarReader(gzipStream);
-            TarEntry? entry;
-            while ((entry = tarArchive.GetNextEntry()) != null)
+            TarEntry? item;
+            while ((item = tarArchive.GetNextEntry()) != null)
             {
-                if (!entry.Name.EndsWith("frpc")
-                    || !entry.Name.EndsWith("hpatchz"))
+                if (!item.Name.EndsWith(GuiNames.NameFrpFile)
+                    || !item.Name.EndsWith(GuiNames.NameHdiffFile))
                 {
                     continue;
                 }
 
-                entry.ExtractToFileAsync(Path.Combine(local, Path.GetFileName(entry.Name)), true);
+                item.ExtractToFileAsync(Path.Combine(local, Path.GetFileName(item.Name)), true);
 
                 break;
             }
@@ -92,8 +92,10 @@ public static class ToolUtils
             using var s = new ZipArchive(stream);
             foreach (var item in s.Entries)
             {
-                if (!item.Name.EndsWith("frpc.exe")
-                    || !item.Name.EndsWith("hpatchz.exe"))
+                if (!item.Name.EndsWith(GuiNames.NameFrpFile1)
+                    || !item.Name.EndsWith(GuiNames.NameFrpFile)
+                    || !item.Name.EndsWith(GuiNames.NameHdiffFile)
+                    || !item.Name.EndsWith(GuiNames.NameHdiffFile1))
                 {
                     continue;
                 }

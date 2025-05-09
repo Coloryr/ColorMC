@@ -122,7 +122,7 @@ public static class FrpLaunchUtils
             .AppendLine($"localPort = {model.Port}")
             .AppendLine($"remotePort = {item1.Obj.NetPort}");
 
-        PathHelper.WriteText(Path.Combine(dir, "server.toml"), builder.ToString());
+        PathHelper.WriteText(Path.Combine(dir, GuiNames.NameServerTomlFile), builder.ToString());
 
         try
         {
@@ -137,7 +137,7 @@ public static class FrpLaunchUtils
                 {
                     FileName = file,
                     WorkingDirectory = dir,
-                    Arguments = "-c server.toml",
+                    Arguments = $"-c {GuiNames.NameServerTomlFile}",
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
@@ -148,7 +148,7 @@ public static class FrpLaunchUtils
             {
                 Res = true,
                 Process = p,
-                IP = item1.Obj.IP + ":" + item1.NetPort
+                IP = $"{item1.Obj.IP}:{item1.NetPort}"
             };
         }
         catch (Exception e)
@@ -260,7 +260,7 @@ public static class FrpLaunchUtils
                     builder.AppendLine(item3);
                 }
             }
-            outip = ip + ":" + item1.Remote;
+            outip = $"{ip}:{item1.Remote}";
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
@@ -279,7 +279,7 @@ public static class FrpLaunchUtils
             outip = item1.Remote;
         }
 
-        PathHelper.WriteText(Path.Combine(dir, "server.ini"), builder.ToString());
+        PathHelper.WriteText(Path.Combine(dir, GuiNames.NameServerIniFile), builder.ToString());
 
         try
         {
@@ -294,7 +294,7 @@ public static class FrpLaunchUtils
                 {
                     FileName = file,
                     WorkingDirectory = dir,
-                    Arguments = "-c server.ini",
+                    Arguments = $"-c {GuiNames.NameServerIniFile}",
                     RedirectStandardError = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true

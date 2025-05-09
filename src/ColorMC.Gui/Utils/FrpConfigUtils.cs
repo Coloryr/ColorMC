@@ -141,7 +141,8 @@ public static class FrpConfigUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build("frp.json", s_local, Config, JsonGuiType.FrpConfigObj));
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameFrpConfigFile, 
+            s_local, Config, JsonGuiType.FrpConfigObj));
     }
 
     /// <summary>

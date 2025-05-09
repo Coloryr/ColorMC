@@ -152,7 +152,8 @@ public static class GuiConfigUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build("gui.json", s_local, Config, JsonGuiType.GuiConfigObj));
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGuiConfigFile, 
+            s_local, Config, JsonGuiType.GuiConfigObj));
     }
 
     public static LaunchCheckSetting MakeLaunchCheckConfig()
