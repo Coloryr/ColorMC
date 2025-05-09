@@ -1,7 +1,11 @@
-﻿namespace ColorMC.Gui.Objs.Frp;
+﻿using System.Text.Json.Serialization;
 
-public record SakuraFrpUserObj
-{
-    public int id { get; set; }
-    public string name { get; set; }
-}
+namespace ColorMC.Gui.Objs.Frp;
+
+//public record SakuraFrpUserObj
+//{
+//    [JsonPropertyName("id")]
+//    public int Id { get; set; }
+//    [JsonPropertyName("name")]
+//    public string Name { get; set; }
+//}

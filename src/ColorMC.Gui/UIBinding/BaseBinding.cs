@@ -28,6 +28,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;

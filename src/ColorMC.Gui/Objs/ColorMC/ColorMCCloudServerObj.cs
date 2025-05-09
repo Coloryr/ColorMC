@@ -1,9 +1,9 @@
-﻿namespace ColorMC.Gui.Objs.Frp;
+﻿namespace ColorMC.Gui.Objs.ColorMC;
 
 /// <summary>
 /// 映射云端数据
 /// </summary>
-public record FrpCloudObj
+public record ColorMCCloudServerObj
 {
     /// <summary>
     /// 名字
@@ -22,5 +22,5 @@ public record FrpCloudObj
     /// </summary>
     public string Max { get; set; }
 
-    public FrpShareObj? Custom { get; set; }
+    public ColorMCCloudShareObj? Custom { get; set; }
 }

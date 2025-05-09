@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.ColorMC;
 
 public record PutCloudServerObj
 {

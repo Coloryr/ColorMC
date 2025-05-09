@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Avalonia.Input;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 /// <summary>
 /// 按钮设置

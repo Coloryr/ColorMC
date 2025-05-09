@@ -113,7 +113,7 @@ public partial class NetFrpModel
         _itemSakura = null;
         foreach (var item in res)
         {
-            if (item.type == "tcp")
+            if (item.Type == "tcp")
             {
                 RemotesSakura.Add(new(this, KeySakura, item));
             }

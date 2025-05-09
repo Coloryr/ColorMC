@@ -13,7 +13,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
-using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
 using DotNetty.Transport.Bootstrapping;
@@ -27,7 +27,7 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class LaunchSocketUtils
 {
-    public static readonly List<FrpCloudObj> Servers = [];
+    public static readonly List<ColorMCCloudServerObj> Servers = [];
 
     public static int Port { get; private set; }
 
@@ -323,7 +323,7 @@ public static class LaunchSocketUtils
         Servers.Clear();
     }
 
-    public static void AddServerInfo(FrpCloudObj obj)
+    public static void AddServerInfo(ColorMCCloudServerObj obj)
     {
         Servers.Add(obj);
     }
@@ -431,7 +431,7 @@ public static class LaunchSocketUtils
         return buf;
     }
 
-    private static void SendServerInfo(FrpCloudObj model)
+    private static void SendServerInfo(ColorMCCloudServerObj model)
     {
         var buf = Unpooled.Buffer();
 

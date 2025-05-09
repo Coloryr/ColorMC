@@ -168,14 +168,14 @@ public class Mp3File : IDecoder
         _initialized = true;
     }
 
-    public MusicInfo? GetInfo()
+    public MusicInfoObj? GetInfo()
     {
         var id3 = _bitstream.Id3;
         if (id3 == null)
         {
             return null;
         }
-        return new MusicInfo()
+        return new MusicInfoObj()
         {
             Title = id3.Title,
             Album = id3.Album,

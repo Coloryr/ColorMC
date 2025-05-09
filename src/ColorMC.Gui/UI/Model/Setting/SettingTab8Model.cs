@@ -8,7 +8,7 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

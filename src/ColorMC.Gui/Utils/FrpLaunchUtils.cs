@@ -188,7 +188,7 @@ public static class FrpLaunchUtils
             {
                 return new();
             }
-            version = obj1.frpc.ver;
+            version = obj1.Frpc.Ver;
             obj = SakuraFrpApi.BuildFrpItem(obj1);
             local = obj?.Local;
         }
@@ -222,9 +222,9 @@ public static class FrpLaunchUtils
         else if (item1.FrpType == FrpType.OpenFrp)
         {
             var temp = await OpenFrpApi.GetChannelConfig(item1.Key, item1.ID);
-            if (temp != null && temp.proxies?.Count > 0)
+            if (temp != null && temp.Proxies?.Count > 0)
             {
-                info = temp.proxies.Values.First();
+                info = temp.Proxies.Values.First();
             }
         }
         if (info == null)

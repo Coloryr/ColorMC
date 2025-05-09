@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.Objs;
@@ -62,7 +63,7 @@ public record MusicPlayRes
 {
     public bool Res;
     public string? Message;
-    public MusicInfo? MusicInfo;
+    public MusicInfoObj? MusicInfo;
 }
 
 public record FileListRes

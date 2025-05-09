@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;

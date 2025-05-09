@@ -9,6 +9,7 @@ using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UIBinding;

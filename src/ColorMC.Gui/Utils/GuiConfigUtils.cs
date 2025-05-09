@@ -6,6 +6,7 @@ using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 
 namespace ColorMC.Gui.Utils;
 

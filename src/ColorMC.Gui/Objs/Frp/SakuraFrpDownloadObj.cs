@@ -1,30 +1,43 @@
-﻿namespace ColorMC.Gui.Objs.Frp;
+﻿using System.Text.Json.Serialization;
+
+namespace ColorMC.Gui.Objs.Frp;
 
 public record SakuraFrpDownloadObj
 {
-    public record DownloadItemObj
+    public record SakuraFrpDownloadItemObj
     {
         public record Arch
         {
             public record ArchItem
             {
-                public string title { get; set; }
-                public string url { get; set; }
-                public string hash { get; set; }
-                public long size { get; set; }
+                [JsonPropertyName("title")]
+                public string Title { get; set; }
+                [JsonPropertyName("url")]
+                public string Url { get; set; }
+                [JsonPropertyName("hash")]
+                public string Hash { get; set; }
+                //public long size { get; set; }
             }
-
-            public ArchItem windows_amd64 { get; set; }
-            public ArchItem windows_arm64 { get; set; }
-            public ArchItem linux_amd64 { get; set; }
-            public ArchItem linux_arm64 { get; set; }
-            public ArchItem darwin_amd64 { get; set; }
-            public ArchItem darwin_arm64 { get; set; }
+            [JsonPropertyName("windows_amd64")]
+            public ArchItem WindowsAmd64 { get; set; }
+            [JsonPropertyName("windows_arm64")]
+            public ArchItem WindowsArm64 { get; set; }
+            [JsonPropertyName("linux_amd64")]
+            public ArchItem LinuxAmd64 { get; set; }
+            [JsonPropertyName("linux_arm64")]
+            public ArchItem LinuxArm64 { get; set; }
+            [JsonPropertyName("darwin_amd64")]
+            public ArchItem DarwinAmd64 { get; set; }
+            [JsonPropertyName("darwin_arm64")]
+            public ArchItem DarwinArm64 { get; set; }
         }
-        public string ver { get; set; }
-        public long time { get; set; }
-        public string note { get; set; }
-        public Arch archs { get; set; }
+        [JsonPropertyName("ver")]
+        public string Ver { get; set; }
+        //public long time { get; set; }
+        //public string note { get; set; }
+        [JsonPropertyName("archs")]
+        public Arch Archs { get; set; }
     }
-    public DownloadItemObj frpc { get; set; }
+    [JsonPropertyName("frpc")]
+    public SakuraFrpDownloadItemObj Frpc { get; set; }
 }

@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using ColorMC.Core.Objs;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 /// <summary>
 /// 收藏项目

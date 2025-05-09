@@ -14,6 +14,7 @@ using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Add;

@@ -12,7 +12,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.ColorMC;
 
 namespace ColorMC.Gui.Utils;
 

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// 映射
 /// </summary>
 /// <param name="obj"></param>
-public partial class NetFrpCloudServerModel(FrpCloudObj obj, NetFrpModel top) : SelectItemModel
+public partial class NetFrpCloudServerModel(ColorMCCloudServerObj obj, NetFrpModel top) : SelectItemModel
 {
     /// <summary>
     /// 名字
@@ -50,7 +50,7 @@ public partial class NetFrpCloudServerModel(FrpCloudObj obj, NetFrpModel top) : 
     /// <summary>
     /// 云端数据
     /// </summary>
-    public FrpCloudObj Obj => obj;
+    public ColorMCCloudServerObj Obj => obj;
 
     /// <summary>
     /// 是否有自定义数据

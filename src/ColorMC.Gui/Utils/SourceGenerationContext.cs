@@ -2,7 +2,8 @@
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.ColorMC;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.Objs.Frp;
 
 namespace ColorMC.Gui.Utils;
@@ -39,7 +40,7 @@ namespace ColorMC.Gui.Utils;
 [JsonSerializable(typeof(FrpConfigObj))]
 [JsonSerializable(typeof(Dictionary<string, CloudDataObj>))]
 [JsonSerializable(typeof(GameGuiSettingObj))]
-[JsonSerializable(typeof(List<FrpCloudObj>))]
+[JsonSerializable(typeof(List<ColorMCCloudServerObj>))]
 public partial class SourceGenerationContext : JsonSerializerContext
 {
 
@@ -78,5 +79,5 @@ public static class JsonGuiType
     public static JsonTypeInfo<FrpConfigObj> FrpConfigObj => SourceGenerationContext.Default.FrpConfigObj;
     public static JsonTypeInfo<Dictionary<string, CloudDataObj>> DictionaryStringCloudDataObj => SourceGenerationContext.Default.DictionaryStringCloudDataObj;
     public static JsonTypeInfo<GameGuiSettingObj> GameGuiSettingObj => SourceGenerationContext.Default.GameGuiSettingObj;
-    public static JsonTypeInfo<List<FrpCloudObj>> ListFrpCloudObj => SourceGenerationContext.Default.ListFrpCloudObj;
+    public static JsonTypeInfo<List<ColorMCCloudServerObj>> ListColorMCCloudServerObj => SourceGenerationContext.Default.ListColorMCCloudServerObj;
 }

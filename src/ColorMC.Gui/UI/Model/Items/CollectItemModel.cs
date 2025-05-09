@@ -4,7 +4,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;

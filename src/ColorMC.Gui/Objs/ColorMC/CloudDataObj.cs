@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.ColorMC;
 
 /// <summary>
 /// 云同步配置储存

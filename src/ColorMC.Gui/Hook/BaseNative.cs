@@ -1,5 +1,5 @@
 using System;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 
 namespace ColorMC.Gui.Hook;
 

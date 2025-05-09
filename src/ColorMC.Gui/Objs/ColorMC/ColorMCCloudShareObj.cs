@@ -1,9 +1,9 @@
-﻿namespace ColorMC.Gui.Objs.Frp;
+﻿namespace ColorMC.Gui.Objs.ColorMC;
 
 /// <summary>
 /// 映射共享
 /// </summary>
-public record FrpShareObj
+public record ColorMCCloudShareObj
 {
     public string Version { get; set; }
     public string Text { get; set; }

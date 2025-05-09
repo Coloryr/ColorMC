@@ -38,6 +38,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;

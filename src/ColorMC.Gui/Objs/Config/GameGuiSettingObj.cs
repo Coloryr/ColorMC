@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 public record GameLogSettingObj
 {

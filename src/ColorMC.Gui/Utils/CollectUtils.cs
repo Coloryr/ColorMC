@@ -7,7 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Collect;
 
 namespace ColorMC.Gui.Utils;

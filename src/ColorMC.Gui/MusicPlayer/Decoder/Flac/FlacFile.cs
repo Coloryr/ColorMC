@@ -147,14 +147,14 @@ public class FlacFile : IDecoder
         return (float)StreamInfo.SampleCount / StreamInfo.SampleRate;
     }
 
-    public MusicInfo? GetInfo()
+    public MusicInfoObj? GetInfo()
     {
         if (VorbisCommen == null)
         {
             return null;
         }
         var vorbisCommen = VorbisCommen;
-        var info = new MusicInfo();
+        var info = new MusicInfoObj();
         if (vorbisCommen.Vorbis.TryGetValue("Title", out var temp1)
             || vorbisCommen.Vorbis.TryGetValue("TITLE", out temp1))
         {

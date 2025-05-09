@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.Objs;
+﻿using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.NetFrp;
 using CommunityToolkit.Mvvm.Input;
 

@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 public record WindowStateObj
 {

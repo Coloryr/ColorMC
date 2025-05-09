@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Gui.Objs.Frp;
 
@@ -6,19 +7,30 @@ public record OpenFrpChannelObj
 {
     public record ProxieObj
     {
-        public string name { get; set; }
-        public int id { get; set; }
-        public string type { get; set; }
-        public string remote { get; set; }
-        public string local { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+        [JsonPropertyName("remote")]
+        public string Remote { get; set; }
+        //[JsonPropertyName("local")]
+        //public string Local { get; set; }
     }
     public record OpenFrpChannelData
     {
-        public string name { get; set; }
-        public List<ProxieObj> proxies { get; set; }
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+        [JsonPropertyName("proxies")]
+        public List<ProxieObj> Proxies { get; set; }
     }
-    public int status { get; set; }
-    public bool success { get; set; }
-    public string message { get; set; }
-    public List<OpenFrpChannelData> data { get; set; }
+    //[JsonPropertyName("status")]
+    //public int Status { get; set; }
+    //[JsonPropertyName("success")]
+    //public bool Success { get; set; }
+    //[JsonPropertyName("message")]
+    //public string Message { get; set; }
+    [JsonPropertyName("data")]
+    public List<OpenFrpChannelData> Data { get; set; }
 }

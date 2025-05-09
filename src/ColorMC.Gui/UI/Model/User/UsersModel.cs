@@ -8,7 +8,7 @@ using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;

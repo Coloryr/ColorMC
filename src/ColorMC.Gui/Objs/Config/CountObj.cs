@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 /// <summary>
 /// 游戏统计储存

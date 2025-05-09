@@ -38,9 +38,9 @@ public partial class NetFrpRemoteModel : SelectItemModel
     public NetFrpRemoteModel(NetFrpModel model, string key, SakuraFrpChannelObj obj)
     {
         Key = key;
-        Name = obj.name;
-        ID = obj.id;
-        Remote = obj.remote.ToString();
+        Name = obj.Name;
+        ID = obj.Id;
+        Remote = obj.Remote.ToString();
         FrpType = FrpType.SakuraFrp;
         _model = model;
     }
@@ -48,9 +48,9 @@ public partial class NetFrpRemoteModel : SelectItemModel
     public NetFrpRemoteModel(NetFrpModel model, string key, OpenFrpChannelObj.OpenFrpChannelData data, OpenFrpChannelObj.ProxieObj obj)
     {
         Key = key;
-        Name = data.name + obj.name;
-        ID = obj.id;
-        Remote = obj.remote;
+        Name = data.Name + obj.Name;
+        ID = obj.Id;
+        Remote = obj.Remote;
         FrpType = FrpType.OpenFrp;
         _model = model;
     }

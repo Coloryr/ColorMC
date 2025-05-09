@@ -72,7 +72,7 @@ public static class OpenFrpApi
     public static async Task<(FileItemObj?, string?)> BuildFrpItem()
     {
         var data = await GetDownload();
-        if (data == null || data.data == null)
+        if (data == null || data.Data == null)
         {
             return (null, null);
         }
@@ -120,13 +120,13 @@ public static class OpenFrpApi
         return (new()
         {
             Name = $"OpenFrp {data1}",
-            Local = FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full, data1),
-            Url = data.data.source[0].value + data.data.latest + data1,
+            Local = FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull, data1),
+            Url = data.Data.Source[0].Value + data.Data.Latest + data1,
             Later = (stream) =>
             {
-                ToolUtils.Unzip(stream, FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full), data1);
+                ToolUtils.Unzip(stream, FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull), data1);
             }
-        }, FrpLaunchUtils.GetOpenFrpLocal(data.data.latest_full));
+        }, FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull));
     }
 
     /// <summary>

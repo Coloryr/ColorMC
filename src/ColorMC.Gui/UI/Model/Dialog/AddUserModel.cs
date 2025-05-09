@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;

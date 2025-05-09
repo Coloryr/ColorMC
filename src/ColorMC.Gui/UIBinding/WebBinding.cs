@@ -24,7 +24,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Objs.Frp;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
@@ -983,7 +983,7 @@ public static class WebBinding
     /// 获取映射列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<FrpCloudObj>?> GetFrpServer(string version)
+    public static async Task<List<ColorMCCloudServerObj>?> GetFrpServer(string version)
     {
         var list = await ColorMCCloudAPI.GetCloudServer(version);
         if (list == null || !list.RootElement.TryGetProperty("list", out var list1) 
@@ -993,7 +993,7 @@ public static class WebBinding
         }
 
         LaunchSocketUtils.Clear();
-        var list2 = list1.Deserialize(JsonGuiType.ListFrpCloudObj);
+        var list2 = list1.Deserialize(JsonGuiType.ListColorMCCloudServerObj);
         list2?.ForEach(LaunchSocketUtils.AddServerInfo);
 
         return list2;

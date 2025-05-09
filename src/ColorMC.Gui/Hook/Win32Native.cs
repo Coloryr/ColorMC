@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Avalonia.Input;
 using Avalonia.Win32.Input;
 using ColorMC.Gui.Joystick;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 
 namespace ColorMC.Gui.Hook;
 

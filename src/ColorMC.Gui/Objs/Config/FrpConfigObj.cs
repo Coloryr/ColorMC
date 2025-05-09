@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 /// <summary>
 /// 樱花映射配置

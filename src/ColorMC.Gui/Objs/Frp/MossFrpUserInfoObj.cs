@@ -1,6 +1,6 @@
-﻿namespace ColorMC.Core.Objs.Frp;
+﻿//namespace ColorMC.Core.Objs.Frp;
 
-public record MossFrpUserInfoObj
-{
+//public record MossFrpUserInfoObj
+//{
 
-}
+//}

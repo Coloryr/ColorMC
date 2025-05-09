@@ -26,7 +26,7 @@ public interface IDecoder : IDisposable
     /// 获取音乐信息
     /// </summary>
     /// <returns></returns>
-    MusicInfo? GetInfo();
+    MusicInfoObj? GetInfo();
     /// <summary>
     /// 初始化流
     /// </summary>

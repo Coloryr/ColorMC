@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ColorMC.Core.Objs;
 
-namespace ColorMC.Gui.Objs;
+namespace ColorMC.Gui.Objs.Config;
 
 /// <summary>
 /// 启动前检测

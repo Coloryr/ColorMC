@@ -107,39 +107,39 @@ public static class SakuraFrpApi
     /// <returns></returns>
     public static FileItemObj? BuildFrpItem(SakuraFrpDownloadObj data)
     {
-        SakuraFrpDownloadObj.DownloadItemObj.Arch.ArchItem data1;
+        SakuraFrpDownloadObj.SakuraFrpDownloadItemObj.Arch.ArchItem data1;
 
         if (SystemInfo.Os == OsType.Windows)
         {
             if (SystemInfo.IsArm)
             {
-                data1 = data.frpc.archs.windows_arm64;
+                data1 = data.Frpc.Archs.WindowsArm64;
             }
             else
             {
-                data1 = data.frpc.archs.windows_amd64;
+                data1 = data.Frpc.Archs.WindowsAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.Linux)
         {
             if (SystemInfo.IsArm)
             {
-                data1 = data.frpc.archs.linux_arm64;
+                data1 = data.Frpc.Archs.LinuxArm64;
             }
             else
             {
-                data1 = data.frpc.archs.linux_amd64;
+                data1 = data.Frpc.Archs.LinuxAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.MacOS)
         {
             if (SystemInfo.IsArm)
             {
-                data1 = data.frpc.archs.darwin_arm64;
+                data1 = data.Frpc.Archs.DarwinArm64;
             }
             else
             {
-                data1 = data.frpc.archs.darwin_amd64;
+                data1 = data.Frpc.Archs.DarwinAmd64;
             }
         }
         else
@@ -149,10 +149,10 @@ public static class SakuraFrpApi
 
         return new()
         {
-            Name = $"SakuraFrp {data1.title}",
-            Local = FrpLaunchUtils.GetSakuraFrpLocal(data.frpc.ver),
-            Md5 = data1.hash,
-            Url = data1.url
+            Name = $"SakuraFrp {data1.Title}",
+            Local = FrpLaunchUtils.GetSakuraFrpLocal(data.Frpc.Ver),
+            Md5 = data1.Hash,
+            Url = data1.Url
         };
     }
 

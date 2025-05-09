@@ -148,7 +148,7 @@ public partial class MainModel
     /// </summary>
     /// <param name="name"></param>
     /// <param name="info"></param>
-    private void SetMusicInfo(string? name, MusicInfo? info)
+    private void SetMusicInfo(string? name, MusicInfoObj? info)
     {
         if (info == null)
         {

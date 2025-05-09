@@ -180,7 +180,7 @@ public class WavFile : IDecoder
         return _dataSize / (bitsPerSample / 8) * numChannels / sampleRate;
     }
 
-    public MusicInfo? GetInfo()
+    public MusicInfoObj? GetInfo()
     {
         return null;
     }

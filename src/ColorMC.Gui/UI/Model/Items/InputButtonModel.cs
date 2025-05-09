@@ -1,6 +1,6 @@
 ﻿using System.Text;
 using Avalonia.Input;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Setting;
 using CommunityToolkit.Mvvm.ComponentModel;
 

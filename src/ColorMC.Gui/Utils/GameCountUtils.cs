@@ -9,7 +9,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.Config;
 
 namespace ColorMC.Gui.Utils;
 

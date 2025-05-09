@@ -102,18 +102,18 @@ public partial class NetFrpModel
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
         var res1 = await OpenFrpApi.GetChannel(KeyOpenFrp);
         Model.ProgressClose();
-        if (res1 == null || res1.data == null)
+        if (res1 == null || res1.Data == null)
         {
             return;
         }
 
         _itemOpenFrp = null;
         RemotesOpenFrp.Clear();
-        foreach (var item in res1.data)
+        foreach (var item in res1.Data)
         {
-            foreach (var item1 in item.proxies)
+            foreach (var item1 in item.Proxies)
             {
-                if (item1.type == "tcp")
+                if (item1.Type == "tcp")
                 {
                     RemotesOpenFrp.Add(new(this, KeyOpenFrp, item, item1));
                 }

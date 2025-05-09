@@ -16,6 +16,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
@@ -796,12 +797,12 @@ public static class ColorMCCloudAPI
             if (SystemInfo.IsArm)
             {
                 data1 = $"hdiffpatch_v{key}_bin_windows_arm64.zip";
-                sha1 = value.windows_arm64;
+                sha1 = value.WindowsArm64;
             }
             else
             {
                 data1 = $"hdiffpatch_v{key}_bin_windows64.zip";
-                sha1 = value.windows_amd64;
+                sha1 = value.WindowsAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.Linux)
@@ -809,18 +810,18 @@ public static class ColorMCCloudAPI
             if (SystemInfo.IsArm)
             {
                 data1 = $"hdiffpatch_v{key}_bin_linux_arm64.zip";
-                sha1 = value.linux_arm64;
+                sha1 = value.LinuxArm64;
             }
             else
             {
                 data1 = $"hdiffpatch_v{key}_bin_linux64.zip";
-                sha1 = value.linux_amd64;
+                sha1 = value.LinuxAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.MacOS)
         {
             data1 = $"hdiffpatch_v{key}_bin_macos.zip";
-            sha1 = value.macos;
+            sha1 = value.Macos;
         }
         else
         {
