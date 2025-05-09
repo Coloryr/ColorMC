@@ -24,7 +24,7 @@ public record QuiltMetaObj
     //    public string maven { get; set; }
     //    public string version { get; set; }
     //}
-    public record LoaderObj
+    public record QuiltMetaLoaderObj
     {
         //public string separator { get; set; }
         //public int build { get; set; }
@@ -42,6 +42,6 @@ public record QuiltMetaObj
     //public List<Mappings> mappings { get; set; }
     //public List<Hashed> hashed { get; set; }
     [JsonPropertyName("loader")]
-    public List<LoaderObj> Loader { get; set; }
+    public List<QuiltMetaLoaderObj> Loader { get; set; }
     //public List<Installer> installer { get; set; }
 }

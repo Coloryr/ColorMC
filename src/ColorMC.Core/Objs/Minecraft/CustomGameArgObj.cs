@@ -22,7 +22,7 @@ public record CustomGameArgObj : GameArgObj
     [JsonPropertyName("version")]
     public string Version { get; set; }
     [JsonPropertyName("mainJar")]
-    public LibrariesObj MainJar { get; set; }
+    public GameLibrariesObj MainJar { get; set; }
     [JsonPropertyName("_minecraftVersion")]
     public string MinecraftVersion { get; set; }
 

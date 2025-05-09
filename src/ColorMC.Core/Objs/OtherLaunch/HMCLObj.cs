@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.OtherLaunch;
 
@@ -6,9 +6,9 @@ public record HMCLObj
 {
     public record AddonsObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
     }
     //public record Files
@@ -25,16 +25,16 @@ public record HMCLObj
     //}
     public record LaunchInfoObj
     {
-        [JsonProperty("minMemory")]
+        [JsonPropertyName("minMemory")]
         public uint MinMemory { get; set; }
-        [JsonProperty("launchArgument")]
+        [JsonPropertyName("launchArgument")]
         public List<string> LaunchArgument { get; set; }
-        [JsonProperty("javaArgument")]
+        [JsonPropertyName("javaArgument")]
         public List<string> JavaArgument { get; set; }
     }
     //public string manifestType { get; set; }
     //public int manifestVersion { get; set; }
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
     //public string version { get; set; }
     //public string author { get; set; }
@@ -43,11 +43,11 @@ public record HMCLObj
     //public string url { get; set; }
     //public bool forceUpdate { get; set; }
     //public List<object> origin { get; set; }
-    [JsonProperty("addons")]
+    [JsonPropertyName("addons")]
     public List<AddonsObj> Addons { get; set; }
     //public List<object> libraries { get; set; }
     //public List<Files> files { get; set; }
     //public Settings settings { get; set; }
-    [JsonProperty("launchInfo")]
+    [JsonPropertyName("launchInfo")]
     public LaunchInfoObj LaunchInfo { get; set; }
 }

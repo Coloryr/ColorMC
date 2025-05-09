@@ -7,7 +7,7 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeCategoriesObj
 {
-    public record DataObj
+    public record CurseForgeCategoriesDataObj
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -24,5 +24,5 @@ public record CurseForgeCategoriesObj
         //public int displayIndex { get; set; }
     }
     [JsonPropertyName("data")]
-    public List<DataObj> Data { get; set; }
+    public List<CurseForgeCategoriesDataObj> Data { get; set; }
 }

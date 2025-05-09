@@ -1,5 +1,8 @@
 ﻿namespace ColorMC.Gui.Objs.Frp;
 
+/// <summary>
+/// 映射共享
+/// </summary>
 public record FrpShareObj
 {
     public string Version { get; set; }

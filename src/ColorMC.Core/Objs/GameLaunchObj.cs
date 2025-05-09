@@ -15,7 +15,7 @@ public record GameLaunchObj
     public HashSet<int> JavaVersions = [];
     public string MainClass;
     public string NativeDir;
-    public GameArgObj.AssetIndexObj Assets;
+    public GameArgObj.GameAssetIndexObj Assets;
     public FileItemObj GameJar;
     public FileItemObj Log4JXml;
     public bool UseColorMCASM;

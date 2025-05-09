@@ -7,7 +7,7 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeVersionObj
 {
-    public record DataObj
+    public record CurseForgeVersionDataObj
     {
         [JsonPropertyName("type")]
         public int Type { get; set; }
@@ -16,7 +16,7 @@ public record CurseForgeVersionObj
     }
 
     [JsonPropertyName("data")]
-    public List<DataObj> Data { get; set; }
+    public List<CurseForgeVersionDataObj> Data { get; set; }
 }
 
 /// <summary>
@@ -24,7 +24,7 @@ public record CurseForgeVersionObj
 /// </summary>
 public record CurseForgeVersionTypeObj
 {
-    public record DataObj
+    public record CurseForgeVersionTypeDataObj
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
@@ -35,5 +35,5 @@ public record CurseForgeVersionTypeObj
     }
 
     [JsonPropertyName("data")]
-    public List<DataObj> Data { get; set; }
+    public List<CurseForgeVersionTypeDataObj> Data { get; set; }
 }

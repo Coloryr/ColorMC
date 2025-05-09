@@ -2,12 +2,13 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using Ae.Dns.Protocol.Enums;
 using Ae.Dns.Protocol.Records;
 using ColorMC.Core.Objs.MinecraftAPI;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Motd;
 
@@ -21,7 +22,7 @@ public static class ServerMotd
     /// </summary>
     /// <param name="chat"></param>
     /// <returns></returns>
-    public static string ToPlainTextString(this Chat chat)
+    public static string ToPlainTextString(this ChatObj chat)
     {
         StringBuilder stringBuilder = new(chat.Text);
         if (chat.Extra != null)
@@ -229,12 +230,43 @@ public static class ServerMotd
                 if (ProtocolHandler.ReadNextVarInt(packetData) == 0x00) //Read Packet ID
                 {
                     string result = ProtocolHandler.ReadNextString(packetData); //Get the Json data
-                    JsonConvert.PopulateObject(result, info);
+
+                    var doc = JsonDocument.Parse(result);
+                    foreach (var item in doc.RootElement.EnumerateObject())
+                    {
+                        if (item.Name == "version")
+                        {
+                            info.Version = item.Value.Deserialize(JsonType.ServerVersionInfoObj);
+                        }
+                        else if (item.Name == "players")
+                        {
+                            info.Players = item.Value.Deserialize(JsonType.ServerPlayerInfoObj);
+                        }
+                        else if (item.Name == "modinfo")
+                        {
+                            info.ModInfo = item.Value.Deserialize(JsonType.ServerMotdModInfoObj);
+                        }
+                        else if (item.Name == "favicon")
+                        {
+                            info.Favicon = item.Value.GetString();
+                        }
+                        else if (item.Name == "description")
+                        {
+                            if (item.Value.ValueKind == JsonValueKind.String)
+                            {
+                                info.Description = ChatConverter.StringToChar(item.Value.GetString());
+                            }
+                            else
+                            {
+                                info.Description = item.Value.Deserialize(JsonType.ChatObj)!;
+                            }
+                        }
+                    }
 
                     if (!string.IsNullOrEmpty(info.Description.Text)
                         && info.Description.Extra == null && info.Description.Text.Contains('§'))
                     {
-                        info.Description = ServerDescriptionJsonConverter.StringToChar(info.Description.Text);
+                        info.Description = ChatConverter.StringToChar(info.Description.Text);
                     }
                 }
             }

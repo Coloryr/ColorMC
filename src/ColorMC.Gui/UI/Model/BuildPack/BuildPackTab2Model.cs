@@ -23,7 +23,7 @@ public partial class BuildPackModel
     /// <summary>
     /// 加载游戏列表
     /// </summary>
-    private async Task LoadGames()
+    private async void LoadGames()
     {
         Model.Progress(App.Lang("UserWindow.Info1"));
         await Task.Run(() =>

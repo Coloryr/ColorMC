@@ -2,10 +2,10 @@ using System;
 using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -38,16 +38,18 @@ public static class GuiConfigUtils
     {
         if (File.Exists(local))
         {
+            GuiConfigObj? conf = null;
             try
             {
-                Config = JsonConvert.DeserializeObject<GuiConfigObj>(File.ReadAllText(local))!;
+                using var stream = PathHelper.OpenRead(local);
+                conf = JsonUtils.ToObj(stream, JsonGuiType.GuiConfigObj);
             }
             catch (Exception e)
             {
                 Logs.Error(App.Lang("Config.Error2"), e);
             }
 
-            if (Config == null)
+            if (conf == null)
             {
                 if (quit)
                 {
@@ -58,6 +60,10 @@ public static class GuiConfigUtils
 
                 SaveNow();
                 return true;
+            }
+            else
+            {
+                Config = conf;
             }
 
             bool save = false;
@@ -137,7 +143,7 @@ public static class GuiConfigUtils
     public static void SaveNow()
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
-        File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
+        PathHelper.WriteText(s_local, JsonUtils.ToString(Config, JsonGuiType.GuiConfigObj));
     }
 
     /// <summary>
@@ -145,12 +151,7 @@ public static class GuiConfigUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = "gui.json",
-            File = s_local,
-            Obj = Config
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build("gui.json", s_local, Config, JsonGuiType.GuiConfigObj));
     }
 
     public static LaunchCheckSetting MakeLaunchCheckConfig()

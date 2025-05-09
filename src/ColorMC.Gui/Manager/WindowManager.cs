@@ -10,6 +10,7 @@ using Avalonia.VisualTree;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
@@ -38,7 +39,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Manager;
 
@@ -222,12 +222,8 @@ public static class WindowManager
         {
             try
             {
-                var data = PathHelper.ReadText(s_file);
-                if (data == null)
-                {
-                    return;
-                }
-                var state = JsonConvert.DeserializeObject<Dictionary<string, WindowStateObj>>(data);
+                using var stream = PathHelper.OpenRead(s_file);
+                var state = JsonUtils.ToObj(stream, JsonGuiType.DictionaryStringWindowStateObj);
                 if (state == null)
                 {
                     return;
@@ -247,12 +243,7 @@ public static class WindowManager
     /// </summary>
     private static void SaveState()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = "ColorMC_Window",
-            File = s_file,
-            Obj = s_WindowState
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build("ColorMC_Window", s_file, s_WindowState, JsonGuiType.DictionaryStringWindowStateObj));
     }
 
     /// <summary>

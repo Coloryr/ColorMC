@@ -48,7 +48,7 @@ public static partial class CheckHelpers
     /// </summary>
     /// <param name="list">规则列表</param>
     /// <returns>是否允许</returns>
-    public static bool CheckAllow(List<GameArgObj.LibrariesObj.RulesObj> list)
+    public static bool CheckAllow(List<GameArgObj.GameLibrariesObj.GameRulesObj> list)
     {
         bool allow = true;
         if (list == null)

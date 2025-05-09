@@ -33,8 +33,7 @@ public static class LanguageHelper
         };
         var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;
-        var reader = new StreamReader(istr);
-        s_language.Load(reader.ReadToEnd());
+        s_language.Load(istr);
     }
 
     /// <summary>

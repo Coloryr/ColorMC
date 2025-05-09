@@ -37,7 +37,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="item">运行库项目</param>
     /// <returns>运行库项目</returns>
-    public static ForgeLaunchObj.LibrariesObj? MakeLibObj(string item)
+    public static ForgeLaunchObj.ForgeLibrariesObj? MakeLibObj(string item)
     {
         var args = item.Split(":");
         if (args[0] == "net.minecraftforge" && args[1] == "forge")

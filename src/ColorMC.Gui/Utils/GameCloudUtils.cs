@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.Utils;
 
@@ -40,20 +41,29 @@ public static class GameCloudUtils
         {
             try
             {
-                s_datas = JsonConvert.DeserializeObject<Dictionary<string, CloudDataObj>>
-                    (File.ReadAllText(s_file))!;
-                var games = InstancesPath.Games;
                 bool save = false;
-                foreach (var item in new List<string>(s_datas.Keys))
+                using var stream = PathHelper.OpenRead(s_file);
+                var obj = JsonUtils.ToObj(stream, JsonGuiType.DictionaryStringCloudDataObj);
+                if (obj != null)
                 {
-                    if (games.Any(a => a.UUID == item))
+                    s_datas = obj;
+                    var games = InstancesPath.Games;
+                    foreach (var item in new List<string>(s_datas.Keys))
                     {
-                        continue;
-                    }
+                        if (games.Any(a => a.UUID == item))
+                        {
+                            continue;
+                        }
 
-                    s_datas.Remove(item);
+                        s_datas.Remove(item);
+                        save = true;
+                    }
+                }
+                else
+                {
                     save = true;
                 }
+                
                 if (save)
                 {
                     Save();
@@ -77,12 +87,7 @@ public static class GameCloudUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = GuiNames.NameGameCloudFile,
-            File = s_file,
-            Obj = s_datas
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGameCloudFile, s_file, s_datas, JsonGuiType.DictionaryStringCloudDataObj));
     }
 
     /// <summary>
@@ -129,22 +134,23 @@ public static class GameCloudUtils
         try
         {
             var data = Convert.FromBase64String(config);
-            var obj = JObject.Parse(Encoding.UTF8.GetString(data));
+            var obj = JsonDocument.Parse(Encoding.UTF8.GetString(data));
             if (obj == null)
             {
                 return;
             }
-            if (obj.TryGetValue("server", out var server) && server != null)
+            var json = obj.RootElement;
+            if (json.TryGetProperty("server", out var server) && server.ValueKind is JsonValueKind.String)
             {
-                ColorMCCloudAPI.Server = server.ToString();
+                ColorMCCloudAPI.Server = server.GetString()!;
             }
-            if (obj.TryGetValue("serverkey", out var serverkey) && serverkey != null)
+            if (json.TryGetProperty("serverkey", out var serverkey) && serverkey.ValueKind is JsonValueKind.String)
             {
-                ColorMCCloudAPI.Serverkey = serverkey.ToString();
+                ColorMCCloudAPI.Serverkey = serverkey.GetString()!;
             }
-            if (obj.TryGetValue("clientkey", out var clientkey) && clientkey != null)
+            if (json.TryGetProperty("clientkey", out var clientkey) && clientkey.ValueKind is JsonValueKind.String)
             {
-                ColorMCCloudAPI.Clientkey = clientkey.ToString();
+                ColorMCCloudAPI.Clientkey = clientkey.GetString()!;
             }
 
             if (string.IsNullOrWhiteSpace(ColorMCCloudAPI.Server)

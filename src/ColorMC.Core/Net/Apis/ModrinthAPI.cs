@@ -262,13 +262,13 @@ public static class ModrinthAPI
     /// </summary>
     /// <param name="sha1"></param>
     /// <returns></returns>
-    public static async Task<ModrinthVersionFileObj?> GetVersionFromSha1(string sha1)
+    public static async Task<ModrinthVersionObj?> GetVersionFromSha1(string sha1)
     {
         try
         {
             string url = $"{UrlHelper.Modrinth}version_file/{sha1}";
             using var stream = await SendAsync(url);
-            return JsonUtils.ToObj(stream, JsonType.ModrinthVersionFileObj);
+            return JsonUtils.ToObj(stream, JsonType.ModrinthVersionObj);
         }
         catch (Exception e)
         {

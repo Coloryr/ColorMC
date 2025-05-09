@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Java;
 
@@ -8,56 +8,56 @@ public record AdoptiumObj
     {
         public record PackageObj
         {
-            [JsonProperty("checksum")]
+            [JsonPropertyName("checksum")]
             public string Checksum { get; set; }
             //public string checksum_link { get; set; }
             //public int download_count { get; set; }
-            [JsonProperty("link")]
+            [JsonPropertyName("link")]
             public string Link { get; set; }
             //public string metadata_link { get; set; }
-            [JsonProperty("name")]
+            [JsonPropertyName("name")]
             public string Name { get; set; }
             //public string signature_link { get; set; }
-            [JsonProperty("size")]
+            [JsonPropertyName("size")]
             public long Size { get; set; }
         }
-        [JsonProperty("architecture")]
+        [JsonPropertyName("architecture")]
         public string Architecture { get; set; }
         //public int download_count { get; set; }
         //public string heap_size { get; set; }
-        [JsonProperty("image_type")]
+        [JsonPropertyName("image_type")]
         public string ImageType { get; set; }
         //public string jvm_impl { get; set; }
-        [JsonProperty("os")]
+        [JsonPropertyName("os")]
         public string Os { get; set; }
-        [JsonProperty("package")]
+        [JsonPropertyName("package")]
         public PackageObj Package { get; set; }
         //public string project { get; set; }
-        [JsonProperty("scm_ref")]
+        [JsonPropertyName("scm_ref")]
         public string ScmRef { get; set; }
         //public string updated_at { get; set; }
     }
-    public record VersionObj
+    public record AdoptiumVersionObj
     {
         //public int build { get; set; }
         //public int major { get; set; }
         //public int minor { get; set; }
-        [JsonProperty("openjdk_version")]
+        [JsonPropertyName("openjdk_version")]
         public string OpenjdkVersion { get; set; }
         //public int security { get; set; }
         //public string semver { get; set; }
     }
-    [JsonProperty("binary")]
+    [JsonPropertyName("binary")]
     public BinaryObj Binary { get; set; }
     //public string release_link { get; set; }
     //public string release_name { get; set; }
     //public string vendor { get; set; }
-    [JsonProperty("version")]
-    public VersionObj Version { get; set; }
+    [JsonPropertyName("version")]
+    public AdoptiumVersionObj Version { get; set; }
 }
 
 public record AdoptiumJavaVersionObj
 {
-    [JsonProperty("available_releases")]
+    [JsonPropertyName("available_releases")]
     public List<int> AvailableReleases { get; set; }
 }

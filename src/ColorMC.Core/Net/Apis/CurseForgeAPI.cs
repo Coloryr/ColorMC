@@ -179,7 +179,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 查询Mod信息
     /// </summary>
-    public static async Task<List<CurseForgeModObj.DataObj>?> GetFiles(List<CurseForgePackObj.FilesObj> obj)
+    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> GetFiles(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {

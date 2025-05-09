@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using System.Formats.Tar;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +12,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
-using ICSharpCode.SharpZipLib.Zip;
 
 namespace ColorMC.Gui.Utils;
 
@@ -71,37 +70,35 @@ public static class ToolUtils
     {
         if (file.EndsWith(Names.NameTarGzExt))
         {
-            using var gzipStream = new GZipInputStream(stream);
-            var tarArchive = new TarInputStream(gzipStream, TarBuffer.DefaultBlockFactor, Encoding.UTF8);
-            do
+            using var gzipStream = new GZipStream(stream, CompressionMode.Decompress);
+            var tarArchive = new TarReader(gzipStream);
+            TarEntry? entry;
+            while ((entry = tarArchive.GetNextEntry()) != null)
             {
-                TarEntry entry1 = tarArchive.GetNextEntry();
-                if (entry1.IsDirectory || !entry1.Name.EndsWith("frpc")
-                    || !entry1.Name.EndsWith("hpatchz"))
+                if (!entry.Name.EndsWith("frpc")
+                    || !entry.Name.EndsWith("hpatchz"))
                 {
                     continue;
                 }
 
-                using var filestream = PathHelper.OpenWrite(Path.Combine(local, Path.GetFileName(entry1.Name)), true);
-                tarArchive.CopyEntryContents(filestream);
+                entry.ExtractToFileAsync(Path.Combine(local, Path.GetFileName(entry.Name)), true);
 
                 break;
             }
-            while (true);
 
-            tarArchive.Close();
         }
         else
         {
-            using var s = new ZipFile(stream);
-            foreach (ZipEntry item in s)
+            using var s = new ZipArchive(stream);
+            foreach (var item in s.Entries)
             {
-                if (item.IsDirectory || !item.Name.EndsWith("frpc.exe"))
+                if (!item.Name.EndsWith("frpc.exe")
+                    || !item.Name.EndsWith("hpatchz.exe"))
                 {
                     continue;
                 }
 
-                PathHelper.WriteBytes(Path.Combine(local, Path.GetFileName(item.Name)), s.GetInputStream(item));
+                item.ExtractToFile(Path.Combine(local, Path.GetFileName(item.Name)), true);
                 break;
             }
         }

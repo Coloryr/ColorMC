@@ -115,7 +115,7 @@ public static class ModrinthHelper
     /// <param name="data">数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static FileItemObj MakeDownloadObj(this ModrinthPackObj.FileObj data, GameSettingObj obj)
+    public static FileItemObj MakeDownloadObj(this ModrinthPackObj.ModrinthPackFileObj data, GameSettingObj obj)
     {
         return new FileItemObj()
         {

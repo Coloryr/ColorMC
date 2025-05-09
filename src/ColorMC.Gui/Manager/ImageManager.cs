@@ -526,13 +526,13 @@ public static class ImageManager
             try
             {
                 //从网络读取图片
-                var data1 = await CoreHttpClient.GetStreamAsync(url);
-                if (data1.State)
+                using var data1 = await CoreHttpClient.GetStreamAsync(url);
+                if (data1 != null)
                 {
                     //压缩图片
                     if (zoom)
                     {
-                        using var image1 = SKBitmap.Decode(data1.Stream!);
+                        using var image1 = SKBitmap.Decode(data1);
                         using var image2 = ImageUtils.Resize(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
                         PathHelper.WriteBytes(file, data.AsStream());
@@ -540,7 +540,7 @@ public static class ImageManager
                     }
                     else
                     {
-                        PathHelper.WriteBytes(file, data1.Stream!);
+                        PathHelper.WriteBytes(file, data1);
                         return new Bitmap(file);
                     }
                 }
@@ -567,18 +567,18 @@ public static class ImageManager
     {
         return Task.Run(async () =>
         {
+            Stream? stream = null;
             try
             {
-                Stream? stream1 = null;
                 if (file.StartsWith("https://") || file.StartsWith("http://"))
                 {
-                    var res = await CoreHttpClient.DownloadClient.GetAsync(file);
-                    stream1 = res.Content.ReadAsStream();
+                    var res = await CoreHttpClient.GetAsync(file);
+                    stream = await res.Content.ReadAsStreamAsync();
                 }
                 else if (file.StartsWith("ColorMC.Gui"))
                 {
                     var assm = Assembly.GetExecutingAssembly();
-                    stream1 = assm.GetManifestResourceStream(file)!;
+                    stream = assm.GetManifestResourceStream(file)!;
                 }
 #if Phone
                 else if (SystemInfo.Os == OsType.Android)
@@ -589,17 +589,17 @@ public static class ImageManager
 #else
                 else
                 {
-                    stream1 = PathHelper.OpenRead(file);
+                    stream = PathHelper.OpenRead(file);
                 }
 #endif
-                if (stream1 == null)
+                if (stream == null)
                 {
                     return null;
                 }
                 //是否需要限制图片大小或者高斯模糊
                 if (value > 0 || (lim != 100 && lim > 0))
                 {
-                    var image = SKBitmap.Decode(stream1);
+                    var image = SKBitmap.Decode(stream);
                     if (lim != 100 && lim > 0)
                     {
                         int x = (int)(image.Width * (float)lim / 100);
@@ -630,13 +630,18 @@ public static class ImageManager
                 }
                 else
                 {
-                    return new Bitmap(stream1);
+                    return new Bitmap(stream);
                 }
             }
             catch (Exception e)
             {
                 Logs.Error(App.Lang("ImageUtils.Error1"), e);
                 return null;
+            }
+            finally 
+            {
+                stream?.Close();
+                stream?.Dispose();
             }
         });
     }

@@ -4,8 +4,9 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -38,8 +39,8 @@ public static class GameGuiSetting
         {
             try
             {
-                var data = PathHelper.ReadText(dir);
-                var obj1 = JsonConvert.DeserializeObject<GameGuiSettingObj>(data!);
+                using var data = PathHelper.OpenRead(dir);
+                var obj1 = JsonUtils.ToObj(data, JsonGuiType.GameGuiSettingObj);
                 if (obj1 != null)
                 {
                     obj1.Log ??= MakeLog();
@@ -72,12 +73,7 @@ public static class GameGuiSetting
 
         var dir = Path.Combine(obj.GetBasePath(), GuiNames.NameGameGuiConfigFile);
 
-        ConfigSave.AddItem(new()
-        {
-            File = dir,
-            Name = "GameLogSetting:" + obj.UUID,
-            Obj = config
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build("GameLogSetting:" + obj.UUID, dir, config, JsonGuiType.GameGuiSettingObj));
     }
 
     //创建基础配置

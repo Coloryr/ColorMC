@@ -315,11 +315,11 @@ public static class Media
     private static async Task<MusicPlayRes> PlayUrl(string url)
     {
         var stream = new MemoryStream();
-        var res = await CoreHttpClient.DownloadClient.GetAsync(url);
+        var res = await CoreHttpClient.GetAsync(url);
         if (res.StatusCode == HttpStatusCode.Redirect)
         {
             var url1 = res.Headers.Location;
-            res = await CoreHttpClient.DownloadClient.GetAsync(url1);
+            res = await CoreHttpClient.GetAsync(url1!);
             await res.Content.ReadAsStream().CopyToAsync(stream);
         }
         else

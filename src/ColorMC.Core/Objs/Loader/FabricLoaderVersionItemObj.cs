@@ -4,14 +4,14 @@ namespace ColorMC.Core.Objs.Loader;
 
 public record FabricLoaderObj
 {
-    public record ArgumentsObj
+    public record FabricArgumentsObj
     {
         [JsonPropertyName("game")]
         public List<string> Game { get; set; }
         [JsonPropertyName("jvm")]
         public List<string> Jvm { get; set; }
     }
-    public record LibrariesObj
+    public record FabricLibrariesObj
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -27,14 +27,14 @@ public record FabricLoaderObj
     [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
     [JsonPropertyName("arguments")]
-    public ArgumentsObj Arguments { get; set; }
+    public FabricArgumentsObj Arguments { get; set; }
     [JsonPropertyName("libraries")]
-    public List<LibrariesObj> Libraries { get; set; }
+    public List<FabricLibrariesObj> Libraries { get; set; }
 }
 
 public record FabricLoaderVersionObj
 {
-    public record LoaderObj
+    public record FabricLoaderVersionItemObj
     {
         //public string separator { get; set; }
         //public int build { get; set; }
@@ -50,7 +50,7 @@ public record FabricLoaderVersionObj
     //    public bool stable { get; set; }
     //}
     [JsonPropertyName("loader")]
-    public LoaderObj Loader { get; set; }
+    public FabricLoaderVersionItemObj Loader { get; set; }
     //public Intermediary intermediary { get; set; }
 }
 

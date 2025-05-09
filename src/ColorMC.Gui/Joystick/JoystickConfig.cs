@@ -5,9 +5,10 @@ using Avalonia.Input;
 using ColorMC.Core;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Joystick;
 
@@ -58,7 +59,8 @@ public static class JoystickConfig
         {
             try
             {
-                config = JsonConvert.DeserializeObject<InputControlObj>(File.ReadAllText(local))!;
+                using var stream = PathHelper.OpenRead(local);
+                config = JsonUtils.ToObj(stream, JsonGuiType.InputControlObj);
             }
             catch (Exception e)
             {
@@ -80,12 +82,7 @@ public static class JoystickConfig
     /// </summary>
     public static void Save(InputControlObj obj)
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = obj.UUID + Names.NameJsonExt,
-            File = Path.Combine(s_local, $"{obj.UUID}{Names.NameJsonExt}"),
-            Obj = obj
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(obj.UUID + Names.NameJsonExt, Path.Combine(s_local, $"{obj.UUID}{Names.NameJsonExt}"), obj, JsonGuiType.InputControlObj));
     }
 
     /// <summary>

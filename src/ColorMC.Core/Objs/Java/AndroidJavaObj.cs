@@ -1,25 +1,26 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Java;
 
 public record AndroidJavaItemObj
 {
-    [JsonProperty("name")]
+    [JsonPropertyName("name")]
     public string Name { get; set; }
-    [JsonProperty("sha1")]
+    [JsonPropertyName("sha1")]
     public string Sha1 { get; set; }
-    [JsonProperty("size")]
+    [JsonPropertyName("size")]
     public string Size { get; set; }
-    [JsonProperty("url")]
+    [JsonPropertyName("url")]
     public string Url { get; set; }
 }
-
+#if Phone
 public record AndroidJavaObj
 {
-    [JsonProperty("jre8")]
+    [JsonPropertyName("jre8")]
     public List<AndroidJavaItemObj> Jre8 { get; set; }
-    [JsonProperty("jre17")]
+    [JsonPropertyName("jre17")]
     public List<AndroidJavaItemObj> Jre17 { get; set; }
-    [JsonProperty("jre21")]
+    [JsonPropertyName("jre21")]
     public List<AndroidJavaItemObj> Jre21 { get; set; }
 }
+#endif

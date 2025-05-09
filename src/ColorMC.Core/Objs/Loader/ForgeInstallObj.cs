@@ -51,7 +51,7 @@ public record ForgeInstallObj
     //public Data data { get; set; }
     //public List<ProcessorsItem> processors { get; set; }
     [JsonPropertyName("libraries")]
-    public List<ForgeLaunchObj.LibrariesObj> Libraries { get; set; }
+    public List<ForgeLaunchObj.ForgeLibrariesObj> Libraries { get; set; }
     //public string icon { get; set; }
     //public string json { get; set; }
     //public string logo { get; set; }

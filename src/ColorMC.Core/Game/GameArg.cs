@@ -194,7 +194,7 @@ public static class GameArg
                 #endregion
                 list.Add(str);
             }
-            else if (item is GameArgObj.ArgumentsObj.JvmObj obj1)
+            else if (item is GameArgObj.GameArgumentsObj.GameJvmObj obj1)
             {
                 //检查是否需要使用
                 if (!CheckHelpers.CheckAllow(obj1.Rules))
@@ -1107,7 +1107,7 @@ public static class GameArg
         return arg;
     }
 
-    public static GameArgObj.AssetIndexObj? FindAsset(this GameSettingObj obj)
+    public static GameArgObj.GameAssetIndexObj? FindAsset(this GameSettingObj obj)
     {
         if (obj.CustomLoader?.CustomJson != true)
         {
@@ -1119,7 +1119,7 @@ public static class GameArg
         }
         else
         {
-            GameArgObj.AssetIndexObj? assetIndex = null;
+            GameArgObj.GameAssetIndexObj? assetIndex = null;
             foreach (var item in obj.CustomJson)
             {
                 //材质

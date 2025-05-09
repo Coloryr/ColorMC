@@ -4,11 +4,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Net.Apis;
 
@@ -49,9 +49,9 @@ public static class SakuraFrpApi
     {
         try
         {
-            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}tunnels?token={key}");
-
-            return JsonConvert.DeserializeObject<List<SakuraFrpChannelObj>>(data);
+            string url = $"{Url}tunnels?token={key}";
+            var data = await ColorMCAPI.GetStreamAsync(url);
+            return JsonUtils.ToObj(data, JsonGuiType.ListSakuraFrpChannelObj);
         }
         catch (Exception e)
         {
@@ -72,10 +72,19 @@ public static class SakuraFrpApi
     {
         try
         {
-            var content = new StringContent(JsonConvert.SerializeObject(new { query = id }),
-                MediaTypeHeaderValue.Parse("application/json"));
+            var obj = new SakuraFrpGetChannelObj()
+            {
+                Query = id
+            };
 
-            var data = await CoreHttpClient.LoginClient.PostAsync($"{Url}tunnel/config?token={key}&frpc={version}", content);
+            var message = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{Url}tunnel/config?token={key}&frpc={version}"),
+                Content = new StringContent(JsonUtils.ToString(obj, JsonGuiType.SakuraFrpGetChannelObj),
+                MediaTypeHeaderValue.Parse("application/json"))
+            };
+            using var data = await ColorMCAPI.SendAsync(message);
             var str = await data.Content.ReadAsStringAsync();
             if (str.StartsWith('{'))
             {
@@ -155,9 +164,9 @@ public static class SakuraFrpApi
     {
         try
         {
-            var data = await CoreHttpClient.LoginClient.GetStringAsync($"{Url}system/clients");
-
-            return JsonConvert.DeserializeObject<SakuraFrpDownloadObj>(data);
+            string url = $"{Url}system/clients";
+            using var data = await ColorMCAPI.GetStreamAsync(url);
+            return JsonUtils.ToObj(data,JsonGuiType.SakuraFrpDownloadObj);
         }
         catch (Exception e)
         {

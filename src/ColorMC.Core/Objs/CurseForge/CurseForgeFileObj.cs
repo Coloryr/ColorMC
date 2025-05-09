@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.CurseForge;
 
@@ -7,18 +7,18 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeFileObj
 {
-    public record PaginationObj
+    public record CurseForgeFilePaginationObj
     {
         //public int index { get; set; }
         //public int pageSize { get; set; }
         //public int resultCount { get; set; }
-        [JsonProperty("totalCount")]
+        [JsonPropertyName("totalCount")]
         public int TotalCount { get; set; }
     }
 
-    [JsonProperty("data")]
-    public List<CurseForgeModObj.DataObj> Data { get; set; }
+    [JsonPropertyName("data")]
+    public List<CurseForgeModObj.CurseForgeDataObj> Data { get; set; }
 
-    [JsonProperty("pagination")]
-    public PaginationObj Pagination { get; set; }
+    [JsonPropertyName("pagination")]
+    public CurseForgeFilePaginationObj Pagination { get; set; }
 }

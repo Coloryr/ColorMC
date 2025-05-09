@@ -25,7 +25,7 @@ public record FabricMetaObj
     //    public string version { get; set; }
     //    public bool stable { get; set; }
     //}
-    public record LoaderObj
+    public record FabricMetaLoaderObj
     {
         //public string separator { get; set; }
         //public int build { get; set; }
@@ -46,6 +46,6 @@ public record FabricMetaObj
     //public List<Mappings> mappings { get; set; }
     //public List<Intermediary> intermediary { get; set; }
     [JsonPropertyName("loader")]
-    public List<LoaderObj> Loader { get; set; }
+    public List<FabricMetaLoaderObj> Loader { get; set; }
     //public List<Installer> installer { get; set; }
 }

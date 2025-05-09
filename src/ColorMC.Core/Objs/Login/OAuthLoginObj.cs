@@ -11,25 +11,25 @@ namespace ColorMC.Core.Objs.Login;
 /// </summary>
 public record OAuthLoginObj
 {
-    public record PropertiesObj
+    public record OAuthLoginPropertiesObj
     { 
         public string AuthMethod { get; set; }
         public string SiteName { get; set; }
         public string RpsTicket { get; set; }
     }
-    public PropertiesObj Properties { get; set; }
+    public OAuthLoginPropertiesObj Properties { get; set; }
     public string RelyingParty { get; set; }
     public string TokenType { get; set; }
 }
 
 public record OAuthLogin1Obj
 {
-    public record PropertiesObj
+    public record OAuthLogin1PropertiesObj
     {
         public string SandboxId { get; set; }
         public string[] UserTokens { get; set; }
     }
-    public PropertiesObj Properties { get; set; }
+    public OAuthLogin1PropertiesObj Properties { get; set; }
     public string RelyingParty { get; set; }
     public string TokenType { get; set; }
 }

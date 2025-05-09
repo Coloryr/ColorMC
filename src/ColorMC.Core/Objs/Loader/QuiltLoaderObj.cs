@@ -7,12 +7,12 @@ namespace ColorMC.Core.Objs.Loader;
 /// </summary>
 public record QuiltLoaderObj
 {
-    public record ArgumentsObj
+    public record QuiltArgumentsObj
     {
         [JsonPropertyName("game")]
         public List<string> Game { get; set; }
     }
-    public record LibrariesObj
+    public record QuiltLibrariesObj
     {
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -28,7 +28,7 @@ public record QuiltLoaderObj
     [JsonPropertyName("mainClass")]
     public string MainClass { get; set; }
     [JsonPropertyName("arguments")]
-    public ArgumentsObj Arguments { get; set; }
+    public QuiltArgumentsObj Arguments { get; set; }
     [JsonPropertyName("libraries")]
-    public List<LibrariesObj> Libraries { get; set; }
+    public List<QuiltLibrariesObj> Libraries { get; set; }
 }

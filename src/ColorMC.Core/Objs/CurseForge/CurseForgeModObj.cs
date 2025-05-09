@@ -7,7 +7,7 @@ namespace ColorMC.Core.Objs.CurseForge;
 /// </summary>
 public record CurseForgeModObj
 {
-    public record DataObj
+    public record CurseForgeDataObj
     {
         public record HashesObj
         {
@@ -68,5 +68,5 @@ public record CurseForgeModObj
         //public List<Modules> modules { get; set; }
     }
     [JsonPropertyName("data")]
-    public DataObj Data { get; set; }
+    public CurseForgeDataObj Data { get; set; }
 }

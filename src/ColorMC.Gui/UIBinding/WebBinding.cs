@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
@@ -381,7 +382,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, CurseForgeModObj.DataObj? data)
+    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
         {
@@ -526,7 +527,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.DataObj? data)
+    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
             return false;
@@ -623,7 +624,7 @@ public static class WebBinding
     /// <param name="obj1"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.DataObj? data)
+    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
         {
@@ -673,7 +674,7 @@ public static class WebBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static string GetUrl(this CurseForgeListObj.DataObj obj)
+    public static string GetUrl(this CurseForgeListObj.CurseForgeListDataObj obj)
     {
         return obj.Links.WebsiteUrl;
     }
@@ -762,7 +763,7 @@ public static class WebBinding
                         continue;
                     }
 
-                    if (item1.Data is CurseForgeModObj.DataObj data)
+                    if (item1.Data is CurseForgeModObj.CurseForgeDataObj data)
                     {
                         version.Add(data.DisplayName);
                         items.Add(new()
@@ -985,13 +986,14 @@ public static class WebBinding
     public static async Task<List<FrpCloudObj>?> GetFrpServer(string version)
     {
         var list = await ColorMCCloudAPI.GetCloudServer(version);
-        if (list == null || list?["list"] is not { } list1)
+        if (list == null || !list.RootElement.TryGetProperty("list", out var list1) 
+            || list1.ValueKind is not JsonValueKind.Array)
         {
             return null;
         }
 
         LaunchSocketUtils.Clear();
-        var list2 = list1.ToObject<List<FrpCloudObj>>();
+        var list2 = list1.Deserialize(JsonGuiType.ListFrpCloudObj);
         list2?.ForEach(LaunchSocketUtils.AddServerInfo);
 
         return list2;
@@ -1724,7 +1726,7 @@ public static class WebBinding
     /// <returns></returns>
     public static async Task<FileItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
     {
-        ModInfoObj? mod = null;
+        Core.Objs.ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
         {
             var res1 = await model1.ShowAsync(App.Lang("AddWindow.Info15"));
@@ -1742,7 +1744,7 @@ public static class WebBinding
                 DownloadModArg? arg = null;
                 if (model.SourceType == SourceType.CurseForge)
                 {
-                    var data = (model.Data as CurseForgeModObj.DataObj)!;
+                    var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                     arg = new DownloadModArg()
                     {
                         Item = data.MakeModDownloadObj(obj),
@@ -1798,7 +1800,7 @@ public static class WebBinding
         {
             if (model.SourceType == SourceType.CurseForge)
             {
-                var data = (model.Data as CurseForgeModObj.DataObj)!;
+                var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                 return new()
                 {
                     Name = data.DisplayName,
@@ -1827,7 +1829,7 @@ public static class WebBinding
         {
             if (model.SourceType == SourceType.CurseForge)
             {
-                var data = (model.Data as CurseForgeModObj.DataObj)!;
+                var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                 return new()
                 {
                     Name = data.DisplayName,

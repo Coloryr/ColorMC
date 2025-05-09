@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Login;
 
@@ -6,42 +6,46 @@ public record AuthenticateObj
 {
     public record AgentObj
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public int Version { get; set; }
     }
-    [JsonProperty("agent")]
+    [JsonPropertyName("agent")]
     public AgentObj Agent { get; set; }
-    [JsonProperty("username")]
+    [JsonPropertyName("username")]
     public string Username { get; set; }
-    [JsonProperty("password")]
+    [JsonPropertyName("password")]
     public string Password { get; set; }
-    [JsonProperty("clientToken")]
+    [JsonPropertyName("clientToken")]
     public string ClientToken { get; set; }
     //public bool requestUser { get; set; }
 }
 
 public record AuthenticateResObj
 {
-    public record SelectedProfileObj
+    public record AuthenticateResSelectedProfileObj
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
     }
     //public record User
     //{
     //    public string id { get; set; }
     //}
-    [JsonProperty("accessToken")]
+    [JsonPropertyName("accessToken")]
     public string AccessToken { get; set; }
-    [JsonProperty("clientToken")]
+    [JsonPropertyName("clientToken")]
     public string ClientToken { get; set; }
-    [JsonProperty("selectedProfile")]
-    public SelectedProfileObj SelectedProfile { get; set; }
-    [JsonProperty("availableProfiles")]
-    public List<SelectedProfileObj> AvailableProfiles { get; set; }
+    [JsonPropertyName("selectedProfile")]
+    public AuthenticateResSelectedProfileObj SelectedProfile { get; set; }
+    [JsonPropertyName("availableProfiles")]
+    public List<AuthenticateResSelectedProfileObj> AvailableProfiles { get; set; }
     //public User user { get; set; }
+    [JsonPropertyName("errorMessage")]
+    public string ErrorMessage { get; set; }
+    [JsonPropertyName("error")]
+    public object Error { get; set; }
 }

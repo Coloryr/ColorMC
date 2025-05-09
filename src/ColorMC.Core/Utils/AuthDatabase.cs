@@ -2,8 +2,8 @@ using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Login;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -60,10 +60,12 @@ public static class AuthDatabase
     {
         try
         {
-            var data = PathHelper.ReadText(s_local)!;
-            var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
+            using var stream = PathHelper.OpenRead(s_local);
+            var list = JsonUtils.ToObj(stream, JsonType.ListLoginObj);
             if (list == null)
+            {
                 return;
+            }
 
             foreach (var item in list)
             {
@@ -81,12 +83,7 @@ public static class AuthDatabase
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = Names.NameAuthFile,
-            Obj = s_auths.Values,
-            File = s_local
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameAuthFile, s_local, [.. s_auths.Values], JsonType.ListLoginObj));
     }
 
     /// <summary>
@@ -141,12 +138,12 @@ public static class AuthDatabase
     /// </summary>
     public static bool LoadData(string dir)
     {
-        var data = PathHelper.ReadText(dir);
-        if (data == null)
-            return false;
-        var list = JsonConvert.DeserializeObject<List<LoginObj>>(data);
+        var data = PathHelper.OpenRead(dir);
+        var list = JsonUtils.ToObj(data, JsonType.ListLoginObj);
         if (list == null)
+        {
             return false;
+        }
 
         foreach (var item in list)
         {

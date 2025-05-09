@@ -117,9 +117,9 @@ public partial class ServerMotdControl : UserControl
             using var stream = new MemoryStream(motd.FaviconByteArray);
             Image1.Source = new Bitmap(stream);
 
-            Label2.Text = motd.Players.Online.ToString();
-            Label3.Text = motd.Players.Max.ToString();
-            Label4.Text = motd.Version.Name;
+            Label2.Text = motd.Players?.Online.ToString() ?? "";
+            Label3.Text = motd.Players?.Max.ToString() ?? "";
+            Label4.Text = motd.Version?.Name ?? "";
             Label5.Text = motd.Ping.ToString();
 
             MakeText(motd.Description);
@@ -140,7 +140,7 @@ public partial class ServerMotdControl : UserControl
     /// 生成文字显示
     /// </summary>
     /// <param name="chat">文本</param>
-    private void MakeText(Chat chat)
+    private void MakeText(ChatObj chat)
     {
         if (chat.Text == "\n")
         {

@@ -288,7 +288,7 @@ public partial class AddControlModel
         if (type == SourceType.CurseForge)
         {
             var res = await WebBinding.GetFileList(type, _lastId ??
-                (_last!.Data as CurseForgeListObj.DataObj)!.Id.ToString(), PageDownload ?? 0,
+                (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Obj.Loader, _now);
             list = res.List;
             MaxPageDownload = res.Count / 50;
@@ -364,7 +364,7 @@ public partial class AddControlModel
             if (type == SourceType.CurseForge)
             {
                 GameBinding.SetModInfo(Obj,
-                    data.Data as CurseForgeModObj.DataObj);
+                    data.Data as CurseForgeModObj.CurseForgeDataObj);
             }
             else if (type == SourceType.Modrinth)
             {
@@ -421,7 +421,7 @@ public partial class AddControlModel
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(item,
-                        data.Data as CurseForgeModObj.DataObj),
+                        data.Data as CurseForgeModObj.CurseForgeDataObj),
                     SourceType.Modrinth => await WebBinding.Download(item,
                         data.Data as ModrinthVersionObj),
                     _ => false
@@ -442,7 +442,7 @@ public partial class AddControlModel
                 var list = (type == SourceType.McMod ? _lastType : type) switch
                 {
                     SourceType.CurseForge => await WebBinding.GetDownloadModList(Obj,
-                    data.Data as CurseForgeModObj.DataObj),
+                    data.Data as CurseForgeModObj.CurseForgeDataObj),
                     SourceType.Modrinth => await WebBinding.GetDownloadModList(Obj,
                     data.Data as ModrinthVersionObj),
                     _ => null
@@ -503,7 +503,7 @@ public partial class AddControlModel
                 res = type switch
                 {
                     SourceType.CurseForge => await WebBinding.Download(_now, Obj,
-                        data.Data as CurseForgeModObj.DataObj),
+                        data.Data as CurseForgeModObj.CurseForgeDataObj),
                     SourceType.Modrinth => await WebBinding.Download(_now, Obj,
                         data.Data as ModrinthVersionObj),
                     _ => false

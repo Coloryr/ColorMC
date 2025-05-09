@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using ColorMC.Core.Objs;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Objs;
 

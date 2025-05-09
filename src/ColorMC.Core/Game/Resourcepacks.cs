@@ -39,19 +39,26 @@ public static class Resourcepacks
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            string sha1 = HashHelper.GenSha1WithFile(item.FullName);
             if (item.Extension is not Names.NameZipExt)
             {
                 return;
             }
             try
             {
+                using var stream = PathHelper.OpenRead(item.FullName);
+                if (stream == null)
+                {
+                    return;
+                }
+                string sha1 = await HashHelper.GenSha1Async(stream);
                 string filesha256 = "";
                 if (sha256)
                 {
-                    filesha256 = HashHelper.GenSha256WithFile(item.FullName);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    filesha256 = await HashHelper.GenSha256Async(stream);
                 }
-                var obj = await ReadResourcepackAsync(item.FullName, cancel);
+                stream.Seek(0, SeekOrigin.Begin);
+                var obj = await ReadResourcepackAsync(stream, cancel);
                 if (obj != null)
                 {
                     obj.Local = item.FullName;
@@ -64,6 +71,7 @@ public static class Resourcepacks
                     list.Add(new()
                     {
                         Sha1 = sha1,
+                        Sha256 = filesha256,
                         Local = item.FullName,
                         Broken = true
                     });
@@ -127,9 +135,9 @@ public static class Resourcepacks
     /// <param name="file">文件</param>
     /// <param name="file">取消Token</param>
     /// <returns>材质包</returns>
-    private static async Task<ResourcepackObj?> ReadResourcepackAsync(string file, CancellationToken cancel)
+    private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream stream1, CancellationToken cancel)
     {
-        using var zFile = ZipFile.OpenRead(file);
+        using var zFile = new ZipArchive(stream1);
         var item1 = zFile.GetEntry(Names.NamePackMetaFile);
         if (item1 == null)
         {

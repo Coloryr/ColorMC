@@ -62,7 +62,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public object Data;
 
-    public FileVersionItemModel(CurseForgeModObj.DataObj data, FileType type)
+    public FileVersionItemModel(CurseForgeModObj.CurseForgeDataObj data, FileType type)
     {
         Data = data;
 

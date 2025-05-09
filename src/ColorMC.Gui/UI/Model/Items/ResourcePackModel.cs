@@ -33,7 +33,7 @@ public partial class ResourcePackModel : SelectItemModel
     /// <summary>
     /// 资源包描述
     /// </summary>
-    public Chat Description => GameBinding.StringToChat(Obj.Description);
+    public ChatObj Description => GameBinding.StringToChat(Obj.Description);
     /// <summary>
     /// 是否为损坏的资源包
     /// </summary>

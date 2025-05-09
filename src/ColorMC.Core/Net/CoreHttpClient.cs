@@ -163,9 +163,25 @@ public static class CoreHttpClient
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
     }
 
+    public static Task<HttpResponseMessage> GetAsync(Uri url)
+    {
+        return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+    }
+
     public static Task<HttpResponseMessage> GetAsync(string url, CancellationToken token)
     {
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
+    }
+
+    public static async Task<Stream?> GetStreamAsync(string url)
+    {
+        var res = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        if (res.StatusCode != HttpStatusCode.OK)
+        {
+            res.Dispose();
+            return null;
+        }
+        return await res.Content.ReadAsStreamAsync();
     }
 
     public static Task<HttpResponseMessage> LoginGetAsync(string url)

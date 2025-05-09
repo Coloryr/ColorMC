@@ -8,7 +8,7 @@ namespace ColorMC.Core.Objs.MinecraftAPI;
 /// <value></value>
 public record UserProfileObj
 {
-    public record PropertiesObj
+    public record UserProfilePropertiesObj
     {
         //public string name { get; set; }
         [JsonPropertyName("value")]
@@ -18,5 +18,5 @@ public record UserProfileObj
     //public string id { get; set; }
     //public string name { get; set; }
     [JsonPropertyName("properties")]
-    public List<PropertiesObj> Properties { get; set; }
+    public List<UserProfilePropertiesObj> Properties { get; set; }
 }

@@ -370,6 +370,17 @@ public static class PathHelper
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="local"></param>
+    /// <param name="str"></param>
+    public static async Task WriteTextAsync(string local, string str)
+    {
+        var data = Encoding.UTF8.GetBytes(str);
+        await WriteBytesAsync(local, data);
+    }
+
+    /// <summary>
     /// 读文本
     /// </summary>
     /// <param name="local">路径</param>
@@ -449,6 +460,18 @@ public static class PathHelper
     {
         using var stream = OpenWrite(local, true);
         await data.CopyToAsync(stream);
+    }
+
+    /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="local"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    public static async Task WriteBytesAsync(string local, byte[] data)
+    {
+        using var stream = OpenWrite(local, true);
+        await stream.WriteAsync(data);
     }
 
     /// <summary>

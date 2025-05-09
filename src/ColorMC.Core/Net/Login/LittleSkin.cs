@@ -50,7 +50,7 @@ public static class LittleSkin
         {
             if (select != null)
             {
-                var index = await select(LanguageHelper.Get("Core.Login.Info1"), obj.Logins.Select(item => item.UserName).ToList());
+                var index = await select(LanguageHelper.Get("Core.Login.Info1"), [.. obj.Logins.Select(item => item.UserName)]);
                 if (index >= obj.Logins.Count || index < 0)
                 {
                     return new()

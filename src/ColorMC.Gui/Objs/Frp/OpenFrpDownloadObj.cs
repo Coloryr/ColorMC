@@ -8,14 +8,14 @@ public record OpenFrpDownloadObj
     {
         public record Soft
         {
-            public record Arch
+            public record OpenFrpDownloadArchObj
             {
                 public string label { get; set; }
                 public string file { get; set; }
             }
             public string os { get; set; }
             public string label { get; set; }
-            public List<Arch> arch { get; set; }
+            public List<OpenFrpDownloadArchObj> arch { get; set; }
         }
         public record Launcher
         {

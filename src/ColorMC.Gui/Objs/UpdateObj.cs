@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Objs;
 
 public record UpdateObj
 {
-    [JsonProperty("diff")]
+    [JsonPropertyName("diff")]
     public string Diff { get; set; }
-    [JsonProperty("sha1")]
+    [JsonPropertyName("sha1")]
     public string Sha1 { get; set; }
-    [JsonProperty("core")]
+    [JsonPropertyName("core")]
     public string Core { get; set; }
-    [JsonProperty("gui")]
+    [JsonPropertyName("gui")]
     public string Gui { get; set; }
 }

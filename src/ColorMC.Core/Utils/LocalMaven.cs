@@ -4,7 +4,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using Newtonsoft.Json;
+using ColorMC.Core.Objs.Config;
 
 namespace ColorMC.Core.Utils;
 
@@ -34,8 +34,8 @@ public static class LocalMaven
         {
             try
             {
-                var data = PathHelper.ReadText(s_local)!;
-                var list = JsonConvert.DeserializeObject<Dictionary<string, MavenItemObj>>(data);
+                using var data = PathHelper.OpenRead(s_local);
+                var list = JsonUtils.ToObj(data, JsonType.DictionaryStringMavenItemObj);
 
                 if (list != null)
                 {
@@ -84,12 +84,7 @@ public static class LocalMaven
             s_items.TryAdd(item.Name, item);
         }
 
-        ConfigSave.AddItem(new()
-        {
-            Name = Names.NameMavenFile,
-            File = s_local,
-            Obj = s_items
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameMavenFile, s_local, s_items.ToDictionary(), JsonType.DictionaryStringMavenItemObj));
     }
 
     /// <summary>
@@ -126,9 +121,7 @@ public static class LocalMaven
                 var url = (CoreHttpClient.Source == SourceLocal.Offical ?
                     UrlHelper.MavenUrl[0] :
                     UrlHelper.MavenUrl[1]) + dir;
-                var res = await CoreHttpClient._downloadClient
-                    .GetAsync(url + Names.NameSha1Ext,
-                    HttpCompletionOption.ResponseHeadersRead);
+                using var res = await CoreHttpClient.GetAsync(url + Names.NameSha1Ext);
                 if (res.IsSuccessStatusCode)
                 {
                     item3 = new FileItemObj()

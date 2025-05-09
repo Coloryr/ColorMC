@@ -140,7 +140,7 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     private bool _close;
 
-    public FileItemModel(CurseForgeListObj.DataObj data, FileType type, McModSearchItemObj? mcmod)
+    public FileItemModel(CurseForgeListObj.CurseForgeListDataObj data, FileType type, McModSearchItemObj? mcmod)
     {
         McMod = mcmod;
         Data = data;

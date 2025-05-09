@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.OtherLaunch;
 
@@ -6,29 +6,29 @@ public record OfficialObj
 {
     public record PatchObj
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("version")]
+        [JsonPropertyName("version")]
         public string Version { get; set; }
     }
     public record LibrarieObj
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
     }
     public record ArgumentsObj
     {
-        [JsonProperty("game")]
+        [JsonPropertyName("game")]
         public List<object> Game { get; set; }
     }
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     public string Id { get; set; }
-    [JsonProperty("inheritsFrom")]
+    [JsonPropertyName("inheritsFrom")]
     public string InheritsFrom { get; set; }
-    [JsonProperty("patches")]
+    [JsonPropertyName("patches")]
     public List<PatchObj> Patches { get; set; }
-    [JsonProperty("libraries")]
+    [JsonPropertyName("libraries")]
     public List<LibrarieObj> Libraries { get; set; }
-    [JsonProperty("arguments")]
+    [JsonPropertyName("arguments")]
     public ArgumentsObj Arguments { get; set; }
 }

@@ -42,7 +42,7 @@ public partial class ResourcePackControl : UserControl
     /// 创建文本
     /// </summary>
     /// <param name="chat">内容</param>
-    private void MakeText(Chat chat)
+    private void MakeText(ChatObj chat)
     {
         if (chat.Text == "\n")
         {

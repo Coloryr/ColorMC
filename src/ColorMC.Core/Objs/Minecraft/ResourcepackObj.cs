@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -10,12 +10,12 @@ public record ResourcepackObj
     /// <summary>
     /// 描述
     /// </summary>
-    [JsonProperty("description")]
+    [JsonPropertyName("description")]
     public string Description { get; set; }
     /// <summary>
     /// 材质包格式
     /// </summary>
-    [JsonProperty("pack_format")]
+    [JsonPropertyName("pack_format")]
     public int PackFormat { get; set; }
 
     [JsonIgnore]

@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.IO.Hashing;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using Avalonia.Controls;
@@ -29,10 +32,6 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json.Linq;
-using Path = System.IO.Path;
-using ZipFile = ICSharpCode.SharpZipLib.Zip.ZipFile;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -328,10 +327,15 @@ public static class BaseBinding
     /// </summary>
     /// <param name="local">导入路径</param>
     /// <returns></returns>
+    [Obsolete("A37 remove")]
     public static async Task<bool> SetLive2DCore(string local)
     {
         using var stream = PathHelper.OpenRead(local);
-        using var zip = new ZipFile(stream);
+        if (stream == null)
+        {
+            return false;
+        }
+        using var zip = new ZipArchive(stream);
         string file = "";
         string file1 = Directory.GetCurrentDirectory();
         switch (SystemInfo.Os)
@@ -353,11 +357,11 @@ public static class BaseBinding
 
         file1 = Path.GetFullPath(file1);
 
-        foreach (ZipEntry item in zip)
+        foreach (var item in zip.Entries)
         {
-            if (item.IsFile && item.Name.Contains(file))
+            if (item.Name.Contains(file))
             {
-                using var stream1 = zip.GetInputStream(item);
+                using var stream1 = item.Open();
                 await PathHelper.WriteBytesAsync(file1, stream1);
                 return true;
             }
@@ -447,7 +451,7 @@ public static class BaseBinding
 
         if (model.SourceType == SourceType.CurseForge)
         {
-            var obj1 = (model.Data as CurseForgeListObj.DataObj)!;
+            var obj1 = (model.Data as CurseForgeListObj.CurseForgeListDataObj)!;
             obj.Pid = obj1.Id.ToString();
 
         }
@@ -493,24 +497,15 @@ public static class BaseBinding
     /// <summary>
     /// 给压缩包添加一个文件
     /// </summary>
-    /// <param name="crc">校验</param>
-    /// <param name="stream">压缩包流</param>
+    /// <param name="zip">压缩包</param>
     /// <param name="file">文件名</param>
     /// <param name="path">文件路径</param>
     /// <returns></returns>
-    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path)
+    private static async Task PutFile(ZipArchive zip, string file, string path)
     {
         using var buffer = PathHelper.OpenRead(path)!;
-
-        var entry = new ZipEntry(file)
-        {
-            DateTime = DateTime.Now,
-            Size = buffer.Length
-        };
-        crc.Reset();
-        await crc.AppendAsync(buffer);
-        entry.Crc = crc.GetCurrentHashAsUInt32();
-        await stream.PutNextEntryAsync(entry);
+        var entry = zip.CreateEntry(file);
+        using var stream = entry.Open();
         buffer.Seek(0, SeekOrigin.Begin);
         await buffer.CopyToAsync(stream);
     }
@@ -518,52 +513,35 @@ public static class BaseBinding
     /// <summary>
     /// 给压缩包添加一个文件
     /// </summary>
-    /// <param name="crc">校验</param>
-    /// <param name="stream">压缩包流</param>
+    /// <param name="zip">压缩包</param>
     /// <param name="file">文件名</param>
     /// <param name="data">文件内容</param>
     /// <returns></returns>
-    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, byte[] data)
+    private static async Task PutFile(ZipArchive zip, string file, byte[] data)
     {
-        var entry = new ZipEntry(file)
-        {
-            DateTime = DateTime.Now,
-            Size = data.Length
-        };
-        crc.Reset();
-        crc.Append(data);
-        entry.Crc = crc.GetCurrentHashAsUInt32();
-        await stream.PutNextEntryAsync(entry);
+        var entry = zip.CreateEntry(file);
+        using var stream = entry.Open();
         await stream.WriteAsync(data);
     }
 
     /// <summary>
     /// 给压缩包添加一个文件夹
     /// </summary>
-    /// <param name="crc">校验</param>
-    /// <param name="stream">压缩包流</param>
+    /// <param name="zip">压缩包</param>
     /// <param name="file">文件名</param>
     /// <param name="path">路径</param>
     /// <param name="basepath">基础路径，用于替换</param>
     /// <returns></returns>
-    private static async Task PutFile(Crc32 crc, ZipOutputStream stream, string file, string path, string basepath)
+    private static async Task PutFile(ZipArchive zip, string file, string path, string basepath)
     {
         foreach (var item in PathHelper.GetAllFiles(path))
         {
             string tempfile = file + "/" + item.FullName[(basepath.Length + 1)..];
             tempfile = tempfile.Replace("\\", "/");
             using var buffer = PathHelper.OpenRead(item.FullName)!;
-
-            var entry = new ZipEntry(tempfile)
-            {
-                DateTime = DateTime.Now,
-                Size = buffer.Length
-            };
-            crc.Reset();
-            await crc.AppendAsync(buffer);
-            entry.Crc = crc.GetCurrentHashAsUInt32();
-            await stream.PutNextEntryAsync(entry);
+            var entry = zip.CreateEntry(tempfile);
             buffer.Seek(0, SeekOrigin.Begin);
+            using var stream = entry.Open();
             await buffer.CopyToAsync(stream);
         }
     }
@@ -574,26 +552,21 @@ public static class BaseBinding
     public static void ReadBuildConfig()
     {
         var file = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameClientConfigFile);
-        if (!File.Exists(file))
+        using var stream = PathHelper.OpenRead(file);
+        if (stream == null)
         {
             return;
         }
-
-        var temp = PathHelper.ReadText(file);
-        if (temp == null)
-        {
-            return;
-        }
-
-        var obj = JObject.Parse(temp);
-
+        var obj = JsonDocument.Parse(stream);
+        var json = obj.RootElement;
         var conf = GuiConfigUtils.Config;
         var conf1 = ConfigUtils.Config;
         var conf2 = conf.ServerCustom;
 
-        if (obj.TryGetValue(nameof(BuildPackModel.UiBg), out var value) && value is JObject obj1)
+        if (json.TryGetProperty(nameof(BuildPackModel.UiBg), out var value) 
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj1.ToObject<UiBackConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.UiBackConfigObj)!;
             conf.EnableBG = config.EnableBG;
             conf.BackImage = config.BackImage;
             conf.BackEffect = config.BackEffect;
@@ -602,9 +575,10 @@ public static class BaseBinding
             conf.BackLimitValue = config.BackLimitValue;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.UiColor), out value) && value is JObject obj2)
+        if (json.TryGetProperty(nameof(BuildPackModel.UiColor), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj2.ToObject<UiColorConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.UiColorConfigObj)!;
             conf.ColorType = config.ColorType;
             conf.ColorMain = config.ColorMain;
             conf.RGB = config.RGB;
@@ -616,36 +590,41 @@ public static class BaseBinding
             conf.LogColor = config.LogColor;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.UiOther), out value) && value is JObject obj3)
+        if (json.TryGetProperty(nameof(BuildPackModel.UiOther), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj3.ToObject<UiOtherConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.UiOtherConfigObj)!;
             conf.Head = config.Head;
             conf.CloseBeforeLaunch = config.CloseBeforeLaunch;
             conf.Card = config.Card;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.LaunchCheck), out value) && value is JObject obj4)
+        if (json.TryGetProperty(nameof(BuildPackModel.LaunchCheck), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj4.ToObject<LaunchCheckConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.LaunchCheckConfigObj)!;
             conf1.GameCheck = config.GameCheck;
             conf.LaunchCheck = config.LaunchCheck;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.LaunchArg), out value) && value is JObject obj5)
+        if (json.TryGetProperty(nameof(BuildPackModel.LaunchArg), out value)
+             && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj5.ToObject<RunArgObj>()!;
+            var config = value.Deserialize(JsonGuiType.RunArgObj)!;
             conf1.DefaultJvmArg = config;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.LaunchWindow), out value) && value is JObject obj6)
+        if (json.TryGetProperty(nameof(BuildPackModel.LaunchWindow), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj6.ToObject<WindowSettingObj>()!;
+            var config = value.Deserialize(JsonGuiType.WindowSettingObj)!;
             conf1.Window = config;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.ServerOpt), out value) && value is JObject obj7)
+        if (json.TryGetProperty(nameof(BuildPackModel.ServerOpt), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj7.ToObject<ServerOptConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.ServerOptConfigObj)!;
             conf2.IP = config.IP;
             conf2.Port = config.Port;
             conf2.Motd = config.Motd;
@@ -656,18 +635,20 @@ public static class BaseBinding
             conf2.GameAdminLaunch = config.GameAdminLaunch;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.ServerLock), out value) && value is JObject obj8)
+        if (json.TryGetProperty(nameof(BuildPackModel.ServerLock), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj8.ToObject<ServerLockConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.ServerLockConfigObj)!;
             conf2.LockGame = config.LockGame;
             conf2.GameName = config.GameName;
             conf2.LockLogin = config.LockLogin;
             conf2.LockLogins = config.LockLogins;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.ServerUi), out value) && value is JObject obj9)
+        if (json.TryGetProperty(nameof(BuildPackModel.ServerUi), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj9.ToObject<ServerUiConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.ServerUiConfigObj)!;
             conf2.EnableUI = config.EnableUI;
             conf2.CustomIcon = config.CustomIcon;
             conf2.IconFile = config.IconFile;
@@ -677,9 +658,10 @@ public static class BaseBinding
             conf2.StartText = config.StartText;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.ServerMusic), out value) && value is JObject obj10)
+        if (json.TryGetProperty(nameof(BuildPackModel.ServerMusic), out value)
+            && value.ValueKind is JsonValueKind.Object)
         {
-            var config = obj10.ToObject<ServerMusicConfigObj>()!;
+            var config = value.Deserialize(JsonGuiType.ServerMusicConfigObj)!;
             conf2.PlayMusic = config.PlayMusic;
             conf2.Music = config.Music;
             conf2.Volume = config.Volume;
@@ -688,9 +670,9 @@ public static class BaseBinding
             conf2.RunPause = config.RunPause;
         }
 
-        if (obj.TryGetValue(nameof(BuildPackModel.Javas), out value) && value is JArray obj11)
+        if (json.TryGetProperty(nameof(BuildPackModel.Javas), out value) && value.ValueKind is JsonValueKind.Array)
         {
-            var list = obj11.ToObject<List<JvmConfigObj>>()!;
+            var list = value.Deserialize(JsonGuiType.ListJvmConfigObj)!;
             conf1.JavaList.AddRange(list);
         }
 
@@ -711,15 +693,13 @@ public static class BaseBinding
         try
         {
             var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
-            var stream = new ZipOutputStream(PathHelper.OpenWrite(file, true));
-            stream.SetLevel(9);
-            var crc = new Crc32();
-
+            var stream = PathHelper.OpenWrite(file, true);
+            var zip = new ZipArchive(stream);
             var conf = GuiConfigUtils.Config;
             var conf1 = ConfigUtils.Config;
             var conf2 = conf.ServerCustom;
 
-            var obj = new JObject();
+            var obj = new JsonObject();
 
             model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info3"));
 
@@ -727,8 +707,8 @@ public static class BaseBinding
             if (model.UiBg && File.Exists(conf.BackImage))
             {
                 var filename = Path.GetFileName(conf.BackImage);
-                await PutFile(crc, stream, filename, conf.BackImage);
-                obj.Add(nameof(BuildPackModel.UiBg), JObject.FromObject(new UiBackConfigObj()
+                await PutFile(zip, filename, conf.BackImage);
+                obj.Add(nameof(BuildPackModel.UiBg), JsonSerializer.SerializeToNode(new UiBackConfigObj()
                 {
                     EnableBG = conf.EnableBG,
                     BackImage = conf.BackImage,
@@ -736,12 +716,12 @@ public static class BaseBinding
                     BackTran = conf.BackTran,
                     BackLimit = conf.BackLimit,
                     BackLimitValue = conf.BackLimitValue
-                }));
+                }, JsonGuiType.UiBackConfigObj));
             }
 
             if (model.UiColor)
             {
-                obj.Add(nameof(BuildPackModel.UiColor), JObject.FromObject(new UiColorConfigObj()
+                obj.Add(nameof(BuildPackModel.UiColor), JsonSerializer.SerializeToNode(new UiColorConfigObj()
                 {
                     ColorType = conf.ColorType,
                     ColorMain = conf.ColorMain,
@@ -752,41 +732,41 @@ public static class BaseBinding
                     Simple = conf.Simple,
                     Style = conf.Style,
                     LogColor = conf.LogColor
-                }));
+                }, JsonGuiType.UiColorConfigObj));
             }
 
             if (model.UiOther)
             {
-                obj.Add(nameof(BuildPackModel.UiOther), JObject.FromObject(new UiOtherConfigObj()
+                obj.Add(nameof(BuildPackModel.UiOther), JsonSerializer.SerializeToNode(new UiOtherConfigObj()
                 {
                     Head = conf.Head,
                     CloseBeforeLaunch = conf.CloseBeforeLaunch,
                     Card = conf.Card
-                }));
+                }, JsonGuiType.UiOtherConfigObj));
             }
 
             if (model.LaunchCheck)
             {
-                obj.Add(nameof(BuildPackModel.LaunchCheck), JObject.FromObject(new LaunchCheckConfigObj()
+                obj.Add(nameof(BuildPackModel.LaunchCheck), JsonSerializer.SerializeToNode(new LaunchCheckConfigObj()
                 {
                     GameCheck = conf1.GameCheck,
                     LaunchCheck = conf.LaunchCheck,
-                }));
+                }, JsonGuiType.LaunchCheckConfigObj));
             }
 
             if (model.LaunchArg)
             {
-                obj.Add(nameof(BuildPackModel.LaunchArg), JObject.FromObject(conf1.DefaultJvmArg));
+                obj.Add(nameof(BuildPackModel.LaunchArg), JsonSerializer.SerializeToNode(conf1.DefaultJvmArg, JsonGuiType.RunArgObj));
             }
 
             if (model.LaunchWindow)
             {
-                obj.Add(nameof(BuildPackModel.LaunchWindow), JObject.FromObject(conf1.Window));
+                obj.Add(nameof(BuildPackModel.LaunchWindow), JsonSerializer.SerializeToNode(conf1.Window, JsonGuiType.WindowSettingObj));
             }
 
             if (model.ServerOpt)
             {
-                obj.Add(nameof(BuildPackModel.ServerOpt), JObject.FromObject(new ServerOptConfigObj()
+                obj.Add(nameof(BuildPackModel.ServerOpt), JsonSerializer.SerializeToNode(new ServerOptConfigObj()
                 {
                     IP = conf2.IP,
                     Port = conf2.Port,
@@ -796,18 +776,18 @@ public static class BaseBinding
                     MotdBackColor = conf2.MotdBackColor,
                     AdminLaunch = conf2.AdminLaunch,
                     GameAdminLaunch = conf2.GameAdminLaunch
-                }));
+                }, JsonGuiType.ServerOptConfigObj));
             }
 
             if (model.ServerLock)
             {
-                obj.Add(nameof(BuildPackModel.ServerLock), JObject.FromObject(new ServerLockConfigObj()
+                obj.Add(nameof(BuildPackModel.ServerLock), JsonSerializer.SerializeToNode(new ServerLockConfigObj()
                 {
                     LockGame = conf2.LockGame,
                     GameName = conf2.GameName,
                     LockLogin = conf2.LockLogin,
                     LockLogins = conf2.LockLogins
-                }));
+                }, JsonGuiType.ServerLockConfigObj));
             }
 
             if (model.ServerUi)
@@ -815,20 +795,20 @@ public static class BaseBinding
                 var uiFile = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCustomUIFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(crc, stream, GuiNames.NameCustomUIFile, uiFile);
+                    await PutFile(zip, GuiNames.NameCustomUIFile, uiFile);
                 }
                 uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.IconFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(crc, stream, conf2.IconFile, uiFile);
+                    await PutFile(zip, conf2.IconFile, uiFile);
                 }
                 uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.StartIconFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(crc, stream, conf2.StartIconFile, uiFile);
+                    await PutFile(zip, conf2.StartIconFile, uiFile);
                 }
 
-                obj.Add(nameof(BuildPackModel.ServerUi), JObject.FromObject(new ServerUiConfigObj()
+                obj.Add(nameof(BuildPackModel.ServerUi), JsonSerializer.SerializeToNode(new ServerUiConfigObj()
                 {
                     EnableUI = conf2.EnableUI,
                     CustomIcon = conf2.CustomIcon,
@@ -837,7 +817,7 @@ public static class BaseBinding
                     StartIconFile = conf2.StartIconFile,
                     DisplayType = conf2.DisplayType,
                     StartText = conf2.StartText
-                }));
+                }, JsonGuiType.ServerUiConfigObj));
             }
 
             if (model.ServerMusic)
@@ -846,10 +826,10 @@ public static class BaseBinding
                 var filename = Path.GetFileName(musicFile);
                 if (File.Exists(musicFile))
                 {
-                    await PutFile(crc, stream, filename!, musicFile);
+                    await PutFile(zip, filename!, musicFile);
                 }
 
-                obj.Add(nameof(BuildPackModel.ServerMusic), JObject.FromObject(new ServerMusicConfigObj()
+                obj.Add(nameof(BuildPackModel.ServerMusic), JsonSerializer.SerializeToNode(new ServerMusicConfigObj()
                 {
                     PlayMusic = conf2.PlayMusic,
                     Music = filename,
@@ -857,26 +837,18 @@ public static class BaseBinding
                     SlowVolume = conf2.SlowVolume,
                     MusicLoop = conf2.MusicLoop,
                     RunPause = conf2.RunPause
-                }));
+                }, JsonGuiType.ServerMusicConfigObj));
             }
 
             if (model.PackUpdate)
             {
                 if (File.Exists(UpdateUtils.LocalPath[0]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
+                    await PutFile(zip, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
                 }
                 if (File.Exists(UpdateUtils.LocalPath[1]))
                 {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Core.pdb", UpdateUtils.LocalPath[1]);
-                }
-                if (File.Exists(UpdateUtils.LocalPath[2]))
-                {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
-                }
-                if (File.Exists(UpdateUtils.LocalPath[3]))
-                {
-                    await PutFile(crc, stream, $"{GuiNames.NameDllDir}/ColorMC.Gui.pdb", UpdateUtils.LocalPath[3]);
+                    await PutFile(zip, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
                 }
             }
 
@@ -892,7 +864,7 @@ public static class BaseBinding
                     {
                         continue;
                     }
-                    await PutFile(crc, stream, Names.NameJavaDir, Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
+                    await PutFile(zip, Names.NameJavaDir, Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
                     list.Add(new()
                     {
                         Name = item.Name,
@@ -904,11 +876,11 @@ public static class BaseBinding
                     });
                 }
 
-                obj.Add(nameof(BuildPackModel.Javas), JArray.FromObject(list));
+                obj.Add(nameof(BuildPackModel.Javas), JsonSerializer.SerializeToNode(list, JsonGuiType.ListJvmConfigObj));
             }
 
-            var data = obj.ToString();
-            await PutFile(crc, stream, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
+            var data = obj.ToJsonString();
+            await PutFile(zip, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
 
             //打包启动器
             if (model.PackLaunch)
@@ -919,7 +891,7 @@ public static class BaseBinding
                     item);
                     if (File.Exists(fileitem))
                     {
-                        await PutFile(crc, stream, item, fileitem);
+                        await PutFile(zip, item, fileitem);
                     }
                 }
             }
@@ -932,17 +904,18 @@ public static class BaseBinding
                 string tempfile = item[(ColorMCGui.BaseDir.Length)..];
                 tempfile = tempfile.Replace("\\", "/");
 
-                await PutFile(crc, stream, tempfile, item);
+                await PutFile(zip, tempfile, item);
             }
 
             model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info6"));
 
             foreach (var item in model.Files)
             {
-                await PutFile(crc, stream, item.File, item.Local);
+                await PutFile(zip, item.File, item.Local);
             }
 
-            await stream.DisposeAsync();
+            zip.Dispose();
+            stream.Dispose();
 
             PathHelper.MoveFile(file, output);
 

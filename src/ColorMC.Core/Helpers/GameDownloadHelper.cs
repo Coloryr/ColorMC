@@ -246,7 +246,7 @@ public static class GameDownloadHelper
     /// <param name="v2">是否为V2版本</param>
     /// <param name="install">是否包含安装器</param>
     /// <returns>下载项目列表</returns>
-    public static ICollection<FileItemObj> BuildForgeLibs(List<ForgeLaunchObj.LibrariesObj> info, string mc,
+    public static ICollection<FileItemObj> BuildForgeLibs(List<ForgeLaunchObj.ForgeLibrariesObj> info, string mc,
         string version, bool neo, bool v2, bool install)
     {
         var list = new Dictionary<string, FileItemObj>();
@@ -672,7 +672,12 @@ public static class GameDownloadHelper
             return null;
         }
 
-        using var zFile = ZipFile.OpenRead(down.Local);
+        using var stream1 = PathHelper.OpenRead(down.Local);
+        if (stream1 == null)
+        {
+            return null;
+        }
+        using var zFile = new ZipArchive(stream1);
         ZipArchiveEntry? versionfile = null;
         ZipArchiveEntry? installfile = null;
         if (zFile.GetEntry(Names.NameVersionFile) is { } item)
@@ -823,7 +828,7 @@ public static class GameDownloadHelper
             return null;
         }
 
-        FabricMetaObj.LoaderObj? fabric;
+        FabricMetaObj.FabricMetaLoaderObj? fabric;
 
         if (version != null)
         {
@@ -896,7 +901,7 @@ public static class GameDownloadHelper
             return null;
         }
 
-        QuiltMetaObj.LoaderObj? quilt;
+        QuiltMetaObj.QuiltMetaLoaderObj? quilt;
 
         if (version != null)
         {
@@ -913,18 +918,22 @@ public static class GameDownloadHelper
 
         version = quilt.Version;
 
-        var data = await QuiltAPI.GetLoader(mc, version, CoreHttpClient.Source);
-        if (data == null)
+        using var stream = await QuiltAPI.GetLoader(mc, version, CoreHttpClient.Source);
+        if (stream == null)
         {
             return null;
         }
-        var meta1 = JsonUtils.ToObj(data, JsonType.QuiltLoaderObj);
+        using var mem = new MemoryStream();
+        await stream.CopyToAsync(mem);
+        mem.Seek(0, SeekOrigin.Begin);
+        var meta1 = JsonUtils.ToObj(mem, JsonType.QuiltLoaderObj);
         if (meta1 == null)
         {
             return null;
         }
 
-        VersionPath.AddGame(meta1, data, mc, version);
+        mem.Seek(0, SeekOrigin.Begin);
+        VersionPath.AddGame(meta1, mem, mc, version);
 
         foreach (var item in meta1.Libraries)
         {
@@ -1022,7 +1031,12 @@ public static class GameDownloadHelper
     /// <returns>下载项目列表</returns>
     public static async Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
     {
-        using var zFile = ZipFile.OpenRead(path);
+        using var stream1 = PathHelper.OpenRead(path);
+        if (stream1 == null)
+        {
+            return new();
+        }
+        using var zFile = new ZipArchive(stream1);
 
         ForgeLaunchObj? obj1 = null;
         ForgeInstallObj? obj2 = null;

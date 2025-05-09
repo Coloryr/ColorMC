@@ -18,8 +18,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Mods
 {
-    private static readonly char[] s_separator = ['\n'];
-
     public static async Task<List<ModObj>> GetModFastAsync(this GameSettingObj obj)
     {
         var dir = obj.GetModsPath();
@@ -116,8 +114,14 @@ public static class Mods
         string sha1 = "";
         try
         {
-            sha1 = HashHelper.GenSha1WithFile(item.FullName);
-            using var zFile = ZipFile.OpenRead(item.FullName);
+            using var stream = PathHelper.OpenRead(item.FullName);
+            if (stream == null)
+            {
+                return null;
+            }
+            sha1 = await HashHelper.GenSha1Async(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            using var zFile = new ZipArchive(stream);
             var mod = await ReadModAsync(zFile);
             if (mod != null)
             {
@@ -128,7 +132,8 @@ public static class Mods
                 mod.Sha1 = sha1;
                 if (sha256)
                 {
-                    mod.Sha256 = HashHelper.GenSha256(item.FullName);
+                    stream.Seek(0, SeekOrigin.Begin);
+                    mod.Sha256 = await HashHelper.GenSha256Async(stream);
                 }
 
                 return mod;

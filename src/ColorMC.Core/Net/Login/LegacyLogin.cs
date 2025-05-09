@@ -3,9 +3,7 @@ using System.Net.Http.Headers;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
+using ColorMC.Core.Utils;
 namespace ColorMC.Core.Net.Login;
 
 /// <summary>
@@ -41,22 +39,13 @@ public static class LegacyLogin
         {
             Method = HttpMethod.Post,
             RequestUri = new(server + "authserver/authenticate"),
-            Content = new StringContent(JsonConvert.SerializeObject(obj),
+            Content = new StringContent(JsonUtils.ToString(obj, JsonType.AuthenticateObj),
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        var res = await CoreHttpClient._loginClient.SendAsync(message);
-        var data = await res.Content.ReadAsStringAsync();
-        if (string.IsNullOrWhiteSpace(data))
-        {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Login.Error22")
-            };
-        }
-
-        var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
+        using var res = await CoreHttpClient.SendLoginAsync(message);
+        using var data = await res.Content.ReadAsStreamAsync();
+        var obj2 = JsonUtils.ToObj(data, JsonType.AuthenticateResObj);
 
         if (obj2 == null)
         {
@@ -66,26 +55,23 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-
-        if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
+        else if (!string.IsNullOrWhiteSpace(obj2.ErrorMessage))
         {
-            var obj1 = JObject.Parse(data);
-            if (obj1?["errorMessage"]?.ToString() is { } msg)
+            return new LegacyLoginRes
             {
-                return new LegacyLoginRes
-                {
-                    State = LoginState.Error,
-                    Message = msg
-                };
-            }
-
+                State = LoginState.Error,
+                Message = obj2.ErrorMessage
+            };
+        }
+        else if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
+        {
             return new LegacyLoginRes
             {
                 State = LoginState.Error,
                 Message = LanguageHelper.Get("Core.Login.Error23")
             };
         }
-        if (obj2.SelectedProfile != null)
+        else if (obj2.SelectedProfile != null)
         {
             return new LegacyLoginRes
             {
@@ -186,7 +172,7 @@ public static class LegacyLogin
 
         if (select)
         {
-            message.Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
+            var obj1 = new RefreshObj
             {
                 AccessToken = obj.AccessToken,
                 ClientToken = obj.ClientToken,
@@ -195,21 +181,24 @@ public static class LegacyLogin
                     Name = obj.UserName,
                     Id = obj.UUID
                 }
-            }),
+            };
+            message.Content = new StringContent(JsonUtils.ToString(obj1, JsonType.RefreshObj),
             MediaTypeHeaderValue.Parse("application/json"));
         }
         else
         {
-            message.Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
+            var obj1 = new RefreshObj
             {
                 AccessToken = obj.AccessToken,
                 ClientToken = obj.ClientToken
-            }),
+            };
+            message.Content = new StringContent(JsonUtils.ToString(obj1, JsonType.RefreshObj),
             MediaTypeHeaderValue.Parse("application/json"));
         }
-        var res = await CoreHttpClient._loginClient.SendAsync(message);
-        var data = await res.Content.ReadAsStringAsync();
-        if (string.IsNullOrWhiteSpace(data))
+        using var res = await CoreHttpClient.SendLoginAsync(message);
+        using var data = await res.Content.ReadAsStreamAsync();
+        var obj2 = JsonUtils.ToObj(data, JsonType.AuthenticateResObj);
+        if (obj2 == null)
         {
             return new LegacyLoginRes
             {
@@ -217,17 +206,15 @@ public static class LegacyLogin
                 Message = LanguageHelper.Get("Core.Login.Error24")
             };
         }
-        if (data.Contains("error") && data.Contains("errorMessage"))
+        else if (obj2.Error != null && !string.IsNullOrEmpty(obj2.ErrorMessage))
         {
-            var jobj = JObject.Parse(data);
             return new LegacyLoginRes
             {
                 State = LoginState.Error,
-                Message = jobj["errorMessage"]!.ToString()
+                Message = obj2.ErrorMessage
             };
         }
-        var obj2 = JsonConvert.DeserializeObject<AuthenticateResObj>(data);
-        if (obj2 == null || (obj2.SelectedProfile == null && !select))
+        if (obj2.SelectedProfile == null && !select)
         {
             return new LegacyLoginRes
             {
@@ -258,19 +245,20 @@ public static class LegacyLogin
     /// <returns>可用性</returns>
     public static async Task<bool> ValidateAsync(string server, LoginObj obj)
     {
+        var obj1 = new RefreshObj
+        {
+            AccessToken = obj.AccessToken,
+            ClientToken = obj.ClientToken
+        };
         var message = new HttpRequestMessage
         {
             Method = HttpMethod.Post,
             RequestUri = new(server + "/authserver/validate"),
-            Content = new StringContent(JsonConvert.SerializeObject(new RefreshObj
-            {
-                AccessToken = obj.AccessToken,
-                ClientToken = obj.ClientToken
-            }),
+            Content = new StringContent(JsonUtils.ToString(obj1, JsonType.RefreshObj),
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        var res = await CoreHttpClient._loginClient.SendAsync(message);
+        var res = await CoreHttpClient.SendLoginAsync(message);
         if (res.StatusCode == HttpStatusCode.NoContent)
         {
             return true;

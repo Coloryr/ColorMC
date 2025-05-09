@@ -17,6 +17,7 @@ using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Objs.ServerPack;
 
 namespace ColorMC.Core.Utils;
 
@@ -25,7 +26,7 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(GameArgObj))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(string))]
-[JsonSerializable(typeof(GameArgObj.ArgumentsObj.JvmObj))]
+[JsonSerializable(typeof(GameArgObj.GameArgumentsObj.GameJvmObj))]
 [JsonSerializable(typeof(LangObj))]
 [JsonSerializable(typeof(MMCObj))]
 [JsonSerializable(typeof(OfficialObj))]
@@ -43,7 +44,7 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(ForgeInstallOldObj))]
 [JsonSerializable(typeof(ModrinthPackObj))]
 [JsonSerializable(typeof(AssetsObj))]
-[JsonSerializable(typeof(Dictionary<string, ModInfoObj>))]
+[JsonSerializable(typeof(Dictionary<string, Objs.ModInfoObj>))]
 [JsonSerializable(typeof(LaunchDataObj))]
 [JsonSerializable(typeof(CustomGameArgObj))]
 [JsonSerializable(typeof(AdoptiumJavaVersionObj))]
@@ -77,7 +78,6 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(List<ModrinthVersionObj>))]
 [JsonSerializable(typeof(List<ModrinthGameVersionObj>))]
 [JsonSerializable(typeof(List<ModrinthCategoriesObj>))]
-[JsonSerializable(typeof(ModrinthVersionFileObj))]
 [JsonSerializable(typeof(OAuthObj))]
 [JsonSerializable(typeof(OAuthGetCodeObj))]
 [JsonSerializable(typeof(OAuthLoginObj))]
@@ -87,6 +87,18 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(List<OptifineListObj>))]
 [JsonSerializable(typeof(MinecraftTexturesObj))]
 [JsonSerializable(typeof(List<QuiltMetaObj.QuiltGameObj>))]
+[JsonSerializable(typeof(QuiltMetaObj))]
+[JsonSerializable(typeof(List<ZuluObj>))]
+[JsonSerializable(typeof(AuthenticateObj))]
+[JsonSerializable(typeof(AuthenticateResObj))]
+[JsonSerializable(typeof(RefreshObj))]
+[JsonSerializable(typeof(ChatObj))]
+[JsonSerializable(typeof(ServerMotdObj.ServerVersionInfoObj))]
+[JsonSerializable(typeof(ServerMotdObj.ServerPlayerInfoObj))]
+[JsonSerializable(typeof(ServerMotdObj.ServerMotdModInfoObj))]
+[JsonSerializable(typeof(List<LoginObj>))]
+[JsonSerializable(typeof(Dictionary<string, MavenItemObj>))]
+[JsonSerializable(typeof(ServerPackObj))]
 public partial class SourceGenerationContext : JsonSerializerContext
 {
 
@@ -113,7 +125,7 @@ public static class JsonType
     public static JsonTypeInfo<ForgeInstallOldObj> ForgeInstallOldObj => SourceGenerationContext.Default.ForgeInstallOldObj;
     public static JsonTypeInfo<ModrinthPackObj> ModrinthPackObj => SourceGenerationContext.Default.ModrinthPackObj;
     public static JsonTypeInfo<AssetsObj> AssetsObj => SourceGenerationContext.Default.AssetsObj;
-    public static JsonTypeInfo<Dictionary<string, ModInfoObj>> DictionaryStringModInfoObj => SourceGenerationContext.Default.DictionaryStringModInfoObj;
+    public static JsonTypeInfo<Dictionary<string, Objs.ModInfoObj>> DictionaryStringModInfoObj => SourceGenerationContext.Default.DictionaryStringModInfoObj;
     public static JsonTypeInfo<LaunchDataObj> LaunchDataObj => SourceGenerationContext.Default.LaunchDataObj;
     public static JsonTypeInfo<CustomGameArgObj> CustomGameArgObj => SourceGenerationContext.Default.CustomGameArgObj;
     public static JsonTypeInfo<AdoptiumJavaVersionObj> AdoptiumJavaVersionObj => SourceGenerationContext.Default.AdoptiumJavaVersionObj;
@@ -149,7 +161,6 @@ public static class JsonType
     public static JsonTypeInfo<List<ModrinthVersionObj>> ListModrinthVersionObj => SourceGenerationContext.Default.ListModrinthVersionObj;
     public static JsonTypeInfo<List<ModrinthGameVersionObj>> ListModrinthGameVersionObj => SourceGenerationContext.Default.ListModrinthGameVersionObj;
     public static JsonTypeInfo<List<ModrinthCategoriesObj>> ListModrinthCategoriesObj => SourceGenerationContext.Default.ListModrinthCategoriesObj;
-    public static JsonTypeInfo<ModrinthVersionFileObj> ModrinthVersionFileObj => SourceGenerationContext.Default.ModrinthVersionFileObj;
     public static JsonTypeInfo<OAuthObj> OAuthObj => SourceGenerationContext.Default.OAuthObj;
     public static JsonTypeInfo<OAuthGetCodeObj> OAuthGetCodeObj => SourceGenerationContext.Default.OAuthGetCodeObj;
     public static JsonTypeInfo<OAuthLoginObj> OAuthLoginObj => SourceGenerationContext.Default.OAuthLoginObj;
@@ -158,5 +169,17 @@ public static class JsonType
     public static JsonTypeInfo<OpenJ9FileObj> OpenJ9FileObj => SourceGenerationContext.Default.OpenJ9FileObj;
     public static JsonTypeInfo<List<OptifineListObj>> ListOptifineListObj => SourceGenerationContext.Default.ListOptifineListObj;
     public static JsonTypeInfo<MinecraftTexturesObj> MinecraftTexturesObj => SourceGenerationContext.Default.MinecraftTexturesObj;
-    public static JsonTypeInfo<List<QuiltMetaObj.QuiltGameObj>> QuiltGameObj => SourceGenerationContext.Default.ListQuiltGameObj;
+    public static JsonTypeInfo<List<QuiltMetaObj.QuiltGameObj>> ListQuiltGameObj => SourceGenerationContext.Default.ListQuiltGameObj;
+    public static JsonTypeInfo<QuiltMetaObj> QuiltMetaObj => SourceGenerationContext.Default.QuiltMetaObj;
+    public static JsonTypeInfo<List<ZuluObj>> ListZuluObj => SourceGenerationContext.Default.ListZuluObj;
+    public static JsonTypeInfo<AuthenticateObj> AuthenticateObj => SourceGenerationContext.Default.AuthenticateObj;
+    public static JsonTypeInfo<AuthenticateResObj> AuthenticateResObj => SourceGenerationContext.Default.AuthenticateResObj;
+    public static JsonTypeInfo<RefreshObj> RefreshObj => SourceGenerationContext.Default.RefreshObj;
+    public static JsonTypeInfo<ChatObj> ChatObj => SourceGenerationContext.Default.ChatObj;
+    public static JsonTypeInfo<ServerMotdObj.ServerVersionInfoObj> ServerVersionInfoObj => SourceGenerationContext.Default.ServerVersionInfoObj;
+    public static JsonTypeInfo<ServerMotdObj.ServerPlayerInfoObj> ServerPlayerInfoObj => SourceGenerationContext.Default.ServerPlayerInfoObj;
+    public static JsonTypeInfo<ServerMotdObj.ServerMotdModInfoObj> ServerMotdModInfoObj => SourceGenerationContext.Default.ServerMotdModInfoObj;
+    public static JsonTypeInfo<List<LoginObj>> ListLoginObj => SourceGenerationContext.Default.ListLoginObj;
+    public static JsonTypeInfo<Dictionary<string, MavenItemObj>> DictionaryStringMavenItemObj => SourceGenerationContext.Default.DictionaryStringMavenItemObj;
+    public static JsonTypeInfo<ServerPackObj> ServerPackObj => SourceGenerationContext.Default.ServerPackObj;
 }

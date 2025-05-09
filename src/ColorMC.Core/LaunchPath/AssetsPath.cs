@@ -62,7 +62,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="game">游戏数据</param>
     /// <returns>资源数据</returns>
-    public static AssetsObj? GetIndex(this GameArgObj.AssetIndexObj game)
+    public static AssetsObj? GetIndex(this GameArgObj.GameAssetIndexObj game)
     {
         string file = Path.Combine(IndexDir, $"{game.Id}.json");
         if (!File.Exists(file))

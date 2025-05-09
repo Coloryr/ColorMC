@@ -16,5 +16,5 @@ public record CurseForgeGetFilesObj
 public record CurseForgeGetFilesResObj
 {
     [JsonPropertyName("data")]
-    public List<CurseForgeModObj.DataObj> Data { get; set; }
+    public List<CurseForgeModObj.CurseForgeDataObj> Data { get; set; }
 }

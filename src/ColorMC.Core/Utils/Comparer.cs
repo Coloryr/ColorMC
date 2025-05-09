@@ -88,15 +88,15 @@ public class VersionStrObjComparer : IComparer<VersionStrObj>
 /// <summary>
 /// CurseForge比较器
 /// </summary>
-public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.DataObj>
+public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.CurseForgeDataObj>
 {
     public static readonly CurseForgeDataComparer Instance = new();
-    public bool Equals(CurseForgeModObj.DataObj? x, CurseForgeModObj.DataObj? y)
+    public bool Equals(CurseForgeModObj.CurseForgeDataObj? x, CurseForgeModObj.CurseForgeDataObj? y)
     {
         return x?.Id == y?.Id;
     }
 
-    public int GetHashCode([DisallowNull] CurseForgeModObj.DataObj obj)
+    public int GetHashCode([DisallowNull] CurseForgeModObj.CurseForgeDataObj obj)
     {
         return obj.Id;
     }

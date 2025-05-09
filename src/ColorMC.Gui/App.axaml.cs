@@ -176,9 +176,8 @@ public partial class App : Application
             LanguageType.en_us => "ColorMC.Gui.Resource.Language.gui_en-us.json",
             _ => "ColorMC.Gui.Resource.Language.gui_zh-cn.json"
         };
-        using var item = assm.GetManifestResourceStream(name)!;
-        var reader = new StreamReader(item);
-        s_language.Load(reader.ReadToEnd());
+        using var stream = assm.GetManifestResourceStream(name)!;
+        s_language.Load(stream);
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -28,6 +29,22 @@ public static class ColorMCAPI
     public static Task<HttpResponseMessage> SendAsync(HttpRequestMessage message)
     {
         return _client.SendAsync(message);
+    }
+
+    public static async Task<Stream?> GetStreamAsync(string url)
+    {
+        var res = await _client.GetAsync(url);
+        if (res.StatusCode != HttpStatusCode.OK)
+        {
+            res.Dispose();
+            return null;
+        }
+        return await res.Content.ReadAsStreamAsync();
+    }
+
+    public static Task<string> GetStringAsync(string url)
+    {
+        return _client.GetStringAsync(url);
     }
 
     /// <summary>

@@ -7,12 +7,12 @@ namespace ColorMC.Core.Objs.Minecraft;
 /// </summary>
 public record GameArgObj
 {
-    public record ArgumentsObj
+    public record GameArgumentsObj
     {
-        public record JvmObj
+        public record GameJvmObj
         {
             [JsonPropertyName("rules")]
-            public List<LibrariesObj.RulesObj> Rules { get; set; }
+            public List<GameLibrariesObj.GameRulesObj> Rules { get; set; }
             [JsonPropertyName("value")]
             public object Value { get; set; }
         }
@@ -21,7 +21,7 @@ public record GameArgObj
         [JsonPropertyName("jvm")]
         public List<object> Jvm { get; set; }
     }
-    public record AssetIndexObj
+    public record GameAssetIndexObj
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -31,9 +31,9 @@ public record GameArgObj
         [JsonPropertyName("url")]
         public string Url { get; set; }
     }
-    public record DownloadsObj
+    public record GameDownloadsObj
     {
-        public record Download
+        public record GameDownloadItemObj
         {
             [JsonPropertyName("sha1")]
             public string Sha1 { get; set; }
@@ -42,22 +42,22 @@ public record GameArgObj
             public string Url { get; set; }
         }
         [JsonPropertyName("client")]
-        public Download Client { get; set; }
+        public GameDownloadItemObj Client { get; set; }
         //public Download client_mappings { get; set; }
         //public Download server { get; set; }
         //public Download server_mappings { get; set; }
     }
-    public record JavaVersionObj
+    public record GameJavaVersionObj
     {
         //public string component { get; set; }
         [JsonPropertyName("majorVersion")]
         public int MajorVersion { get; set; }
     }
-    public record LibrariesObj
+    public record GameLibrariesObj
     {
-        public record RulesObj
+        public record GameRulesObj
         {
-            public record OsObj
+            public record GameOsObj
             {
                 [JsonPropertyName("name")]
                 public string Name { get; set; }
@@ -68,9 +68,9 @@ public record GameArgObj
             [JsonPropertyName("action")]
             public string Action { get; set; }
             [JsonPropertyName("os")]
-            public OsObj Os { get; set; }
+            public GameOsObj Os { get; set; }
         }
-        public record DownloadsObj
+        public record GameLibrariesDownloadsObj
         {
             public record ArtifactObj
             {
@@ -108,11 +108,11 @@ public record GameArgObj
         //}
         //public Natives natives { get; set; }
         [JsonPropertyName("downloads")]
-        public DownloadsObj Downloads { get; set; }
+        public GameLibrariesDownloadsObj Downloads { get; set; }
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("rules")]
-        public List<RulesObj> Rules { get; set; }
+        public List<GameRulesObj> Rules { get; set; }
         //decode mmc pack use
         //[JsonProperty("MMC-hint")]
         //public string MMCHint { get; set; }
@@ -143,18 +143,18 @@ public record GameArgObj
     }
 
     [JsonPropertyName("assetIndex")]
-    public AssetIndexObj AssetIndex { get; set; }
+    public GameAssetIndexObj AssetIndex { get; set; }
     //[JsonProperty("assets")]
     //public string Assets { get; set; }
     //public int complianceLevel { get; set; }
     [JsonPropertyName("downloads")]
-    public DownloadsObj Downloads { get; set; }
+    public GameDownloadsObj Downloads { get; set; }
     [JsonPropertyName("id")]
     public string Id { get; set; }
     [JsonPropertyName("javaVersion")]
-    public JavaVersionObj JavaVersion { get; set; }
+    public GameJavaVersionObj JavaVersion { get; set; }
     [JsonPropertyName("libraries")]
-    public List<LibrariesObj> Libraries { get; set; }
+    public List<GameLibrariesObj> Libraries { get; set; }
     [JsonPropertyName("logging")]
     public LoggingObj Logging { get; set; }
     [JsonPropertyName("mainClass")]
@@ -168,5 +168,5 @@ public record GameArgObj
     //public string time { get; set; }
     //public string type { get; set; }
     [JsonPropertyName("arguments")]
-    public ArgumentsObj Arguments { get; set; }
+    public GameArgumentsObj Arguments { get; set; }
 }

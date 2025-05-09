@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,8 +41,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
@@ -235,8 +234,8 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.DataObj data,
-        CurseForgeListObj.DataObj data1, string? group, ColorMCCore.ZipUpdate zip,
+    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.CurseForgeDataObj data,
+        CurseForgeListObj.CurseForgeListDataObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -1521,14 +1520,14 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="data">信息</param>
-    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.DataObj? data)
+    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
             return;
 
         data.FixDownloadUrl();
 
-        var obj1 = new ModInfoObj()
+        var obj1 = new Core.Objs.ModInfoObj()
         {
             FileId = data.Id.ToString(),
             ModId = data.ModId.ToString(),
@@ -1559,7 +1558,7 @@ public static class GameBinding
         }
 
         var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
-        var obj1 = new ModInfoObj()
+        var obj1 = new Core.Objs.ModInfoObj()
         {
             FileId = data.Id.ToString(),
             ModId = data.ProjectId,
@@ -1862,7 +1861,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpgrade(GameSettingObj obj, CurseForgeModObj.DataObj fid,
+    public static Task<bool> ModPackUpgrade(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
@@ -2054,9 +2053,10 @@ public static class GameBinding
         {
             if (local.StartsWith("http"))
             {
-                using var st = await CoreHttpClient.DownloadClient.GetStreamAsync(local);
+                using var res = await CoreHttpClient.GetAsync(local);
+                using var stream1 = await res.Content.ReadAsStreamAsync();
                 var memoryStream = new MemoryStream();
-                await st.CopyToAsync(memoryStream);
+                await stream1.CopyToAsync(memoryStream);
                 stream = memoryStream;
             }
             else
@@ -2075,8 +2075,8 @@ public static class GameBinding
             }
             if (local.EndsWith(".zip"))
             {
-                using var zFile = new ZipFile(stream);
-                foreach (ZipEntry item in zFile)
+                using var zFile = new ZipArchive(stream);
+                foreach (var item in zFile.Entries)
                 {
                     if (item.Name.EndsWith("game.json"))
                     {
@@ -2095,7 +2095,7 @@ public static class GameBinding
                         return PackType.CurseForge;
                     }
                 }
-                foreach (ZipEntry item in zFile)
+                foreach (var item in zFile.Entries)
                 {
                     if (item.Name.StartsWith(".minecraft/"))
                     {
@@ -2127,26 +2127,13 @@ public static class GameBinding
         {
             try
             {
-                using var s = new ZipInputStream(PathHelper.OpenRead(local));
-                ZipEntry theEntry;
-                while ((theEntry = s.GetNextEntry()) != null)
+                using var stream = PathHelper.OpenRead(local);
+                if (stream == null)
                 {
-                    string filename = $"{obj.GetBasePath()}/{theEntry.Name}";
-                    data.Config.Add(theEntry.Name);
-                    var directoryName = Path.GetDirectoryName(filename);
-                    string fileName = Path.GetFileName(theEntry.Name);
-
-                    if (directoryName?.Length > 0)
-                    {
-                        Directory.CreateDirectory(directoryName);
-                    }
-
-                    if (fileName != string.Empty)
-                    {
-                        using var streamWriter = PathHelper.OpenWrite(filename, true);
-                        s.CopyTo(streamWriter);
-                    }
+                    return false;
                 }
+                using var s = new ZipArchive(stream);
+                s.ExtractToDirectory(obj.GetBasePath(), true);
                 return true;
             }
             catch (Exception e)
@@ -2299,7 +2286,7 @@ public static class GameBinding
             {
                 return new() { Message = App.Lang("GameBinding.Error11") };
             }
-            var obj = JsonConvert.DeserializeObject<ServerPackObj>(data.Message!);
+            var obj = JsonUtils.ToObj(data.Message!, JsonType.ServerPackObj);
             if (obj == null)
             {
                 return new() { Message = App.Lang("GameBinding.Error12") };
@@ -2609,9 +2596,9 @@ public static class GameBinding
     /// </summary>
     /// <param name="description"></param>
     /// <returns></returns>
-    public static Chat StringToChat(string description)
+    public static ChatObj StringToChat(string description)
     {
-        return ServerDescriptionJsonConverter.StringToChar(description);
+        return ChatConverter.StringToChar(description);
     }
 
     /// <summary>
@@ -3150,7 +3137,7 @@ public static class GameBinding
             if (list.Count > 0)
             {
                 have = true;
-                await File.WriteAllTextAsync(delete, JsonConvert.SerializeObject(list.Keys));
+                await PathHelper.WriteTextAsync(delete, JsonUtils.ToString([.. list.Keys], JsonType.ListString));
                 pack.Add(delete);
             }
             if (pack.Count == 0)

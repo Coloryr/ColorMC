@@ -66,14 +66,19 @@ public static class DataPack
 
             try
             {
-                using var zip = ZipFile.OpenRead(item);
+                using var stream = PathHelper.OpenRead(item);
+                if (stream == null)
+                {
+                    return;
+                }
+                using var zip = new ZipArchive(stream);
                 var ent = zip.GetEntry(Names.NamePackMetaFile);
                 if (ent == null)
                 {
                     return;
                 }
-                using var stream = ent.Open();
-                var data = await JsonUtils.ReadAsObjAsync(stream);
+                using var stream1 = ent.Open();
+                var data = await JsonUtils.ReadAsObjAsync(stream1);
                 if (data == null)
                 {
                     return;

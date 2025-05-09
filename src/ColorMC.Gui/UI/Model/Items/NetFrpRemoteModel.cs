@@ -45,7 +45,7 @@ public partial class NetFrpRemoteModel : SelectItemModel
         _model = model;
     }
 
-    public NetFrpRemoteModel(NetFrpModel model, string key, OpenFrpChannelObj.Data data, OpenFrpChannelObj.Proxie obj)
+    public NetFrpRemoteModel(NetFrpModel model, string key, OpenFrpChannelObj.OpenFrpChannelData data, OpenFrpChannelObj.ProxieObj obj)
     {
         Key = key;
         Name = data.name + obj.name;

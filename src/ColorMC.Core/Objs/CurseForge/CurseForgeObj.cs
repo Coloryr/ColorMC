@@ -17,7 +17,7 @@ public enum CurseForgeSortField
 public record CurseForgeObj
 {
     [JsonPropertyName("data")]
-    public CurseForgeListObj.DataObj Data { get; set; }
+    public CurseForgeListObj.CurseForgeListDataObj Data { get; set; }
 }
 
 public record CurseForgeModsInfoObj
@@ -33,7 +33,7 @@ public record CurseForgeModsInfoObj
 /// </summary>
 public record CurseForgeListObj
 {
-    public record DataObj
+    public record CurseForgeListDataObj
     {
         public record LinksObj
         {
@@ -128,7 +128,7 @@ public record CurseForgeListObj
         //public bool isAvailable { get; set; }
         //public long thumbsUpCount { get; set; }
     }
-    public record PaginationObj
+    public record CurseForgeListPaginationObj
     {
         //public int index { get; set; }
         //public int pageSize { get; set; }
@@ -138,7 +138,7 @@ public record CurseForgeListObj
     }
 
     [JsonPropertyName("data")]
-    public List<DataObj> Data { get; set; }
+    public List<CurseForgeListDataObj> Data { get; set; }
     [JsonPropertyName("pagination")]
-    public PaginationObj Pagination { get; set; }
+    public CurseForgeListPaginationObj Pagination { get; set; }
 }

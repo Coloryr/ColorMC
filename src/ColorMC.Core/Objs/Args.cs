@@ -292,8 +292,8 @@ public record DownloadModrinthArg : UnpackGameZipArg
 /// </summary>
 public record DownloadCurseForgeArg : UnpackGameZipArg
 {
-    public required CurseForgeModObj.DataObj Data;
-    public required CurseForgeListObj.DataObj Data1;
+    public required CurseForgeModObj.CurseForgeDataObj Data;
+    public required CurseForgeListObj.CurseForgeListDataObj Data1;
 }
 
 /// <summary>
@@ -384,7 +384,7 @@ public record UpdateCurseForgeModPackArg
     /// <summary>
     /// 整合包信息
     /// </summary>
-    public required CurseForgeModObj.DataObj Data;
+    public required CurseForgeModObj.CurseForgeDataObj Data;
 
     public ColorMCCore.PackUpdate Update;
     public ColorMCCore.PackState Update2;

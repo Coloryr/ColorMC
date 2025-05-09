@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
@@ -15,7 +16,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.Utils;
 
@@ -78,11 +78,12 @@ public static class UpdateUtils
                 UpdateCheckFail();
                 return (false, false, null);
             }
+            var json = obj.RootElement;
 
-            if (obj.TryGetValue("Version", out var temp)
-                && ColorMCCore.TopVersion != temp.ToString())
+            if (json.TryGetProperty("Version", out var temp)
+                && ColorMCCore.TopVersion != temp.GetString())
             {
-                return (true, true, obj["Text"]?.ToString());
+                return (true, true, json.GetProperty("Text").GetString());
             }
             var data1 = await CheckNowVersion();
             if (data1.Item1 == true)
@@ -127,13 +128,16 @@ public static class UpdateUtils
 
         model.Progress(App.Lang("UpdateChecker.Info2"));
         var obj = await ColorMCCloudAPI.GetUpdateIndex();
-        if (obj == null || obj.TryGetValue("res", out _))
+        if (obj == null)
         {
             model.Show(App.Lang("UpdateChecker.Error3"));
             return;
         }
+        var json = obj.RootElement;
 
-        if (!obj.TryGetValue("update", out var list) || list?.ToObject<List<UpdateObj>>() is not { } update)
+        if (!json.TryGetProperty("update", out var list) 
+            || list.ValueKind is not JsonValueKind.Array
+            || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
         {
             model.Show(App.Lang("UpdateChecker.Error3"));
             return;
@@ -252,20 +256,20 @@ public static class UpdateUtils
         try
         {
             var obj = await ColorMCCloudAPI.GetUpdateIndex();
-            if (obj == null || obj.TryGetValue("res", out _))
+            if (obj == null)
             {
                 WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
                 return (false, null);
             }
-
-            if (!obj.TryGetValue("index", out var index)
-                || index is not JObject index1)
+            var json = obj.RootElement;
+            if (!json.TryGetProperty("index", out var index)
+                || index.ValueKind is not JsonValueKind.Object)
             {
                 return (false, null);
             }
 
-            WebSha1s[0] = index1["core"]!.ToString();
-            WebSha1s[1] = index1["gui"]!.ToString();
+            WebSha1s[0] = index.GetProperty("core").GetString()!;
+            WebSha1s[1] = index.GetProperty("gui").GetString()!;
 
             Logs.Info($"ColorMC.Core.dll:{LocalSha1s[0]} Web:{WebSha1s[0]}");
             Logs.Info($"ColorMC.Gui.dll:{LocalSha1s[1]} Web:{WebSha1s[1]}");
@@ -274,8 +278,8 @@ public static class UpdateUtils
             {
                 if (WebSha1s[a] != LocalSha1s[a])
                 {
-                    index1.TryGetValue("info", out var data1);
-                    return (true, data1?.ToString() ?? App.Lang("UpdateChecker.Info1"));
+                    index.TryGetProperty("info", out var data1);
+                    return (true, data1.GetString() ?? App.Lang("UpdateChecker.Info1"));
                 }
             }
 

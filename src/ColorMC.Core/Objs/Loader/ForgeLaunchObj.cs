@@ -12,19 +12,19 @@ public record ForgeLaunchObj
     //{
 
     //}
-    public record LibrariesObj
+    public record ForgeLibrariesObj
     {
-        public record DownloadsObj
+        public record ForgeDownloadsObj
         {
             [JsonPropertyName("artifact")]
-            public GameArgObj.LibrariesObj.DownloadsObj.ArtifactObj Artifact { get; set; }
+            public GameArgObj.GameLibrariesObj.GameLibrariesDownloadsObj.ArtifactObj Artifact { get; set; }
         }
         [JsonPropertyName("name")]
         public string Name { get; set; }
         [JsonPropertyName("downloads")]
-        public DownloadsObj Downloads { get; set; }
+        public ForgeDownloadsObj Downloads { get; set; }
     }
-    public record ArgumentsObj
+    public record ForgeArgumentsObj
     {
         [JsonPropertyName("game")]
         public List<string> Game { get; set; }
@@ -48,7 +48,7 @@ public record ForgeLaunchObj
     [JsonPropertyName("minecraftArguments")]
     public string MinecraftArguments { get; set; }
     [JsonPropertyName("arguments")]
-    public ArgumentsObj Arguments { get; set; }
+    public ForgeArgumentsObj Arguments { get; set; }
     [JsonPropertyName("libraries")]
-    public List<LibrariesObj> Libraries { get; set; }
+    public List<ForgeLibrariesObj> Libraries { get; set; }
 }

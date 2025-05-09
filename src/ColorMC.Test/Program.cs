@@ -1,8 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,26 +49,26 @@ internal class Program
         var text = File.Exists("tmp/sha1.json")
             ? File.ReadAllText("tmp/sha1.json") : "{\"text\":\"\"}";
         var dir = AppContext.BaseDirectory;
-        var obj = JObject.Parse(text);
-        {
-            using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.dll");
-            var sha1 = GenSha1(file); ;
-            if (!obj.TryAdd("core.dll", sha1))
-            {
-                obj["core.dll"] = sha1;
-            }
-            Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
-        }
-        {
-            using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
-            var sha1 = GenSha1(file); ;
-            if (!obj.TryAdd("gui.dll", sha1))
-            {
-                obj["gui.dll"] = sha1;
-            }
-            Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
-        }
-        File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString(Formatting.Indented));
+        //var obj = JObject.Parse(text);
+        //{
+        //    using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.dll");
+        //    var sha1 = GenSha1(file); ;
+        //    if (!obj.TryAdd("core.dll", sha1))
+        //    {
+        //        obj["core.dll"] = sha1;
+        //    }
+        //    Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
+        //}
+        //{
+        //    using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
+        //    var sha1 = GenSha1(file); ;
+        //    if (!obj.TryAdd("gui.dll", sha1))
+        //    {
+        //        obj["gui.dll"] = sha1;
+        //    }
+        //    Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
+        //}
+        //File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString(Formatting.Indented));
     }
 
     public static string GenSha1(Stream stream)

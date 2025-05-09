@@ -4,7 +4,7 @@ namespace ColorMC.Gui.Objs.Frp;
 
 public record OpenFrpChannelObj
 {
-    public record Proxie
+    public record ProxieObj
     {
         public string name { get; set; }
         public int id { get; set; }
@@ -12,13 +12,13 @@ public record OpenFrpChannelObj
         public string remote { get; set; }
         public string local { get; set; }
     }
-    public record Data
+    public record OpenFrpChannelData
     {
         public string name { get; set; }
-        public List<Proxie> proxies { get; set; }
+        public List<ProxieObj> proxies { get; set; }
     }
     public int status { get; set; }
     public bool success { get; set; }
     public string message { get; set; }
-    public List<Data> data { get; set; }
+    public List<OpenFrpChannelData> data { get; set; }
 }

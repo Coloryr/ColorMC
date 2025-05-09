@@ -1,5 +1,6 @@
+using System.Net;
 using ColorMC.Core.Objs.Java;
-using Newtonsoft.Json;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
 
@@ -15,15 +16,17 @@ public static class ZuluApi
     /// </summary>
     public static async Task<List<ZuluObj>?> GetJavaList()
     {
-        var data = await CoreHttpClient._downloadClient.GetAsync(Url, HttpCompletionOption.ResponseHeadersRead);
-        if (data == null)
+        var data = await CoreHttpClient.GetAsync(Url);
+        if (data.StatusCode != HttpStatusCode.OK)
+        {
             return null;
+        }
         var str = await data.Content.ReadAsStringAsync();
         if (str.StartsWith('<'))
         {
             ColorMCCore.OnError(str, null, false);
             return null;
         }
-        return JsonConvert.DeserializeObject<List<ZuluObj>>(str);
+        return JsonUtils.ToObj(str, JsonType.ListZuluObj);
     }
 }

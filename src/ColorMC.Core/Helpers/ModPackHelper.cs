@@ -98,7 +98,12 @@ public static class ModPackHelper
     /// <returns>是否升级完成</returns>
     private static async Task<bool> UpgradeCurseForgeModPackAsync(UpdateModPackArg arg)
     {
-        using var zFile = ZipFile.OpenRead(arg.Zip);
+        using var stream3 = PathHelper.OpenRead(arg.Zip);
+        if (stream3 == null)
+        {
+            return false;
+        }
+        using var zFile = new ZipArchive(stream3);
         CurseForgePackObj? info = null;
         //获取主信息
         if (zFile.GetEntry(Names.NameManifestFile) is { } ent)
@@ -505,7 +510,12 @@ public static class ModPackHelper
     /// <returns>升级结果</returns>
     private static async Task<bool> UpgradeModrinthModPackAsync(UpdateModPackArg arg)
     {
-        using var zFile = ZipFile.OpenRead(arg.Zip);
+        using var stream3 = PathHelper.OpenRead(arg.Zip);
+        if (stream3 == null)
+        {
+            return false;
+        }
+        using var zFile = new ZipArchive(stream3);
         ModrinthPackObj? info = null;
         //获取主信息
         if (zFile.GetEntry(Names.NameModrinthFile) is { } ent)
@@ -605,11 +615,11 @@ public static class ModPackHelper
         if (info3 != null)
         {
             //筛选新旧整合包文件差距
-            var addlist = new List<ModrinthPackObj.FileObj>();
-            var removelist = new List<ModrinthPackObj.FileObj>();
+            var addlist = new List<ModrinthPackObj.ModrinthPackFileObj>();
+            var removelist = new List<ModrinthPackObj.ModrinthPackFileObj>();
 
-            ModrinthPackObj.FileObj?[] temp1 = [.. info.Files];
-            ModrinthPackObj.FileObj?[] temp2 = [.. info3.Files];
+            ModrinthPackObj.ModrinthPackFileObj?[] temp1 = [.. info.Files];
+            ModrinthPackObj.ModrinthPackFileObj?[] temp2 = [.. info3.Files];
 
             for (int b = 0; b < temp1.Length; b++)
             {

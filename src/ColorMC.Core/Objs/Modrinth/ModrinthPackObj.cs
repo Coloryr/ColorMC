@@ -4,7 +4,7 @@ namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthPackObj
 {
-    public record FileObj
+    public record ModrinthPackFileObj
     {
         public record HashObj
         {
@@ -32,7 +32,7 @@ public record ModrinthPackObj
     [JsonPropertyName("summary")]
     public string Summary { get; set; }
     [JsonPropertyName("files")]
-    public List<FileObj> Files { get; set; }
+    public List<ModrinthPackFileObj> Files { get; set; }
     [JsonPropertyName("dependencies")]
     public Dictionary<string, string> Dependencies { get; set; }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Collect;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -52,8 +52,8 @@ public static class CollectUtils
         {
             try
             {
-                var data = PathHelper.ReadText(file);
-                var obj1 = JsonConvert.DeserializeObject<CollectObj>(data!);
+                using var stream = PathHelper.OpenRead(file);
+                var obj1 = JsonUtils.ToObj(stream, JsonGuiType.CollectObj);
                 if (obj1 != null)
                 {
                     obj1.Items ??= [];
@@ -228,12 +228,7 @@ public static class CollectUtils
     /// </summary>
     private static void Save()
     {
-        ConfigSave.AddItem(new()
-        {
-            File = s_local,
-            Name = "Collect",
-            Obj = Collect
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build("Collect", s_local, Collect, JsonGuiType.CollectObj));
     }
 
     private static CollectObj Make()

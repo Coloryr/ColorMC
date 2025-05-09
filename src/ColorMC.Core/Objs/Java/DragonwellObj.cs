@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Java;
 
@@ -6,43 +6,43 @@ public record DragonwellObj
 {
     public record ItemObj
     {
-        [JsonProperty("version8")]
+        [JsonPropertyName("version8")]
         public string Version8 { get; set; }
-        [JsonProperty("xurl8")]
+        [JsonPropertyName("xurl8")]
         public string Xurl8 { get; set; }
-        [JsonProperty("aurl8")]
+        [JsonPropertyName("aurl8")]
         public string Aurl8 { get; set; }
-        [JsonProperty("wurl8")]
+        [JsonPropertyName("wurl8")]
         public string Wurl8 { get; set; }
         //public string type8 { get; set; }
-        [JsonProperty("version11")]
+        [JsonPropertyName("version11")]
         public string Version11 { get; set; }
-        [JsonProperty("xurl11")]
+        [JsonPropertyName("xurl11")]
         public string Xurl11 { get; set; }
-        [JsonProperty("aurl11")]
+        [JsonPropertyName("aurl11")]
         public string Aurl11 { get; set; }
-        [JsonProperty("apurl11")]
+        [JsonPropertyName("apurl11")]
         public string Apurl11 { get; set; }
-        [JsonProperty("wurl11")]
+        [JsonPropertyName("wurl11")]
         public string Wurl11 { get; set; }
-        [JsonProperty("rurl11")]
+        [JsonPropertyName("rurl11")]
         public string Rurl11 { get; set; }
         //public string type11 { get; set; }
-        [JsonProperty("version17")]
+        [JsonPropertyName("version17")]
         public string Version17 { get; set; }
-        [JsonProperty("xurl17")]
+        [JsonPropertyName("xurl17")]
         public string Xurl17 { get; set; }
-        [JsonProperty("aurl17")]
+        [JsonPropertyName("aurl17")]
         public string Aurl17 { get; set; }
-        [JsonProperty("apurl17")]
+        [JsonPropertyName("apurl17")]
         public string Apurl17 { get; set; }
-        [JsonProperty("wurl17")]
+        [JsonPropertyName("wurl17")]
         public string Wurl17 { get; set; }
         //public string type17 { get; set; }
     }
 
-    [JsonProperty("extended")]
+    [JsonPropertyName("extended")]
     public ItemObj Extended { get; set; }
-    [JsonProperty("standard")]
+    [JsonPropertyName("standard")]
     public ItemObj Standard { get; set; }
 }

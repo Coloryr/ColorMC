@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,11 +20,9 @@ using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
-using ICSharpCode.SharpZipLib.Checksum;
-using ICSharpCode.SharpZipLib.Zip;
-using Newtonsoft.Json;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
@@ -319,7 +318,7 @@ public static class PathBinding
                 {
                     var name = file.GetPath();
                     PathHelper.WriteText(name!,
-                    JsonConvert.SerializeObject(AuthDatabase.Auths.Values, Formatting.Indented));
+                    JsonUtils.ToString([.. AuthDatabase.Auths.Values], JsonType.ListLoginObj));
                     OpenFileWithExplorer(name!);
                     return true;
                 }
@@ -399,7 +398,7 @@ public static class PathBinding
                     var name = file.GetPath();
                     if (name == null)
                         return false;
-                    await File.WriteAllTextAsync(name, JsonConvert.SerializeObject(arg![1]));
+                    await PathHelper.WriteTextAsync(name, JsonUtils.ToString((InputControlObj)arg![1], JsonGuiType.InputControlObj));
                     OpenFileWithExplorer(name);
                     return true;
                 }
@@ -460,7 +459,7 @@ public static class PathBinding
             {
                 new(name)
                 {
-                     Patterns = new List<string>(ext)
+                     Patterns = [.. ext]
                 }
             }
         });
@@ -754,13 +753,14 @@ public static class PathBinding
                 await new ZipUtils().ZipFileAsync(model.Obj.GetBasePath(),
                     name, list);
 
-                using var s = new ZipFile(PathHelper.OpenWrite(name, false));
-                var data = JsonConvert.SerializeObject(obj1);
-                var data1 = Encoding.UTF8.GetBytes(data);
-                using var stream = new ZipFileStream(data1);
-                s.BeginUpdate();
-                s.Add(stream, Names.NameModInfoFile);
-                s.CommitUpdate();
+                {
+                    using var stream = PathHelper.OpenWrite(name, false);
+                    using var s = new ZipArchive(stream, ZipArchiveMode.Update);
+                    var data = JsonUtils.ToString(obj1, JsonType.DictionaryStringModInfoObj);
+                    var item1 = s.CreateEntry(Names.NameModInfoFile);
+                    using var s1 = item1.Open();
+                    await s1.WriteAsync(Encoding.UTF8.GetBytes(data));
+                }
 
                 OpenFileWithExplorer(name);
                 return true;
@@ -834,41 +834,25 @@ public static class PathBinding
             }
             html.AppendLine("</ul>");
 
-            var crc = new Crc32();
-
             try
             {
-                using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9);
+                using var stream = PathHelper.OpenWrite(name, true);
+                using var s = new ZipArchive(stream, ZipArchiveMode.Create);
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
-                    var entry = new ZipEntry("manifest.json")
-                    {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.CurseForgePackObj));
+                    var entry = s.CreateEntry("manifest.json");
+                    using var stream1 = entry.Open();
+                    await stream1.WriteAsync(buffer);
                 }
 
                 //modlist.html
                 {
                     byte[] buffer = Encoding.UTF8.GetBytes(html.ToString());
-                    var entry = new ZipEntry("modlist.html")
-                    {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
+                    var entry = s.CreateEntry("modlist.html");
+                    using var stream1 = entry.Open();
+                    await stream1.WriteAsync(buffer);
                 }
 
                 {
@@ -883,22 +867,16 @@ public static class PathBinding
                             name1 = '/' + name1;
                         }
                         name1 = "overrides/" + name1;
-                        byte[] buffer = File.ReadAllBytes(item);
-                        var entry = new ZipEntry(name1)
+                        using var buffer = PathHelper.OpenRead(item);
+                        if (buffer == null)
                         {
-                            DateTime = DateTime.Now,
-                            Size = buffer.Length
-                        };
-                        crc.Reset();
-                        crc.Update(buffer);
-                        entry.Crc = crc.Value;
-                        await s.PutNextEntryAsync(entry);
-                        await s.WriteAsync(buffer);
+                            continue;
+                        }
+                        var entry = s.CreateEntry(name1);
+                        using var stream1 = entry.Open();
+                        await buffer.CopyToAsync(stream1);
                     }
                 }
-
-                await s.FinishAsync(CancellationToken.None);
-                s.Close();
             }
             catch (Exception e)
             {
@@ -976,27 +954,18 @@ public static class PathBinding
                     FileSize = item.FileSize
                 });
             }
-
-            var crc = new Crc32();
-
+            
             try
             {
-                using var s = new ZipOutputStream(File.Create(name));
-                s.SetLevel(9);
+                using var stream = PathHelper.OpenWrite(name, true);
+                using var s = new ZipArchive(stream, ZipArchiveMode.Create);
 
                 //manifest.json
                 {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(obj, Formatting.Indented));
-                    var entry = new ZipEntry("modrinth.index.json")
-                    {
-                        DateTime = DateTime.Now,
-                        Size = buffer.Length
-                    };
-                    crc.Reset();
-                    crc.Update(buffer);
-                    entry.Crc = crc.Value;
-                    await s.PutNextEntryAsync(entry);
-                    await s.WriteAsync(buffer);
+                    byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.ModrinthPackObj));
+                    var entry = s.CreateEntry("modrinth.index.json");
+                    using var stream1 = entry.Open();
+                    await stream1.WriteAsync(buffer);
                 }
 
                 {
@@ -1011,22 +980,16 @@ public static class PathBinding
                             name1 = '/' + name1;
                         }
                         name1 = "overrides/" + name1;
-                        byte[] buffer = File.ReadAllBytes(item);
-                        var entry = new ZipEntry(name1)
+                        using var buffer = PathHelper.OpenRead(item);
+                        if (buffer == null)
                         {
-                            DateTime = DateTime.Now,
-                            Size = buffer.Length
-                        };
-                        crc.Reset();
-                        crc.Update(buffer);
-                        entry.Crc = crc.Value;
-                        await s.PutNextEntryAsync(entry);
-                        await s.WriteAsync(buffer);
+                            continue;
+                        }
+                        var entry = s.CreateEntry(name1);
+                        using var stream1 = entry.Open();
+                        await buffer.CopyToAsync(stream1);
                     }
                 }
-
-                await s.FinishAsync(CancellationToken.None);
-                s.Close();
             }
             catch (Exception e)
             {

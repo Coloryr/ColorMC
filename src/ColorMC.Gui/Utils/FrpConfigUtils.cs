@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
-using Newtonsoft.Json;
 
 namespace ColorMC.Gui.Utils;
 
@@ -44,9 +44,11 @@ public static class FrpConfigUtils
     {
         if (File.Exists(local))
         {
+            FrpConfigObj? conf = null;
             try
             {
-                Config = JsonConvert.DeserializeObject<FrpConfigObj>(File.ReadAllText(local))!;
+                using var stream = PathHelper.OpenRead(local);
+                conf = JsonUtils.ToObj(stream, JsonGuiType.FrpConfigObj);
             }
             catch (Exception e)
             {
@@ -57,7 +59,7 @@ public static class FrpConfigUtils
                 Logs.Error(App.Lang("Config.Error1"), e);
             }
 
-            if (Config == null)
+            if (conf == null)
             {
                 if (exit)
                 {
@@ -68,6 +70,10 @@ public static class FrpConfigUtils
 
                 SaveNow();
                 return true;
+            }
+            else
+            {
+                Config = conf;
             }
 
             bool save = false;
@@ -127,7 +133,7 @@ public static class FrpConfigUtils
     public static void SaveNow()
     {
         Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
-        File.WriteAllText(s_local, JsonConvert.SerializeObject(Config));
+        PathHelper.WriteText(s_local, JsonUtils.ToString(Config, JsonGuiType.FrpConfigObj));
     }
 
     /// <summary>
@@ -135,12 +141,7 @@ public static class FrpConfigUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = "frp.json",
-            File = s_local,
-            Obj = Config
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build("frp.json", s_local, Config, JsonGuiType.FrpConfigObj));
     }
 
     /// <summary>

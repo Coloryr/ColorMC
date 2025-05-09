@@ -4,6 +4,8 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core;
@@ -17,8 +19,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ColorMC.Gui.Net.Apis;
 
@@ -62,8 +62,9 @@ public static class ColorMCCloudAPI
     {
         try
         {
-            var data = await ColorMCAPI._client.GetStringAsync(ColorMCAPI.BaseWebUrl + "frp/version.json");
-            return JsonConvert.DeserializeObject<Dictionary<string, FrpDownloadObj>>(data);
+            string url = ColorMCAPI.BaseWebUrl + "frp/version.json";
+            using var data = await ColorMCAPI.GetStreamAsync(url);
+            return JsonUtils.ToObj(data, JsonGuiType.DictionaryStringFrpDownloadObj);
         }
         catch (Exception e)
         {
@@ -80,8 +81,9 @@ public static class ColorMCCloudAPI
     {
         try
         {
-            var data = await ColorMCAPI._client.GetStringAsync(ColorMCAPI.BaseWebUrl + "hdiff/version.json");
-            return JsonConvert.DeserializeObject<Dictionary<string, HdiffDownloadObj>>(data);
+            string url = ColorMCAPI.BaseWebUrl + "hdiff/version.json";
+            using var data = await ColorMCAPI.GetStreamAsync(url);
+            return JsonUtils.ToObj(data, JsonGuiType.DictionaryStringHdiffDownloadObj);
         }
         catch (Exception e)
         {
@@ -98,7 +100,8 @@ public static class ColorMCCloudAPI
     {
         try
         {
-            return await ColorMCAPI._client.GetStringAsync(ColorMCAPI.BaseWebUrl + "colormc/update/log");
+            string url = ColorMCAPI.BaseWebUrl + "colormc/update/log";
+            return await ColorMCAPI.GetStringAsync(url);
         }
         catch (Exception e)
         {
@@ -111,20 +114,30 @@ public static class ColorMCCloudAPI
     /// 获取主版本号
     /// </summary>
     /// <returns></returns>
-    public static async Task<JObject> GetMainIndex()
+    public static async Task<JsonDocument?> GetMainIndex()
     {
-        var data = await CoreHttpClient.DownloadClient.GetStringAsync(ColorMCAPI.BaseUrl + "colormc/update/index.json");
-        return JObject.Parse(data);
+        string url = ColorMCAPI.BaseUrl + "colormc/update/index.json";
+        using var stream = await ColorMCAPI.GetStreamAsync(url);
+        if (stream == null)
+        {
+            return null;
+        }
+        return await JsonDocument.ParseAsync(stream);
     }
 
     /// <summary>
     /// 获取文件修补
     /// </summary>
     /// <returns></returns>
-    public static async Task<JObject> GetUpdateIndex()
+    public static async Task<JsonDocument?> GetUpdateIndex()
     {
-        var data = await CoreHttpClient.DownloadClient.GetStringAsync(UpdateUrl + "index.json");
-        return JObject.Parse(data);
+        string url = UpdateUrl + "index.json";
+        using var stream = await ColorMCAPI.GetStreamAsync(url);
+        if (stream == null)
+        {
+            return null;
+        }
+        return await JsonDocument.ParseAsync(stream);
     }
 
     /// <summary>
@@ -132,14 +145,16 @@ public static class ColorMCCloudAPI
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static async Task<JObject?> GetCloudServer(string version)
+    public static async Task<JsonDocument?> GetCloudServer(string version)
     {
         try
         {
-            var req = new HttpRequestMessage(HttpMethod.Get, ColorMCAPI.BaseUrl + "frplist?version=" + version);
+            string url = ColorMCAPI.BaseUrl + "frplist?version=" + version;
+            var req = new HttpRequestMessage(HttpMethod.Get, url);
             req.Headers.Add("ColorMC", ColorMCCore.Version);
-            var data = await CoreHttpClient.DownloadClient.SendAsync(req);
-            return JObject.Parse(await data.Content.ReadAsStringAsync());
+            using var data = await ColorMCAPI.SendAsync(req);
+            using var stream = await data.Content.ReadAsStreamAsync();
+            return await JsonDocument.ParseAsync(stream);
         }
         catch (Exception e)
         {
@@ -157,46 +172,42 @@ public static class ColorMCCloudAPI
     /// <returns>是否上传成功</returns>
     public static async Task<bool> PutCloudServer(string token, string ip, FrpShareModel model)
     {
+        var obj = new PutCloudServerObj()
+        {
+            Token = token,
+            IP = ip,
+            Custom = new()
+            {
+                Version = model.Version,
+                Loader = model.Loader,
+                IsLoader = model.IsLoader,
+                Text = model.Text
+            }
+        };
         var httpRequest = new HttpRequestMessage()
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(ColorMCAPI.BaseUrl + "frp"),
-            Content = new StringContent(JsonConvert.SerializeObject(new
-            {
-                token,
-                ip,
-                custom = new
-                {
-                    model.Version,
-                    model.Loader,
-                    model.IsLoader,
-                    model.Text
-                }
-            }))
+            Content = new StringContent(JsonUtils.ToString(obj, JsonGuiType.PutCloudServerObj))
         };
         httpRequest.Headers.Add("ColorMC", ColorMCCore.Version);
 
         try
         {
-            var data = await CoreHttpClient.DownloadClient.SendAsync(httpRequest);
-            var data1 = await data.Content.ReadAsStringAsync();
-            if (string.IsNullOrWhiteSpace(data1))
+            using var data = await ColorMCAPI.SendAsync(httpRequest);
+            using var data1 = await data.Content.ReadAsStreamAsync();
+            var obj1 = await JsonDocument.ParseAsync(data1);
+            var json = obj1.RootElement;
+            if (json.TryGetProperty("res", out var res) && res.ValueKind is JsonValueKind.Number)
             {
-                return false;
+                return res.GetInt32() == 100;
             }
-            var obj = JObject.Parse(data1);
-            if (obj.TryGetValue("res", out var res) && ((int)res) != 100)
-            {
-                return false;
-            }
-
-            return true;
         }
         catch (Exception e)
         {
             Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error3"), e);
-            return false;
         }
+        return false;
     }
 
     /// <summary>
@@ -210,14 +221,15 @@ public static class ColorMCCloudAPI
         requ.Headers.Add("serverkey", Serverkey);
         requ.Headers.Add("clientkey", Clientkey);
 
-        var res = await ColorMCAPI._client.SendAsync(requ);
+        using var res = await ColorMCAPI.SendAsync(requ);
         if (res.IsSuccessStatusCode)
         {
-            var data = await res.Content.ReadAsStringAsync();
-            var obj = JObject.Parse(data);
-            if (!obj.TryGetValue("res", out var res1))
+            using var data = await res.Content.ReadAsStreamAsync();
+            var obj = await JsonDocument.ParseAsync(data);
+            var json = obj.RootElement;
+            if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
             {
-                var value = (int)res1!;
+                var value = res1.GetInt32();
                 if (value == 300)
                 {
                     Info = App.Lang("GameCloudUtils.Error4");
@@ -248,19 +260,24 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1) && (int)res1 == 100)
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return new CloudRes()
+                    var value = res1.GetInt32();
+                    if (value == 100)
                     {
-                        State = true,
-                        Data1 = (bool)obj1["have"]!,
-                        Data2 = (string?)obj1["time"]
-                    };
+                        return new CloudRes()
+                        {
+                            State = true,
+                            Data1 = json.GetProperty("have").GetBoolean()!,
+                            Data2 = json.GetProperty("time").GetString()
+                        };
+                    }
                 }
             }
         }
@@ -291,14 +308,15 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", obj.UUID);
             requ.Headers.Add("name", obj.Name);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
 
@@ -328,14 +346,15 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", obj.UUID);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj1 = JObject.Parse(data);
-                if (obj1.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
         }
@@ -367,20 +386,24 @@ public static class ColorMCCloudAPI
             using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj1 = JObject.Parse(data);
-
-                if (obj1.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return new CloudUploadRes()
+                    var value = res1.GetInt32();
+                    if (value == 100)
                     {
-                        State = true,
-                        Data1 = (int)res1,
-                        Data2 = obj1["time"]?.ToString()
-                    };
+                        return new CloudUploadRes()
+                        {
+                            State = true,
+                            Data1 = value,
+                            Data2 = json.GetProperty("time").GetString()
+                        };
+                    }
                 }
             }
         }
@@ -410,7 +433,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", uuid);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
                 using var data = res.Content.ReadAsStream();
@@ -419,12 +442,12 @@ public static class ColorMCCloudAPI
             }
             else if (res.StatusCode == HttpStatusCode.BadRequest)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj1 = JObject.Parse(data);
-
-                if (obj1.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
         }
@@ -456,17 +479,27 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    Info = App.Lang("GameCloudUtils.Error5");
-                    return;
+                    var value = res1.GetInt32();
+                    if (value == 100)
+                    {
+                        Info = string.Format(App.Lang("GameCloudUtils.Info1"), 
+                            json.GetProperty("use").GetInt64(), 
+                            json.GetProperty("size").GetInt64());
+                    }
+                    else
+                    {
+                        Info = App.Lang("GameCloudUtils.Error5");
+                    }
                 }
-                Info = string.Format(App.Lang("GameCloudUtils.Info1"), obj["use"], obj["size"]);
+                
             }
         }
         catch (Exception e)
@@ -495,16 +528,20 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (!obj.TryGetValue("res", out var res1) || (int)res1 != 100)
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return null;
+                    var value = res1.GetInt32();
+                    if (value == 100)
+                    {
+                        json.GetProperty("list").Deserialize(JsonGuiType.ListCloundListObj);
+                    }
                 }
-                return obj["list"]?.ToObject<List<CloundListObj>>();
             }
         }
         catch (Exception e)
@@ -531,18 +568,23 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", game.UUID);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-                if (obj.TryGetValue("res", out var res1) && (int)res1 == 100)
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return new()
+                    var value = res1.GetInt32();
+                    if (value == 100)
                     {
-                        State = true,
-                        Data = obj["list"]?.ToObject<List<CloudWorldObj>>()
-                    };
+                        return new()
+                        {
+                            State = true,
+                            Data = json.GetProperty("list").Deserialize(JsonGuiType.ListCloudWorldObj)
+                        };
+                    }
                 }
             }
         }
@@ -579,15 +621,15 @@ public static class ColorMCCloudAPI
             using var stream = PathHelper.OpenRead(local)!;
             requ.Content = new StreamContent(stream);
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-
-                if (obj.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
         }
@@ -621,18 +663,20 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-
-                if (obj.TryGetValue("res", out var res1) && (int)res1 != 100)
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return null;
+                    var value = res1.GetInt32();
+                    if (value == 100)
+                    {
+                        return json.GetProperty("list").Deserialize(JsonGuiType.DictionaryStringString);
+                    }
                 }
-
-                return obj["list"]?.ToObject<Dictionary<string, string>>();
             }
         }
         catch (Exception e)
@@ -668,17 +712,17 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("clientkey", Clientkey);
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.Name));
-            requ.Content = new StringContent(JsonConvert.SerializeObject(list));
+            requ.Content = new StringContent(JsonUtils.ToString(list, JsonGuiType.DictionaryStringString));
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.StatusCode == HttpStatusCode.BadRequest)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-
-                if (obj.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
             else if (res.IsSuccessStatusCode)
@@ -716,15 +760,15 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("uuid", game.UUID);
             requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
 
-            var res = await ColorMCAPI._client.SendAsync(requ);
+            using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
             {
-                var data = await res.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(data);
-
-                if (obj.TryGetValue("res", out var res1))
+                using var data = await res.Content.ReadAsStreamAsync();
+                var obj1 = await JsonDocument.ParseAsync(data);
+                var json = obj1.RootElement;
+                if (json.TryGetProperty("res", out var res1) && res1.ValueKind is JsonValueKind.Number)
                 {
-                    return (int)res1;
+                    return res1.GetInt32();
                 }
             }
         }
@@ -811,12 +855,12 @@ public static class ColorMCCloudAPI
             if (SystemInfo.IsArm)
             {
                 data1 = $"frp_{key}_windows_arm64.zip";
-                sha1 = value.windows_arm64;
+                sha1 = value.WindowsArm64;
             }
             else
             {
                 data1 = $"frp_{key}_windows_amd64.zip";
-                sha1 = value.windows_amd64;
+                sha1 = value.WindowsAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.Linux)
@@ -824,12 +868,12 @@ public static class ColorMCCloudAPI
             if (SystemInfo.IsArm)
             {
                 data1 = $"frp_{key}_linux_arm64.tar.gz";
-                sha1 = value.linux_arm64;
+                sha1 = value.LinuxArm64;
             }
             else
             {
                 data1 = $"frp_{key}_linux_amd64.tar.gz";
-                sha1 = value.linux_amd64;
+                sha1 = value.LinuxAmd64;
             }
         }
         else if (SystemInfo.Os == OsType.MacOS)
@@ -837,12 +881,12 @@ public static class ColorMCCloudAPI
             if (SystemInfo.IsArm)
             {
                 data1 = $"frp_{key}_darwin_arm64.tar.gz";
-                sha1 = value.darwin_arm64;
+                sha1 = value.DarwinArm64;
             }
             else
             {
                 data1 = $"frp_{key}_darwin_amd64.tar.gz";
-                sha1 = value.darwin_amd64;
+                sha1 = value.DarwinAmd64;
             }
         }
         else

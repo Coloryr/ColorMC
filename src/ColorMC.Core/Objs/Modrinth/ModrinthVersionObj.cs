@@ -4,7 +4,7 @@ namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthVersionObj
 {
-    public record FileObj
+    public record ModrinthVersionFileObj
     {
         public record HasheObj
         {
@@ -49,7 +49,7 @@ public record ModrinthVersionObj
     //public string version_type { get; set; }
     //public string status { get; set; }
     [JsonPropertyName("files")]
-    public List<FileObj> Files { get; set; }
+    public List<ModrinthVersionFileObj> Files { get; set; }
     [JsonPropertyName("dependencies")]
     public List<DependencieObj> Dependencies { get; set; }
 }

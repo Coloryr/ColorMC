@@ -20,7 +20,7 @@ public static class CurseForgeHelper
     /// 修正下载地址
     /// </summary>
     /// <param name="item">CurseForge数据</param>
-    public static void FixDownloadUrl(this CurseForgeModObj.DataObj item)
+    public static void FixDownloadUrl(this CurseForgeModObj.CurseForgeDataObj item)
     {
         item.DownloadUrl ??= $"{UrlHelper.CurseForgeDownload}files/{item.Id / 1000}/{item.Id % 1000}/{item.FileName}";
     }
@@ -31,7 +31,7 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">下载路径</param>
     /// <returns>下载项目</returns>
-    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.DataObj data, GameSettingObj obj)
+    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
 
@@ -51,7 +51,7 @@ public static class CurseForgeHelper
     /// <param name="data">CurseForge数据</param>
     /// <param name="path">路径名字</param>
     /// <returns>Mod信息</returns>
-    public static ModInfoObj MakeModInfo(this CurseForgeModObj.DataObj data, string path)
+    public static ModInfoObj MakeModInfo(this CurseForgeModObj.CurseForgeDataObj data, string path)
     {
         data.FixDownloadUrl();
 
@@ -73,7 +73,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="authors">作者列表</param>
     /// <returns>作者名字</returns>
-    public static string GetString(this List<CurseForgeListObj.DataObj.AuthorsObj> authors)
+    public static string GetString(this List<CurseForgeListObj.CurseForgeListDataObj.AuthorsObj> authors)
     {
         if (authors == null || authors.Count == 0)
         {
@@ -142,7 +142,7 @@ public static class CurseForgeHelper
             return !a.Name.StartsWith("Minecraft ");
         });
 
-        var list111 = new List<CurseForgeVersionTypeObj.DataObj>();
+        var list111 = new List<CurseForgeVersionTypeObj.CurseForgeVersionTypeDataObj>();
         list111.AddRange(from item in list.Data
                          where item.Id > 17
                          orderby item.Id descending
@@ -268,7 +268,7 @@ public static class CurseForgeHelper
     /// <param name="game">游戏实例</param>
     /// <param name="item">CurseForge资源信息</param>
     /// <returns>下载信息</returns>
-    public static async Task<ItemPathRes> GetItemPathAsync(this GameSettingObj game, CurseForgeModObj.DataObj item)
+    public static async Task<ItemPathRes> GetItemPathAsync(this GameSettingObj game, CurseForgeModObj.CurseForgeDataObj item)
     {
         var item1 = new ItemPathRes()
         {
@@ -320,7 +320,7 @@ public static class CurseForgeHelper
     /// <returns>模组列表</returns>
 
     public static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
-      GetModDependenciesAsync(CurseForgeModObj.DataObj data, string mc, Loaders loader)
+      GetModDependenciesAsync(CurseForgeModObj.CurseForgeDataObj data, string mc, Loaders loader)
     {
         var ids = new ConcurrentBag<long>();
         return await GetModDependenciesAsync(data, mc, loader, ids);
@@ -335,7 +335,7 @@ public static class CurseForgeHelper
     /// <param name="ids">已经获取的列表</param>
     /// <returns>模组列表</returns>
     private static async Task<ConcurrentBag<GetCurseForgeModDependenciesRes>>
-        GetModDependenciesAsync(CurseForgeModObj.DataObj data, string mc, Loaders loader, ConcurrentBag<long> ids)
+        GetModDependenciesAsync(CurseForgeModObj.CurseForgeDataObj data, string mc, Loaders loader, ConcurrentBag<long> ids)
     {
         if (data.Dependencies == null || data.Dependencies.Count == 0)
         {

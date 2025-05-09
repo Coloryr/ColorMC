@@ -1,9 +1,7 @@
+using System.Formats.Tar;
+using System.IO.Compression;
 using System.Text;
 using ColorMC.Core.Helpers;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
-using ICSharpCode.SharpZipLib.Zip;
-using Crc32 = ICSharpCode.SharpZipLib.Checksum.Crc32;
 
 namespace ColorMC.Core.Utils;
 
@@ -27,13 +25,10 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     {
         if (zipDir[^1] != Path.DirectorySeparatorChar)
             zipDir += Path.DirectorySeparatorChar;
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
-        s.SetLevel(9);
+        using var s = new ZipArchive(PathHelper.OpenWrite(zipFile, true), ZipArchiveMode.Create);
         _size = PathHelper.GetAllFiles(zipDir).Count;
         _now = 0;
         await ZipAsync(zipDir, s, zipDir, filter);
-        await s.FinishAsync(CancellationToken.None);
-        s.Close();
     }
 
     /// <summary>
@@ -44,11 +39,10 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// <param name="staticFile"></param>
     /// <param name="filter"></param>
     /// <returns></returns>
-    private async Task ZipAsync(string strFile, ZipOutputStream s,
+    private async Task ZipAsync(string strFile, ZipArchive s,
         string staticFile, List<string>? filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
-        var crc = new Crc32();
         string[] filenames = Directory.GetFileSystemEntries(strFile);
         foreach (string file in filenames)
         {
@@ -64,19 +58,12 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             {
                 _now++;
                 ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
-                var buffer = PathHelper.ReadByte(file)!;
-
+                var buffer = PathHelper.OpenRead(file)!;
                 string tempfile = file[(staticFile.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
-                var entry = new ZipEntry(tempfile)
-                {
-                    DateTime = DateTime.Now,
-                    Size = buffer.Length
-                };
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
-                await s.PutNextEntryAsync(entry);
-                await s.WriteAsync(buffer);
+                var entry = s.CreateEntry(tempfile);
+                using var stream = entry.Open();
+                await buffer.CopyToAsync(stream);
+                entry.LastWriteTime = DateTime.Now;
             }
         }
     }
@@ -90,40 +77,19 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// <returns></returns>
     public async Task ZipFileAsync(string zipFile, List<string> zipList, string path)
     {
-        using var s = new ZipOutputStream(PathHelper.OpenWrite(zipFile, true));
-        s.SetLevel(9);
+        using var s = new ZipArchive(PathHelper.OpenWrite(zipFile, true), ZipArchiveMode.Create);
         _size = zipList.Count;
         _now = 0;
-        var crc = new Crc32();
 
         foreach (var item in zipList)
         {
             string tempfile = item[(path.Length + 1)..];
-            if (Directory.Exists(item))
-            {
-                var entry = new ZipEntry(tempfile + "/")
-                {
-                    DateTime = DateTime.Now
-                };
-                await s.PutNextEntryAsync(entry);
-            }
-            else
-            {
-                _now++;
-                ZipUpdate?.Invoke(item, _now, _size);
-                var buffer = PathHelper.ReadByte(item)!;
-
-                var entry = new ZipEntry(tempfile)
-                {
-                    DateTime = DateTime.Now,
-                    Size = buffer.Length
-                };
-                crc.Reset();
-                crc.Update(buffer);
-                entry.Crc = crc.Value;
-                await s.PutNextEntryAsync(entry);
-                await s.WriteAsync(buffer);
-            }
+            _now++;
+            ZipUpdate?.Invoke(item, _now, _size);
+            using var buffer = PathHelper.OpenRead(item)!;
+            var entry = s.CreateEntry(tempfile);
+            using var stream = entry.Open();
+            await buffer.CopyToAsync(stream);
         }
     }
 
@@ -136,18 +102,29 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     {
         if (file.EndsWith(Names.NameTarGzExt))
         {
-            using var gzipStream = new GZipInputStream(stream);
-            var tarArchive = TarArchive.CreateInputTarArchive(gzipStream, Encoding.UTF8);
-            _size = tarArchive.RecordSize;
-            tarArchive.ProgressMessageEvent += TarArchive_ProgressMessageEvent;
-            tarArchive.ExtractContents(path);
-            tarArchive.Close();
+            using var gzipStream = new GZipStream(stream, CompressionMode.Decompress);
+            var tarArchive = new TarReader(gzipStream);
+            _size = 0;
+            _now = 0;
+
+            TarEntry? entry;
+            while ((entry = await tarArchive.GetNextEntryAsync().ConfigureAwait(false)) != null)
+            {
+                var item = Path.GetFullPath($"{path}/{entry.Name}");
+                var info = new FileInfo(item);
+                info.Directory?.Create();
+                if (entry.EntryType is not TarEntryType.GlobalExtendedAttributes)
+                {
+                    ZipUpdate?.Invoke(entry.Name, 0, 0);
+                    await entry.ExtractToFileAsync(item, true);
+                }
+            }
         }
         else
         {
-            using var s = new ZipFile(stream);
-            _size = (int)s.Count;
-            foreach (ZipEntry theEntry in s)
+            using var s = new ZipArchive(stream);
+            _size = s.Entries.Count;
+            foreach (var theEntry in s.Entries)
             {
                 _now++;
                 ZipUpdate?.Invoke(theEntry.Name, _now, _size);
@@ -173,28 +150,13 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                         }
                         item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
                     }
-                    using var stream2 = s.GetInputStream(theEntry);
+                    using var stream2 = theEntry.Open();
                     await PathHelper.WriteBytesAsync(item, stream2);
                 }
             }
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// 进度事件回调
-    /// </summary>
-    /// <param name="archive"></param>
-    /// <param name="entry"></param>
-    /// <param name="message"></param>
-    private void TarArchive_ProgressMessageEvent(TarArchive archive, TarEntry entry, string message)
-    {
-        if (entry != null && message == null)
-        {
-            _now++;
-            ZipUpdate?.Invoke(entry.Name, _now, _size);
-        }
     }
 }
 

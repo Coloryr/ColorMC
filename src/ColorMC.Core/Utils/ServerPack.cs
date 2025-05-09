@@ -6,9 +6,9 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
-using Newtonsoft.Json;
 
 namespace ColorMC.Core.Utils;
 
@@ -215,8 +215,7 @@ public static class ServerPack
             using var stream = PathHelper.OpenRead(file)!;
             sha1 = HashHelper.GenSha1(stream);
             stream.Seek(0, SeekOrigin.Begin);
-            var data = PathHelper.ReadText(stream)!;
-            obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+            obj1 = JsonUtils.ToObj(stream, JsonType.ServerPackObj);
         }
 
         if (obj1 != null)
@@ -242,8 +241,8 @@ public static class ServerPack
         ServerPackObj? obj1 = null;
         if (File.Exists(file))
         {
-            var data = PathHelper.ReadText(file)!;
-            obj1 = JsonConvert.DeserializeObject<ServerPackObj>(data);
+            using var data = PathHelper.OpenRead(file)!;
+            obj1 = JsonUtils.ToObj(data, JsonType.ServerPackObj);
         }
 
         if (obj1 != null)
@@ -264,12 +263,8 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     public static void Save(this ServerPackObj obj)
     {
-        ConfigSave.AddItem(new()
-        {
-            Name = $"game-server-{obj.Game.Name}",
-            File = obj.Game.GetServerPackFile(),
-            Obj = obj
-        });
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-server-{obj.Game.Name}", 
+            obj.Game.GetServerPackFile(), obj, JsonType.ServerPackObj));
     }
 
     /// <summary>
@@ -470,7 +465,7 @@ public static class ServerPack
         await Task.WhenAll(task1, task2, task3);
 
         string local = Path.Combine(path, Names.NameServerFile);
-        PathHelper.WriteText(local, JsonConvert.SerializeObject(obj1));
+        PathHelper.WriteText(local, JsonUtils.ToString(obj1, JsonType.ServerPackObj));
 
         using var stream = PathHelper.OpenRead(local)!;
 
@@ -504,7 +499,7 @@ public static class ServerPack
             ServerPackObj? obj1;
             try
             {
-                obj1 = JsonConvert.DeserializeObject<ServerPackObj>(res1.Message!);
+                obj1 = JsonUtils.ToObj(res1.Message!, JsonType.ServerPackObj);
                 if (obj1 == null)
                 {
                     return false;

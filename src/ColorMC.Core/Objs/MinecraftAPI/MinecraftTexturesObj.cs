@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.MinecraftAPI;
 
@@ -10,28 +10,28 @@ public record MinecraftTexturesObj
         {
             public record MetadataObj
             {
-                [JsonProperty("model")]
+                [JsonPropertyName("model")]
                 public string Model { get; set; }
             }
-            [JsonProperty("url")]
+            [JsonPropertyName("url")]
             public string Url { get; set; }
-            [JsonProperty("metadata")]
+            [JsonPropertyName("metadata")]
             public MetadataObj Metadata { get; set; }
         }
         public record CapeObj
         {
-            [JsonProperty("url")]
+            [JsonPropertyName("url")]
             public string Url { get; set; }
         }
-        [JsonProperty("SKIN")]
+        [JsonPropertyName("SKIN")]
         public SkinObj Skin { get; set; }
-        [JsonProperty("CAPE")]
+        [JsonPropertyName("CAPE")]
         public CapeObj Cape { get; set; }
     }
     //public string timestamp { get; set; }
     //public string profileId { get; set; }
     //public string profileName { get; set; }
     //public bool signatureRequired { get; set; }
-    [JsonProperty("textures")]
+    [JsonPropertyName("textures")]
     public TexturesObj Textures { get; set; }
 }

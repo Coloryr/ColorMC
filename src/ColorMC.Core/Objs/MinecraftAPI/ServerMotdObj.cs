@@ -1,5 +1,5 @@
-﻿using ColorMC.Core.Net.Motd;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using ColorMC.Core.Net.Motd;
 
 namespace ColorMC.Core.Objs.MinecraftAPI;
 
@@ -11,31 +11,31 @@ public enum StateType
     Error
 }
 
-public class Chat
+public class ChatObj
 {
-    [JsonProperty("text")]
+    [JsonPropertyName("text")]
     public string Text { get; set; } = "";
 
-    [JsonProperty("bold")]
+    [JsonPropertyName("bold")]
     public bool Bold { get; set; }
 
-    [JsonProperty("italic")]
+    [JsonPropertyName("italic")]
     public bool Italic { get; set; }
 
-    [JsonProperty("underlined")]
+    [JsonPropertyName("underlined")]
     public bool Underlined { get; set; }
 
-    [JsonProperty("strikethrough")]
+    [JsonPropertyName("strikethrough")]
     public bool Strikethrough { get; set; }
 
-    [JsonProperty("obfuscated")]
+    [JsonPropertyName("obfuscated")]
     public bool Obfuscated { get; set; }
 
-    [JsonProperty("color")]
+    [JsonPropertyName("color")]
     public string Color { get; set; }
 
-    [JsonProperty("extra")]
-    public List<Chat> Extra { get; set; }
+    [JsonPropertyName("extra")]
+    public List<ChatObj> Extra { get; set; }
 
     public override string ToString()
     {
@@ -43,100 +43,91 @@ public class Chat
     }
 }
 
-public record ServerVersionInfo
+public record ServerMotdObj
 {
-    [JsonProperty("name")]
-    public string Name { get; set; }
+    public record ServerVersionInfoObj
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
 
-    [JsonProperty("protocol")]
-    public int Protocol { get; set; }
-}
+        [JsonPropertyName("protocol")]
+        public int Protocol { get; set; }
+    }
 
-public record ServerPlayerInfo
-{
-    [JsonProperty("max")]
-    public int Max { get; set; }
+    public record ServerPlayerInfoObj
+    {
+        public record Player
+        {
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
 
-    [JsonProperty("online")]
-    public int Online { get; set; }
+            [JsonPropertyName("id")]
+            public string Id { get; set; }
+        }
 
-    [JsonProperty("sample")]
-    public List<Player> Sample { get; set; }
-}
+        [JsonPropertyName("max")]
+        public int Max { get; set; }
 
-public record Player
-{
-    [JsonProperty("name")]
-    public string Name { get; set; }
+        [JsonPropertyName("online")]
+        public int Online { get; set; }
 
-    [JsonProperty("id")]
-    public string Id { get; set; }
-}
+        [JsonPropertyName("sample")]
+        public List<Player> Sample { get; set; }
+    }
 
-public record ModInfo
-{
-    [JsonProperty("type")]
-    public string Type { get; set; }
+    public record ServerMotdModInfoObj
+    {
+        public record Mod
+        {
+            [JsonPropertyName("modid")]
+            public string ModId { get; set; }
 
-    [JsonProperty("modList")]
-    public List<Mod> ModList { get; set; }
-}
+            [JsonPropertyName("version")]
+            public string Version { get; set; }
+        }
 
-public record Mod
-{
-    [JsonProperty("modid")]
-    public string ModId { get; set; }
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
 
-    [JsonProperty("version")]
-    public string Version { get; set; }
-}
+        [JsonPropertyName("modList")]
+        public List<Mod> ModList { get; set; }
+    }
 
-public class ServerMotdObj
-{
     /// <summary>
     /// Server's address, support srv.
     /// </summary>
-    [JsonIgnore]
     public string ServerAddress { get; set; }
 
     /// <summary>
     /// Server's runing port
     /// </summary>
-    [JsonIgnore]
     public ushort ServerPort { get; set; }
 
     /// <summary>
     /// The server version info such name or protocol
     /// </summary>
-    [JsonProperty("version")]
-    public ServerVersionInfo Version { get; set; }
+    public ServerVersionInfoObj? Version { get; set; }
 
     /// <summary>
     /// The server player info such max or current player count and sample.
     /// </summary>
-    [JsonProperty("players")]
-    public ServerPlayerInfo Players { get; set; }
+    public ServerPlayerInfoObj? Players { get; set; }
 
     /// <summary>
     /// Server's description (aka motd)
     /// </summary>
-    [JsonProperty("description")]
-    [JsonConverter(typeof(ServerDescriptionJsonConverter))]
-    public Chat Description { get; set; }
+    public ChatObj Description { get; set; }
 
     /// <summary>
     /// server's favicon. is a png image that is base64 encoded
     /// </summary>
-    [JsonProperty("favicon")]
-    public string Favicon { get; set; }
+    public string? Favicon { get; set; }
 
     /// <summary>
     /// Server's mod info including mod type and mod list (if is avaliable)
     /// </summary>
-    [JsonProperty("modinfo")]
-    public ModInfo ModInfo { get; set; }
+    public ServerMotdModInfoObj? ModInfo { get; set; }
 
-    [JsonIgnore]
     public byte[] FaviconByteArray
     {
         get
@@ -155,28 +146,15 @@ public class ServerMotdObj
     /// <summary>
     /// The ping delay time.(ms)
     /// </summary>
-    [JsonIgnore]
     public long Ping { get; set; }
-
     /// <summary>
     /// The handshake state
     /// </summary>
-    [JsonIgnore]
     public StateType State { get; set; }
-
     /// <summary>
     /// The handshake message
     /// </summary>
-    [JsonIgnore]
     public string Message { get; set; }
-
-    [JsonIgnore]
-    public bool AcceptTextures { get; set; }
-
-    public ServerMotdObj()
-    {
-
-    }
 
     public ServerMotdObj(string ip, ushort port)
     {
