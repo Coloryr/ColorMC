@@ -309,7 +309,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例游戏路径
+    /// 获取游戏实例游戏路径 .minecraft
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>路径</returns>

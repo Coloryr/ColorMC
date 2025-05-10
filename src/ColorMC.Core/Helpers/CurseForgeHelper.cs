@@ -45,6 +45,20 @@ public static class CurseForgeHelper
         };
     }
 
+    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj, ItemPathRes info)
+    {
+        data.FixDownloadUrl();
+
+        return new FileItemObj()
+        {
+            Url = data.DownloadUrl,
+            Name = data.DisplayName,
+            Local = Path.Combine(obj.GetGamePath(), info.File, data.FileName),
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
+                    .Select(a => a.Value).FirstOrDefault()
+        };
+    }
+
     /// <summary>
     /// 创建Mod信息
     /// </summary>
@@ -191,44 +205,49 @@ public static class CurseForgeHelper
         var list = new ConcurrentBag<FileItemObj>();
 
         //获取模组下载信息
+        var mods = new ConcurrentDictionary<string, ModInfoObj>(arg.Game.Mods);
+
+        //下载信息处理
+        async Task BuildItem(CurseForgeModObj.CurseForgeDataObj item)
+        {
+            var path = await GetItemPathAsync(arg.Game, item);
+            var item1 = item.MakeModDownloadObj(arg.Game, path);
+            list.Add(item1);
+            var modid = item.ModId.ToString();
+            mods.TryRemove(modid, out _);
+
+            if (path.FileType == FileType.World)
+            {
+                item1.Later = (test) =>
+                {
+                    arg.Game.AddWorldZipAsync(item1.Local, test).Wait();
+                };
+            }
+            else
+            {
+                mods.TryAdd(modid, item.MakeModInfo(path.Path));
+            }
+
+            now++;
+            arg.Update?.Invoke(size, now);
+        }
 
         //一次性获取
         var res = await CurseForgeAPI.GetFiles(arg.Info.Files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
-
-            var mods = new ConcurrentDictionary<string, ModInfoObj>(arg.Game.Mods);
-
+#if false
+            await Parallel.ForEachAsync(res1, new ParallelOptions()
+            {
+                MaxDegreeOfParallelism = 1
+            }, async (item, cancel) =>
+#else
             await Parallel.ForEachAsync(res1, async (item, cancel) =>
+#endif
             {
-                var path = await GetItemPathAsync(arg.Game, item);
-                var item1 = item.MakeModDownloadObj(arg.Game);
-                list.Add(item1);
-                var modid = item.ModId.ToString();
-                mods.TryRemove(modid, out _);
-
-                if (path.FileType == FileType.World)
-                {
-                    item1.Later = (test) =>
-                    {
-                        arg.Game.AddWorldZipAsync(item1.Local, test).Wait();
-                    };
-                }
-                else
-                {
-                    mods.TryAdd(modid, item.MakeModInfo(path.Name));
-                }
-
-                now++;
-                arg.Update?.Invoke(size, now);
+                await BuildItem(item);
             });
-
-            arg.Game.Mods.Clear();
-            foreach (var item in mods)
-            {
-                arg.Game.Mods.Add(item.Key, item.Value);
-            }
         }
         else
         {
@@ -243,20 +262,18 @@ public static class CurseForgeHelper
                     return;
                 }
 
-                var path = await GetItemPathAsync(arg.Game, res.Data);
-
-                list.Add(res.Data.MakeModDownloadObj(arg.Game));
-                var modid = res.Data.ModId.ToString();
-                arg.Game.Mods.Remove(modid);
-                arg.Game.Mods.Add(modid, res.Data.MakeModInfo(path.Name));
-
-                now++;
-                arg.Update?.Invoke(size, now);
+                await BuildItem(res.Data);
             });
             if (!done)
             {
                 return new MakeDownloadItemsRes();
             }
+        }
+
+        arg.Game.Mods.Clear();
+        foreach (var item in mods)
+        {
+            arg.Game.Mods.Add(item.Key, item.Value);
         }
 
         return new MakeDownloadItemsRes { List = list, State = true };
@@ -273,7 +290,7 @@ public static class CurseForgeHelper
         var item1 = new ItemPathRes()
         {
             File = game.GetModsPath(),
-            Name = Names.NameGameModDir,
+            Path = Names.NameGameModDir,
             FileType = FileType.Mod
         };
         if (item.FileName.EndsWith(Names.NameJarExt))
@@ -289,21 +306,21 @@ public static class CurseForgeHelper
                 || info1.Data.ClassId == CurseForgeAPI.ClassResourcepack)
             {
                 item1.File = game.GetResourcepacksPath();
-                item1.Name = Names.NameGameResourcepackDir;
+                item1.Path = Names.NameGameResourcepackDir;
                 item1.FileType = FileType.Resourcepack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassShaderpack)
                 || info1.Data.ClassId == CurseForgeAPI.ClassShaderpack)
             {
                 item1.File = game.GetShaderpacksPath();
-                item1.Name = Names.NameGameShaderpackDir;
+                item1.Path = Names.NameGameShaderpackDir;
                 item1.FileType = FileType.Shaderpack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassWorld)
                 || info1.Data.ClassId == CurseForgeAPI.ClassWorld)
             {
                 item1.File = game.GetSavesPath();
-                item1.Name = Names.NameGameSavesDir;
+                item1.Path = Names.NameGameSavesDir;
                 item1.FileType = FileType.World;
             }
         }
