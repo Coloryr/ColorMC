@@ -77,12 +77,21 @@ public static class MinecraftAPI
         {
             { "identityToken", $"XBL3.0 x={xstsUhs};{xstsToken}" }
         };
-        var json = await CoreHttpClient.LoginPostJsonAsync(LoginXbox, obj.ToJsonString());
-        var accessToken = json?.GetString("access_token");
-        var expireTime = json?.GetString("expires_in");
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(LoginXbox, obj.ToJsonString());
+        if (obj1 == null)
+        {
+            return new MinecraftLoginRes
+            {
+                State = LoginState.DataError
+            };
+        }
+
+        var json = obj1.RootElement;
+        var accessToken = json.GetProperty("access_token").GetString();
+        var expireTime = json.GetProperty("expires_in").GetInt64();
 
         if (string.IsNullOrWhiteSpace(accessToken) ||
-            string.IsNullOrWhiteSpace(expireTime))
+            expireTime <= 0)
         {
             return new MinecraftLoginRes
             {

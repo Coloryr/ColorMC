@@ -33,7 +33,7 @@ public static class GameAuth
                     Message = res1.Message
                 };
             }
-            loginOAuth(res1.Message!, res1.Code!);
+            loginOAuth(res1.Message!, true, res1.Code!);
             //获取用户登录
             var res2 = await OAuthApi.RunGetCodeAsync();
             if (res2.State != LoginState.Done)
@@ -46,6 +46,7 @@ public static class GameAuth
                 };
             }
             //Xbox登录
+            loginOAuth(res1.Message!, false, AuthState.XBox.ToString());
             now = AuthState.XBox;
             var res3 = await OAuthApi.GetXBLAsync(res2.Obj!.AccessToken);
             if (res3.State != LoginState.Done)
@@ -58,6 +59,7 @@ public static class GameAuth
                 };
             }
             //XSTS登录
+            loginOAuth(res1.Message!, false, AuthState.XSTS.ToString());
             now = AuthState.XSTS;
             var res4 = await OAuthApi.GetXSTSAsync(res3.XBLToken!);
             if (res4.State != LoginState.Done)
@@ -70,6 +72,7 @@ public static class GameAuth
                 };
             }
             //获取mojang token
+            loginOAuth(res1.Message!, false, AuthState.Token.ToString());
             now = AuthState.Token;
             var res5 = await MinecraftAPI.GetMinecraftAsync(res4.XSTSUhs!, res4.XSTSToken!);
             if (res5.State != LoginState.Done)
@@ -82,6 +85,7 @@ public static class GameAuth
                 };
             }
             //获取minecraft账户
+            loginOAuth(res1.Message!, false, AuthState.Profile.ToString());
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken!);
             if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
             {

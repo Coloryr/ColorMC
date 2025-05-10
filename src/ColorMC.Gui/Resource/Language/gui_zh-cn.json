@@ -129,6 +129,7 @@
 	"UserWindow.Info11": "皮肤站地址",
 	"UserWindow.Info12": "添加成功",
 	"UserWindow.Info13": "UUID",
+	"UserWindow.Info14": "正在验证中，验证阶段：{0}",
 	"UserWindow.Error1": "请先选择账户",
 	"UserWindow.Error3": "服务器UUID错误",
 	"UserWindow.Error4": "服务器地址错误",

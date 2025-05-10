@@ -400,6 +400,7 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">信息</param>
     public void Progress(string data)
     {
+        ShowClose();
         _info1.Indeterminate = true;
         _info1.Text = data;
         Progress();
@@ -467,6 +468,8 @@ public partial class BaseModel : ObservableObject
     /// <returns>输入结果</returns>
     public async Task<InputRes> Input(string title, string data)
     {
+        ShowClose();
+
         _info3.CancelEnable = true;
         _info3.CancelVisible = true;
         _info3.ConfirmEnable = true;
@@ -481,7 +484,6 @@ public partial class BaseModel : ObservableObject
         _info3.Call = null;
         _info3.ChoiseVisible = false;
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info3, WindowId);
 
@@ -504,6 +506,8 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<InputRes> InputWithEdit(string data1, string data2, string text1 = "", string text2 = "")
     {
+        ShowClose();
+
         _info3.TextReadonly = false;
         _info3.Text1 = data1;
         _info3.Text2 = data2;
@@ -524,7 +528,6 @@ public partial class BaseModel : ObservableObject
         _info3.Call = null;
         _info3.ChoiseVisible = false;
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info3, WindowId);
 
@@ -545,6 +548,7 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<InputRes> InputWithEditAsync(string title, bool lock1)
     {
+        ShowClose();
         _info3.Text2Visable = false;
         _info3.TextReadonly = lock1;
         _info3.Call = null;
@@ -575,7 +579,6 @@ public partial class BaseModel : ObservableObject
             _info3.ConfirmEnable = true;
         }
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info3, WindowId);
         Unlock();
@@ -595,6 +598,7 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<InputRes> InputAsync(string title1, string title2, bool password)
     {
+        ShowClose();
         _info3.TextReadonly = false;
 
         _info3.ValueVisable = false;
@@ -616,7 +620,6 @@ public partial class BaseModel : ObservableObject
 
         _info3.ChoiseVisible = false;
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info3, WindowId);
         Unlock();
@@ -635,9 +638,14 @@ public partial class BaseModel : ObservableObject
     /// </summary>
     /// <param name="text1">内容1</param>
     /// <param name="text2">内容2</param>
+    /// <param name="iscancel">是否可以取消</param>
+    /// <param name="isconfirm">是否可以确认</param>
+    /// <param name="isvalue">是否显示滚动条</param>
     /// <param name="cancel">按下取消后执行</param>
-    public void InputWithReadInfo(string text1, string text2, Action? cancel)
+    public void InputWithReadInfo(string text1, string text2, bool iscancel, bool isconfirm, bool isvalue, Action? cancel)
     {
+        ShowClose();
+
         _info3.TextReadonly = true;
         _info3.Text1 = text1;
         _info3.Text2 = text2;
@@ -651,25 +659,14 @@ public partial class BaseModel : ObservableObject
 
         _info3.ChoiseVisible = false;
 
-        if (cancel != null)
-        {
-            _info3.ConfirmEnable = false;
-            _info3.ValueVisable = true;
+        _info3.Call = cancel;
+        _info3.ConfirmEnable = isconfirm;
+        _info3.ValueVisable = isvalue;
+        _info3.CancelEnable = iscancel;
+        _info3.CancelVisible = iscancel;
 
-            _info3.Call = cancel;
-
-            _info3.CancelEnable = true;
-            _info3.CancelVisible = true;
-        }
-        else
-        {
-            _info3.ConfirmEnable = true;
-
-            _info3.CancelEnable = false;
-            _info3.CancelVisible = false;
-        }
-
-        ShowClose();
+        Lock();
+        
         DialogHost.Show(_info3, WindowId);
     }
     /// <summary>
@@ -680,6 +677,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="choise">选项事件</param>
     public void InputWithChoise(string title, string choiseText, Action? choise)
     {
+        ShowClose();
+
         _info3.TextReadonly = true;
         _info3.Text1 = title;
 
@@ -694,7 +693,6 @@ public partial class BaseModel : ObservableObject
         _info3.ChoiseText = choiseText;
         _info3.ChoiseVisible = true;
 
-        ShowClose();
         DialogHost.Show(_info3, WindowId);
     }
 
@@ -705,6 +703,8 @@ public partial class BaseModel : ObservableObject
     /// <returns>结果</returns>
     public async Task<bool> ShowAsync(string data)
     {
+        ShowClose();
+
         _info4.ConfirmVisable = true;
         bool reut = false;
         _info4.EnableButton = true;
@@ -717,7 +717,6 @@ public partial class BaseModel : ObservableObject
             reut = res;
         };
 
-        ShowClose();
         Lock();
         await DialogHost.Show(_info4, WindowId);
 
@@ -734,6 +733,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="action">取消操作</param>
     public void ShowWithCancel(string data, Action action)
     {
+        ShowClose();
+
         _info4.EnableButton = true;
         _info4.Text = data;
         _info4.CancelVisable = true;
@@ -746,7 +747,6 @@ public partial class BaseModel : ObservableObject
             action.Invoke();
         };
 
-        ShowClose();
         DialogHost.Show(_info4, WindowId);
     }
     /// <summary>
@@ -755,6 +755,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="data">内容</param>
     public void Show(string data)
     {
+        ShowClose();
+
         _info4.ConfirmVisable = true;
         _info4.EnableButton = true;
         _info4.CancelVisable = false;
@@ -762,7 +764,6 @@ public partial class BaseModel : ObservableObject
         _info4.Text = data;
         _info4.ChoiseVisiable = false;
 
-        ShowClose();
         DialogHost.Show(_info4, WindowId);
     }
     /// <summary>
@@ -772,6 +773,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="action">确认执行</param>
     public void ShowWithOk(string data, Action action)
     {
+        ShowClose();
+
         _info4.ConfirmVisable = true;
         _info4.EnableButton = true;
         _info4.CancelVisable = false;
@@ -783,7 +786,6 @@ public partial class BaseModel : ObservableObject
             action.Invoke();
         };
 
-        ShowClose();
         DialogHost.Show(_info4, WindowId);
     }
     /// <summary>
@@ -794,6 +796,8 @@ public partial class BaseModel : ObservableObject
     /// <param name="action">选择执行内容</param>
     public void ShowWithChoise(string data, string choise, Action action)
     {
+        ShowClose();
+
         _info4.ConfirmVisable = true;
         _info4.EnableButton = true;
         _info4.CancelVisable = false;
@@ -803,7 +807,6 @@ public partial class BaseModel : ObservableObject
         _info4.ChoiseText = choise;
         _info4.ChoiseCall = action;
 
-        ShowClose();
         DialogHost.Show(_info4, WindowId);
     }
     /// <summary>
@@ -816,6 +819,8 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task ShowChoiseCancelWait(string data, string choise, Action action, Action<bool> cancel)
     {
+        ShowClose();
+
         _info4.ConfirmVisable = true;
         _info4.EnableButton = true;
         _info4.CancelVisable = true;
@@ -825,7 +830,6 @@ public partial class BaseModel : ObservableObject
         _info4.ChoiseText = choise;
         _info4.ChoiseCall = action;
 
-        ShowClose();
         await DialogHost.Show(_info4, WindowId);
     }
 
@@ -837,6 +841,8 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<ComboRes> Combo(string title, IEnumerable<string> data1)
     {
+        ShowClose();
+
         _info5.Text = title;
         _info5.Items.Clear();
         _info5.Items.AddRange(data1);
@@ -847,7 +853,6 @@ public partial class BaseModel : ObservableObject
             break;
         }
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info5, WindowId);
         Unlock();
@@ -867,11 +872,12 @@ public partial class BaseModel : ObservableObject
     /// <param name="data2">文字2</param>
     public void Text(string data1, string data2)
     {
+        ShowClose();
+
         _info6.Text1 = data1;
         _info6.Text2 = data2;
         _info6.CancelEnable = false;
 
-        ShowClose();
         DialogHost.Show(_info6, WindowId);
     }
     /// <summary>
@@ -882,11 +888,12 @@ public partial class BaseModel : ObservableObject
     /// <returns></returns>
     public async Task<bool> TextAsync(string data, string data1)
     {
+        ShowClose();
+
         _info6.Text1 = data;
         _info6.Text2 = data1;
         _info6.CancelEnable = true;
 
-        ShowClose();
         Lock();
         var res = await DialogHost.Show(_info6, WindowId);
 

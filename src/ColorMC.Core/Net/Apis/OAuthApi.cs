@@ -1,3 +1,4 @@
+using System.Text.Json;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -56,7 +57,7 @@ public static class OAuthApi
                 Message = LanguageHelper.Get("Core.Login.Error22")
             };
         }
-        else if (string.IsNullOrWhiteSpace(obj.Error))
+        else if (!string.IsNullOrWhiteSpace(obj.Error))
         {
             return new OAuthGetCodeRes
             {
@@ -201,24 +202,26 @@ public static class OAuthApi
             RelyingParty = "http://auth.xboxlive.com",
             TokenType = "JWT"
         };
-        var json = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj));
-        if (json == null)
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj));
+        if (obj1 == null)
         { 
             return new OAuthXboxLiveRes
             {
                 State = LoginState.DataError
             };
         }
-        var xblToken = json.GetString("Token");
-        var list = json.GetObj("DisplayClaims")?.GetArray("xui");
-        if (list == null)
+
+        var json = obj1.RootElement;
+        var xblToken = json.GetProperty("Token").GetString();
+        var list = json.GetProperty("DisplayClaims").GetProperty("xui");
+        if (list.ValueKind != JsonValueKind.Array)
         {
             return new OAuthXboxLiveRes
             {
                 State = LoginState.DataError
             };
         }
-        var xblUhs = list.FirstOrDefault()?.AsObject().GetString("uhs");
+        var xblUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
@@ -254,24 +257,26 @@ public static class OAuthApi
             RelyingParty = "rp://api.minecraftservices.com/",
             TokenType = "JWT"
         };
-        var json = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj));
-        if (json == null)
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj));
+        if (obj1 == null)
         {
             return new OAuthXSTSRes
             {
                 State = LoginState.DataError
             };
         }
-        var xstsToken = json.GetString("Token");
-        var list = json.GetObj("DisplayClaims")?.GetArray("xui");
-        if (list == null)
+
+        var json = obj1.RootElement;
+        var xstsToken = json.GetProperty("Token").GetString();
+        var list = json.GetProperty("DisplayClaims").GetProperty("xui");
+        if (list.ValueKind != JsonValueKind.Array)
         {
             return new OAuthXSTSRes
             {
                 State = LoginState.DataError
             };
         }
-        var xstsUhs = list.FirstOrDefault()?.AsObject().GetString("uhs");
+        var xstsUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))
@@ -295,6 +300,6 @@ public static class OAuthApi
     /// </summary>
     public static void Cancel()
     {
-        s_cancel.Cancel();
+        s_cancel?.Cancel();
     }
 }

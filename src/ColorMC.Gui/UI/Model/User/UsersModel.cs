@@ -564,22 +564,29 @@ public partial class UsersModel : TopModel
     /// </summary>
     /// <param name="url"></param>
     /// <param name="code"></param>
-    private async void LoginOAuthCode(string url, string code)
+    private async void LoginOAuthCode(string url, bool iscode, string code)
     {
-        Model.ProgressClose();
-        Model.InputWithReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
-            string.Format(App.Lang("UserWindow.Info7"), code), () =>
-            {
-                _cancel = true;
-                UserBinding.OAuthCancel();
-            });
-        BaseBinding.OpenUrl($"{url}?otc={code}");
-        var top = Model.GetTopLevel();
-        if (top == null)
+        if (iscode)
         {
-            return;
+            Model.ProgressClose();
+            Model.InputWithReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
+                string.Format(App.Lang("UserWindow.Info7"), code), true, false, true, () =>
+                {
+                    _cancel = true;
+                    UserBinding.OAuthCancel();
+                });
+            BaseBinding.OpenUrl($"{url}?otc={code}");
+            var top = Model.GetTopLevel();
+            if (top == null)
+            {
+                return;
+            }
+            await BaseBinding.CopyTextClipboard(top, code);
         }
-        await BaseBinding.CopyTextClipboard(top, code);
+        else
+        {
+            Model.Progress(string.Format(App.Lang("UserWindow.Info14"), code));
+        }
     }
 
     public override void Close()
@@ -656,6 +663,11 @@ public partial class UsersModel : TopModel
         if (_locks != null)
         {
             model.Locks = [.. _locks];
+        }
+
+        if (DisplayType != 0)
+        {
+            model.Type = DisplayType - 1;
         }
 
         if (DialogHost.IsDialogOpen(UsersControl.DialogName))

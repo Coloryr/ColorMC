@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
@@ -241,12 +242,12 @@ public static class CoreHttpClient
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    public static async Task<JsonObject?> LoginPostJsonAsync(string url, string arg)
+    public static async Task<JsonDocument?> LoginPostJsonAsync(string url, string arg)
     {
         var content = new StringContent(arg, MediaTypeHeaderValue.Parse("application/json"));
         using var message = await _loginClient.PostAsync(url, content);
         using var data = await message.Content.ReadAsStreamAsync();
-        return await JsonUtils.ReadAsObjAsync(data);
+        return await JsonDocument.ParseAsync(data);
     }
 
     /// <summary>

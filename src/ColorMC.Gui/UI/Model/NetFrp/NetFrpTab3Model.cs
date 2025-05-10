@@ -185,7 +185,7 @@ public partial class NetFrpModel
             Dispatcher.UIThread.Post(() =>
             {
                 IsOk = true;
-                Model.InputWithReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, null);
+                Model.InputWithReadInfo(App.Lang("NetFrpWindow.Tab3.Info1"), _remoteIP, false, true, false, null);
             });
         }
     }

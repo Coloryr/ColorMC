@@ -75,8 +75,9 @@ public static class ColorMCCore
     /// OAuth登录
     /// </summary>
     /// <param name="url">网址</param>
+    /// <param name="iscode">是否为登陆码模式</param>
     /// <param name="code">登陆码</param>
-    public delegate void LoginOAuthCode(string url, string code);
+    public delegate void LoginOAuthCode(string url, bool iscode, string code);
     /// <summary>
     /// 游戏复写
     /// </summary>
