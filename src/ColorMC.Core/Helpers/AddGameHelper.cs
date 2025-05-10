@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -40,7 +41,8 @@ public static class AddGameHelper
                 var mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                 if (mmc != null)
                 {
-                    var mmc1 = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCCfgFile));
+                    using var stream1 = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCCfgFile));
+                    var mmc1 = Options.ReadOptions(stream1, "=");
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
                     game.Icon = res.Icon + ".png";
@@ -207,18 +209,19 @@ public static class AddGameHelper
                 using var zFile = new ZipArchive(st);
                 string path = "";
                 MMCObj? mmc = null;
-                ZipArchiveEntry? mmc1 = null;
+                Dictionary<string, string>? mmc1 = null;
                 foreach (var e in zFile.Entries)
                 {
-                    if (mmc == null && e.Name.EndsWith(Names.NameMMCJsonFile))
+                    if (mmc == null && e.Name == Names.NameMMCJsonFile)
                     {
                         using var stream = e.Open();
-                        path = e.Name[..^Path.GetFileName(e.Name).Length];
+                        path = e.FullName[..^e.Name.Length];
                         mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                     }
-                    else if (mmc1 != null && e.Name.EndsWith(Names.NameMMCCfgFile))
+                    else if (mmc1 != null && e.Name == Names.NameMMCCfgFile)
                     {
-                        mmc1 = e;
+                        using var stream1 = e.Open();
+                        mmc1 = Options.ReadOptions(stream1, "=");
                     }
 
                     if (mmc != null && mmc1 != null)
@@ -231,9 +234,8 @@ public static class AddGameHelper
                 {
                     return false;
                 }
-
-                using var stream1 = mmc1.Open();
-                var res = mmc.ToColorMC(stream1);
+                
+                var res = mmc.ToColorMC(mmc1);
                 game = res.Game;
 
                 if (!string.IsNullOrWhiteSpace(arg.Name))
@@ -266,10 +268,10 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Name.StartsWith(path))
+                    if (e.FullName.StartsWith(path))
                     {
                         using var stream = e.Open();
-                        string file = Path.GetFullPath($"{game.GetBasePath()}/{e.Name[path.Length..]}");
+                        string file = Path.GetFullPath($"{game.GetBasePath()}/{e.FullName[path.Length..]}");
                         await PathHelper.WriteBytesAsync(file, stream);
                     }
                 }
@@ -339,10 +341,10 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Name.StartsWith(overrides))
+                    if (e.FullName.StartsWith(overrides))
                     {
-                        string file = Path.GetFullPath(game.GetGamePath() + e.Name[overrides.Length..]);
-                        if (e.Name.EndsWith(Names.NameIconFile))
+                        string file = Path.GetFullPath(game.GetGamePath() + e.FullName[overrides.Length..]);
+                        if (e.Name == Names.NameIconFile)
                         {
                             file = game.GetIconFile();
                         }

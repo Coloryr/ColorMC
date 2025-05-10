@@ -330,7 +330,7 @@ public static class Mods
         obj.InJar ??= [];
         foreach (var item3 in zFile.Entries)
         {
-            if (item3.Name.EndsWith(Names.NameJarExt) && item3.Name.StartsWith("META-INF/jarjar/"))
+            if (item3.Name.EndsWith(Names.NameJarExt) && item3.FullName.StartsWith("META-INF/jarjar/"))
             {
                 using var stream = item3.Open();
                 using var zFile1 = new ZipArchive(stream);
@@ -804,7 +804,7 @@ public static class Mods
             //使用jarjar的内容
             foreach (var item3 in zFile.Entries)
             {
-                if (item3.Name.EndsWith(".jar") && item3.Name.StartsWith("META-INF/jarjar/"))
+                if (item3.Name.EndsWith(Names.NameJarExt) && item3.FullName.StartsWith("META-INF/jarjar/"))
                 {
                     using var stream = item3.Open();
                     using var zFile1 = new ZipArchive(stream);

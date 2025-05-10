@@ -127,28 +127,28 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             foreach (var theEntry in s.Entries)
             {
                 _now++;
-                ZipUpdate?.Invoke(theEntry.Name, _now, _size);
+                ZipUpdate?.Invoke(theEntry.FullName, _now, _size);
 
-                var item = Path.GetFullPath($"{path}/{theEntry.Name}");
+                var item = Path.GetFullPath($"{path}/{theEntry.FullName}");
                 var info = new FileInfo(item);
 
                 info.Directory?.Create();
 
-                if (info.Name != string.Empty)
+                if (info.FullName != string.Empty)
                 {
-                    if (PathHelper.FileHasInvalidChars(info.Name))
+                    if (PathHelper.FileHasInvalidChars(info.FullName))
                     {
                         if (GameRequest == null)
                         {
                             return false;
                         }
                         var res = await GameRequest.Invoke(string.Format(
-                            LanguageHelper.Get("Core.Zip.Info1"), theEntry.Name));
+                            LanguageHelper.Get("Core.Zip.Info1"), theEntry.FullName));
                         if (!res)
                         {
                             return false;
                         }
-                        item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
+                        item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.FullName));
                     }
                     using var stream2 = theEntry.Open();
                     await PathHelper.WriteBytesAsync(item, stream2);

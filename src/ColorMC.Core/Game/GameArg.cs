@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Json;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -39,11 +40,11 @@ public static class GameArg
     private static List<string> MakeV2GameArg(GameArgObj game)
     {
         var list = new List<string>();
-        foreach (object item in game.Arguments.Game)
+        foreach (JsonElement item in game.Arguments.Game)
         {
-            if (item is string str)
+            if (item.ValueKind is JsonValueKind.String)
             {
-                list.Add(str);
+                list.Add(item.GetString()!);
             }
             //else if (item is JObject)
             //{
@@ -174,9 +175,9 @@ public static class GameArg
 
         var list = new List<string>();
         //添加原版参数
-        foreach (object item in game.Arguments.Jvm)
+        foreach (JsonElement item in game.Arguments.Jvm)
         {
-            if (item is string str)
+            if (item.ValueKind is JsonValueKind.String)
             {
                 #region Phone
 #if Phone
@@ -192,22 +193,34 @@ public static class GameArg
                 }
 #endif
                 #endregion
-                list.Add(str);
+                list.Add(item.GetString()!);
             }
-            else if (item is GameArgObj.GameArgumentsObj.GameJvmObj obj1)
+            else if (item.ValueKind is JsonValueKind.Object)
             {
+                var obj1 = item.Deserialize(JsonType.GameJvmObj);
+                if (obj1 == null)
+                {
+                    continue;
+                }
                 //检查是否需要使用
                 if (!CheckHelpers.CheckAllow(obj1.Rules))
                 {
                     continue;
                 }
 
-                if (obj1.Value is string item2)
+                var value = (JsonElement)obj1.Value;
+
+                if (value.ValueKind is JsonValueKind.String)
                 {
-                    list.Add(item2!);
+                    list.Add(value.GetString()!);
                 }
-                else if (obj1.Value is List<string> list1)
+                else if (value.ValueKind is JsonValueKind.Array)
                 {
+                    var list1 = value.Deserialize(JsonType.ListString);
+                    if (list1 == null)
+                    {
+                        continue;
+                    }
                     list.AddRange(list1);
                 }
             }

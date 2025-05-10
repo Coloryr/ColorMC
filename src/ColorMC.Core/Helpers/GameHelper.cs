@@ -345,7 +345,7 @@ public static class GameHelper
         using var zFile = new ZipArchive(stream);
         foreach (var e in zFile.Entries)
         {
-            if (e.Name.StartsWith("META-INF"))
+            if (e.FullName.StartsWith("META-INF"))
             {
                 continue;
             }
@@ -366,10 +366,10 @@ public static class GameHelper
     /// <param name="mmc">MMC储存</param>
     /// <param name="mmc1">MMC储存</param>
     /// <returns>游戏设置</returns>
-    public static MMCToColorMCRes ToColorMC(this MMCObj mmc, Stream? mmc1)
+    public static MMCToColorMCRes ToColorMC(this MMCObj mmc, Dictionary<string, string> list)
     {
         var res = new MMCToColorMCRes();
-        var list = Options.ReadOptions(mmc1, "=");
+        
         var game = new GameSettingObj
         {
             Loader = Loaders.Normal

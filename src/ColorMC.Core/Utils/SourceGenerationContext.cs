@@ -182,4 +182,5 @@ public static class JsonType
     public static JsonTypeInfo<List<LoginObj>> ListLoginObj => SourceGenerationContext.Default.ListLoginObj;
     public static JsonTypeInfo<Dictionary<string, MavenItemObj>> DictionaryStringMavenItemObj => SourceGenerationContext.Default.DictionaryStringMavenItemObj;
     public static JsonTypeInfo<ServerPackObj> ServerPackObj => SourceGenerationContext.Default.ServerPackObj;
+    public static JsonTypeInfo<GameArgObj.GameArgumentsObj.GameJvmObj> GameJvmObj => SourceGenerationContext.Default.GameJvmObj;
 }

@@ -75,13 +75,13 @@ public static class ToolUtils
             TarEntry? item;
             while ((item = tarArchive.GetNextEntry()) != null)
             {
-                if (!item.Name.EndsWith(GuiNames.NameFrpFile)
-                    || !item.Name.EndsWith(GuiNames.NameHdiffFile))
+                if (item.Name != GuiNames.NameFrpFile
+                    || item.Name != GuiNames.NameHdiffFile)
                 {
                     continue;
                 }
 
-                item.ExtractToFileAsync(Path.Combine(local, Path.GetFileName(item.Name)), true);
+                item.ExtractToFileAsync(Path.Combine(local, item.Name), true);
 
                 break;
             }
@@ -92,15 +92,15 @@ public static class ToolUtils
             using var s = new ZipArchive(stream);
             foreach (var item in s.Entries)
             {
-                if (!item.Name.EndsWith(GuiNames.NameFrpFile1)
-                    || !item.Name.EndsWith(GuiNames.NameFrpFile)
-                    || !item.Name.EndsWith(GuiNames.NameHdiffFile)
-                    || !item.Name.EndsWith(GuiNames.NameHdiffFile1))
+                if (item.Name != GuiNames.NameFrpFile1
+                    || item.Name != GuiNames.NameFrpFile
+                    || item.Name != GuiNames.NameHdiffFile
+                    || item.Name != GuiNames.NameHdiffFile1)
                 {
                     continue;
                 }
 
-                item.ExtractToFile(Path.Combine(local, Path.GetFileName(item.Name)), true);
+                item.ExtractToFile(Path.Combine(local, item.Name), true);
                 break;
             }
         }

@@ -158,10 +158,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Name.StartsWith(info.Overrides + "/"))
+            if (e.FullName.StartsWith(info.Overrides + "/"))
             {
                 using var stream = e.Open();
-                string file = Path.Combine(arg.Game.GetGamePath(), e.Name[info.Overrides.Length..]);
+                string file = Path.Combine(arg.Game.GetGamePath(), e.FullName[info.Overrides.Length..]);
                 FileInfo info2 = new(file);
                 info2.Directory?.Create();
                 using FileStream stream2 = new(file, FileMode.Create,
@@ -462,10 +462,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Name.StartsWith(dir))
+            if (e.FullName.StartsWith(dir))
             {
                 using var stream = e.Open();
-                string file = Path.GetFullPath(game.GetGamePath() + e.Name[info.Overrides.Length..]);
+                string file = Path.GetFullPath(game.GetGamePath() + e.FullName[info.Overrides.Length..]);
                 file = PathHelper.ReplacePathName(file);
                 var info2 = new FileInfo(file);
                 info2.Directory?.Create();
@@ -570,10 +570,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Name.StartsWith(dir))
+            if (e.FullName.StartsWith(dir))
             {
                 using var stream = e.Open();
-                string file = Path.Combine(arg.Game.GetGamePath(), e.Name[length..]);
+                string file = Path.Combine(arg.Game.GetGamePath(), e.FullName[length..]);
                 var info2 = new FileInfo(file);
                 info2.Directory?.Create();
                 using var stream2 = new FileStream(file, FileMode.Create,
@@ -852,10 +852,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Name.StartsWith(dir))
+            if (e.FullName.StartsWith(dir))
             {
                 using var stream = e.Open();
-                string file = Path.GetFullPath(game.GetGamePath() + e.Name[length..]);
+                string file = Path.GetFullPath(game.GetGamePath() + e.FullName[length..]);
                 file = PathHelper.ReplacePathName(file);
                 var info2 = new FileInfo(file);
                 info2.Directory?.Create();

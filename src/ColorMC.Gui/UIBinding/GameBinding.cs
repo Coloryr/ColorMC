@@ -2079,26 +2079,26 @@ public static class GameBinding
                 using var zFile = new ZipArchive(stream);
                 foreach (var item in zFile.Entries)
                 {
-                    if (item.Name.EndsWith("game.json"))
+                    if (item.Name == "game.json")
                     {
                         return PackType.ColorMC;
                     }
-                    else if (item.Name.EndsWith("mcbbs.packmeta"))
+                    else if (item.Name == "mcbbs.packmeta")
                     {
                         return PackType.HMCL;
                     }
-                    else if (item.Name.EndsWith("instance.cfg"))
+                    else if (item.Name == "instance.cfg")
                     {
                         return PackType.MMC;
                     }
-                    else if (item.Name.EndsWith("manifest.json"))
+                    else if (item.Name == "manifest.json")
                     {
                         return PackType.CurseForge;
                     }
                 }
                 foreach (var item in zFile.Entries)
                 {
-                    if (item.Name.StartsWith(".minecraft/"))
+                    if (item.FullName.StartsWith(".minecraft/"))
                     {
                         return PackType.ZipPack;
                     }

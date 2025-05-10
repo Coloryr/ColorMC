@@ -77,9 +77,9 @@ public static class Worlds
                 var find = false;
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Name.EndsWith(Names.NameLevelFile))
+                    if (e.Name == Names.NameLevelFile)
                     {
-                        dir1 = e.Name.Replace(Names.NameLevelFile, "");
+                        dir1 = e.FullName.Replace(Names.NameLevelFile, "");
                         find = true;
                         break;
                     }
@@ -92,7 +92,7 @@ public static class Worlds
 
                 foreach (var e in zFile.Entries)
                 {
-                    var file1 = Path.Combine(dir, e.Name[dir1.Length..]);
+                    var file1 = Path.Combine(dir, e.FullName[dir1.Length..]);
                     e.ExtractToFile(file1, true);
                 }
 

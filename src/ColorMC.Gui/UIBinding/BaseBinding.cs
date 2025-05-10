@@ -360,7 +360,7 @@ public static class BaseBinding
 
         foreach (var item in zip.Entries)
         {
-            if (item.Name.Contains(file))
+            if (item.FullName.Contains(file))
             {
                 using var stream1 = item.Open();
                 await PathHelper.WriteBytesAsync(file1, stream1);
