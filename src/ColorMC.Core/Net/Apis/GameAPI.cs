@@ -72,7 +72,7 @@ public static class GameAPI
             var mem = new MemoryStream();
             await stream.CopyToAsync(mem);
             mem.Seek(0, SeekOrigin.Begin);
-            var obj = JsonUtils.ToObj(stream, JsonType.GameArgObj);
+            var obj = JsonUtils.ToObj(mem, JsonType.GameArgObj);
             mem.Seek(0, SeekOrigin.Begin);
             return new()
             {
@@ -103,7 +103,7 @@ public static class GameAPI
             var mem = new MemoryStream();
             await stream.CopyToAsync(mem);
             mem.Seek(0, SeekOrigin.Begin);
-            var obj = JsonUtils.ToObj(stream, JsonType.VersionObj);
+            var obj = JsonUtils.ToObj(mem, JsonType.VersionObj);
             mem.Seek(0, SeekOrigin.Begin);
             return new()
             {
