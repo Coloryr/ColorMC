@@ -132,7 +132,7 @@ public static class TestItem
 
     public static void Item8()
     {
-        var login = GameAuth.LoginOAuthAsync((_, _) => { }).Result;
+        var login = GameAuth.LoginOAuthAsync((_, _, _) => { }).Result;
         if (login.LoginState != LoginState.Done)
         {
             Console.WriteLine("登录错误");
