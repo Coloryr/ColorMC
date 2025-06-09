@@ -92,11 +92,6 @@ public partial class MainModel : TopModel, IMutTop
     [ObservableProperty]
     private bool _haveCard = true;
     /// <summary>
-    /// 欢迎消息
-    /// </summary>
-    [ObservableProperty]
-    private string _helloText;
-    /// <summary>
     /// 音频按钮
     /// </summary>
     [ObservableProperty]
@@ -106,16 +101,12 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     private bool _isGetNewInfo;
 
-    private int _helloClick;
-
     public MainModel(BaseModel model) : base(model)
     {
         ImageManager.SkinChange += SkinChange;
         UserBinding.UserEdit += LoadUser;
 
         MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
-
-        ShowHello();
     }
 
     /// <summary>
@@ -203,30 +194,6 @@ public partial class MainModel : TopModel, IMutTop
         {
             item.SetMinMode(MinMode);
         }
-    }
-
-    /// <summary>
-    /// 显示欢迎信息
-    /// </summary>
-    public void HelloClick()
-    {
-        _helloClick++;
-        if (_helloClick == 25)
-        {
-            HelloText = "锟斤拷锟斤拷烫烫烫烫烫烫烫烫烫";
-        }
-        else
-        {
-            HelloText = App.Lang("Hello.Text1");
-        }
-    }
-
-    /// <summary>
-    /// 显示欢迎信息
-    /// </summary>
-    private void ShowHello()
-    {
-        HelloText = App.Lang("Hello.Text1");
     }
 
     /// <summary>

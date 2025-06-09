@@ -355,8 +355,8 @@ public class AvaloniaApi(GlInterface gl) : OpenGLApi
         gl.Uniform1f(loc, v);
     }
 
-    public override void TexStorage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
-    {
-        GLTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
-    }
+    //public override void TexStorage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
+    //{
+    //    GLTexStorage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+    //}
 }

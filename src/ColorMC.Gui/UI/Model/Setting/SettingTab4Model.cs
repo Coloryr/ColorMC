@@ -187,6 +187,11 @@ public partial class SettingModel
     private bool _argLoad = true;
 
     //配置修改
+    partial void OnCloseBeforeChanged(bool value)
+    {
+        ConfigBinding.SetLaunchCloseConfig(value);
+    }
+
     partial void OnColorASMChanged(bool value)
     {
         SetArg();

@@ -43,35 +43,20 @@
                         Name="Head"
                         Margin="10,0,20,0"
                         DockPanel.Dock="Top">
-                        <Decorator
-                            Name="TopRight"
-                            Width="200"
-                            DockPanel.Dock="Right">
-                            <views2:MainUserControl Name="UserButton" IsVisible="{Binding PlayerDisplay}" />
-                        </Decorator>
-                        <StackPanel
+                        <Panel
                             Name="HeadTop"
-                            MinHeight="60"
-                            Margin="0,0,10,0"
+                            MinHeight="30"
                             DockPanel.Dock="Top">
+                            <views2:MainUserControl
+                                Name="UserButton"
+                                HorizontalAlignment="Left"
+                                IsVisible="{Binding PlayerDisplay}" />
                             <Panel.Styles>
                                 <Style Selector="Button">
                                     <Setter Property="Background" Value="Transparent" />
                                     <Setter Property="BorderThickness" Value="0" />
                                 </Style>
                             </Panel.Styles>
-                            <WrapPanel RenderOptions.TextRenderingMode="Antialias">
-                                <TextBlock
-                                    VerticalAlignment="Top"
-                                    FontSize="24"
-                                    Text="{setting:Localize MainWindow.Text23}" />
-                                <TextBlock
-                                    Name="HelloText"
-                                    Margin="10,0,0,3"
-                                    VerticalAlignment="Bottom"
-                                    FontSize="16"
-                                    Text="{Binding HelloText}" />
-                            </WrapPanel>
                             <Panel
                                 Name="Buttons"
                                 Margin="0,0,0,0"
@@ -86,6 +71,23 @@
                                         Height="30"
                                         Margin="0,0,5,0"
                                         VerticalAlignment="Top"
+                                        Command="{Binding ShowSkin}"
+                                        CornerRadius="5"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text9}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <svg:SvgControl Path="/Resource/Icon/skin.svg" />
+                                            <TextBlock
+                                                Margin="0,0,0,5"
+                                                VerticalAlignment="Bottom"
+                                                FontSize="14"
+                                                IsVisible="{Binding !MinMode}"
+                                                Text="{setting:Localize MainWindow.Text39}" />
+                                        </StackPanel>
+                                    </Button>
+                                    <Button
+                                        Height="30"
+                                        Margin="0,0,5,0"
+                                        VerticalAlignment="Top"
                                         Command="{Binding OpenCollect}"
                                         CornerRadius="5"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text133}">
@@ -95,6 +97,7 @@
                                                 Margin="0,0,0,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
+                                                IsVisible="{Binding !MinMode}"
                                                 Text="{setting:Localize MainWindow.Text34}" />
                                         </StackPanel>
                                     </Button>
@@ -111,6 +114,7 @@
                                                 Margin="0,0,0,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
+                                                IsVisible="{Binding !MinMode}"
                                                 Text="{setting:Localize MainWindow.Text29}" />
                                         </StackPanel>
                                     </Button>
@@ -127,6 +131,7 @@
                                                 Margin="0,0,0,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
+                                                IsVisible="{Binding !MinMode}"
                                                 Text="{setting:Localize MainWindow.Text30}" />
                                         </StackPanel>
                                     </Button>
@@ -141,12 +146,13 @@
                                                 Margin="0,0,0,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
+                                                IsVisible="{Binding !MinMode}"
                                                 Text="{setting:Localize MainWindow.Text31}" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
                             </Panel>
-                        </StackPanel>
+                        </Panel>
                     </DockPanel>
                     <ScrollViewer
                         Name="RightViewer"

@@ -54,13 +54,7 @@ public partial class MainControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
 
         SizeChanged += MainControl_SizeChanged;
-        HelloText.PointerPressed += HelloText_PointerPressed;
         BaseBinding.LoadDone += LoadDone;
-    }
-
-    private void HelloText_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        (DataContext as MainModel)?.HelloClick();
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -427,15 +421,15 @@ public partial class MainControl : BaseUserControl
             {
                 if (model.MinMode)
                 {
-                    TopRight.IsVisible = false;
+                    //TopRight.IsVisible = false;
 
                     Head.Children.Remove(HeadTop);
                     ContentTop.Children.Add(HeadTop);
                     HeadTop.Margin = new(0, 0, 0, 10);
 
-                    TopRight.Child = null;
-                    ContentTop.Children.Add(UserButton);
-                    UserButton.Margin = new(0, 0, 0, 10);
+                    //TopRight.Child = null;
+                    //ContentTop.Children.Add(UserButton);
+                    //UserButton.Margin = new(0, 0, 0, 10);
 
                     Right.Child = null;
                     ContentTop.Children.Add(RightSide);
@@ -445,15 +439,15 @@ public partial class MainControl : BaseUserControl
                 }
                 else
                 {
-                    TopRight.IsVisible = true;
+                    //TopRight.IsVisible = true;
 
                     ContentTop.Children.Remove(HeadTop);
                     Head.Children.Add(HeadTop);
                     HeadTop.Margin = new(0, 0, 10, 0);
 
-                    ContentTop.Children.Remove(UserButton);
-                    TopRight.Child = UserButton;
-                    UserButton.Margin = new(0);
+                    //ContentTop.Children.Remove(UserButton);
+                    //TopRight.Child = UserButton;
+                    //UserButton.Margin = new(0);
 
                     ContentTop.Children.Remove(RightSide);
                     Right.Child = RightSide;
