@@ -299,7 +299,7 @@ public static class Media
         {
             return MediaType.Mp3;
         }
-        else if (temp[0] == 0xFF && temp[1] == 0xE0)
+        else if (temp[0] == 0xFF && temp[1] == 0xFB)
         {
             return MediaType.Mp3;
         }
