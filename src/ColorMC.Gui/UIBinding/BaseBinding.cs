@@ -324,54 +324,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 导入Live2D核心
-    /// </summary>
-    /// <param name="local">导入路径</param>
-    /// <returns></returns>
-    [Obsolete("A37 remove")]
-    public static async Task<bool> SetLive2DCore(string local)
-    {
-        using var stream = PathHelper.OpenRead(local);
-        if (stream == null)
-        {
-            return false;
-        }
-        using var zip = new ZipArchive(stream);
-        string file = "";
-        string file1 = Directory.GetCurrentDirectory();
-        switch (SystemInfo.Os)
-        {
-            case OsType.Windows:
-                file = "Core/dll/windows/" + (SystemInfo.Is64Bit ? "x86_64" : "x86") + "/Live2DCubismCore.dll";
-                file1 += "/Live2DCubismCore.dll";
-                break;
-            case OsType.MacOS:
-                file = "Core/dll/macos/libLive2DCubismCore.dylib";
-                file1 += "/Live2DCubismCore.dylib";
-                break;
-            case OsType.Linux:
-                file = SystemInfo.IsArm ? "Core/dll/linux/x86_64/libLive2DCubismCore.so"
-                    : "Core/dll/experimental/rpi/libLive2DCubismCore.so";
-                file1 += "/Live2DCubismCore.so";
-                break;
-        }
-
-        file1 = Path.GetFullPath(file1);
-
-        foreach (var item in zip.Entries)
-        {
-            if (item.FullName.Contains(file))
-            {
-                using var stream1 = item.Open();
-                await PathHelper.WriteBytesAsync(file1, stream1);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /// <summary>
     /// 启动Frp
     /// </summary>
     /// <param name="item1">远程Frp项目</param>

@@ -33,11 +33,6 @@
         </dialog:DialogHost.DataTemplates>
         <Panel>
             <Panel Name="MainView">
-                <views2:Live2dControl
-                    Width="{Binding Live2dWidth}"
-                    Height="{Binding Live2dHeight}"
-                    HorizontalAlignment="{Binding L2dPos}"
-                    VerticalAlignment="{Binding L2dPos1}" />
                 <DockPanel Margin="10,10,0,0">
                     <DockPanel
                         Name="Head"

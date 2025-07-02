@@ -418,8 +418,6 @@ public static class GameBinding
                 item.Key.LaunchData.LastTime = DateTime.Now;
                 item.Key.SaveLaunchData();
 
-                WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
-
                 GameCountUtils.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
@@ -654,8 +652,6 @@ public static class GameBinding
 
             obj.LaunchData.LastTime = DateTime.Now;
             obj.SaveLaunchData();
-
-            WindowManager.MainWindow?.ShowMessage(App.Lang("Live2dControl.Text2"));
 
             GameCountUtils.LaunchDone(obj);
             GameStateUpdate(obj);

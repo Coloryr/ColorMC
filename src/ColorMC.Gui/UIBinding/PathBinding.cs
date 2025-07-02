@@ -576,16 +576,6 @@ public static class PathBinding
                     return (res[0].GetPath(), res[0].Name);
                 }
                 break;
-            case FileType.Live2D:
-                res = await SelectFile(top,
-                    App.Lang("PathBinding.Text36"),
-                    MODEL,
-                    App.Lang("PathBinding.Text37"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
-                break;
             case FileType.GameIcon:
                 res = await SelectFile(top,
                     App.Lang("PathBinding.Text7"),
@@ -611,16 +601,6 @@ public static class PathBinding
                     App.Lang("PathBinding.Text9"),
                     HEADFILE,
                     App.Lang("PathBinding.Text10"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
-                break;
-            case FileType.Live2DCore:
-                res = await SelectFile(top,
-                    App.Lang("PathBinding.Text38"),
-                    ZIPFILE,
-                    App.Lang("PathBinding.Text39"));
                 if (res?.Any() == true)
                 {
                     return (res[0].GetPath(), res[0].Name);

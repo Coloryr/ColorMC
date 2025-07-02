@@ -354,12 +354,10 @@
     <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
-    <PackageReference Include="System.IO.Hashing" Version="9.0.5" />
-    <PackageReference Include="System.Text.Json" Version="9.0.5" />
+    <PackageReference Include="System.IO.Hashing" Version="9.0.6" />
+    <PackageReference Include="System.Text.Json" Version="9.0.6" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.App\Live2DCSharpSDK.App.csproj" />
-    <ProjectReference Include="..\..\Live2DCSharpSDK\Live2DCSharpSDK.OpenGL\Live2DCSharpSDK.OpenGL.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.Image\MinecraftSkinRender.Image.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.OpenGL\MinecraftSkinRender.OpenGL.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />

@@ -131,7 +131,6 @@ public enum WebType
     BSD,
     OpenFrp,
     OpenFrpApi,
-    Live2DCore,
     ColorMCDownload,
     EditSkin,
     LittleSkinEditSkin,
