@@ -20,26 +20,26 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// Ö÷´°¿Ú
+/// ä¸»çª—å£
 /// </summary>
 public partial class MainControl : BaseUserControl
 {
     public const string DialogName = "MainCon";
 
     /// <summary>
-    /// µ¥ÓÎÏ·ÊµÀı
+    /// å•æ¸¸æˆå®ä¾‹
     /// </summary>
     private MainOneGameControl? _oneGame;
     /// <summary>
-    /// Ã»ÓĞÓÎÏ·ÊµÀı
+    /// æ²¡æœ‰æ¸¸æˆå®ä¾‹
     /// </summary>
     private MainEmptyControl? _emptyGame;
     /// <summary>
-    /// ÓÎÏ·ÊµÀıÁĞ±í
+    /// æ¸¸æˆå®ä¾‹åˆ—è¡¨
     /// </summary>
     private MainGamesControl? _games;
     /// <summary>
-    /// ¼òÒ×Ö÷½çÃæ
+    /// ç®€æ˜“ä¸»ç•Œé¢
     /// </summary>
     private SimpleControl? _simple;
 
@@ -53,7 +53,6 @@ public partial class MainControl : BaseUserControl
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        SizeChanged += MainControl_SizeChanged;
         BaseBinding.LoadDone += LoadDone;
     }
 
@@ -77,16 +76,6 @@ public partial class MainControl : BaseUserControl
         }
 
         return Task.FromResult(false);
-    }
-
-    private void MainControl_SizeChanged(object? sender, SizeChangedEventArgs e)
-    {
-        var config = GuiConfigUtils.Config.Live2D;
-        if (DataContext is MainModel model)
-        {
-            model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-            model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-        }
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
@@ -235,8 +224,6 @@ public partial class MainControl : BaseUserControl
 
     public override async void Opened()
     {
-        ChangeLive2DSize();
-
         var config = GuiConfigUtils.Config.ServerCustom;
         if (BaseBinding.NewStart || config.CustomStart)
         {
@@ -280,16 +267,16 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÓÎÏ·ÊµÀıÍË³ö
+    /// æ¸¸æˆå®ä¾‹é€€å‡º
     /// </summary>
-    /// <param name="uuid">ÓÎÏ·ÊµÀıUUID</param>
+    /// <param name="uuid">æ¸¸æˆå®ä¾‹UUID</param>
     public void GameClose(string uuid)
     {
         (DataContext as MainModel)!.GameClose(uuid);
     }
 
     /// <summary>
-    /// ³õÊ¼»¯Íê³É
+    /// åˆå§‹åŒ–å®Œæˆ
     /// </summary>
     public void LoadDone()
     {
@@ -300,7 +287,7 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// ¼ÓÔØÓÎÏ·ÁĞ±í
+    /// åŠ è½½æ¸¸æˆåˆ—è¡¨
     /// </summary>
     public void LoadGameItem()
     {
@@ -311,7 +298,7 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// Motd¼ÓÔØ
+    /// MotdåŠ è½½
     /// </summary>
     public void MotdLoad()
     {
@@ -321,64 +308,10 @@ public partial class MainControl : BaseUserControl
         });
     }
 
-    /// <summary>
-    /// ¸ü»»L2DÄ£ĞÍ
-    /// </summary>
-    public void ChangeModel()
-    {
-        (DataContext as MainModel)!.ChangeModel();
-    }
-
-    /// <summary>
-    /// É¾³ıL2DÄ£ĞÍ
-    /// </summary>
-    public void DeleteModel()
-    {
-        (DataContext as MainModel)!.DeleteModel();
-    }
-
-    /// <summary>
-    /// ĞŞ¸ÄL2DäÖÈ¾´óĞ¡
-    /// </summary>
-    public void ChangeLive2DSize()
-    {
-        var config = GuiConfigUtils.Config.Live2D;
-        var model = (DataContext as MainModel)!;
-        model.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        model.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-        model.L2dPos = (HorizontalAlignment)((config.Pos % 3) + 1);
-        model.L2dPos1 = (VerticalAlignment)((config.Pos / 3) + 1);
-    }
-
-    /// <summary>
-    /// ÇĞ»»L2DÄ£ĞÍ
-    /// </summary>
-    public void ChangeLive2DMode()
-    {
-        var config = GuiConfigUtils.Config.Live2D;
-        var model = (DataContext as MainModel)!;
-
-        model.LowFps = config.LowFps;
-    }
-
-    /// <summary>
-    /// L2DÄ£ĞÍÏÔÊ¾ÎÄ×Ö
-    /// </summary>
-    /// <param name="message">ÎÄ±¾</param>
-    public void ShowMessage(string message)
-    {
-        (DataContext as MainModel)!.L2dShowMessage(message);
-    }
-
     protected override TopModel GenModel(BaseModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
-
-        var config = GuiConfigUtils.Config.Live2D;
-        amodel.Live2dWidth = (int)(Bounds.Width * ((float)config.Width / 100));
-        amodel.Live2dHeight = (int)(Bounds.Height * ((float)config.Height / 100));
-
         return amodel;
     }
 
@@ -468,9 +401,9 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÓÎÏ·ÊµÀıÍ¼±êĞŞ¸Ä
+    /// æ¸¸æˆå®ä¾‹å›¾æ ‡ä¿®æ”¹
     /// </summary>
-    /// <param name="uuid">ÓÎÏ·ÊµÀıUUID</param>
+    /// <param name="uuid">æ¸¸æˆå®ä¾‹UUID</param>
     public void IconChange(string uuid)
     {
         if (DataContext is MainModel model)
@@ -480,7 +413,7 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// Ö÷½çÃæÒş²Ø
+    /// ä¸»ç•Œé¢éšè—
     /// </summary>
     public void Hide()
     {
@@ -491,7 +424,7 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// Ö÷½çÃæ»¹Ô­
+    /// ä¸»ç•Œé¢è¿˜åŸ
     /// </summary>
     public void Show()
     {

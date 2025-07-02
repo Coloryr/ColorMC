@@ -40,8 +40,6 @@ namespace ColorMC.Setup.Wix
         //                        new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
         //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Core.pdb"),
         //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Gui.pdb"),
-        //                    new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.App.pdb"),
-        //                    new File(@"..\build_out\win-arm64-dotnet\Live2DCSharpSDK.Framework.pdb"),
         //                    new File(@"..\build_out\win-arm64-dotnet\ColorMC.Launcher.pdb"),
         //                    new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         //}

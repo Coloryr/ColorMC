@@ -222,10 +222,6 @@ public partial class MainModel : TopModel, IMutTop
     {
         var config = GuiConfigUtils.Config;
         IsSimple = config.Simple;
-        if (config.Live2D?.LowFps == true)
-        {
-            LowFps = true;
-        }
         if (config?.CheckUpdate == true)
         {
             CheckUpdate();

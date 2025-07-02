@@ -12,7 +12,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Live2DCSharpSDK.Framework.Core;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -103,11 +102,6 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _enableWindowTran;
     /// <summary>
-    /// Live2d核心是否安装
-    /// </summary>
-    [ObservableProperty]
-    private bool _coreInstall;
-    /// <summary>
     /// 是否启用动画虚化
     /// </summary>
     [ObservableProperty]
@@ -117,16 +111,6 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _enableBG;
-    /// <summary>
-    /// 是否启用Live2d
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableLive2D;
-    /// <summary>
-    /// 是否降低FPS
-    /// </summary>
-    [ObservableProperty]
-    private bool _lowFps;
     /// <summary>
     /// 是否启用动画
     /// </summary>
@@ -199,41 +183,16 @@ public partial class SettingModel
     [ObservableProperty]
     private int _rgbV2;
     /// <summary>
-    /// Live2d宽度
-    /// </summary>
-    [ObservableProperty]
-    private int _l2dWidth;
-    /// <summary>
-    /// Live2d高度
-    /// </summary>
-    [ObservableProperty]
-    private int _l2dHeight;
-    /// <summary>
     /// 动画时间
     /// </summary>
     [ObservableProperty]
     private int _amTime;
-    /// <summary>
-    /// Live2d位置
-    /// </summary>
-    [ObservableProperty]
-    private int _l2dPos;
 
     /// <summary>
     /// 背景图位置
     /// </summary>
     [ObservableProperty]
     private string? _pic;
-    /// <summary>
-    /// Live2d模型位置
-    /// </summary>
-    [ObservableProperty]
-    private string? _live2DModel;
-    /// <summary>
-    /// Live2d Core状态
-    /// </summary>
-    [ObservableProperty]
-    private string _live2DCoreState;
 
     /// <summary>
     /// 头像模式
@@ -314,30 +273,6 @@ public partial class SettingModel
         ConfigBinding.SetHeadXY(HeadX, value);
     }
 
-    partial void OnLowFpsChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetLive2DMode(value);
-    }
-
-    partial void OnL2dPosChanged(int value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
-    }
-
-    partial void OnEnableLive2DChanged(bool value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetLive2D(value);
-    }
-
     async partial void OnEnableBGChanged(bool value)
     {
         if (_load)
@@ -359,22 +294,6 @@ public partial class SettingModel
     partial void OnAmTimeChanged(int value)
     {
         SetAm();
-    }
-
-    partial void OnL2dWidthChanged(int value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
-    }
-
-    partial void OnL2dHeightChanged(int value)
-    {
-        if (_load)
-            return;
-
-        ConfigBinding.SetLive2DSize(L2dWidth, L2dHeight, L2dPos);
     }
 
     partial void OnMainColorChanged(Color value)
@@ -499,48 +418,12 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// 导入Live2d core
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task InstallCore()
-    {
-        var top = Model.GetTopLevel();
-        if (top == null)
-        {
-            return;
-        }
-        var file = await PathBinding.SelectFile(top, FileType.Live2DCore);
-        if (file.Item1 != null)
-        {
-            Model.Progress(App.Lang("SettingWindow.Tab2.Info11"));
-            var res = await BaseBinding.SetLive2DCore(file.Item1);
-            Model.ProgressClose();
-            if (!res)
-            {
-                Model.Show(App.Lang("SettingWindow.Tab2.Error4"));
-            }
-            else
-            {
-                ColorMCGui.Reboot();
-            }
-        }
-    }
-    /// <summary>
     /// 打开运行路径
     /// </summary>
     [RelayCommand]
     public void OpenRunDir()
     {
         PathBinding.OpenPath(PathType.RunPath);
-    }
-    /// <summary>
-    /// 打开下载live2d core
-    /// </summary>
-    [RelayCommand]
-    public void DownloadCore()
-    {
-        WebBinding.OpenWeb(WebType.Live2DCore);
     }
     /// <summary>
     /// 重载颜色设置
@@ -627,59 +510,6 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
     }
     /// <summary>
-    /// 删除Live2d模型
-    /// </summary>
-    [RelayCommand]
-    public void DeleteLive2D()
-    {
-        Live2DModel = "";
-
-        ConfigBinding.DeleteLive2D();
-    }
-    /// <summary>
-    /// 选中Live2d模型
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task OpenLive2D()
-    {
-        var top = Model.GetTopLevel();
-        if (top == null)
-        {
-            return;
-        }
-        var file = await PathBinding.SelectFile(top, FileType.Live2D);
-        if (file.Item1 != null)
-        {
-            Live2DModel = file.Item1;
-
-            if (_load)
-                return;
-
-            SetLive2D();
-        }
-    }
-    /// <summary>
-    /// 设置Live2d模型
-    /// </summary>
-    [RelayCommand]
-    public void SetLive2D()
-    {
-        if (_load)
-            return;
-
-        if (string.IsNullOrWhiteSpace(Live2DModel))
-        {
-            Model.Show(App.Lang("SettingWindow.Tab2.Error3"));
-            return;
-        }
-        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
-        ConfigBinding.SetLive2D(Live2DModel);
-        Model.ProgressClose();
-
-        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
-    }
-    /// <summary>
     /// 加载UI设置
     /// </summary>
     public void LoadUISetting()
@@ -743,12 +573,6 @@ public partial class SettingModel
             CardLast = con.Card.Last;
             CardOnline = con.Card.Online;
 
-            Live2DModel = con.Live2D.Model;
-            L2dHeight = con.Live2D.Height;
-            L2dWidth = con.Live2D.Width;
-            EnableLive2D = con.Live2D.Enable;
-            L2dPos = con.Live2D.Pos;
-            LowFps = con.Live2D.LowFps;
             HeadType = con.Head.Type;
 
             HeadX = con.Head.X;
@@ -771,24 +595,6 @@ public partial class SettingModel
         if (config1 is { } con1)
         {
             Language = con1.Language;
-        }
-
-        try
-        {
-            var version = CubismCore.Version();
-
-            uint major = (version & 0xFF000000) >> 24;
-            uint minor = (version & 0x00FF0000) >> 16;
-            uint patch = version & 0x0000FFFF;
-            uint vesionNumber = version;
-
-            Live2DCoreState = $"Version: {major:0}.{minor:0}.{patch:0000} ({vesionNumber})";
-            CoreInstall = true;
-        }
-        catch
-        {
-            Live2DCoreState = App.Lang("SettingWindow.Tab2.Error2");
-            CoreInstall = false;
         }
 
         _load = false;

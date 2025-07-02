@@ -166,8 +166,7 @@ $ git submodule update --init --recursive
 | Newtonsoft.Json       | JSON解析器         | [GitHub](https://github.com/JamesNK/Newtonsoft.Json)                          |
 | SharpZipLib           | 压缩包处理           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
 | Tomlyn                | TOML解析器         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
-| ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |
-| Live2DCSharpSDK       | Live2d渲染框架      | [GitHub](https://github.com/coloryr/Live2DCSharpSDK)           |
+| ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |      |
 | OptifineWrapper       | Optifine启动器     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
 | ColorMCASM            | 用于ColorMC与游戏内通信 | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
 | K4os.Compression.LZ4  | LZ4解压缩           | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4)  |

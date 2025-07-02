@@ -168,8 +168,7 @@ The main solution file is `./src/ColorMC.sln`.
 | Newtonsoft.Json       | JSON framework for .NET         | [GitHub](https://github.com/JamesNK/Newtonsoft.Json)                          |
 | SharpZipLib           | Zip Tool           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
 | Tomlyn                | TOML parser         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
-| ForgeWrapper          | Forge Launcher for Minecraft       | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |
-| Live2DCSharpSDK       | Live2d Render      | [GitHub](https://github.com/coloryr/Live2DCSharpSDK)           |
+| ForgeWrapper          | Forge Launcher for Minecraft       | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |         |
 | OptifineWrapper       | Optifine Launcher for Minecraft     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
 | ColorMCASM            | ColorMC with game channel | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
 | K4os.Compression.LZ4  | LZ4/LH4HC compression           | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4)  |

@@ -86,11 +86,6 @@ public static class GuiConfigUtils
                 Config.Render = MakeRenderConfig();
                 save = true;
             }
-            if (Config.Live2D == null)
-            {
-                Config.Live2D = MakeLive2DConfig();
-                save = true;
-            }
             if (Config.Style == null)
             {
                 Config.Style = MakeStyleSettingConfig();
@@ -196,15 +191,6 @@ public static class GuiConfigUtils
         };
     }
 
-    public static Live2DSetting MakeLive2DConfig()
-    {
-        return new()
-        {
-            Width = 30,
-            Height = 50
-        };
-    }
-
     public static RenderSetting MakeRenderConfig()
     {
         return new()
@@ -235,7 +221,6 @@ public static class GuiConfigUtils
             BackLimitValue = 50,
             EnableBG = false,
             BackImage = "",
-            Live2D = MakeLive2DConfig(),
             Style = MakeStyleSettingConfig(),
             Head = MakeHeadSettingConfig(),
             LogColor = MakeLogColorConfig(),
