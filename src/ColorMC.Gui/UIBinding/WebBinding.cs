@@ -84,7 +84,7 @@ public static class WebBinding
             {
                 modlist.Add(item.Id.ToString());
             });
-            var list2 = await ColorMCAPI.GetMcModFromCF(modlist);
+            var list2 = await ColorMCAPI.GetMcModFromCF(modlist, 1);
             list.Data.ForEach(item =>
             {
                 var id = item.Id.ToString();
@@ -110,7 +110,7 @@ public static class WebBinding
             {
                 modlist.Add(item.ProjectId);
             });
-            var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
+            var list2 = await ColorMCAPI.GetMcModFromMO(modlist, 1);
             list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
@@ -329,7 +329,7 @@ public static class WebBinding
             {
                 modlist.Add(item.Id.ToString());
             });
-            var list2 = await ColorMCAPI.GetMcModFromCF(modlist);
+            var list2 = await ColorMCAPI.GetMcModFromCF(modlist, 0);
             list.Data.ForEach(item =>
             {
                 var id = item.Id.ToString();
@@ -360,7 +360,7 @@ public static class WebBinding
             {
                 modlist.Add(item.ProjectId);
             });
-            var list2 = await ColorMCAPI.GetMcModFromMO(modlist);
+            var list2 = await ColorMCAPI.GetMcModFromMO(modlist, 0);
             list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
