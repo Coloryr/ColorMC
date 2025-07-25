@@ -13,6 +13,8 @@ public record McModSearchObj
     public int Type { get; set; }
     [JsonPropertyName("ids")]
     public List<string> Ids { get; set; }
+    [JsonPropertyName("mcmod_type")]
+    public int McmodType { get; set; }
 }
 
 public record McModSearchResObj
