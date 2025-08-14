@@ -72,7 +72,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/skin.svg" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
+                                                Margin="0,0,5,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"
@@ -89,7 +89,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/collection.svg" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
+                                                Margin="0,0,5,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"
@@ -106,7 +106,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/book.svg" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
+                                                Margin="0,0,5,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"
@@ -123,7 +123,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/count.svg" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
+                                                Margin="0,0,5,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"
@@ -138,7 +138,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/setting.svg" />
                                             <TextBlock
-                                                Margin="0,0,0,5"
+                                                Margin="0,0,5,5"
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"

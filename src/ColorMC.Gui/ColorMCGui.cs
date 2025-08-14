@@ -104,7 +104,7 @@ public static class ColorMCGui
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        TaskScheduler.UnobservedTaskException += (object? sender, UnobservedTaskExceptionEventArgs e) =>
+        TaskScheduler.UnobservedTaskException += (sender, e) =>
         {
             if (e.Exception.InnerException is DBusException)
             {

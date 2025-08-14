@@ -86,6 +86,22 @@ public class VersionStrObjComparer : IComparer<VersionStrObj>
 }
 
 /// <summary>
+/// 日志排序
+/// </summary>
+public class GameLogItemObjComparer : IComparer<GameLogItemObj>
+{
+    public static readonly GameLogItemObjComparer Instance = new();
+    public int Compare(GameLogItemObj? x, GameLogItemObj? y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        return y.TimeSpan.CompareTo(x.TimeSpan);
+    }
+}
+
+/// <summary>
 /// CurseForge比较器
 /// </summary>
 public class CurseForgeDataComparer : IEqualityComparer<CurseForgeModObj.CurseForgeDataObj>

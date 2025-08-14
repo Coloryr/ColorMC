@@ -5,7 +5,7 @@ using Avalonia.Media.Immutable;
 using Avalonia.Platform;
 using Avalonia.Svg.Skia;
 using Svg;
-using Svg.Model;
+using Svg.Model.Services;
 using Svg.Skia;
 using Color = System.Drawing.Color;
 
@@ -34,7 +34,7 @@ public class SvgSource
         var uri = path.StartsWith('/') ? new Uri(path, UriKind.Relative) : new Uri(path, UriKind.RelativeOrAbsolute);
         if (uri.IsAbsoluteUri && uri.IsFile)
         {
-            var document = SvgExtensions.Open(uri.LocalPath);
+            var document = SvgService.Open(uri.LocalPath);
             if (document != null)
             {
                 if (stroke1.HasValue) document.Stroke = new SvgColourServer(stroke1.Value);
@@ -56,7 +56,7 @@ public class SvgSource
             {
                 return default;
             }
-            var document = SvgExtensions.Open(stream);
+            var document = SvgService.Open(stream);
             if (document != null)
             {
                 if (stroke1.HasValue) document.Stroke = new SvgColourServer(stroke1.Value);

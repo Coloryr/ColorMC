@@ -1,39 +1,39 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using ColorMC.Gui.Objs;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
-namespace ColorMC.Gui.Utils;
+namespace ColorMC.Core.Game;
 
 /// <summary>
 /// 游戏日志处理
 /// </summary>
-public partial class GameLog
+public partial class RuntimeLog
 {
     //正则
     private const string s_pattern = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:? \[(.*?)\](?: (.*))?";
     private const string s_pattern1 = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?";
 
     [GeneratedRegex(s_pattern)]
-    internal static partial Regex MyRegex();
+    internal static partial Regex LogRegex();
 
     [GeneratedRegex(s_pattern1)]
-    internal static partial Regex MyRegex1();
+    internal static partial Regex LogRegex1();
 
-    private static readonly Regex s_regex = MyRegex();
-    private static readonly Regex s_regex1 = MyRegex1();
+    private static readonly Regex s_regex = LogRegex();
+    private static readonly Regex s_regex1 = LogRegex1();
 
     /// <summary>
     /// 当前进程游戏日志
     /// </summary>
-    public ConcurrentBag<GameLogItemObj> Logs { get; init; } = [];
+    private readonly ConcurrentBag<GameLogItemObj> _logs = [];
 
     /// <summary>
     /// 清理当前进程游戏日志
     /// </summary>
     public void Clear()
     {
-        Logs.Clear();
+        _logs.Clear();
     }
 
     /// <summary>
@@ -63,6 +63,7 @@ public partial class GameLog
 
                 item1 = new GameLogItemObj()
                 {
+                    TimeSpan = DateTime.Now,
                     Time = time,
                     Thread = thread,
                     Category = category,
@@ -84,6 +85,7 @@ public partial class GameLog
 
                     item1 = new GameLogItemObj()
                     {
+                        TimeSpan = DateTime.Now,
                         Time = time,
                         Thread = thread,
                         Log = log,
@@ -95,11 +97,12 @@ public partial class GameLog
 
         item1 ??= new GameLogItemObj()
         {
+            TimeSpan = DateTime.Now,
             Log = log,
             Level = LogLevel.None
         };
 
-        Logs.Add(item1);
+        _logs.Add(item1);
 
         return item1;
     }
@@ -112,7 +115,7 @@ public partial class GameLog
     public List<GameLogItemObj> GetLog(LogLevel type)
     {
         var list = new List<GameLogItemObj>();
-        foreach (var item in Logs)
+        foreach (var item in _logs)
         {
             if ((item.Level & type) == item.Level)
             {
@@ -120,6 +123,7 @@ public partial class GameLog
             }
         }
 
+        list.Sort(GameLogItemObjComparer.Instance);
         list.Reverse();
 
         return list;

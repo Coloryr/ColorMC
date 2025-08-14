@@ -233,6 +233,10 @@ public static class Launch
     public static async Task<Dictionary<GameSettingObj, GameLaunchRes>>
         StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, CancellationToken token)
     {
+        foreach (var item in objs)
+        {
+            ColorMCCore.GameLogClear(item);
+        }
         var stopwatch = new Stopwatch();
 
         var list = new Dictionary<GameSettingObj, GameLaunchRes>();
@@ -742,6 +746,8 @@ public static class Launch
     /// <returns>游戏句柄</returns>
     public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
+        ColorMCCore.GameLogClear(obj);
+
         var stopwatch = new Stopwatch();
 
         if (obj.CustomLoader?.CustomJson != true)

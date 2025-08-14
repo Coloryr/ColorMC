@@ -10,7 +10,6 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

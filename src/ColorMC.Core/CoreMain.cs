@@ -137,7 +137,7 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏日志回调
     /// </summary>
-    public static event Action<GameSettingObj, string?>? GameLog;
+    public static event Action<GameSettingObj, GameLogItemObj?>? GameLog;
     /// <summary>
     /// 语言重载
     /// </summary>
@@ -199,12 +199,17 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏窗口句柄
     /// </summary>
-    internal static ConcurrentDictionary<string, IGameHandel> Games = [];
+    internal static readonly ConcurrentDictionary<string, IGameHandel> Games = [];
 
     /// <summary>
     /// 启动器核心参数
     /// </summary>
     internal static CoreInitArg CoreArg;
+
+    /// <summary>
+    /// 游戏日志
+    /// </summary>
+    internal static readonly ConcurrentDictionary<string, RuntimeLog> GameLogs = [];
 
     /// <summary>
     /// 初始化阶段1
@@ -279,13 +284,33 @@ public static class ColorMCCore
     }
 
     /// <summary>
-    /// 游戏日志
+    /// 运行游戏日志
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="text"></param>
-    public static void OnGameLog(GameSettingObj obj, string? text)
+    internal static void OnGameLog(GameSettingObj obj, string? text)
     {
-        GameLog?.Invoke(obj, text);
+        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        {
+            var item = log.AddLog(text);
+            GameLog?.Invoke(obj, item);
+        }
+    }
+
+    /// <summary>
+    /// 清理游戏运行日志
+    /// </summary>
+    /// <param name="obj"></param>
+    internal static void GameLogClear(GameSettingObj obj)
+    {
+        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        {
+            log.Clear();
+        }
+        else
+        {
+            GameLogs.TryAdd(obj.UUID, new());
+        }
     }
 
     /// <summary>
@@ -307,6 +332,21 @@ public static class ColorMCCore
     {
         Games.TryRemove(obj.UUID, out _);
         GameExit?.Invoke(obj, obj1, code);
+    }
+
+    /// <summary>
+    /// 获取游戏实例运行日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>运行日志</returns>
+    public static RuntimeLog? GetGameRuntimeLog(GameSettingObj obj)
+    {
+        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        { 
+            return log;
+        }
+
+        return null;
     }
 
     /// <summary>
