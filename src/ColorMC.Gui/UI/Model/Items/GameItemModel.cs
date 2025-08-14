@@ -297,10 +297,10 @@ public partial class GameItemModel : GameModel
         }
         WindowManager.ShowAddGame(_group);
     }
-    /// <summary>
-    /// 启动
-    /// </summary>
-    [RelayCommand]
+    ///// <summary>
+    ///// 启动
+    ///// </summary>
+    //[RelayCommand]
     public void Launch()
     {
         if (ShowCheck)
@@ -314,14 +314,14 @@ public partial class GameItemModel : GameModel
 
         _top?.Launch(this);
     }
-    /// <summary>
-    /// 编辑
-    /// </summary>
-    [RelayCommand]
-    public void EditGame()
-    {
-        WindowManager.ShowGameEdit(Obj);
-    }
+    ///// <summary>
+    ///// 编辑
+    ///// </summary>
+    //[RelayCommand]
+    //public void EditGame()
+    //{
+    //    WindowManager.ShowGameEdit(Obj);
+    //}
 
     /// <summary>
     /// 开始多选
