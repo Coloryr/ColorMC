@@ -1,10 +1,11 @@
-﻿namespace ColorMC.Gui.Objs;
+﻿namespace ColorMC.Core.Objs;
 
 /// <summary>
 /// 一行日志
 /// </summary>
 public record GameLogItemObj
 {
+    public DateTime TimeSpan { get; init; }
     /// <summary>
     /// 内容
     /// </summary>

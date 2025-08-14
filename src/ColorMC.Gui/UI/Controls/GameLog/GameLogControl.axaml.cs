@@ -7,7 +7,6 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Rendering;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameLog;
 

@@ -432,3 +432,18 @@ public enum DnsType
 {
     DnsOver, DnsOverHttps, DnsOverHttpsWithUdp
 }
+
+/// <summary>
+/// 日志等级
+/// </summary>
+public enum LogLevel : int
+{
+    Base = 0b00000000,
+    None = 0b00000001,
+    Info = 0b00000010,
+    Warn = 0b00000100,
+    Error = 0b00001000,
+    Debug = 0b00010000,
+    All = 0b00011111,
+    Fatal = 0b00100000,
+}

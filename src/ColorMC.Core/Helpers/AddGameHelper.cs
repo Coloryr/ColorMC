@@ -218,7 +218,7 @@ public static class AddGameHelper
                         path = e.FullName[..^e.Name.Length];
                         mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                     }
-                    else if (mmc1 != null && e.Name == Names.NameMMCCfgFile)
+                    else if (mmc1 == null && e.Name == Names.NameMMCCfgFile)
                     {
                         using var stream1 = e.Open();
                         mmc1 = Options.ReadOptions(stream1, "=");
@@ -268,7 +268,7 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.FullName.StartsWith(path))
+                    if (e.FullName.StartsWith(path) && !string.IsNullOrWhiteSpace(e.Name))
                     {
                         using var stream = e.Open();
                         string file = Path.GetFullPath($"{game.GetBasePath()}/{e.FullName[path.Length..]}");
