@@ -192,6 +192,10 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
+                    if (e.Length == 0)
+                    {
+                        continue;
+                    }
                     using var stream = e.Open();
                     var path = game.GetBasePath();
                     string file = Path.Combine(path, e.Name);
@@ -268,6 +272,10 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
+                    if (e.Length == 0)
+                    {
+                        continue;
+                    }
                     if (e.FullName.StartsWith(path) && !string.IsNullOrWhiteSpace(e.Name))
                     {
                         using var stream = e.Open();
@@ -341,6 +349,10 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
+                    if (e.Length == 0)
+                    {
+                        continue;
+                    }
                     if (e.FullName.StartsWith(overrides))
                     {
                         string file = Path.GetFullPath(game.GetGamePath() + e.FullName[overrides.Length..]);
