@@ -11,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -705,53 +706,17 @@ public static class PathBinding
     /// <returns></returns>
     public static async Task<bool?> Export(TopLevel top, GameExportModel model)
     {
+        string? name = "";
         if (model.Type == PackType.ColorMC)
         {
             var file = await SaveFile(top, App.Lang("PathBinding.Text40"),
-                   ".zip", $"{model.Obj.Name}.zip");
+                  ".zip", $"{model.Obj.Name}.zip");
             if (file == null)
                 return null;
 
-            var name = file.GetPath();
+            name = file.GetPath();
             if (name == null)
                 return null;
-
-            try
-            {
-                var list = model.Files.GetUnSelectItems();
-                list.Add(model.Obj.GetModInfoJsonFile());
-
-                var obj1 = new Dictionary<string, ModInfoObj>();
-                foreach (var item in model.Mods)
-                {
-                    if (item.Export && item.Obj1 != null)
-                    {
-                        obj1.Add(item.Obj1.ModId, item.Obj1);
-                    }
-                }
-
-                await new ZipUtils().ZipFileAsync(model.Obj.GetBasePath(),
-                    name, list);
-
-                {
-                    using var stream = PathHelper.OpenWrite(name, false);
-                    using var s = new ZipArchive(stream, ZipArchiveMode.Update);
-                    var data = JsonUtils.ToString(obj1, JsonType.DictionaryStringModInfoObj);
-                    var item1 = s.CreateEntry(Names.NameModInfoFile);
-                    using var s1 = item1.Open();
-                    await s1.WriteAsync(Encoding.UTF8.GetBytes(data));
-                }
-
-                OpenFileWithExplorer(name);
-                return true;
-            }
-            catch (Exception e)
-            {
-                string temp = App.Lang("PathBinding.Errro5");
-                WindowManager.ShowError(temp, e);
-                Logs.Error(temp, e);
-                return false;
-            }
         }
         else if (model.Type == PackType.CurseForge)
         {
@@ -760,111 +725,9 @@ public static class PathBinding
             if (file == null)
                 return null;
 
-            var name = file.GetPath();
+            name = file.GetPath();
             if (name == null)
                 return null;
-
-            var obj = new CurseForgePackObj()
-            {
-                Name = model.Name,
-                Author = model.Author,
-                Version = model.Version,
-                ManifestType = "minecraftModpack",
-                ManifestVersion = 1,
-                Overrides = "overrides",
-                Minecraft = new()
-                {
-                    Version = model.Obj.Version,
-                    ModLoaders = []
-                },
-                Files = []
-            };
-
-            if (model.Obj.Loader != Loaders.Normal)
-            {
-                obj.Minecraft.ModLoaders.Add(new()
-                {
-                    Id = $"{model.Obj.Loader.ToString().ToLower()}-{model.Obj.LoaderVersion}",
-                    Primary = true
-                });
-            }
-
-            foreach (var item in model.Mods)
-            {
-                if (item.Export)
-                {
-                    obj.Files.Add(new()
-                    {
-                        FileID = int.Parse(item.FID!),
-                        ProjectID = int.Parse(item.PID!),
-                        Required = true
-                    });
-                }
-            }
-
-            var data = await CurseForgeAPI.GetModsInfo(obj.Files);
-            StringBuilder html = new();
-            html.AppendLine("<ul>");
-            if (data != null)
-            {
-                foreach (var item in data.Data)
-                {
-                    html.AppendLine($"<li><a href=\"{item.Links.WebsiteUrl}\">{item.Name} (by {item.Authors.GetString()})</a></li>");
-                }
-            }
-            html.AppendLine("</ul>");
-
-            try
-            {
-                using var stream = PathHelper.OpenWrite(name, true);
-                using var s = new ZipArchive(stream, ZipArchiveMode.Create);
-
-                //manifest.json
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.CurseForgePackObj));
-                    var entry = s.CreateEntry("manifest.json");
-                    using var stream1 = entry.Open();
-                    await stream1.WriteAsync(buffer);
-                }
-
-                //modlist.html
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(html.ToString());
-                    var entry = s.CreateEntry("modlist.html");
-                    using var stream1 = entry.Open();
-                    await stream1.WriteAsync(buffer);
-                }
-
-                {
-                    var path = model.Obj.GetGamePath();
-
-                    foreach (var item in model.Files.GetSelectItems())
-                    {
-                        var name1 = item[path.Length..];
-                        name1 = name1.Replace("\\", "/");
-                        if (!name1.StartsWith('/'))
-                        {
-                            name1 = '/' + name1;
-                        }
-                        name1 = "overrides/" + name1;
-                        using var buffer = PathHelper.OpenRead(item);
-                        if (buffer == null)
-                        {
-                            continue;
-                        }
-                        var entry = s.CreateEntry(name1);
-                        using var stream1 = entry.Open();
-                        await buffer.CopyToAsync(stream1);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                string temp = App.Lang("PathBinding.Errro5");
-                WindowManager.ShowError(temp, e);
-                Logs.Error(temp, e);
-                return false;
-            }
         }
         else if (model.Type == PackType.Modrinth)
         {
@@ -873,113 +736,61 @@ public static class PathBinding
             if (file == null)
                 return null;
 
-            var name = file.GetPath();
+            name = file.GetPath();
             if (name == null)
                 return null;
-
-            var obj = new ModrinthPackObj()
-            {
-                FormatVersion = 1,
-                Name = model.Name,
-                VersionId = model.Version,
-                Summary = model.Summary,
-                Files = [],
-                Dependencies = []
-            };
-
-            obj.Dependencies.Add("minecraft", model.Obj.Version);
-            switch (model.Obj.Loader)
-            {
-                case Loaders.Forge:
-                case Loaders.NeoForge:
-                    obj.Dependencies.Add("forge", model.Obj.LoaderVersion!);
-                    break;
-                case Loaders.Fabric:
-                    obj.Dependencies.Add("fabric-loader", model.Obj.LoaderVersion!);
-                    break;
-                case Loaders.Quilt:
-                    obj.Dependencies.Add("quilt-loader", model.Obj.LoaderVersion!);
-                    break;
-            }
-
-            foreach (var item in model.Mods)
-            {
-                if (item.Source != null)
-                {
-                    obj.Files.Add(new()
-                    {
-                        Path = item.Obj1!.Name,
-                        Hashes = new()
-                        {
-                            Sha1 = item.Sha1,
-                            Sha512 = item.Sha512
-                        },
-                        Downloads = [item.Url],
-                        FileSize = item.FileSize
-                    });
-                }
-            }
-
-            foreach (var item in model.OtherFiles)
-            {
-                obj.Files.Add(new()
-                {
-                    Path = item.Path,
-                    Hashes = new()
-                    {
-                        Sha1 = item.Sha1,
-                        Sha512 = item.Sha512
-                    },
-                    Downloads = [item.Url],
-                    FileSize = item.FileSize
-                });
-            }
-            
-            try
-            {
-                using var stream = PathHelper.OpenWrite(name, true);
-                using var s = new ZipArchive(stream, ZipArchiveMode.Create);
-
-                //manifest.json
-                {
-                    byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.ModrinthPackObj));
-                    var entry = s.CreateEntry("modrinth.index.json");
-                    using var stream1 = entry.Open();
-                    await stream1.WriteAsync(buffer);
-                }
-
-                {
-                    var path = model.Obj.GetGamePath();
-
-                    foreach (var item in model.Files.GetSelectItems())
-                    {
-                        var name1 = item[path.Length..];
-                        name1 = name1.Replace("\\", "/");
-                        if (!name1.StartsWith('/'))
-                        {
-                            name1 = '/' + name1;
-                        }
-                        name1 = "overrides/" + name1;
-                        using var buffer = PathHelper.OpenRead(item);
-                        if (buffer == null)
-                        {
-                            continue;
-                        }
-                        var entry = s.CreateEntry(name1);
-                        using var stream1 = entry.Open();
-                        await buffer.CopyToAsync(stream1);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                string temp = App.Lang("PathBinding.Errro5");
-                WindowManager.ShowError(temp, e);
-                Logs.Error(temp, e);
-                return false;
-            }
         }
-        return true;
+
+        var arg = new GameExportArg
+        {
+            File = name,
+            Type = model.Type,
+            Mods = model.Mods.Select(item => new ModExportObj()
+            {
+                Export = item.Export,
+                FID = item.FID,
+                FileSize = item.FileSize,
+                Obj = item.Obj,
+                Obj1 = item.Obj1,
+                PID = item.PID,
+                Sha1 = item.Sha1,
+                Sha512 = item.Sha512,
+                Type = item.Type,
+                Url = item.Url,
+                Source = item.Source
+            }),
+            Obj = model.Obj,
+            UnSelectItems = model.Files.GetUnSelectItems(),
+            SelectItems = model.Files.GetSelectItems(),
+            OtherFiles = model.OtherFiles.Select(item => new ModExport1Obj()
+            {
+                Path = item.Path,
+                FileSize = item.FileSize,
+                Sha1 = item.Sha1,
+                Sha512 = item.Sha512,
+                Type = item.Type,
+                Url = item.Url
+            }),
+            Author = model.Author,
+            Name = model.Name,
+            Version = model.Version,
+            Summary = model.Summary
+        };
+
+        try
+        {
+            var res = await GameExport.Export(arg);
+            OpenFileWithExplorer(arg.File);
+            return true;
+        }
+
+        catch (Exception e)
+        {
+            string temp = App.Lang("PathBinding.Errro5");
+            WindowManager.ShowError(temp, e);
+            Logs.Error(temp, e);
+            return false;
+        }
     }
 
 #if Phone

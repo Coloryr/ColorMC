@@ -158,6 +158,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
+            if (e.Length == 0 && e.CompressedLength == 0)
+            {
+                continue;
+            }
             if (e.FullName.StartsWith(info.Overrides + "/"))
             {
                 using var stream = e.Open();
@@ -461,7 +465,7 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Length == 0)
+            if (e.Length == 0 && e.CompressedLength == 0)
             {
                 continue;
             }
@@ -573,6 +577,10 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
+            if (e.Length == 0 && e.CompressedLength == 0)
+            {
+                continue;
+            }
             if (e.FullName.StartsWith(dir))
             {
                 using var stream = e.Open();
@@ -855,7 +863,7 @@ public static class ModPackHelper
         //解压文件
         foreach (var e in zFile.Entries)
         {
-            if (e.Length == 0)
+            if (e.Length == 0 && e.CompressedLength == 0)
             {
                 continue;
             }

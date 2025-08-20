@@ -450,3 +450,32 @@ public record UnzipArg
 
     public ColorMCCore.ZipUpdate? Zip;
 }
+
+/// <summary>
+/// 游戏实例导出
+/// </summary>
+public record GameExportArg
+{
+    /// <summary>
+    /// 压缩包位置
+    /// </summary>
+    public required string File;
+    /// <summary>
+    /// 整合包类型
+    /// </summary>
+    public required PackType Type;
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public required GameSettingObj Obj;
+
+    public IEnumerable<ModExportObj> Mods;
+    public IEnumerable<ModExport1Obj> OtherFiles;
+
+    public List<string> UnSelectItems;
+    public List<string> SelectItems;
+    public string Name;
+    public string Author;
+    public string Version;
+    public string Summary;
+}

@@ -226,11 +226,26 @@ public static class ModrinthHelper
 
             var url = item.Downloads
                 .FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
-            if (url == null)
+
+            if (item.ColorMc != null)
             {
-                url = item.Downloads[0];
+                arg.Game.Mods.Remove(item.ColorMc.PID);
+                arg.Game.Mods.Add(item.ColorMc.PID, new()
+                {
+                    Path = item.Path[..item.Path.IndexOf('/')],
+                    Name = item.Path,
+                    File = item.Path,
+                    Sha1 = item11.Sha1!,
+                    ModId = item.ColorMc.PID,
+                    FileId = item.ColorMc.FID,
+                    Url = url ?? item.Downloads[0]
+                });
+
+                now++;
+                arg.Update?.Invoke(size, now);
+                continue;
             }
-            else
+            else if (url != null)
             {
                 var modid = StringHelper.GetString(url, "data/", "/ver");
                 var fileid = StringHelper.GetString(url, "versions/", "/");
@@ -246,6 +261,10 @@ public static class ModrinthHelper
                     FileId = fileid,
                     Url = url
                 });
+            }
+            else
+            {
+                url = item.Downloads[0];
             }
 
             now++;

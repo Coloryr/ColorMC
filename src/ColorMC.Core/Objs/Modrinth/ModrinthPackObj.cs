@@ -21,6 +21,8 @@ public record ModrinthPackObj
         public List<string> Downloads { get; set; }
         [JsonPropertyName("fileSize")]
         public long FileSize { get; set; }
+        [JsonPropertyName("_colormc")]
+        public ColorMcSaveObj? ColorMc { get; set; }
     }
     [JsonPropertyName("formatVersion")]
     public int FormatVersion { get; set; }
