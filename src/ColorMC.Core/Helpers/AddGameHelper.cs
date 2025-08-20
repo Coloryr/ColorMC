@@ -192,7 +192,7 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0)
+                    if (e.Length == 0 && e.CompressedLength == 0)
                     {
                         continue;
                     }
@@ -272,7 +272,7 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0)
+                    if (e.Length == 0 && e.CompressedLength == 0)
                     {
                         continue;
                     }
@@ -349,7 +349,7 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0)
+                    if (e.Length == 0 && e.CompressedLength == 0)
                     {
                         continue;
                     }
