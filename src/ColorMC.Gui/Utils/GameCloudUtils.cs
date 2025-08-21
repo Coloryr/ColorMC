@@ -63,7 +63,7 @@ public static class GameCloudUtils
                 {
                     save = true;
                 }
-                
+
                 if (save)
                 {
                     Save();

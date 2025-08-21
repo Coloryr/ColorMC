@@ -1,18 +1,16 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.User;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SkiaSharp;
-using ColorMC.Gui.Utils;
-using ColorMC.Gui.Manager;
-using Avalonia.Threading;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

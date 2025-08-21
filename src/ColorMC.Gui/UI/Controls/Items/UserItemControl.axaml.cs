@@ -7,8 +7,6 @@ using Avalonia.Animation.Easings;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using Avalonia.Media.Transformation;
 using Avalonia.Styling;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Flyouts;

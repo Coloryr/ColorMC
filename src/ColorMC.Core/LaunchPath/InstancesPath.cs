@@ -3,7 +3,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Config;
-using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.LaunchPath;
@@ -294,7 +293,7 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     public static void Save(this GameSettingObj obj)
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build($"game-{obj.UUID}", 
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-{obj.UUID}",
             obj.GetGameJsonFile(), obj, JsonType.GameSettingObj));
     }
 

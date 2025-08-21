@@ -1,7 +1,5 @@
 using System.IO.Compression;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -369,7 +367,7 @@ public static class GameHelper
     public static MMCToColorMCRes ToColorMC(this MMCObj mmc, Dictionary<string, string> list)
     {
         var res = new MMCToColorMCRes();
-        
+
         var game = new GameSettingObj
         {
             Loader = Loaders.Normal
@@ -932,8 +930,8 @@ public static class GameHelper
         {
             var list2 = GameDownloadHelper.BuildForgeLibs(forgeinstall, obj.Version,
                 obj.LoaderVersion!, neo, v2);
-            return new() 
-            { 
+            return new()
+            {
                 Loaders = list1,
                 Installs = [.. list2]
             };

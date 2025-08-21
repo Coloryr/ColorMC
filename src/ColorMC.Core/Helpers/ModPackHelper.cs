@@ -1,5 +1,4 @@
 using System.IO.Compression;
-using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;

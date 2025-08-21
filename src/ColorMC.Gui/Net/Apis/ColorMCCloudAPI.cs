@@ -5,12 +5,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -491,8 +488,8 @@ public static class ColorMCCloudAPI
                     var value = res1.GetInt32();
                     if (value == 100)
                     {
-                        Info = string.Format(App.Lang("GameCloudUtils.Info1"), 
-                            json.GetProperty("use").GetInt64(), 
+                        Info = string.Format(App.Lang("GameCloudUtils.Info1"),
+                            json.GetProperty("use").GetInt64(),
                             json.GetProperty("size").GetInt64());
                     }
                     else
@@ -500,7 +497,7 @@ public static class ColorMCCloudAPI
                         Info = App.Lang("GameCloudUtils.Error5");
                     }
                 }
-                
+
             }
         }
         catch (Exception e)

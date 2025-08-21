@@ -744,7 +744,7 @@ public partial class SettingModel
         if (SystemInfo.Os is OsType.Windows && !InputDisable)
         {
             IsInputEnable = true;
-        } 
+        }
         else
         {
             IsInputEnable = false;

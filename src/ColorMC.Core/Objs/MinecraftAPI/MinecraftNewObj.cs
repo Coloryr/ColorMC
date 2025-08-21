@@ -26,7 +26,7 @@ public record MinecraftNewObj
             public string TileSize { get; set; }
             [JsonPropertyName("image")]
             public ImageObj Image { get; set; }
-            
+
         }
         [JsonPropertyName("default_tile")]
         public DefaultTileObj DefaultTile { get; set; }

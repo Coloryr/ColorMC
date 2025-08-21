@@ -35,7 +35,7 @@ public record ConfigSaveObj
         {
             Name = name,
             File = file,
-            Run = () => 
+            Run = () =>
             {
                 return JsonUtils.ToString(data, info);
             }

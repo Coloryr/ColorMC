@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
+﻿using System.IO.Compression;
 using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -181,7 +177,7 @@ public static class GameExport
                         Downloads = [item.Url],
                         FileSize = item.FileSize,
                         ColorMc = new()
-                        { 
+                        {
                             Type = source,
                             FID = item.FID!,
                             PID = item.PID!

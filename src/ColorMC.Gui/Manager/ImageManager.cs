@@ -271,7 +271,7 @@ public static class ImageManager
         var key = login.GetKey();
         if (s_userGets.TryGetValue(key, out var temp))
         {
-            await temp.Task; 
+            await temp.Task;
         }
 
         if (s_userSkins.TryGetValue(key, out var file))
@@ -638,7 +638,7 @@ public static class ImageManager
                 Logs.Error(App.Lang("ImageUtils.Error1"), e);
                 return null;
             }
-            finally 
+            finally
             {
                 stream?.Close();
                 stream?.Dispose();

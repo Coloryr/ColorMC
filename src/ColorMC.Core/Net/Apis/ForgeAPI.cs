@@ -2,7 +2,6 @@ using System.Net;
 using System.Xml;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
@@ -102,7 +101,7 @@ public static class ForgeAPI
                     ? UrlHelper.NeoForgeVersions(mc, v222, source)
                     : UrlHelper.ForgeVersions(mc, source);
                 using var stream = await SendAsync(url);
-                
+
                 var list1 = new List<string>();
                 if (neo)
                 {

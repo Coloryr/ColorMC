@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.IO.Hashing;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -516,7 +515,7 @@ public static class BaseBinding
         var conf1 = ConfigUtils.Config;
         var conf2 = conf.ServerCustom;
 
-        if (json.TryGetProperty(nameof(BuildPackModel.UiBg), out var value) 
+        if (json.TryGetProperty(nameof(BuildPackModel.UiBg), out var value)
             && value.ValueKind is JsonValueKind.Object)
         {
             var config = value.Deserialize(JsonGuiType.UiBackConfigObj)!;

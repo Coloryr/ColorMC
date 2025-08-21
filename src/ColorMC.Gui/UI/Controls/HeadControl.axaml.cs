@@ -219,7 +219,7 @@ public partial class HeadControl : UserControl
             max.Bind(HeadImg.PathProperty, MaxObservale.ToBinding());
             MaxObservale.Notify(ImageManager.MaxIcon[0]);
             _buttonMax.Content = max;
-            
+
             _buttonClose = new Button()
             {
                 Width = 40,

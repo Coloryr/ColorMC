@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -166,7 +165,7 @@ public static class SakuraFrpApi
         {
             string url = $"{Url}system/clients";
             using var data = await ColorMCAPI.GetStreamAsync(url);
-            return JsonUtils.ToObj(data,JsonGuiType.SakuraFrpDownloadObj);
+            return JsonUtils.ToObj(data, JsonGuiType.SakuraFrpDownloadObj);
         }
         catch (Exception e)
         {

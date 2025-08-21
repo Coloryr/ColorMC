@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace ColorMC.Gui.Objs.Frp;
+﻿namespace ColorMC.Gui.Objs.Frp;
 
 //public record SakuraFrpUserObj
 //{

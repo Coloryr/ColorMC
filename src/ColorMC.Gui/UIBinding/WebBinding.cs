@@ -985,7 +985,7 @@ public static class WebBinding
     public static async Task<List<ColorMCCloudServerObj>?> GetFrpServer(string version)
     {
         var list = await ColorMCCloudAPI.GetCloudServer(version);
-        if (list == null || !list.RootElement.TryGetProperty("list", out var list1) 
+        if (list == null || !list.RootElement.TryGetProperty("list", out var list1)
             || list1.ValueKind is not JsonValueKind.Array)
         {
             return null;

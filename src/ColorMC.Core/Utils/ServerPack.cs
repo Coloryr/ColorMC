@@ -263,7 +263,7 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     public static void Save(this ServerPackObj obj)
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build($"game-server-{obj.Game.Name}", 
+        ConfigSave.AddItem(ConfigSaveObj.Build($"game-server-{obj.Game.Name}",
             obj.Game.GetServerPackFile(), obj, JsonType.ServerPackObj));
     }
 

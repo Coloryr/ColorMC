@@ -293,7 +293,7 @@ public static class CurseForgeAPI
         try
         {
             var arg1 = new CurseForgeModsInfoObj()
-            { 
+            {
                 ModIds = [],
                 FilterPcOnly = true
             };

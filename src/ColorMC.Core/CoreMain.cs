@@ -342,7 +342,7 @@ public static class ColorMCCore
     public static RuntimeLog? GetGameRuntimeLog(GameSettingObj obj)
     {
         if (GameLogs.TryGetValue(obj.UUID, out var log))
-        { 
+        {
             return log;
         }
 

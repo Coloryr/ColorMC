@@ -204,7 +204,7 @@ public static class OAuthApi
         };
         var obj1 = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj));
         if (obj1 == null)
-        { 
+        {
             return new OAuthXboxLiveRes
             {
                 State = LoginState.DataError

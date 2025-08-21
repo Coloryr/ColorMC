@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Formats.Tar;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
 using System.Threading.Tasks;
-using ColorMC.Core;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

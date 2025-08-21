@@ -1,7 +1,5 @@
 using System.Collections.Concurrent;
 using System.IO.Compression;
-using System.Text;
-using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;

@@ -1,4 +1,3 @@
-using System;
 using Avalonia.Input;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
