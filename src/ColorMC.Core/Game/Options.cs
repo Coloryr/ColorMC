@@ -58,7 +58,7 @@ public static class Options
         var options = new Dictionary<string, string>();
         using var reader = new StreamReader(stream);
 
-        while(reader.ReadLine() is { } item)
+        while (reader.ReadLine() is { } item)
         {
             if (string.IsNullOrWhiteSpace(item))
             {

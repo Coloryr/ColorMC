@@ -1,8 +1,4 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using ColorMC.Core.Objs.MinecraftAPI;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Motd;
 
@@ -22,7 +18,7 @@ public static class ChatConverter
         {
             return new ChatObj() { Text = "" };
         }
-            
+
         var lines = str1.Split('\n');
         var chat = new ChatObj()
         {
@@ -33,7 +29,7 @@ public static class ChatConverter
         {
             var currentSegment = new ChatObj();
             bool isProcessingCode = false;
-            foreach(var c in item)
+            foreach (var c in item)
             {
                 if (c == '§' && !isProcessingCode)
                 {

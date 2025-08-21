@@ -1,6 +1,5 @@
 using System.Formats.Tar;
 using System.IO.Compression;
-using System.Text;
 using ColorMC.Core.Helpers;
 
 namespace ColorMC.Core.Utils;

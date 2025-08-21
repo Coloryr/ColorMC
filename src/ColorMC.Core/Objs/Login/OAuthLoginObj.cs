@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ColorMC.Core.Objs.Login;
+﻿namespace ColorMC.Core.Objs.Login;
 
 /// <summary>
 /// 登录参数
@@ -12,7 +6,7 @@ namespace ColorMC.Core.Objs.Login;
 public record OAuthLoginObj
 {
     public record OAuthLoginPropertiesObj
-    { 
+    {
         public string AuthMethod { get; set; }
         public string SiteName { get; set; }
         public string RpsTicket { get; set; }

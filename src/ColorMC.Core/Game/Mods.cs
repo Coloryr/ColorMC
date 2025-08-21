@@ -864,7 +864,7 @@ public static class Mods
                 }
                 catch (JsonException)
                 {
-                    
+
                 }
             }
 

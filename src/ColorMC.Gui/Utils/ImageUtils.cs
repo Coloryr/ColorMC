@@ -1,7 +1,6 @@
 using System.Runtime.InteropServices;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using ColorMC.Gui.UI.Controls;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
@@ -49,8 +48,8 @@ public static class ImageUtils
     /// <returns></returns>
     public static Bitmap ToBitmap(this SKBitmap bitmap)
     {
-        return new Bitmap(bitmap.ColorType.ToPixelFormat(), 
-        bitmap.AlphaType.ToAlphaFormat(), bitmap.GetPixels(), 
+        return new Bitmap(bitmap.ColorType.ToPixelFormat(),
+        bitmap.AlphaType.ToAlphaFormat(), bitmap.GetPixels(),
         new(bitmap.Width, bitmap.Height), new(96, 96), bitmap.RowBytes);
     }
 
@@ -63,7 +62,7 @@ public static class ImageUtils
     {
         var temp = Marshal.AllocHGlobal(image.Height * image.Info.RowBytes);
         image.ReadPixels(new(image.Width, image.Height, image.ColorType, image.AlphaType), temp);
-        var bitmap = new Bitmap(image.ColorType.ToPixelFormat(),image.AlphaType.ToAlphaFormat(), temp,
+        var bitmap = new Bitmap(image.ColorType.ToPixelFormat(), image.AlphaType.ToAlphaFormat(), temp,
         new(image.Width, image.Height), new(96, 96), image.Info.RowBytes);
         Marshal.FreeHGlobal(temp);
         return bitmap;

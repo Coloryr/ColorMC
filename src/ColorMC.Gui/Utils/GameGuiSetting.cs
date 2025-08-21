@@ -73,7 +73,7 @@ public static class GameGuiSetting
 
         var dir = Path.Combine(obj.GetBasePath(), GuiNames.NameGameGuiConfigFile);
 
-        ConfigSave.AddItem(ConfigSaveObj.Build($"GameLogSetting:{obj.UUID}", dir, 
+        ConfigSave.AddItem(ConfigSaveObj.Build($"GameLogSetting:{obj.UUID}", dir,
             config, JsonGuiType.GameGuiSettingObj));
     }
 

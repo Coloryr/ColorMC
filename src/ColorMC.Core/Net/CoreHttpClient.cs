@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using ColorMC.Core.Config;
@@ -160,7 +159,7 @@ public static class CoreHttpClient
     /// <param name="url"></param>
     /// <returns></returns>
     public static Task<HttpResponseMessage> GetAsync(string url)
-    { 
+    {
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
     }
 

@@ -1,6 +1,5 @@
 using System.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Utils;
 using HtmlAgilityPack;
 using Jint;
@@ -75,7 +74,7 @@ public static class OpenJ9Api
         {
             ""
         };
-        
+
         foreach (var item in nodes1)
         {
             string value = item.Attributes["value"].Value;

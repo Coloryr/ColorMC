@@ -2,19 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.Utils;
@@ -135,7 +131,7 @@ public static class UpdateUtils
         }
         var json = obj.RootElement;
 
-        if (!json.TryGetProperty("update", out var list) 
+        if (!json.TryGetProperty("update", out var list)
             || list.ValueKind is not JsonValueKind.Array
             || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
         {

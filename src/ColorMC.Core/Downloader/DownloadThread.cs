@@ -251,7 +251,7 @@ internal class DownloadThread
                     item.State = DownloadItemState.GetInfo;
                     item.NowSize = 0;
                     item.Update(_index);
-                   
+
                     //创建临时文件
                     var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
 

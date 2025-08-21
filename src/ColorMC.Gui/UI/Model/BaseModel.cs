@@ -666,7 +666,7 @@ public partial class BaseModel : ObservableObject
         _info3.CancelVisible = iscancel;
 
         Lock();
-        
+
         DialogHost.Show(_info3, WindowId);
     }
     /// <summary>

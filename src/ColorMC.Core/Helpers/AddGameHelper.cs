@@ -2,7 +2,6 @@
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.OtherLaunch;
@@ -238,7 +237,7 @@ public static class AddGameHelper
                 {
                     return false;
                 }
-                
+
                 var res = mmc.ToColorMC(mmc1);
                 game = res.Game;
 
