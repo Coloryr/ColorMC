@@ -12,7 +12,7 @@ namespace ColorMC.Core.Net.Apis;
 public static class ColorMCAPI
 {
     //public const string BaseUrl = $"http://localhost:80/";
-    public const string BaseUrl = $"https://mc1.coloryr.com:8081/";
+    public const string BaseUrl = $"https://api.coloryr.com:8081/";
     public const string BaseWebUrl = $"https://www.coloryr.com/";
 
     private static readonly HttpClient _client = new()

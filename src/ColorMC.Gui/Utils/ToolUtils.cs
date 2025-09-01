@@ -24,7 +24,7 @@ public static class ToolUtils
     /// </summary>
     private static string s_baseDir;
 
-    public static string Hdiff { get; private set; }
+    //public static string Hdiff { get; private set; }
 
     /// <summary>
     /// 存档编辑器下载项目
@@ -34,9 +34,9 @@ public static class ToolUtils
     {
         return new()
         {
-            Name = "mcaselector-2.5.2",
-            Local = Path.Combine(s_baseDir, "mcaselector-2.5.2.jar"),
-            Url = "https://github.com/Querz/mcaselector/releases/download/2.5.2/mcaselector-2.5.2.jar"
+            Name = "mcaselector-2.5.3",
+            Local = Path.Combine(s_baseDir, "mcaselector-2.5.3.jar"),
+            Url = "https://github.com/Querz/mcaselector/releases/download/2.5.2/mcaselector-2.5.3.jar"
         };
     }
 
@@ -50,14 +50,14 @@ public static class ToolUtils
         Directory.CreateDirectory(s_baseDir);
     }
 
-    /// <summary>
-    /// 获取Frp文件名
-    /// </summary>
-    /// <returns></returns>
-    public static string GetHdiffName()
-    {
-        return SystemInfo.Os == OsType.Windows ? GuiNames.NameHdiffFile1 : GuiNames.NameHdiffFile;
-    }
+    ///// <summary>
+    ///// 获取Frp文件名
+    ///// </summary>
+    ///// <returns></returns>
+    //public static string GetHdiffName()
+    //{
+    //    return SystemInfo.Os == OsType.Windows ? GuiNames.NameHdiffFile1 : GuiNames.NameHdiffFile;
+    //}
 
     /// <summary>
     /// 解压Frp
@@ -105,46 +105,46 @@ public static class ToolUtils
         }
     }
 
-    /// <summary>
-    /// 获取Hdiff下载文件路径
-    /// </summary>
-    /// <param name="ver"></param>
-    /// <returns></returns>
-    public static string GetHdiffLocal(string ver, string? filename = null)
-    {
-        return filename == null ?
-            Path.Combine(s_baseDir, GuiNames.NameHdiffDir, ver)
-            : Path.Combine(s_baseDir, GuiNames.NameHdiffDir, ver, filename);
-    }
+    ///// <summary>
+    ///// 获取Hdiff下载文件路径
+    ///// </summary>
+    ///// <param name="ver"></param>
+    ///// <returns></returns>
+    //public static string GetHdiffLocal(string ver, string? filename = null)
+    //{
+    //    return filename == null ?
+    //        Path.Combine(s_baseDir, GuiNames.NameHdiffDir, ver)
+    //        : Path.Combine(s_baseDir, GuiNames.NameHdiffDir, ver, filename);
+    //}
 
     /// <summary>
-    /// 准备Hdiff文件
-    /// </summary>
-    /// <returns></returns>
-    public static async Task<(string?, FileItemObj?)> InitHdiff()
-    {
-        var obj1 = await ColorMCCloudAPI.GetHdiffList();
-        if (obj1 == null)
-        {
-            return (null, null);
-        }
-        var item = obj1.FirstOrDefault();
-        var obj = ColorMCCloudAPI.BuildHdiffItem(item.Key, item.Value);
+    ///// 准备Hdiff文件
+    ///// </summary>
+    ///// <returns></returns>
+    //public static async Task<(string?, FileItemObj?)> InitHdiff()
+    //{
+    //    var obj1 = await ColorMCCloudAPI.GetHdiffList();
+    //    if (obj1 == null)
+    //    {
+    //        return (null, null);
+    //    }
+    //    var item = obj1.FirstOrDefault();
+    //    var obj = ColorMCCloudAPI.BuildHdiffItem(item.Key, item.Value);
 
-        if (obj.Item1 == null)
-        {
-            return (null, null);
-        }
-        else
-        {
-            if (File.Exists(obj.Item1))
-            {
-                return (obj.Item1, null);
-            }
+    //    if (obj.Item1 == null)
+    //    {
+    //        return (null, null);
+    //    }
+    //    else
+    //    {
+    //        if (File.Exists(obj.Item1))
+    //        {
+    //            return (obj.Item1, null);
+    //        }
 
-            return (obj.Item1, obj.Item2);
-        }
-    }
+    //        return (obj.Item1, obj.Item2);
+    //    }
+    //}
 
     /// <summary>
     /// 打开存档编辑器

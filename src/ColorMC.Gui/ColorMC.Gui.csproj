@@ -353,7 +353,7 @@
     <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
-    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.3" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.4" />
     <PackageReference Include="System.IO.Hashing" Version="9.0.8" />
     <PackageReference Include="System.Text.Json" Version="9.0.8" />
   </ItemGroup>
