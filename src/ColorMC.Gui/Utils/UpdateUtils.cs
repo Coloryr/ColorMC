@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -104,98 +103,98 @@ public static class UpdateUtils
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        if (!File.Exists(LocalPath[0]) || !File.Exists(LocalPath[1]))
-        {
-            StartDownloadUpdate(model);
-        }
-        else
-        {
-            StartPatchUpdate(model);
-        }
+        //if (!File.Exists(LocalPath[0]) || !File.Exists(LocalPath[1]))
+        //{
+        StartDownloadUpdate(model);
+        //}
+        //else
+        //{
+        //    StartPatchUpdate(model);
+        //}
     }
 
-    /// <summary>
-    /// 开始修补更新
-    /// </summary>
-    private static async void StartPatchUpdate(BaseModel model)
-    {
-        if (ColorMCGui.BaseSha1 == null)
-            return;
+    ///// <summary>
+    ///// 开始修补更新
+    ///// </summary>
+    //private static async void StartPatchUpdate(BaseModel model)
+    //{
+    //    if (ColorMCGui.BaseSha1 == null)
+    //        return;
 
-        model.Progress(App.Lang("UpdateChecker.Info2"));
-        var obj = await ColorMCCloudAPI.GetUpdateIndex();
-        if (obj == null)
-        {
-            model.Show(App.Lang("UpdateChecker.Error3"));
-            return;
-        }
-        var json = obj.RootElement;
+    //    model.Progress(App.Lang("UpdateChecker.Info2"));
+    //    var obj = await ColorMCCloudAPI.GetUpdateIndex();
+    //    if (obj == null)
+    //    {
+    //        model.Show(App.Lang("UpdateChecker.Error3"));
+    //        return;
+    //    }
+    //    var json = obj.RootElement;
 
-        if (!json.TryGetProperty("update", out var list)
-            || list.ValueKind is not JsonValueKind.Array
-            || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
-        {
-            model.Show(App.Lang("UpdateChecker.Error3"));
-            return;
-        }
-        bool find = false;
-        var diffs = new List<string>();
-        var down = new List<FileItemObj>();
-        foreach (var item in update)
-        {
-            if (find || item.Core == LocalSha1s[0] && item.Gui == LocalSha1s[1])
-            {
-                find = true;
-                string file = Path.Combine(DownloadManager.DownloadDir, item.Diff);
-                diffs.Add(file);
-                down.Add(new()
-                {
-                    Name = "colormc_" + item.Diff,
-                    Local = file,
-                    Sha1 = item.Sha1,
-                    Url = ColorMCCloudAPI.UpdateUrl + item.Diff
-                });
-            }
-        }
-        if (find)
-        {
-            var info = await ToolUtils.InitHdiff();
-            if (info.Item1 == null)
-            {
-                model.ProgressClose();
-                model.Show(App.Lang("UpdateChecker.Error1"));
-                return;
-            }
-            if (info.Item2 != null)
-            {
-                down.Add(info.Item2);
-            }
-            var res = await DownloadManager.StartAsync(down);
-            if (res)
-            {
-                model.ProgressUpdate(App.Lang("UpdateChecker.Info3"));
-                res = await StartPatch(info.Item1, diffs);
-                model.ProgressClose();
-                if (res)
-                {
-                    ColorMCGui.Reboot();
-                }
-                else
-                {
-                    model.Show(App.Lang("UpdateChecker.Error2"));
-                }
-            }
-            else
-            {
-                model.ProgressClose();
-                model.Show(App.Lang("UpdateChecker.Error1"));
-            }
-        }
-        else
-        {
-            StartDownloadUpdate(model);
-        }
-    }
+    //    if (!json.TryGetProperty("update", out var list)
+    //        || list.ValueKind is not JsonValueKind.Array
+    //        || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
+    //    {
+    //        model.Show(App.Lang("UpdateChecker.Error3"));
+    //        return;
+    //    }
+    //    bool find = false;
+    //    var diffs = new List<string>();
+    //    var down = new List<FileItemObj>();
+    //    foreach (var item in update)
+    //    {
+    //        if (find || item.Core == LocalSha1s[0] && item.Gui == LocalSha1s[1])
+    //        {
+    //            find = true;
+    //            string file = Path.Combine(DownloadManager.DownloadDir, item.Diff);
+    //            diffs.Add(file);
+    //            down.Add(new()
+    //            {
+    //                Name = "colormc_" + item.Diff,
+    //                Local = file,
+    //                Sha1 = item.Sha1,
+    //                Url = ColorMCCloudAPI.UpdateUrl + item.Diff
+    //            });
+    //        }
+    //    }
+    //    if (find)
+    //    {
+    //        var info = await ToolUtils.InitHdiff();
+    //        if (info.Item1 == null)
+    //        {
+    //            model.ProgressClose();
+    //            model.Show(App.Lang("UpdateChecker.Error1"));
+    //            return;
+    //        }
+    //        if (info.Item2 != null)
+    //        {
+    //            down.Add(info.Item2);
+    //        }
+    //        var res = await DownloadManager.StartAsync(down);
+    //        if (res)
+    //        {
+    //            model.ProgressUpdate(App.Lang("UpdateChecker.Info3"));
+    //            res = await StartPatch(info.Item1, diffs);
+    //            model.ProgressClose();
+    //            if (res)
+    //            {
+    //                ColorMCGui.Reboot();
+    //            }
+    //            else
+    //            {
+    //                model.Show(App.Lang("UpdateChecker.Error2"));
+    //            }
+    //        }
+    //        else
+    //        {
+    //            model.ProgressClose();
+    //            model.Show(App.Lang("UpdateChecker.Error1"));
+    //        }
+    //    }
+    //    else
+    //    {
+    //        StartDownloadUpdate(model);
+    //    }
+    //}
 
     /// <summary>
     /// 开始基文件更新
@@ -302,40 +301,40 @@ public static class UpdateUtils
         window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
     }
 
-    private static async Task<bool> StartPatch(string file, List<string> files)
-    {
-        return await Task.Run(() =>
-        {
-            try
-            {
-                var dir1 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir);
-                var dir2 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllNewDir);
-                foreach (var item in files)
-                {
-                    var patcher = new ProcessStartInfo(file);
-                    patcher.ArgumentList.Add(dir1);
-                    patcher.ArgumentList.Add(item);
-                    patcher.ArgumentList.Add(dir2);
-                    var p = Process.Start(patcher);
-                    if (p == null)
-                    {
-                        return false;
-                    }
-                    p?.WaitForExit();
-                    if (p?.ExitCode != 0)
-                    {
-                        return false;
-                    }
-                    Directory.Delete(dir1, true);
-                    Directory.Move(dir2, dir1);
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("UpdateChecker.Error1"), e);
-                return false;
-            }
-        });
-    }
+    //private static async Task<bool> StartPatch(string file, List<string> files)
+    //{
+    //    return await Task.Run(() =>
+    //    {
+    //        try
+    //        {
+    //            var dir1 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllDir);
+    //            var dir2 = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameDllNewDir);
+    //            foreach (var item in files)
+    //            {
+    //                var patcher = new ProcessStartInfo(file);
+    //                patcher.ArgumentList.Add(dir1);
+    //                patcher.ArgumentList.Add(item);
+    //                patcher.ArgumentList.Add(dir2);
+    //                var p = Process.Start(patcher);
+    //                if (p == null)
+    //                {
+    //                    return false;
+    //                }
+    //                p?.WaitForExit();
+    //                if (p?.ExitCode != 0)
+    //                {
+    //                    return false;
+    //                }
+    //                Directory.Delete(dir1, true);
+    //                Directory.Move(dir2, dir1);
+    //            }
+    //            return true;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Logs.Error(App.Lang("UpdateChecker.Error1"), e);
+    //            return false;
+    //        }
+    //    });
+    //}
 }

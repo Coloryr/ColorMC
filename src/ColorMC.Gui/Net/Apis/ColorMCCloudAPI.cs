@@ -779,64 +779,64 @@ public static class ColorMCCloudAPI
         return -1;
     }
 
-    /// <summary>
-    /// 获取Hdiff
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static (string?, FileItemObj?) BuildHdiffItem(string key, HdiffDownloadObj value)
-    {
-        string data1;
-        string sha1;
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            if (SystemInfo.IsArm)
-            {
-                data1 = $"hdiffpatch_v{key}_bin_windows_arm64.zip";
-                sha1 = value.WindowsArm64;
-            }
-            else
-            {
-                data1 = $"hdiffpatch_v{key}_bin_windows64.zip";
-                sha1 = value.WindowsAmd64;
-            }
-        }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            if (SystemInfo.IsArm)
-            {
-                data1 = $"hdiffpatch_v{key}_bin_linux_arm64.zip";
-                sha1 = value.LinuxArm64;
-            }
-            else
-            {
-                data1 = $"hdiffpatch_v{key}_bin_linux64.zip";
-                sha1 = value.LinuxAmd64;
-            }
-        }
-        else if (SystemInfo.Os == OsType.MacOS)
-        {
-            data1 = $"hdiffpatch_v{key}_bin_macos.zip";
-            sha1 = value.Macos;
-        }
-        else
-        {
-            return (null, null);
-        }
+    ///// <summary>
+    ///// 获取Hdiff
+    ///// </summary>
+    ///// <param name="key"></param>
+    ///// <param name="value"></param>
+    ///// <returns></returns>
+    //public static (string?, FileItemObj?) BuildHdiffItem(string key, HdiffDownloadObj value)
+    //{
+    //    string data1;
+    //    string sha1;
+    //    if (SystemInfo.Os == OsType.Windows)
+    //    {
+    //        if (SystemInfo.IsArm)
+    //        {
+    //            data1 = $"hdiffpatch_v{key}_bin_windows_arm64.zip";
+    //            sha1 = value.WindowsArm64;
+    //        }
+    //        else
+    //        {
+    //            data1 = $"hdiffpatch_v{key}_bin_windows64.zip";
+    //            sha1 = value.WindowsAmd64;
+    //        }
+    //    }
+    //    else if (SystemInfo.Os == OsType.Linux)
+    //    {
+    //        if (SystemInfo.IsArm)
+    //        {
+    //            data1 = $"hdiffpatch_v{key}_bin_linux_arm64.zip";
+    //            sha1 = value.LinuxArm64;
+    //        }
+    //        else
+    //        {
+    //            data1 = $"hdiffpatch_v{key}_bin_linux64.zip";
+    //            sha1 = value.LinuxAmd64;
+    //        }
+    //    }
+    //    else if (SystemInfo.Os == OsType.MacOS)
+    //    {
+    //        data1 = $"hdiffpatch_v{key}_bin_macos.zip";
+    //        sha1 = value.Macos;
+    //    }
+    //    else
+    //    {
+    //        return (null, null);
+    //    }
 
-        return (Path.Combine(ToolUtils.GetHdiffLocal(key), ToolUtils.GetHdiffName()), new()
-        {
-            Name = $"Hdiff {data1}",
-            Local = ToolUtils.GetHdiffLocal(key, data1),
-            Url = $"{ColorMCAPI.BaseWebUrl}hdiff/{key}/{data1}",
-            Sha1 = sha1,
-            Later = (stream) =>
-            {
-                ToolUtils.Unzip(stream, ToolUtils.GetHdiffLocal(key), data1);
-            }
-        });
-    }
+    //    return (Path.Combine(ToolUtils.GetHdiffLocal(key), ToolUtils.GetHdiffName()), new()
+    //    {
+    //        Name = $"Hdiff {data1}",
+    //        Local = ToolUtils.GetHdiffLocal(key, data1),
+    //        Url = $"{ColorMCAPI.BaseWebUrl}hdiff/{key}/{data1}",
+    //        Sha1 = sha1,
+    //        Later = (stream) =>
+    //        {
+    //            ToolUtils.Unzip(stream, ToolUtils.GetHdiffLocal(key), data1);
+    //        }
+    //    });
+    //}
 
     /// <summary>
     /// 获取上游Frp
