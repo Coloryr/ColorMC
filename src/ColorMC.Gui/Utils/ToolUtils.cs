@@ -2,15 +2,12 @@ using System.Diagnostics;
 using System.Formats.Tar;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Net.Apis;
 
 namespace ColorMC.Gui.Utils;
 

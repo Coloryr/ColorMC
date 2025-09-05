@@ -72,7 +72,7 @@ public static class DataPack
                     return;
                 }
                 using var zip = ZipArchive.Open(stream);
-                var ent = zip.Entries.FirstOrDefault(item=>item.Key == Names.NamePackMetaFile);
+                var ent = zip.Entries.FirstOrDefault(item => item.Key == Names.NamePackMetaFile);
                 if (ent == null)
                 {
                     return;
