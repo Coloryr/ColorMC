@@ -1,4 +1,3 @@
-using System.Text;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;

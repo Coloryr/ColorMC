@@ -105,7 +105,7 @@ public static class ModPackHelper
         using var zFile = ZipArchive.Open(stream3);
         CurseForgePackObj? info = null;
         //获取主信息
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameManifestFile) is { } ent)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } ent)
         {
             try
             {
@@ -365,7 +365,7 @@ public static class ModPackHelper
 
         //获取主信息
         CurseForgePackObj? info = null;
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameManifestFile) is { } ent)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } ent)
         {
             try
             {
@@ -526,7 +526,7 @@ public static class ModPackHelper
         using var zFile = ZipArchive.Open(stream3);
         ModrinthPackObj? info = null;
         //获取主信息
-        if (zFile.Entries.FirstOrDefault(item=>item.Key
+        if (zFile.Entries.FirstOrDefault(item => item.Key
          == Names.NameModrinthFile) is { } ent)
         {
             try
@@ -778,7 +778,7 @@ public static class ModPackHelper
         using var zFile = ZipArchive.Open(arg.Zip);
         //获取主信息
         ModrinthPackObj? info = null;
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameModrinthFile) is { } ent)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameModrinthFile) is { } ent)
         {
             try
             {

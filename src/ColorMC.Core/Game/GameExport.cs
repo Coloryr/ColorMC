@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -7,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using SharpCompress.Archives.Zip;
 using SharpCompress.Common;
 using SharpCompress.Writers.Zip;
 
@@ -90,7 +88,7 @@ public static class GameExport
                 }
             }
             html.AppendLine("</ul>");
-            
+
             using var stream = PathHelper.OpenWrite(arg.File, true);
             using var s = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
 

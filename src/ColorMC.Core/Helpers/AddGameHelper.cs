@@ -166,7 +166,7 @@ public static class AddGameHelper
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
                 using var zFile = ZipArchive.Open(st);
-                if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameGameFile) is { } item)
+                if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameGameFile) is { } item)
                 {
                     using var stream = item.OpenEntryStream();
                     game = JsonUtils.ToObj(stream, JsonType.GameSettingObj);
@@ -304,7 +304,7 @@ public static class AddGameHelper
                 using var zFile = ZipArchive.Open(st);
                 HMCLObj? obj = null;
                 CurseForgePackObj? obj1 = null;
-                if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameHMCLFile) is { } item)
+                if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameHMCLFile) is { } item)
                 {
                     using var stream = item.OpenEntryStream();
                     obj = JsonUtils.ToObj(stream, JsonType.HMCLObj);

@@ -1,5 +1,3 @@
-using System.IO.Compression;
-using System.Text;
 using ColorMC.Core.Objs;
 using SharpCompress.Common.Zip;
 
