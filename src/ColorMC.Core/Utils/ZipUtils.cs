@@ -1,6 +1,10 @@
 using System.Formats.Tar;
-using System.IO.Compression;
 using ColorMC.Core.Helpers;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Compressors;
+using SharpCompress.Compressors.Deflate;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Utils;
 
@@ -17,32 +21,32 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// 压缩文件
     /// </summary>
     /// <param name="zipDir">路径</param>
-    /// <param name="zipFile">文件名</param>
+    /// <param name="stream">文件流</param>
     /// <param name="filter">过滤</param>
-    /// <returns></returns>
-    public async Task ZipFileAsync(string zipDir, string zipFile, List<string>? filter = null)
+    /// <returns>压缩流</returns>
+    public async Task<ZipWriter> ZipFileAsync(string zipDir, Stream stream, List<string>? filter = null)
     {
         if (zipDir[^1] != Path.DirectorySeparatorChar)
             zipDir += Path.DirectorySeparatorChar;
-        using var s = new ZipArchive(PathHelper.OpenWrite(zipFile, true), ZipArchiveMode.Create);
+        var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
         _size = PathHelper.GetAllFiles(zipDir).Count;
         _now = 0;
-        await ZipAsync(zipDir, s, zipDir, filter);
+        await ZipAsync(zipDir, zip, zipDir, filter);
+        return zip;
     }
 
     /// <summary>
     /// 打包Zip
     /// </summary>
-    /// <param name="strFile"></param>
-    /// <param name="s"></param>
-    /// <param name="staticFile"></param>
-    /// <param name="filter"></param>
-    /// <returns></returns>
-    private async Task ZipAsync(string strFile, ZipArchive s,
-        string staticFile, List<string>? filter)
+    /// <param name="strFile">打包路径</param>
+    /// <param name="zip">压缩流</param>
+    /// <param name="rootPath">根路径</param>
+    /// <param name="filter">文件过滤</param>
+    private async Task ZipAsync(string strFile, ZipWriter zip,
+        string rootPath, List<string>? filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
-        string[] filenames = Directory.GetFileSystemEntries(strFile);
+        var filenames = Directory.GetFileSystemEntries(strFile);
         foreach (string file in filenames)
         {
             if (filter != null && filter.Contains(file))
@@ -51,18 +55,16 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             }
             if (Directory.Exists(file))
             {
-                await ZipAsync(file, s, staticFile, filter);
+                await ZipAsync(file, zip, rootPath, filter);
             }
             else
             {
                 _now++;
                 ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
                 var buffer = PathHelper.OpenRead(file)!;
-                string tempfile = file[(staticFile.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
-                var entry = s.CreateEntry(tempfile);
-                using var stream = entry.Open();
+                string tempfile = file[(rootPath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
+                using var stream = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
                 await buffer.CopyToAsync(stream);
-                entry.LastWriteTime = DateTime.Now;
             }
         }
     }
@@ -72,23 +74,23 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// </summary>
     /// <param name="zipFile">压缩包路径</param>
     /// <param name="zipList">压缩的文件</param>
-    /// <param name="path">替换的前置路径</param>
+    /// <param name="rootPath">替换的前置路径</param>
     /// <returns></returns>
-    public async Task ZipFileAsync(string zipFile, List<string> zipList, string path)
+    public async Task ZipFileAsync(string zipFile, List<string> zipList, string rootPath)
     {
-        using var s = new ZipArchive(PathHelper.OpenWrite(zipFile, true), ZipArchiveMode.Create);
+        using var stream = PathHelper.OpenWrite(zipFile, true);
+        var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
         _size = zipList.Count;
         _now = 0;
 
         foreach (var item in zipList)
         {
-            string tempfile = item[(path.Length + 1)..];
+            string tempfile = item[(rootPath.Length + 1)..];
             _now++;
             ZipUpdate?.Invoke(item, _now, _size);
             using var buffer = PathHelper.OpenRead(item)!;
-            var entry = s.CreateEntry(tempfile);
-            using var stream = entry.Open();
-            await buffer.CopyToAsync(stream);
+            using var stream1 = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
+            await buffer.CopyToAsync(stream1);
         }
     }
 
@@ -121,37 +123,36 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
         }
         else
         {
-            using var s = new ZipArchive(stream);
+            using var s = ZipArchive.Open(stream);
             _size = s.Entries.Count;
-            foreach (var theEntry in s.Entries)
+            foreach (var e in s.Entries)
             {
                 _now++;
-                ZipUpdate?.Invoke(theEntry.FullName, _now, _size);
+                ZipUpdate?.Invoke(e.Key ?? "", _now, _size);
 
-                var item = Path.GetFullPath($"{path}/{theEntry.FullName}");
-                var info = new FileInfo(item);
-
-                info.Directory?.Create();
-
-                if (info.FullName != string.Empty)
+                if (!FuntionUtils.IsFile(e))
                 {
-                    if (PathHelper.FileHasInvalidChars(info.FullName))
-                    {
-                        if (GameRequest == null)
-                        {
-                            return false;
-                        }
-                        var res = await GameRequest.Invoke(string.Format(
-                            LanguageHelper.Get("Core.Zip.Info1"), theEntry.FullName));
-                        if (!res)
-                        {
-                            return false;
-                        }
-                        item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.FullName));
-                    }
-                    using var stream2 = theEntry.Open();
-                    await PathHelper.WriteBytesAsync(item, stream2);
+                    continue;
                 }
+
+                var item = Path.GetFullPath($"{path}/{e.Key}");
+                var info = new FileInfo(item);
+                if (PathHelper.FileHasInvalidChars(info.Name))
+                {
+                    if (GameRequest == null)
+                    {
+                        return false;
+                    }
+                    var res = await GameRequest.Invoke(string.Format(
+                        LanguageHelper.Get("Core.Zip.Info1"), e.Key));
+                    if (!res)
+                    {
+                        return false;
+                    }
+                    item = Path.Combine(info.Directory!.FullName, PathHelper.ReplaceFileName(info.Name));
+                }
+                using var stream2 = e.OpenEntryStream();
+                await PathHelper.WriteBytesAsync(item, stream2);
             }
         }
 

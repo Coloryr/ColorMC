@@ -3091,7 +3091,8 @@ public static class GameBinding
         if (!world.HaveCloud)
         {
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
-            await new ZipUtils().ZipFileAsync(dir, local);
+            using var stream = PathHelper.OpenWrite(local, true);
+            using var zip = await new ZipUtils().ZipFileAsync(dir, stream);
         }
         else
         {

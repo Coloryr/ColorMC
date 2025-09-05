@@ -1,5 +1,5 @@
-﻿using System.IO.Compression;
-using System.Text;
+﻿using System.Text;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -7,6 +7,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Game;
 
@@ -28,15 +31,12 @@ public static class GameExport
                 }
             }
 
-            await new ZipUtils().ZipFileAsync(arg.Obj.GetBasePath(),
-                arg.File, list);
-
             using var stream = PathHelper.OpenWrite(arg.File, false);
-            using var s = new ZipArchive(stream, ZipArchiveMode.Update);
+            using var zip = await new ZipUtils().ZipFileAsync(arg.Obj.GetBasePath(), stream, list);
             var data = JsonUtils.ToString(obj1, JsonType.DictionaryStringModInfoObj);
-            var item1 = s.CreateEntry(Names.NameModInfoFile);
-            using var s1 = item1.Open();
-            await s1.WriteAsync(Encoding.UTF8.GetBytes(data));
+            using var stream1 = zip.WriteToStream(Names.NameModInfoFile, new ZipWriterEntryOptions());
+            await stream1.WriteAsync(Encoding.UTF8.GetBytes(data));
+
             return true;
         }
         else if (arg.Type == PackType.CurseForge)
@@ -90,24 +90,20 @@ public static class GameExport
                 }
             }
             html.AppendLine("</ul>");
-
+            
             using var stream = PathHelper.OpenWrite(arg.File, true);
-            using var s = new ZipArchive(stream, ZipArchiveMode.Create);
+            using var s = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
 
             //manifest.json
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.CurseForgePackObj));
-                var entry = s.CreateEntry("manifest.json");
-                using var stream1 = entry.Open();
-                await stream1.WriteAsync(buffer);
+                using var stream1 = s.WriteToStream(Names.NameManifestFile, new ZipWriterEntryOptions());
+                await stream1.WriteAsync(Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.CurseForgePackObj)));
             }
 
             //modlist.html
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(html.ToString());
-                var entry = s.CreateEntry("modlist.html");
-                using var stream1 = entry.Open();
-                await stream1.WriteAsync(buffer);
+                using var stream1 = s.WriteToStream(Names.NameModListFile, new ZipWriterEntryOptions());
+                await stream1.WriteAsync(Encoding.UTF8.GetBytes(html.ToString()));
             }
 
             {
@@ -121,14 +117,13 @@ public static class GameExport
                     {
                         name1 = '/' + name1;
                     }
-                    name1 = "overrides" + name1;
+                    name1 = Names.NameOverrideDir + name1;
                     using var buffer = PathHelper.OpenRead(item);
                     if (buffer == null)
                     {
                         continue;
                     }
-                    var entry = s.CreateEntry(name1);
-                    using var stream1 = entry.Open();
+                    using var stream1 = s.WriteToStream(name1, new ZipWriterEntryOptions());
                     await buffer.CopyToAsync(stream1);
                 }
             }
@@ -202,14 +197,12 @@ public static class GameExport
             }
 
             using var stream = PathHelper.OpenWrite(arg.File, true);
-            using var s = new ZipArchive(stream, ZipArchiveMode.Create);
+            using var s = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
 
             //manifest.json
             {
-                byte[] buffer = Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.ModrinthPackObj));
-                var entry = s.CreateEntry("modrinth.index.json");
-                using var stream1 = entry.Open();
-                await stream1.WriteAsync(buffer);
+                using var stream1 = s.WriteToStream(Names.NameModrinthFile, new ZipWriterEntryOptions());
+                await stream1.WriteAsync(Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.ModrinthPackObj)));
             }
 
             {
@@ -229,8 +222,7 @@ public static class GameExport
                     {
                         continue;
                     }
-                    var entry = s.CreateEntry(name1);
-                    using var stream1 = entry.Open();
+                    using var stream1 = s.WriteToStream(name1, new ZipWriterEntryOptions());
                     await buffer.CopyToAsync(stream1);
                 }
             }

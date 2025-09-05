@@ -178,6 +178,7 @@ public partial class GameExportModel : MenuModel
             _ => false
         };
 
+        LoadMods();
         LoadFile();
         if (MoEx)
         {
@@ -337,23 +338,41 @@ public partial class GameExportModel : MenuModel
     }
 
     /// <summary>
-    /// 加载模组列表
+    /// 更新视图中的模组列表
     /// </summary>
     public void LoadMods()
     {
+        Mods.Clear();
         if (string.IsNullOrWhiteSpace(Text))
         {
-            Mods.Clear();
-            Mods.AddRange(Items);
+            foreach (var item in Items)
+            {
+                if (item.Source == SourceType.Modrinth && Type == PackType.CurseForge)
+                {
+                    continue;
+                }
+
+                Mods.Add(item);
+            }
         }
         else
         {
             string fil = Text.ToLower();
-            var list = from item in Items
-                       where item.Name.Contains(fil, StringComparison.CurrentCultureIgnoreCase)
-                       select item;
-            Mods.Clear();
-            Mods.AddRange(list);
+            if (Type == PackType.CurseForge)
+            {
+                var list = from item in Items
+                           where item.Name.Contains(fil, StringComparison.CurrentCultureIgnoreCase)
+                           && item.Source != SourceType.Modrinth
+                           select item;
+                Mods.AddRange(list);
+            }
+            else
+            {
+                var list = from item in Items
+                           where item.Name.Contains(fil, StringComparison.CurrentCultureIgnoreCase)
+                           select item;
+                Mods.AddRange(list);
+            }
         }
     }
 
@@ -498,8 +517,11 @@ public partial class GameExportModel : MenuModel
             }
 
             var type = GameDownloadHelper.TestSourceType(item.Obj1.ModId, item.Obj1.FileId);
-            if ((type == SourceType.CurseForge && Type == PackType.CurseForge)
-                || (type == SourceType.Modrinth && Type == PackType.Modrinth))
+            if (type == SourceType.Modrinth && Type == PackType.CurseForge)
+            {
+                item.Export = false;
+            }
+            else if (type == SourceType.CurseForge || type == SourceType.Modrinth)
             {
                 item.Export = true;
                 list.Add(item.Obj.Local);
