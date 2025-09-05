@@ -10,9 +10,8 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Utils;
-using SkiaSharp;
-using System.IO.Compression;
 using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
+using ZipArchive = SharpCompress.Archives.Zip.ZipArchive;
 
 namespace ColorMC.Test;
 
@@ -512,26 +511,26 @@ public static class TestItem
         //var data = ChunkMca.Read(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-2.1.mca").Result;
         //ChunkMca.Write(data, "r.-2.1.mca");
 
-        {
-            using var temp = File.Open(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            temp.Seek(0x6005, SeekOrigin.Begin);
-            var temp1 = new byte[0x168];
-            temp.ReadExactly(temp1);
-            using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
-            MemoryStream decompressed = new MemoryStream();
-            temp2.CopyTo(decompressed);
-            File.WriteAllBytes("a.data", decompressed.ToArray());
-        }
-        {
-            using var temp = File.Open("r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            temp.Seek(0x2005, SeekOrigin.Begin);
-            var temp1 = new byte[0x16F];
-            temp.ReadExactly(temp1);
-            using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
-            MemoryStream decompressed = new MemoryStream();
-            temp2.CopyTo(decompressed);
-            File.WriteAllBytes("2.data", decompressed.ToArray());
-        }
+        //{
+        //    using var temp = File.Open(@"F:\minecraft\ColorMC\minecraft\instances\game\.minecraft\saves\新的世界\region\r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        //    temp.Seek(0x6005, SeekOrigin.Begin);
+        //    var temp1 = new byte[0x168];
+        //    temp.ReadExactly(temp1);
+        //    using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
+        //    MemoryStream decompressed = new MemoryStream();
+        //    temp2.CopyTo(decompressed);
+        //    File.WriteAllBytes("a.data", decompressed.ToArray());
+        //}
+        //{
+        //    using var temp = File.Open("r.-2.1.mca", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        //    temp.Seek(0x2005, SeekOrigin.Begin);
+        //    var temp1 = new byte[0x16F];
+        //    temp.ReadExactly(temp1);
+        //    using var temp2 = new ZLibStream(new MemoryStream(temp1), CompressionMode.Decompress);
+        //    MemoryStream decompressed = new MemoryStream();
+        //    temp2.CopyTo(decompressed);
+        //    File.WriteAllBytes("2.data", decompressed.ToArray());
+        //}
 
     }
 
@@ -741,5 +740,10 @@ public static class TestItem
         using var temp = new HttpClient();
         var res = await temp.GetAsync("https://edge.forgecdn.net/files/4351/224/wolf-armor-compat-1.0.3-1.19.2.jar", HttpCompletionOption.ResponseHeadersRead);
         var data = res.Content.ReadAsStream();
+    }
+
+    public static void Item44()
+    {
+        using var temp = ZipArchive.Open("H:\\2025年7月30号_版本0.3.4_客户端导入包.zip");
     }
 }

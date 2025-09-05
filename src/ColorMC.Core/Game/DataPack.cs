@@ -1,4 +1,3 @@
-using System.IO.Compression;
 using System.Text;
 using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
@@ -6,6 +5,7 @@ using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Game;
 
@@ -71,13 +71,13 @@ public static class DataPack
                 {
                     return;
                 }
-                using var zip = new ZipArchive(stream);
-                var ent = zip.GetEntry(Names.NamePackMetaFile);
+                using var zip = ZipArchive.Open(stream);
+                var ent = zip.Entries.FirstOrDefault(item=>item.Key == Names.NamePackMetaFile);
                 if (ent == null)
                 {
                     return;
                 }
-                using var stream1 = ent.Open();
+                using var stream1 = ent.OpenEntryStream();
                 var data = await JsonUtils.ReadAsObjAsync(stream1);
                 if (data == null)
                 {

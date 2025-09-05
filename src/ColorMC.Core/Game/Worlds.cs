@@ -125,9 +125,10 @@ public static class Worlds
     /// </summary>
     /// <param name="world">世界实例</param>
     /// <param name="file">输出文件位置</param>
-    public static Task ExportWorldZip(this WorldObj world, string file)
+    public static async Task ExportWorldZip(this WorldObj world, string file)
     {
-        return new ZipUtils().ZipFileAsync(world.Local, file);
+        using var stream = PathHelper.OpenWrite(file, true);
+        using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
     }
 
     /// <summary>
@@ -154,7 +155,8 @@ public static class Worlds
         var file = Path.Combine(path, world.LevelName + "_" + DateTime.Now
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
-        await new ZipUtils().ZipFileAsync(world.Local, file);
+        using var stream = PathHelper.OpenWrite(file, true);
+        using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
     }
 
     /// <summary>

@@ -369,7 +369,11 @@ public static class ServerPack
                         {
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
-                            await new ZipUtils(GameRequest: arg.Request).ZipFileAsync(path1, file.FullName);
+                            var stream1 = PathHelper.OpenWrite(file.FullName, true);
+                            var zip = await new ZipUtils(GameRequest: arg.Request).ZipFileAsync(path1, stream1);
+                            zip.Dispose();
+                            stream1.Dispose();
+
                             var stream = PathHelper.OpenRead(file.FullName)!;
 
                             var item1 = new ConfigPackObj()

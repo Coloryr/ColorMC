@@ -1,4 +1,7 @@
+using System.IO.Compression;
+using System.Text;
 using ColorMC.Core.Objs;
+using SharpCompress.Common.Zip;
 
 namespace ColorMC.Core.Utils;
 
@@ -147,5 +150,44 @@ public static class FuntionUtils
         }
 
         dic.Add(key, value);
+    }
+
+    /// <summary>
+    /// 检查文本是否包含乱码字符
+    /// </summary>
+    /// <param name="text"></param>
+    /// <returns></returns>
+    public static bool HasGarbledText(string text)
+    {
+        if (text.Contains('?') || text.Contains('�') ||
+            text.Contains("ï»¿") || text.Contains('Ã') || text.Contains('Â'))
+        {
+            return true;
+        }
+
+        foreach (var c in text)
+        {
+            if (char.IsControl(c) && c != '\t' && c != '\r' && c != '\n' && c != ' ')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 判断压缩里面是为可解压文件
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
+    public static bool IsFile(ZipEntry entry)
+    {
+        if (entry.Key == null || entry.IsDirectory || (entry.Size == 0 && entry.CompressedSize == 0))
+        {
+            return false;
+        }
+
+        return true;
     }
 }

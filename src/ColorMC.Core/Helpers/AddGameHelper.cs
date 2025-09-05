@@ -1,11 +1,11 @@
-﻿using System.IO.Compression;
-using ColorMC.Core.Downloader;
+﻿using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -165,10 +165,10 @@ public static class AddGameHelper
             async Task<bool> ColorMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipArchive(st);
-                if (zFile.GetEntry(Names.NameGameFile) is { } item)
+                using var zFile = ZipArchive.Open(st);
+                if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameGameFile) is { } item)
                 {
-                    using var stream = item.Open();
+                    using var stream = item.OpenEntryStream();
                     game = JsonUtils.ToObj(stream, JsonType.GameSettingObj);
                 }
 
@@ -191,13 +191,12 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0 && e.CompressedLength == 0)
+                    if (!FuntionUtils.IsFile(e))
                     {
                         continue;
                     }
-                    using var stream = e.Open();
-                    var path = game.GetBasePath();
-                    string file = Path.Combine(path, e.Name);
+                    using var stream = e.OpenEntryStream();
+                    string file = Path.GetFullPath(game.GetBasePath() + "/" + e.Key);
                     await PathHelper.WriteBytesAsync(file, stream);
                 }
 
@@ -209,21 +208,25 @@ public static class AddGameHelper
             async Task<bool> MMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipArchive(st);
+                using var zFile = ZipArchive.Open(st);
                 string path = "";
                 MMCObj? mmc = null;
                 Dictionary<string, string>? mmc1 = null;
                 foreach (var e in zFile.Entries)
                 {
-                    if (mmc == null && e.Name == Names.NameMMCJsonFile)
+                    if (!FuntionUtils.IsFile(e))
                     {
-                        using var stream = e.Open();
-                        path = e.FullName[..^e.Name.Length];
+                        continue;
+                    }
+                    if (mmc == null && e.Key!.EndsWith(Names.NameMMCJsonFile))
+                    {
+                        path = e.Key.Replace(Path.GetFileName(e.Key), "");
+                        using var stream = e.OpenEntryStream();
                         mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                     }
-                    else if (mmc1 == null && e.Name == Names.NameMMCCfgFile)
+                    else if (mmc1 == null && e.Key!.EndsWith(Names.NameMMCCfgFile))
                     {
-                        using var stream1 = e.Open();
+                        using var stream1 = e.OpenEntryStream();
                         mmc1 = Options.ReadOptions(stream1, "=");
                     }
 
@@ -271,14 +274,14 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0 && e.CompressedLength == 0)
+                    if (!FuntionUtils.IsFile(e))
                     {
                         continue;
                     }
-                    if (e.FullName.StartsWith(path) && !string.IsNullOrWhiteSpace(e.Name))
+                    if (e.Key!.StartsWith(path))
                     {
-                        using var stream = e.Open();
-                        string file = Path.GetFullPath($"{game.GetBasePath()}/{e.FullName[path.Length..]}");
+                        using var stream = e.OpenEntryStream();
+                        string file = Path.GetFullPath($"{game.GetBasePath()}/{e.Key[path.Length..]}");
                         await PathHelper.WriteBytesAsync(file, stream);
                     }
                 }
@@ -298,17 +301,17 @@ public static class AddGameHelper
             async Task<bool> HMCL()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
-                using var zFile = new ZipArchive(st);
+                using var zFile = ZipArchive.Open(st);
                 HMCLObj? obj = null;
                 CurseForgePackObj? obj1 = null;
-                if (zFile.GetEntry(Names.NameHMCLFile) is { } item)
+                if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameHMCLFile) is { } item)
                 {
-                    using var stream = item.Open();
+                    using var stream = item.OpenEntryStream();
                     obj = JsonUtils.ToObj(stream, JsonType.HMCLObj);
                 }
-                if (zFile.GetEntry(Names.NameManifestFile) is { } item1)
+                if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } item1)
                 {
-                    using var stream = item1.Open();
+                    using var stream = item1.OpenEntryStream();
                     obj1 = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
                 }
 
@@ -348,18 +351,18 @@ public static class AddGameHelper
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Length == 0 && e.CompressedLength == 0)
+                    if (!FuntionUtils.IsFile(e))
                     {
                         continue;
                     }
-                    if (e.FullName.StartsWith(overrides))
+                    if (e.Key!.StartsWith(overrides))
                     {
-                        string file = Path.GetFullPath(game.GetGamePath() + e.FullName[overrides.Length..]);
-                        if (e.Name == Names.NameIconFile)
+                        string file = Path.GetFullPath(game.GetGamePath() + e.Key[overrides.Length..]);
+                        if (e.Key.EndsWith(Names.NameIconFile))
                         {
                             file = game.GetIconFile();
                         }
-                        using var stream = e.Open();
+                        using var stream = e.OpenEntryStream();
                         await PathHelper.WriteBytesAsync(file, stream);
                     }
                 }

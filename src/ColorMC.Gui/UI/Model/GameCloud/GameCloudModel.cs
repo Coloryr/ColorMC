@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
@@ -260,7 +261,8 @@ public partial class GameCloudModel : MenuModel
             Obj.GetModInfoJsonFile(),
             Obj.GetIconFile(),
             Obj.GetLaunchFile(),
-            Obj.GetModPackJsonFile()
+            Path.Combine(Obj.GetBasePath(), Names.NameModPackFile),
+            Path.Combine(Obj.GetBasePath(), Names.NameModrinthFile)
         };
         _files.SetSelectItems(list);
 

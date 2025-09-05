@@ -328,16 +328,6 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例整合包信息文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>文件路径</returns>
-    public static string GetModPackJsonFile(this GameSettingObj obj)
-    {
-        return Path.Combine(s_baseDir, obj.DirName, Names.NameModPackFile);
-    }
-
-    /// <summary>
     /// 获取游戏实例视频选项文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -832,10 +822,15 @@ public static class InstancesPath
             {
                 PathHelper.CopyFile(file, obj1.GetIconFile());
             }
-            file = obj.GetModPackJsonFile();
+            file = Path.Combine(obj.GetBasePath(), Names.NameModrinthFile);
             if (File.Exists(file))
             {
-                PathHelper.CopyFile(file, obj1.GetModPackJsonFile());
+                PathHelper.CopyFile(file, Path.Combine(obj1.GetBasePath(), Names.NameModrinthFile));
+            }
+            file = Path.Combine(obj.GetBasePath(), Names.NameManifestFile);
+            if (File.Exists(file))
+            {
+                PathHelper.CopyFile(file, Path.Combine(obj1.GetBasePath(), Names.NameManifestFile));
             }
             file = obj.GetModInfoJsonFile();
             if (File.Exists(file))
