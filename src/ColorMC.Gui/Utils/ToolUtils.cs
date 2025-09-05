@@ -8,6 +8,8 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 
 namespace ColorMC.Gui.Utils;
 
@@ -184,5 +186,11 @@ public static class ToolUtils
         p.BeginErrorReadLine();
 
         return new MessageRes { State = true };
+    }
+
+    public static void RegisterFastLaunch()
+    {
+        Win32.RegisterProtocolHandler(true);
+        Win32.RegisterProtocolHandler(false);
     }
 }

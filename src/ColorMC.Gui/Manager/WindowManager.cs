@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Platform;
@@ -9,6 +11,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.Minecraft;
@@ -632,12 +635,84 @@ public static class WindowManager
     }
 
     /// <summary>
+    /// 显示添加游戏资源窗口，需要用户选择游戏实例
+    /// </summary>
+    /// <param name="name">搜索内容</param>
+    public static async void ShowAdd(string name)
+    {
+        var window = MainWindow;
+        if (MainWindow == null || MainWindow.Window == null)
+        {
+            return;
+        }
+
+        try
+        {
+            var data = await ModrinthAPI.GetProject(name);
+            if (data?.ProjectType == "mod")
+            {
+                var list = GameBinding.GetGames();
+                if (list.Count == 0)
+                {
+                    MainWindow.Window.Show();
+                    MainWindow.Window.WindowActivate();
+                    MainWindow.Window.Model.Show(App.Lang("MainWindow.Error11"));
+                    return;
+                }
+
+                var res = await MainWindow.Window.Model.Combo(App.Lang(App.Lang("MainWindow.Info47")), list.Select(item => item.Name));
+                if (res.Cancel)
+                {
+                    return;
+                }
+                var obj = list[res.Index];
+
+                if (GameAddWindows.TryGetValue(obj.UUID, out var value))
+                {
+                    value.Window?.WindowActivate();
+                    value.GoFile(SourceType.Modrinth, data.Id);
+                }
+                else
+                {
+                    var con = new AddControl(obj);
+                    GameAddWindows.Add(obj.UUID, con);
+                    AWindow(con);
+                    con.GoFile(SourceType.Modrinth, data.Id);
+                }
+            }
+            else if (data?.ProjectType == "modpack")
+            {
+                if (AddModPackWindow != null)
+                {
+                    AddModPackWindow.Window?.WindowActivate();
+                    AddModPackWindow.GoFile(SourceType.Modrinth, data.Id);
+                }
+                else
+                {
+                    AddModPackWindow = new();
+                    AWindow(AddModPackWindow);
+                    AddModPackWindow.GoFile(SourceType.Modrinth, data.Id);
+                    AddModPackWindow.Window?.WindowActivate();
+                }
+            }
+        }
+        catch
+        { 
+            
+        }
+    }
+
+    /// <summary>
     /// 显示添加游戏资源窗口
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="obj1">模组项目</param>
     public static void ShowAdd(GameSettingObj obj, ModDisplayModel obj1)
     {
+        if (obj == null)
+        {
+            return;
+        }
         var type1 = GameDownloadHelper.TestSourceType(obj1.PID, obj1.FID);
 
         if (GameAddWindows.TryGetValue(obj.UUID, out var value))

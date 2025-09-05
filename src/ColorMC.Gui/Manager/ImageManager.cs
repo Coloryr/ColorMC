@@ -533,6 +533,10 @@ public static class ImageManager
                     if (zoom)
                     {
                         using var image1 = SKBitmap.Decode(data1);
+                        if (image1 == null)
+                        {
+                            return null;
+                        }
                         using var image2 = ImageUtils.Resize(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
                         PathHelper.WriteBytes(file, data.AsStream());

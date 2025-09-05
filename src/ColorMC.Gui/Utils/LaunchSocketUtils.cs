@@ -34,7 +34,7 @@ public static class LaunchSocketUtils
     private const int TypeGameMouseState = 1;
     private const int TypeGameMotd = 2;
     private const int TypeLaunchShow = 3;
-    private const int TypeLaunchStart = 4;
+    private const int TypeLaunchArg = 4;
     //private const int TypeMouseXY = 5;
     //private const int TypeMouseClick = 6;
     //private const int TypeKeybordClick = 7;
@@ -251,7 +251,7 @@ public static class LaunchSocketUtils
             if (data != null && data.Length != 0)
             {
                 var buf = Unpooled.Buffer();
-                buf.WriteInt(TypeLaunchStart)
+                buf.WriteInt(TypeLaunchArg)
                     .WriteStringList(data);
                 await clientChannel.WriteAndFlushAsync(buf);
             }
@@ -361,7 +361,7 @@ public static class LaunchSocketUtils
                         App.Show();
                     }
                     //启动游戏实例
-                    else if (type == TypeLaunchStart)
+                    else if (type == TypeLaunchArg)
                     {
                         var data = buffer.ReadStringList();
                         Dispatcher.UIThread.Post(() =>

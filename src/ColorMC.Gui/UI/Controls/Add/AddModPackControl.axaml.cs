@@ -1,6 +1,8 @@
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Input;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
@@ -41,6 +43,7 @@ public partial class AddModPackControl : BaseUserControl
     public override void Opened()
     {
         (DataContext as AddModPackControlModel)!.Source = 0;
+        (DataContext as AddModPackControlModel)!.Display = true;
     }
 
     protected override TopModel GenModel(BaseModel model)
@@ -79,5 +82,10 @@ public partial class AddModPackControl : BaseUserControl
             await (DataContext as AddModPackControlModel)!.Download();
             e.Handled = true;
         }
+    }
+
+    public void GoFile(SourceType type, string pid)
+    {
+        (DataContext as AddModPackControlModel)!.GoFile(type, pid);
     }
 }

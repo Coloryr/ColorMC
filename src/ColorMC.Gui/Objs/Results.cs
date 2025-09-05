@@ -70,6 +70,7 @@ public record FileListRes
 {
     public List<FileVersionItemModel>? List;
     public int Count;
+    public string Name;
 }
 
 public record ModPackListRes

@@ -288,6 +288,27 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
+    public static async Task<CurseForgeObj?> GetModInfo(string id)
+    {
+        try
+        {
+            using var data = await Send(new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
+            });
+            return JsonUtils.ToObj(data, JsonType.CurseForgeObj);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 获取Mod信息
+    /// </summary>
     public static async Task<CurseForgeListObj?> GetModsInfo(List<CurseForgePackObj.FilesObj> obj)
     {
         try

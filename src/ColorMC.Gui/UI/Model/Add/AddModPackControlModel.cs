@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
@@ -54,6 +55,14 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// 是否在加载
     /// </summary>
     private bool _load = false;
+    /// <summary>
+    /// 是否关闭
+    /// </summary>
+    private bool _close = false;
+    /// <summary>
+    /// 上一个下载ID
+    /// </summary>
+    private string? _lastId;
 
     /// <summary>
     /// 下载源
@@ -110,6 +119,12 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// </summary>
     [ObservableProperty]
     private bool _enableNextPage;
+
+    /// <summary>
+    /// 是否已经显示
+    /// </summary>
+    public bool Display { get; set; }
+
     /// <summary>
     /// 是否继续添加
     /// </summary>
@@ -605,6 +620,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             Model.PopBack();
         }
 
+        _close = true;
         _load = true;
         Model.RemoveChoiseData(_useName);
         FileList.Clear();
@@ -614,5 +630,30 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         }
         DisplayList.Clear();
         _last = null;
+    }
+
+    /// <summary>
+    /// 转到下载类型
+    /// </summary>
+    /// <param name="type">下载源</param>
+    /// <param name="pid">项目ID</param>
+    public async void GoFile(SourceType type, string pid)
+    {
+        Source = (int)type;
+        await Task.Run(() =>
+        {
+            while ((!Display || _load) && !_close)
+            {
+                Thread.Sleep(100);
+            }
+        });
+
+        _lastId = pid;
+
+        _load = true;
+        PageDownload = 0;
+        DisplayVersion = true;
+        LoadVersion();
+        _load = false;
     }
 }

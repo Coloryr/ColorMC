@@ -72,6 +72,8 @@ public partial class AddModPackControlModel
         {
             Model.PushBack(back: () =>
             {
+                _lastId = null;
+                Model.Title = App.Lang("AddModPackWindow.Title");
                 DisplayVersion = false;
             });
         }
@@ -182,20 +184,23 @@ public partial class AddModPackControlModel
         Model.Progress(App.Lang("AddModPackWindow.Info3"));
         List<FileVersionItemModel>? list = null;
         var page = 0;
+        string title = "";
         if (Source == 0)
         {
             var res = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
+                _lastId ?? (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
+            title = res.Name;
             MaxPageDownload = res.Count / 50;
         }
         else if (Source == 1)
         {
             var res = await WebBinding.GetFileList((SourceType)Source,
-                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload ?? 0,
+                _lastId ?? (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
+            title = res.Name;
             MaxPageDownload = res.Count / 50;
             page = PageDownload ?? 0;
         }
@@ -232,6 +237,7 @@ public partial class AddModPackControlModel
 
         Model.ProgressClose();
         Model.Notify(App.Lang("AddWindow.Info16"));
+        Model.Title = App.Lang("AddModPackWindow.Title") + ": " + title;
     }
 
     /// <summary>
