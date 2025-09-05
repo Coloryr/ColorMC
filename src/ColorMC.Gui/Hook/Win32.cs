@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using ColorMC.Core.Utils;
+using Microsoft.Win32;
 
 namespace ColorMC.Gui.Hook;
 
@@ -387,4 +389,37 @@ internal unsafe class Win32
             throw new InvalidOperationException("Unable to get memory status.");
         }
     }
+
+#pragma warning disable CA1416 // 验证平台兼容性
+    public static void RegisterProtocolHandler(bool overmod)
+    {
+        string protocolName = overmod ? "modrinth" : "colormc";
+
+        try
+        {
+            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(protocolName))
+            {
+                key.SetValue("", "URL:ColorMC Protocol");
+                key.SetValue("URL Protocol", "");
+
+                var file = Environment.ProcessPath!;
+
+                using (RegistryKey iconKey = key.CreateSubKey("DefaultIcon"))
+                {
+                    iconKey.SetValue("", $"\"{file}\",1");
+                }
+
+                using RegistryKey commandKey = key.CreateSubKey(@"shell\open\command");
+                commandKey.SetValue("", $"\"{file}\" \"%1\"");
+            }
+
+            Logs.Info($"成功注册协议: {protocolName}");
+        }
+        catch (Exception ex)
+        {
+            Logs.Error($"注册协议时发生错误", ex);
+        }
+    }
+
+#pragma warning restore CA1416
 }

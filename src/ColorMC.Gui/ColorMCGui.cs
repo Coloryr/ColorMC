@@ -11,6 +11,7 @@ using Avalonia.Media;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
@@ -84,6 +85,10 @@ public static class ColorMCGui
     /// 是否关闭
     /// </summary>
     public static bool IsClose { get; private set; }
+    /// <summary>
+    /// 是否已经初始化
+    /// </summary>
+    public static bool IsInit { get; private set; }
 
     /// <summary>
     /// 默认字体
@@ -152,7 +157,7 @@ public static class ColorMCGui
 
         try
         {
-            var builder = BuildAvaloniaApp();
+            GuiConfigUtils.Init();
 
             //以管理员方式启动
             if (GuiConfigUtils.Config.ServerCustom.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
@@ -175,12 +180,21 @@ public static class ColorMCGui
                 return;
             }
 
-            StartArg(args);
+            if (StartArg(args))
+            {
+                return;
+            }
+
+            var builder = BuildAvaloniaApp();
+
+            ToolUtils.RegisterFastLaunch();
 
             s_arg.Local = BaseDir;
             ColorMCCore.Init(s_arg);
 
             BaseBinding.ReadBuildConfig();
+
+            IsInit = true;
 
             builder.StartWithClassicDesktopLifetime(args);
         }
@@ -201,7 +215,7 @@ public static class ColorMCGui
         }
     }
 
-    public static void StartArg(string[] args)
+    public static bool StartArg(string[] args)
     {
         //快捷启动
         if (args.Length > 0)
@@ -210,16 +224,76 @@ public static class ColorMCGui
             {
                 BaseBinding.SetLaunch(args[1..]);
             }
-            else if (args[0] == "-install" && args.Length == 2)
+            else if (args[0].StartsWith("colormc:"))
             {
-                WindowManager.ShowAddGame(null, file: args[1]);
+                var url = args[0][8..];
+                if (url.StartsWith("//run/"))
+                {
+                    string uuid = url[6..];
+                    BaseBinding.SetLaunch([uuid]);
+                }
+                else if (url.StartsWith("//install/"))
+                {
+                    string appId = url[10..];
+                    if (IsInit)
+                    {
+                        WindowManager.ShowAddGame(null, file: appId);
+                    }
+                }
             }
-            //MMC for labymod
-            else if (args[0] == "--import" && args.Length == 2)
+            else if (args[0].StartsWith("modrinth:"))
             {
-                WindowManager.ShowAddGame(null, file: args[1]);
+                var url = args[0][9..];
+                if (url.StartsWith("//mod/"))
+                {
+                    string appId = url[6..];
+                    if (IsInit)
+                    {
+                        WindowManager.ShowAdd(appId);
+                    }
+                }
+            }
+            else if (args[0] == "--register")
+            {
+                if (SystemInfo.Os == OsType.Windows)
+                {
+                    if (!ProcessUtils.IsRunAsAdmin())
+                    {
+                        try
+                        {
+                            ProcessUtils.LaunchAdmin(args);
+                            return false;
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        ToolUtils.RegisterFastLaunch();
+                        Environment.Exit(0);
+                        return true;
+                    }
+
+                    return true;
+                }
+            }
+
+            if (IsInit)
+            {
+                if (args[0] == "--install" && args.Length == 2)
+                {
+                    WindowManager.ShowAddGame(null, file: args[1]);
+                }
+                //MMC for labymod
+                else if (args[0] == "--import" && args.Length == 2)
+                {
+                    WindowManager.ShowAddGame(null, file: args[1]);
+                }
             }
         }
+        return false;
     }
 
     /// <summary>
@@ -292,9 +366,8 @@ public static class ColorMCGui
             BaseDir = AppContext.BaseDirectory + "colormc\\";
 
             SystemInfo.Init();
+            GuiConfigUtils.Init();
         }
-
-        GuiConfigUtils.Init();
 
         var builder = AppBuilder.Configure<App>()
             .With(new FontManagerOptions

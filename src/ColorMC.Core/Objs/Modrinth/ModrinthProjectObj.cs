@@ -4,9 +4,11 @@ namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthProjectObj
 {
-    //public string id { get; set; }
+    [JsonPropertyName("id")]
+    public string Id { get; set; }
     //public string slug { get; set; }
-    //public string project_type { get; set; }
+    [JsonPropertyName("project_type")]
+    public string ProjectType { get; set; }
     //public string team { get; set; }
     [JsonPropertyName("title")]
     public string Title { get; set; }

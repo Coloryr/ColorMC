@@ -301,6 +301,7 @@ public partial class BaseModel : ObservableObject
         if (!_listBack.IsEmpty)
         {
             HeadBackEnable = true;
+            HeadBackDisplay = true;
         }
 #endif
         HeadCloseDisplay = true;

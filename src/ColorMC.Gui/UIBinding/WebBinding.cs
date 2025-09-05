@@ -141,9 +141,12 @@ public static class WebBinding
     {
         if (type == SourceType.CurseForge)
         {
+            var data1 = await CurseForgeAPI.GetModInfo(id);
             var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
-            if (list == null)
+            if (data1 == null || list == null)
+            {
                 return new();
+            }
 
             var list1 = new List<FileVersionItemModel>();
             list.Data.ForEach(item =>
@@ -154,14 +157,18 @@ public static class WebBinding
             return new()
             {
                 List = list1,
-                Count = list.Pagination.TotalCount
+                Count = list.Pagination.TotalCount,
+                Name = data1.Data.Name
             };
         }
         else if (type == SourceType.Modrinth)
         {
+            var data1 = await ModrinthAPI.GetProject(id);
             var list = await ModrinthAPI.GetFileVersions(id, mc, loader);
-            if (list == null)
+            if (data1 == null || list == null)
+            {
                 return new();
+            }
 
             var list1 = new List<FileVersionItemModel>();
             list.ForEach(item =>
@@ -172,7 +179,8 @@ public static class WebBinding
             return new()
             {
                 List = list1,
-                Count = list.Count
+                Count = list.Count,
+                Name = data1.Title
             };
         }
 
