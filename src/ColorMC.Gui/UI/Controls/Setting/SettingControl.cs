@@ -22,6 +22,7 @@ public partial class SettingControl : MenuControl
     private Tab6Control _tab6;
     private Tab7Control _tab7;
     private Tab8Control _tab8;
+    private Tab9Control _tab9;
 
     /// <summary>
     /// 需要的Java主版本
@@ -123,6 +124,9 @@ public partial class SettingControl : MenuControl
                 model.LoadInput();
                 return _tab8 ??= new();
             case 7:
+                model.LoadLaunch();
+                return _tab9 ??= new();
+            case 8:
                 _tab7 ??= new();
                 _tab7.Start();
                 return _tab7;

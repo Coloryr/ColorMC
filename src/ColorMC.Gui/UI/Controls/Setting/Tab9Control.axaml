@@ -1,0 +1,47 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Setting.Tab9Control"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
+    xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    d:DesignWidth="800"
+    x:DataType="model:SettingModel"
+    mc:Ignorable="d">
+    <ScrollViewer>
+        <StackPanel Margin="0,0,10,15">
+            <Border Margin="10,5,10,3" Classes="t2">
+                <DockPanel Margin="15">
+                    <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg23.svg" />
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab9.Text1}" />
+                    </DockPanel>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                DockPanel.Dock="Bottom"
+                                Text="{setting:Localize SettingWindow.Tab9.Text2}"
+                                TextWrapping="Wrap" />
+                            <ToggleSwitch
+                                IsChecked="{Binding FastEnable}"
+                                OffContent="{setting:Localize Button.Disable}"
+                                OnContent="{setting:Localize Button.Enable}" />
+                        </StackPanel>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

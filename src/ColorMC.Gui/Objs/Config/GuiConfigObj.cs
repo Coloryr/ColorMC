@@ -291,6 +291,14 @@ public record CardSetting
     public bool Last { get; set; }
 }
 
+public record LauncherSetting
+{ 
+    /// <summary>
+    /// 系统快速启动
+    /// </summary>
+    public bool FastLaunch { get; set; }
+}
+
 /// <summary>
 /// Gui配置文件
 /// </summary>
@@ -421,5 +429,9 @@ public record GuiConfigObj
     /// 简易主界面
     /// </summary>
     public bool Simple { get; set; }
+    /// <summary>
+    /// 启动器功能
+    /// </summary>
+    public LauncherSetting LauncherFunction { get; set; }
 }
 
