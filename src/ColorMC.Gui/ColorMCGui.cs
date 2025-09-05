@@ -173,6 +173,11 @@ public static class ColorMCGui
                 return;
             }
 
+            if (StartArg(args))
+            {
+                return;
+            }
+
             //是否已经启动过了
             if (IsLock(out var port))
             {
@@ -180,14 +185,12 @@ public static class ColorMCGui
                 return;
             }
 
-            if (StartArg(args))
-            {
-                return;
-            }
-
             var builder = BuildAvaloniaApp();
 
-            ToolUtils.RegisterFastLaunch();
+            if (GuiConfigUtils.Config.LauncherFunction.FastLaunch && ProcessUtils.IsRunAsAdmin())
+            {
+                ToolUtils.RegisterFastLaunch();
+            }
 
             s_arg.Local = BaseDir;
             ColorMCCore.Init(s_arg);
@@ -255,29 +258,26 @@ public static class ColorMCGui
             }
             else if (args[0] == "--register")
             {
-                if (SystemInfo.Os == OsType.Windows)
+                if (!ProcessUtils.IsRunAsAdmin())
                 {
-                    if (!ProcessUtils.IsRunAsAdmin())
+                    try
                     {
-                        try
-                        {
-                            ProcessUtils.LaunchAdmin(args);
-                            return false;
-                        }
-                        catch
-                        {
-
-                        }
+                        ProcessUtils.LaunchAdmin(args);
+                        return false;
                     }
-                    else
+                    catch
                     {
-                        ToolUtils.RegisterFastLaunch();
-                        Environment.Exit(0);
-                        return true;
-                    }
 
+                    }
+                }
+                else
+                {
+                    ToolUtils.RegisterFastLaunch();
+                    Environment.Exit(0);
                     return true;
                 }
+
+                return true;
             }
 
             if (IsInit)

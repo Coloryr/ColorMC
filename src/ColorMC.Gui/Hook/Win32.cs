@@ -412,12 +412,24 @@ internal unsafe class Win32
                 using RegistryKey commandKey = key.CreateSubKey(@"shell\open\command");
                 commandKey.SetValue("", $"\"{file}\" \"%1\"");
             }
-
-            Logs.Info($"成功注册协议: {protocolName}");
         }
         catch (Exception ex)
         {
-            Logs.Error($"注册协议时发生错误", ex);
+            
+        }
+    }
+
+    public static void DeleteProtocolHandler()
+    {
+        string protocolName = "colormc";
+
+        try
+        {
+            Registry.ClassesRoot.DeleteSubKey(protocolName);
+        }
+        catch (Exception ex)
+        {
+            
         }
     }
 

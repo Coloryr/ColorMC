@@ -190,7 +190,18 @@ public static class ToolUtils
 
     public static void RegisterFastLaunch()
     {
-        Win32.RegisterProtocolHandler(true);
-        Win32.RegisterProtocolHandler(false);
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            Win32.RegisterProtocolHandler(true);
+            Win32.RegisterProtocolHandler(false);
+        }
+    }
+
+    public static void DeleteFastLaunch()
+    {
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            Win32.DeleteProtocolHandler();
+        }
     }
 }

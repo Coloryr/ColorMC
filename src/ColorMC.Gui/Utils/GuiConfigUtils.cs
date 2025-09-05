@@ -116,6 +116,11 @@ public static class GuiConfigUtils
                 Config.LaunchCheck = MakeLaunchCheckConfig();
                 save = true;
             }
+            if (Config.LauncherFunction == null)
+            {
+                Config.LauncherFunction = MakeLauncherFunctionConfig();
+                save = true;
+            }
 
             if (save)
             {
@@ -249,6 +254,14 @@ public static class GuiConfigUtils
             MotdBackColor = "Black",
             Volume = 30,
             LockLogins = []
+        };
+    }
+
+    public static LauncherSetting MakeLauncherFunctionConfig()
+    {
+        return new()
+        {
+
         };
     }
 }

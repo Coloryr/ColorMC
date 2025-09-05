@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -1027,5 +1028,17 @@ public static class ConfigBinding
 
         GuiConfigUtils.Save();
         WindowManager.MainWindow?.LoadDone();
+    }
+
+    /// <summary>
+    /// 设置启动器功能
+    /// </summary>
+    /// <param name="value"></param>
+    public static void SetLauncherFunction(bool value)
+    {
+        GuiConfigUtils.Config.LauncherFunction ??= new();
+        GuiConfigUtils.Config.LauncherFunction.FastLaunch = value;
+
+        GuiConfigUtils.Save();
     }
 }
