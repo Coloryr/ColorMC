@@ -1034,10 +1034,11 @@ public static class ConfigBinding
     /// 设置启动器功能
     /// </summary>
     /// <param name="value"></param>
-    public static void SetLauncherFunction(bool value)
+    public static void SetLauncherFunction(bool value, bool value1)
     {
         GuiConfigUtils.Config.LauncherFunction ??= new();
         GuiConfigUtils.Config.LauncherFunction.FastLaunch = value;
+        GuiConfigUtils.Config.LauncherFunction.FastModrinth = value1;
 
         GuiConfigUtils.Save();
     }

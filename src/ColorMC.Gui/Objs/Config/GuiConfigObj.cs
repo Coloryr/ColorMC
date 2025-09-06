@@ -297,6 +297,10 @@ public record LauncherSetting
     /// 系统快速启动
     /// </summary>
     public bool FastLaunch { get; set; }
+    /// <summary>
+    /// 覆盖modrinth
+    /// </summary>
+    public bool FastModrinth { get; set; }
 }
 
 /// <summary>

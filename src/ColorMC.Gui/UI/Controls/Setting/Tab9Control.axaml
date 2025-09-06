@@ -39,6 +39,18 @@
                                 OffContent="{setting:Localize Button.Disable}"
                                 OnContent="{setting:Localize Button.Enable}" />
                         </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Margin="0,0,5,0"
+                                DockPanel.Dock="Bottom"
+                                Text="{setting:Localize SettingWindow.Tab9.Text3}"
+                                TextWrapping="Wrap" />
+                            <ToggleSwitch
+                                IsChecked="{Binding FastModrinth}"
+                                OffContent="{setting:Localize Button.Disable}"
+                                OnContent="{setting:Localize Button.Enable}" />
+                        </StackPanel>
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab9.Text4}" />
                     </StackPanel>
                 </DockPanel>
             </Border>

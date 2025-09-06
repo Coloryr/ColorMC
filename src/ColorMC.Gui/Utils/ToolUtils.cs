@@ -187,21 +187,4 @@ public static class ToolUtils
 
         return new MessageRes { State = true };
     }
-
-    public static void RegisterFastLaunch()
-    {
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            Win32.RegisterProtocolHandler(true);
-            Win32.RegisterProtocolHandler(false);
-        }
-    }
-
-    public static void DeleteFastLaunch()
-    {
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            Win32.DeleteProtocolHandler();
-        }
-    }
 }

@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using Microsoft.Win32;
+using SkiaSharp;
 
 namespace ColorMC.Gui.Hook;
 
@@ -397,25 +404,21 @@ internal unsafe class Win32
 
         try
         {
-            using (RegistryKey key = Registry.ClassesRoot.CreateSubKey(protocolName))
-            {
-                key.SetValue("", "URL:ColorMC Protocol");
-                key.SetValue("URL Protocol", "");
+            using var key = Registry.ClassesRoot.CreateSubKey(protocolName);
+            key.SetValue("", "URL:ColorMC Protocol");
+            key.SetValue("URL Protocol", "");
 
-                var file = Environment.ProcessPath!;
+            var file = Environment.ProcessPath!;
 
-                using (RegistryKey iconKey = key.CreateSubKey("DefaultIcon"))
-                {
-                    iconKey.SetValue("", $"\"{file}\",1");
-                }
+            using RegistryKey iconKey = key.CreateSubKey("DefaultIcon");
+            iconKey.SetValue("", $"\"{file}\",1");
 
-                using RegistryKey commandKey = key.CreateSubKey(@"shell\open\command");
-                commandKey.SetValue("", $"\"{file}\" \"%1\"");
-            }
+            using RegistryKey commandKey = key.CreateSubKey(@"shell\open\command");
+            commandKey.SetValue("", $"\"{file}\" \"%1\"");
         }
         catch (Exception ex)
         {
-            
+
         }
     }
 
@@ -430,6 +433,46 @@ internal unsafe class Win32
         catch (Exception ex)
         {
             
+        }
+    }
+
+    public static void CreateLaunch(GameSettingObj obj)
+    {
+        try
+        {
+            var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
+            dynamic shell = Activator.CreateInstance(shellType)!;
+            var file = Path.Combine(ColorMCGui.BaseDir, $"{obj.Name}.lnk");
+            var icon = obj.GetIconFile();
+            var shortcut = shell.CreateShortcut(file);
+            if (File.Exists(icon))
+            {
+                using var originalBitmap = IcoConverterUtils.LoadImage(icon);
+                using var resizedBitmap = IcoConverterUtils.ResizeImage(originalBitmap, 256, 256);
+
+                icon = Path.Combine(obj.GetBasePath(), GuiNames.NameGameIcoFile);
+                IcoConverterUtils.ConvertToIco(resizedBitmap, icon);
+
+                shortcut.IconLocation = icon;
+            }
+
+            if (GuiConfigUtils.Config.LauncherFunction.FastLaunch)
+            {
+                shortcut.TargetPath = GuiNames.NameUrlColorMC + GuiNames.NameUrlRun + obj.UUID;
+            }
+            else
+            {
+                var path = Environment.ProcessPath;
+                shortcut.TargetPath = path;
+                shortcut.Arguments = GuiNames.NameCommandGame + " " + obj.UUID;
+            }
+            shortcut.WorkingDirectory = ColorMCGui.BaseDir;
+            shortcut.Save();
+            PathBinding.OpenFileWithExplorer(file);
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.Lang("BaseBinding.Error5"), e);
         }
     }
 
