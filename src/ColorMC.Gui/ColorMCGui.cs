@@ -189,7 +189,11 @@ public static class ColorMCGui
 
             if (GuiConfigUtils.Config.LauncherFunction.FastLaunch && ProcessUtils.IsRunAsAdmin())
             {
-                ToolUtils.RegisterFastLaunch();
+                HookUtils.RegisterFastLaunch(false);
+                if (GuiConfigUtils.Config.LauncherFunction.FastModrinth)
+                {
+                    HookUtils.RegisterFastLaunch(true);
+                }
             }
 
             s_arg.Local = BaseDir;
@@ -223,40 +227,54 @@ public static class ColorMCGui
         //快捷启动
         if (args.Length > 0)
         {
-            if (args[0] == "-game" && args.Length >= 2)
+            if (args[0] == GuiNames.NameCommandGame && args.Length >= 2)
             {
-                BaseBinding.SetLaunch(args[1..]);
-            }
-            else if (args[0].StartsWith("colormc:"))
-            {
-                var url = args[0][8..];
-                if (url.StartsWith("//run/"))
+                if (IsInit)
                 {
-                    string uuid = url[6..];
-                    BaseBinding.SetLaunch([uuid]);
+                    BaseBinding.Launch(args[1..]);
                 }
-                else if (url.StartsWith("//install/"))
+                else
                 {
-                    string appId = url[10..];
+                    BaseBinding.SetLaunch(args[1..]);
+                }
+            }
+            else if (args[0].StartsWith(GuiNames.NameUrlColorMC))
+            {
+                var url = args[0][GuiNames.NameUrlColorMC.Length..];
+                if (url.StartsWith(GuiNames.NameUrlRun))
+                {
+                    string uuid = url[GuiNames.NameUrlRun.Length..];
+                    if (IsInit)
+                    {
+                        BaseBinding.Launch([uuid]);
+                    }
+                    else
+                    {
+                        BaseBinding.SetLaunch([uuid]);
+                    }
+                }
+                else if (url.StartsWith(GuiNames.NameUrlInstall))
+                {
+                    string appId = url[GuiNames.NameUrlInstall.Length..];
                     if (IsInit)
                     {
                         WindowManager.ShowAddGame(null, file: appId);
                     }
                 }
             }
-            else if (args[0].StartsWith("modrinth:"))
+            else if (args[0].StartsWith(GuiNames.NameUrlModrinth))
             {
-                var url = args[0][9..];
-                if (url.StartsWith("//mod/"))
+                var url = args[0][GuiNames.NameUrlModrinth.Length..];
+                if (url.StartsWith(GuiNames.NameUrlMod))
                 {
-                    string appId = url[6..];
+                    string appId = url[GuiNames.NameUrlMod.Length..];
                     if (IsInit)
                     {
                         WindowManager.ShowAdd(appId);
                     }
                 }
             }
-            else if (args[0] == "--register")
+            else if (args[0] == GuiNames.NameCommandRegister)
             {
                 if (!ProcessUtils.IsRunAsAdmin())
                 {
@@ -272,7 +290,11 @@ public static class ColorMCGui
                 }
                 else
                 {
-                    ToolUtils.RegisterFastLaunch();
+                    HookUtils.RegisterFastLaunch(false);
+                    if (args.Contains(GuiNames.NameCommandRemapModrinth))
+                    {
+                        HookUtils.RegisterFastLaunch(true);
+                    }
                     Environment.Exit(0);
                     return true;
                 }
@@ -282,12 +304,12 @@ public static class ColorMCGui
 
             if (IsInit)
             {
-                if (args[0] == "--install" && args.Length == 2)
+                if (args[0] == GuiNames.NameCommandInstall && args.Length == 2)
                 {
                     WindowManager.ShowAddGame(null, file: args[1]);
                 }
                 //MMC for labymod
-                else if (args[0] == "--import" && args.Length == 2)
+                else if (args[0] == GuiNames.NameCommandImport && args.Length == 2)
                 {
                     WindowManager.ShowAddGame(null, file: args[1]);
                 }

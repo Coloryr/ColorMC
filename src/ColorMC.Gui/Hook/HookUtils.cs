@@ -1,5 +1,8 @@
-﻿using ColorMC.Core.Objs;
+﻿using System;
+using System.IO;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.Hook;
 
@@ -84,4 +87,34 @@ public static class HookUtils
     //        X11Hook.SetTitle(pr, title);
     //    }
     //}
+
+    public static void RegisterFastLaunch(bool mod)
+    {
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            Win32.RegisterProtocolHandler(mod);
+        }
+    }
+
+    public static void DeleteFastLaunch()
+    {
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            Win32.DeleteProtocolHandler();
+        }
+    }
+
+    /// <summary>
+    /// 创建快捷方式
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void CreateLaunch(GameSettingObj obj)
+    {
+#pragma warning disable CA1416 // 验证平台兼容性
+        if (SystemInfo.Os == OsType.Windows)
+        {
+            Win32.CreateLaunch(obj);
+        }
+#pragma warning restore CA1416 // 验证平台兼容性
+    }
 }

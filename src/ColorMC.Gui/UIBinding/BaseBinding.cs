@@ -94,6 +94,7 @@ public static class BaseBinding
         {
             if (WindowManager.MainWindow != null)
             {
+                WindowManager.MainWindow.Window?.WindowActivate();
                 (WindowManager.MainWindow.DataContext as IMainTop)?.Launch(games);
             }
         });
@@ -271,36 +272,6 @@ public static class BaseBinding
 
             return false;
         }
-    }
-
-    /// <summary>
-    /// 创建快捷方式
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void CreateLaunch(GameSettingObj obj)
-    {
-#pragma warning disable CA1416 // 验证平台兼容性
-        if (SystemInfo.Os == OsType.Windows)
-        {
-            try
-            {
-                var shellType = Type.GetTypeFromProgID("WScript.Shell")!;
-                dynamic shell = Activator.CreateInstance(shellType)!;
-                var file = Path.Combine(ColorMCGui.BaseDir, $"{obj.Name}.lnk");
-                var shortcut = shell.CreateShortcut(file);
-                var path = Environment.ProcessPath;
-                shortcut.TargetPath = path;
-                shortcut.Arguments = "-game " + obj.UUID;
-                shortcut.WorkingDirectory = ColorMCGui.BaseDir;
-                shortcut.Save();
-                PathBinding.OpenFileWithExplorer(file);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("BaseBinding.Error5"), e);
-            }
-        }
-#pragma warning restore CA1416 // 验证平台兼容性
     }
 
     /// <summary>

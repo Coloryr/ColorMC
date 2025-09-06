@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
@@ -62,7 +63,7 @@ public class MainFlyout
                 [
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>
                     {
-                        BaseBinding.CreateLaunch(obj.Obj);
+                        HookUtils.CreateLaunch(obj.Obj);
                     }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text14"), ColorMCCloudAPI.Connect, ()=>
                     {

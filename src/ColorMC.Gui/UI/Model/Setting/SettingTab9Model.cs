@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Core.Utils;
+﻿using ColorMC.Core.Utils;
+using ColorMC.Gui.Hook;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,8 +10,39 @@ public partial class SettingModel
 {
     [ObservableProperty]
     private bool _fastEnable;
+    [ObservableProperty]
+    private bool _fastModrinth;
 
     private bool _launchLoad;
+
+    partial void OnFastModrinthChanged(bool value)
+    {
+        if (_launchLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetLauncherFunction(FastEnable, value);
+
+        if (value)
+        {
+            if (!ProcessUtils.IsRunAsAdmin())
+            {
+                try
+                {
+                    ProcessUtils.LaunchAdmin(["--register", "--remap_modrinth"]);
+                }
+                catch
+                {
+
+                }
+            }
+            else
+            {
+                HookUtils.RegisterFastLaunch(true);
+            }
+        }
+    }
 
     partial void OnFastEnableChanged(bool value)
     {
@@ -24,7 +51,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetLauncherFunction(value);
+        ConfigBinding.SetLauncherFunction(value, FastModrinth);
 
         if (value)
         {
@@ -41,7 +68,11 @@ public partial class SettingModel
             }
             else
             {
-                ToolUtils.RegisterFastLaunch();
+                HookUtils.RegisterFastLaunch(false);
+                if (FastModrinth)
+                {
+                    HookUtils.RegisterFastLaunch(true);
+                }
             }
         }
         else
@@ -59,7 +90,7 @@ public partial class SettingModel
             }
             else
             {
-                ToolUtils.DeleteFastLaunch();
+                HookUtils.DeleteFastLaunch();
             }
         }
     }
@@ -73,6 +104,7 @@ public partial class SettingModel
 
         var config = GuiConfigUtils.Config.LauncherFunction;
         FastEnable = config.FastLaunch;
+        FastModrinth = config.FastModrinth;
 
         _launchLoad = false;
     }

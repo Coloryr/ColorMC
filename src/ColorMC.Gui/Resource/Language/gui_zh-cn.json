@@ -453,6 +453,8 @@
 	"SettingWindow.Tab8.Error4": "导出手柄配置文件错误",
 	"SettingWindow.Tab9.Text1": "快捷启动",
 	"SettingWindow.Tab9.Text2": "启用系统快捷启动",
+	"SettingWindow.Tab9.Text3": "覆盖Modrinth快捷启动(NTR bushi)",
+	"SettingWindow.Tab9.Text4": "启用后无法真正意义的关闭，覆盖后可以被其他启动器覆盖",
 	"SettingWindow.Flyouts.Text1": "删除Java",
 	"SettingWindow.Flyouts.Text2": "修改绑定",
 	"SettingWindow.Flyouts.Text3": "删除按键",

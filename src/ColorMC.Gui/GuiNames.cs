@@ -33,6 +33,7 @@ public static class GuiNames
     public const string NameClientFile = "client";
     public const string NameServerTomlFile = "server.toml";
     public const string NameServerIniFile = "server.ini";
+    public const string NameGameIcoFile = "icon.ico";
 
     public const string NameColorMCExt = ".colormc";
 
@@ -60,4 +61,15 @@ public static class GuiNames
     public const string NameTypeByte = "Byte";
     public const string NameTypeInt = "Int";
     public const string NameTypeLong = "Long";
+
+    public const string NameCommandInstall = "--install";
+    public const string NameCommandGame = "--game";
+    public const string NameCommandImport = "--import";
+    public const string NameCommandRegister = "--register";
+    public const string NameCommandRemapModrinth = "--remap_modrinth";
+    public const string NameUrlColorMC = "colormc:";
+    public const string NameUrlModrinth = "modrinth:";
+    public const string NameUrlRun = "//run/";
+    public const string NameUrlInstall = "//install/";
+    public const string NameUrlMod = "//mod/";
 }
