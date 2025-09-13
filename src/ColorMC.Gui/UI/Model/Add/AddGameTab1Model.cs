@@ -330,8 +330,8 @@ public partial class AddGameModel
             LoaderTypeList.Add(item.GetName());
         }
         foreach (var item in res.Fail)
-        { 
-            
+        {
+            Model.Notify(string.Format(App.Lang("AddGameWindow.Tab1.Error19"), item.GetName()));
         }
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());

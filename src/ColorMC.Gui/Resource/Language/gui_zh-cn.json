@@ -760,6 +760,7 @@
 	"AddGameWindow.Tab1.Error13": "请输入合理的实例名字",
 	"AddGameWindow.Tab1.Error14": "请输入合理的服务器实例网址",
 	"AddGameWindow.Tab1.Error18": "不支持的自定义模组加载器，需要重新手动设置",
+	"AddGameWindow.Tab1.Error19": "加载器 {0} 读取错误",
 	"AddGameWindow.Tab2.Text1": "压缩包地址",
 	"AddGameWindow.Tab2.Text2": "压缩包类型",
 	"AddGameWindow.Tab2.Text3": "选择压缩包",
