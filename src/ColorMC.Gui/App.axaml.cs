@@ -124,8 +124,11 @@ public partial class App : Application
         FrpLaunchUtils.Init();
         JoystickConfig.Init();
         ToolUtils.Init();
-        SdlUtils.Init();
-        Media.Init();
+        Task.Run(() =>
+        {
+            SdlUtils.Init();
+            Media.Init();
+        });
         UpdateUtils.Init();
 #endif
         GameCloudUtils.Init();

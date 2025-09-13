@@ -867,47 +867,6 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// 获取Forge支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetForgeSupportVersion()
-    {
-        return ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取Fabric支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetFabricSupportVersion()
-    {
-        return FabricAPI.GetSupportVersion(CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取Quilt支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetQuiltSupportVersion()
-    {
-        return QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取NeoForge支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetNeoForgeSupportVersion()
-    {
-        return ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取Optifine支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static async Task<List<string>?> GetOptifineSupportVersion()
-    {
-        return await OptifineAPI.GetSupportVersion();
-    }
-
-    /// <summary>
     /// 获取Forge版本
     /// </summary>
     /// <param name="version">游戏版本</param>

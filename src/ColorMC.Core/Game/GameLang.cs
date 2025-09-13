@@ -17,10 +17,7 @@ public static class GameLang
     /// <returns>语言列表</returns>
     public static Task<Dictionary<string, string>> GetLangsAsync(this AssetsObj? obj)
     {
-        return Task.Run(() =>
-        {
-            return GetLangs(obj);
-        });
+        return Task.Run(() => GetLangs(obj));
     }
 
     /// <summary>
@@ -39,7 +36,7 @@ public static class GameLang
                 MaxDegreeOfParallelism = 1
             }, (item) =>
 #else
-            Parallel.ForEach(obj.Objects, (item) =>
+            Parallel.ForEach(obj.Objects, item =>
 #endif
             {
                 if (!item.Key.StartsWith(Names.NameLangKey1))
@@ -54,11 +51,11 @@ public static class GameLang
                     {
                         return;
                     }
+
                     using var reader = new StreamReader(stream);
                     //json格式
-                    var datas = new char[1];
-                    var start = reader.ReadAsync(datas);
-                    if (datas[0] == '{')
+                    var bit = reader.Read();
+                    if (bit == '{')
                     {
                         stream.Seek(0, SeekOrigin.Begin);
                         var data = JsonUtils.ToObj(stream, JsonType.LangObj);
@@ -66,8 +63,9 @@ public static class GameLang
                         {
                             return;
                         }
+
                         list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
-                                data.Name + "-" + data.Region);
+                            data.Name + "-" + data.Region);
                     }
                     else
                     {
@@ -83,6 +81,7 @@ public static class GameLang
                             {
                                 region = line[16..].Trim();
                             }
+
                             if (name != null && region != null)
                             {
                                 break;
@@ -90,13 +89,13 @@ public static class GameLang
                         }
 
                         list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".lang", ""),
-                                   (name ?? "") + "-" + (region ?? ""));
+                            (name ?? "") + "-" + (region ?? ""));
                     }
                 }
                 catch
                 {
 
-                }
+                } 
             });
         }
 
@@ -150,23 +149,11 @@ public static class GameLang
             }
         }
 
-        if (key == "zh_cn")
+        return key switch
         {
-            return new LangRes
-            {
-                Key = "zh_cn",
-                Name = "简体中文"
-            };
-        }
-        else if (key == "en_us")
-        {
-            return new LangRes
-            {
-                Key = "en_us",
-                Name = "English"
-            };
-        }
-
-        return null;
+            "zh_cn" => new LangRes { Key = "zh_cn", Name = "简体中文" },
+            "en_us" => new LangRes { Key = "en_us", Name = "English" },
+            _ => null
+        };
     }
 }

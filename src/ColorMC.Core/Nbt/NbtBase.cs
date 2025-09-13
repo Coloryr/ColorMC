@@ -191,7 +191,7 @@ public abstract class NbtBase
     /// <param name="stream">文件流</param>
     /// <param name="chunk">是否为区块文件</param>
     /// <returns>NBT标签</returns>
-    public static async Task<NbtBase?> ReadAsync(Stream stream, bool chunk = false)
+    public static async Task<NbtBase?> ReadAsync(Stream stream, bool chunk = false, CancellationToken token = default)
     {
         if (stream.Length < 2)
         {
@@ -199,7 +199,7 @@ public abstract class NbtBase
         }
         DataInputStream stream2;
         var data = new byte[3];
-        await stream.ReadExactlyAsync(data);
+        await stream.ReadExactlyAsync(data, token);
         stream.Seek(0, SeekOrigin.Begin);
         ZipType zip = ZipType.None;
         //是否为压缩
@@ -233,36 +233,26 @@ public abstract class NbtBase
 
         var type1 = (NbtType)type;
 
-        if (type1 == NbtType.NbtEnd)
+        switch (type1)
         {
-            return new NbtEnd();
+            case NbtType.NbtEnd:
+                return new NbtEnd();
+            case NbtType.NbtCompound:
+                var temp = stream2.ReadShort();
+                if (temp > 0)
+                {
+                    var temp1 = new byte[temp];
+                    stream2.Read(temp1);
+                }
+                break;
         }
 
-        if (type1 == NbtType.NbtCompound)
-        {
-            var temp = stream2.ReadShort();
-            if (temp > 0)
-            {
-                var temp1 = new byte[temp];
-                stream2.Read(temp1);
-            }
-        }
-
-        NbtBase nbt;
-
-        if (chunk)
-        {
-            nbt = new ChunkNbt();
-        }
-        else
-        {
-            nbt = ById(type1);
-        }
+        NbtBase nbt = chunk ? new ChunkNbt() : ById(type1);
         nbt.ZipType = zip;
         await Task.Run(() =>
         {
             nbt.Read(stream2);
-        });
+        }, token);
 
         stream2.Dispose();
 

@@ -14,7 +14,7 @@ public static class ChunkUtils
     /// <returns>>区块 X Z</returns>
     public static PointPos PosToChunk(PointPos pos)
     {
-        return new(pos.X >> 4, pos.Y >> 4);
+        return new PointPos(pos.X >> 4, pos.Y >> 4);
     }
 
     /// <summary>
@@ -24,7 +24,7 @@ public static class ChunkUtils
     /// <returns>MCA X Z</returns>
     public static PointPos ChunkToRegion(PointPos pos)
     {
-        return new(pos.X >> 5, pos.Y >> 5);
+        return new PointPos(pos.X >> 5, pos.Y >> 5);
     }
 
     /// <summary>

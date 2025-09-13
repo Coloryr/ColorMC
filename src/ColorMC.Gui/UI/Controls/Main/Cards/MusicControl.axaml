@@ -46,7 +46,7 @@
                 </DockPanel>
                 <TextBlock Margin="0,0,0,5" Text="{Binding MusicNow}" />
                 <DockPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text18}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                     <TextBlock
                         Width="35"
                         VerticalAlignment="Center"
@@ -103,7 +103,7 @@
                     <TextBlock
                         VerticalAlignment="Center"
                         Foreground="White"
-                        Text="{setting:Localize SettingWindow.Tab6.Text18}}" />
+                        Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                     <TextBlock
                         Width="35"
                         VerticalAlignment="Center"

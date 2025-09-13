@@ -44,21 +44,6 @@ public record DownloadArg
 }
 
 /// <summary>
-/// 删除世界数据包
-/// </summary>
-public record DataPackDeleteArg
-{
-    /// <summary>
-    /// 要删除的列表
-    /// </summary>
-    public required ICollection<DataPackObj> List;
-    /// <summary>
-    /// 请求回调
-    /// </summary>
-    public ColorMCCore.Request? Request;
-}
-
-/// <summary>
 /// 删除文件夹参数
 /// </summary>
 public record DeleteFilesArg

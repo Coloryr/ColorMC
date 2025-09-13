@@ -143,7 +143,7 @@ public record GameArgObj
     }
 
     [JsonPropertyName("assetIndex")]
-    public GameAssetIndexObj AssetIndex { get; set; }
+    public GameAssetIndexObj? AssetIndex { get; set; }
     //[JsonProperty("assets")]
     //public string Assets { get; set; }
     //public int complianceLevel { get; set; }
@@ -152,15 +152,15 @@ public record GameArgObj
     [JsonPropertyName("id")]
     public string Id { get; set; }
     [JsonPropertyName("javaVersion")]
-    public GameJavaVersionObj JavaVersion { get; set; }
+    public GameJavaVersionObj? JavaVersion { get; set; }
     [JsonPropertyName("libraries")]
-    public List<GameLibrariesObj> Libraries { get; set; }
+    public List<GameLibrariesObj>? Libraries { get; set; }
     [JsonPropertyName("logging")]
-    public LoggingObj Logging { get; set; }
+    public LoggingObj? Logging { get; set; }
     [JsonPropertyName("mainClass")]
-    public string MainClass { get; set; }
+    public string? MainClass { get; set; }
     [JsonPropertyName("minecraftArguments")]
-    public string MinecraftArguments { get; set; }
+    public string? MinecraftArguments { get; set; }
     [JsonPropertyName("minimumLauncherVersion")]
     public int MinimumLauncherVersion { get; set; }
     [JsonPropertyName("releaseTime")]
@@ -168,5 +168,5 @@ public record GameArgObj
     //public string time { get; set; }
     //public string type { get; set; }
     [JsonPropertyName("arguments")]
-    public GameArgumentsObj Arguments { get; set; }
+    public GameArgumentsObj? Arguments { get; set; }
 }

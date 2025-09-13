@@ -3,6 +3,7 @@ using System.Text;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.OtherLaunch;
@@ -452,7 +453,7 @@ public static class GameHelper
         if (list.TryGetValue("JoinServerOnLaunch", out item1)
             && item1 == "true")
         {
-            game.StartServer = new();
+            game.StartServer = new ServerObj();
             if (list.TryGetValue("JoinServerOnLaunchAddress", out item1))
             {
                 game.StartServer.IP = item1;
@@ -462,7 +463,7 @@ public static class GameHelper
         if (list.TryGetValue("PreLaunchCommand", out item1))
         {
             var temp = StringHelper.ArgParse(item1);
-            game.JvmArg ??= new();
+            game.JvmArg ??= new RunArgObj();
             game.JvmArg.LaunchPre = true;
             var data = new StringBuilder();
             foreach (var item in temp)
@@ -477,33 +478,29 @@ public static class GameHelper
                     item3 = item3[..^1];
                 }
 
-                if (item3 == "$INST_JAVA")
+                switch (item3)
                 {
-                    data.AppendLine(Launch.JAVA_LOCAL);
-                }
-                else if (item3 == "$INST_NAME")
-                {
-                    data.AppendLine(Launch.GAME_NAME);
-                }
-                else if (item3 == "$INST_DIR")
-                {
-                    data.AppendLine(Launch.GAME_DIR);
-                }
-                else if (item3 == "$INST_MC_DIR")
-                {
-                    data.AppendLine(Launch.GAME_DIR);
-                }
-                else if (item3 == "$INST_ID")
-                {
-                    data.AppendLine(Launch.GAME_UUID);
-                }
-                else if (item3 == "$INST_JAVA_ARGS")
-                {
-                    data.AppendLine(Launch.JAVA_ARG);
-                }
-                else
-                {
-                    data.AppendLine(item3);
+                    case "$INST_JAVA":
+                        data.AppendLine(Names.NameArgJavaLocal);
+                        break;
+                    case "$INST_NAME":
+                        data.AppendLine(Names.NameArgGameName);
+                        break;
+                    case "$INST_DIR":
+                        data.AppendLine(Names.NameArgGameBaseDir);
+                        break;
+                    case "$INST_MC_DIR":
+                        data.AppendLine(Names.NameArgGameDir);
+                        break;
+                    case "$INST_ID":
+                        data.AppendLine(Names.NameArgGameUUID);
+                        break;
+                    case "$INST_JAVA_ARGS":
+                        data.AppendLine(Names.NameArgJavaArg);
+                        break;
+                    default:
+                        data.AppendLine(item3);
+                        break;
                 }
             }
             game.JvmArg.LaunchPreData = data.ToString();
@@ -796,7 +793,7 @@ public static class GameHelper
             try
             {
                 using var stream = PathHelper.OpenRead(item3.FullName);
-                var obj = JsonUtils.ReadAsObj(stream);
+                var obj = JsonUtils.ReadObj(stream);
                 if (obj == null)
                 {
                     continue;
@@ -1023,5 +1020,103 @@ public static class GameHelper
             Overwrite = true,
             Url = optifine.Url1
         }];
+    }
+
+    /// <summary>
+    /// 查询支持的模组加载器
+    /// </summary>
+    /// <param name="version"></param>
+    /// <returns></returns>
+    public static async Task<SupportLoaderRes> GetSupportLoader(string version)
+    {
+        var res = new SupportLoaderRes()
+        { 
+            Done = [],
+            Fail = []
+        };
+        Task[] list =
+        [
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var list = await ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
+                    if (list != null && list.Contains(version))
+                    {
+                        res.Done.Add(Loaders.Forge);
+                    }
+                }
+                catch
+                {
+                    res.Fail.Add(Loaders.Forge);
+                }
+            }),
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var list = await FabricAPI.GetSupportVersion(CoreHttpClient.Source);
+                    if (list != null && list.Contains(version))
+                    {
+                        res.Done.Add(Loaders.Fabric);
+                    }
+                }
+                catch
+                {
+                    res.Fail.Add(Loaders.Fabric);
+                }
+            }),
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var list = await QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
+                    if (list != null && list.Contains(version))
+                    {
+                        res.Done.Add(Loaders.Quilt);
+                    }
+                }
+                catch
+                {
+                    res.Fail.Add(Loaders.Quilt);
+                }
+            }),
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var list = await ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
+                    if (list != null && list.Contains(version))
+                    {
+                        res.Done.Add(Loaders.NeoForge);
+                    }
+                }
+                catch
+                {
+                    res.Fail.Add(Loaders.NeoForge);
+                }
+            }),
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var list = await OptifineAPI.GetSupportVersion();
+                    if (list != null && list.Contains(version))
+                    {
+                        res.Done.Add(Loaders.OptiFine);
+                    }
+                }
+                catch
+                {
+                    res.Fail.Add(Loaders.OptiFine);
+                }
+            })
+        ];
+
+        await Task.WhenAll(list);
+
+        res.Done.Sort();
+
+        return res;
     }
 }

@@ -47,7 +47,10 @@ public static class JvmPath
 #endif
         Directory.CreateDirectory(JavaDir);
 
-        AddList(ConfigUtils.Config.JavaList);
+        if (ConfigUtils.Config.JavaList is { } list)
+        {
+            AddList(list);
+        }
 
         if (Jvms.Count == 0)
         {
@@ -278,7 +281,7 @@ public static class JvmPath
         if (info != null)
         {
             Jvms.Add(name, info);
-            ConfigUtils.Config.JavaList.Add(new()
+            ConfigUtils.Config.JavaList?.Add(new JvmConfigObj
             {
                 Name = name,
                 Local = local
@@ -301,13 +304,10 @@ public static class JvmPath
     public static void Remove(string name)
     {
         Jvms.Remove(name);
-        var list = ConfigUtils.Config.JavaList.Where(a => a.Name == name).ToList();
-        foreach (var item in list)
+        var item = ConfigUtils.Config.JavaList?.FirstOrDefault(a => a.Name == name);
+        if (item != null && ConfigUtils.Config.JavaList?.Remove(item) == true)
         {
-            if (ConfigUtils.Config.JavaList.Remove(item))
-            {
-                ConfigUtils.Save();
-            }
+            ConfigUtils.Save();
         }
     }
 

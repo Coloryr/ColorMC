@@ -29,7 +29,7 @@ public record ForgeLaunchObj
         [JsonPropertyName("game")]
         public List<string> Game { get; set; }
         [JsonPropertyName("jvm")]
-        public List<string> Jvm { get; set; }
+        public List<string>? Jvm { get; set; }
     }
     //public List<string> _comment_ { get; set; }
     //[JsonProperty("id")]

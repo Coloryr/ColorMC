@@ -23,22 +23,16 @@ public static class GameLogs
         var path = obj.GetLogPath();
         if (Directory.Exists(path))
         {
-            var list1 = Directory.GetFiles(path);
-            foreach (var item in list1)
-            {
-                list.Add(item.Replace(path, Names.NameGameLogDir));
-            }
+            list.AddRange(Directory.GetFiles(path).Select(item => item.Replace(path, Names.NameGameLogDir)));
         }
 
         path = obj.GetGameCrashReports();
-        if (Directory.Exists(path))
+        if (!Directory.Exists(path))
         {
-            var list1 = Directory.GetFiles(path);
-            foreach (var item in list1)
-            {
-                list.Add(item.Replace(path, Names.NameGameCrashLogDir));
-            }
+            return list;
         }
+
+        list.AddRange(Directory.GetFiles(path).Select(item => item.Replace(path, Names.NameGameCrashLogDir)));
 
         return list;
     }

@@ -77,7 +77,7 @@ public static class AuthlibHelper
         }
         try
         {
-            var obj = JsonUtils.ReadAsObj(data.Message!)!;
+            var obj = JsonUtils.ReadObj(data.Message!)!;
             var sha1 = obj.GetString("jarHash")!;
             var item = BuildNide8Item(obj.GetString("jarVersion")!);
             NowNide8Injector = item.Local;

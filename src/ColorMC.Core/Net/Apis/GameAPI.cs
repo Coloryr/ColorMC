@@ -41,7 +41,7 @@ public static class GameAPI
             mem.Seek(0, SeekOrigin.Begin);
             var obj = JsonUtils.ToObj(mem, JsonType.AssetsObj);
             mem.Seek(0, SeekOrigin.Begin);
-            return new()
+            return new GetAssetsRes
             {
                 Assets = obj,
                 Text = mem

@@ -30,30 +30,20 @@ public static class JsonUtils
         JsonSerializer.Serialize(stream, data, info);
     }
 
-    public static async Task<JsonObject?> ReadAsObjAsync(Stream? stream)
+    public static async Task<JsonObject?> ReadAsObjAsync(Stream stream)
     {
-        if (stream == null)
-        {
-            return null;
-        }
         var data = await JsonNode.ParseAsync(stream);
         return data?.AsObject();
     }
 
-    public static JsonObject? ReadAsObj(string str)
+    public static JsonObject? ReadObj(string str)
     {
-        var data = JsonNode.Parse(str);
-        return data?.AsObject();
+        return JsonNode.Parse(str)?.AsObject();
     }
 
-    public static JsonObject? ReadAsObj(Stream? stream)
+    public static JsonObject? ReadObj(Stream stream)
     {
-        if (stream == null)
-        {
-            return null;
-        }
-        var data = JsonNode.Parse(stream);
-        return data?.AsObject();
+        return JsonNode.Parse(stream)?.AsObject();
     }
 
     public static JsonObject? GetObj(this JsonObject obj, string key)

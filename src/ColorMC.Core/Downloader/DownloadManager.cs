@@ -11,6 +11,8 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 public static class DownloadManager
 {
+    private const int DefaultCopyBufferSize = 81920;
+    
     /// <summary>
     /// 下载状态
     /// </summary>
@@ -156,7 +158,6 @@ public static class DownloadManager
     /// <returns>大小</returns>
     internal static int GetCopyBufferSize(Stream stream)
     {
-        int DefaultCopyBufferSize = 81920;
         int bufferSize = DefaultCopyBufferSize;
 
         if (stream.CanSeek)
@@ -212,11 +213,10 @@ public static class DownloadManager
     private static void InitThread()
     {
         Stop();
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"),
-            ConfigUtils.Config.Http.DownloadThread));
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"), ConfigUtils.Config.Http!.DownloadThread));
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
-            s_threads.Add(new(a));
+            s_threads.Add(new DownloadThread(a));
         }
     }
 
@@ -229,6 +229,7 @@ public static class DownloadManager
         s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
+
         State = false;
     }
 

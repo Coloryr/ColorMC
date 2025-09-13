@@ -2389,17 +2389,13 @@ public static class GameBinding
     /// <param name="item"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteDataPack(DataPackModel item, ColorMCCore.Request request)
+    public static async Task<bool> DeleteDataPack(DataPackModel item)
     {
         if (GameManager.IsGameRun(item.Pack.World.Game))
         {
             return false;
         }
-        return await item.Pack.World.DeleteDataPackAsync(new DataPackDeleteArg
-        {
-            List = [item.Pack],
-            Request = request
-        });
+        return await item.Pack.World.DeleteDataPackAsync([item.Pack]);
     }
 
     /// <summary>
@@ -2408,7 +2404,7 @@ public static class GameBinding
     /// <param name="items"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items, ColorMCCore.Request request)
+    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)
     {
         var list = new List<DataPackObj>();
         foreach (var item in items)
@@ -2419,71 +2415,10 @@ public static class GameBinding
         {
             return false;
         }
-        return await list[0].World.DeleteDataPackAsync(new DataPackDeleteArg
-        {
-            List = list,
-            Request = request
-        });
+        return await list[0].World.DeleteDataPackAsync(list);
     }
 
-    /// <summary>
-    /// 查询支持的模组加载器
-    /// </summary>
-    /// <param name="version"></param>
-    /// <returns></returns>
-    public static async Task<List<Loaders>> GetSupportLoader(string version)
-    {
-        var loaders = new List<Loaders>();
-        Task[] list =
-        [
-            Task.Run(async () =>
-            {
-                var list = await WebBinding.GetForgeSupportVersion();
-                if (list != null && list.Contains(version))
-                {
-                    loaders.Add(Loaders.Forge);
-                }
-            }),
-            Task.Run(async () =>
-            {
-                var list = await WebBinding.GetFabricSupportVersion();
-                if (list != null && list.Contains(version))
-                {
-                    loaders.Add(Loaders.Fabric);
-                }
-            }),
-            Task.Run(async () =>
-            {
-                var list = await WebBinding.GetQuiltSupportVersion();
-                if (list != null && list.Contains(version))
-                {
-                    loaders.Add(Loaders.Quilt);
-                }
-            }),
-            Task.Run(async () =>
-            {
-                var list = await WebBinding.GetNeoForgeSupportVersion();
-                if (list != null && list.Contains(version))
-                {
-                    loaders.Add(Loaders.NeoForge);
-                }
-            }),
-            Task.Run(async () =>
-            {
-                var list = await WebBinding.GetOptifineSupportVersion();
-                if (list != null && list.Contains(version))
-                {
-                    loaders.Add(Loaders.OptiFine);
-                }
-            })
-        ];
-
-        await Task.WhenAll(list);
-
-        loaders.Sort();
-
-        return loaders;
-    }
+    
 
     /// <summary>
     /// 生成实例信息

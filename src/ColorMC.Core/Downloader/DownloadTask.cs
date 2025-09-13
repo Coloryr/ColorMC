@@ -51,7 +51,7 @@ internal class DownloadTask
     {
         var names = new List<string>();
 
-        _semaphore = new(0, 2);
+        _semaphore = new Semaphore(0, 2);
         _arg = arg;
 
         Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
@@ -88,7 +88,7 @@ internal class DownloadTask
             }
 
             return _allSize == _doneSize;
-        });
+        }, Token);
     }
 
     /// <summary>
@@ -139,12 +139,14 @@ internal class DownloadTask
         lock (this)
         {
             _doneThreadCount++;
+            if (_doneThreadCount < DownloadManager.ThreadCount)
+            {
+                return;
+            }
         }
-        if (_doneThreadCount >= DownloadManager.ThreadCount)
-        {
-            //任务结束
-            _semaphore.Release();
-            DownloadManager.TaskDone(_arg);
-        }
+        
+        //任务结束
+        _semaphore.Release();
+        DownloadManager.TaskDone(_arg);
     }
 }

@@ -16,32 +16,36 @@ public static class SdlUtils
     /// </summary>
     public static void Init()
     {
-        if (ColorMCGui.RunType == RunType.Program)
+        if (ColorMCGui.RunType != RunType.Program)
         {
-            try
+            return;
+        }
+
+        try
+        {
+            Sdl = Sdl.GetApi();
+            var config = GuiConfigUtils.Config.Input.Disable;
+            if (config)
             {
-                Sdl = Sdl.GetApi();
-                var config = GuiConfigUtils.Config.Input.Disable;
-                if (config)
+                if (Sdl.Init(Sdl.InitAudio) == 0)
                 {
-                    if (Sdl.Init(Sdl.InitAudio) == 0)
-                    {
-                        SdlInit = true;
-                    }
-                }
-                else
-                {
-                    if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
-                    {
-                        JoystickInput.Init(Sdl);
-                        SdlInit = true;
-                    }
+                    SdlInit = true;
                 }
             }
-            catch (Exception e)
+            else
             {
-                Logs.Error(App.Lang("BaseBinding.Error1"), e);
+                if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) != 0)
+                {
+                    return;
+                }
+
+                JoystickInput.Init(Sdl);
+                SdlInit = true;
             }
+        }
+        catch (Exception e)
+        {
+            Logs.Error(App.Lang("BaseBinding.Error1"), e);
         }
     }
 #if DEBUG
@@ -50,11 +54,13 @@ public static class SdlUtils
         try
         {
             Sdl = Sdl.GetApi();
-            if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) == 0)
+            if (Sdl.Init(Sdl.InitGamecontroller | Sdl.InitAudio) != 0)
             {
-                JoystickInput.Init(Sdl);
-                SdlInit = true;
+                return;
             }
+
+            JoystickInput.Init(Sdl);
+            SdlInit = true;
         }
         catch (Exception e)
         {

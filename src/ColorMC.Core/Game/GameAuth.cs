@@ -46,7 +46,7 @@ public static class GameAuth
                 };
             }
             //Xbox登录
-            loginOAuth(res1.Message!, false, AuthState.XBox.ToString());
+            loginOAuth(res1.Message!, false, nameof(AuthState.XBox));
             now = AuthState.XBox;
             var res3 = await OAuthApi.GetXBLAsync(res2.Obj!.AccessToken);
             if (res3.State != LoginState.Done)
@@ -59,7 +59,7 @@ public static class GameAuth
                 };
             }
             //XSTS登录
-            loginOAuth(res1.Message!, false, AuthState.XSTS.ToString());
+            loginOAuth(res1.Message!, false, nameof(AuthState.XSTS));
             now = AuthState.XSTS;
             var res4 = await OAuthApi.GetXSTSAsync(res3.XBLToken!);
             if (res4.State != LoginState.Done)
@@ -72,7 +72,7 @@ public static class GameAuth
                 };
             }
             //获取mojang token
-            loginOAuth(res1.Message!, false, AuthState.Token.ToString());
+            loginOAuth(res1.Message!, false, nameof(AuthState.Token));
             now = AuthState.Token;
             var res5 = await MinecraftAPI.GetMinecraftAsync(res4.XSTSUhs!, res4.XSTSToken!);
             if (res5.State != LoginState.Done)
@@ -85,7 +85,7 @@ public static class GameAuth
                 };
             }
             //获取minecraft账户
-            loginOAuth(res1.Message!, false, AuthState.Profile.ToString());
+            loginOAuth(res1.Message!, false, nameof(AuthState.Profile));
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken!);
             if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
             {
@@ -138,9 +138,8 @@ public static class GameAuth
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> RefreshOAuthAsync(LoginObj obj)
+    private static async Task<LoginRes> RefreshOAuthAsync(LoginObj obj)
     {
-        var now = AuthState.OAuth;
         try
         {
             var profile = await MinecraftAPI.GetMinecraftProfileAsync(obj.AccessToken);
@@ -205,7 +204,7 @@ public static class GameAuth
                 };
             }
 
-            obj.UserName = profile!.Name;
+            obj.UserName = profile.Name;
             obj.UUID = profile.Id;
             obj.Text1 = res1.Obj!.RefreshToken;
             obj.AccessToken = res4.AccessToken!;
@@ -223,7 +222,7 @@ public static class GameAuth
             Logs.Error(text, e);
             return new LoginRes
             {
-                AuthState = now,
+                AuthState = AuthState.OAuth,
                 LoginState = LoginState.Crash,
                 Message = text,
                 Ex = e
@@ -280,7 +279,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> RefreshNide8Async(LoginObj obj)
+    private static async Task<LoginRes> RefreshNide8Async(LoginObj obj)
     {
         try
         {
@@ -321,6 +320,7 @@ public static class GameAuth
     /// <param name="server">服务器地址</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
+    /// <param name="select">选择项目</param>
     /// <returns>登录结果</returns>
     public static async Task<LoginRes> LoginAuthlibInjectorAsync(string server, string user, string pass, ColorMCCore.Select? select)
     {
@@ -364,7 +364,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> RefreshAuthlibInjectorAsync(LoginObj obj)
+    private static async Task<LoginRes> RefreshAuthlibInjectorAsync(LoginObj obj)
     {
         try
         {
@@ -405,6 +405,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
+    /// <param name="select">选择项目</param>
     /// <param name="server">自定义皮肤站地址</param>
     /// <returns>登录结果</returns>
     public static async Task<LoginRes> LoginLittleSkinAsync(string user, string pass, ColorMCCore.Select? select, string? server = null)
@@ -449,7 +450,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginRes> RefreshLittleSkinAsync(LoginObj obj)
+    private static async Task<LoginRes> RefreshLittleSkinAsync(LoginObj obj)
     {
         try
         {

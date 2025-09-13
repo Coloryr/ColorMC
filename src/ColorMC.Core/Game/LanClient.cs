@@ -21,12 +21,12 @@ public class LanClient
     public LanClient()
     {
         //V4组播地址
-        _socketV4 = new();
+        _socketV4 = new UdpClient();
         _socketV4.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         _socketV4.Client.Bind(new IPEndPoint(IPAddress.Any, LanGameHelper.Port));
         _socketV4.JoinMulticastGroup(IPAddress.Parse(LanGameHelper.IPv4));
         //V6组播地址
-        _socketV6 = new(AddressFamily.InterNetworkV6);
+        _socketV6 = new UdpClient(AddressFamily.InterNetworkV6);
         _socketV6.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         _socketV6.Client.Bind(new IPEndPoint(IPAddress.IPv6Any, LanGameHelper.Port));
         _socketV6.JoinMulticastGroup(IPAddress.Parse(LanGameHelper.IPv6));

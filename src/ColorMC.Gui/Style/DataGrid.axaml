@@ -7,7 +7,6 @@
             <DataGrid
                 Name="DataGrid1"
                 AutoGenerateColumns="False"
-                Background=""
                 CanUserResizeColumns="True"
                 CanUserSortColumns="False">
                 <DataGrid.Columns>

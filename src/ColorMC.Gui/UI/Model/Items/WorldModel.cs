@@ -175,7 +175,7 @@ public partial class WorldModel : SelectItemModel
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(item, TopModel.Model.ShowAsync);
+        res = await GameBinding.DeleteDataPack(item);
         if (res)
         {
             LoadList();
@@ -195,7 +195,7 @@ public partial class WorldModel : SelectItemModel
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(items, TopModel.Model.ShowAsync);
+        res = await GameBinding.DeleteDataPack(items);
         if (res)
         {
             LoadList();

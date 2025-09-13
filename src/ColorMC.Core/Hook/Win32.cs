@@ -22,24 +22,30 @@ public static partial class Win32
 
     // 定义文件操作的常量
     private const int FO_DELETE = 3;
-    private const int FOF_ALLOWUNDO = 0x40; // 允许撤销，即移动到回收站
+    private const ushort FOF_ALLOWUNDO = 0x40; // 允许撤销，即移动到回收站
+    private const ushort FOF_NOCONFIRMATION = 0x10; // 不显示确认对话框
+    private const ushort FOF_SILENT = 0x4; // 不显示进度
 
     // 调用SHFileOperation函数
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     private static extern int SHFileOperation(ref SHFILEOPSTRUCT FileOp);
 
-    public static bool MoveToTrash(string dir)
+    public static bool MoveToTrash(string path)
     {
         // 设置SHFILEOPSTRUCT结构体
-        var fileOp = new SHFILEOPSTRUCT
+        SHFILEOPSTRUCT fs = new SHFILEOPSTRUCT
         {
             wFunc = FO_DELETE,
-            pFrom = dir + '\0' + '\0', // 双重终止符
-            fFlags = FOF_ALLOWUNDO
+            // 确保字符串以双空字符结尾
+            pFrom = path + '\0' + '\0',
+            fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_SILENT,
+            fAnyOperationsAborted = false,
+            hNameMappings = IntPtr.Zero,
+            lpszProgressTitle = string.Empty
         };
 
         // 调用SHFileOperation函数
-        int result = SHFileOperation(ref fileOp);
+        int result = SHFileOperation(ref fs);
 
         return result == 0;
     }

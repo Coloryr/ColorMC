@@ -76,11 +76,11 @@ public record DnsObj
     /// <summary>
     /// DNS IP地址
     /// </summary>
-    public List<string> Dns { get; set; }
+    public List<string>? Dns { get; set; }
     /// <summary>
     /// DNS over HTTPS地址
     /// </summary>
-    public List<string> Https { get; set; }
+    public List<string>? Https { get; set; }
     /// <summary>
     /// 启用的DNS类型
     /// </summary>
@@ -280,27 +280,27 @@ public record ConfigObj
     /// <summary>
     /// Java列表
     /// </summary>
-    public List<JvmConfigObj> JavaList { get; set; }
+    public List<JvmConfigObj>? JavaList { get; set; }
     /// <summary>
     /// 联网设置
     /// </summary>
-    public HttpObj Http { get; set; }
+    public HttpObj? Http { get; set; }
     /// <summary>
     /// 内置DNS设置
     /// </summary>
-    public DnsObj Dns { get; set; }
+    public DnsObj? Dns { get; set; }
     /// <summary>
     /// 启动参数
     /// </summary>
-    public RunArgObj DefaultJvmArg { get; set; }
+    public RunArgObj? DefaultJvmArg { get; set; }
     /// <summary>
     /// 游戏窗口设置
     /// </summary>
-    public WindowSettingObj Window { get; set; }
+    public WindowSettingObj? Window { get; set; }
     /// <summary>
     /// 游戏检查设置
     /// </summary>
-    public GameCheckObj GameCheck { get; set; }
+    public GameCheckObj? GameCheck { get; set; }
     /// <summary>
     /// 安全log4j
     /// </summary>

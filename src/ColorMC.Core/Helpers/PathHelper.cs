@@ -335,12 +335,8 @@ public static class PathHelper
         }
 #else
         local = Path.GetFullPath(local);
-        if (File.Exists(local))
-        {
-            return File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        }
+        return File.Exists(local) ? File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) : null;
 #endif
-        return null;
     }
 
     /// <summary>

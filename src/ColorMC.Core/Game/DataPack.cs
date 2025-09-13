@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
@@ -29,7 +28,7 @@ public static class DataPack
     /// </summary>
     /// <param name="world">世界存储</param>
     /// <returns>数据包列表</returns>
-    public static List<DataPackObj> GetDataPacks(this WorldObj world)
+    private static List<DataPackObj> GetDataPacks(this WorldObj world)
     {
         var path = world.GetWorldDataPacksPath();
         if (!Directory.Exists(path))
@@ -56,7 +55,7 @@ public static class DataPack
             MaxDegreeOfParallelism = 1
         }, (item) =>
 #else
-        Parallel.ForEach(files, async (item) =>
+        Parallel.ForEach(files, (item) =>
 #endif
         {
             if (!item.EndsWith(".zip"))
@@ -65,31 +64,33 @@ public static class DataPack
             }
 
             try
-            {
+            { 
                 using var stream = PathHelper.OpenRead(item);
                 if (stream == null)
                 {
                     return;
                 }
                 using var zip = ZipArchive.Open(stream);
-                var ent = zip.Entries.FirstOrDefault(item => item.Key == Names.NamePackMetaFile);
+                var ent = zip.GetEntry(Names.NamePackMetaFile);
                 if (ent == null)
                 {
                     return;
                 }
                 using var stream1 = ent.OpenEntryStream();
-                var data = await JsonUtils.ReadAsObjAsync(stream1);
+                var data = JsonUtils.ReadObj(stream1);
                 if (data == null)
                 {
                     return;
                 }
                 //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
-                if (pack != null)
+                if (pack == null)
                 {
-                    pack.World = world;
-                    list.Add(pack);
+                    return;
                 }
+
+                pack.World = world;
+                list.Add(pack);
             }
             catch (Exception e)
             {
@@ -105,25 +106,31 @@ public static class DataPack
             MaxDegreeOfParallelism = 1
         }, (item) =>
 #else
-        Parallel.ForEach(paths, async (item) =>
+        Parallel.ForEach(paths, (item) =>
 #endif
         {
             try
             {
                 var file = Path.Combine(item, Names.NamePackMetaFile);
                 using var str = PathHelper.OpenRead(file);
-                var data = await JsonUtils.ReadAsObjAsync(str);
+                if (str == null)
+                {
+                    return;
+                }
+                var data = JsonUtils.ReadObj(str);
                 if (data == null)
                 {
                     return;
                 }
                 //检查数据包是否正确
                 var pack = CheckPack(item, ens, dis, data);
-                if (pack != null)
+                if (pack == null)
                 {
-                    pack.World = world;
-                    list.Add(pack);
+                    return;
                 }
+
+                pack.World = world;
+                list.Add(pack);
             }
             catch (Exception e)
             {
@@ -162,44 +169,54 @@ public static class DataPack
         {
             foreach (var item in ens)
             {
-                if (item is NbtString str && str.Value == obj.Name)
+                if (item is not NbtString str || str.Value != obj.Name)
                 {
-                    nbten = str;
-                    enable = true;
-                    break;
+                    continue;
                 }
+
+                nbten = str;
+                enable = true;
+                break;
             }
             foreach (var item in dis)
             {
-                if (item is NbtString str && str.Value == obj.Name)
+                if (item is not NbtString str || str.Value != obj.Name)
                 {
-                    nbtdi = str;
-                    disable = true;
-                    break;
+                    continue;
                 }
+
+                nbtdi = str;
+                disable = true;
+                break;
             }
 
-            if (enable && disable)
+            switch (enable)
             {
-                //启用
-                dis.Remove(nbtdi!);
-            }
-            else if (enable)
-            {
-                //禁用
-                ens.Remove(nbten!);
-                dis.Add(nbten!);
-            }
-            else if (disable)
-            {
-                //启用
-                dis.Remove(nbtdi!);
-                ens.Add(nbtdi!);
-            }
-            else
-            {
-                //启用
-                ens.Add(new NbtString() { Value = obj.Name });
+                case true when disable:
+                    //启用
+                    dis.Remove(nbtdi!);
+                    break;
+                case true:
+                    //禁用
+                    ens.Remove(nbten!);
+                    dis.Add(nbten!);
+                    break;
+                default:
+                {
+                    if (disable)
+                    {
+                        //启用
+                        dis.Remove(nbtdi!);
+                        ens.Add(nbtdi!);
+                    }
+                    else
+                    {
+                        //启用
+                        ens.Add(new NbtString { Value = obj.Name });
+                    }
+
+                    break;
+                }
             }
         }
 
@@ -212,41 +229,35 @@ public static class DataPack
     /// 删除世界数据包
     /// </summary>
     /// <param name="world">世界存储</param>
-    /// <param name="arg">删除参数</param>
+    /// <param name="list">删除列表</param>
     /// <returns>是否删除成功</returns>
-    public static async Task<bool> DeleteDataPackAsync(this WorldObj world, DataPackDeleteArg arg)
+    public static async Task<bool> DeleteDataPackAsync(this WorldObj world, ICollection<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
         if (nbt?.TryGet<NbtList>("Enabled") is not { } ens
-            || nbt?.TryGet<NbtList>("Disabled") is not { } dis)
+            || nbt.TryGet<NbtList>("Disabled") is not { } dis)
         {
             return false;
         }
 
-        foreach (var item in arg.List)
-        {
-            if (Directory.Exists(item.Path))
-            {
-                await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-                {
-                    Local = item.Path,
-                    Request = arg.Request
-                });
-            }
-            else
-            {
-                File.Delete(item.Path);
-            }
-        }
 
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             try
             {
                 //删除存在的
-                foreach (var obj in arg.List)
+                foreach (var obj in list)
                 {
+                    if (Directory.Exists(obj.Path))
+                    {
+                        await PathHelper.MoveToTrash(obj.Path);
+                    }
+                    else
+                    {
+                        File.Delete(obj.Path);
+                    }
+
                     foreach (var item in ens.CopyList())
                     {
                         if (item is NbtString str && str.Value == obj.Name)
