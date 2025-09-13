@@ -15,10 +15,10 @@ public partial class RuntimeLog
     private const string s_pattern1 = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?";
 
     [GeneratedRegex(s_pattern)]
-    internal static partial Regex LogRegex();
+    private static partial Regex LogRegex();
 
     [GeneratedRegex(s_pattern1)]
-    internal static partial Regex LogRegex1();
+    private static partial Regex LogRegex1();
 
     private static readonly Regex s_regex = LogRegex();
     private static readonly Regex s_regex1 = LogRegex1();
@@ -75,23 +75,20 @@ public partial class RuntimeLog
         else
         {
             var match1 = s_regex1.Match(data);
-            if (match1.Success)
+            if (match1 is { Success: true, Groups.Count: 4 })
             {
-                if (match1.Groups.Count == 4)
-                {
-                    string time = match1.Groups[1].Value;
-                    string thread = match1.Groups[2].Value;
-                    string level = match1.Groups[3].Value;
+                string time = match1.Groups[1].Value;
+                string thread = match1.Groups[2].Value;
+                string level = match1.Groups[3].Value;
 
-                    item1 = new GameLogItemObj()
-                    {
-                        TimeSpan = DateTime.Now,
-                        Time = time,
-                        Thread = thread,
-                        Log = log,
-                        Level = GetLevel(level)
-                    };
-                }
+                item1 = new GameLogItemObj()
+                {
+                    TimeSpan = DateTime.Now,
+                    Time = time,
+                    Thread = thread,
+                    Log = log,
+                    Level = GetLevel(level)
+                };
             }
         }
 
@@ -114,14 +111,7 @@ public partial class RuntimeLog
     /// <returns></returns>
     public List<GameLogItemObj> GetLog(LogLevel type)
     {
-        var list = new List<GameLogItemObj>();
-        foreach (var item in _logs)
-        {
-            if ((item.Level & type) == item.Level)
-            {
-                list.Add(item);
-            }
-        }
+        var list = _logs.Where(item => (item.Level & type) == item.Level).ToList();
 
         list.Sort(GameLogItemObjComparer.Instance);
         list.Reverse();

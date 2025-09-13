@@ -1,5 +1,6 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Utils;
 
@@ -35,49 +36,40 @@ public static class ChunkMca
         {
             return;
         }
+
         //跳过文件头
         stream.Seek(8192, SeekOrigin.Begin);
         int now = 8192;
         int time = FuntionUtils.GetTime();
-        foreach (var item in data.Pos)
-        {
-            if (item == null)
-            {
-                continue;
-            }
-
-            item.Pos = 0;
-            item.Count = 0;
-            item.Size = 0;
-            item.Time = 0;
-        }
 
         //写数据
-        foreach (ChunkNbt item in data.Nbt.Cast<ChunkNbt>())
+        foreach (var item in data.Nbt.Cast<ChunkNbt>())
         {
             using var stream1 = new MemoryStream();
             item.Save(stream1);
             var data1 = stream1.ToArray();
             int len = data1.Length + 5;
-            int pos = ChunkUtils.ChunkToHeadPos(new(item.X, item.Z));
-            var temp = data.Pos[pos];
-            temp.Time = time;
-            temp.Pos = now / 4096;
-            temp.Count = (byte)Math.Ceiling((double)len / 4096); //区块大小
-            var array = BitConverter.GetBytes(data1.Length + 1);
+            int pos = ChunkUtils.ChunkToHeadPos(new PointPos(item.X, item.Z)); //区块坐标
+            var chunk = data.Pos[pos];
+            chunk.Time = time;
+            chunk.Pos = now / 4096;
+            chunk.Count = (byte)Math.Ceiling((double)len / 4096); //区块大小
+            var array = BitConverter.GetBytes(data1.Length + 1); //区块数据长度
             Array.Reverse(array);
             stream.Write(array); //数据大小
-            stream.WriteByte(2); //压缩类型
+            stream.WriteByte((byte)item.ZipType); //压缩类型
             stream.Write(data1); //数据
             now += len;
             var last = len % 4096;
             //填充区块剩余空间
-            if (last != 0)
+            if (last == 0)
             {
-                var size1 = 4096 - last;
-                stream.Write(new byte[size1]);
-                now += size1;
+                continue;
             }
+
+            var size1 = 4096 - last;
+            stream.Write(new byte[size1]);
+            now += size1;
         }
     }
 
@@ -94,6 +86,7 @@ public static class ChunkMca
         {
             if (item.Count == 0)
             {
+                //区块为空填充0
                 stream.Write(new byte[4]);
             }
             else
@@ -112,6 +105,7 @@ public static class ChunkMca
         {
             if (item.Count == 0)
             {
+                //区块为空填充0
                 stream.Write(new byte[4]);
             }
             else
@@ -158,15 +152,16 @@ public static class ChunkMca
     /// <param name="stream">要读取的流</param>
     private static async Task ReadChunkAsync(ChunkDataObj data, Stream stream)
     {
-        var list = new NbtList()
+        var list = new NbtList
         {
             InNbtType = NbtType.NbtCompound
         };
-        var list1 = new ChunkNbt[data.Pos.Length];
+        var list1 = new ChunkNbt?[data.Pos.Length];
         await Parallel.ForAsync(0, data.Pos.Length, async (a, cancel) =>
         {
             var item = data.Pos[a];
-            if (item == null || item.Count == 0)
+            //区块为空
+            if (item.Count == 0)
             {
                 return;
             }
@@ -179,13 +174,12 @@ public static class ChunkMca
                 stream.ReadExactly(temp);
                 //区块大小
                 item.Size = temp[0] << 24 | temp[1] << 16 | temp[2] << 8 | temp[3];
-                var type = temp[4];
-                buffer = new byte[item.Size - 1];
+                buffer = new byte[item.Size - 1]; 
                 stream.ReadExactly(buffer);
             }
             using var stream1 = new MemoryStream(buffer);
             //读NBT标签
-            var nbt = await NbtBase.ReadAsync(stream1, true) as ChunkNbt;
+            var nbt = await NbtBase.ReadAsync(stream1, true, cancel) as ChunkNbt;
 
             //获取区块位置
             if (nbt!.TryGet("xPos") is NbtInt value)
@@ -239,7 +233,7 @@ public static class ChunkMca
             int time = temp[(a * 4) + 4096] << 24 | temp[(a * 4) + 4097] << 16
                 | temp[(a * 4) + 4098] << 8 | temp[(a * 4) + 4099];
 
-            data.Pos[a] = new ChunkPosObj(po * 4096, temp[(a * 4) + 3], time, a);
+            data.Pos[a] = new ChunkPosStruct(po * 4096, temp[(a * 4) + 3], time, a);
         }
 
         return data;

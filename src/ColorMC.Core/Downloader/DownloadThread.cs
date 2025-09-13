@@ -27,11 +27,11 @@ internal class DownloadThread
     /// <summary>
     /// 是否在暂停
     /// </summary>
-    private bool _pause = false;
+    private bool _pause;
     /// <summary>
     /// 是否在运行
     /// </summary>
-    private bool _run = false;
+    private bool _run;
     /// <summary>
     /// 是否被取消
     /// </summary>
@@ -54,7 +54,7 @@ internal class DownloadThread
     {
         _index = index;
         _run = true;
-        _thread = new(() =>
+        _thread = new Thread(() =>
         {
             while (_run)
             {
@@ -97,9 +97,10 @@ internal class DownloadThread
     /// </summary>
     internal void Start(DownloadTask task)
     {
-        if (_cancel != null && !_cancel.IsCancellationRequested)
+        if (!_cancel.IsCancellationRequested)
         {
             _cancel.Cancel();
+            _cancel.Dispose();
         }
         _cancel = CancellationTokenSource.CreateLinkedTokenSource(task.Token);
 
@@ -130,12 +131,14 @@ internal class DownloadThread
     /// <param name="item">下载项目</param>
     private void CheckPause(FileItemObj item)
     {
-        if (_pause)
+        if (!_pause)
         {
-            item.State = DownloadItemState.Pause;
-            item.Update(_index);
-            _semaphorePause.WaitOne();
+            return;
         }
+
+        item.State = DownloadItemState.Pause;
+        item.Update(_index);
+        _semaphorePause.WaitOne();
     }
 
     /// <summary>
@@ -190,8 +193,8 @@ internal class DownloadThread
         {
             return;
         }
-        FileItemObj? item;
-        while ((item = _task.GetItem()) != null)
+
+        while (_task.GetItem() is { } item)
         {
             CheckPause(item);
 
@@ -211,7 +214,7 @@ internal class DownloadThread
                     {
                         PathHelper.Delete(item.Local);
                     }
-                    else if (ConfigUtils.Config.Http.CheckFile && CheckFile(item))
+                    else if (ConfigUtils.Config.Http!.CheckFile && CheckFile(item))
                     {
                         continue;
                     }
@@ -255,6 +258,28 @@ internal class DownloadThread
                     //创建临时文件
                     var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
 
+                    //开始下载
+                    if (Download() || _cancel.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
+                    PathHelper.MoveFile(file, item.Local);
+
+                    //后续操作
+                    if (item.Later != null)
+                    {
+                        item.State = DownloadItemState.Action;
+                        item.Update(_index);
+                        using var stream2 = PathHelper.OpenRead(item.Local)!;
+                        item.Later(stream2);
+                    }
+
+                    item.State = DownloadItemState.Done;
+                    item.Update(_index);
+                    _task.Done();
+                    break;
+
                     bool Download()
                     {
                         using var stream1 = data.Content.ReadAsStream();
@@ -288,7 +313,7 @@ internal class DownloadThread
                         }
 
                         //检查文件
-                        if (ConfigUtils.Config.Http.CheckFile)
+                        if (ConfigUtils.Config.Http?.CheckFile == true)
                         {
                             if (!string.IsNullOrWhiteSpace(item.Md5))
                             {
@@ -329,28 +354,6 @@ internal class DownloadThread
 
                         return false;
                     }
-
-                    //开始下载
-                    if (Download() || _cancel.IsCancellationRequested)
-                    {
-                        break;
-                    }
-
-                    PathHelper.MoveFile(file, item.Local);
-
-                    //后续操作
-                    if (item.Later != null)
-                    {
-                        item.State = DownloadItemState.Action;
-                        item.Update(_index);
-                        using var stream2 = PathHelper.OpenRead(item.Local)!;
-                        item.Later(stream2);
-                    }
-
-                    item.State = DownloadItemState.Done;
-                    item.Update(_index);
-                    _task.Done();
-                    break;
                 }
                 catch (Exception e)
                 {
@@ -373,7 +376,6 @@ internal class DownloadThread
                         {
                             item.Url = res;
                             time = 0;
-                            continue;
                         }
                     }
                 }

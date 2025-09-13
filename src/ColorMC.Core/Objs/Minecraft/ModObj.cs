@@ -5,8 +5,8 @@
 /// </summary>
 public record ModObj
 {
-    public string ModId { get; set; }
-    public string Name { get; set; }
+    public string? ModId { get; set; }
+    public string? Name { get; set; }
     public string? Description { get; set; }
     public string? Version { get; set; }
     public HashSet<string> Author { get; set; }
@@ -21,5 +21,5 @@ public record ModObj
     public string Sha1 { get; set; }
     public string Sha256 { get; set; }
     public GameSettingObj Game { get; set; }
-    public List<ModObj> InJar { get; set; }
+    public List<ModObj>? InJar { get; set; }
 }

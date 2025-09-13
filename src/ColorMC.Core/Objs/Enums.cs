@@ -436,7 +436,8 @@ public enum DnsType
 /// <summary>
 /// 日志等级
 /// </summary>
-public enum LogLevel : int
+[Flags]
+public enum LogLevel
 {
     Base = 0b00000000,
     None = 0b00000001,

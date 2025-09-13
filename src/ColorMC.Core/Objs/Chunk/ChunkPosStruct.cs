@@ -3,7 +3,7 @@ namespace ColorMC.Core.Objs.Chunk;
 /// <summary>
 /// 区块头数据
 /// </summary>
-public record ChunkPosObj
+public struct ChunkPosStruct
 {
     /// <summary>
     /// 序号
@@ -26,7 +26,12 @@ public record ChunkPosObj
     /// </summary>
     public int Size { get; set; }
 
-    public ChunkPosObj(int pos, byte count, int time, int index)
+    public ChunkPosStruct()
+    {
+        
+    }
+
+    public ChunkPosStruct(int pos, byte count, int time, int index)
     {
         Pos = pos;
         Count = count;

@@ -40,7 +40,7 @@ public record FileItemObj
     /// <summary>
     /// 下载后执行
     /// </summary>
-    public Action<Stream> Later { get; set; }
+    public Action<Stream>? Later { get; set; }
     /// <summary>
     /// 错误次数
     /// </summary>

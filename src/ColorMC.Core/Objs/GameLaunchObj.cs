@@ -7,16 +7,16 @@ namespace ColorMC.Core.Objs;
 /// </summary>
 public record GameLaunchObj
 {
-    public List<FileItemObj> GameLibs = [];
-    public List<FileItemObj> LoaderLibs = [];
-    public List<FileItemObj> InstallerLibs = [];
-    public List<string> JvmArgs = [];
-    public List<string> GameArgs = [];
-    public HashSet<int> JavaVersions = [];
+    public readonly List<FileItemObj> GameLibs = [];
+    public readonly List<FileItemObj> LoaderLibs = [];
+    public readonly List<FileItemObj> InstallerLibs = [];
+    public readonly List<string> JvmArgs = [];
+    public readonly List<string> GameArgs = [];
+    public readonly HashSet<int> JavaVersions = [];
     public string MainClass;
     public string NativeDir;
     public GameArgObj.GameAssetIndexObj Assets;
     public FileItemObj GameJar;
-    public FileItemObj Log4JXml;
+    public FileItemObj? Log4JXml;
     public bool UseColorMCASM;
 }

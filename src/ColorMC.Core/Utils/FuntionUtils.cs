@@ -1,4 +1,5 @@
 using ColorMC.Core.Objs;
+using SharpCompress.Archives.Zip;
 using SharpCompress.Common.Zip;
 
 namespace ColorMC.Core.Utils;
@@ -181,11 +182,17 @@ public static class FuntionUtils
     /// <returns></returns>
     public static bool IsFile(ZipEntry entry)
     {
-        if (entry.Key == null || entry.IsDirectory || (entry.Size == 0 && entry.CompressedSize == 0))
-        {
-            return false;
-        }
+        return entry.Key != null && !entry.IsDirectory && (entry.Size != 0 || entry.CompressedSize != 0);
+    }
 
-        return true;
+    /// <summary>
+    /// 获取压缩包内的文件
+    /// </summary>
+    /// <param name="archive"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static ZipArchiveEntry? GetEntry(this ZipArchive archive, string name)
+    {
+        return archive.Entries.FirstOrDefault(item=>item.Key == name);
     }
 }

@@ -14,5 +14,5 @@ public record ChunkDataObj
     /// <summary>
     /// 区块地址数据
     /// </summary>
-    public ChunkPosObj[] Pos = new ChunkPosObj[1024];
+    public readonly ChunkPosStruct[] Pos = new ChunkPosStruct[1024];
 }

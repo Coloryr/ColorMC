@@ -70,7 +70,7 @@ public static class GameDownloadHelper
     {
         var game = VersionPath.GetVersion(mc)!;
         var file = LibrariesPath.GetGameFile(mc);
-        return new()
+        return new FileItemObj
         {
             Url = CoreHttpClient.Source == SourceLocal.Offical ? game.Downloads.Client.Url
                 : UrlHelper.DownloadGame(mc, CoreHttpClient.Source),

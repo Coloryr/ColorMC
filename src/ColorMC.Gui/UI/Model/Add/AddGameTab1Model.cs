@@ -323,13 +323,16 @@ public partial class AddGameModel
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
-        var loaders = await GameBinding.GetSupportLoader(Version);
-        foreach (var item in loaders)
+        var res = await GameHelper.GetSupportLoader(Version);
+        foreach (var item in res.Done)
         {
             _loaderTypeList.Add(item);
             LoaderTypeList.Add(item.GetName());
         }
-
+        foreach (var item in res.Fail)
+        { 
+            
+        }
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
 

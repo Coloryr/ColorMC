@@ -29,6 +29,11 @@ public static class GameArg
     /// <returns></returns>
     private static List<string> MakeV1GameArg(GameArgObj game)
     {
+        if (string.IsNullOrWhiteSpace(game.MinecraftArguments))
+        {
+            return [];
+        }
+
         return [.. game.MinecraftArguments.Split(' ')];
     }
 
@@ -39,6 +44,11 @@ public static class GameArg
     /// <returns></returns>
     private static List<string> MakeV2GameArg(GameArgObj game)
     {
+        if (game.Arguments == null)
+        {
+            return [];
+        }
+
         var list = new List<string>();
         foreach (JsonElement item in game.Arguments.Game)
         {
@@ -76,6 +86,7 @@ public static class GameArg
     /// 创建V1版游戏参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="game">游戏数据</param>
     /// <returns>启动参数</returns>
     private static List<string> MakeLoaderV1GameArg(GameSettingObj obj, GameArgObj game)
     {
@@ -101,6 +112,7 @@ public static class GameArg
                     "--tweakClass",
                     "optifine.OptiFineTweaker"
                 ];
+            case Loaders.Normal:
             default:
                 return [];
         }
@@ -121,40 +133,34 @@ public static class GameArg
 
         var arg = new List<string>();
 
-        //Mod加载器参数
-        if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
+        switch (obj.Loader)
         {
-            var forge = obj.Loader == Loaders.NeoForge
-                ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-            foreach (var item in forge.Arguments.Game)
+            //Mod加载器参数
+            case Loaders.Forge or Loaders.NeoForge:
             {
-                arg.Add(item);
+                var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
+                arg.AddRange(forge.Arguments.Game);
+                break;
             }
-        }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            foreach (var item in fabric.Arguments.Game)
+            case Loaders.Fabric:
             {
-                arg.Add(item);
+                var fabric = obj.GetFabricObj()!;
+                arg.AddRange(fabric.Arguments.Game);
+                break;
             }
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            foreach (var item in quilt.Arguments.Game)
+            case Loaders.Quilt:
             {
-                arg.Add(item);
+                var quilt = obj.GetQuiltObj()!;
+                arg.AddRange(quilt.Arguments.Game);
+                break;
             }
-        }
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            arg.Add("--tweakClass");
-            arg.Add("optifine.OptiFineTweaker");
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            arg.AddRange(obj.GetLoaderGameArg());
+            case Loaders.OptiFine:
+                arg.Add("--tweakClass");
+                arg.Add("optifine.OptiFineTweaker");
+                break;
+            case Loaders.Custom:
+                arg.AddRange(obj.GetLoaderGameArg());
+                break;
         }
 
         return arg;
@@ -163,7 +169,6 @@ public static class GameArg
     /// <summary>
     /// 创建原版游戏Jvm参数
     /// </summary>
-    /// <param name="v2"></param>
     /// <param name="game">游戏数据</param>
     /// <returns></returns>
     private static List<string> MakeV2JvmArg(GameArgObj game)
@@ -177,9 +182,10 @@ public static class GameArg
         //添加原版参数
         foreach (JsonElement item in game.Arguments.Jvm)
         {
-            if (item.ValueKind is JsonValueKind.String)
+            switch (item.ValueKind)
             {
-                #region Phone
+                case JsonValueKind.String:
+                    #region Phone
 #if Phone
                 if (SystemInfo.Os == OsType.Android)
                 {
@@ -192,36 +198,44 @@ public static class GameArg
                     }
                 }
 #endif
-                #endregion
-                list.Add(item.GetString()!);
-            }
-            else if (item.ValueKind is JsonValueKind.Object)
-            {
-                var obj1 = item.Deserialize(JsonType.GameJvmObj);
-                if (obj1 == null)
+                    #endregion
+                    list.Add(item.GetString()!);
+                    break;
+                case JsonValueKind.Object:
                 {
-                    continue;
-                }
-                //检查是否需要使用
-                if (!CheckHelpers.CheckAllow(obj1.Rules))
-                {
-                    continue;
-                }
-
-                var value = (JsonElement)obj1.Value;
-
-                if (value.ValueKind is JsonValueKind.String)
-                {
-                    list.Add(value.GetString()!);
-                }
-                else if (value.ValueKind is JsonValueKind.Array)
-                {
-                    var list1 = value.Deserialize(JsonType.ListString);
-                    if (list1 == null)
+                    var obj1 = item.Deserialize(JsonType.GameJvmObj);
+                    if (obj1 == null)
                     {
                         continue;
                     }
-                    list.AddRange(list1);
+                    //检查是否需要使用
+                    if (!CheckHelpers.CheckAllow(obj1.Rules))
+                    {
+                        continue;
+                    }
+
+                    var value = (JsonElement)obj1.Value;
+
+                    switch (value.ValueKind)
+                    {
+                        case JsonValueKind.String:
+                        {
+                            list.Add(value.GetString()!);
+                            break;
+                        }
+                        case JsonValueKind.Array:
+                        {
+                            var list1 = value.Deserialize(JsonType.ListString);
+                            if (list1 == null)
+                            {
+                                continue;
+                            }
+                            list.AddRange(list1);
+                            break;
+                        }
+                    }
+
+                    break;
                 }
             }
         }
@@ -273,8 +287,8 @@ public static class GameArg
             //    break;
             case Loaders.OptiFine:
                 list.Add($"-Dlibdir={LibrariesPath.BaseDir}");
-                list.Add($"-Dgamecore={LibrariesPath.GetGameFile(obj.Version)}");
-                list.Add($"-Doptifine={LibrariesPath.GetOptifineFile(obj)}");
+                list.Add($"-Dgamecore={obj.GetGameFile()}");
+                list.Add($"-Doptifine={obj.GetOptifineFile()}");
                 if (v2)
                 {
                     list.Add("--add-opens");
@@ -307,37 +321,37 @@ public static class GameArg
         var gameArg = new List<string>();
 #if !Phone
         //设置游戏窗口大小
-        WindowSettingObj window;
+        WindowSettingObj? window;
         if (obj.Window == null)
         {
             window = ConfigUtils.Config.Window;
         }
         else
         {
-            window = new()
+            window = new WindowSettingObj
             {
                 FullScreen = obj.Window.FullScreen
-                    ?? ConfigUtils.Config.Window.FullScreen,
+                    ?? ConfigUtils.Config.Window?.FullScreen,
                 Width = obj.Window.Width
-                    ?? ConfigUtils.Config.Window.Width,
+                    ?? ConfigUtils.Config.Window?.Width,
                 Height = obj.Window.Height
-                    ?? ConfigUtils.Config.Window.Height,
+                    ?? ConfigUtils.Config.Window?.Height,
             };
         }
-        if (window.FullScreen == true)
+        if (window?.FullScreen == true)
         {
             gameArg.Add("--fullscreen");
         }
         else
         {
-            if (window.Width > 0)
+            if (window?.Width > 0)
             {
-                gameArg.Add($"--width");
+                gameArg.Add("--width");
                 gameArg.Add($"{window.Width}");
             }
-            if (window.Height > 0)
+            if (window?.Height > 0)
             {
-                gameArg.Add($"--height");
+                gameArg.Add("--height");
                 gameArg.Add($"{window.Height}");
             }
         }
@@ -347,7 +361,7 @@ public static class GameArg
         //快速加入
         if (world != null)
         {
-            gameArg.Add($"--quickPlaySingleplayer");
+            gameArg.Add("--quickPlaySingleplayer");
             gameArg.Add($"{world.LevelName}");
         }
         else
@@ -360,19 +374,12 @@ public static class GameArg
             {
                 if (CheckHelpers.IsGameVersion120(obj.Version))
                 {
-                    gameArg.Add($"--quickPlayMultiplayer");
-                    if (server.Port > 0)
-                    {
-                        gameArg.Add($"{server.IP}:{server.Port}");
-                    }
-                    else
-                    {
-                        gameArg.Add($"{server.IP}:25565");
-                    }
+                    gameArg.Add("--quickPlayMultiplayer");
+                    gameArg.Add(server.Port > 0 ? $"{server.IP}:{server.Port}" : $"{server.IP}:25565");
                 }
                 else
                 {
-                    gameArg.Add($"--server");
+                    gameArg.Add("--server");
                     gameArg.Add(server.IP);
                     if (server.Port > 0)
                     {
@@ -381,7 +388,7 @@ public static class GameArg
                     }
                     else
                     {
-                        gameArg.Add($"--port");
+                        gameArg.Add("--port");
                         gameArg.Add("25565");
                     }
                 }
@@ -393,45 +400,45 @@ public static class GameArg
         {
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.IP))
             {
-                gameArg.Add($"--proxyHost");
+                gameArg.Add("--proxyHost");
                 gameArg.Add(obj.ProxyHost.IP);
             }
             if (obj.ProxyHost.Port != null && obj.ProxyHost.Port != 0)
             {
-                gameArg.Add($"--proxyPort");
+                gameArg.Add("--proxyPort");
                 gameArg.Add(obj.ProxyHost.Port.ToString()!);
             }
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.User))
             {
-                gameArg.Add($"--proxyUser");
+                gameArg.Add("--proxyUser");
                 gameArg.Add(obj.ProxyHost.User);
             }
             if (!string.IsNullOrWhiteSpace(obj.ProxyHost.Password))
             {
-                gameArg.Add($"--proxyPass");
+                gameArg.Add("--proxyPass");
                 gameArg.Add(obj.ProxyHost.Password);
             }
         }
-        else if (ConfigUtils.Config.Http.GameProxy)
+        else if (ConfigUtils.Config.Http?.GameProxy == true)
         {
             if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
             {
-                gameArg.Add($"--proxyHost");
+                gameArg.Add("--proxyHost");
                 gameArg.Add(ConfigUtils.Config.Http.ProxyIP);
             }
             if (ConfigUtils.Config.Http.ProxyPort != 0)
             {
-                gameArg.Add($"--proxyPort");
+                gameArg.Add("--proxyPort");
                 gameArg.Add(ConfigUtils.Config.Http.ProxyPort.ToString());
             }
             if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyUser))
             {
-                gameArg.Add($"--proxyUser");
+                gameArg.Add("--proxyUser");
                 gameArg.Add(ConfigUtils.Config.Http.ProxyUser);
             }
             if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyPassword))
             {
-                gameArg.Add($"--proxyPass");
+                gameArg.Add("--proxyPass");
                 gameArg.Add(ConfigUtils.Config.Http.ProxyPassword);
             }
         }
@@ -454,7 +461,7 @@ public static class GameArg
     /// <returns>Jvm参数</returns>
     private static async Task<(List<string>, bool)> MakeJvmArgAsync(this GameSettingObj obj, LoginObj login, int? mixinport = null)
     {
-        RunArgObj args;
+        RunArgObj? args;
 
         if (obj.JvmArg == null)
         {
@@ -462,29 +469,28 @@ public static class GameArg
         }
         else
         {
-            args = new()
+            args = new RunArgObj
             {
                 JvmArgs = obj.JvmArg.JvmArgs
-                    ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
+                    ?? ConfigUtils.Config.DefaultJvmArg?.JvmArgs,
                 GCArgument = obj.JvmArg.GCArgument
-                    ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
+                    ?? ConfigUtils.Config.DefaultJvmArg?.GCArgument,
                 GC = obj.JvmArg.GC
-                    ?? ConfigUtils.Config.DefaultJvmArg.GC,
+                    ?? ConfigUtils.Config.DefaultJvmArg?.GC,
                 JavaAgent = obj.JvmArg.JavaAgent
-                    ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
+                    ?? ConfigUtils.Config.DefaultJvmArg?.JavaAgent,
                 MaxMemory = obj.JvmArg.MaxMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
+                    ?? ConfigUtils.Config.DefaultJvmArg?.MaxMemory,
                 MinMemory = obj.JvmArg.MinMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg.MinMemory,
-                ColorASM = obj.JvmArg != null ? obj.JvmArg.ColorASM
-                    : ConfigUtils.Config.DefaultJvmArg.ColorASM
+                    ?? ConfigUtils.Config.DefaultJvmArg?.MinMemory,
+                ColorASM = obj.JvmArg.ColorASM
             };
         }
 
         var jvm = new List<string>();
         bool useasm = false;
         //javaagent
-        if (!string.IsNullOrWhiteSpace(args.JavaAgent))
+        if (!string.IsNullOrWhiteSpace(args!.JavaAgent))
         {
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }
@@ -518,8 +524,6 @@ public static class GameArg
                 if (!string.IsNullOrWhiteSpace(args.GCArgument))
                     jvm.Add(args.GCArgument.Trim());
                 break;
-            default:
-                break;
         }
 
         //mem
@@ -533,50 +537,54 @@ public static class GameArg
         }
         if (!string.IsNullOrWhiteSpace(args.JvmArgs))
         {
-            foreach (var item in args.JvmArgs.Split("\n"))
-            {
-                jvm.Add(item.Trim());
-            }
+            jvm.AddRange(args.JvmArgs.Split("\n").Select(item => item.Trim()));
         }
 
-        //外置登陆器相关
-        if (login.AuthType == AuthType.Nide8)
+        switch (login.AuthType)
         {
-            jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
-            jvm.Add("-Dnide8auth.client=true");
-        }
-        else if (login.AuthType == AuthType.AuthlibInjector)
-        {
-            var res = await CoreHttpClient.GetStringAsync(login.Text1);
-            if (!res.State)
+            //外置登陆器相关
+            case AuthType.Nide8:
             {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
+                jvm.Add("-Dnide8auth.client=true");
+                break;
             }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
-        }
-        else if (login.AuthType == AuthType.LittleSkin)
-        {
-            var res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
-            if (!res.State)
+            case AuthType.AuthlibInjector:
             {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                var res = await CoreHttpClient.GetStringAsync(login.Text1);
+                if (!res.State)
+                {
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
             }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
-        }
-        else if (login.AuthType == AuthType.SelfLittleSkin)
-        {
-            var res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
-            if (!res.State)
+            case AuthType.LittleSkin:
             {
-                throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                var res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
+                if (!res.State)
+                {
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
             }
-            jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-            jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-            jvm.Add("-Dauthlibinjector.side=client");
+            case AuthType.SelfLittleSkin:
+            {
+                var res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
+                if (!res.State)
+                {
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
+            }
         }
 
         jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
@@ -596,14 +604,14 @@ public static class GameArg
     /// <param name="args">所有参数参数</param>
     /// <param name="classpath">classpath</param>
     /// <param name="native">native路径</param>
-    /// <param name="native">native路径</param>
-    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath, string native, string asset)
+    /// <param name="assets">资源文件</param>
+    private static void ReplaceAll(this GameSettingObj obj, LoginObj login, List<string> args, string classpath, string native, string? assets)
     {
         var assetsPath = AssetsPath.BaseDir;
-        var gameDir = InstancesPath.GetGamePath(obj);
-        var assetsIndexName = asset ?? "legacy";
+        var gameDir = obj.GetGamePath();
+        var assetsIndexName = assets ?? "legacy";
 
-        var version_name = obj.Loader switch
+        var versionName = obj.Loader switch
         {
             Loaders.Forge => $"forge-{obj.Version}-{obj.LoaderVersion}",
             Loaders.Fabric => $"fabric-{obj.Version}-{obj.LoaderVersion}",
@@ -617,7 +625,7 @@ public static class GameArg
         var argDic = new Dictionary<string, string>()
         {
             {"${auth_player_name}", login.UserName },
-            {"${version_name}", version_name },
+            {"${version_name}", versionName },
             {"${game_directory}", gameDir },
             {"${assets_root}", assetsPath },
             {"${assets_index_name}", assetsIndexName },
@@ -642,7 +650,7 @@ public static class GameArg
 
         for (int a = 0; a < args.Count; a++)
         {
-            args[a] = argDic.Aggregate(args[a], (a, b) => a.Replace(b.Key, b.Value));
+            args[a] = argDic.Aggregate(args[a], (key, value) => key.Replace(value.Key, value.Value));
         }
     }
 
@@ -650,7 +658,9 @@ public static class GameArg
     /// 创建所有启动参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="arg">游戏启动参数</param>
+    /// <param name="larg">启动参数</param>
+    /// <param name="arg">游戏启动配置</param>
+    /// <param name="check">是否检查游戏文件</param>
     /// <returns>参数列表</returns>
     public static List<string> MakeRunArg(this GameSettingObj obj, GameLaunchArg larg, GameLaunchObj arg, bool check)
     {
@@ -671,28 +681,22 @@ public static class GameArg
             var list = obj.AdvanceJvm.ClassPath.Split(';');
             var dir1 = obj.GetGamePath();
             var dir2 = obj.GetBasePath();
-            foreach (var item1 in list)
-            {
-                var path = item1
-                    .Replace(Launch.GAME_DIR, dir1)
-                    .Replace(Launch.GAME_BASE_DIR, dir2)
-                    .Trim();
-                path = Path.GetFullPath(path);
-                if (!check || File.Exists(path))
-                {
-                    libraries.Add(path);
-                }
-            }
+            libraries.AddRange(list.Select(item1 => item1
+                    .Replace(Names.NameArgGameName, obj.Name)
+                    .Replace(Names.NameArgGameUUID, obj.UUID)
+                    .Replace(Names.NameArgGameDir, dir1)
+                    .Replace(Names.NameArgGameDir, dir2)
+                    .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
+                    .Trim())
+                .Select(Path.GetFullPath)
+                .Where(path => !check || File.Exists(path)));
         }
 
         //添加lib路径到classpath
-        foreach (var item in libraries)
+        foreach (var item in libraries.Where(item => !check || File.Exists(item)))
         {
-            if (!check || File.Exists(item))
-            {
-                classpath.Append($"{item}{sep}");
-                ColorMCCore.OnGameLog(obj, $"    {item}");
-            }
+            classpath.Append($"{item}{sep}");
+            ColorMCCore.OnGameLog(obj, $"    {item}");
         }
         classpath.Remove(classpath.Length - 1, 1);
 
@@ -717,8 +721,6 @@ public static class GameArg
     /// 创建主类
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="version">游戏数据</param>
-    /// <param name="v2">是否为v2版本</param>
     /// <returns>主类</returns>
     private static string MakeMainClass(this GameSettingObj obj)
     {
@@ -729,51 +731,46 @@ public static class GameArg
         {
             return obj.AdvanceJvm.MainClass;
         }
-        else if (obj.Loader == Loaders.Normal)
+
+        switch (obj.Loader)
         {
-            return version.MainClass;
-        }
-        //forgewrapper
-        else if (obj.Loader == Loaders.Forge || obj.Loader == Loaders.NeoForge)
-        {
-            if (v2)
+            //forgewrapper
+            case Loaders.Forge:
+            case Loaders.NeoForge:
             {
-                return "io.github.zekerzhayard.forgewrapper.installer.Main";
-            }
-            else
-            {
+                if (v2)
+                {
+                    return "io.github.zekerzhayard.forgewrapper.installer.Main";
+                }
+
                 var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
                 return forge.MainClass;
             }
+            case Loaders.Fabric:
+            {
+                var fabric = obj.GetFabricObj()!;
+                return fabric.MainClass;
+            }
+            //optifinewrapper
+            case Loaders.Quilt:
+            {
+                var quilt = obj.GetQuiltObj()!;
+                return quilt.MainClass;
+            }
+            case Loaders.OptiFine:
+                return "com.coloryr.optifinewrapper.OptifineWrapper";
+            case Loaders.Custom:
+                return obj.GetLoaderMainClass();
+            default:
+                return version.MainClass!;
         }
-        else if (obj.Loader == Loaders.Fabric)
-        {
-            var fabric = obj.GetFabricObj()!;
-            return fabric.MainClass;
-        }
-        else if (obj.Loader == Loaders.Quilt)
-        {
-            var quilt = obj.GetQuiltObj()!;
-            return quilt.MainClass;
-        }
-        //optifinewrapper
-        else if (obj.Loader == Loaders.OptiFine)
-        {
-            return "com.coloryr.optifinewrapper.OptifineWrapper";
-        }
-        else if (obj.Loader == Loaders.Custom)
-        {
-            return obj.GetLoaderMainClass();
-        }
-
-        return version.MainClass;
     }
 
     /// <summary>
     /// 创建游戏完整启动内容
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="gamearg"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="arg1">启动参数</param>
     /// <param name="cancel"></param>
     /// <returns></returns>
     /// <exception cref="LaunchException"></exception>
@@ -790,9 +787,9 @@ public static class GameArg
 
         if (obj.CustomLoader?.CustomJson != true)
         {
-            var game = await CheckHelpers.CheckGameArgFile(obj);
+            var game = await obj.CheckGameArgFile();
             var v2 = obj.IsGameVersionV2();
-            arg.JavaVersions.Add(game.JavaVersion.MajorVersion);
+            arg.JavaVersions.Add(game.JavaVersion!.MajorVersion);
 
             //处理运行库
             await Task.Run(async () =>
@@ -885,22 +882,16 @@ public static class GameArg
                 }
                 if (loader != null)
                 {
-                    foreach (var item in loader)
+                    foreach (var item in loader.Where(item => !string.IsNullOrWhiteSpace(item.Local)))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Local))
-                        {
-                            arg.LoaderLibs.Add(item);
-                        }
+                        arg.LoaderLibs.Add(item);
                     }
                 }
                 if (install != null)
                 {
-                    foreach (var item in install)
+                    foreach (var item in install.Where(item => !string.IsNullOrWhiteSpace(item.Local)))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Local))
-                        {
-                            arg.InstallerLibs.Add(item);
-                        }
+                        arg.InstallerLibs.Add(item);
                     }
                 }
             }, cancel);
@@ -929,31 +920,29 @@ public static class GameArg
                 }
                 else
                 {
-                    if (obj.Loader != Loaders.Normal)
-                    {
-                        arg.GameArgs.AddRange(MakeLoaderV1GameArg(obj, game));
-                    }
-                    else
-                    {
-                        arg.GameArgs.AddRange(MakeV1GameArg(game));
-                    }
+                    arg.GameArgs.AddRange(obj.Loader != Loaders.Normal
+                        ? MakeLoaderV1GameArg(obj, game)
+                        : MakeV1GameArg(game));
                 }
             }
 
             arg.GameArgs.AddRange(gamearg);
 
-            //材质与主类
-            var assets = game.AssetIndex.GetIndex();
-            if (assets == null)
+            if (game.AssetIndex != null)
             {
-                //不存在json文件
-                var res = await GameAPI.GetAssets(game.AssetIndex.Url)
-                    ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
-                assets = res.Assets;
-                game.AddIndex(res.Text);
+                //材质与主类
+                var assets = game.AssetIndex.GetIndex();
+                if (assets == null)
+                {
+                    //不存在json文件
+                    var res = await GameAPI.GetAssets(game.AssetIndex.Url)
+                              ?? throw new LaunchException(LaunchState.AssetsError,
+                                  LanguageHelper.Get("Core.Launch.Error2"));
+                    // assets = res.Assets;
+                    game.AddIndex(res.Text);
+                }
+                arg.Assets = game.AssetIndex;
             }
-
-            arg.Assets = game.AssetIndex;
 
             arg.MainClass = MakeMainClass(obj);
         }
@@ -973,8 +962,12 @@ public static class GameArg
                     if (item.MinecraftVersion != null)
                     {
                         var file = LibrariesPath.GetGameFile(item.MinecraftVersion);
-                        arg.NativeDir ??= LibrariesPath.GetNativeDir(obj.Version);
-                        arg.GameJar = new()
+                        if (string.IsNullOrWhiteSpace(arg.NativeDir))
+                        {
+                            arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
+                        }
+
+                        arg.GameJar = new FileItemObj
                         {
                             Url = CoreHttpClient.Source == SourceLocal.Offical ? item.Downloads.Client.Url
                                 : UrlHelper.DownloadGame(item.MinecraftVersion, CoreHttpClient.Source),
@@ -985,7 +978,7 @@ public static class GameArg
                     }
                     else
                     {
-                        arg.GameJar = new()
+                        arg.GameJar = new FileItemObj
                         {
                             Url = UrlHelper.DownloadSourceChange(item.Downloads.Client.Url, CoreHttpClient.Source),
                             Sha1 = item.Downloads.Client.Sha1,
@@ -1003,7 +996,7 @@ public static class GameArg
                     {
                         var res = await GameAPI.GetAssets(item.AssetIndex.Url)
                             ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
-                        assets = res.Assets;
+                        // assets = res.Assets;
                         item.AddIndex(res.Text);
                     }
                     arg.Assets = item.AssetIndex;
@@ -1012,7 +1005,11 @@ public static class GameArg
                 //运行库
                 if (item.Libraries != null)
                 {
-                    arg.NativeDir ??= LibrariesPath.GetNativeDir(null);
+                    if(string.IsNullOrWhiteSpace(arg.NativeDir))
+                    {
+                        arg.NativeDir = LibrariesPath.GetNativeDir(null);
+                    }
+                
                     var list = await item.BuildGameLibsAsync(arg.NativeDir, obj);
                     foreach (var item1 in list)
                     {
@@ -1063,7 +1060,7 @@ public static class GameArg
                             file = FuntionUtils.VersionNameToPath(lib.Name);
                         }
 
-                        arg.GameJar = new()
+                        arg.GameJar = new FileItemObj
                         {
                             Name = lib.Name,
                             Url = UrlHelper.DownloadLibraries(lib.Downloads.Artifact.Url, CoreHttpClient.Source),

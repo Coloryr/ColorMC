@@ -10,9 +10,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public class LanServer
 {
-    private readonly string _motd;
-    private readonly string _port;
-
     private readonly byte[] _data;
 
     private bool _isRun;
@@ -25,10 +22,7 @@ public class LanServer
 
     public LanServer(string port, string motd)
     {
-        _motd = motd;
-        _port = port;
-
-        _data = Encoding.UTF8.GetBytes(LanGameHelper.MakeMotd(_motd, _port));
+        _data = Encoding.UTF8.GetBytes(LanGameHelper.MakeMotd(motd, port));
 
         _socketV4 = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         _socketV4.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);

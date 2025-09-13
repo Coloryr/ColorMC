@@ -153,7 +153,7 @@ public static class ColorMCGui
 
         //}
 
-        Console.WriteLine($"RunDir: {BaseDir}");
+        Console.WriteLine($@"RunDir: {BaseDir}");
 
         try
         {
@@ -168,7 +168,7 @@ public static class ColorMCGui
                 }
                 catch
                 {
-
+                    
                 }
                 return;
             }
@@ -225,95 +225,97 @@ public static class ColorMCGui
     public static bool StartArg(string[] args)
     {
         //快捷启动
-        if (args.Length > 0)
+        if (args.Length <= 0)
         {
-            if (args[0] == GuiNames.NameCommandGame && args.Length >= 2)
-            {
-                if (IsInit)
-                {
-                    BaseBinding.Launch(args[1..]);
-                }
-                else
-                {
-                    BaseBinding.SetLaunch(args[1..]);
-                }
-            }
-            else if (args[0].StartsWith(GuiNames.NameUrlColorMC))
-            {
-                var url = args[0][GuiNames.NameUrlColorMC.Length..];
-                if (url.StartsWith(GuiNames.NameUrlRun))
-                {
-                    string uuid = url[GuiNames.NameUrlRun.Length..];
-                    if (IsInit)
-                    {
-                        BaseBinding.Launch([uuid]);
-                    }
-                    else
-                    {
-                        BaseBinding.SetLaunch([uuid]);
-                    }
-                }
-                else if (url.StartsWith(GuiNames.NameUrlInstall))
-                {
-                    string appId = url[GuiNames.NameUrlInstall.Length..];
-                    if (IsInit)
-                    {
-                        WindowManager.ShowAddGame(null, file: appId);
-                    }
-                }
-            }
-            else if (args[0].StartsWith(GuiNames.NameUrlModrinth))
-            {
-                var url = args[0][GuiNames.NameUrlModrinth.Length..];
-                if (url.StartsWith(GuiNames.NameUrlMod))
-                {
-                    string appId = url[GuiNames.NameUrlMod.Length..];
-                    if (IsInit)
-                    {
-                        WindowManager.ShowAdd(appId);
-                    }
-                }
-            }
-            else if (args[0] == GuiNames.NameCommandRegister)
-            {
-                if (!ProcessUtils.IsRunAsAdmin())
-                {
-                    try
-                    {
-                        ProcessUtils.LaunchAdmin(args);
-                        return false;
-                    }
-                    catch
-                    {
+            return false;
+        }
 
-                    }
-                }
-                else
-                {
-                    HookUtils.RegisterFastLaunch(false);
-                    if (args.Contains(GuiNames.NameCommandRemapModrinth))
-                    {
-                        HookUtils.RegisterFastLaunch(true);
-                    }
-                    Environment.Exit(0);
-                    return true;
-                }
-
-                return true;
-            }
-
+        if (args[0] == GuiNames.NameCommandGame && args.Length >= 2)
+        {
             if (IsInit)
             {
-                if (args[0] == GuiNames.NameCommandInstall && args.Length == 2)
+                BaseBinding.Launch(args[1..]);
+            }
+            else
+            {
+                BaseBinding.SetLaunch(args[1..]);
+            }
+        }
+        else if (args[0].StartsWith(GuiNames.NameUrlColorMC))
+        {
+            var url = args[0][GuiNames.NameUrlColorMC.Length..];
+            if (url.StartsWith(GuiNames.NameUrlRun))
+            {
+                string uuid = url[GuiNames.NameUrlRun.Length..];
+                if (IsInit)
                 {
-                    WindowManager.ShowAddGame(null, file: args[1]);
+                    BaseBinding.Launch([uuid]);
                 }
-                //MMC for labymod
-                else if (args[0] == GuiNames.NameCommandImport && args.Length == 2)
+                else
                 {
-                    WindowManager.ShowAddGame(null, file: args[1]);
+                    BaseBinding.SetLaunch([uuid]);
                 }
             }
+            else if (url.StartsWith(GuiNames.NameUrlInstall))
+            {
+                string appId = url[GuiNames.NameUrlInstall.Length..];
+                if (IsInit)
+                {
+                    WindowManager.ShowAddGame(null, file: appId);
+                }
+            }
+        }
+        else if (args[0].StartsWith(GuiNames.NameUrlModrinth))
+        {
+            var url = args[0][GuiNames.NameUrlModrinth.Length..];
+            if (url.StartsWith(GuiNames.NameUrlMod))
+            {
+                string appId = url[GuiNames.NameUrlMod.Length..];
+                if (IsInit)
+                {
+                    WindowManager.ShowAdd(appId);
+                }
+            }
+        }
+        else if (args[0] == GuiNames.NameCommandRegister)
+        {
+            if (!ProcessUtils.IsRunAsAdmin())
+            {
+                try
+                {
+                    ProcessUtils.LaunchAdmin(args);
+                    return false;
+                }
+                catch
+                {
+
+                }
+            }
+            else
+            {
+                HookUtils.RegisterFastLaunch(false);
+                if (args.Contains(GuiNames.NameCommandRemapModrinth))
+                {
+                    HookUtils.RegisterFastLaunch(true);
+                }
+                Environment.Exit(0);
+            }
+
+            return true;
+        }
+
+        if (!IsInit)
+        {
+            return false;
+        }
+
+        switch (args[0])
+        {
+            case GuiNames.NameCommandInstall when args.Length == 2:
+            //MMC for labymod
+            case GuiNames.NameCommandImport when args.Length == 2:
+                WindowManager.ShowAddGame(null, file: args[1]);
+                break;
         }
         return false;
     }
@@ -403,99 +405,111 @@ public static class ColorMCGui
 #endif
             .UsePlatformDetect();
 
-        if (SystemInfo.Os == OsType.Windows)
+        switch (SystemInfo.Os)
         {
-            var config = GuiConfigUtils.Config.Render.Windows;
-            var opt = new Win32PlatformOptions();
+            case OsType.Windows:
+            {
+                var config = GuiConfigUtils.Config.Render.Windows;
+                var opt = new Win32PlatformOptions();
 
-            if (config.ShouldRenderOnUIThread is { } value)
-            {
-                opt.ShouldRenderOnUIThread = value;
-            }
-            if (config.OverlayPopups is { } value1)
-            {
-                opt.OverlayPopups = value1;
-            }
-            if (config.Wgl is true)
-            {
-                opt.RenderingMode = [Win32RenderingMode.Wgl, Win32RenderingMode.Software];
-            }
-            else if (config.UseVulkan is true)
-            {
-                opt.RenderingMode =
-                [
-                    Win32RenderingMode.Vulkan,
-                    Win32RenderingMode.Software
-                ];
-            }
-            else if (config.UseSoftware is true)
-            {
-                opt.RenderingMode = [Win32RenderingMode.Software];
-            }
-            else if (SystemInfo.IsArm)
-            {
-                opt.RenderingMode =
-                [
-                    Win32RenderingMode.Wgl,
-                    Win32RenderingMode.Software
-                ];
-            }
-            builder.With(opt);
-        }
-        else if (SystemInfo.Os == OsType.Linux)
-        {
-            var config = GuiConfigUtils.Config.Render.X11;
-            var opt = new X11PlatformOptions();
-            if (config.UseDBusMenu is { } value2)
-            {
-                opt.UseDBusMenu = value2;
-            }
-            if (config.UseDBusFilePicker is { } value3)
-            {
-                opt.UseDBusFilePicker = value3;
-            }
-            if (config.OverlayPopups is { } value4)
-            {
-                opt.OverlayPopups = value4;
-            }
+                if (config.ShouldRenderOnUIThread is { } value)
+                {
+                    opt.ShouldRenderOnUIThread = value;
+                }
 
-            if (config.UseEgl is true)
-            {
-                opt.RenderingMode =
-                [
-                    X11RenderingMode.Egl,
-                    X11RenderingMode.Software
-                ];
+                if (config.OverlayPopups is { } value1)
+                {
+                    opt.OverlayPopups = value1;
+                }
+
+                if (config.Wgl is true)
+                {
+                    opt.RenderingMode = [Win32RenderingMode.Wgl, Win32RenderingMode.Software];
+                }
+                else if (config.UseVulkan is true)
+                {
+                    opt.RenderingMode =
+                    [
+                        Win32RenderingMode.Vulkan,
+                        Win32RenderingMode.Software
+                    ];
+                }
+                else if (config.UseSoftware is true)
+                {
+                    opt.RenderingMode = [Win32RenderingMode.Software];
+                }
+                else if (SystemInfo.IsArm)
+                {
+                    opt.RenderingMode =
+                    [
+                        Win32RenderingMode.Wgl,
+                        Win32RenderingMode.Software
+                    ];
+                }
+
+                builder.With(opt);
+                break;
             }
-            else if (config.UseVulkan is true)
+            case OsType.Linux:
             {
-                opt.RenderingMode =
-                [
-                    X11RenderingMode.Vulkan,
-                    X11RenderingMode.Software
-                ];
+                var config = GuiConfigUtils.Config.Render.X11;
+                var opt = new X11PlatformOptions();
+                if (config.UseDBusMenu is { } value2)
+                {
+                    opt.UseDBusMenu = value2;
+                }
+
+                if (config.UseDBusFilePicker is { } value3)
+                {
+                    opt.UseDBusFilePicker = value3;
+                }
+
+                if (config.OverlayPopups is { } value4)
+                {
+                    opt.OverlayPopups = value4;
+                }
+
+                if (config.UseEgl is true)
+                {
+                    opt.RenderingMode =
+                    [
+                        X11RenderingMode.Egl,
+                        X11RenderingMode.Software
+                    ];
+                }
+                else if (config.UseVulkan is true)
+                {
+                    opt.RenderingMode =
+                    [
+                        X11RenderingMode.Vulkan,
+                        X11RenderingMode.Software
+                    ];
+                }
+                else if (config.UseSoftware == true)
+                {
+                    opt.RenderingMode = [X11RenderingMode.Software];
+                }
+                else if (SystemInfo.IsArm)
+                {
+                    opt.RenderingMode =
+                    [
+                        X11RenderingMode.Egl,
+                        X11RenderingMode.Software
+                    ];
+                }
+
+                builder.With(opt);
+                break;
             }
-            else if (config.UseSoftware == true)
+            case OsType.MacOS:
             {
-                opt.RenderingMode = [X11RenderingMode.Software];
+                var opt = new MacOSPlatformOptions()
+                {
+                    DisableDefaultApplicationMenuItems = true,
+                };
+                builder.With(opt);
+                break;
             }
-            else if (SystemInfo.IsArm)
-            {
-                opt.RenderingMode =
-                [
-                    X11RenderingMode.Egl,
-                    X11RenderingMode.Software
-                ];
-            }
-            builder.With(opt);
-        }
-        else if (SystemInfo.Os == OsType.MacOS)
-        {
-            var opt = new MacOSPlatformOptions()
-            {
-                DisableDefaultApplicationMenuItems = true,
-            };
-            builder.With(opt);
         }
 
         return builder;
@@ -505,20 +519,22 @@ public static class ColorMCGui
     {
         var name = Path.Combine(BaseDir, GuiNames.NameLockFile);
         port = -1;
-        if (File.Exists(name))
+        if (!File.Exists(name))
         {
-            try
-            {
-                using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
-            }
-            catch
-            {
-                using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
-                byte[] temp1 = new byte[4];
-                temp.ReadExactly(temp1);
-                port = BitConverter.ToInt32(temp1);
-                return true;
-            }
+            return false;
+        }
+
+        try
+        {
+            using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+        }
+        catch
+        {
+            using var temp = File.Open(name, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+            byte[] temp1 = new byte[4];
+            temp.ReadExactly(temp1);
+            port = BitConverter.ToInt32(temp1);
+            return true;
         }
 
         return false;

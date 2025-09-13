@@ -378,3 +378,18 @@ public record ForgeGetFilesRes
     /// </summary>
     public List<FileItemObj>? Installs;
 }
+
+/// <summary>
+/// 加载器查询结果
+/// </summary>
+public record SupportLoaderRes
+{
+    /// <summary>
+    /// 成功获取
+    /// </summary>
+    public List<Loaders> Done;
+    /// <summary>
+    /// 成功获取
+    /// </summary>
+    public List<Loaders> Fail;
+}

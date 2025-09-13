@@ -48,11 +48,11 @@ public static class AssetsPath
     /// <summary>
     /// 添加资源数据
     /// </summary>
-    /// <param name="obj">资源数据</param>
     /// <param name="game">游戏数据</param>
+    /// <param name="data">资源文件</param>
     public static void AddIndex(this GameArgObj game, MemoryStream data)
     {
-        string file = Path.Combine(IndexDir, $"{game.AssetIndex.Id}.json");
+        string file = Path.Combine(IndexDir, $"{game.AssetIndex?.Id}.json");
         PathHelper.WriteBytes(file, data);
         data.Dispose();
     }
@@ -94,7 +94,7 @@ public static class AssetsPath
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>皮肤路径</returns>
-    public static string GetSkinFile(this LoginObj obj)
+    private static string GetSkinFile(this LoginObj obj)
     {
         return Path.Combine(SkinDir, $"{obj.UUID}_skin.png");
     }

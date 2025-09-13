@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -917,11 +916,11 @@ public static class ConfigBinding
         ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
         if (dnsOver == DnsType.DnsOver)
         {
-            ConfigUtils.Config.Dns.Dns.Add(url);
+            ConfigUtils.Config.Dns.Dns?.Add(url);
         }
         else
         {
-            ConfigUtils.Config.Dns.Https.Add(url);
+            ConfigUtils.Config.Dns.Https?.Add(url);
         }
         ConfigUtils.Save();
 
@@ -942,11 +941,11 @@ public static class ConfigBinding
         ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
         if (dns == DnsType.DnsOver)
         {
-            ConfigUtils.Config.Dns.Dns.Remove(url);
+            ConfigUtils.Config.Dns.Dns?.Remove(url);
         }
         else
         {
-            ConfigUtils.Config.Dns.Https.Remove(url);
+            ConfigUtils.Config.Dns.Https?.Remove(url);
         }
         ConfigUtils.Save();
 

@@ -13,7 +13,7 @@ public static class ConfigUtils
     /// <summary>
     /// 配置文件
     /// </summary>
-    public static ConfigObj Config { get; set; }
+    public static ConfigObj Config { get; private set; }
     /// <summary>
     /// 配置文件路径
     /// </summary>
@@ -123,9 +123,9 @@ public static class ConfigUtils
     /// 创建新的配置文件
     /// </summary>
     /// <returns>配置内容</returns>
-    public static ConfigObj MakeDefaultConfig()
+    private static ConfigObj MakeDefaultConfig()
     {
-        return new()
+        return new ConfigObj
         {
             Version = ColorMCCore.Version,
             JavaList = [],
@@ -143,7 +143,7 @@ public static class ConfigUtils
     /// <returns>配置内容</returns>
     public static DnsObj MakeDnsConfig()
     {
-        return new()
+        return new DnsObj
         {
             Dns = ["1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"],
             Https = ["https://223.5.5.5/dns-query"]
@@ -156,7 +156,7 @@ public static class ConfigUtils
     /// <returns>配置内容</returns>
     public static HttpObj MakeHttpConfig()
     {
-        return new()
+        return new HttpObj
         {
             Source = SourceLocal.Offical,
             DownloadThread = 5,
@@ -173,7 +173,7 @@ public static class ConfigUtils
     /// <returns>配置内容</returns>
     public static RunArgObj MakeJvmArgConfig()
     {
-        return new()
+        return new RunArgObj
         {
             GC = GCType.G1GC,
             MaxMemory = 4096,
@@ -187,7 +187,7 @@ public static class ConfigUtils
     /// <returns>配置内容</returns>
     public static WindowSettingObj MakeWindowSettingConfig()
     {
-        return new()
+        return new WindowSettingObj
         {
             Height = 720,
             Width = 1280
@@ -200,7 +200,7 @@ public static class ConfigUtils
     /// <returns>配置内容</returns>
     public static GameCheckObj MakeGameCheckConfig()
     {
-        return new()
+        return new GameCheckObj
         {
             CheckCore = true,
             CheckAssets = true,

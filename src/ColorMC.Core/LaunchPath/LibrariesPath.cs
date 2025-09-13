@@ -72,6 +72,16 @@ public static class LibrariesPath
     }
 
     /// <summary>
+    /// 获取游戏核心路径
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>游戏路径</returns>
+    public static string GetGameFile(this GameSettingObj obj)
+    {
+        return GetGameFile(obj.Version);
+    }
+    
+    /// <summary>
     /// 获取OptiFine路径
     /// </summary>
     /// <param name="obj">游戏实例</param>

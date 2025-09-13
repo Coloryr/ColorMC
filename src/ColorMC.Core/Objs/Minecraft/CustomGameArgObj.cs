@@ -8,7 +8,7 @@ namespace ColorMC.Core.Objs.Minecraft;
 public record CustomGameArgObj : GameArgObj
 {
     [JsonPropertyName("compatibleJavaMajors")]
-    public List<int> CompatibleJavaMajors { get; set; }
+    public List<int>? CompatibleJavaMajors { get; set; }
     [JsonPropertyName("name")]
     public string Name { get; set; }
     [JsonPropertyName("order")]
@@ -16,15 +16,15 @@ public record CustomGameArgObj : GameArgObj
     [JsonPropertyName("uid")]
     public string Uid { get; set; }
     [JsonPropertyName("+tweakers")]
-    public List<string> AddTweakers { get; set; }
+    public List<string>? AddTweakers { get; set; }
     [JsonPropertyName("+jvmArgs")]
-    public List<string> AddJvmArgs { get; set; }
+    public List<string>? AddJvmArgs { get; set; }
     [JsonPropertyName("version")]
     public string Version { get; set; }
     [JsonPropertyName("mainJar")]
     public GameLibrariesObj MainJar { get; set; }
     [JsonPropertyName("_minecraftVersion")]
-    public string MinecraftVersion { get; set; }
+    public string? MinecraftVersion { get; set; }
 
     [JsonIgnore]
     public string File { get; set; }

@@ -31,7 +31,7 @@ public static class ConfigSave
     {
         ColorMCCore.Stop += Stop;
 
-        t_thread = new(Run)
+        t_thread = new Thread(Run)
         {
             Name = "ColorMC Config Save"
         };

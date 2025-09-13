@@ -1,6 +1,4 @@
 using System.Collections.Concurrent;
-using System.IO.Compression;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
@@ -8,6 +6,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -45,7 +44,7 @@ public static class Mods
                 var sha1 = await HashHelper.GenSha1Async(filestream);
                 filestream.Seek(0, SeekOrigin.Begin);
 
-                list.Add(new()
+                list.Add(new ModObj
                 {
                     Local = item.FullName,
                     Sha1 = sha1
@@ -121,8 +120,8 @@ public static class Mods
             }
             sha1 = await HashHelper.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
-            using var zFile = new ZipArchive(stream);
-            var mod = await ReadModAsync(zFile);
+            using var zFile = ZipArchive.Open(stream);
+            var mod = await ReadModAsync(item.FullName, zFile);
             if (mod != null)
             {
                 mod.Local = item.FullName;
@@ -130,11 +129,13 @@ public static class Mods
                 mod.Name ??= "";
                 mod.ModId ??= "";
                 mod.Sha1 = sha1;
-                if (sha256)
+                if (!sha256)
                 {
-                    stream.Seek(0, SeekOrigin.Begin);
-                    mod.Sha256 = await HashHelper.GenSha256Async(stream);
+                    return mod;
                 }
+
+                stream.Seek(0, SeekOrigin.Begin);
+                mod.Sha256 = await HashHelper.GenSha256Async(stream);
 
                 return mod;
             }
@@ -143,7 +144,7 @@ public static class Mods
         {
             Logs.Error(LanguageHelper.Get("Core.Game.Error1"), e);
         }
-        return new()
+        return new ModObj
         {
             ModId = "",
             Name = "",
@@ -167,18 +168,18 @@ public static class Mods
             return null;
         }
         var file = Path.Combine(obj.GetModsPath(), mod.File);
-        if (File.Exists(file))
+        if (!File.Exists(file))
         {
-            var info = new FileInfo(file);
-            var mod1 = await ReadMod(info, false);
-            if (mod1 != null)
-            {
-                mod1.Game = obj;
-            }
-            return mod1;
+            return null;
         }
 
-        return null;
+        var info = new FileInfo(file);
+        var mod1 = await ReadMod(info, false);
+        if (mod1 != null)
+        {
+            mod1.Game = obj;
+        }
+        return mod1;
     }
 
     /// <summary>
@@ -198,11 +199,13 @@ public static class Mods
         PathHelper.MoveFile(file.FullName, mod.Local);
 
         var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
-        if (info != null)
+        if (info == null)
         {
-            info.File = Path.ChangeExtension(info.File, Names.NameDisableExt);
-            mod.Game.SaveModInfo();
+            return;
         }
+
+        info.File = Path.ChangeExtension(info.File, Names.NameDisableExt);
+        mod.Game.SaveModInfo();
     }
 
     /// <summary>
@@ -222,11 +225,13 @@ public static class Mods
         PathHelper.MoveFile(file.FullName, mod.Local);
 
         var info = mod.Game.Mods.Values.FirstOrDefault(item => item.Sha1 == mod.Sha1);
-        if (info != null)
+        if (info == null)
         {
-            info.File = Path.ChangeExtension(info.File, Names.NameJarExt);
-            mod.Game.SaveModInfo();
+            return;
         }
+
+        info.File = Path.ChangeExtension(info.File, Names.NameJarExt);
+        mod.Game.SaveModInfo();
     }
 
     /// <summary>
@@ -252,29 +257,21 @@ public static class Mods
         }
         var path = obj.GetModsPath();
         var ok = true;
-        await Task.Run(() => Parallel.ForEach(file, async (item) =>
+        await Task.Run(() => Parallel.ForEach(file, item =>
         {
             var local = Path.Combine(path, Path.GetFileName(item));
 
-            await Task.Run(() =>
+            try
             {
-                try
-                {
-                    PathHelper.CopyFile(item, local);
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
-                    ok = false;
-                }
-            });
+                PathHelper.CopyFile(item, local);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
+                ok = false;
+            }
         }));
-        if (!ok)
-        {
-            return false;
-        }
-
-        return true;
+        return ok;
     }
 
     /// <summary>
@@ -308,16 +305,8 @@ public static class Mods
             return 0;
         }
         var files = info.GetFiles();
-        int a = 0;
-        foreach (var item in files)
-        {
-            if (item.Name.EndsWith(Names.NameJarExt))
-            {
-                a++;
-            }
-        }
 
-        return a;
+        return files.Count(item => item.Name.EndsWith(Names.NameJarExt));
     }
 
     /// <summary>
@@ -330,15 +319,17 @@ public static class Mods
         obj.InJar ??= [];
         foreach (var item3 in zFile.Entries)
         {
-            if (item3.Name.EndsWith(Names.NameJarExt) && item3.FullName.StartsWith("META-INF/jarjar/"))
+            if (item3.Key?.EndsWith(Names.NameJarExt) == false || item3.Key?.StartsWith(Names.NameModJarJarDir) == false)
             {
-                using var stream = item3.Open();
-                using var zFile1 = new ZipArchive(stream);
-                var inmod = await ReadModAsync(zFile1);
-                if (inmod != null)
-                {
-                    obj.InJar.Add(inmod);
-                }
+                continue;
+            }
+
+            using var stream = item3.OpenEntryStream();
+            using var zFile1 = ZipArchive.Open(stream);
+            var inmod = await ReadModAsync(obj.Local, zFile1);
+            if (inmod != null)
+            {
+                obj.InJar.Add(inmod);
             }
         }
     }
@@ -346,12 +337,13 @@ public static class Mods
     /// <summary>
     /// 读取一个Mod文件
     /// </summary>
+    /// <param name="path">Mod路径</param>
     /// <param name="zFile">Mod压缩包</param>
     /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadModAsync(ZipArchive zFile)
+    private static async Task<ModObj?> ReadModAsync(string path, ZipArchive zFile)
     {
         bool istest = false;
-        var mod = new ModObj()
+        var mod = new ModObj
         {
             Loaders = [],
             Dependants = [],
@@ -359,12 +351,12 @@ public static class Mods
         };
 
         //forge 1.13以下
-        var item1 = zFile.GetEntry("mcmod.info");
+        var item1 = zFile.GetEntry(Names.NameMcModInfoFile);
         if (item1 != null)
         {
             try
             {
-                using var stream1 = item1.Open();
+                using var stream1 = item1.OpenEntryStream();
                 var data = await StringHelper.GetStringAsync(stream1);
                 var obj1 = Parse(data);
                 JsonObject? obj3;
@@ -374,7 +366,7 @@ public static class Mods
                 }
                 else
                 {
-                    obj3 = obj1?.AsObject()?.GetArray("modList")?[0]?.AsObject();
+                    obj3 = obj1?.AsObject().GetArray("modList")?[0]?.AsObject();
                 }
                 if (obj3 != null)
                 {
@@ -433,21 +425,21 @@ public static class Mods
                     istest = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
             }
         }
 
         //forge 1.13及以上
         bool neoforge = false;
-        item1 = zFile.GetEntry("META-INF/mods.toml");
+        item1 = zFile.GetEntry(Names.NameMcModTomlFile);
         if (item1 == null)
         {
             //neoforge 1.20.5及以上
-            item1 = zFile.GetEntry("META-INF/neoforge.mods.toml");
+            item1 = zFile.GetEntry(Names.NameNeoTomlFile);
             neoforge = true;
-            item1 ??= zFile.GetEntry("neoforge.mods.toml");
+            item1 ??= zFile.GetEntry(Names.NameNeoToml1File);
         }
         if (item1 != null)
         {
@@ -456,18 +448,15 @@ public static class Mods
             {
                 try
                 {
-                    using var stream1 = item1.Open();
+                    using var stream1 = item1.OpenEntryStream();
                     var data = await StringHelper.GetStringAsync(stream1);
                     var model = Toml.Parse(data).ToModel();
-                    TomlTable? model2 = null;
-                    if (model["mods"] is TomlArray array)
+                    TomlTable? model2 = model["mods"] switch
                     {
-                        model2 = array.FirstOrDefault() as TomlTable;
-                    }
-                    else if (model["mods"] is TomlTableArray model1)
-                    {
-                        model2 = model1[0];
-                    }
+                        TomlArray array => array.FirstOrDefault() as TomlTable,
+                        TomlTableArray model1 => model1[0],
+                        _ => null
+                    };
                     if (model2 == null)
                     {
                         return null;
@@ -510,40 +499,32 @@ public static class Mods
                     {
                         foreach (var item3 in model5)
                         {
-                            if (item3.TryGetValue("modId", out item2))
+                            if (!item3.TryGetValue("modId", out item2))
                             {
-                                var modid = item2.ToString()!;
-                                if (modid == "minecraft" && item3.TryGetValue("side", out var item4))
+                                continue;
+                            }
+
+                            var modid = item2.ToString()!;
+                            if (modid == "minecraft" && item3.TryGetValue("side", out var item4))
+                            {
+                                var temp = item4.ToString()!.ToLower();
+                                mod.Side = temp switch
                                 {
-                                    var temp = item4.ToString()!.ToLower();
-                                    if (temp == "both")
-                                    {
-                                        mod.Side = SideType.Both;
-                                    }
-                                    else if (temp == "client")
-                                    {
-                                        mod.Side = SideType.Client;
-                                    }
-                                    else if (temp == "server")
-                                    {
-                                        mod.Side = SideType.Server;
-                                    }
-                                }
-                                else
+                                    "both" => SideType.Both,
+                                    "client" => SideType.Client,
+                                    "server" => SideType.Server,
+                                    _ => mod.Side
+                                };
+                            }
+                            else
+                            {
+                                if ((!item3.TryGetValue("mandatory", out item4) || item4.ToString()?.ToLower() != "true") &&
+                                    (!item3.TryGetValue("type", out item4) || item4.ToString()?.ToLower() != "required"))
                                 {
-                                    if (item3.TryGetValue("mandatory", out item4)
-                                        && item4?.ToString()?.ToLower() == "true")
-                                    {
-                                        mod.Dependants.Add(modid);
-                                        continue;
-                                    }
-                                    if (item3.TryGetValue("type", out item4)
-                                        && item4?.ToString()?.ToLower() == "required")
-                                    {
-                                        mod.Dependants.Add(modid);
-                                        continue;
-                                    }
+                                    continue;
                                 }
+
+                                mod.Dependants.Add(modid);
                             }
                         }
                     }
@@ -551,9 +532,9 @@ public static class Mods
                     await CheckJarInJarAsync(mod, zFile);
                     istest = true;
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
                 }
             }
         }
@@ -567,7 +548,7 @@ public static class Mods
             {
                 try
                 {
-                    using var stream = item1.Open();
+                    using var stream = item1.OpenEntryStream();
                     var obj1 = await JsonUtils.ReadAsObjAsync(stream);
                     if (obj1 != null)
                     {
@@ -577,23 +558,15 @@ public static class Mods
                         mod.Version = obj1.GetString("version");
                         mod.Url = obj1.GetObj("contact")?.GetString("homepage");
 
-                        var side = obj1.GetString("environment")?.ToString().ToLower();
-                        if (side == null)
+                        var side = obj1.GetString("environment")?.ToLower();
+                        mod.Side = side switch
                         {
-                            mod.Side = SideType.None;
-                        }
-                        else if (side == "*")
-                        {
-                            mod.Side = SideType.Both;
-                        }
-                        else if (side == "client")
-                        {
-                            mod.Side = SideType.Client;
-                        }
-                        else if (side == "server")
-                        {
-                            mod.Side = SideType.Server;
-                        }
+                            null => SideType.None,
+                            "*" => SideType.Both,
+                            "client" => SideType.Client,
+                            "server" => SideType.Server,
+                            _ => mod.Side
+                        };
 
                         if (obj1.GetArray("authors") is { } list1)
                         {
@@ -616,9 +589,9 @@ public static class Mods
                         istest = true;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
                 }
             }
         }
@@ -632,7 +605,7 @@ public static class Mods
             {
                 try
                 {
-                    using var stream = item1.Open();
+                    using var stream = item1.OpenEntryStream();
                     var obj = await JsonUtils.ReadAsObjAsync(stream);
                     if (obj?.GetObj("quilt_loader") is not { } obj1)
                     {
@@ -670,133 +643,142 @@ public static class Mods
                     await CheckJarInJarAsync(mod, zFile);
                     istest = true;
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
                 }
             }
         }
 
-        //core mod
-        item1 = zFile.GetEntry("META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
-        var item5 = zFile.GetEntry("META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
-        var item7 = zFile.GetEntry("META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
-        var item6 = zFile.GetEntry("META-INF/MANIFEST.MF");
-        if (item6 != null)
+        try
         {
-            using var stream = item6.Open();
-            var con = Options.ReadOptions(stream);
-            if (item7 != null)
+            //core mod
+            item1 = zFile.GetEntry("META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
+            var item5 = zFile.GetEntry("META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
+            var item7 = zFile.GetEntry("META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
+            var item6 = zFile.GetEntry("META-INF/MANIFEST.MF");
+            if (item6 != null)
             {
-                mod.CoreMod = true;
-                mod.Loaders.Add(Loaders.NeoForge);
-                if (!istest)
+                using var stream = item6.OpenEntryStream();
+                var con = Options.ReadOptions(stream);
+                if (item7 != null)
                 {
-                    if (!con.TryGetValue("Automatic-Module-Name", out string? name)
-                        && !con.TryGetValue("Specification-Title", out name)
-                        && !con.TryGetValue("Implementation-Title", out name)
-                        && !con.TryGetValue("Automatic-Module-Name", out name))
+                    mod.CoreMod = true;
+                    mod.Loaders.Add(Loaders.NeoForge);
+                    if (!istest)
                     {
-                        name = "";
+                        if (!con.TryGetValue("Automatic-Module-Name", out string? name)
+                            && !con.TryGetValue("Specification-Title", out name)
+                            && !con.TryGetValue("Implementation-Title", out name)
+                            && !con.TryGetValue("Automatic-Module-Name", out name))
+                        {
+                            name = "";
+                        }
+
+                        name = name.Trim();
+
+                        if (con.TryGetValue("Implementation-Version", out string? version))
+                        {
+                            mod.Version = version;
+                        }
+
+                        mod.Name = name;
+                        mod.ModId = name.ToLower();
+
+                        await CheckJarInJarAsync(mod, zFile);
+
+                        istest = true;
                     }
-                    name = name.Trim();
-
-                    if (con.TryGetValue("Implementation-Version", out string? version))
-                    {
-                        mod.Version = version;
-                    }
-
-                    mod.Name = name;
-                    mod.ModId = name.ToLower();
-
-                    await CheckJarInJarAsync(mod, zFile);
-
-                    istest = true;
                 }
-            }
-            else if (item1 != null || item5 != null)
-            {
-                mod.CoreMod = true;
-                mod.Loaders.Add(Loaders.Forge);
-                if (!istest)
-                {
-                    if (!con.TryGetValue("Specification-Title", out string? name)
-                        && !con.TryGetValue("Implementation-Title", out name)
-                        && !con.TryGetValue("Automatic-Module-Name", out name))
-                    {
-                        name = "";
-                    }
-                    name = name.Trim();
-                    mod.Name = name;
-                    mod.ModId = name.ToLower();
-
-                    await CheckJarInJarAsync(mod, zFile);
-
-                    istest = true;
-                }
-            }
-            else if (con.TryGetValue("FMLCorePlugin", out string? fml))
-            {
-                mod.CoreMod = true;
-                mod.Loaders.Add(Loaders.Forge);
-                if (!istest)
-                {
-                    fml = fml.Trim();
-                    mod.Name = fml;
-                    mod.ModId = fml.ToLower();
-
-                    istest = true;
-                }
-            }
-        }
-
-        item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
-        //forge coremod
-        if (item1 != null)
-        {
-            using var stream = item1.Open();
-            var obj1 = await JsonUtils.ReadAsObjAsync(stream);
-            if (obj1 != null)
-            {
-                var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
-                if (obj2?.AsObject() is { } obj3)
+                else if (item1 != null || item5 != null)
                 {
                     mod.CoreMod = true;
                     mod.Loaders.Add(Loaders.Forge);
                     if (!istest)
                     {
-                        if (obj3.GetObj("modId")?.GetString("value") is { } str)
+                        if (!con.TryGetValue("Specification-Title", out string? name)
+                            && !con.TryGetValue("Implementation-Title", out name)
+                            && !con.TryGetValue("Automatic-Module-Name", out name))
                         {
-                            mod.ModId = str;
-                        }
-                        else if (obj3.GetObj("modid")?.GetString("value") is { } str1)
-                        {
-                            mod.ModId = str1;
+                            name = "";
                         }
 
-                        if (obj3.GetObj("names")?.GetString("value") is { } str2)
-                        {
-                            mod.Name = str2;
-                        }
-                        else if (obj3.GetObj("name")?.GetString("value") is { } str3)
-                        {
-                            mod.Name = str3;
-                        }
+                        name = name.Trim();
+                        mod.Name = name;
+                        mod.ModId = name.ToLower();
 
-                        if (obj3.GetObj("version")?.GetString("value") is { } str4)
-                        {
-                            mod.Version = str4;
-                        }
+                        await CheckJarInJarAsync(mod, zFile);
 
-                        if (obj3.GetObj("dependencies")?.GetString("value") is { } str5)
-                        {
-                            mod.Dependants.Add(str5);
-                        }
+                        istest = true;
+                    }
+                }
+                else if (con.TryGetValue("FMLCorePlugin", out string? fml))
+                {
+                    mod.CoreMod = true;
+                    mod.Loaders.Add(Loaders.Forge);
+                    if (!istest)
+                    {
+                        fml = fml.Trim();
+                        mod.Name = fml;
+                        mod.ModId = fml.ToLower();
 
                         istest = true;
                     }
                 }
             }
+
+            item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
+            //forge coremod
+            if (item1 != null)
+            {
+                using var stream = item1.OpenEntryStream();
+                var obj1 = await JsonUtils.ReadAsObjAsync(stream);
+                if (obj1 != null)
+                {
+                    var obj2 = FindKey(obj1, "acceptedMinecraftVersions");
+                    if (obj2?.AsObject() is { } obj3)
+                    {
+                        mod.CoreMod = true;
+                        mod.Loaders.Add(Loaders.Forge);
+                        if (!istest)
+                        {
+                            if (obj3.GetObj("modId")?.GetString("value") is { } str)
+                            {
+                                mod.ModId = str;
+                            }
+                            else if (obj3.GetObj("modid")?.GetString("value") is { } str1)
+                            {
+                                mod.ModId = str1;
+                            }
+
+                            if (obj3.GetObj("names")?.GetString("value") is { } str2)
+                            {
+                                mod.Name = str2;
+                            }
+                            else if (obj3.GetObj("name")?.GetString("value") is { } str3)
+                            {
+                                mod.Name = str3;
+                            }
+
+                            if (obj3.GetObj("version")?.GetString("value") is { } str4)
+                            {
+                                mod.Version = str4;
+                            }
+
+                            if (obj3.GetObj("dependencies")?.GetString("value") is { } str5)
+                            {
+                                mod.Dependants.Add(str5);
+                            }
+
+                            istest = true;
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
         }
 
         if (!istest)
@@ -804,21 +786,22 @@ public static class Mods
             //使用jarjar的内容
             foreach (var item3 in zFile.Entries)
             {
-                if (item3.Name.EndsWith(Names.NameJarExt) && item3.FullName.StartsWith("META-INF/jarjar/"))
+                if (item3.Key == null || !item3.Key.EndsWith(Names.NameJarExt) || !item3.Key.StartsWith(Names.NameModJarJarDir))
                 {
-                    using var stream = item3.Open();
-                    using var zFile1 = new ZipArchive(stream);
-                    var inmod = await ReadModAsync(zFile1);
-                    if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
-                         && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)
-                    {
-                        return inmod;
-                    }
+                    continue;
+                }
+
+                using var stream = item3.OpenEntryStream();
+                using var zFile1 = ZipArchive.Open(stream);
+                var inmod = await ReadModAsync(path, zFile1);
+                if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
+                                  && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)
+                {
+                    return inmod;
                 }
             }
         }
-
-        if (istest)
+        else if (istest)
         {
             return mod;
         }
