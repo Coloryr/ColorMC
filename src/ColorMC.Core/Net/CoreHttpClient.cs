@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Authentication;
 using System.Text.Json;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
@@ -72,7 +73,7 @@ public static class CoreHttpClient
             proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
         }
         //Dns
-        if (dns.Enable)
+        if (dns != null && dns.Enable)
         {
             //有GC问题
             //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
@@ -82,7 +83,7 @@ public static class CoreHttpClient
             //    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
             //}
             //}
-            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp)
+            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp && dns.Https != null)
             {
                 foreach (var item in dns.Https)
                 {
@@ -111,15 +112,17 @@ public static class CoreHttpClient
         {
             _downloadClient = new(new DnsDelegatingHandler(dnsClient)
             {
-                InnerHandler = new SocketsHttpHandler()
+                InnerHandler = new HttpClientHandler()
                 {
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                     Proxy = http.DownloadProxy ? proxy : null
                 }
             });
             _loginClient = new(new DnsDelegatingHandler(dnsClient)
             {
-                InnerHandler = new SocketsHttpHandler()
+                InnerHandler = new HttpClientHandler()
                 {
+                    SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                     Proxy = http.LoginProxy ? proxy : null
                 }
             });
@@ -128,10 +131,12 @@ public static class CoreHttpClient
         {
             _downloadClient = new(new HttpClientHandler()
             {
+                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                 Proxy = http.DownloadProxy ? proxy : null
             });
             _loginClient = new(new HttpClientHandler()
             {
+                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
                 Proxy = http.LoginProxy ? proxy : null
             });
         }

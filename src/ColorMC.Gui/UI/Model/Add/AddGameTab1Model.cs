@@ -56,6 +56,11 @@ public partial class AddGameModel
     [ObservableProperty]
     private bool _enableLoader;
     /// <summary>
+    /// 启用加载器
+    /// </summary>
+    [ObservableProperty]
+    private bool _enableLoaderVersion;
+    /// <summary>
     /// 后加载原版运行库
     /// </summary>
     [ObservableProperty]
@@ -165,6 +170,7 @@ public partial class AddGameModel
     public async Task GetLoader()
     {
         EnableLoader = false;
+        EnableLoaderVersion = false;
         if (string.IsNullOrWhiteSpace(Version) || _loaderTypeList.Count == 0)
         {
             return;
@@ -219,6 +225,7 @@ public partial class AddGameModel
         }
 
         EnableLoader = true;
+        EnableLoaderVersion = true;
         LoaderVersionList.Clear();
         LoaderVersionList.AddRange(list);
 
@@ -303,6 +310,7 @@ public partial class AddGameModel
         _load = true;
 
         EnableLoader = false;
+        EnableLoaderVersion = false;
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         LoaderVersionList.Clear();
@@ -341,6 +349,7 @@ public partial class AddGameModel
 
         LoaderType = 0;
         _load = false;
+        EnableLoader = true;
 
         Model.Notify(App.Lang("AddGameWindow.Tab1.Info24"));
     }
@@ -355,6 +364,7 @@ public partial class AddGameModel
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
         EnableLoader = false;
+        EnableLoaderVersion = false;
         LoaderVersion = null;
         IsLoad = true;
         Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info12");

@@ -694,13 +694,16 @@ public partial class GameEditModel
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
-        var loaders = await GameBinding.GetSupportLoader(GameVersion);
-        foreach (var item in loaders)
+        var res = await GameHelper.GetSupportLoader(GameVersion);
+        foreach (var item in res.Done)
         {
             _loaderTypeList.Add(item);
             LoaderTypeList.Add(item.GetName());
         }
-
+        foreach (var item in res.Fail)
+        {
+            Model.Notify(string.Format(App.Lang("AddGameWindow.Tab1.Error19"), item.GetName()));
+        }
         if (_loaderTypeList.Contains(loaderType))
         {
             LoaderType = _loaderTypeList.IndexOf(loaderType);
