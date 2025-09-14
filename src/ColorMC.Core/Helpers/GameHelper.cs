@@ -1038,75 +1038,75 @@ public static class GameHelper
         [
             Task.Run(async () =>
             {
-                try
+                var list = await ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
+                if (list != null)
                 {
-                    var list = await ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
-                    if (list != null && list.Contains(version))
+                    if(list.Contains(version))
                     {
                         res.Done.Add(Loaders.Forge);
                     }
                 }
-                catch
+                else
                 {
                     res.Fail.Add(Loaders.Forge);
                 }
             }),
             Task.Run(async () =>
             {
-                try
+                var list = await FabricAPI.GetSupportVersion(CoreHttpClient.Source);
+                if (list != null)
                 {
-                    var list = await FabricAPI.GetSupportVersion(CoreHttpClient.Source);
-                    if (list != null && list.Contains(version))
+                    if(list.Contains(version))
                     {
                         res.Done.Add(Loaders.Fabric);
                     }
                 }
-                catch
+                else
                 {
                     res.Fail.Add(Loaders.Fabric);
                 }
             }),
             Task.Run(async () =>
             {
-                try
+                var list = await QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
+                if (list != null)
                 {
-                    var list = await QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
-                    if (list != null && list.Contains(version))
+                    if(list.Contains(version))
                     {
                         res.Done.Add(Loaders.Quilt);
                     }
                 }
-                catch
+                else
                 {
                     res.Fail.Add(Loaders.Quilt);
                 }
             }),
             Task.Run(async () =>
             {
-                try
+                var list = await ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
+                if (list != null)
                 {
-                    var list = await ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
-                    if (list != null && list.Contains(version))
+                    if(list.Contains(version))
                     {
                         res.Done.Add(Loaders.NeoForge);
                     }
                 }
-                catch
+                else
                 {
                     res.Fail.Add(Loaders.NeoForge);
                 }
             }),
             Task.Run(async () =>
             {
-                try
+                var list = await OptifineAPI.GetSupportVersion();
+                if (list != null)
                 {
-                    var list = await OptifineAPI.GetSupportVersion();
-                    if (list != null && list.Contains(version))
+                    if(list.Contains(version))
                     {
                         res.Done.Add(Loaders.OptiFine);
                     }
                 }
-                catch
+                else
                 {
                     res.Fail.Add(Loaders.OptiFine);
                 }
