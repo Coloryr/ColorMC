@@ -1023,7 +1023,7 @@ public partial class GameEditModel
             var list = await Task.Run(() =>
             {
                 var version = VersionPath.GetVersion(_obj.Version);
-                if (version != null)
+                if (version != null && version.AssetIndex != null)
                 {
                     var ass = AssetsPath.GetIndex(version.AssetIndex);
                     if (ass != null)
@@ -1055,5 +1055,10 @@ public partial class GameEditModel
         }
 
         _gameLoad = false;
+
+        if (!CustomJson)
+        {
+            await LoaderReload();
+        }
     }
 }
