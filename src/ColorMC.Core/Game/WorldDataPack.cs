@@ -10,7 +10,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 数据包处理
 /// </summary>
-public static class DataPack
+public static class WorldDataPack
 {
     /// <summary>
     /// 获取数据包列表
@@ -248,14 +248,7 @@ public static class DataPack
                 //删除存在的
                 foreach (var obj in list)
                 {
-                    if (Directory.Exists(obj.Path))
-                    {
-                        await PathHelper.MoveToTrash(obj.Path);
-                    }
-                    else
-                    {
-                        File.Delete(obj.Path);
-                    }
+                    await PathHelper.MoveToTrashAsync(obj.Path);
 
                     foreach (var item in ens.CopyList())
                     {

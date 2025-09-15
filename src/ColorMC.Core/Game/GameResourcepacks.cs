@@ -124,9 +124,9 @@ public static class GameResourcepacks
     /// 删除材质包
     /// </summary>
     /// <param name="obj">材质包</param>
-    public static void Delete(this ResourcepackObj obj)
+    public static Task Delete(this ResourcepackObj obj)
     {
-        PathHelper.Delete(obj.Local);
+        return PathHelper.MoveToTrashAsync(obj.Local);
     }
 
     /// <summary>

@@ -43,6 +43,7 @@ public static class ConfigUtils
         ConfigObj? obj = null;
         if (data == null)
         {
+            //无法打开有可能是第一次启动
             if (!quit)
             {
                 ColorMCCore.NewStart = true;
@@ -64,6 +65,7 @@ public static class ConfigUtils
             }
         }
 
+        //读取失败创建一个新的
         if (obj == null)
         {
             if (quit)

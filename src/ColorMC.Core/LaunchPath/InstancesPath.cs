@@ -623,7 +623,7 @@ public static class InstancesPath
             game.DirName = PathHelper.ReplaceFileName(game.Name);
 
             var dir = game.GetBasePath();
-            await PathHelper.MoveToTrash(dir);
+            await PathHelper.MoveToTrashAsync(dir);
 
             try
             {
@@ -1016,7 +1016,7 @@ public static class InstancesPath
     public static async Task<bool> Remove(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
-        return await PathHelper.MoveToTrash(obj.GetBasePath());
+        return await PathHelper.MoveToTrashAsync(obj.GetBasePath());
     }
 
     /// <summary>
