@@ -80,7 +80,7 @@ public static class LibrariesPath
     {
         return GetGameFile(obj.Version);
     }
-    
+
     /// <summary>
     /// 获取OptiFine路径
     /// </summary>

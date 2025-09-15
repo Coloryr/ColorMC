@@ -28,7 +28,7 @@ public struct ChunkPosStruct
 
     public ChunkPosStruct()
     {
-        
+
     }
 
     public ChunkPosStruct(int pos, byte count, int time, int index)

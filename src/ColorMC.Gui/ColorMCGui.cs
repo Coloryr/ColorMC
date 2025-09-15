@@ -168,7 +168,7 @@ public static class ColorMCGui
                 }
                 catch
                 {
-                    
+
                 }
                 return;
             }
@@ -408,108 +408,108 @@ public static class ColorMCGui
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
-            {
-                var config = GuiConfigUtils.Config.Render.Windows;
-                var opt = new Win32PlatformOptions();
+                {
+                    var config = GuiConfigUtils.Config.Render.Windows;
+                    var opt = new Win32PlatformOptions();
 
-                if (config.ShouldRenderOnUIThread is { } value)
-                {
-                    opt.ShouldRenderOnUIThread = value;
-                }
+                    if (config.ShouldRenderOnUIThread is { } value)
+                    {
+                        opt.ShouldRenderOnUIThread = value;
+                    }
 
-                if (config.OverlayPopups is { } value1)
-                {
-                    opt.OverlayPopups = value1;
-                }
+                    if (config.OverlayPopups is { } value1)
+                    {
+                        opt.OverlayPopups = value1;
+                    }
 
-                if (config.Wgl is true)
-                {
-                    opt.RenderingMode = [Win32RenderingMode.Wgl, Win32RenderingMode.Software];
-                }
-                else if (config.UseVulkan is true)
-                {
-                    opt.RenderingMode =
-                    [
-                        Win32RenderingMode.Vulkan,
+                    if (config.Wgl is true)
+                    {
+                        opt.RenderingMode = [Win32RenderingMode.Wgl, Win32RenderingMode.Software];
+                    }
+                    else if (config.UseVulkan is true)
+                    {
+                        opt.RenderingMode =
+                        [
+                            Win32RenderingMode.Vulkan,
                         Win32RenderingMode.Software
-                    ];
-                }
-                else if (config.UseSoftware is true)
-                {
-                    opt.RenderingMode = [Win32RenderingMode.Software];
-                }
-                else if (SystemInfo.IsArm)
-                {
-                    opt.RenderingMode =
-                    [
-                        Win32RenderingMode.Wgl,
+                        ];
+                    }
+                    else if (config.UseSoftware is true)
+                    {
+                        opt.RenderingMode = [Win32RenderingMode.Software];
+                    }
+                    else if (SystemInfo.IsArm)
+                    {
+                        opt.RenderingMode =
+                        [
+                            Win32RenderingMode.Wgl,
                         Win32RenderingMode.Software
-                    ];
-                }
+                        ];
+                    }
 
-                builder.With(opt);
-                break;
-            }
+                    builder.With(opt);
+                    break;
+                }
             case OsType.Linux:
-            {
-                var config = GuiConfigUtils.Config.Render.X11;
-                var opt = new X11PlatformOptions();
-                if (config.UseDBusMenu is { } value2)
                 {
-                    opt.UseDBusMenu = value2;
-                }
+                    var config = GuiConfigUtils.Config.Render.X11;
+                    var opt = new X11PlatformOptions();
+                    if (config.UseDBusMenu is { } value2)
+                    {
+                        opt.UseDBusMenu = value2;
+                    }
 
-                if (config.UseDBusFilePicker is { } value3)
-                {
-                    opt.UseDBusFilePicker = value3;
-                }
+                    if (config.UseDBusFilePicker is { } value3)
+                    {
+                        opt.UseDBusFilePicker = value3;
+                    }
 
-                if (config.OverlayPopups is { } value4)
-                {
-                    opt.OverlayPopups = value4;
-                }
+                    if (config.OverlayPopups is { } value4)
+                    {
+                        opt.OverlayPopups = value4;
+                    }
 
-                if (config.UseEgl is true)
-                {
-                    opt.RenderingMode =
-                    [
-                        X11RenderingMode.Egl,
+                    if (config.UseEgl is true)
+                    {
+                        opt.RenderingMode =
+                        [
+                            X11RenderingMode.Egl,
                         X11RenderingMode.Software
-                    ];
-                }
-                else if (config.UseVulkan is true)
-                {
-                    opt.RenderingMode =
-                    [
-                        X11RenderingMode.Vulkan,
+                        ];
+                    }
+                    else if (config.UseVulkan is true)
+                    {
+                        opt.RenderingMode =
+                        [
+                            X11RenderingMode.Vulkan,
                         X11RenderingMode.Software
-                    ];
-                }
-                else if (config.UseSoftware == true)
-                {
-                    opt.RenderingMode = [X11RenderingMode.Software];
-                }
-                else if (SystemInfo.IsArm)
-                {
-                    opt.RenderingMode =
-                    [
-                        X11RenderingMode.Egl,
+                        ];
+                    }
+                    else if (config.UseSoftware == true)
+                    {
+                        opt.RenderingMode = [X11RenderingMode.Software];
+                    }
+                    else if (SystemInfo.IsArm)
+                    {
+                        opt.RenderingMode =
+                        [
+                            X11RenderingMode.Egl,
                         X11RenderingMode.Software
-                    ];
-                }
+                        ];
+                    }
 
-                builder.With(opt);
-                break;
-            }
+                    builder.With(opt);
+                    break;
+                }
             case OsType.MacOS:
-            {
-                var opt = new MacOSPlatformOptions()
                 {
-                    DisableDefaultApplicationMenuItems = true,
-                };
-                builder.With(opt);
-                break;
-            }
+                    var opt = new MacOSPlatformOptions()
+                    {
+                        DisableDefaultApplicationMenuItems = true,
+                    };
+                    builder.With(opt);
+                    break;
+                }
         }
 
         return builder;

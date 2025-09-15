@@ -4,3 +4,9 @@ Type=Application
 Exec=ColorMC.Launcher
 Icon=colormc
 Categories=Game;
+MimeType=x-scheme-handler/colormc;
+Comment=A Minecraft Launcher
+
+[Desktop Action colormc]
+Name=Handle colormc:// URI
+Exec=ColorMC.Launcher %u

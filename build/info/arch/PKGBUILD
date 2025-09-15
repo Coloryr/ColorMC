@@ -7,16 +7,17 @@ packager="colormc"
 arch=("%arch%")
 license=("Apache 2.0")
 sha512sums=("SKIP" "SKIP" "SKIP" "SKIP"
-            "SKIP" "SKIP")
+            "SKIP" "SKIP" "SKIP")
 OPTIONS=(!strip)
 source=("libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so" "ColorMC.Launcher"
-        "ColorMC.desktop" "colormc.png")
+        "ColorMC.desktop" "colormc.png" "colormc.xml")
 install=colormc.install
 
 package() {
     mkdir -p ${pkgdir}/usr/share/ColorMC
     mkdir -p ${pkgdir}/usr/share/applications
     mkdir -p ${pkgdir}/usr/share/icons
+    mkdir -p ${pkgdir}/usr/share/mime/packages
 
     dir="${pkgdir}/usr/share/ColorMC"
 
@@ -30,4 +31,5 @@ package() {
 
     cp ${srcdir}/ColorMC.desktop ${pkgdir}/usr/share/applications/ColorMC.desktop
     cp ${srcdir}/colormc.png ${pkgdir}/usr/share/icons/colormc.png
+    cp ${srcdir}/colormc.xml ${pkgdir}/usr/share/mime/packages/colormc.xml
 }

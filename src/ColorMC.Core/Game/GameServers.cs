@@ -10,7 +10,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 服务器列表存储操作
 /// </summary>
-public static class Servers
+public static class GameServers
 {
     /// <summary>
     /// 获取服务器储存

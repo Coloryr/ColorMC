@@ -15,7 +15,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 游戏模组相关操作
 /// </summary>
-public static class Mods
+public static class GameMods
 {
     public static async Task<List<ModObj>> GetModFastAsync(this GameSettingObj obj)
     {
@@ -660,7 +660,7 @@ public static class Mods
             if (item6 != null)
             {
                 using var stream = item6.OpenEntryStream();
-                var con = Options.ReadOptions(stream);
+                var con = GameOptions.ReadOptions(stream);
                 if (item7 != null)
                 {
                     mod.CoreMod = true;

@@ -174,7 +174,7 @@ public static class ChunkMca
                 stream.ReadExactly(temp);
                 //区块大小
                 item.Size = temp[0] << 24 | temp[1] << 16 | temp[2] << 8 | temp[3];
-                buffer = new byte[item.Size - 1]; 
+                buffer = new byte[item.Size - 1];
                 stream.ReadExactly(buffer);
             }
             using var stream1 = new MemoryStream(buffer);

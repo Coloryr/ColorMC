@@ -1332,7 +1332,7 @@ public static class GameBinding
     /// <param name="file">截图</param>
     public static void DeleteScreenshot(ScreenshotObj file)
     {
-        Screenshots.Delete(file);
+        GameScreenshots.Delete(file);
     }
 
     /// <summary>
@@ -2418,7 +2418,7 @@ public static class GameBinding
         return await list[0].World.DeleteDataPackAsync(list);
     }
 
-    
+
 
     /// <summary>
     /// 生成实例信息

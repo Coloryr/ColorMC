@@ -360,14 +360,14 @@ public static class TestItem
             Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
-        list = Mods.GetModsAsync(games[1], false).Result;
+        list = GameMods.GetModsAsync(games[1], false).Result;
 
         foreach (var item in list)
         {
             Console.WriteLine($"{item.ModId} {item.Name} {item.Description}");
         }
 
-        list = Mods.GetModsAsync(games[2], false).Result;
+        list = GameMods.GetModsAsync(games[2], false).Result;
 
         foreach (var item in list)
         {
@@ -378,7 +378,7 @@ public static class TestItem
     public static async void Item13()
     {
         var games = InstancesPath.Games;
-        var list = await Servers.GetServerInfosAsync(games[0]);
+        var list = await GameServers.GetServerInfosAsync(games[0]);
 
         foreach (var item in list)
         {

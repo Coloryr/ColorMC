@@ -195,7 +195,7 @@ public static class Launch
         {
             ColorMCCore.OnGameLog(obj, b.Data);
         };
-        
+
         p.Exited += (_, _) =>
         {
             p.Dispose();

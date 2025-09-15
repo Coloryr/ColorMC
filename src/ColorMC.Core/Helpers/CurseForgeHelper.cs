@@ -16,6 +16,7 @@ public static class CurseForgeHelper
 {
     private static CurseForgeCategoriesObj? s_categories;
     private static List<string>? s_supportVersion;
+
     /// <summary>
     /// 修正下载地址
     /// </summary>
@@ -29,7 +30,7 @@ public static class CurseForgeHelper
     /// 创建下载项目
     /// </summary>
     /// <param name="data">CurseForge数据</param>
-    /// <param name="path">下载路径</param>
+    /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
     public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj)
     {
@@ -45,6 +46,13 @@ public static class CurseForgeHelper
         };
     }
 
+    /// <summary>
+    /// 创建下载项目
+    /// </summary>
+    /// <param name="data">CurseForge数据</param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="info">下载项目</param>
+    /// <returns></returns>
     public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj, ItemPathRes info)
     {
         data.FixDownloadUrl();

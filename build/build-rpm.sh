@@ -34,12 +34,14 @@ build_rpm()
     mkdir -p $bindir/colormc
     mkdir -p $bindir/applications
     mkdir -p $bindir/icons
+    mkdir -p $bindir/mime/packages
 
     info=./build/info/linux/usr/share
 
     cp ./build/info/rpm/build.spec $base_dir/SPECS
     cp $info/applications/ColorMC.desktop $bindir/applications/ColorMC.desktop
     cp $info/icons/colormc.png $bindir/icons/colormc.png
+    cp $info/mime/packages/colormc.xml $bindir/mime/packages/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/SPECS/build.spec
 
@@ -75,12 +77,14 @@ build_rpm_aot()
     mkdir -p $bindir/colormc
     mkdir -p $bindir/applications
     mkdir -p $bindir/icons
+    mkdir -p $bindir/mime/packages
 
     info=./build/info/linux/usr/share
 
     cp ./build/info/rpm/build.spec $base_dir/SPECS
     cp $info/applications/ColorMC.desktop $bindir/applications/ColorMC.desktop
     cp $info/icons/colormc.png $bindir/icons/colormc.png
+    cp $info/mime/packages/colormc.xml $bindir/mime/packages/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/SPECS/build.spec
 
@@ -116,12 +120,14 @@ build_rpm_min()
     mkdir -p $bindir/colormc
     mkdir -p $bindir/applications
     mkdir -p $bindir/icons
+    mkdir -p $bindir/mime/packages
 
     info=./build/info/linux/usr/share
 
     cp ./build/info/rpm/build.spec $base_dir/SPECS
     cp $info/applications/ColorMC.desktop $bindir/applications/ColorMC.desktop
     cp $info/icons/colormc.png $bindir/icons/colormc.png
+    cp $info/mime/packages/colormc.xml $bindir/mime/packages/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/SPECS/build.spec
 

@@ -1,7 +1,6 @@
 using System.Text.Json.Nodes;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives.Zip;
@@ -64,7 +63,7 @@ public static class DataPack
             }
 
             try
-            { 
+            {
                 using var stream = PathHelper.OpenRead(item);
                 if (stream == null)
                 {
@@ -202,21 +201,21 @@ public static class DataPack
                     dis.Add(nbten!);
                     break;
                 default:
-                {
-                    if (disable)
                     {
-                        //启用
-                        dis.Remove(nbtdi!);
-                        ens.Add(nbtdi!);
-                    }
-                    else
-                    {
-                        //启用
-                        ens.Add(new NbtString { Value = obj.Name });
-                    }
+                        if (disable)
+                        {
+                            //启用
+                            dis.Remove(nbtdi!);
+                            ens.Add(nbtdi!);
+                        }
+                        else
+                        {
+                            //启用
+                            ens.Add(new NbtString { Value = obj.Name });
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 

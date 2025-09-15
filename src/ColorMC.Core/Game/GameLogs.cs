@@ -1,9 +1,10 @@
-using System.IO.Compression;
 using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using SharpCompress.Compressors;
+using SharpCompress.Compressors.Deflate;
 
 namespace ColorMC.Core.Game;
 

@@ -1,6 +1,4 @@
-using System.IO.Compression;
 using System.Text;
-using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
@@ -8,6 +6,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -341,20 +340,24 @@ public static class GameHelper
     /// <param name="stream">文件流</param>
     public static void UnpackNative(string native, Stream stream)
     {
-        using var zFile = new ZipArchive(stream);
+        using var zFile = ZipArchive.Open(stream);
         foreach (var e in zFile.Entries)
         {
-            if (e.FullName.StartsWith("META-INF"))
+            if (!FuntionUtils.IsFile(e))
             {
                 continue;
             }
-            var file = Path.Combine(native, e.Name);
+            if (e.Key!.StartsWith("META-INF"))
+            {
+                continue;
+            }
+            var file = Path.Combine(native, e.Key);
             if (File.Exists(file))
             {
                 continue;
             }
 
-            using var stream2 = e.Open();
+            using var stream2 = e.OpenEntryStream();
             PathHelper.WriteBytes(file, stream2);
         }
     }
@@ -793,6 +796,10 @@ public static class GameHelper
             try
             {
                 using var stream = PathHelper.OpenRead(item3.FullName);
+                if (stream == null)
+                {
+                    return false;
+                }
                 var obj = JsonUtils.ReadObj(stream);
                 if (obj == null)
                 {
@@ -843,7 +850,7 @@ public static class GameHelper
         foreach (var item in dirs)
         {
             //官器格式
-            if (item.Name == "versions")
+            if (item.Name == Names.NameVersionDir)
             {
                 var dirs1 = PathHelper.GetDirs(item.FullName);
                 foreach (var item2 in dirs1)
@@ -859,7 +866,7 @@ public static class GameHelper
                 }
             }
             //MMC格式
-            if (item.Name == "instances")
+            if (item.Name == Names.NameInstanceDir)
             {
                 var dirs1 = PathHelper.GetDirs(item.FullName);
                 foreach (var item2 in dirs1)
@@ -1030,7 +1037,7 @@ public static class GameHelper
     public static async Task<SupportLoaderRes> GetSupportLoader(string version)
     {
         var res = new SupportLoaderRes()
-        { 
+        {
             Done = [],
             Fail = []
         };

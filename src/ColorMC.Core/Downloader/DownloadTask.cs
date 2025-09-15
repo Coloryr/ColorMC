@@ -144,7 +144,7 @@ internal class DownloadTask
                 return;
             }
         }
-        
+
         //任务结束
         _semaphore.Release();
         DownloadManager.TaskDone(_arg);

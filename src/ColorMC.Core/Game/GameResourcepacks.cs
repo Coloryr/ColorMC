@@ -1,17 +1,17 @@
-using System.IO.Compression;
 using System.Text.Json;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Game;
 
 /// <summary>
 /// 材质包相关操作
 /// </summary>
-public static class Resourcepacks
+public static class GameResourcepacks
 {
     /// <summary>
     /// 获取材质包列表
@@ -137,14 +137,14 @@ public static class Resourcepacks
     /// <returns>材质包</returns>
     private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream stream1, CancellationToken cancel)
     {
-        using var zFile = new ZipArchive(stream1);
+        using var zFile = ZipArchive.Open(stream1);
         var item1 = zFile.GetEntry(Names.NamePackMetaFile);
         if (item1 == null)
         {
             return null;
         }
 
-        using var stream = item1.Open();
+        using var stream = item1.OpenEntryStream();
         var obj1 = await JsonUtils.ReadAsObjAsync(stream);
         if (obj1 == null)
         {
@@ -171,7 +171,7 @@ public static class Resourcepacks
         item1 = zFile.GetEntry(Names.NamePackIconFile);
         if (item1 != null)
         {
-            using var stream2 = item1.Open();
+            using var stream2 = item1.OpenEntryStream();
             using var stream3 = new MemoryStream();
             await stream2.CopyToAsync(stream3, cancel);
             obj.Icon = stream3.ToArray();

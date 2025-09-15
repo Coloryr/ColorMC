@@ -292,7 +292,7 @@ public record CardSetting
 }
 
 public record LauncherSetting
-{ 
+{
     /// <summary>
     /// 系统快速启动
     /// </summary>
