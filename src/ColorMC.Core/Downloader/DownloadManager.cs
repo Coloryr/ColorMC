@@ -12,7 +12,7 @@ namespace ColorMC.Core.Downloader;
 public static class DownloadManager
 {
     private const int DefaultCopyBufferSize = 81920;
-    
+
     /// <summary>
     /// 下载状态
     /// </summary>

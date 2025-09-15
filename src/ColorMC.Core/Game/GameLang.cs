@@ -95,7 +95,7 @@ public static class GameLang
                 catch
                 {
 
-                } 
+                }
             });
         }
 

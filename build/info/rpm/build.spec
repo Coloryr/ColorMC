@@ -13,12 +13,15 @@ rm -f /usr/local/bin/ColorMC.Launcher
 %post
 chmod a+x /usr/share/colormc/ColorMC.Launcher
 chmod a+x /usr/share/applications/ColorMC.desktop
-sudo ln -s /usr/share/colormc/ColorMC.Launcher /usr/local/bin
+ln -s /usr/share/colormc/ColorMC.Launcher /usr/local/bin
+update-mime-database /usr/share/mime
+xdg-settings set default-url-scheme-handler colormc ColorMC.desktop
 
 %postup
-sudo update-desktop-database /usr/share/applications
+update-desktop-database /usr/share/applications
 
 %files
 /usr/share/applications/ColorMC.desktop
 /usr/share/colormc/
 /usr/share/icons/colormc.png
+/usr/share/mime/packages/colormc.xml

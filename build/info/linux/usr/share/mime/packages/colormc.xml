@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="x-scheme-handler/colormc">
+        <comment>ColorMC URI Scheme</comment>
+        <glob pattern="colormc:*"/>
+    </mime-type>
+</mime-info>

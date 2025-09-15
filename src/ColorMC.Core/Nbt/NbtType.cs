@@ -24,7 +24,7 @@ public enum NbtType
 /// Nbt压缩类型
 /// </summary>
 public enum ZipType : byte
-{ 
+{
     GZip = 1,
     Zlib = 2,
     None = 3,

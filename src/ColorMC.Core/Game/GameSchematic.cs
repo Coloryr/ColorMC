@@ -11,7 +11,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 结构文件操作
 /// </summary>
-public static class Schematic
+public static class GameSchematic
 {
     /// <summary>
     /// 读取结构文件

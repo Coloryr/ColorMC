@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.Hook;
 
@@ -110,11 +107,9 @@ public static class HookUtils
     /// <param name="obj"></param>
     public static void CreateLaunch(GameSettingObj obj)
     {
-#pragma warning disable CA1416 // 验证平台兼容性
         if (SystemInfo.Os == OsType.Windows)
         {
             Win32.CreateLaunch(obj);
         }
-#pragma warning restore CA1416 // 验证平台兼容性
     }
 }

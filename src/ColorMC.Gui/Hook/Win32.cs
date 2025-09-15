@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -9,7 +8,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using Microsoft.Win32;
-using SkiaSharp;
 
 namespace ColorMC.Gui.Hook;
 
@@ -432,7 +430,7 @@ internal unsafe class Win32
         }
         catch (Exception ex)
         {
-            
+
         }
     }
 

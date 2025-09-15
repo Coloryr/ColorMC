@@ -8,7 +8,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 屏幕截图相关操作
 /// </summary>
-public static class Screenshots
+public static class GameScreenshots
 {
     /// <summary>
     /// 获取屏幕截图

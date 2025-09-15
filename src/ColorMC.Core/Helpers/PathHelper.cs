@@ -11,6 +11,31 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class PathHelper
 {
+    private static string GetTrashFilesPath()
+    {
+        string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ??
+                          Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share");
+        string trashPath = Path.Combine(dataHome, "Trash", "files");
+        Directory.CreateDirectory(trashPath); // 确保目录存在
+        return trashPath;
+    }
+
+    private static string GetTrashInfoPath()
+    {
+        string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ??
+                          Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share");
+        string trashInfoPath = Path.Combine(dataHome, "Trash", "info");
+        Directory.CreateDirectory(trashInfoPath); // 确保目录存在
+        return trashInfoPath;
+    }
+
+    private static string GenerateTrashInfoContent(string originalPath, DateTime deletionDate)
+    {
+        return $"[Trash Info]\n" +
+               $"Path={originalPath}\n" +
+               $"DeletionDate={deletionDate:yyyy-MM-ddTHH:mm:ss}\n";
+    }
+
     /// <summary>
     /// 将文件夹挪到回收站
     /// </summary>
@@ -27,28 +52,36 @@ public static class PathHelper
                 }
                 else if (SystemInfo.Os == OsType.Linux)
                 {
-                    // 获取用户的主目录
-                    string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                    // 定义垃圾桶路径
-                    string trashPath = Path.Combine(home, ".local", "share", "Trash", "files");
+                    string trashFilesPath = GetTrashFilesPath();
+                    string trashInfoPath = GetTrashInfoPath();
 
-                    if (!Directory.Exists(trashPath))
-                    {
-                        Directory.CreateDirectory(trashPath);
-                    }
-
-                    // 生成唯一的文件名以避免冲突
                     string fileName = Path.GetFileName(dir);
-                    string destPath = Path.Combine(trashPath, fileName);
-                    int count = 1;
+                    string destPath = Path.Combine(trashFilesPath, fileName);
+                    string trashInfoFile = Path.Combine(trashInfoPath, fileName + ".trashinfo");
+
+                    // 处理文件名冲突
+                    int counter = 1;
                     while (File.Exists(destPath) || Directory.Exists(destPath))
                     {
-                        destPath = Path.Combine(trashPath, $"{fileName}_{count}");
-                        count++;
+                        string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                        string ext = Path.GetExtension(fileName);
+                        destPath = Path.Combine(trashFilesPath, $"{nameWithoutExt}_{counter}{ext}");
+                        trashInfoFile = Path.Combine(trashInfoPath, $"{nameWithoutExt}_{counter}{ext}.trashinfo");
+                        counter++;
                     }
 
-                    // 移动文件或文件夹到垃圾桶
-                    Directory.Move(dir, destPath);
+                    // 创建 .trashinfo 文件
+                    string trashInfoContent = GenerateTrashInfoContent(dir, DateTime.Now);
+                    File.WriteAllText(trashInfoFile, trashInfoContent);
+
+                    if (File.Exists(dir))
+                    {
+                        File.Move(dir, destPath);
+                    }
+                    else if (Directory.Exists(dir))
+                    {
+                        Directory.Move(dir, destPath);
+                    }
 
                     return true;
                 }

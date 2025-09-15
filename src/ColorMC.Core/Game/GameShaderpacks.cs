@@ -10,7 +10,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 光影包相关操作
 /// </summary>
-public static class Shaderpacks
+public static class GameShaderpacks
 {
     /// <summary>
     /// 获取游戏实例光影包

@@ -8,8 +8,6 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
-using ColorMC.Gui.Hook;
 
 namespace ColorMC.Gui.Utils;
 

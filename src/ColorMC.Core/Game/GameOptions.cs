@@ -8,7 +8,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 配置文件相关操作
 /// </summary>
-public static class Options
+public static class GameOptions
 {
     /// <summary>
     /// 获取设置选项

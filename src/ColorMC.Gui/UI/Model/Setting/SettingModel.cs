@@ -1,5 +1,7 @@
 ﻿using System.Timers;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -21,6 +23,8 @@ public partial class SettingModel : MenuModel
     /// </summary>
     public bool IsInputEnable { get; private set; }
 
+    public bool IsWindows { get; init; }
+
     /// <summary>
     /// 
     /// </summary>
@@ -34,6 +38,7 @@ public partial class SettingModel : MenuModel
 
     public SettingModel(BaseModel model) : base(model)
     {
+        IsWindows = SystemInfo.Os == OsType.Windows;
 #if Phone
         Phone = true;
         _enableWindowMode = false;

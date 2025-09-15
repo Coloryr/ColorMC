@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using System.IO.Compression;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -8,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -381,7 +381,7 @@ public static class GameDownloadHelper
             MaxDegreeOfParallelism = 1
         }, (item1) =>
 #else
-        Parallel.ForEach(obj.Libraries, (item1) =>
+        Parallel.ForEach(obj.Libraries!, (item1) =>
 #endif
         {
             bool download = CheckHelpers.CheckAllow(item1.Rules);
@@ -676,7 +676,7 @@ public static class GameDownloadHelper
         {
             return null;
         }
-        using var zFile = new ZipArchive(stream1);
+        using var zFile = ZipArchive.Open(stream1);
         ZipArchiveEntry? versionfile = null;
         ZipArchiveEntry? installfile = null;
         if (zFile.GetEntry(Names.NameVersionFile) is { } item)
@@ -695,14 +695,14 @@ public static class GameDownloadHelper
             ForgeLaunchObj? info;
             try
             {
-                var stream = versionfile.Open();
+                var stream = versionfile.OpenEntryStream();
                 info = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
                 if (info == null)
                 {
                     return null;
                 }
                 stream.Dispose();
-                stream = versionfile.Open();
+                stream = versionfile.OpenEntryStream();
                 VersionPath.AddGame(info, stream, mc, version, neo);
                 stream.Dispose();
             }
@@ -717,14 +717,14 @@ public static class GameDownloadHelper
             ForgeInstallObj? info1;
             try
             {
-                var stream = installfile.Open();
+                var stream = installfile.OpenEntryStream();
                 info1 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
                 if (info1 == null)
                 {
                     return null;
                 }
                 stream.Dispose();
-                stream = installfile.Open();
+                stream = installfile.OpenEntryStream();
                 VersionPath.AddGame(info1, stream, mc, version, neo);
                 stream.Dispose();
             }
@@ -748,7 +748,7 @@ public static class GameDownloadHelper
         }
         try
         {
-            using var stream = installfile.Open();
+            using var stream = installfile.OpenEntryStream();
             var obj = JsonUtils.ToObj(stream, JsonType.ForgeInstallOldObj);
             if (obj == null)
             {
@@ -1035,19 +1035,19 @@ public static class GameDownloadHelper
         {
             return new();
         }
-        using var zFile = new ZipArchive(stream1);
+        using var zFile = ZipArchive.Open(stream1);
 
         ForgeLaunchObj? obj1 = null;
         ForgeInstallObj? obj2 = null;
 
         if (zFile.GetEntry(Names.NameVersionFile) is { } item)
         {
-            using var stream = item.Open();
+            using var stream = item.OpenEntryStream();
             obj1 = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
         }
         if (zFile.GetEntry(Names.NameForgeInstallFile) is { } item1)
         {
-            using var stream = item1.Open();
+            using var stream = item1.OpenEntryStream();
             obj2 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
         }
 
@@ -1111,7 +1111,7 @@ public static class GameDownloadHelper
                         }
 
                         {
-                            using var stream3 = item1.Open();
+                            using var stream3 = item1.OpenEntryStream();
                             await PathHelper.WriteBytesAsync(local, stream3);
                         }
                     }
@@ -1172,7 +1172,7 @@ public static class GameDownloadHelper
                         }
 
                         {
-                            using var stream3 = item1.Open();
+                            using var stream3 = item1.OpenEntryStream();
                             await PathHelper.WriteBytesAsync(local, stream3);
                         }
                     }

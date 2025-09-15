@@ -2,6 +2,7 @@ post_remove() {
     echo "Removing colormc desktop icon..."
     rm -f /usr/share/icons/colormc.png
     rm -f /usr/share/applications/ColorMC.desktop
+    rm -f /usr/share/mime/packages/colormc.xml
 }
 
 post_install() {
@@ -9,6 +10,8 @@ post_install() {
     chmod a+x /usr/share/ColorMC/ColorMC.Launcher
     rm /usr/bin/ColorMC.Launcher
     ln -s /usr/share/ColorMC/ColorMC.Launcher /usr/bin/
+    update-mime-database /usr/share/mime
+    xdg-settings set default-url-scheme-handler colormc ColorMC.desktop
 }
 
 post_upgrade() {

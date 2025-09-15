@@ -102,7 +102,7 @@ public static class Names
     public const string NameMcaExt = ".mca";
 
     public const string NameDefaultGroup = " ";
-    
+
     public const string NameArgJavaLocal = "%JAVA_LOCAL%";
     public const string NameArgJavaArg = "%JAVA_ARG%";
     public const string NameArgLauncherDir = "%LAUNCH_DIR%";
@@ -110,7 +110,7 @@ public static class Names
     public const string NameArgGameUUID = "%GAME_UUID%";
     public const string NameArgGameDir = "%GAME_DIR%";
     public const string NameArgGameBaseDir = "%GAME_BASE_DIR%";
-    
+
     public const string NameMcModInfoFile = "mcmod.info";
     public const string NameMcModTomlFile = "META-INF/mods.toml";
     public const string NameNeoTomlFile = "META-INF/neoforge.mods.toml";

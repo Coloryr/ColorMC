@@ -38,6 +38,7 @@ build_arch()
     cp ./build/info/arch/colormc.install $base_dir/colormc.install
     cp $info/applications/ColorMC.desktop $base_dir/ColorMC.desktop
     cp $info/icons/colormc.png $base_dir/colormc.png
+    cp $info/mime/packages/colormc.xml $base_dir/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/PKGBUILD
     sed -i "s/%arch%/$2/g" $base_dir/PKGBUILD
@@ -77,6 +78,7 @@ build_arch_aot()
     cp ./build/info/arch/colormc.install $base_dir/colormc.install
     cp $info/applications/ColorMC.desktop $base_dir/ColorMC.desktop
     cp $info/icons/colormc.png $base_dir/colormc.png
+    cp $info/mime/packages/colormc.xml $base_dir/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/PKGBUILD
     sed -i "s/%arch%/$2/g" $base_dir/PKGBUILD
@@ -116,6 +118,7 @@ build_arch_min()
     cp ./build/info/arch/colormc.install $base_dir/colormc.install
     cp $info/applications/ColorMC.desktop $base_dir/ColorMC.desktop
     cp $info/icons/colormc.png $base_dir/colormc.png
+    cp $info/mime/packages/colormc.xml $base_dir/colormc.xml
 
     sed -i "s/%version%/$version/g" $base_dir/PKGBUILD
     sed -i "s/%arch%/$2/g" $base_dir/PKGBUILD

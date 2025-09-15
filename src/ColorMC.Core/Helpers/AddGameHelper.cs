@@ -41,7 +41,7 @@ public static class AddGameHelper
                 if (mmc != null)
                 {
                     using var stream1 = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCCfgFile));
-                    var mmc1 = Options.ReadOptions(stream1, "=");
+                    var mmc1 = GameOptions.ReadOptions(stream1, "=");
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
                     game.Icon = res.Icon + ".png";
@@ -227,7 +227,7 @@ public static class AddGameHelper
                     else if (mmc1 == null && e.Key!.EndsWith(Names.NameMMCCfgFile))
                     {
                         using var stream1 = e.OpenEntryStream();
-                        mmc1 = Options.ReadOptions(stream1, "=");
+                        mmc1 = GameOptions.ReadOptions(stream1, "=");
                     }
 
                     if (mmc != null && mmc1 != null)

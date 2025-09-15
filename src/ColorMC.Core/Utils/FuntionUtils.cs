@@ -193,6 +193,6 @@ public static class FuntionUtils
     /// <returns></returns>
     public static ZipArchiveEntry? GetEntry(this ZipArchive archive, string name)
     {
-        return archive.Entries.FirstOrDefault(item=>item.Key == name);
+        return archive.Entries.FirstOrDefault(item => item.Key == name);
     }
 }

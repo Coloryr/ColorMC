@@ -1,18 +1,18 @@
 using System.Collections.Concurrent;
-using System.IO.Compression;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Game;
 
 /// <summary>
 /// 世界相关操作
 /// </summary>
-public static class Worlds
+public static class GameWorlds
 {
     /// <summary>
     /// 获取世界列表
@@ -66,18 +66,22 @@ public static class Worlds
         var info = new FileInfo(name);
         dir = Path.Combine(dir, info.Name[..^info.Extension.Length]);
         Directory.CreateDirectory(dir);
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             try
             {
-                using var zFile = new ZipArchive(file);
+                using var zFile = ZipArchive.Open(file);
                 var dir1 = "";
                 var find = false;
                 foreach (var e in zFile.Entries)
                 {
-                    if (e.Name == Names.NameLevelFile)
+                    if (!FuntionUtils.IsFile(e))
                     {
-                        dir1 = e.FullName.Replace(Names.NameLevelFile, "");
+                        continue;
+                    }
+                    if (e.Key!.EndsWith(Names.NameLevelFile))
+                    {
+                        dir1 = e.Key.Replace(Names.NameLevelFile, "");
                         find = true;
                         break;
                     }
@@ -90,8 +94,13 @@ public static class Worlds
 
                 foreach (var e in zFile.Entries)
                 {
-                    var file1 = Path.Combine(dir, e.FullName[dir1.Length..]);
-                    e.ExtractToFile(file1, true);
+                    if (!FuntionUtils.IsFile(e))
+                    {
+                        continue;
+                    }
+                    var file1 = Path.Combine(dir, e.Key![dir1.Length..]);
+                    using var stream = e.OpenEntryStream();
+                    await PathHelper.WriteBytesAsync(file1, stream);
                 }
 
                 return true;
