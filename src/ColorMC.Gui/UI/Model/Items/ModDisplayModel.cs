@@ -91,7 +91,7 @@ public partial class ModDisplayModel : ObservableObject
         Obj = obj;
         Obj1 = obj1;
 
-        Name = obj.ReadFail ? App.Lang("GameBinding.Info15") : obj.Name;
+        Name = obj.ReadFail ? App.Lang("GameBinding.Info15") : obj.Name ?? "";
         Enable = !obj.Disable;
         if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
         {

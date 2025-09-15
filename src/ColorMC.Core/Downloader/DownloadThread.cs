@@ -12,6 +12,48 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 internal class DownloadThread
 {
+    private const int DefaultCopyBufferSize = 81920;
+
+    /// <summary>
+    /// 计算buffer大小
+    /// </summary>
+    /// <param name="stream">流</param>
+    /// <returns>大小</returns>
+    private static int GetCopyBufferSize(Stream stream)
+    {
+        int bufferSize = DefaultCopyBufferSize;
+
+        if (stream.CanSeek)
+        {
+            long length = stream.Length;
+            long position = stream.Position;
+            if (length <= position)
+            {
+                bufferSize = 1;
+            }
+            else
+            {
+                long remaining = length - position;
+                if (remaining > 0)
+                {
+                    bufferSize = (int)Math.Min(bufferSize, remaining);
+                }
+            }
+        }
+
+        return bufferSize;
+    }
+
+    /// <summary>
+    /// 下载错误
+    /// </summary>
+    /// <param name="item">下载项目</param>
+    /// <param name="e">错误内容</param>
+    private static void Error(FileItemObj item, Exception e)
+    {
+        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
+    }
+
     /// <summary>
     /// 线程
     /// </summary>
@@ -225,7 +267,7 @@ internal class DownloadThread
                     item.State = DownloadItemState.Error;
                     item.ErrorTime++;
                     item.Update(_index);
-                    DownloadManager.Error(item, e);
+                    Error(item, e);
                     continue;
                 }
             }
@@ -284,7 +326,7 @@ internal class DownloadThread
                     {
                         using var stream1 = data.Content.ReadAsStream();
                         //获取buffer
-                        buffer = ArrayPool<byte>.Shared.Rent(DownloadManager.GetCopyBufferSize(stream1));
+                        buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
                         using var stream = PathHelper.OpenWrite(file, true);
 
                         int bytesRead;
@@ -322,7 +364,7 @@ internal class DownloadThread
                                 {
                                     item.State = DownloadItemState.Error;
                                     item.Update(_index);
-                                    DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                                    Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                     return true;
                                 }
                             }
@@ -333,7 +375,7 @@ internal class DownloadThread
                                 {
                                     item.State = DownloadItemState.Error;
                                     item.Update(_index);
-                                    DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                                    Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                     return true;
                                 }
                             }
@@ -344,7 +386,7 @@ internal class DownloadThread
                                 {
                                     item.State = DownloadItemState.Error;
                                     item.Update(_index);
-                                    DownloadManager.Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                                    Error(item, new Exception(LanguageHelper.Get("Core.Http.Error10")));
                                     return true;
                                 }
                             }
@@ -367,7 +409,7 @@ internal class DownloadThread
                     item.ErrorTime++;
                     item.Update(_index);
                     time++;
-                    DownloadManager.Error(item, e);
+                    Error(item, e);
 
                     if (time == 5)
                     {

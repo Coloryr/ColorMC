@@ -40,7 +40,7 @@ public static class PathHelper
     /// 将文件夹挪到回收站
     /// </summary>
     /// <param name="dir"></param>
-    public static Task<bool> MoveToTrash(string dir)
+    public static Task<bool> MoveToTrashAsync(string dir)
     {
         return Task.Run(() =>
         {

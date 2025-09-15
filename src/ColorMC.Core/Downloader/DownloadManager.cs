@@ -11,8 +11,6 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 public static class DownloadManager
 {
-    private const int DefaultCopyBufferSize = 81920;
-
     /// <summary>
     /// 下载状态
     /// </summary>
@@ -120,24 +118,15 @@ public static class DownloadManager
     }
 
     /// <summary>
-    /// 下载错误
-    /// </summary>
-    /// <param name="item">下载项目</param>
-    /// <param name="e">错误内容</param>
-    internal static void Error(FileItemObj item, Exception e)
-    {
-        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
-    }
-
-    /// <summary>
-    /// 下载任务完成
+    /// 进行下一个任务
     /// </summary>
     /// <param name="arg">下载参数</param>
-    internal static void TaskDone(DownloadArg arg)
+    internal static void TaskRunNext(DownloadArg arg)
     {
         s_nowTask = null;
         Task.Run(() =>
         {
+            //若没有下一个任务则全部完成
             if (s_tasks.TryDequeue(out s_nowTask))
             {
                 arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
@@ -149,36 +138,6 @@ public static class DownloadManager
                 arg.Update?.Invoke(s_threads.Count, State, 0);
             }
         });
-    }
-
-    /// <summary>
-    /// 计算buffer大小
-    /// </summary>
-    /// <param name="stream">流</param>
-    /// <returns>大小</returns>
-    internal static int GetCopyBufferSize(Stream stream)
-    {
-        int bufferSize = DefaultCopyBufferSize;
-
-        if (stream.CanSeek)
-        {
-            long length = stream.Length;
-            long position = stream.Position;
-            if (length <= position)
-            {
-                bufferSize = 1;
-            }
-            else
-            {
-                long remaining = length - position;
-                if (remaining > 0)
-                {
-                    bufferSize = (int)Math.Min(bufferSize, remaining);
-                }
-            }
-        }
-
-        return bufferSize;
     }
 
     /// <summary>
@@ -196,7 +155,7 @@ public static class DownloadManager
         {
             State = true;
             arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
-            TaskDone(arg);
+            TaskRunNext(arg);
         }
         else
         {

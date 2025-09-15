@@ -5,8 +5,8 @@
 /// </summary>
 public record ModObj
 {
-    public string? ModId { get; set; }
-    public string? Name { get; set; }
+    public string ModId { get; set; }
+    public string Name { get; set; }
     public string? Description { get; set; }
     public string? Version { get; set; }
     public HashSet<string> Author { get; set; }

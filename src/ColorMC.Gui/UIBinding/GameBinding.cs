@@ -1301,9 +1301,9 @@ public static class GameBinding
     /// 删除资源包
     /// </summary>
     /// <param name="obj">资源包</param>
-    public static void DeleteResourcepack(ResourcepackObj obj)
+    public static Task DeleteResourcepack(ResourcepackObj obj)
     {
-        obj.Delete();
+        return obj.Delete();
     }
 
     /// <summary>

@@ -413,7 +413,7 @@ public static class BaseBinding
     public static void DeleteTemp()
     {
         var temp = DownloadManager.DownloadDir;
-        PathHelper.MoveToTrash(temp);
+        PathHelper.MoveToTrashAsync(temp);
         Directory.CreateDirectory(temp);
     }
 

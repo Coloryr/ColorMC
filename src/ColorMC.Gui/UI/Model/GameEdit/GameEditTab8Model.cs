@@ -140,7 +140,7 @@ public partial class GameEditModel
             return;
         }
 
-        GameBinding.DeleteResourcepack(obj);
+        await GameBinding.DeleteResourcepack(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadResource();
     }
