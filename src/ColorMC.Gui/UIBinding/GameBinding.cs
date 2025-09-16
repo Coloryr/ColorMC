@@ -1839,12 +1839,14 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="name">文件名</param>
     /// <returns></returns>
-    public static async Task<string?> ReadLog(GameSettingObj obj, string name)
+    public static async Task<GameRuntimeLog?> ReadLog(GameSettingObj obj, string name)
     {
         if (GameManager.IsGameRun(obj))
         {
             if (name.EndsWith("latest.log") || name.EndsWith("debug.log"))
-                return null;
+            { 
+            return null;
+            }
         }
 
         return await Task.Run(() => obj.ReadLog(name));
@@ -2326,7 +2328,7 @@ public static class GameBinding
                 {
                     model.Progress(text);
                 }
-            });
+            }, CancellationToken.None);
             if (!res1)
             {
                 model.ProgressClose();

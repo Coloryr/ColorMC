@@ -200,7 +200,7 @@ public partial record GameSettingObj
     /// <summary>
     /// 日志编码
     /// </summary>
-    public int Encoding { get; set; }
+    public LogEncoding Encoding { get; set; }
     /// <summary>
     /// 自动打开日志窗口
     /// </summary>

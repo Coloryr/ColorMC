@@ -209,7 +209,7 @@ public partial class GameEditModel
             return;
         }
 
-        _obj.Encoding = value;
+        _obj.Encoding = (LogEncoding)value;
         _obj.Save();
     }
     /// <summary>
@@ -996,7 +996,7 @@ public partial class GameEditModel
         GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
 
         LogAutoShow = _obj.LogAutoShow;
-        Encoding = _obj.Encoding;
+        Encoding = (int)_obj.Encoding;
         Group = _obj.GroupName;
         FID = _obj.FID;
         PID = _obj.PID;

@@ -448,3 +448,9 @@ public enum LogLevel
     All = 0b00011111,
     Fatal = 0b00100000,
 }
+
+public enum LogEncoding
+{ 
+    UTF8 = 0,
+    GBK
+}

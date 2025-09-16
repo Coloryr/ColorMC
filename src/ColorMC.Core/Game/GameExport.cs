@@ -13,12 +13,19 @@ namespace ColorMC.Core.Game;
 
 public static class GameExport
 {
+    /// <summary>
+    /// 到处游戏实例
+    /// </summary>
+    /// <param name="arg">导出参数</param>
+    /// <returns></returns>
     public static async Task<bool> Export(GameExportArg arg)
     {
+        using var stream = PathHelper.OpenWrite(arg.File, true);
         switch (arg.Type)
         {
             case PackType.ColorMC:
                 {
+                    //ColorMC整合包只需要整个文件夹打包
                     var list = arg.UnSelectItems;
                     list.Add(arg.Obj.GetModInfoJsonFile());
 
@@ -31,7 +38,6 @@ public static class GameExport
                         }
                     }
 
-                    using var stream = PathHelper.OpenWrite(arg.File, false);
                     using var zip = await new ZipUtils().ZipFileAsync(arg.Obj.GetBasePath(), stream, list);
                     var data = JsonUtils.ToString(obj1, JsonType.DictionaryStringModInfoObj);
                     using var stream1 = zip.WriteToStream(Names.NameModInfoFile, new ZipWriterEntryOptions());
@@ -41,6 +47,7 @@ public static class GameExport
                 }
             case PackType.CurseForge:
                 {
+                    //CF整合包需要创建信息文件
                     var obj = new CurseForgePackObj()
                     {
                         Name = arg.Name,
@@ -66,6 +73,7 @@ public static class GameExport
                         });
                     }
 
+                    //添加可以在线下载的Mod
                     foreach (var item in arg.Mods)
                     {
                         if (item.Export)
@@ -79,6 +87,7 @@ public static class GameExport
                         }
                     }
 
+                    //添加Mod网页链接信息
                     var data = await CurseForgeAPI.GetModsInfo(obj.Files);
                     StringBuilder html = new();
                     html.AppendLine("<ul>");
@@ -91,7 +100,6 @@ public static class GameExport
                     }
                     html.AppendLine("</ul>");
 
-                    using var stream = PathHelper.OpenWrite(arg.File, true);
                     using var s = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
 
                     //manifest.json
@@ -105,7 +113,7 @@ public static class GameExport
                         using var stream1 = s.WriteToStream(Names.NameModListFile, new ZipWriterEntryOptions());
                         await stream1.WriteAsync(Encoding.UTF8.GetBytes(html.ToString()));
                     }
-
+                    //打包剩余文件
                     {
                         var path = arg.Obj.GetGamePath();
 
@@ -131,6 +139,7 @@ public static class GameExport
                 }
             case PackType.Modrinth:
                 {
+                    //mo整合包信息
                     var obj = new ModrinthPackObj()
                     {
                         FormatVersion = 1,
@@ -158,6 +167,7 @@ public static class GameExport
                             break;
                     }
 
+                    //在线模组下载
                     foreach (var item in arg.Mods)
                     {
                         if (item.Source is not { } source)
@@ -165,13 +175,13 @@ public static class GameExport
                             continue;
                         }
 
-                        ModrinthPackObj.ModrinthPackFileObj fileObj = new ModrinthPackObj.ModrinthPackFileObj()
+                        var fileObj = new ModrinthPackObj.ModrinthPackFileObj()
                         {
                             Path = $"{item.Obj1!.Path}/{item.Obj1!.File}",
                             Hashes = new ModrinthPackObj.ModrinthPackFileObj.HashObj(),
                             Downloads = [item.Url],
                             FileSize = item.FileSize,
-                            ColorMc = new ColorMcSaveObj
+                            ColorMc = new ColorMCSaveObj
                             {
                                 Type = source,
                                 FID = item.FID!,
@@ -183,6 +193,7 @@ public static class GameExport
                         obj.Files.Add(fileObj);
                     }
 
+                    //在线文件下载
                     foreach (var item in arg.OtherFiles)
                     {
                         obj.Files.Add(new ModrinthPackObj.ModrinthPackFileObj
@@ -198,7 +209,6 @@ public static class GameExport
                         });
                     }
 
-                    using var stream = PathHelper.OpenWrite(arg.File, true);
                     using var s = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
 
                     //manifest.json
@@ -206,7 +216,7 @@ public static class GameExport
                         using var stream1 = s.WriteToStream(Names.NameModrinthFile, new ZipWriterEntryOptions());
                         await stream1.WriteAsync(Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.ModrinthPackObj)));
                     }
-
+                    //剩余文件
                     {
                         var path = arg.Obj.GetGamePath();
 

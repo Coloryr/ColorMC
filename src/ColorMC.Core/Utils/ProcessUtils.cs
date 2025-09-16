@@ -57,7 +57,6 @@ public static class ProcessUtils
     /// </summary>
     /// <param name="process">进程</param>
     /// <param name="admin">是否是管理员启动</param>
-    /// <returns>是否启动</returns>
     public static bool Launch(Process process, bool admin)
     {
         if (admin && !IsRunAsAdmin())

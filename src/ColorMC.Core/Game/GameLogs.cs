@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -28,12 +29,10 @@ public static class GameLogs
         }
 
         path = obj.GetGameCrashReports();
-        if (!Directory.Exists(path))
+        if (Directory.Exists(path))
         {
-            return list;
+            list.AddRange(Directory.GetFiles(path).Select(item => item.Replace(path, Names.NameGameCrashLogDir)));
         }
-
-        list.AddRange(Directory.GetFiles(path).Select(item => item.Replace(path, Names.NameGameCrashLogDir)));
 
         return list;
     }
@@ -72,40 +71,69 @@ public static class GameLogs
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件名</param>
     /// <returns>日志内容</returns>
-    public static string? ReadLog(this GameSettingObj obj, string file)
+    public static GameRuntimeLog? ReadLog(this GameSettingObj obj, string file)
     {
         try
         {
-            var path = Path.Combine(obj.GetGamePath(), file);
+            var path = Path.GetFullPath(obj.GetGamePath() + "/" + file);
             if (!File.Exists(path))
             {
                 return null;
             }
 
+            StreamReader reader;
+            using var stream = PathHelper.OpenRead(path);
+            if (stream == null)
+            {
+                return null;
+            }
+
+            Encoding? encoding = null;
+            if (obj.Encoding == LogEncoding.GBK)
+            {
+                try
+                {
+                    encoding = Encoding.GetEncoding("gbk");
+                }
+                catch
+                {
+
+                }
+            }
+
+            encoding ??= Encoding.UTF8;
+
             if (path.EndsWith(Names.NameLogExt) || path.EndsWith(Names.NameTxtExt))
             {
-                return PathHelper.ReadText(path);
+                reader = new StreamReader(stream, encoding);
             }
             else if (path.EndsWith(Names.NameLogGzExt))
             {
                 //解压日志
-                using var compressedFileStream = PathHelper.OpenRead(path)!;
-                using var decompressor = new GZipStream(compressedFileStream, CompressionMode.Decompress);
-                using var output = new MemoryStream();
-                decompressor.CopyTo(output);
-                if (obj.Encoding == 1)
-                {
-                    try
-                    {
-                        return Encoding.GetEncoding("gbk").GetString(output.ToArray());
-                    }
-                    catch
-                    {
-
-                    }
-                }
-                return Encoding.UTF8.GetString(output.ToArray());
+                var decompressor = new GZipStream(stream, CompressionMode.Decompress);
+                reader = new StreamReader(decompressor, encoding);
             }
+            else
+            {
+                return null;
+            }
+
+            var log = new GameRuntimeLog
+            {
+                File = file
+            };
+            for (; ; )
+            {
+                var temp = reader.ReadLine();
+                if (temp == null || reader.EndOfStream)
+                {
+                    break;
+                }
+
+                log.AddLog(temp);
+            }
+
+            return log;
         }
         catch (Exception e)
         {

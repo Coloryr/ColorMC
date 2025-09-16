@@ -49,7 +49,7 @@ public static class ChunkMca
             item.Save(stream1);
             var data1 = stream1.ToArray();
             int len = data1.Length + 5;
-            int pos = ChunkUtils.ChunkToHeadPos(new PointPos(item.X, item.Z)); //区块坐标
+            int pos = ChunkUtils.ChunkToHeadPos(new PointStruct(item.X, item.Z)); //区块坐标
             var chunk = data.Pos[pos];
             chunk.Time = time;
             chunk.Pos = now / 4096;

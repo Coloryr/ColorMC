@@ -22,7 +22,7 @@ public record ModrinthPackObj
         [JsonPropertyName("fileSize")]
         public long FileSize { get; set; }
         [JsonPropertyName("_colormc")]
-        public ColorMcSaveObj? ColorMc { get; set; }
+        public ColorMCSaveObj? ColorMc { get; set; }
     }
     [JsonPropertyName("formatVersion")]
     public int FormatVersion { get; set; }

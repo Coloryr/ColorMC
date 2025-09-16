@@ -1,16 +1,16 @@
 ﻿namespace ColorMC.Core.Objs;
 
-public struct PointPos
+public struct PointStruct
 {
     public int X;
     public int Y;
 
-    public PointPos()
+    public PointStruct()
     {
 
     }
 
-    public PointPos(int x, int y)
+    public PointStruct(int x, int y)
     {
         X = x;
         Y = y;

@@ -12,9 +12,9 @@ public static class ChunkUtils
     /// </summary>
     /// <param name="pos">坐标 X Z</param>
     /// <returns>>区块 X Z</returns>
-    public static PointPos PosToChunk(PointPos pos)
+    public static PointStruct PosToChunk(PointStruct pos)
     {
-        return new PointPos(pos.X >> 4, pos.Y >> 4);
+        return new PointStruct(pos.X >> 4, pos.Y >> 4);
     }
 
     /// <summary>
@@ -22,15 +22,15 @@ public static class ChunkUtils
     /// </summary>
     /// <param name="pos">区块 X Z</param>
     /// <returns>MCA X Z</returns>
-    public static PointPos ChunkToRegion(PointPos pos)
+    public static PointStruct ChunkToRegion(PointStruct pos)
     {
-        return new PointPos(pos.X >> 5, pos.Y >> 5);
+        return new PointStruct(pos.X >> 5, pos.Y >> 5);
     }
 
     /// <summary>
     /// 区块坐标转文件头位置
     /// </summary>
-    public static int ChunkToHeadPos(PointPos pos)
+    public static int ChunkToHeadPos(PointStruct pos)
     {
         return (pos.X & 31) + (pos.Y & 31) * 32;
     }
