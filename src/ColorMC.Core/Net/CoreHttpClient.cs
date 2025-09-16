@@ -199,9 +199,9 @@ public static class CoreHttpClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<MessageRes> GetStringAsync(string url)
+    public static async Task<MessageRes> GetStringAsync(string url, CancellationToken token = default)
     {
-        using var data = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        using var data = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
         if (data.StatusCode != HttpStatusCode.OK)
         {
             return new();

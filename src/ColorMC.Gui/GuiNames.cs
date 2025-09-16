@@ -1,4 +1,6 @@
-﻿namespace ColorMC.Gui;
+﻿using System;
+
+namespace ColorMC.Gui;
 
 public static class GuiNames
 {
@@ -63,6 +65,8 @@ public static class GuiNames
     public const string NameTypeLong = "Long";
 
     public const string NameCommandInstall = "--install";
+    [Obsolete("Use NameCommandGame")]
+    public const string NameCommandOldGame = "-game";
     public const string NameCommandGame = "--game";
     public const string NameCommandImport = "--import";
     public const string NameCommandRegister = "--register";

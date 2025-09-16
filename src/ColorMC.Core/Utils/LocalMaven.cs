@@ -4,7 +4,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Config;
 
 namespace ColorMC.Core.Utils;
 

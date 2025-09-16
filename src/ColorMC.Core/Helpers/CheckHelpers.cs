@@ -479,14 +479,14 @@ public static partial class CheckHelpers
     /// <param name="login">保存的账户</param>
     /// <returns>下载项目</returns>
     /// <exception cref="LaunchException">启动失败</exception>
-    public static async Task<FileItemObj?> CheckLoginCoreAsync(this LoginObj login)
+    public static async Task<FileItemObj?> CheckLoginCoreAsync(this LoginObj login, CancellationToken token)
     {
         var item1 = login.AuthType switch
         {
-            AuthType.Nide8 => await AuthlibHelper.ReadyNide8Async(),
-            AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
-            AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
-            AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(),
+            AuthType.Nide8 => await AuthlibHelper.ReadyNide8Async(token),
+            AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
+            AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
+            AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
             _ => new MakeDownloadItemRes { State = true }
         };
         if (!item1.State)

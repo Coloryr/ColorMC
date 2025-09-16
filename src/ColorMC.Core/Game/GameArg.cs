@@ -214,7 +214,7 @@ public static class GameArg
                             continue;
                         }
 
-                        var value = (JsonElement)obj1.Value;
+                        var value = obj1.Value;
 
                         switch (value.ValueKind)
                         {

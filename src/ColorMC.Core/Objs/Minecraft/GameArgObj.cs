@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Core.Objs.Minecraft;
 
@@ -14,12 +15,12 @@ public record GameArgObj
             [JsonPropertyName("rules")]
             public List<GameLibrariesObj.GameRulesObj> Rules { get; set; }
             [JsonPropertyName("value")]
-            public object Value { get; set; }
+            public JsonElement Value { get; set; }
         }
         [JsonPropertyName("game")]
-        public List<object> Game { get; set; }
+        public List<JsonElement> Game { get; set; }
         [JsonPropertyName("jvm")]
-        public List<object> Jvm { get; set; }
+        public List<JsonElement> Jvm { get; set; }
     }
     public record GameAssetIndexObj
     {

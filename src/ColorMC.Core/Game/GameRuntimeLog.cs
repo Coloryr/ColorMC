@@ -8,25 +8,22 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 游戏日志处理
 /// </summary>
-public partial class RuntimeLog
+public partial class GameRuntimeLog
 {
     //正则
-    private const string s_pattern = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:? \[(.*?)\](?: (.*))?";
-    private const string s_pattern1 = @"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?";
-
-    [GeneratedRegex(s_pattern)]
+    [GeneratedRegex(@"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:? \[(.*?)\](?: (.*))?")]
     private static partial Regex LogRegex();
-
-    [GeneratedRegex(s_pattern1)]
+    [GeneratedRegex(@"\[(.*?)\] \[(.*?)(?:\/(.*?))?\]:?")]
     private static partial Regex LogRegex1();
-
-    private static readonly Regex s_regex = LogRegex();
-    private static readonly Regex s_regex1 = LogRegex1();
 
     /// <summary>
     /// 当前进程游戏日志
     /// </summary>
     private readonly ConcurrentBag<GameLogItemObj> _logs = [];
+    /// <summary>
+    /// 日志文件
+    /// </summary>
+    public string? File { get; init; }
 
     /// <summary>
     /// 清理当前进程游戏日志
@@ -50,31 +47,28 @@ public partial class RuntimeLog
 
         //正则拆分
         var data = log.Trim();
-        var match = s_regex.Match(data);
+        var match = LogRegex().Match(data);
         GameLogItemObj? item1 = null;
-        if (match.Success)
+        if (match is { Success: true, Groups.Count: 6 })
         {
-            if (match.Groups.Count == 6)
-            {
-                string time = match.Groups[1].Value;
-                string thread = match.Groups[2].Value;
-                string level = match.Groups[3].Value;
-                string category = match.Groups[4].Value;
+            string time = match.Groups[1].Value;
+            string thread = match.Groups[2].Value;
+            string level = match.Groups[3].Value;
+            string category = match.Groups[4].Value;
 
-                item1 = new GameLogItemObj()
-                {
-                    TimeSpan = DateTime.Now,
-                    Time = time,
-                    Thread = thread,
-                    Category = category,
-                    Log = log,
-                    Level = GetLevel(level)
-                };
-            }
+            item1 = new GameLogItemObj()
+            {
+                TimeSpan = DateTime.Now,
+                Time = time,
+                Thread = thread,
+                Category = category,
+                Log = log,
+                Level = GetLevel(level)
+            };
         }
         else
         {
-            var match1 = s_regex1.Match(data);
+            var match1 = LogRegex1().Match(data);
             if (match1 is { Success: true, Groups.Count: 4 })
             {
                 string time = match1.Groups[1].Value;

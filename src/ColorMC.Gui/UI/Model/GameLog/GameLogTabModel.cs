@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
@@ -103,11 +104,6 @@ public partial class GameLogModel : GameModel
     /// </summary>
     [ObservableProperty]
     private bool _enableDebug;
-    /// <summary>
-    /// 是否为历史文件
-    /// </summary>
-    [ObservableProperty]
-    private bool _isFile;
 
     /// <summary>
     /// 日志
@@ -145,6 +141,8 @@ public partial class GameLogModel : GameModel
     /// </summary>
     private bool _load;
 
+    private GameRuntimeLog? _nowLog;
+
     public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _text = new();
@@ -175,28 +173,9 @@ public partial class GameLogModel : GameModel
     /// 切换文件
     /// </summary>
     /// <param name="value"></param>
-    async partial void OnFileChanged(string? value)
+    partial void OnFileChanged(string? value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            IsFile = false;
-            LoadLast();
-            OnPropertyChanged(NameTop);
-            return;
-        }
-
-        IsFile = true;
-        Model.Progress(App.Lang("GameLogWindow.Info1"));
-        var data = await GameBinding.ReadLog(Obj, value);
-        Model.ProgressClose();
-        if (data == null)
-        {
-            Model.Show(App.Lang("GameLogWindow.Info2"));
-            return;
-        }
-
-        Text = new(data);
-        OnPropertyChanged(NameTop);
+        LoadLast();
     }
 
     partial void OnSelectThreadChanged(string? value)
@@ -481,14 +460,10 @@ public partial class GameLogModel : GameModel
     }
 
     /// <summary>
-    /// 加载当前运行日志
+    /// 加载当前实例日志
     /// </summary>
-    private void LoadLast()
+    private async void LoadLast()
     {
-        if (IsFile)
-        {
-            return;
-        }
         _load = true;
 
         Threads.Clear();
@@ -496,28 +471,73 @@ public partial class GameLogModel : GameModel
         Categorys.Clear();
         Categorys.Add("");
 
-        if (GameManager.GetGameLog(Obj, BuildLevel()) is { } text)
+        if (string.IsNullOrWhiteSpace(File))
         {
-            _logs = text;
-            var builder = new StringBuilder();
-            foreach (var item in text)
+            if (GameManager.GetGameLog(Obj, BuildLevel()) is { } text)
             {
-                if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
+                _logs = text;
+                var builder = new StringBuilder();
+                foreach (var item in text)
                 {
-                    Categorys.Add(item.Category);
-                }
-                if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
-                {
-                    Threads.Add(item.Thread);
-                }
+                    if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
+                    {
+                        Categorys.Add(item.Category);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
+                    {
+                        Threads.Add(item.Thread);
+                    }
 
-                builder.AppendLine(item.Log);
+                    builder.AppendLine(item.Log);
+                }
+                Text = new(builder.ToString());
             }
-            Text = new(builder.ToString());
+            else
+            {
+                Text = new();
+            }
+            OnPropertyChanged(NameTop);
+            return;
         }
         else
         {
-            Text = new();
+            if (_nowLog == null || _nowLog.File != File)
+            {
+                _nowLog = null;
+                Model.Progress(App.Lang("GameLogWindow.Info1"));
+                _nowLog = await GameBinding.ReadLog(Obj, File);
+                Model.ProgressClose();
+                if (_nowLog == null)
+                {
+                    Model.Show(App.Lang("GameLogWindow.Info2"));
+                    return;
+                }
+            }
+
+            if (_nowLog.GetLog(BuildLevel()) is { } text)
+            {
+                _logs = text;
+                var builder = new StringBuilder();
+                foreach (var item in text)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
+                    {
+                        Categorys.Add(item.Category);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
+                    {
+                        Threads.Add(item.Thread);
+                    }
+
+                    builder.AppendLine(item.Log);
+                }
+                Text = new(builder.ToString());
+            }
+            else
+            {
+                Text = new();
+            }
+            OnPropertyChanged(NameTop);
         }
 
         _load = false;
@@ -528,7 +548,7 @@ public partial class GameLogModel : GameModel
     /// </summary>
     private void LoadLogWithSelect()
     {
-        if (_load || IsFile)
+        if (_load)
         {
             return;
         }

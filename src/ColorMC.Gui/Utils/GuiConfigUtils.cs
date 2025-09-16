@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs.Config;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;

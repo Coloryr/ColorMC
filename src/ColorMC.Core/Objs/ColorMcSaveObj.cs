@@ -2,7 +2,7 @@
 
 namespace ColorMC.Core.Objs;
 
-public record ColorMcSaveObj
+public record ColorMCSaveObj
 {
     [JsonPropertyName("type")]
     public SourceType Type { get; set; }

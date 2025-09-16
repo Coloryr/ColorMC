@@ -6,7 +6,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Config;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 
@@ -35,7 +34,7 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     /// <param name="state">更新参数</param>
     /// <returns>是否更新完成</returns>
-    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state)
+    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state, CancellationToken token)
     {
         PathHelper.Delete(obj.Game.GetServerPackFile());
         var old = obj.Game.GetOldServerPack();
@@ -128,7 +127,7 @@ public static class ServerPack
 
                 mods.Find(a => a.Sha256 == item.Sha256)?.Delete();
             }
-        });
+        }, token);
 
         var task2 = Task.Run(() =>
         {
@@ -145,7 +144,7 @@ public static class ServerPack
                     Url = obj.Game.ServerUrl + item.Url
                 });
             }
-        });
+        }, token);
 
         var task3 = Task.Run(() =>
         {
@@ -189,7 +188,7 @@ public static class ServerPack
                     });
                 }
             }
-        });
+        }, token);
 
         await Task.WhenAll(task1, task2, task3);
 
@@ -484,17 +483,17 @@ public static class ServerPack
     /// <param name="obj">游戏实例</param>
     /// <param name="arg">参数</param>
     /// <returns>是否检查成功</returns>
-    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg)
+    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg, CancellationToken token)
     {
         var obj2 = obj.GetServerPack();
-        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}");
+        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token);
         if (!res.State)
         {
             return false;
         }
         if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
         {
-            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameServerFile}");
+            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameServerFile}", token);
             if (!res1.State)
             {
                 return false;
@@ -522,7 +521,7 @@ public static class ServerPack
             obj2.Pack?.MoveToOld();
             arg.State?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
 
-            var res2 = await obj1.UpdateAsync(arg.State);
+            var res2 = await obj1.UpdateAsync(arg.State, token);
             if (res2)
             {
                 File.WriteAllText(obj.GetServerPackFile(), res1.Message!);

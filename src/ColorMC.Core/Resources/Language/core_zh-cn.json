@@ -123,7 +123,7 @@
   "Core.Game.Error20": "游戏实例名字冲突，是否允许自动修改",
   "Core.Game.Error21": "模组：{0}，信息获取失败",
   "Core.Game.Info1": "{0} 个成员",
-  "Core.Game.Info2": "游戏管理员方式启动后，日志无法输出",
+  "Core.Game.Info2": "游戏管理员方式启动后，日志已被重定向输出",
   "Core.Zip.Info1": "解压文件时出现非法名字 {0}\n是否替换为合法的名字",
   "Core.ServerPack.Info1": "正在下载获取服务器实例",
   "Core.ServerPack.Info2": "正在对比服务器实例文件",

@@ -209,7 +209,7 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏日志
     /// </summary>
-    internal static readonly ConcurrentDictionary<string, RuntimeLog> GameLogs = [];
+    internal static readonly ConcurrentDictionary<string, GameRuntimeLog> GameLogs = [];
 
     /// <summary>
     /// 初始化阶段1
@@ -298,7 +298,7 @@ public static class ColorMCCore
     }
 
     /// <summary>
-    /// 清理游戏运行日志
+    /// 清理游戏实例日志
     /// </summary>
     /// <param name="obj"></param>
     internal static void GameLogClear(GameSettingObj obj)
@@ -335,11 +335,11 @@ public static class ColorMCCore
     }
 
     /// <summary>
-    /// 获取游戏实例运行日志
+    /// 获取游戏实例日志
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>运行日志</returns>
-    public static RuntimeLog? GetGameRuntimeLog(GameSettingObj obj)
+    /// <returns>实例日志</returns>
+    public static GameRuntimeLog? GetGameRuntimeLog(GameSettingObj obj)
     {
         if (GameLogs.TryGetValue(obj.UUID, out var log))
         {

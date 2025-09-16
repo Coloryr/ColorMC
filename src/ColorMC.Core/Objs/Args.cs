@@ -453,14 +453,36 @@ public record GameExportArg
     /// 游戏实例
     /// </summary>
     public required GameSettingObj Obj;
-
+    /// <summary>
+    /// 选择的Mod
+    /// </summary>
     public IEnumerable<ModExportObj> Mods;
-    public IEnumerable<ModExport1Obj> OtherFiles;
-
+    /// <summary>
+    /// 选择的其他文件
+    /// </summary>
+    public IEnumerable<ModExportBaseObj> OtherFiles;
+    /// <summary>
+    /// 不选择的文件
+    /// </summary>
     public List<string> UnSelectItems;
+    /// <summary>
+    /// 选中的文件
+    /// </summary>
     public List<string> SelectItems;
+    /// <summary>
+    /// 名字
+    /// </summary>
     public string Name;
+    /// <summary>
+    /// 作者
+    /// </summary>
     public string Author;
+    /// <summary>
+    /// 版本
+    /// </summary>
     public string Version;
+    /// <summary>
+    /// 说明
+    /// </summary>
     public string Summary;
 }

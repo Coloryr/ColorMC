@@ -65,9 +65,9 @@ public static class AuthlibHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static async Task<MakeDownloadItemRes> ReadyNide8Async()
+    public static async Task<MakeDownloadItemRes> ReadyNide8Async(CancellationToken token)
     {
-        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/");
+        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token);
         if (data.State == false)
         {
             return new MakeDownloadItemRes
@@ -125,12 +125,12 @@ public static class AuthlibHelper
     /// 获取AuthlibInjector信息
     /// </summary>
     /// <returns>信息</returns>
-    private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObjAsync()
+    private static async Task<AuthlibInjectorObj> GetAuthlibInjectorObjAsync(CancellationToken token)
     {
         try
         {
             string url = UrlHelper.AuthlibInjectorMeta(CoreHttpClient.Source);
-            var meta = await CoreHttpClient.GetStringAsync(url);
+            var meta = await CoreHttpClient.GetStringAsync(url, token);
             if (meta.State == false)
             {
                 return LocalAuthLib;
@@ -142,7 +142,7 @@ public static class AuthlibHelper
             }
             var item = obj.Artifacts.Where(a => a.BuildNumber == obj.LatestBuildNumber).ToList()[0];
 
-            var info = await CoreHttpClient.GetStringAsync(UrlHelper.AuthlibInjector(item, CoreHttpClient.Source));
+            var info = await CoreHttpClient.GetStringAsync(UrlHelper.AuthlibInjector(item, CoreHttpClient.Source), token);
             if (info.State == false)
             {
                 return LocalAuthLib;
@@ -159,13 +159,13 @@ public static class AuthlibHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<MakeDownloadItemRes> ReadyAuthlibInjectorAsync()
+    public static async Task<MakeDownloadItemRes> ReadyAuthlibInjectorAsync(CancellationToken token)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
             {
-                var obj1 = await GetAuthlibInjectorObjAsync();
+                var obj1 = await GetAuthlibInjectorObjAsync(token);
                 var item1 = BuildAuthlibInjectorItem(obj1);
 
                 LocalMaven.AddItem(new()
@@ -219,7 +219,7 @@ public static class AuthlibHelper
                     var sha2561 = await HashHelper.GenSha256Async(stream);
                     if (item.SHA256 != sha2561)
                     {
-                        var obj1 = await GetAuthlibInjectorObjAsync();
+                        var obj1 = await GetAuthlibInjectorObjAsync(token);
                         return new MakeDownloadItemRes
                         {
                             State = true,

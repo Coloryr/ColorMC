@@ -756,7 +756,7 @@ public static class PathBinding
             Obj = model.Obj,
             UnSelectItems = model.Files.GetUnSelectItems(),
             SelectItems = model.Files.GetSelectItems(),
-            OtherFiles = model.OtherFiles.Select(item => new ModExport1Obj()
+            OtherFiles = model.OtherFiles.Select(item => new ModExportBaseObj()
             {
                 Path = item.Path,
                 FileSize = item.FileSize,

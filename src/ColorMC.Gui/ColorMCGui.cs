@@ -230,7 +230,7 @@ public static class ColorMCGui
             return false;
         }
 
-        if (args[0] == GuiNames.NameCommandGame && args.Length >= 2)
+        if (args[0] is GuiNames.NameCommandGame or GuiNames.NameCommandOldGame && args.Length >= 2)
         {
             if (IsInit)
             {

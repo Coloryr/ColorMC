@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization.Metadata;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Objs.Config;
+namespace ColorMC.Core.Objs;
 
 /// <summary>
 /// 配置文件保存项目
