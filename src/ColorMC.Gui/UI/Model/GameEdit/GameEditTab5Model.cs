@@ -248,7 +248,7 @@ public partial class GameEditModel
             return;
         }
 
-        GameBinding.DeleteWorld(obj.World);
+        await GameBinding.DeleteWorld(obj.World);
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadWorld();
     }

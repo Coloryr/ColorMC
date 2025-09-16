@@ -189,7 +189,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (World != null)
             {
-                ChunkData = await GameBinding.ReadMca(World, value);
+                ChunkData = await GameBinding.ReadMcaAsync(World, value);
             }
             else
             {

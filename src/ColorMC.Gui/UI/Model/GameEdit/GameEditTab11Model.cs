@@ -109,7 +109,7 @@ public partial class GameEditModel
         {
             return;
         }
-        GameBinding.DeleteShaderpack(obj);
+        await GameBinding.DeleteShaderpack(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadShaderpack();
     }

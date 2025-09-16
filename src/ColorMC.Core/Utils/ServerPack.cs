@@ -125,7 +125,7 @@ public static class ServerPack
                     continue;
                 }
 
-                mods.Find(a => a.Sha256 == item.Sha256)?.Delete();
+                mods.Find(a => a.Sha256 == item.Sha256)?.DeleteAsync();
             }
         }, token);
 

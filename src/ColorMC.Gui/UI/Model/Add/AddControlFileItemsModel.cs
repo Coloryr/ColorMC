@@ -462,7 +462,7 @@ public partial class AddControlModel
                         {
                             Item = list.Item!,
                             Info = list.Info!,
-                            Old = await Obj.ReadMod(mod)
+                            Old = await Obj.ReadModAsync(mod)
                         }
                     ]);
                     IsDownload = false;
@@ -476,7 +476,7 @@ public partial class AddControlModel
                     {
                         Item = list.Item!,
                         Info = list.Info!,
-                        Old = await Obj.ReadMod(mod)
+                        Old = await Obj.ReadModAsync(mod)
                     };
                     OpenModDownloadDisplay();
                     _modList.ForEach(item =>

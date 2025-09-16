@@ -63,9 +63,9 @@ public static class GameSchematic
     /// 删除结构文件
     /// </summary>
     /// <param name="obj">结构文件</param>
-    public static void Delete(this SchematicObj obj)
+    public static Task DeleteAsync(this SchematicObj obj)
     {
-        PathHelper.Delete(obj.Local);
+        return PathHelper.MoveToTrashAsync(obj.Local);
     }
 
     /// <summary>
