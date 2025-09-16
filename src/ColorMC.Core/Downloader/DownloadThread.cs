@@ -139,7 +139,7 @@ internal class DownloadThread
     /// </summary>
     internal void Start(DownloadTask task)
     {
-        if (!_cancel.IsCancellationRequested)
+        if (_cancel != null && !_cancel.IsCancellationRequested)
         {
             _cancel.Cancel();
             _cancel.Dispose();

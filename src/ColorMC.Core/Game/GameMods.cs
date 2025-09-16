@@ -332,7 +332,9 @@ public static class GameMods
             }
 
             using var stream = item3.OpenEntryStream();
-            using var zFile1 = ZipArchive.Open(stream);
+            using var stream1 = new MemoryStream();
+            await stream.CopyToAsync(stream1);
+            using var zFile1 = ZipArchive.Open(stream1);
             var inmod = await ReadModAsync(obj.Local, zFile1);
             if (inmod != null)
             {

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Avalonia;
 
 #if !DEBUG
@@ -97,12 +98,6 @@ public static class Program
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 _inputDir = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/.ColorMC/";
-
-                path = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}/ColorMC/";
-                if (Directory.Exists(path))
-                {
-                    Directory.Move(path, _inputDir);
-                }
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
@@ -110,7 +105,7 @@ public static class Program
             }
             else
             {
-                _inputDir = AppContext.BaseDirectory + "colormc\\";
+                _inputDir = AppContext.BaseDirectory + "colormc" + Path.DirectorySeparatorChar;
             }
         }
 
@@ -143,7 +138,7 @@ public static class Program
         try
         {
 #if DEBUG
-            Gui.ColorMCGui.SetInputDir(AppContext.BaseDirectory + "colormc\\");
+            Gui.ColorMCGui.SetInputDir(AppContext.BaseDirectory + "colormc" + Path.DirectorySeparatorChar);
             Gui.ColorMCGui.Main(args);
 #else
 
