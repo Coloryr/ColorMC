@@ -37,6 +37,7 @@ public static class GuiConfigUtils
     /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool quit = false)
     {
+        LanguageHelper.Load(LanguageType.zh_cn);
         if (File.Exists(local))
         {
             GuiConfigObj? conf = null;
@@ -232,6 +233,7 @@ public static class GuiConfigUtils
             Input = new(),
             Card = MakeCardConfig(),
             LaunchCheck = MakeLaunchCheckConfig(),
+            LauncherFunction = MakeLauncherFunctionConfig(),
             CheckUpdate = true
         };
     }

@@ -8,7 +8,7 @@ using ColorMC.Gui.UI.Model.GameEdit;
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀý±à¼­
+/// ï¿½ï¿½Ï·Êµï¿½ï¿½ï¿½à¼­
 /// </summary>
 public partial class Tab4Control : UserControl
 {
@@ -57,7 +57,10 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        var data = (sender as DataGrid)!;
+        if (sender is not DataGrid data)
+        {
+            return;
+        }
         if (data.CurrentColumn.DisplayIndex == 1)
         {
             return;
