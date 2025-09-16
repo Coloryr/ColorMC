@@ -1,17 +1,11 @@
 #!/bin/bash
 
 version=""
-main_version=""
 replace_sdl="false"
 
 for line in `cat ./build/version`
 do
     version=$line
-done
-
-for line in `cat ./build/main_version`
-do
-    main_version=$line
 done
 
 build_sdl_arm64()
@@ -27,7 +21,7 @@ build_sdl_arm64()
 
 build_osx()
 {    
-    zip_name="colormc-macos-$main_version$version-$2.zip"
+    zip_name="colormc-macos-$version-$2.zip"
 
     echo "build $zip_name"
 
@@ -80,7 +74,7 @@ build_osx()
 
 build_osx_min()
 {
-    zip_name="colormc-macos-$main_version$version-min-$2.zip"
+    zip_name="colormc-macos-$version-min-$2.zip"
 
     echo "build $zip_name"
 

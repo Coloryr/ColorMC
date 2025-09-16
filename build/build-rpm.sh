@@ -3,21 +3,15 @@
 sudo apt-get install rpm -y
 
 version=""
-main_version=""
 
 for line in `cat ./build/version`
 do
     version=$line
 done
 
-for line in `cat ./build/main_version`
-do
-    main_version=$line
-done
-
 build_rpm()
 {
-    rpm=colormc-linux-$main_version$version-1.$2.rpm
+    rpm=colormc-linux-$version-1.$2.rpm
 
     echo "build $rpm"
 
@@ -60,7 +54,7 @@ build_rpm()
 
 build_rpm_aot()
 {
-    rpm=colormc-linux-$main_version$version-1-aot.$2.rpm
+    rpm=colormc-linux-$version-1-aot.$2.rpm
 
     echo "build $rpm"
 
@@ -103,7 +97,7 @@ build_rpm_aot()
 
 build_rpm_min()
 {
-    rpm=colormc-linux-$main_version$version-1-min.$2.rpm
+    rpm=colormc-linux-$version-1-min.$2.rpm
 
     echo "build $rpm"
 
