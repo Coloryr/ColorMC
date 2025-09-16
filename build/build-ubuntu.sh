@@ -1,21 +1,15 @@
 #!/bin/bash
 
 version=""
-main_version=""
 
 for line in `cat ./build/version`
 do
     version=$line
 done
 
-for line in `cat ./build/main_version`
-do
-    main_version=$line
-done
-
 build_deb() 
 {
-    deb=colormc-linux-$main_version$version-$2.deb
+    deb=colormc-linux-$version-$2.deb
 
     echo "build $deb"
 
@@ -50,7 +44,7 @@ build_deb()
 
 build_deb_aot() 
 {
-    deb=colormc-linux-$main_version$version-aot-$2.deb
+    deb=colormc-linux-$version-aot-$2.deb
 
     echo "build $deb"
 
@@ -85,7 +79,7 @@ build_deb_aot()
 
 build_deb_min() 
 {
-    deb=colormc-linux-$main_version$version-min-$2.deb
+    deb=colormc-linux-$version-min-$2.deb
 
     echo "build $deb"
 
@@ -140,7 +134,7 @@ sudo apt-get install libfuse2 curl -y
 
 build_appimage()
 {
-    appimg=colormc-linux-$main_version$version-$2.AppImage
+    appimg=colormc-linux-$version-$2.AppImage
     
     build_dir=$build_run/$1
     
@@ -151,24 +145,24 @@ build_appimage()
     cp ./build/info/appimg.json $build_dir/appimg.json
 
     arch=amd64
-    deb_name=colormc-linux-$main_version$version-$1.deb
+    deb_name=colormc-linux-$version-$1.deb
 
-    sed -i "s/%version%/$main_version$version/g" $build_dir/appimg.json
+    sed -i "s/%version%/$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
-    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
+    chmod a+x build_out/colormc-$version-$2.AppImage
+    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
 build_appimage_aot()
 {
-    appimg=colormc-linux-$main_version$version-aot-$2.AppImage
+    appimg=colormc-linux-$version-aot-$2.AppImage
     
     build_dir=$build_run/$1-aot
     
@@ -179,24 +173,24 @@ build_appimage_aot()
     cp ./build/info/appimg.json $build_dir/appimg.json
 
     arch=amd64
-    deb_name=colormc-linux-$main_version$version-aot-$1.deb
+    deb_name=colormc-linux-$version-aot-$1.deb
 
-    sed -i "s/%version%/$main_version$version/g" $build_dir/appimg.json
+    sed -i "s/%version%/$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
-    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
+    chmod a+x build_out/colormc-$version-$2.AppImage
+    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }
 
 build_appimage_min()
 {
-    appimg=colormc-linux-$main_version$version-min-$2.AppImage
+    appimg=colormc-linux-$version-min-$2.AppImage
     
     build_dir=$build_run/$1-min
 
@@ -207,17 +201,17 @@ build_appimage_min()
     cp ./build/info/appimg.json $build_dir/appimg.json
 
     arch=amd64
-    deb_name=colormc-linux-$main_version$version-min-$1.deb
+    deb_name=colormc-linux-$version-min-$1.deb
 
-    sed -i "s/%version%/$main_version$version/g" $build_dir/appimg.json
+    sed -i "s/%version%/$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$main_version$version-$2.AppImage
-    chmod a+x build_out/colormc-$main_version$version-$2.AppImage
-    mv build_out/colormc-$main_version$version-$2.AppImage build_out/$appimg
+    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
+    chmod a+x build_out/colormc-$version-$2.AppImage
+    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
 
     echo "$appimg build done"
 }

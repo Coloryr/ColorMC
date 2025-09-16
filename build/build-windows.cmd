@@ -2,14 +2,9 @@
 setlocal enabledelayedexpansion
 
 set "version="
-set "main_version="
 
 for /f %%i in ('type .\build\version') do (
     set "version=%%i"
-)
-
-for /f %%i in ('type .\build\main_version') do (
-    set "main_version=%%i"
 )
 
 mkdir .\build_out
@@ -25,7 +20,7 @@ call :build_win_aot win-arm64 aarch64
 goto :eof
 
 :build_win
-echo build colormc-win-%main_version%%version%-%2.zip
+echo build colormc-win-%version%-%2.zip
 
 dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1
 
@@ -37,11 +32,11 @@ for %%f in (%files%) do (
     copy .\src\build_out\%1-dotnet\%%f .\src\build_out\%1-dotnet\colormc\%%f
 )
 
-echo colormc-win-%main_version%%version%-%2.zip build done
+echo colormc-win-%version%-%2.zip build done
 goto :eof
 
 :build_win_aot
-echo build colormc-win-%main_version%%version%-aot-%2.zip
+echo build colormc-win-%version%-aot-%2.zip
 
 dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1-aot
 
@@ -53,11 +48,11 @@ for %%f in (%files%) do (
     copy .\src\build_out\%1-aot\%%f .\src\build_out\%1-aot\colormc\%%f
 )
 
-echo colormc-win-%main_version%%version%-aot-%2.zip build done
+echo colormc-win-%version%-aot-%2.zip build done
 goto :eof
 
 :build_win_min
-echo build colormc-win-%main_version%%version%-min-%2.zip
+echo build colormc-win-%version%-min-%2.zip
 
 dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1-min
 
@@ -69,5 +64,5 @@ for %%f in (%files%) do (
     copy .\src\build_out\%1-min\%%f .\src\build_out\%1-min\colormc\%%f
 )
 
-echo colormc-win-%main_version%%version%-min-%2.zip build done
+echo colormc-win-%version%-min-%2.zip build done
 goto :eof

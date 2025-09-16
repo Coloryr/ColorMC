@@ -1,21 +1,15 @@
 #!/bin/bash
 
 version=""
-main_version=""
 
 for line in `cat ./build/version`
 do
     version=$line
 done
 
-for line in `cat ./build/main_version`
-do
-    main_version=$line
-done
-
 build_arch() 
 {
-    pkg=colormc-linux-$main_version$version-1-$2.pkg.tar.zst
+    pkg=colormc-linux-$version-1-$2.pkg.tar.zst
 
     echo "build $pkg"
 
@@ -55,7 +49,7 @@ build_arch()
 
 build_arch_aot() 
 {
-    pkg=colormc-linux-$main_version$version-1-aot-$2.pkg.tar.zst
+    pkg=colormc-linux-$version-1-aot-$2.pkg.tar.zst
 
     echo "build $pkg"
 
@@ -95,7 +89,7 @@ build_arch_aot()
 
 build_arch_min() 
 {
-    pkg=colormc-linux-$main_version$version-1-min-$2.pkg.tar.zst
+    pkg=colormc-linux-$version-1-min-$2.pkg.tar.zst
 
     echo "build $pkg"
 
