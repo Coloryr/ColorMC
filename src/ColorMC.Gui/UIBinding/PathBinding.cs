@@ -664,7 +664,7 @@ public static class PathBinding
                     App.Lang("PathBinding.Text17"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddMods(obj, res);
+                    return await GameBinding.AddModsAsync(obj, res);
                 }
                 return null;
             case FileType.World:

@@ -102,7 +102,7 @@ public partial class GameEditModel
         {
             return;
         }
-        GameBinding.DeleteSchematic(obj);
+        await GameBinding.DeleteSchematic(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadSchematic();
     }

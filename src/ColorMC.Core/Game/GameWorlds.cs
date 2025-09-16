@@ -46,11 +46,9 @@ public static class GameWorlds
     /// 删除世界
     /// </summary>
     /// <param name="world">世界储存</param>
-    public static void Remove(this WorldObj world)
+    public static Task DeleteAsync(this WorldObj world)
     {
-        string dir = world.Game.GetRemoveWorldPath();
-        Directory.CreateDirectory(dir);
-        Directory.Move(world.Local, Path.Combine(dir, world.LevelName));
+        return PathHelper.MoveToTrashAsync(world.Local);
     }
 
     /// <summary>

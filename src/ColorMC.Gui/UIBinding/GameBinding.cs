@@ -975,7 +975,7 @@ public static class GameBinding
                 break;
             }
         }
-        mod.Delete();
+        mod.DeleteAsync();
     }
 
     /// <summary>
@@ -984,7 +984,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns></returns>
-    public static Task<bool> AddMods(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddModsAsync(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
@@ -1081,7 +1081,7 @@ public static class GameBinding
     /// <param name="obj">存档</param>
     /// <param name="name">区块文件名</param>
     /// <returns></returns>
-    public static async Task<ChunkDataObj?> ReadMca(WorldObj obj, string name)
+    public static async Task<ChunkDataObj?> ReadMcaAsync(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
@@ -1266,9 +1266,9 @@ public static class GameBinding
     /// 删除存档
     /// </summary>
     /// <param name="world">存档</param>
-    public static void DeleteWorld(WorldObj world)
+    public static Task DeleteWorld(WorldObj world)
     {
-        world.Remove();
+        return world.DeleteAsync();
     }
 
     /// <summary>
@@ -1330,9 +1330,9 @@ public static class GameBinding
     /// 删除截图
     /// </summary>
     /// <param name="file">截图</param>
-    public static void DeleteScreenshot(ScreenshotObj file)
+    public static Task DeleteScreenshot(ScreenshotObj file)
     {
-        GameScreenshots.Delete(file);
+        return GameScreenshots.Delete(file);
     }
 
     /// <summary>
@@ -1449,9 +1449,9 @@ public static class GameBinding
     /// 删除光影包
     /// </summary>
     /// <param name="obj">光影包</param>
-    public static void DeleteShaderpack(ShaderpackObj obj)
+    public static Task DeleteShaderpack(ShaderpackObj obj)
     {
-        obj.Delete();
+        return obj.DeleteAsync();
     }
 
     /// <summary>
@@ -1507,9 +1507,9 @@ public static class GameBinding
     /// 删除结构文件
     /// </summary>
     /// <param name="obj">结构文件</param>
-    public static void DeleteSchematic(SchematicObj obj)
+    public static Task DeleteSchematic(SchematicObj obj)
     {
-        obj.Delete();
+        return obj.DeleteAsync();
     }
 
     /// <summary>

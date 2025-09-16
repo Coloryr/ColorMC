@@ -57,8 +57,8 @@ public static class GameScreenshots
     /// 删除屏幕截图
     /// </summary>
     /// <param name="item">截图文件</param>
-    public static void Delete(ScreenshotObj item)
+    public static Task Delete(ScreenshotObj item)
     {
-        PathHelper.Delete(item.File);
+        return PathHelper.MoveToTrashAsync(item.File);
     }
 }

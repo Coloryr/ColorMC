@@ -1715,7 +1715,7 @@ public static class WebBinding
                     {
                         Item = data.MakeModDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),
-                        Old = await obj.ReadMod(mod)
+                        Old = await obj.ReadModAsync(mod)
                     };
                 }
                 else
@@ -1725,7 +1725,7 @@ public static class WebBinding
                     {
                         Item = data.MakeModDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),
-                        Old = await obj.ReadMod(mod)
+                        Old = await obj.ReadModAsync(mod)
                     };
                 }
 

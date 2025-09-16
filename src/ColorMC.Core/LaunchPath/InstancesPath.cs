@@ -462,16 +462,6 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取删除世界的文件夹
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>路径</returns>
-    public static string GetRemoveWorldPath(this GameSettingObj obj)
-    {
-        return Path.Combine(s_baseDir, obj.DirName, Names.NameRemoveDir, Names.NameGameSavesDir);
-    }
-
-    /// <summary>
     /// 获取服务器实例文件
     /// </summary>
     /// <param name="obj">游戏实例</param>

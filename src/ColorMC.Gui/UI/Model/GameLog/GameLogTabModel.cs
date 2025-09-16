@@ -123,7 +123,7 @@ public partial class GameLogModel : GameModel
     /// <summary>
     /// 日志列表
     /// </summary>
-    private List<GameLogItemObj> _logs;
+    private List<GameLogItemObj>? _logs;
     /// <summary>
     /// 更新定时器
     /// </summary>
@@ -471,33 +471,15 @@ public partial class GameLogModel : GameModel
         Categorys.Clear();
         Categorys.Add("");
 
+        _logs = null;
+
+        //切换日志
         if (string.IsNullOrWhiteSpace(File))
         {
             if (GameManager.GetGameLog(Obj, BuildLevel()) is { } text)
             {
                 _logs = text;
-                var builder = new StringBuilder();
-                foreach (var item in text)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
-                    {
-                        Categorys.Add(item.Category);
-                    }
-                    if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
-                    {
-                        Threads.Add(item.Thread);
-                    }
-
-                    builder.AppendLine(item.Log);
-                }
-                Text = new(builder.ToString());
             }
-            else
-            {
-                Text = new();
-            }
-            OnPropertyChanged(NameTop);
-            return;
         }
         else
         {
@@ -517,28 +499,34 @@ public partial class GameLogModel : GameModel
             if (_nowLog.GetLog(BuildLevel()) is { } text)
             {
                 _logs = text;
-                var builder = new StringBuilder();
-                foreach (var item in text)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
-                    {
-                        Categorys.Add(item.Category);
-                    }
-                    if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
-                    {
-                        Threads.Add(item.Thread);
-                    }
-
-                    builder.AppendLine(item.Log);
-                }
-                Text = new(builder.ToString());
             }
-            else
-            {
-                Text = new();
-            }
-            OnPropertyChanged(NameTop);
         }
+
+        //显示日志
+        if (_logs != null)
+        {
+            var builder = new StringBuilder();
+            foreach (var item in _logs)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Category) && !Categorys.Contains(item.Category))
+                {
+                    Categorys.Add(item.Category);
+                }
+                if (!string.IsNullOrWhiteSpace(item.Thread) && !Threads.Contains(item.Thread))
+                {
+                    Threads.Add(item.Thread);
+                }
+
+                builder.AppendLine(item.Log);
+            }
+            Text = new(builder.ToString());
+        }
+        else
+        {
+            Text = new();
+        }
+
+        OnPropertyChanged(NameTop);
 
         _load = false;
     }
@@ -548,7 +536,7 @@ public partial class GameLogModel : GameModel
     /// </summary>
     private void LoadLogWithSelect()
     {
-        if (_load)
+        if (_load || _logs == null)
         {
             return;
         }

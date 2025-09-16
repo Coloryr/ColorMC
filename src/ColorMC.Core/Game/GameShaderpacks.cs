@@ -54,9 +54,9 @@ public static class GameShaderpacks
     /// 删除光影包
     /// </summary>
     /// <param name="pack"></param>
-    public static void Delete(this ShaderpackObj pack)
+    public static Task DeleteAsync(this ShaderpackObj pack)
     {
-        PathHelper.Delete(pack.Local);
+        return PathHelper.MoveToTrashAsync(pack.Local);
     }
 
     /// <summary>

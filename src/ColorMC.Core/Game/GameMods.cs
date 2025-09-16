@@ -17,13 +17,17 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class GameMods
 {
+    /// <summary>
+    /// 获取模组列表，只获取文件名相关的
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>模组列表</returns>
     public static async Task<List<ModObj>> GetModFastAsync(this GameSettingObj obj)
     {
         var dir = obj.GetModsPath();
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
-            info.Create();
             return [];
         }
 
@@ -38,11 +42,15 @@ public static class GameMods
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            if (item.Extension is not (Names.NameZipExt or Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
+            //之判断.jar为Mod
+            if (item.Extension is Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt)
             {
-                using var filestream = PathHelper.OpenRead(item.FullName)!;
+                using var filestream = PathHelper.OpenRead(item.FullName);
+                if (filestream == null)
+                {
+                    return;
+                }
                 var sha1 = await HashHelper.GenSha1Async(filestream);
-                filestream.Seek(0, SeekOrigin.Begin);
 
                 list.Add(new ModObj
                 {
@@ -67,7 +75,6 @@ public static class GameMods
         var info = new DirectoryInfo(dir);
         if (!info.Exists)
         {
-            info.Create();
             return [];
         }
         var list = new ConcurrentBag<ModObj>();
@@ -83,7 +90,7 @@ public static class GameMods
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            var mod = await ReadMod(item, sha256);
+            var mod = await ReadModAsync(item, sha256);
             if (mod != null)
             {
                 mod.Game = obj;
@@ -104,9 +111,9 @@ public static class GameMods
     /// <param name="item">文件</param>
     /// <param name="sha256">是否获取sha256</param>
     /// <returns>模组信息</returns>
-    private static async Task<ModObj?> ReadMod(FileInfo item, bool sha256)
+    private static async Task<ModObj?> ReadModAsync(FileInfo item, bool sha256)
     {
-        if (item.Extension is not (Names.NameZipExt or Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
+        if (item.Extension is not (Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
         {
             return null;
         }
@@ -125,7 +132,7 @@ public static class GameMods
             if (mod != null)
             {
                 mod.Local = item.FullName;
-                mod.Disable = item.Extension is Names.NameDisableExt or Names.NameDisabledExt;
+                mod.Disable = item.Extension is Names.NameDisableExt or Names.NameDisabledExt; //其他启动器的禁用不一样
                 mod.Name ??= "";
                 mod.ModId ??= "";
                 mod.Sha1 = sha1;
@@ -161,7 +168,7 @@ public static class GameMods
     /// <param name="obj">游戏实例</param>
     /// <param name="mod">模组在线信息</param>
     /// <returns>模组信息</returns>
-    public static async Task<ModObj?> ReadMod(this GameSettingObj obj, ModInfoObj? mod)
+    public static async Task<ModObj?> ReadModAsync(this GameSettingObj obj, ModInfoObj? mod)
     {
         if (mod == null)
         {
@@ -174,7 +181,7 @@ public static class GameMods
         }
 
         var info = new FileInfo(file);
-        var mod1 = await ReadMod(info, false);
+        var mod1 = await ReadModAsync(info, false);
         if (mod1 != null)
         {
             mod1.Game = obj;
@@ -238,9 +245,9 @@ public static class GameMods
     /// 删除模组
     /// </summary>
     /// <param name="mod">游戏模组</param>
-    public static void Delete(this ModObj mod)
+    public static Task DeleteAsync(this ModObj mod)
     {
-        PathHelper.Delete(mod.Local);
+        return PathHelper.MoveToTrashAsync(mod.Local);
     }
 
     /// <summary>
@@ -305,7 +312,7 @@ public static class GameMods
             return 0;
         }
         var files = info.GetFiles();
-
+        //只需要读取能加载的mod数量
         return files.Count(item => item.Name.EndsWith(Names.NameJarExt));
     }
 

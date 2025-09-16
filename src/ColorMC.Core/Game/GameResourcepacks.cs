@@ -132,8 +132,8 @@ public static class GameResourcepacks
     /// <summary>
     /// 获取材质包
     /// </summary>
-    /// <param name="file">文件</param>
-    /// <param name="file">取消Token</param>
+    /// <param name="stream1">文件</param>
+    /// <param name="cancel">取消Token</param>
     /// <returns>材质包</returns>
     private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream stream1, CancellationToken cancel)
     {
