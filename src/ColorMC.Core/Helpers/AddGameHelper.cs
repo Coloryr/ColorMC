@@ -44,7 +44,7 @@ public static class AddGameHelper
                     var mmc1 = GameOptions.ReadOptions(stream1, "=");
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
-                    game.Icon = res.Icon + ".png";
+                    game.Icon = res.Icon + Names.NamePngExt;
                     ismmc = true;
                     isfind = true;
                 }
@@ -61,7 +61,7 @@ public static class AddGameHelper
             var files = Directory.GetFiles(arg.Local);
             foreach (var item in files)
             {
-                if (!item.EndsWith(".json"))
+                if (!item.EndsWith(Names.NameJsonExt))
                 {
                     continue;
                 }
@@ -85,18 +85,22 @@ public static class AddGameHelper
 
         game ??= new GameSettingObj()
         {
-            Name = arg.Name ?? throw new Exception("Name is empty"),
             Version = (await GameHelper.GetGameVersions(GameType.Release))[0],
-            Loader = Loaders.Normal
+            Loader = Loaders.Normal,
+            GroupName = arg.Group
         };
 
-        if (!string.IsNullOrWhiteSpace(arg.Name))
+        //没有名字使用输入名字，已有名字同时有输入名字则覆盖
+        if (string.IsNullOrWhiteSpace(game.Name))
+        {
+            game.Name = arg.Name ?? throw new ArgumentNullException(nameof(arg.Name));
+        }
+        else if (!string.IsNullOrWhiteSpace(arg.Name))
         {
             game.Name = arg.Name;
         }
 
-        game.GroupName = arg.Group;
-
+        //创建游戏实例
         game = await InstancesPath.CreateGame(new CreateGameArg
         {
             Game = game,
@@ -108,11 +112,12 @@ public static class AddGameHelper
             return new();
         }
 
+        //复制游戏文件
         await game.CopyFileAsync(new()
         {
             Local = arg.Local,
             Unselect = arg.Unselect,
-            Dir = ismmc,
+            IsDir = ismmc,
             State = arg.State
         });
 
@@ -144,7 +149,7 @@ public static class AddGameHelper
                     Url = arg.Dir,
                     Overwrite = true,
                     Local = file,
-                    Name = "网络整合包"
+                    Name = LanguageHelper.Get("Core.Game.Info3")
                 }]);
                 if (!res)
                 {
@@ -165,6 +170,7 @@ public static class AddGameHelper
             async Task<bool> ColorMC()
             {
                 arg.Update2?.Invoke(CoreRunState.Read);
+                //直接解压
                 using var zFile = ZipArchive.Open(st);
                 if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameGameFile) is { } item)
                 {
@@ -177,6 +183,7 @@ public static class AddGameHelper
                     return false;
                 }
 
+                //导入实例
                 game = await InstancesPath.CreateGame(new CreateGameArg
                 {
                     Game = game,
@@ -189,6 +196,7 @@ public static class AddGameHelper
                     return false;
                 }
 
+                //复制文件
                 foreach (var e in zFile.Entries)
                 {
                     if (!FuntionUtils.IsFile(e))

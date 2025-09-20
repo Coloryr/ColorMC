@@ -1023,7 +1023,7 @@ public static class InstancesPath
             list.RemoveAll(item => arg.Unselect.Contains(item.FullName));
         }
         int basel = arg.Local.Length;
-        var local1 = arg.Dir ? obj.GetBasePath() : obj.GetGamePath();
+        var local1 = arg.IsDir ? obj.GetBasePath() : obj.GetGamePath();
         await Task.Run(() =>
         {
             int index = 0;

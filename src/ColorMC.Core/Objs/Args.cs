@@ -222,7 +222,7 @@ public record CopyGameFileArg
     /// <summary>
     /// 是否为根目录
     /// </summary>
-    public bool Dir;
+    public bool IsDir;
 
     public ColorMCCore.ZipUpdate? State;
 }
