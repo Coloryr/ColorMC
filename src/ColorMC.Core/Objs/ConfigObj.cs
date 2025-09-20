@@ -198,7 +198,7 @@ public record RunArgObj
     /// </summary>
     public uint? MinMemory { get; set; }
     /// <summary>
-    /// 禁用ColorASM
+    /// 启用ColorASM
     /// </summary>
     public bool ColorASM { get; set; }
 

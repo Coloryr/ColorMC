@@ -496,7 +496,7 @@ public static class GameArg
         }
 
         //colorasm
-        if (args.ColorASM == false && mixinport > 0)
+        if (args.ColorASM && mixinport > 0)
         {
             useasm = true;
             GameHelper.ReadyColorMCASM();

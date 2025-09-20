@@ -170,11 +170,10 @@ public static class AuthlibHelper
 
                 LocalMaven.AddItem(new()
                 {
-                    Name = $"moe.yushi:authlibinjector",
+                    Name = "moe.yushi:authlibinjector",
                     Url = item1.Url,
                     Have = true,
-                    Local = "/moe/yushi/authlibinjector/" +
-                    $"{obj1.Version}/authlib-injector-{obj1.Version}.jar",
+                    Local = $"/moe/yushi/authlibinjector/{obj1.Version}/authlib-injector-{obj1.Version}.jar",
                     SHA256 = obj1.Checksums.Sha256
                 });
 
@@ -216,8 +215,8 @@ public static class AuthlibHelper
                 if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
                 {
                     using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
-                    var sha2561 = await HashHelper.GenSha256Async(stream);
-                    if (item.SHA256 != sha2561)
+                    var sha256 = await HashHelper.GenSha256Async(stream);
+                    if (item.SHA256 != sha256)
                     {
                         var obj1 = await GetAuthlibInjectorObjAsync(token);
                         return new MakeDownloadItemRes

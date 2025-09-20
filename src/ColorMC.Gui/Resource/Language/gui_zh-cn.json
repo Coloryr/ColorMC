@@ -317,7 +317,7 @@
 	"SettingWindow.Tab4.Text27": "检测模组加载器",
 	"SettingWindow.Tab4.Text28": "检测内存参数",
 	"SettingWindow.Tab4.Text29": "当前系统内存：{0} MB，剩余内存{1} MB",
-	"SettingWindow.Tab4.Text30": "禁用ColorMC ASM",
+	"SettingWindow.Tab4.Text30": "启用ColorMC ASM",
 	"SettingWindow.Tab5.Text1": "添加Java路径",
 	"SettingWindow.Tab5.Text2": "Java名字",
 	"SettingWindow.Tab5.Text3": "Java路径",

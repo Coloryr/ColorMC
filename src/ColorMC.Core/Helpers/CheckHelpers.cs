@@ -166,7 +166,9 @@ public static partial class CheckHelpers
         }
         catch
         {
-            return false;
+            var obj1 = VersionPath.GetVersion(version) 
+                ?? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Check.Error1"), version));
+            return obj1.JavaVersion?.MajorVersion > 8;
         }
     }
 
