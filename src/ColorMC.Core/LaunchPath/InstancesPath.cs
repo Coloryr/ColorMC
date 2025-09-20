@@ -612,7 +612,10 @@ public static class InstancesPath
             game.DirName = PathHelper.ReplaceFileName(game.Name);
 
             var dir = game.GetBasePath();
-            await PathHelper.MoveToTrashAsync(dir);
+            if (Directory.Exists(dir))
+            {
+                await PathHelper.MoveToTrashAsync(dir);
+            }
 
             try
             {
