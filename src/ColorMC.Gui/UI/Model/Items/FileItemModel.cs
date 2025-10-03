@@ -271,10 +271,7 @@ public partial class FileItemModel : SelectItemModel
         }
         try
         {
-            await Task.Run(() =>
-            {
-                _img = ImageManager.Load(Logo, true).Result;
-            });
+            _img = await ImageManager.Load(Logo, true);
             return _img;
         }
         catch (Exception e)

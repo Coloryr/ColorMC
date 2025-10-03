@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using SkiaSharp;
@@ -75,7 +76,7 @@ public static class ImageUtils
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <returns></returns>
-    public static SKBitmap Resize(SKBitmap image, int width, int height)
+    public static Task<SKBitmap> ResizeAsync(SKBitmap image, int width, int height)
     {
         int newWidth;
         int newHeight;
@@ -92,6 +93,9 @@ public static class ImageUtils
             newHeight = height;
             newWidth = (int)(newHeight * ((float)image.Width / image.Height));
         }
-        return image.Resize(new SKSizeI(newWidth, newHeight), SKFilterQuality.High);
+        return Task.Run(() =>
+        {
+            return image.Resize(new SKSizeI(newWidth, newHeight), SKFilterQuality.High);
+        });
     }
 }
