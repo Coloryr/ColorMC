@@ -99,10 +99,7 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
         }
         try
         {
-            await Task.Run(() =>
-            {
-                _img = ImageManager.Load(Obj.Icon, true).Result;
-            });
+            _img = await ImageManager.Load(Obj.Icon, true);
             return _img;
         }
         catch (Exception e)

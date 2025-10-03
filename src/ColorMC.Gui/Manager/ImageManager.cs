@@ -532,19 +532,22 @@ public static class ImageManager
                     //压缩图片
                     if (zoom)
                     {
-                        using var image1 = SKBitmap.Decode(data1);
+                        using var temp = new MemoryStream();
+                        await data1.CopyToAsync(temp);
+                        temp.Seek(0, SeekOrigin.Begin);
+                        using var image1 = SKBitmap.Decode(temp);
                         if (image1 == null)
                         {
                             return null;
                         }
-                        using var image2 = ImageUtils.Resize(image1, 100, 100);
+                        using var image2 = await ImageUtils.ResizeAsync(image1, 100, 100);
                         using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
-                        PathHelper.WriteBytes(file, data.AsStream());
+                        await PathHelper.WriteBytesAsync(file, data.AsStream());
                         return new Bitmap(file);
                     }
                     else
                     {
-                        PathHelper.WriteBytes(file, data1);
+                        await PathHelper.WriteBytesAsync(file, data1);
                         return new Bitmap(file);
                     }
                 }

@@ -304,10 +304,7 @@ public static class GameBinding
 
                 if (resize && (info.Width > 100 || info.Height > 100))
                 {
-                    using var image = await Task.Run(() =>
-                    {
-                        return ImageUtils.Resize(info, 100, 100);
-                    });
+                    using var image = await ImageUtils.ResizeAsync(info, 100, 100);
                     using var data = image.Encode(SKEncodedImageFormat.Png, 100);
                     obj.SetGameIconFromBytes(data.AsSpan().ToArray());
                 }
