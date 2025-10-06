@@ -37,7 +37,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
-    public const string DrapType = "Game";
+    public static readonly DataFormat<string> DrapType = DataFormat.CreateStringApplicationFormat("Game");
 
     /// <summary>
     /// 是否为第一次启动
@@ -56,7 +56,7 @@ public static class BaseBinding
     /// <summary>
     /// 快捷启动
     /// </summary>
-    public static string[] StartLaunch { get; private set; }
+    public static string[]? StartLaunch { get; private set; }
 
     /// <summary>
     /// 是否处于添加游戏实例中
@@ -115,14 +115,18 @@ public static class BaseBinding
     /// <summary>
     /// 复制到剪贴板
     /// </summary>
+    /// <param name="top"></param>
     /// <param name="file">文件列表</param>
     public static async Task CopyFileClipboard(TopLevel top, List<IStorageFile> file)
     {
         if (top.Clipboard is { } clipboard)
         {
-            var obj = new DataObject();
-            obj.Set(DataFormats.Files, file);
-            await clipboard.SetDataObjectAsync(obj);
+            var obj = new DataTransfer();
+            foreach (var item in file)
+            {
+                obj.Add(DataTransferItem.CreateFile(item));
+            }
+            await clipboard.SetDataAsync(obj);
         }
     }
 

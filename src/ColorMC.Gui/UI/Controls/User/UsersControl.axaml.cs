@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Model.User;
 namespace ColorMC.Gui.UI.Controls.User;
 
 /// <summary>
-/// ÓÃ»§ÁĞ±í´°¿Ú
+/// ç”¨æˆ·åˆ—è¡¨çª—å£
 /// </summary>
 public partial class UsersControl : BaseUserControl
 {
@@ -35,7 +35,7 @@ public partial class UsersControl : BaseUserControl
         {
             return;
         }
-        if (e.Data.Contains(DataFormats.Text))
+        if (e.DataTransfer.Contains(DataFormat.Text))
         {
             Grid2.IsVisible = true;
         }
@@ -54,20 +54,20 @@ public partial class UsersControl : BaseUserControl
             return;
         }
         Grid2.IsVisible = false;
-        (DataContext as UsersModel)!.Drop(e.Data);
+        (DataContext as UsersModel)!.Drop(e.DataTransfer);
     }
 
     /// <summary>
-    /// Ìí¼ÓÒ»¸ö×Ô¶¨ÒåÑéÖ¤·şÎñÆ÷
+    /// æ·»åŠ ä¸€ä¸ªè‡ªå®šä¹‰éªŒè¯æœåŠ¡å™¨
     /// </summary>
-    /// <param name="url">·şÎñÆ÷µØÖ·</param>
+    /// <param name="url">æœåŠ¡å™¨åœ°å€</param>
     public void AddUrl(string url)
     {
         (DataContext as UsersModel)?.AddUrl(url);
     }
 
     /// <summary>
-    /// Ìí¼ÓÒ»¸öÕË»§
+    /// æ·»åŠ ä¸€ä¸ªè´¦æˆ·
     /// </summary>
     public void Add()
     {
@@ -80,7 +80,7 @@ public partial class UsersControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÖØĞÂµÇÂ½
+    /// é‡æ–°ç™»é™†
     /// </summary>
     public void Relogin()
     {
@@ -88,7 +88,7 @@ public partial class UsersControl : BaseUserControl
     }
 
     /// <summary>
-    /// Ë¢ĞÂÕË»§ÁĞ±í
+    /// åˆ·æ–°è´¦æˆ·åˆ—è¡¨
     /// </summary>
     public void LoadUsers()
     {
@@ -96,7 +96,7 @@ public partial class UsersControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÖØÔØÍ·Ïñ
+    /// é‡è½½å¤´åƒ
     /// </summary>
     public void ReloadHead()
     {

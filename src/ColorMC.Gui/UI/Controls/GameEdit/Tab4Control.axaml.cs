@@ -8,7 +8,7 @@ using ColorMC.Gui.UI.Model.GameEdit;
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 /// <summary>
-/// ��Ϸʵ���༭
+/// 游戏实例编辑
 /// </summary>
 public partial class Tab4Control : UserControl
 {
@@ -26,7 +26,7 @@ public partial class Tab4Control : UserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.Files))
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
             Grid2.IsVisible = true;
         }
@@ -40,7 +40,7 @@ public partial class Tab4Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditModel)!.DropMod(e.Data);
+        (DataContext as GameEditModel)!.DropMod(e.DataTransfer);
     }
 
     private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)

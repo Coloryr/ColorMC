@@ -308,20 +308,17 @@ public partial class UsersModel : TopModel
     /// 拖拽添加账户
     /// </summary>
     /// <param name="data"></param>
-    public void Drop(IDataObject data)
+    public void Drop(IDataTransfer data)
     {
-        if (LockLogin)
+        if (LockLogin || !data.Contains(DataFormat.Text))
         {
             return;
         }
 
-        if (data.Contains(DataFormats.Text))
+        var str = data.TryGetText();
+        if (str?.StartsWith(GuiNames.NameAuthlibKey) == true)
         {
-            var str = data.GetText();
-            if (str?.StartsWith("authlib-injector:yggdrasil-server:") == true)
-            {
-                AddUrl(str);
-            }
+            AddUrl(str);
         }
     }
 

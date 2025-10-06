@@ -326,7 +326,7 @@ public static class JvmPath
         Task.Run(() =>
         {
             Jvms.Clear();
-            list.ForEach(a =>
+            list.ToList().ForEach(a =>
             {
                 var path = a.Local;
                 var local = path;

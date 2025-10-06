@@ -40,7 +40,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ÍË³öÊ±
+    /// é€€å‡ºæ—¶
     /// </summary>
     public static event Action? OnClose;
 
@@ -49,17 +49,17 @@ public partial class App : Application
     /// </summary>
     public static Application ThisApp { get; private set; }
     /// <summary>
-    /// ÉúÃüÖÜÆÚ
+    /// ç”Ÿå‘½å‘¨æœŸ
     /// </summary>
     public static IApplicationLifetime? Life { get; private set; }
 
     /// <summary>
-    /// ÊÇ·ñÒş²Ø
+    /// æ˜¯å¦éšè—
     /// </summary>
     public static bool IsHide { get; private set; }
 
     /// <summary>
-    /// ±¾µØ»¯
+    /// æœ¬åœ°åŒ–
     /// </summary>
     private static readonly Language s_language = new();
 
@@ -78,10 +78,10 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// »ñÈ¡±¾µØ»¯ÓïÑÔ
+    /// è·å–æœ¬åœ°åŒ–è¯­è¨€
     /// </summary>
-    /// <param name="input">ÓïÑÔ¼ü</param>
-    /// <returns>ÓïÑÔ</returns>
+    /// <param name="input">è¯­è¨€é”®</param>
+    /// <returns>è¯­è¨€</returns>
     public static string Lang(string input)
     {
         var data = s_language.GetLanguage(input, out bool have);
@@ -101,7 +101,7 @@ public partial class App : Application
 
         if (PlatformSettings is { } setting)
         {
-            //³õÊ¼»¯ÑùÊ½
+            //åˆå§‹åŒ–æ ·å¼
             setting.ColorValuesChanged += (object? sender, PlatformColorValues e) =>
             {
                 if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
@@ -111,7 +111,7 @@ public partial class App : Application
             };
         }
 
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         CoreManager.Init();
         ThemeManager.Init();
         ImageManager.Init();
@@ -138,7 +138,7 @@ public partial class App : Application
             singleViewPlatform.MainView = WindowManager.AllWindow;
         }
 
-        //ºËĞÄµÚ¶ş½×¶Î³õÊ¼»¯
+        //æ ¸å¿ƒç¬¬äºŒé˜¶æ®µåˆå§‹åŒ–
         if (ColorMCGui.RunType != RunType.AppBuilder)
         {
             Task.Run(() =>
@@ -153,7 +153,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ÇåÀíUI°ó¶¨
+    /// æ¸…ç†UIç»‘å®š
     /// </summary>
     public static void Clear()
     {
@@ -163,9 +163,9 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ¼ÓÔØÓïÑÔÎÄ¼ş
+    /// åŠ è½½è¯­è¨€æ–‡ä»¶
     /// </summary>
-    /// <param name="type">ÓïÑÔÀàĞÍ</param>
+    /// <param name="type">è¯­è¨€ç±»å‹</param>
     public static void LoadLanguage(LanguageType type)
     {
         var assm = Assembly.GetExecutingAssembly();
@@ -183,7 +183,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ¹Ø±Õ³ÌĞò²¢ÍË³ö
+    /// å…³é—­ç¨‹åºå¹¶é€€å‡º
     /// </summary>
     public static void Exit()
     {
@@ -192,7 +192,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ¹Ø±Õ³ÌĞò²»ÍË³ö
+    /// å…³é—­ç¨‹åºä¸é€€å‡º
     /// </summary>
     public static void Close()
     {
@@ -203,7 +203,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ÏÔÊ¾´°¿Ú
+    /// æ˜¾ç¤ºçª—å£
     /// </summary>
     public static void Show()
     {
@@ -212,7 +212,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// Òş²Ø´°¿Ú
+    /// éšè—çª—å£
     /// </summary>
     public static void Hide()
     {
@@ -222,7 +222,7 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// ²âÊÔÊÇ·ñĞèÒª¹Ø±Õ³ÌĞò
+    /// æµ‹è¯•æ˜¯å¦éœ€è¦å…³é—­ç¨‹åº
     /// </summary>
     public static void TestClose()
     {

@@ -417,8 +417,8 @@ public partial class GameItemModel : GameModel
         {
             return;
         }
-        var dragData = new DataObject();
-        dragData.Set(BaseBinding.DrapType, Obj.UUID);
+        var dragData = new DataTransfer();
+        dragData.Add(DataTransferItem.Create(BaseBinding.DrapType, Obj.UUID));
         IsDrop = true;
         var files = new List<IStorageFolder>();
         if (top == null)
@@ -427,10 +427,14 @@ public partial class GameItemModel : GameModel
         }
         var item = await top.StorageProvider.TryGetFolderFromPathAsync(Obj.GetBasePath());
         files.Add(item!);
-        dragData.Set(DataFormats.Files, files);
+        foreach (var file in files)
+        {
+            dragData.Add(DataTransferItem.CreateFile(file));
+        }
+        
         Dispatcher.UIThread.Post(() =>
         {
-            DragDrop.DoDragDrop(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
+            DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
         });
 #endif
     }

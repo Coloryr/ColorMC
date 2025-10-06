@@ -65,24 +65,25 @@ public partial class GameEditModel
         }
         var res = await PathBinding.AddFile(top, _obj, FileType.Schematic);
 
-        if (res == null)
-            return;
-
-        if (res == false)
+        switch (res)
         {
-            Model.Show(App.Lang("GameEditWindow.Tab11.Error1"));
-            return;
+            case null:
+                return;
+            case false:
+                Model.Show(App.Lang("GameEditWindow.Tab11.Error1"));
+                return;
+            default:
+                Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
+                LoadSchematic();
+                break;
         }
-
-        Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
-        LoadSchematic();
     }
 
     /// <summary>
     /// 拖拽加入结构文件
     /// </summary>
     /// <param name="data"></param>
-    public async void DropSchematic(IDataObject data)
+    public async void DropSchematic(IDataTransfer data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Schematic);
         if (res)

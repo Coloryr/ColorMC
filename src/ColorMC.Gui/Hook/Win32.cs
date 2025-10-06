@@ -11,7 +11,7 @@ using Microsoft.Win32;
 
 namespace ColorMC.Gui.Hook;
 
-internal unsafe class Win32
+internal class Win32
 {
     public const int WM_CLOSE = 0x0010;
     public const int WM_DESTROY = 0x0002;

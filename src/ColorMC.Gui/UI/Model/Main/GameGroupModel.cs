@@ -158,19 +158,19 @@ public partial class GameGroupModel : TopModel
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public bool DropIn(IDataObject data)
+    public bool DropIn(IDataTransfer data)
     {
-        return data.Get(BaseBinding.DrapType) is not string c
-            || !Items.ContainsKey(c);
+        return (data.TryGetValue(BaseBinding.DrapType)) is not { } c
+               || !Items.ContainsKey(c);
     }
 
     /// <summary>
     /// 拖拽
     /// </summary>
     /// <param name="data"></param>
-    public void Drop(IDataObject data)
+    public void Drop(IDataTransfer data)
     {
-        if (data.Get(BaseBinding.DrapType) is not string c)
+        if (data.TryGetValue(BaseBinding.DrapType) is not { } c)
         {
             return;
         }
@@ -310,14 +310,7 @@ public partial class GameGroupModel : TopModel
     {
         foreach (var item in GameList)
         {
-            if (item.IsNew)
-            {
-                item.IsDisplay = false;
-            }
-            else
-            {
-                item.IsDisplay = item.Name.Contains(value);
-            }
+            item.IsDisplay = !item.IsNew && item.Name.Contains(value);
         }
     }
 
@@ -333,7 +326,8 @@ public partial class GameGroupModel : TopModel
             {
                 continue;
             }
-            else if (item.UUID == uuid)
+
+            if (item.UUID == uuid)
             {
                 item.LoadIcon();
             }
@@ -349,15 +343,13 @@ public partial class GameGroupModel : TopModel
     {
         foreach (var item in GameList)
         {
-            if (item.IsNew)
+            if (item.IsNew || item.UUID != uuid)
             {
                 continue;
             }
-            else if (item.UUID == uuid)
-            {
-                GameList.Move(GameList.IndexOf(item), 0);
-                return true;
-            }
+
+            GameList.Move(GameList.IndexOf(item), 0);
+            return true;
         }
 
         return false;
@@ -372,15 +364,13 @@ public partial class GameGroupModel : TopModel
     {
         foreach (var item in GameList)
         {
-            if (item.IsNew)
+            if (item.IsNew || item.UUID != uuid)
             {
                 continue;
             }
-            else if (item.UUID == uuid)
-            {
-                GameList.Move(GameList.IndexOf(item), GameList.Count - 2);
-                return true;
-            }
+            
+            GameList.Move(GameList.IndexOf(item), GameList.Count - 2);
+            return true;
         }
 
         return false;
