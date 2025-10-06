@@ -89,7 +89,7 @@ public partial class GameEditModel
     /// 拖拽添加光影包
     /// </summary>
     /// <param name="data"></param>
-    public async void DropShaderpack(IDataObject data)
+    public async void DropShaderpack(IDataTransfer data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Shaderpack);
         if (res)

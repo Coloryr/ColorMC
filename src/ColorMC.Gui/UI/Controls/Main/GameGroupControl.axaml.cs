@@ -7,7 +7,7 @@ using ColorMC.Gui.UI.Model.Main;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// 游戏分组
+/// 娓告垙鍒嗙粍
 /// </summary>
 public partial class GameGroupControl : UserControl
 {
@@ -79,7 +79,7 @@ public partial class GameGroupControl : UserControl
     {
         if (e.Source is Control && DataContext is GameGroupModel model)
         {
-            Grid1.IsVisible = model.DropIn(e.Data);
+            Grid1.IsVisible = model.DropIn(e.DataTransfer);
         }
     }
 
@@ -93,7 +93,7 @@ public partial class GameGroupControl : UserControl
         Grid1.IsVisible = false;
         if (e.Source is Control && DataContext is GameGroupModel model)
         {
-            model.Drop(e.Data);
+            model.Drop(e.DataTransfer);
         }
     }
 }

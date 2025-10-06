@@ -212,7 +212,7 @@ public partial class GameEditModel
     /// 拖拽导入存档
     /// </summary>
     /// <param name="data"></param>
-    public async void DropWorld(IDataObject data)
+    public async void DropWorld(IDataTransfer data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.World);
         if (res)

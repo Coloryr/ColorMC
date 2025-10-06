@@ -149,7 +149,7 @@ public partial class GameEditModel
     /// 拖拽导入资源包
     /// </summary>
     /// <param name="data">资源包</param>
-    public async void DropResource(IDataObject data)
+    public async void DropResource(IDataTransfer data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Resourcepack);
         if (res)

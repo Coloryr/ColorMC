@@ -1946,17 +1946,19 @@ public static class GameBinding
     /// <param name="data"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<bool> AddFile(GameSettingObj obj, IDataObject data, FileType type)
+    public static async Task<bool> AddFile(GameSettingObj obj, IDataTransfer data, FileType type)
     {
-        if (!data.Contains(DataFormats.Files))
+        if (!data.Contains(DataFormat.File))
         {
             return false;
         }
-        var list = data.GetFiles();
+
+        var list = data.TryGetFiles();
         if (list == null)
         {
             return false;
         }
+
         switch (type)
         {
             case FileType.Mod:
@@ -1968,6 +1970,7 @@ public static class GameBinding
                     {
                         continue;
                     }
+
                     if (File.Exists(file) && file.ToLower().EndsWith(".jar"))
                     {
                         list1.Add(file);
@@ -1983,11 +1986,13 @@ public static class GameBinding
                     {
                         continue;
                     }
+
                     if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
                         return await obj.AddWorldZipAsync(file);
                     }
                 }
+
                 return false;
             case FileType.Resourcepack:
                 list1 = [];
@@ -1998,11 +2003,13 @@ public static class GameBinding
                     {
                         continue;
                     }
+
                     if (File.Exists(file) && file.ToLower().EndsWith(".zip"))
                     {
                         list1.Add(file);
                     }
                 }
+
                 return await obj.AddResourcepackAsync(list1);
             case FileType.Shaderpack:
                 list1 = [];
@@ -2016,6 +2023,7 @@ public static class GameBinding
                         list1.Add(file);
                     }
                 }
+
                 return await obj.AddShaderpackAsync(list1);
             case FileType.Schematic:
                 list1 = [];
@@ -2026,11 +2034,13 @@ public static class GameBinding
                         continue;
                     var file1 = file.ToLower();
                     if (File.Exists(file) &&
-                        (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt) || file1.EndsWith(Names.NameSchemExt)))
+                        (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt) ||
+                         file1.EndsWith(Names.NameSchemExt)))
                     {
                         list1.Add(file);
                     }
                 }
+
                 return obj.AddSchematic(list1);
         }
 

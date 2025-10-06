@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Model.GameEdit;
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀı±à¼­
+/// æ¸¸æˆå®ä¾‹ç¼–è¾‘
 /// </summary>
 public partial class Tab5Control : UserControl
 {
@@ -20,7 +20,7 @@ public partial class Tab5Control : UserControl
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(DataFormats.Files))
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
             Grid2.IsVisible = true;
         }
@@ -34,6 +34,6 @@ public partial class Tab5Control : UserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        (DataContext as GameEditModel)?.DropWorld(e.Data);
+        (DataContext as GameEditModel)?.DropWorld(e.DataTransfer);
     }
 }

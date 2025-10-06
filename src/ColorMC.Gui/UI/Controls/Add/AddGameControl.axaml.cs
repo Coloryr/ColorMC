@@ -13,14 +13,14 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Add;
 
 /// <summary>
-/// Ìí¼ÓÓÎÏ·ÊµÀı´°¿Ú
+/// æ·»åŠ æ¸¸æˆå®ä¾‹çª—å£
 /// </summary>
 public partial class AddGameControl : BaseUserControl
 {
-    private AddGameTab1Control _tab1;
-    private AddGameTab2Control _tab2;
-    private AddGameTab3Control _tab3;
-    private AddGameTab4Control _tab4;
+    private AddGameTab1Control? _tab1;
+    private AddGameTab2Control? _tab2;
+    private AddGameTab3Control? _tab3;
+    private AddGameTab4Control? _tab4;
 
     public AddGameControl() : base(nameof(AddGameControl))
     {
@@ -46,10 +46,10 @@ public partial class AddGameControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÉèÖÃÌí¼ÓµÄÎÄ¼ş
+    /// è®¾ç½®æ·»åŠ çš„æ–‡ä»¶
     /// </summary>
-    /// <param name="path">Â·¾¶</param>
-    /// <param name="isDir">ÊÇ·ñÊÇÄ¿Â¼</param>
+    /// <param name="path">è·¯å¾„</param>
+    /// <param name="isDir">æ˜¯å¦æ˜¯ç›®å½•</param>
     public void AddFile(string path, bool isDir)
     {
         var model = (DataContext as AddGameModel)!;
@@ -66,70 +66,65 @@ public partial class AddGameControl : BaseUserControl
     }
 
     /// <summary>
-    /// Ô¤ÉèÓÎÏ··Ö×é
+    /// é¢„è®¾æ¸¸æˆåˆ†ç»„
     /// </summary>
     /// <param name="group"></param>
     public void SetGroup(string? group)
     {
-        if (DataContext is AddGameModel model)
+        if (DataContext is not AddGameModel model)
         {
-            model.DefaultGroup ??= group;
-            model.Group ??= group;
+            return;
         }
+
+        model.DefaultGroup ??= group;
+        model.Group ??= group;
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == AddGameModel.NameTab1)
+        Content1.Child = e.PropertyName switch
         {
-            Content1.Child = _tab1 ??= new();
-        }
-        else if (e.PropertyName == AddGameModel.NameTab2)
-        {
-            Content1.Child = _tab2 ??= new();
-        }
-        else if (e.PropertyName == AddGameModel.NameTab3)
-        {
-            Content1.Child = _tab3 ??= new();
-        }
-        else if (e.PropertyName == AddGameModel.NameTab4)
-        {
-            Content1.Child = _tab4 ??= new();
-        }
-        else if (e.PropertyName == AddGameModel.NameBack)
-        {
-            Content1.Child = null;
-        }
+            AddGameModel.NameTab1 => _tab1 ??= new(),
+            AddGameModel.NameTab2 => _tab2 ??= new(),
+            AddGameModel.NameTab3 => _tab3 ??= new(),
+            AddGameModel.NameTab4 => _tab4 ??= new(),
+            AddGameModel.NameBack => null,
+            _ => Content1.Child
+        };
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        //ÊÇ·ñÊÇÎÄ¼şÍÏ×§
-        if (e.Data.Contains(DataFormats.Files))
+        //æ˜¯å¦æ˜¯æ–‡ä»¶æ‹–æ‹½
+        if (e.DataTransfer.Contains(DataFormat.File))
         {
-            //È¡³öÎÄ¼şĞÅÏ¢
-            var files = e.Data.GetFiles();
-            if (files == null || files.Count() > 1)
+            //å–å‡ºæ–‡ä»¶ä¿¡æ¯
+            var files = e.DataTransfer.TryGetFiles();
+            if (files == null || files.Length > 1)
             {
                 return;
             }
 
-            var item = files.ToList()[0];
-            if (item == null)
+            var item = files.FirstOrDefault();
+            switch (item)
             {
-                return;
-            }
+                case null:
+                    return;
+                //åˆ¤æ–­è·¯å¾„è¿˜æ˜¯æ–‡ä»¶æ˜¾ç¤ºæ–‡å­—
+                case IStorageFolder forder when Directory.Exists(forder.GetPath()):
+                    Grid2.IsVisible = true;
+                    Label1.Text = App.Lang("AddGameWindow.Text2");
+                    break;
+                default:
+                {
+                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
+                    {
+                        Grid2.IsVisible = true;
+                        Label1.Text = App.Lang("MainWindow.Text25");
+                    }
 
-            //ÅĞ¶ÏÂ·¾¶»¹ÊÇÎÄ¼şÏÔÊ¾ÎÄ×Ö
-            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
-            {
-                Grid2.IsVisible = true;
-                Label1.Text = App.Lang("AddGameWindow.Text2");
-            }
-            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
-            {
-                Grid2.IsVisible = true;
-                Label1.Text = App.Lang("MainWindow.Text25");
+                    break;
+                }
             }
         }
     }
@@ -142,39 +137,41 @@ public partial class AddGameControl : BaseUserControl
     private void Drop(object? sender, DragEventArgs e)
     {
         Grid2.IsVisible = false;
-        if (e.Data.Contains(DataFormats.Files))
+        if (!e.DataTransfer.Contains(DataFormat.File))
         {
-            //È¡³öÎÄ¼şĞÅÏ¢
-            var files = e.Data.GetFiles();
-            if (files == null || files.Count() > 1)
-            {
-                return;
-            }
+            return;
+        }
 
-            var item = files.ToList()[0];
-            if (item == null)
-            {
-                return;
-            }
+        //å–å‡ºæ–‡ä»¶ä¿¡æ¯
+        var files = e.DataTransfer.TryGetFiles();
+        if (files == null || files.Length > 1)
+        {
+            return;
+        }
 
-            //Ö»µ¼ÈëÖ§³ÖµÄÀàĞÍ
-            var model = (DataContext as AddGameModel)!;
+        var item = files.FirstOrDefault();
+        if (item == null)
+        {
+            return;
+        }
 
-            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
-            {
-                model.GoTab(AddGameModel.NameTab3);
-                model.SetPath(item.GetPath()!);
-            }
-            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
-            {
-                model.GoTab(AddGameModel.NameTab2);
-                model.SetFile(item.GetPath()!);
-            }
+        //åªå¯¼å…¥æ”¯æŒçš„ç±»å‹
+        var model = (DataContext as AddGameModel)!;
+
+        if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+        {
+            model.GoTab(AddGameModel.NameTab3);
+            model.SetPath(item.GetPath()!);
+        }
+        else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
+        {
+            model.GoTab(AddGameModel.NameTab2);
+            model.SetFile(item.GetPath()!);
         }
     }
 
     /// <summary>
-    /// ÉèÖÃÌí¼ÓµÄÓÎÏ··Ö×é
+    /// è®¾ç½®æ·»åŠ çš„æ¸¸æˆåˆ†ç»„
     /// </summary>
     /// <returns></returns>
     public string? GetGroup()

@@ -50,67 +50,74 @@ public partial class MainControl : BaseUserControl
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
-        AddHandler(DragDrop.DropEvent, Drop);
+        AddHandler(DragDrop.DropEvent, DropAsync);
 
         BaseBinding.LoadDone += LoadDone;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control)
+        if (e.Key != Key.F || e.KeyModifiers != KeyModifiers.Control
+                           || DataContext is not MainModel model
+                           || Content1.Child is not MainGamesControl con)
         {
-            if (DataContext is MainModel model
-                && Content1.Child is MainGamesControl con)
-            {
-                if (model.GameSearch)
-                {
-                    model.SearchClose();
-                }
-                else
-                {
-                    model.Search();
-                    con.Search.Focus();
-                }
-            }
+            return Task.FromResult(false);
         }
 
-        return Task.FromResult(false);
+        if (model.GameSearch)
+        {
+            model.SearchClose();
+        }
+        else
+        {
+            model.Search();
+            con.Search.Focus();
+        }
+
+        return Task.FromResult(true);
     }
 
     private void DragEnter(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(BaseBinding.DrapType))
+        if (e.DataTransfer.Contains(BaseBinding.DrapType))
         {
             return;
         }
-        if (e.Data.Contains(DataFormats.Text))
+        if (e.DataTransfer.Contains(DataFormat.Text))
         {
             Grid2.IsVisible = true;
             Label1.Text = App.Lang("UserWindow.Text8");
         }
-        else if (e.Data.Contains(DataFormats.Files))
+        else if (e.DataTransfer.Contains(DataFormat.File))
         {
-            var files = e.Data.GetFiles();
-            if (files == null || files.Count() > 1)
+            var files = e.DataTransfer.TryGetFiles();
+            if (files == null || files.Length > 1)
                 return;
 
-            var item = files.ToList()[0];
-            if (item == null)
-                return;
-            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+            var item = files.FirstOrDefault();
+            switch (item)
             {
-                Grid2.IsVisible = true;
-                Label1.Text = App.Lang("AddGameWindow.Text2");
-            }
-            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
-            {
-                Grid2.IsVisible = true;
-                Label1.Text = App.Lang("MainWindow.Text25");
-            }
-            else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
-            {
-                Grid2.IsVisible = true;
-                Label1.Text = App.Lang("MainWindow.Text38");
+                case null:
+                    return;
+                case IStorageFolder forder when Directory.Exists(forder.GetPath()):
+                    Grid2.IsVisible = true;
+                    Label1.Text = App.Lang("AddGameWindow.Text2");
+                    break;
+                default:
+                {
+                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
+                    {
+                        Grid2.IsVisible = true;
+                        Label1.Text = App.Lang("MainWindow.Text25");
+                    }
+                    else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
+                    {
+                        Grid2.IsVisible = true;
+                        Label1.Text = App.Lang("MainWindow.Text38");
+                    }
+
+                    break;
+                }
             }
         }
     }
@@ -120,61 +127,68 @@ public partial class MainControl : BaseUserControl
         Grid2.IsVisible = false;
     }
 
-    private async void Drop(object? sender, DragEventArgs e)
+    private async Task DropAsync(object? sender, DragEventArgs e)
     {
-        if (e.Data.Contains(BaseBinding.DrapType))
+        if (e.DataTransfer.Contains(BaseBinding.DrapType))
         {
             return;
         }
         Grid2.IsVisible = false;
-        if (e.Data.Contains(DataFormats.Text))
+        if (e.DataTransfer.Contains(DataFormat.Text))
         {
-            var str = e.Data.GetText();
+            var str = e.DataTransfer.TryGetText();
             if (str == null)
             {
                 return;
             }
             if (str.StartsWith(GuiNames.NameAuthlibKey))
             {
-                WindowManager.ShowUser(false, url: str);
+                WindowManager.ShowUser(url: str);
             }
             else if (str.StartsWith(GuiNames.NameColorMCCloudKey, StringComparison.CurrentCultureIgnoreCase))
             {
                 BaseBinding.SetCloudKey(str);
             }
         }
-        else if (e.Data.Contains(DataFormats.Files))
+        else if (e.DataTransfer.Contains(DataFormat.File))
         {
-            var files = e.Data.GetFiles();
-            if (files == null || files.Count() > 1)
+            var files = e.DataTransfer.TryGetFiles();
+            if (files == null || files.Length > 1)
                 return;
 
-            var item = files.ToList()[0];
-            if (item == null)
-                return;
-            if (item is IStorageFolder forder && Directory.Exists(forder.GetPath()))
+            var item = files.FirstOrDefault();
+            switch (item)
             {
-                WindowManager.ShowAddGame(null, true, forder.GetPath());
-            }
-            else if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
-            {
-                WindowManager.ShowAddGame(null, false, item.GetPath());
-            }
-            else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
-            {
-                if (DataContext is not MainModel model)
-                {
+                case null:
                     return;
-                }
-                if (!GameBinding.IsNotGame)
+                case IStorageFolder forder when Directory.Exists(forder.GetPath()):
+                    WindowManager.ShowAddGame(null, true, forder.GetPath());
+                    break;
+                default:
                 {
-                    var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
-                    if (res is not true)
+                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                     {
-                        return;
+                        WindowManager.ShowAddGame(null, false, item.GetPath());
                     }
+                    else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
+                    {
+                        if (DataContext is not MainModel model)
+                        {
+                            return;
+                        }
+                        if (!GameBinding.IsNotGame)
+                        {
+                            var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
+                            if (res is not true)
+                            {
+                                return;
+                            }
+                        }
+                        BaseBinding.ReadBuildConfig(model.Model, item);
+                    }
+
+                    break;
                 }
-                BaseBinding.ReadBuildConfig(model.Model, item);
             }
         }
     }

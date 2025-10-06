@@ -293,7 +293,7 @@ public partial class GameEditModel : IModEdit
     /// 拖拽导入模组
     /// </summary>
     /// <param name="data"></param>
-    public async void DropMod(IDataObject data)
+    public async void DropMod(IDataTransfer data)
     {
         var res = await GameBinding.AddFile(_obj, data, FileType.Mod);
         if (res)
