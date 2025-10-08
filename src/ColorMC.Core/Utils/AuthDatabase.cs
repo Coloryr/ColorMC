@@ -115,12 +115,7 @@ public static class AuthDatabase
     /// </summary>
     public static LoginObj? Get(string uuid, AuthType type)
     {
-        if (s_auths.TryGetValue(new() { UUID = uuid, Type = type }, out var item))
-        {
-            return item;
-        }
-
-        return null;
+        return s_auths.GetValueOrDefault(new UserKeyObj { UUID = uuid, Type = type });
     }
 
     /// <summary>

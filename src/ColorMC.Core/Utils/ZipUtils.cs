@@ -11,8 +11,7 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 压缩包处理
 /// </summary>
-public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
-    ColorMCCore.Request? GameRequest = null)
+public class ZipUtils(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Request? gameRequest = null)
 {
     private int _size = 0;
     private int _now = 0;
@@ -42,8 +41,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// <param name="zip">压缩流</param>
     /// <param name="rootPath">根路径</param>
     /// <param name="filter">文件过滤</param>
-    private async Task ZipAsync(string strFile, ZipWriter zip,
-        string rootPath, List<string>? filter)
+    private async Task ZipAsync(string strFile, ZipWriter zip, string rootPath, List<string>? filter)
     {
         if (strFile[^1] != Path.DirectorySeparatorChar) strFile += Path.DirectorySeparatorChar;
         var filenames = Directory.GetFileSystemEntries(strFile);
@@ -60,7 +58,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             else
             {
                 _now++;
-                ZipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
+                zipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
                 var buffer = PathHelper.OpenRead(file)!;
                 string tempfile = file[(rootPath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
                 using var stream = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
@@ -87,7 +85,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
         {
             string tempfile = item[(rootPath.Length + 1)..];
             _now++;
-            ZipUpdate?.Invoke(item, _now, _size);
+            zipUpdate?.Invoke(item, _now, _size);
             using var buffer = PathHelper.OpenRead(item)!;
             using var stream1 = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
             await buffer.CopyToAsync(stream1);
@@ -99,6 +97,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
     /// </summary>
     /// <param name="path">解压路径</param>
     /// <param name="file">文件名</param>
+    /// <param name="stream"></param>
     public async Task<bool> UnzipAsync(string path, string file, Stream stream)
     {
         if (file.EndsWith(Names.NameTarGzExt))
@@ -108,15 +107,14 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             _size = 0;
             _now = 0;
 
-            TarEntry? entry;
-            while ((entry = await tarArchive.GetNextEntryAsync().ConfigureAwait(false)) != null)
+            while (await tarArchive.GetNextEntryAsync().ConfigureAwait(false) is { } entry)
             {
                 var item = Path.GetFullPath($"{path}/{entry.Name}");
                 var info = new FileInfo(item);
                 info.Directory?.Create();
                 if (entry.EntryType is not TarEntryType.GlobalExtendedAttributes)
                 {
-                    ZipUpdate?.Invoke(entry.Name, 0, 0);
+                    zipUpdate?.Invoke(entry.Name, 0, 0);
                     await entry.ExtractToFileAsync(item, true);
                 }
             }
@@ -128,7 +126,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
             foreach (var e in s.Entries)
             {
                 _now++;
-                ZipUpdate?.Invoke(e.Key ?? "", _now, _size);
+                zipUpdate?.Invoke(e.Key ?? "", _now, _size);
 
                 if (!FuntionUtils.IsFile(e))
                 {
@@ -139,11 +137,11 @@ public class ZipUtils(ColorMCCore.ZipUpdate? ZipUpdate = null,
                 var info = new FileInfo(item);
                 if (PathHelper.FileHasInvalidChars(info.Name))
                 {
-                    if (GameRequest == null)
+                    if (gameRequest == null)
                     {
                         return false;
                     }
-                    var res = await GameRequest.Invoke(string.Format(
+                    var res = await gameRequest.Invoke(string.Format(
                         LanguageHelper.Get("Core.Zip.Info1"), e.Key));
                     if (!res)
                     {

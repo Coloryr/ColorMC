@@ -331,25 +331,25 @@ public static class GameArg
             window = new WindowSettingObj
             {
                 FullScreen = obj.Window.FullScreen
-                    ?? ConfigUtils.Config.Window?.FullScreen,
+                    ?? ConfigUtils.Config.Window.FullScreen,
                 Width = obj.Window.Width
-                    ?? ConfigUtils.Config.Window?.Width,
+                    ?? ConfigUtils.Config.Window.Width,
                 Height = obj.Window.Height
-                    ?? ConfigUtils.Config.Window?.Height,
+                    ?? ConfigUtils.Config.Window.Height,
             };
         }
-        if (window?.FullScreen == true)
+        if (window.FullScreen == true)
         {
             gameArg.Add("--fullscreen");
         }
         else
         {
-            if (window?.Width > 0)
+            if (window.Width > 0)
             {
                 gameArg.Add("--width");
                 gameArg.Add($"{window.Width}");
             }
-            if (window?.Height > 0)
+            if (window.Height > 0)
             {
                 gameArg.Add("--height");
                 gameArg.Add($"{window.Height}");
@@ -419,7 +419,7 @@ public static class GameArg
                 gameArg.Add(obj.ProxyHost.Password);
             }
         }
-        else if (ConfigUtils.Config.Http?.GameProxy == true)
+        else if (ConfigUtils.Config.Http.GameProxy)
         {
             if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
             {
@@ -471,18 +471,12 @@ public static class GameArg
         {
             args = new RunArgObj
             {
-                JvmArgs = obj.JvmArg.JvmArgs
-                    ?? ConfigUtils.Config.DefaultJvmArg?.JvmArgs,
-                GCArgument = obj.JvmArg.GCArgument
-                    ?? ConfigUtils.Config.DefaultJvmArg?.GCArgument,
-                GC = obj.JvmArg.GC
-                    ?? ConfigUtils.Config.DefaultJvmArg?.GC,
-                JavaAgent = obj.JvmArg.JavaAgent
-                    ?? ConfigUtils.Config.DefaultJvmArg?.JavaAgent,
-                MaxMemory = obj.JvmArg.MaxMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg?.MaxMemory,
-                MinMemory = obj.JvmArg.MinMemory
-                    ?? ConfigUtils.Config.DefaultJvmArg?.MinMemory,
+                JvmArgs = obj.JvmArg.JvmArgs ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
+                GCArgument = obj.JvmArg.GCArgument ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
+                GC = obj.JvmArg.GC ?? ConfigUtils.Config.DefaultJvmArg.GC,
+                JavaAgent = obj.JvmArg.JavaAgent ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
+                MaxMemory = obj.JvmArg.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
+                MinMemory = obj.JvmArg.MinMemory ?? ConfigUtils.Config.DefaultJvmArg.MinMemory,
                 ColorASM = obj.JvmArg.ColorASM
             };
         }
@@ -490,7 +484,7 @@ public static class GameArg
         var jvm = new List<string>();
         bool useasm = false;
         //javaagent
-        if (!string.IsNullOrWhiteSpace(args!.JavaAgent))
+        if (!string.IsNullOrWhiteSpace(args.JavaAgent))
         {
             jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
         }

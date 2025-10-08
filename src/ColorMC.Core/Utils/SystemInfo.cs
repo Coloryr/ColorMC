@@ -16,11 +16,7 @@ public static class SystemInfo
     /// <summary>
     /// 系统类型
     /// </summary>
-#if DEBUG
     public static OsType Os { get; set; } = OsType.Windows;
-#else
-    public static OsType Os { get; private set; } = OsType.Windows;
-#endif
     /// <summary>
     /// 系统进制
     /// </summary>
@@ -36,11 +32,7 @@ public static class SystemInfo
     /// <summary>
     /// 是否为Arm处理器
     /// </summary>
-#if DEBUG
     public static bool IsArm { get; set; }
-#else
-    public static bool IsArm { get; private set; }
-#endif
     /// <summary>
     /// 是否为64位处理器
     /// </summary>
@@ -58,27 +50,13 @@ public static class SystemInfo
         IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
                 RuntimeInformation.OSArchitecture == Architecture.Arm64;
 
-        if (Is64Bit = Environment.Is64BitOperatingSystem)
+        if (Is64Bit == Environment.Is64BitOperatingSystem)
         {
-            if (IsArm)
-            {
-                SystemArch = ArchEnum.aarch64;
-            }
-            else
-            {
-                SystemArch = ArchEnum.x86_64;
-            }
+            SystemArch = IsArm ? ArchEnum.aarch64 : ArchEnum.x86_64;
         }
         else
         {
-            if (IsArm)
-            {
-                SystemArch = ArchEnum.arm;
-            }
-            else
-            {
-                SystemArch = ArchEnum.x86;
-            }
+            SystemArch = IsArm ? ArchEnum.arm : ArchEnum.x86;
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -88,7 +66,7 @@ public static class SystemInfo
             var os = Environment.OSVersion;
             var version = os.Version;
 
-            if (version.Major > 10 || (version.Major == 10 && version.Build >= 22000))
+            if (version.Major > 10 || version is { Major: 10, Build: >= 22000 })
             {
                 IsWin11 = true;
             }
@@ -102,7 +80,6 @@ public static class SystemInfo
             Os = OsType.MacOS;
         }
 
-#if Phone
         if (OperatingSystem.IsAndroid())
         {
             Os = OsType.Android;
@@ -111,7 +88,6 @@ public static class SystemInfo
         {
             Os = OsType.Ios;
         }
-#endif
 
         SystemName = RuntimeInformation.OSDescription;
         System = $"Os:{Os} Arch:{SystemArch}";

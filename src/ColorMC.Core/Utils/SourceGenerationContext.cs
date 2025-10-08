@@ -39,7 +39,7 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(ForgeInstallOldObj))]
 [JsonSerializable(typeof(ModrinthPackObj))]
 [JsonSerializable(typeof(AssetsObj))]
-[JsonSerializable(typeof(Dictionary<string, Objs.ModInfoObj>))]
+[JsonSerializable(typeof(Dictionary<string, ModInfoObj>))]
 [JsonSerializable(typeof(LaunchDataObj))]
 [JsonSerializable(typeof(CustomGameArgObj))]
 [JsonSerializable(typeof(AdoptiumJavaVersionObj))]

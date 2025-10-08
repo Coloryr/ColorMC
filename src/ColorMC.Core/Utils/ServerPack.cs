@@ -20,7 +20,7 @@ public static class ServerPack
     /// 移动到旧的服务器实例
     /// </summary>
     /// <param name="obj">服务器实例</param>
-    public static void MoveToOld(this ServerPackObj obj)
+    private static void MoveToOld(this ServerPackObj obj)
     {
         var file1 = obj.Game.GetServerPackOldFile();
         var file2 = obj.Game.GetServerPackFile();
@@ -33,6 +33,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">服务器实例</param>
     /// <param name="state">更新参数</param>
+    /// <param name="token"></param>
     /// <returns>是否更新完成</returns>
     public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state, CancellationToken token)
     {
@@ -369,7 +370,7 @@ public static class ServerPack
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
                             var stream1 = PathHelper.OpenWrite(file.FullName, true);
-                            var zip = await new ZipUtils(GameRequest: arg.Request).ZipFileAsync(path1, stream1);
+                            var zip = await new ZipUtils(gameRequest: arg.Request).ZipFileAsync(path1, stream1);
                             zip.Dispose();
                             stream1.Dispose();
 
@@ -379,7 +380,7 @@ public static class ServerPack
                             {
                                 FileName = file.Name,
                                 Group = item.Group,
-                                Sha256 = HashHelper.GenSha256(stream),
+                                Sha256 = await HashHelper.GenSha256Async(stream),
                                 IsZip = true
                             };
                             item1.Url = $"files/{item1.Sha256}";
@@ -403,7 +404,7 @@ public static class ServerPack
                                 {
                                     Group = item.Group,
                                     FileName = name,
-                                    Sha256 = HashHelper.GenSha256(stream),
+                                    Sha256 = await HashHelper.GenSha256Async(stream),
                                     IsZip = false
                                 };
 
@@ -426,7 +427,7 @@ public static class ServerPack
                         {
                             Group = "",
                             FileName = item.Group,
-                            Sha256 = HashHelper.GenSha256(stream),
+                            Sha256 = await HashHelper.GenSha256Async(stream),
                             IsZip = false
                         };
 
@@ -447,7 +448,7 @@ public static class ServerPack
                     {
                         Group = "../",
                         FileName = Names.NameIconFile,
-                        Sha256 = HashHelper.GenSha256(stream),
+                        Sha256 = await HashHelper.GenSha256Async(stream),
                         IsZip = false
                     };
 
@@ -468,11 +469,11 @@ public static class ServerPack
         await Task.WhenAll(task1, task2, task3);
 
         string local = Path.Combine(path, Names.NameServerFile);
-        PathHelper.WriteText(local, JsonUtils.ToString(obj1, JsonType.ServerPackObj));
+        await PathHelper.WriteTextAsync(local, JsonUtils.ToString(obj1, JsonType.ServerPackObj));
 
         using var stream = PathHelper.OpenRead(local)!;
 
-        PathHelper.WriteText(Path.Combine(path, Names.NameShaFile), await HashHelper.GenSha1Async(stream));
+        await PathHelper.WriteTextAsync(Path.Combine(path, Names.NameShaFile), await HashHelper.GenSha1Async(stream));
 
         return !fail;
     }
@@ -482,6 +483,7 @@ public static class ServerPack
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="arg">参数</param>
+    /// <param name="token"></param>
     /// <returns>是否检查成功</returns>
     public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg, CancellationToken token)
     {
@@ -524,7 +526,7 @@ public static class ServerPack
             var res2 = await obj1.UpdateAsync(arg.State, token);
             if (res2)
             {
-                File.WriteAllText(obj.GetServerPackFile(), res1.Message!);
+                await PathHelper.WriteTextAsync(obj.GetServerPackFile(), res1.Message!);
             }
 
             return res2;

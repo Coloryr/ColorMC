@@ -406,7 +406,7 @@ public static class AddGameHelper
                     return false;
                 }
 
-                await new ZipUtils(ZipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
+                await new ZipUtils(zipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
                 arg.Update2?.Invoke(CoreRunState.End);
 
                 //尝试解析版本号

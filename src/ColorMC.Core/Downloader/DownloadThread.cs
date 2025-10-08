@@ -139,7 +139,7 @@ internal class DownloadThread
     /// </summary>
     internal void Start(DownloadTask task)
     {
-        if (_cancel != null && !_cancel.IsCancellationRequested)
+        if (_cancel is { IsCancellationRequested: false })
         {
             _cancel.Cancel();
             _cancel.Dispose();
@@ -256,7 +256,7 @@ internal class DownloadThread
                     {
                         PathHelper.Delete(item.Local);
                     }
-                    else if (ConfigUtils.Config.Http!.CheckFile && CheckFile(item))
+                    else if (ConfigUtils.Config.Http.CheckFile && CheckFile(item))
                     {
                         continue;
                     }
@@ -355,7 +355,7 @@ internal class DownloadThread
                         }
 
                         //检查文件
-                        if (ConfigUtils.Config.Http?.CheckFile == true)
+                        if (ConfigUtils.Config.Http.CheckFile)
                         {
                             if (!string.IsNullOrWhiteSpace(item.Md5))
                             {

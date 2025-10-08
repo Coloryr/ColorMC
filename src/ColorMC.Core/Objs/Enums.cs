@@ -409,10 +409,8 @@ public enum OsType
     Windows,
     Linux,
     MacOS,
-#if Phone
     Android,
     Ios
-#endif
 }
 
 /// <summary>
@@ -449,6 +447,9 @@ public enum LogLevel
     Fatal = 0b00100000,
 }
 
+/// <summary>
+/// 编码模式
+/// </summary>
 public enum LogEncoding
 { 
     UTF8 = 0,
