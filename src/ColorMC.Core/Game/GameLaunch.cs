@@ -15,106 +15,6 @@ namespace ColorMC.Core.Game;
 /// </summary>
 public static class Launch
 {
-#if Phone
-    /// <summary>
-    /// 获取Forge安装参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="v2">是否为1.13以上版本</param>
-    /// <returns>安装参数</returns>
-    private static List<string> MakeInstallForgeArg(this GameSettingObj obj, bool v2)
-    {
-        var jvm = new List<string>
-        {
-            $"-Dforgewrapper.librariesDir={LibrariesPath.BaseDir}",
-            $"-Dforgewrapper.installer={(obj.Loader == Loaders.NeoForge ?
-            DownloadItemHelper.BuildNeoForgeInstaller(obj.Version, obj.LoaderVersion!).Local :
-            DownloadItemHelper.BuildForgeInstaller(obj.Version, obj.LoaderVersion!).Local)}",
-            $"-Dforgewrapper.minecraft={LibrariesPath.GetGameFile(obj.Version)}",
-            "-Dforgewrapper.justInstall=true"
-        };
-
-        var list = new Dictionary<LibVersionObj, string>();
-
-        var forge = obj.Loader == Loaders.NeoForge
-                ? VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!
-                : VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
-        var list2 = DownloadItemHelper.BuildForgeLibs(forge, obj.Version, obj.LoaderVersion!,
-            obj.Loader == Loaders.NeoForge, v2);
-        foreach (var item in list2)
-        {
-            list.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), item.Local);
-        }
-
-        GameHelper.ReadyForgeWrapper();
-        list.AddOrUpdate(new(), GameHelper.ForgeWrapper);
-
-        var libraries = new List<string>(list.Values);
-        var classpath = new StringBuilder();
-        var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
-
-        //添加lib路径到classpath
-        foreach (var item in libraries)
-        {
-            if (File.Exists(item))
-            {
-                classpath.Append($"{item}{sep}");
-            }
-        }
-
-        var cp = classpath.ToString()[..^1].Trim();
-        jvm.Add("-cp");
-        jvm.Add(cp);
-
-        //var arg = MakeV2GameArg(obj);
-
-        jvm.Add("io.github.zekerzhayard.forgewrapper.installer.Main");
-        var forge1 = obj.Loader == Loaders.NeoForge
-                ? obj.GetNeoForgeObj()!
-                : obj.GetForgeObj()!;
-
-        jvm.AddRange(forge1.Arguments.Game);
-
-        return jvm;
-    }
-
-    private static int PhoneCmdRun(this GameSettingObj obj, string start, JavaInfo jvm1, Dictionary<string, string> env)
-    {
-        var args = start.Split('\n');
-        var arglist = new List<string>();
-        for (int a = 1; a < args.Length; a++)
-        {
-            arglist.Add(args[a].Trim());
-        }
-
-        return PhoneCmdRun(obj, arglist, jvm1, env);
-    }
-
-    private static int PhoneCmdRun(this GameSettingObj obj, List<string> arglist, JavaInfo jvm1, Dictionary<string, string> env)
-    {
-        var res2 = ColorMCCore.PhoneJvmRun(obj, jvm1, obj.GetGamePath(), arglist, env);
-        res2.StartInfo.RedirectStandardError = true;
-        res2.StartInfo.RedirectStandardInput = true;
-        res2.StartInfo.RedirectStandardOutput = true;
-        res2.OutputDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        res2.ErrorDataReceived += (a, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        res2.Start();
-        res2.BeginOutputReadLine();
-        res2.BeginErrorReadLine();
-
-        res2.WaitForExit();
-
-        return res2.ExitCode;
-    }
-#endif
-
     /// <summary>
     /// 替换参数
     /// </summary>
@@ -126,12 +26,12 @@ public static class Launch
     private static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
         return item.Replace(Names.NameArgGameName, obj.Name)
-                .Replace(Names.NameArgGameUUID, obj.UUID)
-                .Replace(Names.NameArgGameDir, obj.GetGamePath())
-                .Replace(Names.NameArgGameBaseDir, obj.GetBasePath())
-                .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
-                .Replace(Names.NameArgJavaLocal, jvm)
-                .Replace(Names.NameArgJavaArg, GetString(arg));
+            .Replace(Names.NameArgGameUUID, obj.UUID)
+            .Replace(Names.NameArgGameDir, obj.GetGamePath())
+            .Replace(Names.NameArgGameBaseDir, obj.GetBasePath())
+            .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
+            .Replace(Names.NameArgJavaLocal, jvm)
+            .Replace(Names.NameArgJavaArg, GetString(arg));
 
         static string GetString(List<string> arg)
         {
@@ -202,6 +102,7 @@ public static class Launch
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">启动参数</param>
+    /// <param name="token"></param>
     /// <exception cref="LaunchException"></exception>
     private static async Task PackUpdateAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
@@ -218,7 +119,7 @@ public static class Launch
 
             stopwatch.Stop();
             var temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
-                    obj.Name, stopwatch.Elapsed.ToString());
+                obj.Name, stopwatch.Elapsed.ToString());
             ColorMCCore.OnGameLog(obj, temp);
             Logs.Info(temp);
 
@@ -234,6 +135,7 @@ public static class Launch
                     throw new LaunchException(LaunchState.VersionError,
                         string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
                 }
+
                 var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
                 if (!res2)
                 {
@@ -251,7 +153,8 @@ public static class Launch
     /// <param name="token"></param>
     /// <returns>游戏实例启动配置</returns>
     /// <exception cref="LaunchException"></exception>
-    private static async Task<GameLaunchObj> CheckGameFileAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
+    private static async Task<GameLaunchObj> CheckGameFileAsync(GameSettingObj obj, GameLaunchArg larg,
+        CancellationToken token)
     {
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -271,33 +174,36 @@ public static class Launch
         }
 
         //下载缺失的文件
-        if (!res.IsEmpty)
+        if (res.IsEmpty)
         {
-            bool download = true;
-            if (ConfigUtils.Config.Http?.AutoDownload == false && larg.Request != null)
+            return arg1;
+        }
+
+        bool download = true;
+        if (ConfigUtils.Config.Http.AutoDownload == false && larg.Request != null)
+        {
+            download = await larg.Request(LanguageHelper.Get("Core.Launch.Info12"));
+        }
+
+        if (download)
+        {
+            larg.Update2?.Invoke(obj, LaunchState.Download);
+
+            stopwatch.Reset();
+            stopwatch.Start();
+
+            var ok = await DownloadManager.StartAsync([.. res]);
+            if (!ok)
             {
-                download = await larg.Request(LanguageHelper.Get("Core.Launch.Info12"));
+                throw new LaunchException(LaunchState.LostFile,
+                    LanguageHelper.Get("Core.Launch.Error5"));
             }
 
-            if (download)
-            {
-                larg.Update2?.Invoke(obj, LaunchState.Download);
-
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                var ok = await DownloadManager.StartAsync([.. res]);
-                if (!ok)
-                {
-                    throw new LaunchException(LaunchState.LostFile,
-                        LanguageHelper.Get("Core.Launch.Error5"));
-                }
-                stopwatch.Stop();
-                temp = string.Format(LanguageHelper.Get("Core.Launch.Info7"),
-                    obj.Name, stopwatch.Elapsed.ToString());
-                ColorMCCore.OnGameLog(obj, temp);
-                Logs.Info(temp);
-            }
+            stopwatch.Stop();
+            temp = string.Format(LanguageHelper.Get("Core.Launch.Info7"),
+                obj.Name, stopwatch.Elapsed.ToString());
+            ColorMCCore.OnGameLog(obj, temp);
+            Logs.Info(temp);
         }
 
         return arg1;
@@ -316,7 +222,7 @@ public static class Launch
         {
             envstr = str;
         }
-        else if (ConfigUtils.Config.DefaultJvmArg?.JvmEnv is { } str1)
+        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
         {
             envstr = str1;
         }
@@ -380,6 +286,7 @@ public static class Launch
                 var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
+
             var jvm = JvmPath.GetInfo(obj.JvmName);
             if (jvm == null)
             {
@@ -392,13 +299,14 @@ public static class Launch
                     }
                 }
             }
+
             if (jvm == null)
             {
                 var jv = arg1.JavaVersions.First();
                 larg.Update2?.Invoke(obj, LaunchState.JavaError);
                 larg.Nojava?.Invoke(jv);
                 throw new LaunchException(LaunchState.JavaError,
-                        string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
+                    string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
             }
 
             path = jvm.GetPath();
@@ -415,7 +323,8 @@ public static class Launch
     /// <param name="env">运行环境</param>
     /// <param name="runsame">是否不等待结束</param>
     /// <param name="admin">管理员启动</param>
-    private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame, bool admin)
+    private static void CmdRun(this GameSettingObj obj, string cmd, Dictionary<string, string> env, bool runsame,
+        bool admin)
     {
         var args = cmd.Split('\n');
         var name = args[0].Trim();
@@ -425,10 +334,12 @@ public static class Launch
         {
             name = Path.Combine(obj.GetBasePath(), name);
         }
+
         if (!File.Exists(name))
         {
             name = Path.Combine(obj.GetGamePath(), name);
         }
+
         if (!File.Exists(name))
         {
             ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Error14"), name));
@@ -446,28 +357,21 @@ public static class Launch
         {
             info.Environment.Add(item.Key, item.Value);
         }
+
         for (int a = 1; a < args.Length; a++)
         {
             info.ArgumentList.Add(args[a].Trim());
         }
+
         var p = new Process
         {
             EnableRaisingEvents = true,
             StartInfo = info
         };
-        p.OutputDataReceived += (_, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
-        p.ErrorDataReceived += (_, b) =>
-        {
-            ColorMCCore.OnGameLog(obj, b.Data);
-        };
+        p.OutputDataReceived += (_, b) => { ColorMCCore.OnGameLog(obj, b.Data); };
+        p.ErrorDataReceived += (_, b) => { ColorMCCore.OnGameLog(obj, b.Data); };
 
-        p.Exited += (_, _) =>
-        {
-            p.Dispose();
-        };
+        p.Exited += (_, _) => { p.Dispose(); };
         ProcessUtils.Launch(p, admin);
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
@@ -575,6 +479,7 @@ public static class Launch
                     {
                         ColorMCCore.OnGameLog(obj, item);
                     }
+
                     var low = item.ToLower();
                     if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
                     {
@@ -664,6 +569,7 @@ public static class Launch
                 var list1 = await JavaHelper.FindJava();
                 list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
             }
+
             var jv = game.JavaVersion?.MajorVersion ?? 8;
             var jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
             if (jvm == null)
@@ -692,7 +598,7 @@ public static class Launch
         {
             envstr = str;
         }
-        else if (ConfigUtils.Config.DefaultJvmArg?.JvmEnv is { } str1)
+        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
         {
             envstr = str1;
         }
@@ -753,7 +659,8 @@ public static class Launch
     /// <param name="token">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>游戏句柄</returns>
-    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
+    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg,
+        CancellationToken token)
     {
         ColorMCCore.GameLogClear(obj);
 
@@ -761,7 +668,8 @@ public static class Launch
         {
             //版本号检测
             if (string.IsNullOrWhiteSpace(obj.Version)
-                || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
+                || (obj.Loader is not (Loaders.Normal or Loaders.Custom) &&
+                    string.IsNullOrWhiteSpace(obj.LoaderVersion))
                 || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
             {
                 throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
@@ -775,7 +683,7 @@ public static class Launch
         {
             return null;
         }
-      
+
         //处理服务器实例
         await PackUpdateAsync(obj, larg, token);
 
@@ -832,12 +740,14 @@ public static class Launch
             {
                 ColorMCCore.OnGameLog(obj, item);
             }
+
             var low = item.ToLower();
             if (low.StartsWith("--uuid") || low.StartsWith("--accesstoken"))
             {
                 hidenext = true;
             }
         }
+
         ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
         ColorMCCore.OnGameLog(obj, path);
 
@@ -857,12 +767,12 @@ public static class Launch
         var stopwatch = new Stopwatch();
 
         //启动前运行
-        if (obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg?.LaunchPre == true)
+        if (obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg.LaunchPre)
         {
             var cmd1 = obj.JvmArg?.LaunchPreData;
-            var cmd2 = ConfigUtils.Config.DefaultJvmArg?.LaunchPreData;
+            var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
-            var prerun = obj.JvmArg?.PreRunSame ?? ConfigUtils.Config.DefaultJvmArg?.PreRunSame ?? false;
+            var prerun = obj.JvmArg?.PreRunSame ?? ConfigUtils.Config.DefaultJvmArg.PreRunSame;
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(true)))
             {
@@ -897,7 +807,7 @@ public static class Launch
             else
             {
                 string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
-                obj.Name);
+                    obj.Name);
                 ColorMCCore.OnGameLog(obj, temp2);
                 Logs.Info(temp2);
             }
@@ -976,47 +886,51 @@ public static class Launch
         ColorMCCore.AddGameHandel(obj.UUID, handel);
 
         //启动后执行
-        if (obj.JvmArg?.LaunchPost == true || ConfigUtils.Config.DefaultJvmArg?.LaunchPost == true)
+        if (obj.JvmArg?.LaunchPost != true && !ConfigUtils.Config.DefaultJvmArg.LaunchPost)
         {
-            var start = obj.JvmArg?.LaunchPostData;
-            if (string.IsNullOrWhiteSpace(start))
-            {
-                start = ConfigUtils.Config.DefaultJvmArg?.LaunchPostData;
-            }
-            if (!string.IsNullOrWhiteSpace(start) &&
-                (larg.Pre == null || await larg.Pre(false)))
-            {
-#if Phone
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    if (JvmPath.FindJava(8) is { } jvm1)
-                    {
-                        stopwatch.Start();
-                        larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-                        start = ReplaceArg(obj, path!, arg, start);
-                        obj.PhoneCmdRun(start, jvm1, env);
-                        stopwatch.Stop();
-                        string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                            obj.Name, stopwatch.Elapsed.ToString());
-                        ColorMCCore.OnGameLog(obj, temp1);
-                    }
-                }
-#else
-                stopwatch.Start();
-                larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-                start = ReplaceArg(obj, path, arg, start);
-                obj.CmdRun(start, env, false, larg.Admin);
-                stopwatch.Stop();
-                ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                    obj.Name, stopwatch.Elapsed.ToString()));
-#endif
-            }
-            else
-            {
-                ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
-                    obj.Name));
-            }
+            return handel;
         }
+
+        var start1 = obj.JvmArg?.LaunchPostData;
+        if (string.IsNullOrWhiteSpace(start1))
+        {
+            start1 = ConfigUtils.Config.DefaultJvmArg?.LaunchPostData;
+        }
+
+        if (!string.IsNullOrWhiteSpace(start1) &&
+            (larg.Pre == null || await larg.Pre(false)))
+        {
+#if Phone
+            if (SystemInfo.Os == OsType.Android)
+            {
+                if (JvmPath.FindJava(8) is { } jvm1)
+                {
+                    stopwatch.Start();
+                    larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
+                    start = ReplaceArg(obj, path!, arg, start);
+                    obj.PhoneCmdRun(start, jvm1, env);
+                    stopwatch.Stop();
+                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                        obj.Name, stopwatch.Elapsed.ToString());
+                    ColorMCCore.OnGameLog(obj, temp1);
+                }
+            }
+#else
+            stopwatch.Start();
+            larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
+            start1 = ReplaceArg(obj, path, arg, start1);
+            obj.CmdRun(start1, env, false, larg.Admin);
+            stopwatch.Stop();
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+                obj.Name, stopwatch.Elapsed.ToString()));
+#endif
+        }
+        else
+        {
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
+                obj.Name));
+        }
+
 
         return handel;
     }

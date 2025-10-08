@@ -240,6 +240,8 @@ public static class GameExport
                     }
                     break;
                 }
+            default:
+                throw new ArgumentOutOfRangeException(arg.Type.ToString());
         }
 
         return true;

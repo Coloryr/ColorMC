@@ -92,9 +92,9 @@ public static class GameLang
                             (name ?? "") + "-" + (region ?? ""));
                     }
                 }
-                catch
+                catch (Exception e)
                 {
-
+                    Logs.Error($"error with read lang file: {item.Key}", e);
                 }
             });
         }
@@ -142,9 +142,9 @@ public static class GameLang
                         Name = data.Name + "-" + data.Region
                     };
                 }
-                catch
+                catch (Exception e)
                 {
-
+                    Logs.Error($"error with read lang key: {key}", e);
                 }
             }
         }
