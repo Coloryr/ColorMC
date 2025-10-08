@@ -793,6 +793,14 @@ public static class GameArg
                         {
                             arg.GameLibs.Add(item);
                         }
+                        if (item.Later != null)
+                        {
+                            using var temp = PathHelper.OpenRead(item.Local);
+                            if (temp != null)
+                            {
+                                item.Later(temp);
+                            }
+                        }
                     }
                 }
 
@@ -998,12 +1006,19 @@ public static class GameArg
                         arg.NativeDir = LibrariesPath.GetNativeDir(null);
                     }
 
-                    var list = await item.BuildGameLibsAsync(arg.NativeDir, obj);
-                    foreach (var item1 in list)
+                    foreach (var item1 in await item.BuildGameLibsAsync(arg.NativeDir, obj))
                     {
                         if (!string.IsNullOrWhiteSpace(item1.Local))
                         {
                             arg.GameLibs.Add(item1);
+                        }
+                        if (item1.Later != null)
+                        {
+                            using var temp = PathHelper.OpenRead(item1.Local);
+                            if (temp != null)
+                            {
+                                item1.Later(temp);
+                            }
                         }
                     }
                 }
