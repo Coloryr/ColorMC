@@ -240,7 +240,7 @@ public partial class DownloadModel : TopModel
         }
         else if (state == false)
         {
-            Dispatcher.UIThread.Post(WindowClose);
+            Dispatcher.UIThread.Invoke(WindowClose);
         }
     }
 

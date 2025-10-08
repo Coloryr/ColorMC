@@ -73,13 +73,13 @@ public partial class AddModPackControlModel
             Model.PushBack(back: () =>
             {
                 _lastId = null;
-                Model.Title = App.Lang("AddModPackWindow.Title");
                 DisplayVersion = false;
             });
         }
         else
         {
             Model.PopBack();
+            Model.Title = App.Lang("AddModPackWindow.Title");
         }
     }
 

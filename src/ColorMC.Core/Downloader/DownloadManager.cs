@@ -66,6 +66,10 @@ public static class DownloadManager
             return;
         }
         s_nowTask?.Cancel();
+        foreach (var item in s_tasks)
+        {
+            item.Cancel();
+        }
         s_tasks.Clear();
         s_threads.ForEach(a => a.DownloadStop());
         State = false;
@@ -124,20 +128,17 @@ public static class DownloadManager
     internal static void TaskRunNext(DownloadArg arg)
     {
         s_nowTask = null;
-        Task.Run(() =>
+        //若没有下一个任务则全部完成
+        if (s_tasks.TryDequeue(out s_nowTask))
         {
-            //若没有下一个任务则全部完成
-            if (s_tasks.TryDequeue(out s_nowTask))
-            {
-                arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
-                Start(s_nowTask);
-            }
-            else
-            {
-                State = false;
-                arg.Update?.Invoke(s_threads.Count, State, 0);
-            }
-        });
+            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
+            Start(s_nowTask);
+        }
+        else
+        {
+            State = false;
+            arg.Update?.Invoke(s_threads.Count, State, 0);
+        }
     }
 
     /// <summary>

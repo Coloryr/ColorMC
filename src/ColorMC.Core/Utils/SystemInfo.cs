@@ -49,8 +49,9 @@ public static class SystemInfo
     {
         IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm ||
                 RuntimeInformation.OSArchitecture == Architecture.Arm64;
+        Is64Bit = Environment.Is64BitOperatingSystem;
 
-        if (Is64Bit == Environment.Is64BitOperatingSystem)
+        if (Is64Bit)
         {
             SystemArch = IsArm ? ArchEnum.aarch64 : ArchEnum.x86_64;
         }

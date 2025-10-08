@@ -104,6 +104,7 @@ internal class DownloadTask
     /// </summary>
     public void Cancel()
     {
+        _semaphore.Release();
         _items.Clear();
         _cancel.Cancel();
     }

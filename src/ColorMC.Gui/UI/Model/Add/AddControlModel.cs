@@ -546,11 +546,11 @@ public partial class AddControlModel : GameModel
             //自动设置游戏版本
             if (GameVersionList.Contains(Obj.Version))
             {
-                GameVersionOptifine = GameVersion = Obj.Version;
+                GameVersionOptifine = GameVersion = GameVersionDownload = Obj.Version;
             }
             else
             {
-                GameVersionOptifine = GameVersion = GameVersionList.FirstOrDefault();
+                GameVersionOptifine = GameVersion = GameVersionDownload = GameVersionList.FirstOrDefault();
             }
 
             SortType = type is SourceType.CurseForge ? 1 : 0;
@@ -586,13 +586,14 @@ public partial class AddControlModel : GameModel
 
             CategorieList.AddRange(_categories.Values);
 
+            //自动设置游戏版本
             if (GameVersionList.Contains(Obj.Version))
             {
-                GameVersionDownload = GameVersion = Obj.Version;
+                GameVersionOptifine = GameVersion = GameVersionDownload = Obj.Version;
             }
             else
             {
-                GameVersionDownload = GameVersion = GameVersionList.FirstOrDefault();
+                GameVersionOptifine = GameVersion = GameVersionDownload = GameVersionList.FirstOrDefault();
             }
 
             await GetList();
