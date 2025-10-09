@@ -128,7 +128,7 @@ public partial class GameConfigEditControl : BaseUserControl
         var item = model.Source.Selection;
         if (item != null)
         {
-            _ = new ConfigFlyout1(control, item, model);
+            ConfigFlyout1.Show(control, item, model);
         }
     }
 

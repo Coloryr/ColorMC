@@ -225,6 +225,29 @@ public static class GameWorlds
             //读数据
             var tag1 = tag.TryGet<NbtCompound>("Data")!;
             obj.LastPlayed = tag1.TryGet<NbtLong>("LastPlayed")!.Value;
+            if (tag1.TryGet<NbtLong>("RandomSeed") is { } seed)
+            {
+                obj.RandomSeed = seed.Value;
+            }
+            if (tag1.TryGet<NbtCompound>("WorldGenSettings") is { } setting  )
+            {
+                if (setting.TryGet<NbtLong>("seed") is { } seed1)
+                {
+                    obj.RandomSeed = seed1.Value;
+                }
+                if (setting.TryGet<NbtCompound>("dimensions")?
+                    .TryGet<NbtCompound>("minecraft:overworld")?
+                    .TryGet<NbtCompound>("generator")?
+                    .TryGet<NbtString>("settings") is { } name)
+                {
+                    obj.GeneratorName = name.Value;
+                }
+            }
+            if (tag1.TryGet<NbtString>("generatorName") is { } name1)
+            {
+                obj.GeneratorName = "minecraft:" + name1.Value;
+            }
+            
             obj.GameType = tag1.TryGet<NbtInt>("GameType")!.Value;
             obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.Value;
             obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;

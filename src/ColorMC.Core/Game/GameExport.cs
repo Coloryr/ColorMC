@@ -18,7 +18,7 @@ public static class GameExport
     /// </summary>
     /// <param name="arg">导出参数</param>
     /// <returns></returns>
-    public static async Task<bool> Export(GameExportArg arg)
+    public static async Task<bool> ExportAsync(GameExportArg arg)
     {
         using var stream = PathHelper.OpenWrite(arg.File, true);
         switch (arg.Type)
@@ -107,7 +107,6 @@ public static class GameExport
                         using var stream1 = s.WriteToStream(Names.NameManifestFile, new ZipWriterEntryOptions());
                         await stream1.WriteAsync(Encoding.UTF8.GetBytes(JsonUtils.ToString(obj, JsonType.CurseForgePackObj)));
                     }
-
                     //modlist.html
                     {
                         using var stream1 = s.WriteToStream(Names.NameModListFile, new ZipWriterEntryOptions());

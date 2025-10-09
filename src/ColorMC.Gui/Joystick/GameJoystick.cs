@@ -85,7 +85,7 @@ public class GameJoystick
     /// </summary>
     /// <param name="obj">游戏储存</param>
     /// <param name="handel">游戏操作句柄</param>
-    public static void Start(GameSettingObj obj, IGameHandel handel)
+    public static void Start(GameSettingObj obj, GameHandel handel)
     {
         if (NowGameJoystick.Remove(obj.UUID, out var value))
         {
@@ -99,7 +99,7 @@ public class GameJoystick
     /// </summary>
     /// <param name="obj">游戏储存</param>
     /// <param name="handel">游戏操作句柄</param>
-    private GameJoystick(GameSettingObj obj, IGameHandel handel)
+    private GameJoystick(GameSettingObj obj, GameHandel handel)
     {
         if (SystemInfo.Os == OsType.Windows)
         {

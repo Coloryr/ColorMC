@@ -143,16 +143,20 @@ public partial class GameControl : UserControl
             {
                 return;
             }
+
+            var pro = e.GetCurrentPoint(this);
             if (model.ShowCheck)
             {
-                e.Handled = true;
-                model.IsCheck = !model.IsCheck;
+                if (pro.Properties.IsLeftButtonPressed)
+                {
+                    e.Handled = true;
+                    model.IsCheck = !model.IsCheck;
+                }
                 return;
             }
             var select = model.IsSelect;
             model.SetSelect();
 
-            var pro = e.GetCurrentPoint(this);
             point = pro.Position;
 
             if (pro.Properties.IsRightButtonPressed)

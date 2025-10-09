@@ -9,16 +9,16 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 设置界面
 /// DNS右键菜单
 /// </summary>
-public class SettingFlyout3
+public static class SettingFlyout3
 {
-    public SettingFlyout3(Control con, SettingModel model, DnsItemModel data)
+    public static void Show(Control con, SettingModel model, DnsItemModel data)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
             {
                  model.DeleteDns(data);
             }),
-        ], con);
+        ]).Show(con);
     }
 }

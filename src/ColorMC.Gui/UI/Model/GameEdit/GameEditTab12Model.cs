@@ -95,7 +95,7 @@ public partial class GameEditModel
     /// <summary>
     /// 删除结构文件
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">结构文件</param>
     public async void DeleteSchematic(SchematicObj obj)
     {
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab12.Info2"));
@@ -106,5 +106,16 @@ public partial class GameEditModel
         await GameBinding.DeleteSchematic(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadSchematic();
+    }
+
+    /// <summary>
+    /// 删除所选结构文件
+    /// </summary>
+    public void DeleteSchematic()
+    {
+        if (SchematicItem is { } item)
+        {
+            DeleteSchematic(item);
+        }
     }
 }

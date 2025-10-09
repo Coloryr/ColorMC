@@ -12,37 +12,33 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 配置文件编辑页面
 /// Nbt标签右键菜单
 /// </summary>
-public class ConfigFlyout1
+public static class ConfigFlyout1
 {
-    private readonly TreeDataGridRowSelectionModel<NbtNodeModel> _list;
-    private readonly GameConfigEditModel _model;
-    private readonly NbtNodeModel? _item;
-
-    public ConfigFlyout1(Control con, ITreeDataGridSelection list, GameConfigEditModel model)
+    public static void Show(Control con, ITreeDataGridSelection list, GameConfigEditModel model)
     {
-        _model = model;
-        _list = (list as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
+        var _list = (list as TreeDataGridRowSelectionModel<NbtNodeModel>)!;
 
         if (_list.Count == 0)
             return;
 
         bool delete = false, add = false, editKey = false, editValue = false;
 
-        if (_list.Count == 1)
+        NbtNodeModel? item = null;
+        if (_list.Count == 1 && _list.SelectedItem != null)
         {
-            _item = _list.SelectedItem!;
+            item = _list.SelectedItem;
 
-            add = _item.NbtType switch
+            add = item.NbtType switch
             {
                 NbtType.NbtList => true,
                 NbtType.NbtCompound => true,
                 _ => false
             };
 
-            if (_item.Parent != null)
+            if (item.Parent != null)
             {
                 delete = true;
-                editValue = _item.NbtType switch
+                editValue = item.NbtType switch
                 {
                     NbtType.NbtByte => true,
                     NbtType.NbtShort => true,
@@ -58,8 +54,8 @@ public class ConfigFlyout1
                 };
             }
 
-            if (_item.Parent?.Nbt is ChunkNbt
-                && _item.Key is "xPos" or "yPos" or "zPos")
+            if (item.Parent?.Nbt is ChunkNbt
+                && item.Key is "xPos" or "yPos" or "zPos")
             {
                 editKey = false;
                 delete = false;
@@ -67,16 +63,16 @@ public class ConfigFlyout1
             }
             else
             {
-                editKey = !string.IsNullOrWhiteSpace(_item.Key);
+                editKey = !string.IsNullOrWhiteSpace(item.Key);
             }
         }
         else
         {
             add = false;
             editKey = false;
-            foreach (var item in _list.SelectedItems)
+            foreach (var item1 in _list.SelectedItems)
             {
-                if (item?.Parent != null)
+                if (item1?.Parent != null)
                 {
                     delete = true;
                     break;
@@ -84,32 +80,32 @@ public class ConfigFlyout1
             }
         }
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.Add"), add, () =>
             {
-                _model.AddItem(_item!);
+                model.AddItem(item);
             }),
             new FlyoutMenuObj(App.Lang("Button.Delete"), delete, ()=>
             {
-                if (_item == null)
+                if (item == null)
                 {
-                    _model.Delete(_list.SelectedItems);
+                    model.Delete(_list.SelectedItems);
                 }
                 else
                 {
-                    _model.Delete(_item!);
+                    model.Delete(item!);
                 }
             }),
             new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
             {
-                _model.SetKey(_item!);
+                model.SetKey(item);
             }),
             new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
             {
-                _model.SetValue(_item!);
+                model.SetValue(item);
             }),
-            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text5"), true, _model.Find),
-        ], con);
+            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text5"), true, model.Find),
+        ]).Show(con);
     }
 }

@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Text;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
@@ -16,37 +15,7 @@ namespace ColorMC.Core.Game;
 public static class Launch
 {
     /// <summary>
-    /// 替换参数
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="jvm">JAVA位置</param>
-    /// <param name="arg">JVM参数</param>
-    /// <param name="item">命令</param>
-    /// <returns>参数</returns>
-    private static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
-    {
-        return item.Replace(Names.NameArgGameName, obj.Name)
-            .Replace(Names.NameArgGameUUID, obj.UUID)
-            .Replace(Names.NameArgGameDir, obj.GetGamePath())
-            .Replace(Names.NameArgGameBaseDir, obj.GetBasePath())
-            .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
-            .Replace(Names.NameArgJavaLocal, jvm)
-            .Replace(Names.NameArgJavaArg, GetString(arg));
-
-        static string GetString(List<string> arg)
-        {
-            var data = new StringBuilder();
-            foreach (var item in arg)
-            {
-                data.AppendLine(item);
-            }
-
-            return data.ToString();
-        }
-    }
-
-    /// <summary>
-    /// 登录账户
+    /// 实例启动前登录账户
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">启动参数</param>
@@ -524,7 +493,7 @@ public static class Launch
             //启动进程
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var handel = new DesktopGameHandel(item1);
+            var handel = new GameHandel(item1);
             stopwatch.Stop();
             var temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
                 item1.Obj.Name, stopwatch.Elapsed.ToString());
@@ -539,7 +508,7 @@ public static class Launch
     }
 
     /// <summary>
-    /// 生成游戏启动参数
+    /// 生成游戏启动参数，不用于启动，用于生成启动脚本
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">请求参数</param>
@@ -659,7 +628,7 @@ public static class Launch
     /// <param name="token">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>游戏句柄</returns>
-    public static async Task<IGameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg,
+    public static async Task<GameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg,
         CancellationToken token)
     {
         ColorMCCore.GameLogClear(obj);
@@ -776,33 +745,16 @@ public static class Launch
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(true)))
             {
-#if Phone
-                if (SystemInfo.Os == OsType.Android && start.StartsWith(JAVA_LOCAL))
-                {
-                    if (JvmPath.FindJava(8) is { } jvm1)
-                    {
-                        stopwatch.Start();
-                        larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
-                        start = ReplaceArg(obj, path!, arg, start);
-                        obj.PhoneCmdRun(start, jvm1, env);
-                        stopwatch.Stop();
-                        string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
-                            obj.Name, stopwatch.Elapsed.ToString());
-                        ColorMCCore.OnGameLog(obj, temp1);
-                    }
-                }
-#else
                 stopwatch.Reset();
                 stopwatch.Start();
                 larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
-                start = ReplaceArg(obj, path, arg, start);
+                start = obj.ReplaceArg(path, arg, start);
                 obj.CmdRun(start, env, prerun, larg.Admin);
                 stopwatch.Stop();
                 string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
                     obj.Name, stopwatch.Elapsed.ToString());
                 ColorMCCore.OnGameLog(obj, temp1);
                 Logs.Info(temp1);
-#endif
             }
             else
             {
@@ -817,54 +769,15 @@ public static class Launch
         {
             return null;
         }
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            //安装Forge
-            var version = VersionPath.GetVersion(obj.Version)!;
-            var v2 = version.IsGameVersionV2();
-            if (v2 && obj.Loader is Loaders.Forge or Loaders.NeoForge)
-            {
-                var obj1 = obj.Loader is Loaders.Forge
-                    ? VersionPath.GetForgeInstallObj(obj.Version, obj.LoaderVersion!)!
-                    : VersionPath.GetNeoForgeInstallObj(obj.Version, obj.LoaderVersion!)!;
-                var install = CheckHelpers.CheckForgeInstall(obj1,
-                    obj.LoaderVersion!, obj.Loader is Loaders.NeoForge);
-                if (install)
-                {
-                    larg.Update2?.Invoke(obj, LaunchState.InstallForge);
-                    var jvm1 = JvmPath.FindJava(8) ?? throw new LaunchException(LaunchState.JavaError,
-                            LanguageHelper.Get("Core.Launch.Error9"));
-
-                    var res2 = obj.PhoneCmdRun(obj.MakeInstallForgeArg(v2), jvm1, env);
-
-                    if (res2 != 0)
-                    {
-                        throw new LaunchException(LaunchState.LoaderError,
-                            LanguageHelper.Get("Core.Launch.Error10"));
-                    }
-                }
-            }
-        }
-#endif
         if (token.IsCancellationRequested)
         {
             return null;
         }
 
         //启动进程
-        IGameHandel? handel;
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            handel = ColorMCCore.PhoneGameLaunch(larg.Auth, obj, jvm!, arg, env);
-        }
-        else
-        {
-#else
         stopwatch.Reset();
         stopwatch.Start();
-        handel = new DesktopGameHandel(new GameRunObj
+        var handel = new GameHandel(new GameRunObj
         {
             Obj = obj,
             Arg = arg,
@@ -873,10 +786,6 @@ public static class Launch
             Auth = larg.Auth,
             Admin = larg.Admin
         });
-#endif
-#if Phone
-        }
-#endif
         stopwatch.Stop();
         var temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
             obj.Name, stopwatch.Elapsed.ToString());
@@ -900,30 +809,13 @@ public static class Launch
         if (!string.IsNullOrWhiteSpace(start1) &&
             (larg.Pre == null || await larg.Pre(false)))
         {
-#if Phone
-            if (SystemInfo.Os == OsType.Android)
-            {
-                if (JvmPath.FindJava(8) is { } jvm1)
-                {
-                    stopwatch.Start();
-                    larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-                    start = ReplaceArg(obj, path!, arg, start);
-                    obj.PhoneCmdRun(start, jvm1, env);
-                    stopwatch.Stop();
-                    string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info9"),
-                        obj.Name, stopwatch.Elapsed.ToString());
-                    ColorMCCore.OnGameLog(obj, temp1);
-                }
-            }
-#else
             stopwatch.Start();
             larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-            start1 = ReplaceArg(obj, path, arg, start1);
+            start1 = obj.ReplaceArg(path, arg, start1);
             obj.CmdRun(start1, env, false, larg.Admin);
             stopwatch.Stop();
             ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
                 obj.Name, stopwatch.Elapsed.ToString()));
-#endif
         }
         else
         {

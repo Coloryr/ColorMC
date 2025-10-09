@@ -35,7 +35,7 @@ public partial class Tab3Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new BuildPackFlyout1(control, model);
+            BuildPackFlyout1.Show(control, model);
         });
     }
 }

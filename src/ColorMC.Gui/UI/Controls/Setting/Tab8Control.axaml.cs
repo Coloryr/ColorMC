@@ -50,7 +50,7 @@ public partial class Tab8Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new SettingFlyout2(control, model, model.InputItem);
+            SettingFlyout2.Show(control, model, model.InputItem);
         });
     }
 
@@ -63,7 +63,7 @@ public partial class Tab8Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new SettingFlyout2(control, model, model.InputAxisItem);
+            SettingFlyout2.Show(control, model, model.InputAxisItem);
         });
     }
 }

@@ -57,12 +57,12 @@ public partial class GameGroupControl : UserControl
 
     private static void Flyout(Control con, GameGroupModel model)
     {
-        _ = new MainFlyout1(con, model);
+        MainFlyout1.Show(con, model);
     }
 
     private static void Flyout1(Control con, GameGroupModel model)
     {
-        _ = new MainFlyout2(con, model, model.Top);
+        MainFlyout2.Show(con, model, model.Top);
     }
 
     private void GameGroupControl_PointerExited(object? sender, PointerEventArgs e)

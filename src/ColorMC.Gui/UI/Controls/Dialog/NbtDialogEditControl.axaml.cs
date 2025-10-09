@@ -45,7 +45,7 @@ public partial class NbtDialogEditControl : UserControl
         }
         if (model.DataItem != null)
         {
-            _ = new ConfigFlyout2(control, model, model.DataItem);
+            ConfigFlyout2.Show(control, model, model.DataItem);
         }
     }
 }

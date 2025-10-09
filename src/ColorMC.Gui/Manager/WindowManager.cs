@@ -866,7 +866,7 @@ public static class WindowManager
     /// <param name="obj">存档</param>
     public static void ShowConfigEdit(WorldObj obj)
     {
-        string key = obj.Game.UUID + ":" + obj.LevelName;
+        string key = obj.Game.UUID + ":" + obj.Local;
         if (GameConfigEditWindows.TryGetValue(key, out var win1))
         {
             win1.Window?.WindowActivate();

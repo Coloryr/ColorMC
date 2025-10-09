@@ -9,26 +9,22 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 云同步页面
 /// 存档右键菜单
 /// </summary>
-public class GameCloudFlyout1
+public static class GameCloudFlyout1
 {
-    private readonly WorldCloudModel _model;
-
-    public GameCloudFlyout1(Control con, WorldCloudModel model)
+    public static void Show(Control con, WorldCloudModel model)
     {
-        _model = model;
-
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.OpFile"), model.HaveLocal, () =>
             {
-                PathBinding.OpenPath(_model.World);
+                PathBinding.OpenPath(model.World);
             }),
             new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text1"),
-                model.HaveLocal, _model.Upload),
+                model.HaveLocal, model.Upload),
             new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text2"),
-                model.HaveCloud, _model.Download),
+                model.HaveCloud, model.Download),
             new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text3"),
-                model.HaveCloud,_model.DeleteCloud),
-        ], con);
+                model.HaveCloud,model.DeleteCloud),
+        ]).Show(con);
     }
 }

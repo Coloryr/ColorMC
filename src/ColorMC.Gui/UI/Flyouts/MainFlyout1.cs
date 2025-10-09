@@ -9,17 +9,17 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 主界面
 /// 多选右键菜单
 /// </summary>
-public class MainFlyout1
+public static class MainFlyout1
 {
-    public MainFlyout1(Control con, GameGroupModel model)
+    public static void Show(Control con, GameGroupModel model)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text20"), true, model.Top.StartMut),
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text22"), model.GameList.Any(item=>!item.IsNew), ()=>
             {
                 model.Top.StartMut(model);
             })
-        ], con);
+        ]).Show(con);
     }
 }

@@ -11,40 +11,40 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 游戏实例
 /// 存档右键菜单
 /// </summary>
-public class GameEditFlyout2
+public static class GameEditFlyout2
 {
-    private readonly WorldModel _model;
-
-    public GameEditFlyout2(Control con, WorldModel model)
+    public static void Show(Control con, WorldModel model)
     {
-        _model = model;
-
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpenPath(_model.World);
+                PathBinding.OpenPath(model.World);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(_model.World.Game.Version), ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(model.World.Game.Version), ()=>
             {
-                _model.TopModel.LaunchWorld(_model);
+                model.TopModel.LaunchWorld(model);
             }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text7"), true, ()=>
             {
-                _model.TopModel.Export(_model);
+                model.TopModel.Export(model);
             }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text10"), true, ()=>
             {
-                WindowManager.ShowConfigEdit(_model.World);
+                WindowManager.ShowConfigEdit(model.World);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text9"), !_model.World.Broken, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text9"), !model.World.Broken, ()=>
             {
-                _model.TopModel.BackupWorld(_model);
+                model.TopModel.BackupWorld(model);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text8"), !_model.World.Broken, ()=>
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text8"), !model.World.Broken, ()=>
             {
-                _model.TopModel.DeleteWorld(_model);
+                model.TopModel.DeleteWorld(model);
+            }),
+            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text14"), !model.World.Broken, ()=>
+            {
+                GameBinding.OpenWorldSeed(model);
             })
-        ], con);
+        ]).Show(con);
     }
 }

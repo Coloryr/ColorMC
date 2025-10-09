@@ -34,6 +34,6 @@ public partial class Tab10Control : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout5(control, model);
+        GameEditFlyout5.Show(control, model);
     }
 }

@@ -8,48 +8,38 @@ using ColorMC.Core.Utils;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 游戏进程句柄
+/// 游戏句柄
 /// </summary>
-public interface IGameHandel
-{
-    /// <summary>
-    /// 游戏实例UUID
-    /// </summary>
-    public string UUID { get; }
-    /// <summary>
-    /// 是否已经退出
-    /// </summary>
-    public bool IsExit { get; }
-    /// <summary>
-    /// 句柄
-    /// </summary>
-    public IntPtr Handel { get; }
-    /// <summary>
-    /// 结束进程
-    /// </summary>
-    public void Kill();
-}
-
-/// <summary>
-/// 桌面环境游戏句柄
-/// </summary>
-/// <param name="process">进程</param>
-/// <param name="uuid">游戏UUID</param>
-public class DesktopGameHandel : IGameHandel
+public class GameHandel
 {
     /// <summary>
     /// 游戏进程
     /// </summary>
     public Process Process { get; init; }
-
+    /// <summary>
+    /// 游戏实例UUID
+    /// </summary>
     public string UUID => _game.UUID;
-    public bool IsExit => Process.HasExited;
+    /// <summary>
+    /// 进程是否已经退出
+    /// </summary>
+    public bool IsExit { get; private set; }
+    /// <summary>
+    /// 游戏实例主窗口句柄
+    /// </summary>
     public IntPtr Handel => Process.MainWindowHandle;
+    /// <summary>
+    /// 是否为管理员启动，且无法获取句柄
+    /// </summary>
+    public bool IsOutAdmin { get; private set; }
 
     private readonly GameSettingObj _game;
-    private bool _stop;
 
-    public DesktopGameHandel(GameRunObj run)
+    /// <summary>
+    /// 游戏句柄
+    /// </summary>
+    /// <param name="run">游戏运行参数</param>
+    public GameHandel(GameRunObj run)
     {
         _game = run.Obj;
 
@@ -75,14 +65,16 @@ public class DesktopGameHandel : IGameHandel
 
         Process.Exited += (_, _) =>
         {
-            _stop = true;
+            IsExit = true;
             ColorMCCore.OnGameExit(_game, run.Auth, Process.ExitCode);
             Process.Dispose();
         };
 
         if (ProcessUtils.Launch(Process, run.Admin))
         {
+            IsOutAdmin = true;
             ColorMCCore.OnGameLog(_game, LanguageHelper.Get("Core.Game.Info2"));
+            return;
         }
 
         //监听日志
@@ -104,26 +96,28 @@ public class DesktopGameHandel : IGameHandel
         new Thread(() =>
         {
             using var reader = new StreamReader(Process.StandardOutput.BaseStream, encoding);
-            while (!_stop)
+            while (!IsExit)
             {
                 var output = reader.ReadLine();
                 ColorMCCore.OnGameLog(_game, output);
             }
         })
         {
-            Name = "ColorMC_Game_" + _game.UUID + "_StandardOutput"
+            Name = "ColorMC_Game_" + _game.UUID + "_StandardOutput",
+            IsBackground = true
         }.Start();
         new Thread(() =>
         {
             using var reader = new StreamReader(Process.StandardError.BaseStream, encoding);
-            while (!_stop)
+            while (!IsExit)
             {
                 var output = reader.ReadLine();
                 ColorMCCore.OnGameLog(_game, output);
             }
         })
         {
-            Name = "ColorMC_Game_" + _game.UUID + "_StandardError"
+            Name = "ColorMC_Game_" + _game.UUID + "_StandardError",
+            IsBackground = true
         }.Start();
     }
 

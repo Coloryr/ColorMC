@@ -34,6 +34,6 @@ public partial class Tab4Control : UserControl
         {
             return;
         }
-        _ = new ServerPackFlyout1(control, model, model.FileItem);
+        ServerPackFlyout1.Show(control, model, model.FileItem);
     }
 }

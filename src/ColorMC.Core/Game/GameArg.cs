@@ -185,20 +185,6 @@ public static class GameArg
             switch (item.ValueKind)
             {
                 case JsonValueKind.String:
-                    #region Phone
-#if Phone
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    if (str.StartsWith("-Djava.library.path")
-                        || str.StartsWith("-Djna.tmpdir")
-                        || str.StartsWith("-Dorg.lwjgl.system.SharedLibraryExtractPath")
-                        || str.StartsWith("-Dio.netty.native.workdir"))
-                    {
-                        continue;
-                    }
-                }
-#endif
-                    #endregion
                     list.Add(item.GetString()!);
                     break;
                 case JsonValueKind.Object:
@@ -268,14 +254,6 @@ public static class GameArg
                     {
                         list.AddRange(forge.Arguments.Jvm);
                     }
-                    #region Phone
-#if Phone
-                    if (SystemInfo.Os == OsType.Android)
-                    {
-                        jvm.Add("-Dforgewrapper.justLaunch=true");
-                    }
-#endif
-                    #endregion
                 }
                 break;
             case Loaders.Fabric:
@@ -629,12 +607,7 @@ public static class GameArg
             {"${user_properties}", "{}" },
             {"${user_type}", login.AuthType == AuthType.OAuth ? "msa" : "mojang" },
             {"${version_type}", "release" },
-#if Phone
-            {"${natives_directory}", SystemInfo.Os == OsType.Android
-                ? "%natives_directory%" : native },
-#else
             {"${natives_directory}", native },
-#endif
             {"${library_directory}",LibrariesPath.BaseDir },
             {"${classpath_separator}", sep },
             {"${launcher_name}","ColorMC" },
@@ -742,9 +715,9 @@ public static class GameArg
                 }
             case Loaders.Fabric:
                 return obj.GetFabricObj()!.MainClass;
-            //optifinewrapper
             case Loaders.Quilt:
                 return obj.GetQuiltObj()!.MainClass;
+            //optifinewrapper
             case Loaders.OptiFine:
                 return "com.coloryr.optifinewrapper.OptifineWrapper";
             case Loaders.Custom:
@@ -773,6 +746,7 @@ public static class GameArg
 
         arg.UseColorMCASM = jvmarg.Item2;
 
+        //非自定义加载器
         if (obj.CustomLoader?.CustomJson != true)
         {
             var game = await obj.CheckGameArgFile();
@@ -1120,30 +1094,33 @@ public static class GameArg
         return arg;
     }
 
-    public static GameArgObj.GameAssetIndexObj? FindAsset(this GameSettingObj obj)
+    /// <summary>
+    /// 替换参数
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="jvm">JAVA位置</param>
+    /// <param name="arg">JVM参数</param>
+    /// <param name="item">命令</param>
+    /// <returns>参数</returns>
+    public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
-        if (obj.CustomLoader?.CustomJson != true)
-        {
-            var version = VersionPath.GetVersion(obj.Version);
-            if (version != null)
-            {
-                return version.AssetIndex;
-            }
-        }
-        else
-        {
-            GameArgObj.GameAssetIndexObj? assetIndex = null;
-            foreach (var item in obj.CustomJson)
-            {
-                //材质
-                if (item.AssetIndex != null)
-                {
-                    assetIndex = item.AssetIndex;
-                }
-            }
-            return assetIndex;
-        }
+        return item.Replace(Names.NameArgGameName, obj.Name)
+            .Replace(Names.NameArgGameUUID, obj.UUID)
+            .Replace(Names.NameArgGameDir, obj.GetGamePath())
+            .Replace(Names.NameArgGameBaseDir, obj.GetBasePath())
+            .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
+            .Replace(Names.NameArgJavaLocal, jvm)
+            .Replace(Names.NameArgJavaArg, GetString(arg));
 
-        return null;
+        static string GetString(List<string> arg)
+        {
+            var data = new StringBuilder();
+            foreach (var item in arg)
+            {
+                data.AppendLine(item);
+            }
+
+            return data.ToString();
+        }
     }
 }

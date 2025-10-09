@@ -52,6 +52,6 @@ public partial class ScreenshotControl : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout4(control, model);
+        GameEditFlyout4.Show(control, model);
     }
 }

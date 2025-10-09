@@ -77,7 +77,7 @@ public partial class WorldControl : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout2(control, model);
+        GameEditFlyout2.Show(control, model);
     }
 
     private void Flyout1(Control control)
@@ -86,6 +86,6 @@ public partial class WorldControl : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout8(control, DataGridDataPack.SelectedItems, model);
+        GameEditFlyout8.Show(control, DataGridDataPack.SelectedItems, model);
     }
 }

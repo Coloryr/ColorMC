@@ -16,7 +16,7 @@ public class UserFlyout
     {
         _obj = model;
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("UserWindow.Flyouts.Text1"), true, ()=>
             {
@@ -39,6 +39,6 @@ public class UserFlyout
             {
                 _obj.Edit();
             })
-        ], con);
+        ]).Show(con);
     }
 }

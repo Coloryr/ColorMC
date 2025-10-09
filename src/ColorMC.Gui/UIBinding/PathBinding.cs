@@ -773,7 +773,7 @@ public static class PathBinding
 
         try
         {
-            var res = await GameExport.Export(arg);
+            var res = await GameExport.ExportAsync(arg);
             OpenFileWithExplorer(arg.File);
             return true;
         }

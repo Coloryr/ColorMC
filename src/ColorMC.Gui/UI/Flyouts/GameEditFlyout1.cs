@@ -16,9 +16,9 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 游戏实例
 /// 模组右键菜单
 /// </summary>
-public class GameEditFlyout1
+public static class GameEditFlyout1
 {
-    public GameEditFlyout1(Control con, IList list, GameEditModel model)
+    public static void Show(Control con, IList list, GameEditModel model)
     {
         ModDisplayModel obj = null!;
         bool single = false;
@@ -30,7 +30,7 @@ public class GameEditFlyout1
             obj = mods.ToList()[0];
         }
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text1"), true, () =>
             {
@@ -90,6 +90,6 @@ public class GameEditFlyout1
                 {
                     WindowManager.ShowAdd(obj!.Obj.Game, obj);
                 }),
-        ], con);
+        ]).Show(con);
     }
 }

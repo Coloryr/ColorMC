@@ -38,7 +38,7 @@ public partial class Tab5Control : UserControl
         }
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new SettingFlyout1(control, model, DataGrid1.SelectedItems);
+            SettingFlyout1.Show(control, model, DataGrid1.SelectedItems);
         });
     }
 }

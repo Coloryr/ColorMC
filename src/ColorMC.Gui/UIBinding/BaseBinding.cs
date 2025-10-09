@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -136,7 +137,10 @@ public static class BaseBinding
     /// <param name="url">网址</param>
     public static void OpenUrl(string? url)
     {
-        url = url?.Replace(" ", "%20");
+        if (url == null)
+        {
+            return;
+        }
         switch (SystemInfo.Os)
         {
             case OsType.Windows:
@@ -148,7 +152,7 @@ public static class BaseBinding
                 });
                 if (ps != null)
                 {
-                    ps.StandardInput.WriteLine($"start {url}");
+                    ps.StandardInput.WriteLine($"start \"\" \"{url}\"");
                     ps.Close();
                 }
                 break;

@@ -38,7 +38,7 @@ public partial class Tab3Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new SettingFlyout3(control, model, model.DnsItem);
+            SettingFlyout3.Show(control, model, model.DnsItem);
         });
     }
 }

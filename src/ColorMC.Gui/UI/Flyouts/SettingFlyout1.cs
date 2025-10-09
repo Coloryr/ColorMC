@@ -12,13 +12,13 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 启动器设置
 /// Java右键菜单
 /// </summary>
-public class SettingFlyout1
+public static class SettingFlyout1
 {
-    public SettingFlyout1(Control con, SettingModel model, IList list)
+    public static void Show(Control con, SettingModel model, IList list)
     {
         var java = list.Cast<JavaDisplayModel>();
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
             {
@@ -29,6 +29,6 @@ public class SettingFlyout1
 
                 model.LoadJava();
             }),
-        ], con);
+        ]).Show(con);
     }
 }

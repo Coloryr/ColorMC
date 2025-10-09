@@ -241,7 +241,7 @@ public record IntRes
 /// </summary>
 public record GameLaunchRes
 {
-    public IGameHandel? Handel;
+    public GameHandel? Handel;
     public Exception? Ex;
 }
 

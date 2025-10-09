@@ -1,5 +1,4 @@
 using System.Text;
-using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -41,8 +40,9 @@ public static class GameLogs
     /// 获取上一个崩溃日志
     /// </summary>
     /// <param name="obj">游戏实例</param>
+    /// <param name="sec">日志与当前时间相差多少秒</param>
     /// <returns>日志位置</returns>
-    public static string? GetLastCrash(this GameSettingObj obj)
+    public static string? GetLastCrash(this GameSettingObj obj, int sec = 5)
     {
         var path = obj.GetGameCrashReports();
         if (!Directory.Exists(path))
@@ -56,7 +56,7 @@ public static class GameLogs
         if (file != null)
         {
             var time = DateTime.Now - file.LastWriteTime;
-            if (time.TotalSeconds is > 0 and < 5)
+            if (time.TotalSeconds > 0 && time.TotalSeconds < sec)
             {
                 return file.FullName.Replace(path, Names.NameGameCrashLogDir);
             }

@@ -36,7 +36,7 @@ public partial class CollectItemControl : UserControl
 
         void OpenFlyout()
         {
-            _ = new CollectFlyout((sender as Control)!, model);
+            CollectFlyout.Show((sender as Control)!, model);
             e.Handled = true;
         }
 

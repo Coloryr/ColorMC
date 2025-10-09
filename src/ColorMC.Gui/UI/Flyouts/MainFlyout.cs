@@ -15,13 +15,13 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 主界面
 /// 游戏实例右键菜单
 /// </summary>
-public class MainFlyout
+public static class MainFlyout
 {
-    public MainFlyout(Control con, GameItemModel obj)
+    public static void Show(Control con, GameItemModel obj)
     {
         var run = GameManager.IsGameRun(obj.Obj);
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text3"), true, ()=>
             {
@@ -102,6 +102,6 @@ public class MainFlyout
             },
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text16"),
                 GameJoystick.NowGameJoystick.ContainsKey(obj.Obj.UUID), obj.SetJoystick),
-        ], con);
+        ]).Show(con);
     }
 }

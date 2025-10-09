@@ -9,10 +9,16 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// </summary>
 public class FlyoutsControl
 {
-    public FlyoutsControl(ICollection<FlyoutMenuObj> list, Control con)
+    private readonly MenuFlyout flyout;
+
+    public FlyoutsControl(ICollection<FlyoutMenuObj> list)
     {
-        var flyout = new MenuFlyout();
+        flyout = new MenuFlyout();
         flyout.ItemsSource = BuildItems(flyout, list);
+    }
+
+    public void Show(Control con)
+    {
         flyout.ShowAt(con, true);
     }
 

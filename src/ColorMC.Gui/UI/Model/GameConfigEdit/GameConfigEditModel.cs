@@ -439,12 +439,16 @@ public partial class GameConfigEditModel : GameModel
     /// <summary>
     /// 添加一个Nbt标签
     /// </summary>
-    /// <param name="model"></param>
-    public async void AddItem(NbtNodeModel model)
+    /// <param name="nbt">父节点</param>
+    public async void AddItem(NbtNodeModel? nbt)
     {
-        if (model.NbtType == NbtType.NbtCompound)
+        if (nbt == null)
         {
-            var list = (model.Nbt as NbtCompound)!;
+            return;
+        }
+        if (nbt.NbtType == NbtType.NbtCompound)
+        {
+            var list = (nbt.Nbt as NbtCompound)!;
 
             var model1 = new NbtDialogAddModel(UseName)
             {
@@ -469,11 +473,11 @@ public partial class GameConfigEditModel : GameModel
                 return;
             }
 
-            model.Add(model1.Key, model1.Type);
+            nbt.Add(model1.Key, model1.Type);
         }
-        else if (model.NbtType == NbtType.NbtList)
+        else if (nbt.NbtType == NbtType.NbtList)
         {
-            model.Add("", NbtType.NbtEnd);
+            nbt.Add("", NbtType.NbtEnd);
         }
         Model.Notify(App.Lang("onfigEditWindow.Info12"));
         Edit();
@@ -522,18 +526,18 @@ public partial class GameConfigEditModel : GameModel
     /// <summary>
     /// 设置Nbt标签键
     /// </summary>
-    /// <param name="model"></param>
-    public async void SetKey(NbtNodeModel model)
+    /// <param name="nbt">需要设置的NBT</param>
+    public async void SetKey(NbtNodeModel? nbt)
     {
-        if (model.Parent == null)
+        if (nbt == null || nbt.Parent == null)
         {
             return;
         }
 
-        var list = (model.Parent.Nbt as NbtCompound)!;
+        var list = (nbt.Parent.Nbt as NbtCompound)!;
         var model1 = new NbtDialogAddModel(UseName)
         {
-            Key = model.Key!,
+            Key = nbt.Key!,
             DisplayType = false,
             Title = App.Lang("ConfigEditWindow.Info5"),
             Title1 = App.Lang("ConfigEditWindow.Info3")
@@ -548,7 +552,7 @@ public partial class GameConfigEditModel : GameModel
             Model.Show(App.Lang("ConfigEditWindow.Error1"));
             return;
         }
-        else if (model1.Key == model.Key)
+        else if (model1.Key == nbt.Key)
         {
             return;
         }
@@ -558,7 +562,7 @@ public partial class GameConfigEditModel : GameModel
             return;
         }
 
-        model.EditKey(model.Key!, model1.Key);
+        nbt.EditKey(nbt.Key!, model1.Key);
         Model.Notify(App.Lang("onfigEditWindow.Info14"));
         Edit();
     }
@@ -566,17 +570,21 @@ public partial class GameConfigEditModel : GameModel
     /// <summary>
     /// 设置Nbt标签值
     /// </summary>
-    /// <param name="model"></param>
-    public async void SetValue(NbtNodeModel model)
+    /// <param name="nbt">需要设置的NBT标签</param>
+    public async void SetValue(NbtNodeModel? nbt)
     {
+        if (nbt == null)
+        {
+            return;
+        }
         //根据类型设置值
-        if (model.NbtType == NbtType.NbtByteArray)
+        if (nbt.NbtType == NbtType.NbtByteArray)
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
                 DataType = GuiNames.NameTypeByte
             };
-            var list = (model.Nbt as NbtByteArray)!;
+            var list = (nbt.Nbt as NbtByteArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
                 model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
@@ -595,13 +603,13 @@ public partial class GameConfigEditModel : GameModel
                 list.Value.Add((byte)item.GetValue());
             }
         }
-        else if (model.NbtType == NbtType.NbtIntArray)
+        else if (nbt.NbtType == NbtType.NbtIntArray)
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
                 DataType = GuiNames.NameTypeInt
             };
-            var list = (model.Nbt as NbtIntArray)!;
+            var list = (nbt.Nbt as NbtIntArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
                 model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
@@ -620,13 +628,13 @@ public partial class GameConfigEditModel : GameModel
                 list.Value.Add((int)item.GetValue());
             }
         }
-        else if (model.NbtType == NbtType.NbtLongArray)
+        else if (nbt.NbtType == NbtType.NbtLongArray)
         {
             var model1 = new NbtDialogEditModel(Model, UseName)
             {
                 DataType = GuiNames.NameTypeLong
             };
-            var list = (model.Nbt as NbtLongArray)!;
+            var list = (nbt.Nbt as NbtLongArray)!;
             for (int a = 0; a < list.Value.Count; a++)
             {
                 model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
@@ -649,7 +657,7 @@ public partial class GameConfigEditModel : GameModel
         {
             var model1 = new NbtDialogAddModel(UseName)
             {
-                Key = model.Nbt.Value,
+                Key = nbt.Nbt.Value,
                 DisplayType = false,
                 Title = App.Lang("ConfigEditWindow.Info6"),
                 Title1 = App.Lang("ConfigEditWindow.Info4"),
@@ -667,7 +675,7 @@ public partial class GameConfigEditModel : GameModel
 
             try
             {
-                model.SetValue(model1.Key);
+                nbt.SetValue(model1.Key);
             }
             catch
             {
@@ -675,7 +683,7 @@ public partial class GameConfigEditModel : GameModel
             }
         }
         Model.Notify(App.Lang("onfigEditWindow.Info14"));
-        model.Update();
+        nbt.Update();
         Edit();
     }
 

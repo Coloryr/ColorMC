@@ -11,12 +11,12 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 主界面
 /// 多选后右键菜单
 /// </summary>
-public class MainFlyout2
+public static class MainFlyout2
 {
-    public MainFlyout2(Control con, GameGroupModel model, IMutTop top)
+    public static void Show(Control con, GameGroupModel model, IMutTop top)
     {
         var list = top.GetMut();
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text22"),
                 model.GameList.Any(item=>!item.IsNew), model.MutAll),
@@ -28,6 +28,6 @@ public class MainFlyout2
                 list.Count != 0, top.MutEditGroup),
             new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text11"),
                 list.Count != 0 && !list.Any(item=>GameManager.IsGameRun(item.Obj)), top.MutDelete)
-        ], con);
+        ]).Show(con);
     }
 }

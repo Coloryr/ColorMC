@@ -78,7 +78,7 @@ public partial class Tab4Control : UserControl
         Dispatcher.UIThread.Post(() =>
         {
             var items = DataGrid1.SelectedItems;
-            _ = new GameEditFlyout1(control, items, model);
+            GameEditFlyout1.Show(control, items, model);
         });
     }
 }
