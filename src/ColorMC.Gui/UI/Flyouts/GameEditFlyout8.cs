@@ -13,9 +13,9 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 游戏实例
 /// 存档右键菜单
 /// </summary>
-public class GameEditFlyout8
+public static class GameEditFlyout8
 {
-    public GameEditFlyout8(Control con, IList list, WorldModel model)
+    public static void Show(Control con, IList list, WorldModel model)
     {
         IEnumerable<DataPackModel> mods;
         DataPackModel obj = null!;
@@ -29,7 +29,7 @@ public class GameEditFlyout8
 
         var run = GameManager.IsGameRun(model.World.Game);
 
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text1"),
                 !run, ()=>
@@ -54,6 +54,6 @@ public class GameEditFlyout8
                     model.Delete(mods);
                 }
             })
-        ], con);
+        ]).Show(con);
     }
 }

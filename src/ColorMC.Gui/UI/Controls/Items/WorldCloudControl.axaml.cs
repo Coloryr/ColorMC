@@ -49,6 +49,6 @@ public partial class WorldCloudControl : UserControl
         {
             return;
         }
-        _ = new GameCloudFlyout1(control, model);
+        GameCloudFlyout1.Show(control, model);
     }
 }

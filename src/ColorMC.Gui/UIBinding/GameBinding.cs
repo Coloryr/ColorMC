@@ -418,7 +418,7 @@ public static class GameBinding
                 GameCountUtils.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
-                if (pr is DesktopGameHandel handel)
+                if (pr is GameHandel handel)
                 {
                     GameHandel(item.Key, handel);
                 }
@@ -653,7 +653,7 @@ public static class GameBinding
             GameCountUtils.LaunchDone(obj);
             GameStateUpdate(obj);
 
-            if (pr is DesktopGameHandel handel)
+            if (pr is GameHandel handel)
             {
                 GameHandel(obj, handel);
 
@@ -2564,10 +2564,9 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="handel"></param>
-    private static void GameHandel(GameSettingObj obj, DesktopGameHandel handel)
+    private static void GameHandel(GameSettingObj obj, GameHandel handel)
     {
-        var pr = handel.Process;
-        Task.Run(() =>
+        new Thread(() =>
         {
             try
             {
@@ -2575,8 +2574,7 @@ public static class GameBinding
 
                 do
                 {
-                    if (pr.HasExited ||
-                    (s_gameConnect.TryGetValue(obj.UUID, out var temp) && temp))
+                    if (handel.IsExit || (s_gameConnect.TryGetValue(obj.UUID, out var temp) && temp))
                     {
                         break;
                     }
@@ -2584,23 +2582,23 @@ public static class GameBinding
                 }
                 while (true);
 
-                if (pr.HasExited)
+                if (handel.IsExit)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 var config = GuiConfigUtils.Config.Input;
+
                 //启用手柄支持
-                if (config.Enable && !config.Disable)
+                if (config.Enable && !config.Disable && !handel.IsOutAdmin)
                 {
                     GameJoystick.Start(obj, handel);
                 }
 
                 //修改窗口标题
-
                 if (string.IsNullOrWhiteSpace(conf?.GameTitle))
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 var ran = new Random();
@@ -2620,11 +2618,12 @@ public static class GameBinding
                 }
                 if (list.Count == 0)
                 {
-                    return Task.CompletedTask;
+                    return;
                 }
 
                 Thread.Sleep(1000);
 
+                //循环设置窗口标题
                 do
                 {
                     string title1 = "";
@@ -2644,7 +2643,7 @@ public static class GameBinding
 
                     LaunchSocketUtils.SetTitle(obj, title1);
 
-                    if (!conf.CycTitle || conf.TitleDelay <= 0 || pr.HasExited)
+                    if (!conf.CycTitle || conf.TitleDelay <= 0 || handel.IsExit)
                     {
                         break;
                     }
@@ -2657,9 +2656,11 @@ public static class GameBinding
             {
 
             }
-
-            return Task.CompletedTask;
-        });
+        })
+        {
+            Name = "ColorMC_Game_" + handel.UUID + "_Handel",
+            IsBackground = true
+        }.Start();
     }
 
     /// <summary>
@@ -3256,5 +3257,18 @@ public static class GameBinding
     public static void ReloadJson(GameSettingObj obj)
     {
         obj.ReadCustomJson();
+    }
+
+    /// <summary>
+    /// 打开种子信息
+    /// </summary>
+    /// <param name="model"></param>
+    public static void OpenWorldSeed(WorldModel model)
+    {
+        var obj = model.World;
+        var game = obj.Game;
+
+        var url = ChunkbaseApi.GenUrl(game.Version, obj.RandomSeed, obj.GeneratorName == "minecraft:large_biomes");
+        BaseBinding.OpenUrl(url);
     }
 }

@@ -38,7 +38,7 @@ public partial class Tab6Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            _ = new LockLoginFlyout(control, model.LockSelect);
+            LockLoginFlyout.Show(control, model.LockSelect);
         });
     }
 }

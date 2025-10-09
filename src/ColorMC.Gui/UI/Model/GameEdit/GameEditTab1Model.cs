@@ -618,7 +618,10 @@ public partial class GameEditModel
     public async Task LoaderVersionLoad()
     {
         EnableLoader = false;
+        var version = LoaderVersion;
+
         LoaderVersionList.Clear();
+        LoaderVersion = null;
 
         if (_loaderTypeList.Count <= LoaderType || LoaderType == -1)
         {
@@ -660,6 +663,10 @@ public partial class GameEditModel
 
         EnableLoader = true;
         LoaderVersionList.AddRange(list);
+        if (version != null)
+        {
+            LoaderVersion = version;
+        }
 
         Model.Notify(App.Lang("GameEditWindow.Tab1.Info15"));
     }
@@ -686,11 +693,13 @@ public partial class GameEditModel
 
         _loaderTypeList.Clear();
         LoaderTypeList.Clear();
+        LoaderType = -1;
+
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
-
+        
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
@@ -1054,11 +1063,12 @@ public partial class GameEditModel
             }
         }
 
-        _gameLoad = false;
-
         if (!CustomJson)
         {
             await LoaderReload();
+            await LoaderVersionLoad();
         }
+
+        _gameLoad = false;
     }
 }

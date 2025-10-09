@@ -8,7 +8,10 @@ namespace ColorMC.Core.Objs.Minecraft;
 public record WorldObj
 {
     //public byte Raining { get; set; }
-    //public long RandomSeed { get; set; }
+    /// <summary>
+    /// 地图种子
+    /// </summary>
+    public long RandomSeed { get; set; }
     //public int SpawnX { get; set; }
     //public int SpawnY { get; set; }
     //public int SpawnZ { get; set; }
@@ -39,6 +42,10 @@ public record WorldObj
     /// 难度
     /// </summary>
     public byte Difficulty { get; set; }
+    /// <summary>
+    /// 生成器名字
+    /// </summary>
+    public string GeneratorName { get; set; }
 
     /// <summary>
     /// 路径

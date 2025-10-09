@@ -9,16 +9,16 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 服务器包
 /// 文件右键菜单
 /// </summary>
-public class ServerPackFlyout1
+public static class ServerPackFlyout1
 {
-    public ServerPackFlyout1(Control con, ServerPackModel model, ServerPackConfigModel obj)
+    public static void Show(Control con, ServerPackModel model, ServerPackConfigModel obj)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
             {
                 model.DeleteFile(obj);
             }),
-        ], con);
+        ]).Show(con);
     }
 }

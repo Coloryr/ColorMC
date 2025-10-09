@@ -23,12 +23,33 @@ public record GameLaunchObj
     public bool UseColorMCASM;
 }
 
+/// <summary>
+/// 游戏实例实际运行使用的参数
+/// </summary>
 public record GameRunObj
 {
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
     public GameSettingObj Obj;
-    public string Path;
-    public List<string> Arg;
-    public Dictionary<string, string> Env;
+    /// <summary>
+    /// 使用的账户
+    /// </summary>
     public LoginObj Auth;
+    /// <summary>
+    /// 运行路径
+    /// </summary>
+    public string Path;
+    /// <summary>
+    /// 启动参数
+    /// </summary>
+    public List<string> Arg;
+    /// <summary>
+    /// 运行环境
+    /// </summary>
+    public Dictionary<string, string> Env;
+    /// <summary>
+    /// 是否管理员启动
+    /// </summary>
     public bool Admin;
 }

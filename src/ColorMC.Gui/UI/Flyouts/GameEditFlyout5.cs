@@ -9,19 +9,15 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 游戏实例
 /// 服务器右键菜单
 /// </summary>
-public class GameEditFlyout5
+public static class GameEditFlyout5
 {
-    private readonly GameEditModel _model;
-
-    public GameEditFlyout5(Control con, GameEditModel model)
+    public static void Show(Control con, GameEditModel model)
     {
-        _model = model;
-
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
             {
-                _model.DeleteServer(_model.ServerItem!);
+                model.DeleteServer(model.ServerItem!);
             }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text13"), true, ()=>
             {
@@ -30,8 +26,8 @@ public class GameEditFlyout5
                 {
                     return;
                 }
-                GameBinding.CopyServer(top, _model.ServerItem!);
+                GameBinding.CopyServer(top, model.ServerItem!);
             })
-        ], con);
+        ]).Show(con);
     }
 }

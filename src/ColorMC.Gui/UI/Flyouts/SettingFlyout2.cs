@@ -9,11 +9,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 设置页面
 /// 手柄按钮右键菜单
 /// </summary>
-public class SettingFlyout2
+public static class SettingFlyout2
 {
-    public SettingFlyout2(Control con, SettingModel model, InputButtonModel data)
+    public static void Show(Control con, SettingModel model, InputButtonModel data)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text2"), true, ()=>
             {
@@ -29,6 +29,6 @@ public class SettingFlyout2
                     model.DeleteInput(key);
                 }
             }),
-        ], con);
+        ]).Show(con);
     }
 }

@@ -131,6 +131,6 @@ public partial class ResourcePackControl : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout3(control, model);
+        GameEditFlyout3.Show(control, model);
     }
 }

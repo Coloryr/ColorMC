@@ -9,24 +9,17 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 游戏实例
 /// 光影包右键菜单
 /// </summary>
-public class GameEditFlyout6
+public static class GameEditFlyout6
 {
-    private readonly GameEditModel _obj;
-
-    public GameEditFlyout6(Control con, GameEditModel obj)
+    public static void Show(Control con, GameEditModel obj)
     {
-        _obj = obj;
-
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
             {
-                PathBinding.OpenFileWithExplorer(_obj.ShaderpackItem!.Local);
+                PathBinding.OpenFileWithExplorer(obj.ShaderpackItem!.Local);
             }),
-            new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
-            {
-                _obj.DeleteShaderpack(_obj.ShaderpackItem!);
-            })
-        ], con);
+            new FlyoutMenuObj(App.Lang("Button.Delete"), true, obj.DeleteShaderpack)
+        ]).Show(con);
     }
 }

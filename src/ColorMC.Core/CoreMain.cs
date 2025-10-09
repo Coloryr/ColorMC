@@ -154,58 +154,22 @@ public static class ColorMCCore
     /// 游戏实例图标修改事件
     /// </summary>
     public static event Action<GameSettingObj>? InstanceIconChange;
-
-#if Phone
-    /// <summary>
-    /// 手机端启动
-    /// </summary>
-    public static Func<LoginObj, GameSettingObj, JavaInfo, List<string>,
-        Dictionary<string, string>, IGameHandel> PhoneGameLaunch
-    { internal get; set; }
-    /// <summary>
-    /// 手机端Jvm安装
-    /// </summary>
-    public static Action<Stream, string, ZipUpdate?> PhoneJvmInstall { internal get; set; }
-    /// <summary>
-    /// 手机端读Java信息
-    /// </summary>
-    public static Func<string, Process?> PhoneStartJvm { internal get; set; }
-    /// <summary>
-    /// 手机端读文件
-    /// </summary>
-    public static Func<string, Stream?> PhoneReadFile { internal get; set; }
-    /// <summary>
-    /// 手机端获取运行路径
-    /// </summary>
-    public static Func<string> PhoneGetDataDir { internal get; set; }
-    /// <summary>
-    /// 手机端Jvm运行
-    /// </summary>
-    public static Func<GameSettingObj, JavaInfo, string, List<string>,
-        Dictionary<string, string>, Process> PhoneJvmRun
-    { internal get; set; }
-#endif
-
     /// <summary>
     /// 是否为新运行
     /// </summary>
     public static bool NewStart { get; internal set; }
-
     /// <summary>
     /// 停止事件
     /// </summary>
     internal static event Action? Stop;
-
     /// <summary>
     /// 游戏窗口句柄
     /// </summary>
-    internal static readonly ConcurrentDictionary<string, IGameHandel> Games = [];
-
+    internal static readonly ConcurrentDictionary<string, GameHandel> Games = [];
     /// <summary>
     /// 启动器核心参数
     /// </summary>
     internal static CoreInitArg CoreArg;
-
     /// <summary>
     /// 游戏日志
     /// </summary>
@@ -354,7 +318,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="uuid"></param>
     /// <param name="handel"></param>
-    internal static void AddGameHandel(string uuid, IGameHandel handel)
+    internal static void AddGameHandel(string uuid, GameHandel handel)
     {
         if (!Games.TryAdd(uuid, handel))
         {

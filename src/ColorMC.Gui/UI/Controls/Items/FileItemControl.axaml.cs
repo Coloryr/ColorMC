@@ -89,7 +89,7 @@ public partial class FileItemControl : UserControl
                 return;
             }
 
-            _ = new UrlFlyout((sender as Control)!, url, url1);
+            UrlFlyout.Show((sender as Control)!, url, url1);
             e.Handled = true;
         }
 

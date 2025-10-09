@@ -12,6 +12,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -431,7 +432,7 @@ public partial class GameItemModel : GameModel
         {
             dragData.Add(DataTransferItem.CreateFile(file));
         }
-        
+
         Dispatcher.UIThread.Post(() =>
         {
             DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
@@ -453,7 +454,7 @@ public partial class GameItemModel : GameModel
     /// <param name="con"></param>
     public void Flyout(Control con)
     {
-        _ = new MainFlyout(con, this);
+        MainFlyout.Show(con, this);
     }
 
     /// <summary>
@@ -502,7 +503,7 @@ public partial class GameItemModel : GameModel
         if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
         {
             var model = value.MakeModel();
-            var res = await DialogHost.Show(model, "MainCon");
+            var res = await DialogHost.Show(model, MainControl.DialogName);
             if (res is true)
             {
                 value.ChangeConfig(model);

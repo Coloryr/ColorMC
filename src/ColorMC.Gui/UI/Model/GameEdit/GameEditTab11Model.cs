@@ -101,7 +101,7 @@ public partial class GameEditModel
     /// <summary>
     /// 删除光影包
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">光影包</param>
     public async void DeleteShaderpack(ShaderpackObj obj)
     {
         var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab11.Info2"));
@@ -112,5 +112,16 @@ public partial class GameEditModel
         await GameBinding.DeleteShaderpack(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadShaderpack();
+    }
+
+    /// <summary>
+    /// 删除选中光影包
+    /// </summary>
+    public void DeleteShaderpack()
+    {
+        if (ShaderpackItem is { } item)
+        {
+            DeleteShaderpack(item);
+        }
     }
 }

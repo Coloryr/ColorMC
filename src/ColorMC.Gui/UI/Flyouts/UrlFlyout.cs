@@ -8,11 +8,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 下载项目
 /// 右键菜单
 /// </summary>
-public class UrlFlyout
+public static class UrlFlyout
 {
-    public UrlFlyout(Control con, string? url, string? url1)
+    public static void Show(Control con, string? url, string? url1)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("NetFrpWindow.Tab1.Text14"), url != null, ()=>
             {
@@ -22,6 +22,6 @@ public class UrlFlyout
             {
                 BaseBinding.OpenUrl(url1);
             })
-        ], con);
+        ]).Show(con);
     }
 }

@@ -58,7 +58,7 @@ public partial class Tab12Control : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout7(control, model);
+        GameEditFlyout7.Show(control, model);
     }
 }
 

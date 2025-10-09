@@ -58,6 +58,6 @@ public partial class Tab11Control : UserControl
         {
             return;
         }
-        _ = new GameEditFlyout6(control, model);
+        GameEditFlyout6.Show(control, model);
     }
 }

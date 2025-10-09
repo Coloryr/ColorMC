@@ -9,11 +9,11 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// 收藏页面
 /// 收藏项目右键
 /// </summary>
-public class CollectFlyout
+public static class CollectFlyout
 {
-    public CollectFlyout(Control con, CollectItemModel model)
+    public static void Show(Control con, CollectItemModel model)
     {
-        _ = new FlyoutsControl(
+        new FlyoutsControl(
         [
             new FlyoutMenuObj(App.Lang("CollectFlyout.Text1"), model.Add.HaveSelect(), model.Add.Install),
             new FlyoutMenuObj(App.Lang("NetFrpWindow.Tab1.Text14"), true, ()=>
@@ -22,6 +22,6 @@ public class CollectFlyout
             }),
             new FlyoutMenuObj(App.Lang("CollectFlyout.Text2"), model.Add.HaveSelect(), model.Add.DeleteSelect),
             new FlyoutMenuObj(App.Lang("CollectFlyout.Text3"), model.Add.HaveGroup(), model.Add.GroupSelect),
-        ], con);
+        ]).Show(con);
     }
 }

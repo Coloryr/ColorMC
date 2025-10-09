@@ -4,6 +4,7 @@ using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
+using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives.Zip;
@@ -1125,5 +1126,37 @@ public static class GameHelper
         res.Done.Sort();
 
         return res;
+    }
+
+    /// <summary>
+    /// 查找材质
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>实例版本使用的材质信息</returns>
+    public static GameArgObj.GameAssetIndexObj? FindAsset(this GameSettingObj obj)
+    {
+        if (obj.CustomLoader?.CustomJson != true)
+        {
+            var version = VersionPath.GetVersion(obj.Version);
+            if (version != null)
+            {
+                return version.AssetIndex;
+            }
+        }
+        else
+        {
+            GameArgObj.GameAssetIndexObj? assetIndex = null;
+            foreach (var item in obj.CustomJson)
+            {
+                //材质
+                if (item.AssetIndex != null)
+                {
+                    assetIndex = item.AssetIndex;
+                }
+            }
+            return assetIndex;
+        }
+
+        return null;
     }
 }
