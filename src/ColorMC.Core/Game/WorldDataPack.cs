@@ -201,21 +201,19 @@ public static class WorldDataPack
                     dis.Add(nbten!);
                     break;
                 default:
+                    if (disable)
                     {
-                        if (disable)
-                        {
-                            //启用
-                            dis.Remove(nbtdi!);
-                            ens.Add(nbtdi!);
-                        }
-                        else
-                        {
-                            //启用
-                            ens.Add(new NbtString { Value = obj.Name });
-                        }
-
-                        break;
+                        //启用
+                        dis.Remove(nbtdi!);
+                        ens.Add(nbtdi!);
                     }
+                    else
+                    {
+                        //启用
+                        ens.Add(new NbtString { Value = obj.Name });
+                    }
+
+                    break;
             }
         }
 

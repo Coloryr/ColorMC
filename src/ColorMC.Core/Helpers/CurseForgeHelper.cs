@@ -1,11 +1,13 @@
 using System.Collections.Concurrent;
 using System.Text;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -14,7 +16,13 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class CurseForgeHelper
 {
+    /// <summary>
+    /// 分类存储
+    /// </summary>
     private static CurseForgeCategoriesObj? s_categories;
+    /// <summary>
+    /// 支持的游戏版本
+    /// </summary>
     private static List<string>? s_supportVersion;
 
     /// <summary>
@@ -417,5 +425,306 @@ public static class CurseForgeHelper
         });
 
         return list;
+    }
+
+    /// <summary>
+    /// 升级CurseForge整合包
+    /// </summary>
+    /// <param name="arg">参数</param>
+    /// <returns>是否升级完成</returns>
+    private static async Task<bool> UpgradeCurseForgeModPackAsync(UpdateModPackArg arg)
+    {
+        using var stream3 = PathHelper.OpenRead(arg.Zip);
+        if (stream3 == null)
+        {
+            return false;
+        }
+        using var zFile = ZipArchive.Open(stream3);
+        CurseForgePackObj? info = null;
+        //获取主信息
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } ent)
+        {
+            try
+            {
+                using var stream = ent.OpenEntryStream();
+                info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
+            }
+            catch (Exception e)
+            {
+                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+        if (info == null)
+        {
+            return false;
+        }
+
+        arg.Update2?.Invoke(CoreRunState.Init);
+
+        //获取版本数据
+        foreach (var item in info.Minecraft.ModLoaders)
+        {
+            if (item.Id.StartsWith(Names.NameForgeKey))
+            {
+                arg.Game.Loader = Loaders.Forge;
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameForgeKey + "-", "");
+            }
+            else if (item.Id.StartsWith(Names.NameNeoForgeKey))
+            {
+                arg.Game.Loader = Loaders.NeoForge;
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameNeoForgeKey + "-", "");
+            }
+            else if (item.Id.StartsWith(Names.NameFabricKey))
+            {
+                arg.Game.Loader = Loaders.Fabric;
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameFabricKey + "-", "");
+            }
+            else if (item.Id.StartsWith(Names.NameQuiltKey))
+            {
+                arg.Game.Loader = Loaders.Quilt;
+                arg.Game.LoaderVersion = item.Id.Replace(Names.NameQuiltKey + "-", "");
+            }
+        }
+
+        //解压文件
+        foreach (var e in zFile.Entries)
+        {
+            if (!FuntionUtils.IsFile(e))
+            {
+                continue;
+            }
+            if (e.Key!.StartsWith(info.Overrides + "/"))
+            {
+                using var stream = e.OpenEntryStream();
+                string file = Path.GetFullPath(arg.Game.GetGamePath() + e.Key[info.Overrides.Length..]);
+                file = PathHelper.ReplacePathName(file);
+                using var stream1 = PathHelper.OpenWrite(file, true);
+                await stream.CopyToAsync(stream1);
+            }
+            else
+            {
+                using var stream = e.OpenEntryStream();
+                string file = Path.GetFullPath(arg.Game.GetBasePath() + "/" + e.Key);
+                file = PathHelper.ReplacePathName(file);
+                using var stream1 = PathHelper.OpenWrite(file, true);
+                await stream.CopyToAsync(stream1);
+            }
+        }
+
+        CurseForgePackObj? info3 = null;
+        var json = Path.Combine(arg.Game.GetBasePath(), Names.NameManifestFile);
+        if (File.Exists(json))
+        {
+            try
+            {
+                using var stream = PathHelper.OpenRead(json);
+                info3 = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
+            }
+            catch
+            {
+
+            }
+        }
+
+        var path = arg.Game.GetGamePath();
+
+        var list1 = new List<FileItemObj>();
+
+        int b = 0;
+
+        //筛选需要升级的资源
+        if (info3 != null)
+        {
+            var addlist = new List<CurseForgePackObj.FilesObj>();
+            var removelist = new List<CurseForgePackObj.FilesObj>();
+
+            CurseForgePackObj.FilesObj?[] temp1 = [.. info.Files];
+            CurseForgePackObj.FilesObj?[] temp2 = [.. info3.Files];
+
+            for (int index1 = 0; index1 < temp1.Length; index1++)
+            {
+                var item = temp1[index1];
+                for (int index2 = 0; index2 < temp2.Length; index2++)
+                {
+                    var item1 = temp2[index2];
+                    if (item1 == null)
+                        continue;
+                    if (item!.ProjectID == item1.ProjectID)
+                    {
+                        temp1[index1] = null;
+                        temp2[index2] = null;
+                        if (item.FileID != item1.FileID)
+                        {
+                            addlist.Add(item1);
+                            removelist.Add(item);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var item in temp1)
+            {
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    removelist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                if (arg.Game.Mods.Remove(item.ProjectID.ToString(), out var mod))
+                {
+                    PathHelper.Delete(Path.Combine(path, mod.Path, mod.File));
+                }
+            }
+
+            if (addlist.Count > 0)
+            {
+                arg.Update?.Invoke(addlist.Count, 0);
+            }
+
+            foreach (var item in addlist)
+            {
+                var res = await CurseForgeAPI.GetMod(item);
+                if (res == null || res.Data == null)
+                {
+                    return false;
+                }
+
+                var path1 = await CurseForgeHelper.GetItemPathAsync(arg.Game, res.Data);
+                var modid = res.Data.ModId.ToString();
+                var item1 = res.Data.MakeModDownloadObj(arg.Game, path1);
+                list1.Add(item1);
+
+                arg.Game.Mods.Remove(modid, out _);
+                arg.Game.Mods.TryAdd(modid, res.Data.MakeModInfo(path1.Path));
+
+                arg.Update?.Invoke(addlist.Count, ++b);
+            }
+        }
+        else
+        {
+            //没有筛选信息通过sha1筛选
+            var addlist = new List<ModInfoObj>();
+            var removelist = new List<ModInfoObj>();
+
+            var obj1 = arg.Game.CopyObj();
+            obj1.Mods.Clear();
+
+            var list = await CurseForgeHelper.GetModInfoAsync(new GetCurseForgeModInfoArg
+            {
+                Game = obj1,
+                Info = info,
+                Update = arg.Update
+            });
+            if (!list.State)
+            {
+                return false;
+            }
+
+            ModInfoObj[] temp1 = [.. arg.Game.Mods.Values];
+            ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
+
+            foreach (var item in temp1)
+            {
+                for (int a = 0; a < temp2.Length; a++)
+                {
+                    var item1 = temp2[a];
+                    if (item1 == null)
+                        continue;
+                    if (item.ModId == item1.ModId)
+                    {
+                        temp2[a] = null;
+                        if (item.FileId != item1.FileId
+                            || item.Sha1 != item1.Sha1)
+                        {
+                            addlist.Add(item1);
+                            removelist.Add(item);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var item in temp2)
+            {
+                if (item != null)
+                {
+                    addlist.Add(item);
+                }
+            }
+
+            foreach (var item in removelist)
+            {
+                var local = Path.Combine(path, item.Path, item.File);
+                if (File.Exists(local))
+                {
+                    PathHelper.Delete(local);
+                }
+                arg.Game.Mods.Remove(item.ModId);
+            }
+
+            foreach (var item in addlist)
+            {
+                list1.Add(list.List!.First(a => a.Sha1 == item.Sha1));
+                arg.Game.Mods.Add(item.ModId, item);
+            }
+        }
+
+        await DownloadManager.StartAsync(list1);
+
+        return true;
+    }
+
+    /// <summary>
+    /// 升级CurseForge整合包
+    /// </summary>
+    /// <param name="arg">参数</param>
+    /// <returns>是否升级完成</returns>
+    public static async Task<bool> UpgradeModPackAsync(UpdateCurseForgeModPackArg arg)
+    {
+        arg.Data.FixDownloadUrl();
+
+        var item = new FileItemObj()
+        {
+            Url = arg.Data.DownloadUrl,
+            Name = arg.Data.FileName,
+            Local = Path.Combine(DownloadManager.DownloadDir, arg.Data.FileName),
+        };
+
+        var res = await DownloadManager.StartAsync([item]);
+        if (!res)
+            return false;
+
+        res = await UpgradeCurseForgeModPackAsync(new UpdateModPackArg
+        {
+            Game = arg.Game,
+            Zip = item.Local,
+            Update = arg.Update,
+            Update2 = arg.Update2
+        });
+        if (res)
+        {
+            arg.Game.PID = arg.Data.ModId.ToString();
+            arg.Game.FID = arg.Data.Id.ToString();
+            arg.Game.Save();
+            arg.Game.SaveModInfo();
+        }
+
+        return res;
     }
 }

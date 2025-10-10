@@ -131,12 +131,12 @@ public static class UrlHelper
     }
 
     /// <summary>
-    /// 游戏下载
+    /// 从其他下载源获取游戏下载
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="source">下载源</param>
     /// <returns>下载地址</returns>
-    public static string DownloadGame(string mc, SourceLocal? source)
+    public static string DownloadGameOther(string mc, SourceLocal? source)
     {
         return $"{BMCLAPI}version/{mc}/client";
     }

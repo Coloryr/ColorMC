@@ -33,7 +33,8 @@ public class LanServer
         _isRun = true;
         new Thread(Run)
         {
-            Name = "ColorMC Lan Server"
+            Name = "ColorMC Lan Server",
+            IsBackground = true
         }.Start();
     }
 

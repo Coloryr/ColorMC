@@ -53,9 +53,10 @@ public static class TestItem
 
     public static void Item3()
     {
-        var list = ModPackHelper.InstallCurseForgeModPackAsync(new InstallModPackZipArg
+        var list = AddGameHelper.InstallZip(new InstallZipArg
         {
-            Zip = File.OpenRead("H:\\ColonyVenture-1.13.zip"),
+            Dir = "H:\\ColonyVenture-1.13.zip",
+            Type = PackType.CurseForge,
             Request = Program.Download,
             Overwirte = (_) => Task.FromResult(true)
         }).Result;
@@ -441,7 +442,7 @@ public static class TestItem
 
     public static void Item18()
     {
-        var motd = ServerMotd.GetServerInfo("color.coloryr.xyz", 25565).Result;
+        var motd = ServerMotd.GetServerInfoAsync("color.coloryr.xyz", 25565).Result;
 
         Console.WriteLine(motd.State);
     }

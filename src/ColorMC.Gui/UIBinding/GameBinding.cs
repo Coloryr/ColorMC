@@ -92,7 +92,7 @@ public static class GameBinding
     public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
-        var game1 = await InstancesPath.CreateGame(new CreateGameArg
+        var game1 = await InstancesPath.CreateGameAsync(new CreateGameArg
         {
             Game = game,
             Request = request,
@@ -372,7 +372,7 @@ public static class GameBinding
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
         {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
+            var server = await ServerMotd.GetServerInfoAsync(GuiConfigUtils.Config.ServerCustom.IP,
                 GuiConfigUtils.Config.ServerCustom.Port);
 
             arg.Server = new()
@@ -585,7 +585,7 @@ public static class GameBinding
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
         {
-            var server = await ServerMotd.GetServerInfo(GuiConfigUtils.Config.ServerCustom.IP,
+            var server = await ServerMotd.GetServerInfoAsync(GuiConfigUtils.Config.ServerCustom.IP,
                 GuiConfigUtils.Config.ServerCustom.Port);
 
             arg.Server = new()
@@ -1329,7 +1329,7 @@ public static class GameBinding
     /// <param name="file">截图</param>
     public static Task DeleteScreenshot(ScreenshotObj file)
     {
-        return GameScreenshots.Delete(file);
+        return GameScreenshots.DeleteAsync(file);
     }
 
     /// <summary>
@@ -1632,7 +1632,7 @@ public static class GameBinding
             return false;
         }
 
-        if (await obj.Copy(new()
+        if (await obj.CopyAsync(new()
         {
             Game = data,
             Request = request,
@@ -1861,7 +1861,7 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return ModPackHelper.UpgradeModPack(new UpdateCurseForgeModPackArg
+        return CurseForgeHelper.UpgradeModPackAsync(new UpdateCurseForgeModPackArg
         {
             Data = fid,
             Game = obj,
@@ -1882,7 +1882,7 @@ public static class GameBinding
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
-        return ModPackHelper.UpgradeModPack(new UpdateModrinthModPackArg
+        return ModrinthHelper.UpgradeModPackAsync(new UpdateModrinthModPackArg
         {
             Game = obj,
             Data = fid,
@@ -2161,7 +2161,7 @@ public static class GameBinding
     public static async Task<MessageRes> DownloadCloud(CloundListObj obj, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
-        var game = await InstancesPath.CreateGame(new CreateGameArg
+        var game = await InstancesPath.CreateGameAsync(new CreateGameArg
         {
             Game = new()
             {
@@ -2264,7 +2264,7 @@ public static class GameBinding
     /// <returns></returns>
     public static async Task<bool> DeleteGame(GameSettingObj obj)
     {
-        var res = await obj.Remove();
+        var res = await obj.RemoveAsync();
         if (res)
         {
             WindowManager.CloseGameWindow(obj);
@@ -2311,7 +2311,7 @@ public static class GameBinding
             game.LaunchData = null!;
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
-            game = await InstancesPath.CreateGame(new CreateGameArg
+            game = await InstancesPath.CreateGameAsync(new CreateGameArg
             {
                 Game = game,
                 Request = model.ShowAsync,
@@ -2341,7 +2341,7 @@ public static class GameBinding
                 model.ProgressClose();
                 model.ShowWithOk(App.Lang("GameBinding.Error10"), async () =>
                 {
-                    await game.Remove();
+                    await game.RemoveAsync();
                 });
 
                 return new();
@@ -2509,7 +2509,7 @@ public static class GameBinding
     /// <returns></returns>
     public static Task<MessageRes> SetGameLoader(GameSettingObj obj, string path)
     {
-        return obj.SetGameLoader(path);
+        return obj.SetGameLoaderAsync(path);
     }
 
     /// <summary>
@@ -2722,7 +2722,7 @@ public static class GameBinding
             });
         };
         model.Progress(App.Lang("MainWindow.Info43"));
-        var res1 = await obj.CreateGameCmd(arg);
+        var res1 = await obj.CreateGameCmdAsync(arg);
         if (!res1.Res)
         {
             model.Show(res1.Message!);

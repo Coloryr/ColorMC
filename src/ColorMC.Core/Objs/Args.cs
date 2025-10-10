@@ -281,29 +281,29 @@ public record DownloadCurseForgeArg : UnpackGameZipArg
     public required CurseForgeListObj.CurseForgeListDataObj Data1;
 }
 
-/// <summary>
-/// 安装压缩包参数
-/// </summary>
-public record InstallModPackZipArg
-{
-    /// <summary>
-    /// 压缩包位置
-    /// </summary>
-    public required Stream Zip;
-    /// <summary>
-    /// 覆盖的游戏实例名
-    /// </summary>
-    public string? Name;
-    /// <summary>
-    /// 加入的分组
-    /// </summary>
-    public string? Group;
+///// <summary>
+///// 安装压缩包参数
+///// </summary>
+//public record InstallModPackZipArg
+//{
+//    /// <summary>
+//    /// 压缩包位置
+//    /// </summary>
+//    public required Stream Zip;
+//    /// <summary>
+//    /// 覆盖的游戏实例名
+//    /// </summary>
+//    public string? Name;
+//    /// <summary>
+//    /// 加入的分组
+//    /// </summary>
+//    public string? Group;
 
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.GameOverwirte? Overwirte;
-    public ColorMCCore.PackUpdate? Update;
-    public ColorMCCore.PackState? Update2;
-}
+//    public ColorMCCore.Request? Request;
+//    public ColorMCCore.GameOverwirte? Overwirte;
+//    public ColorMCCore.PackUpdate? Update;
+//    public ColorMCCore.PackState? Update2;
+//}
 
 /// <summary>
 /// 获取CurseForge整合包Mod信息参数

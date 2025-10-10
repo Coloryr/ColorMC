@@ -198,7 +198,7 @@ public partial class NetFrpModel
         var model = new FrpShareModel();
         _ = ushort.TryParse(_localIP, out var port);
 
-        var info = await ServerMotd.GetServerInfo("localhost", port);
+        var info = await ServerMotd.GetServerInfoAsync("localhost", port);
         var version = "";
         if (info?.Version?.Name is { } version1)
         {

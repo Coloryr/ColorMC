@@ -168,16 +168,32 @@ public static class CoreHttpClient
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
     }
 
+    /// <summary>
+    /// 进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static Task<HttpResponseMessage> GetAsync(Uri url)
     {
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
     }
 
+    /// <summary>
+    /// 进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public static Task<HttpResponseMessage> GetAsync(string url, CancellationToken token)
     {
         return _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
     }
 
+    /// <summary>
+    /// 进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static async Task<Stream?> GetStreamAsync(string url)
     {
         var res = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
@@ -189,6 +205,11 @@ public static class CoreHttpClient
         return await res.Content.ReadAsStreamAsync();
     }
 
+    /// <summary>
+    /// 使用登录Client进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
     public static Task<HttpResponseMessage> LoginGetAsync(string url)
     {
         return _loginClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);

@@ -18,7 +18,7 @@ public static class JavaHelper
     {
         try
         {
-            Process p = new();
+            using var p = new Process();
             p.StartInfo.FileName = "sh";
             p.StartInfo.RedirectStandardInput = true;
             p.StartInfo.RedirectStandardOutput = true;
@@ -29,9 +29,7 @@ public static class JavaHelper
 
             var info = new FileInfo(path);
             p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/*");
-            string path1 = info.Directory!.Parent!.FullName + "/lib/*";
-            p.StandardInput.WriteLine("chmod a+x " + path1);
-
+            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.Parent!.FullName + "/lib/*");
             p.StandardInput.WriteLine("exit");
             p.WaitForExit();
 
@@ -84,16 +82,8 @@ public static class JavaHelper
         {
             if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
-                Process? p;
-#if Phone
-                if (SystemInfo.Os == OsType.Android)
-                {
-                    p = ColorMCCore.PhoneStartJvm(path);
-                }
-#else
-                p = new Process();
+                using var p = new Process();
                 p.StartInfo.FileName = path;
-#endif
                 if (p == null)
                 {
                     return null;

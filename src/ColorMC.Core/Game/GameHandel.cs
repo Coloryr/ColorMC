@@ -103,7 +103,7 @@ public class GameHandel
             }
         })
         {
-            Name = "ColorMC_Game_" + _game.UUID + "_StandardOutput",
+            Name = "ColorMC Game " + _game.UUID + " StandardOutput",
             IsBackground = true
         }.Start();
         new Thread(() =>
@@ -116,7 +116,7 @@ public class GameHandel
             }
         })
         {
-            Name = "ColorMC_Game_" + _game.UUID + "_StandardError",
+            Name = "ColorMC Game " + _game.UUID + " StandardError",
             IsBackground = true
         }.Start();
     }

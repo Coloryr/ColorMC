@@ -46,7 +46,8 @@ public static class JoystickInput
             }
         })
         {
-            Name = "ColorMC Joystick Read"
+            Name = "ColorMC Joystick Read",
+            IsBackground = true
         }.Start();
     }
 

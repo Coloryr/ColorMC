@@ -137,23 +137,17 @@ public static class GameArg
         {
             //Mod加载器参数
             case Loaders.Forge or Loaders.NeoForge:
-                {
-                    var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-                    arg.AddRange(forge.Arguments.Game);
-                    break;
-                }
+                var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
+                arg.AddRange(forge.Arguments.Game);
+                break;
             case Loaders.Fabric:
-                {
-                    var fabric = obj.GetFabricObj()!;
-                    arg.AddRange(fabric.Arguments.Game);
-                    break;
-                }
+                var fabric = obj.GetFabricObj()!;
+                arg.AddRange(fabric.Arguments.Game);
+                break;
             case Loaders.Quilt:
-                {
-                    var quilt = obj.GetQuiltObj()!;
-                    arg.AddRange(quilt.Arguments.Game);
-                    break;
-                }
+                var quilt = obj.GetQuiltObj()!;
+                arg.AddRange(quilt.Arguments.Game);
+                break;
             case Loaders.OptiFine:
                 arg.Add("--tweakClass");
                 arg.Add("optifine.OptiFineTweaker");
@@ -182,47 +176,38 @@ public static class GameArg
         //添加原版参数
         foreach (JsonElement item in game.Arguments.Jvm)
         {
-            switch (item.ValueKind)
+            if (item.ValueKind is JsonValueKind.String)
             {
-                case JsonValueKind.String:
-                    list.Add(item.GetString()!);
-                    break;
-                case JsonValueKind.Object:
+                list.Add(item.GetString()!);
+            }
+            else if (item.ValueKind is JsonValueKind.Object)
+            {
+                var obj1 = item.Deserialize(JsonType.GameJvmObj);
+                if (obj1 == null)
+                {
+                    continue;
+                }
+
+                //检查是否需要使用
+                if (!CheckHelpers.CheckAllow(obj1.Rules))
+                {
+                    continue;
+                }
+
+                var value = obj1.Value;
+                if (value.ValueKind is JsonValueKind.String)
+                {
+                    list.Add(value.GetString()!);
+                }
+                else if (value.ValueKind is JsonValueKind.Array)
+                {
+                    var list1 = value.Deserialize(JsonType.ListString);
+                    if (list1 == null)
                     {
-                        var obj1 = item.Deserialize(JsonType.GameJvmObj);
-                        if (obj1 == null)
-                        {
-                            continue;
-                        }
-                        //检查是否需要使用
-                        if (!CheckHelpers.CheckAllow(obj1.Rules))
-                        {
-                            continue;
-                        }
-
-                        var value = obj1.Value;
-
-                        switch (value.ValueKind)
-                        {
-                            case JsonValueKind.String:
-                                {
-                                    list.Add(value.GetString()!);
-                                    break;
-                                }
-                            case JsonValueKind.Array:
-                                {
-                                    var list1 = value.Deserialize(JsonType.ListString);
-                                    if (list1 == null)
-                                    {
-                                        continue;
-                                    }
-                                    list.AddRange(list1);
-                                    break;
-                                }
-                        }
-
-                        break;
+                        continue;
                     }
+                    list.AddRange(list1);
+                }
             }
         }
         return list;
@@ -297,7 +282,6 @@ public static class GameArg
     private static List<string> MakeGameArg(this GameSettingObj obj, WorldObj? world, ServerObj? server)
     {
         var gameArg = new List<string>();
-#if !Phone
         //设置游戏窗口大小
         WindowSettingObj? window;
         if (obj.Window == null)
@@ -333,7 +317,6 @@ public static class GameArg
                 gameArg.Add($"{window.Height}");
             }
         }
-#endif
 
         //--quickPlayMultiplayer
         //快速加入
@@ -516,47 +499,39 @@ public static class GameArg
         {
             //外置登陆器相关
             case AuthType.Nide8:
-                {
-                    jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
-                    jvm.Add("-Dnide8auth.client=true");
-                    break;
-                }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowNide8Injector}={login.Text1}");
+                jvm.Add("-Dnide8auth.client=true");
+                break;
             case AuthType.AuthlibInjector:
+                var res = await CoreHttpClient.GetStringAsync(login.Text1);
+                if (!res.State)
                 {
-                    var res = await CoreHttpClient.GetStringAsync(login.Text1);
-                    if (!res.State)
-                    {
-                        throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-                    }
-                    jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-                    jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-                    jvm.Add("-Dauthlibinjector.side=client");
-                    break;
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
             case AuthType.LittleSkin:
+                res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
+                if (!res.State)
                 {
-                    var res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
-                    if (!res.State)
-                    {
-                        throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-                    }
-                    jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-                    jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-                    jvm.Add("-Dauthlibinjector.side=client");
-                    break;
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
             case AuthType.SelfLittleSkin:
+                res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
+                if (!res.State)
                 {
-                    var res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
-                    if (!res.State)
-                    {
-                        throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
-                    }
-                    jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-                    jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
-                    jvm.Add("-Dauthlibinjector.side=client");
-                    break;
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
+                jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add("-Dauthlibinjector.side=client");
+                break;
         }
 
         jvm.Add($"-Dcolormc.dir={ColorMCCore.BaseDir}");
@@ -704,15 +679,13 @@ public static class GameArg
             //forgewrapper
             case Loaders.Forge:
             case Loaders.NeoForge:
+                if (v2)
                 {
-                    if (v2)
-                    {
-                        return "io.github.zekerzhayard.forgewrapper.installer.Main";
-                    }
-
-                    var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
-                    return forge.MainClass;
+                    return "io.github.zekerzhayard.forgewrapper.installer.Main";
                 }
+
+                var forge = obj.Loader == Loaders.NeoForge ? obj.GetNeoForgeObj()! : obj.GetForgeObj()!;
+                return forge.MainClass;
             case Loaders.Fabric:
                 return obj.GetFabricObj()!.MainClass;
             case Loaders.Quilt:
@@ -746,35 +719,44 @@ public static class GameArg
 
         arg.UseColorMCASM = jvmarg.Item2;
 
+        void DoLibItem(FileItemObj item)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Local))
+            {
+                arg.GameLibs.Add(item);
+            }
+            if (item.Later != null)
+            {
+                using var temp = PathHelper.OpenRead(item.Local);
+                if (temp != null)
+                {
+                    item.Later(temp);
+                }
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(arg.NativeDir))
+        {
+            arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
+        }
+
         //非自定义加载器
         if (obj.CustomLoader?.CustomJson != true)
         {
-            var game = await obj.CheckGameArgFile();
+            var game = await obj.CheckGameArgFileAsync();
             var v2 = obj.IsGameVersionV2();
             arg.JavaVersions.Add(game.JavaVersion!.MajorVersion);
 
             //处理运行库
             await Task.Run(async () =>
             {
-                arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
                 arg.GameJar = GameDownloadHelper.BuildGameItem(game.Id);
 
                 if (obj.Loader != Loaders.Custom || obj.CustomLoader?.RemoveLib != true)
                 {
                     foreach (var item in await game.BuildGameLibsAsync(arg.NativeDir))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.Local))
-                        {
-                            arg.GameLibs.Add(item);
-                        }
-                        if (item.Later != null)
-                        {
-                            using var temp = PathHelper.OpenRead(item.Local);
-                            if (temp != null)
-                            {
-                                item.Later(temp);
-                            }
-                        }
+                        DoLibItem(item);
                     }
                 }
 
@@ -792,7 +774,7 @@ public static class GameArg
                         }
                         if (res2 == null)
                         {
-                            res2 = await obj.GetDownloadForgeLibs();
+                            res2 = await obj.BuildForgeAsync();
                             if (res2 == null)
                             {
                                 throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
@@ -812,7 +794,7 @@ public static class GameArg
                         {
                             return;
                         }
-                        loader ??= await obj.GetDownloadFabricLibs()
+                        loader ??= await obj.BuildFabricAsync()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         break;
                     case Loaders.Quilt:
@@ -821,7 +803,7 @@ public static class GameArg
                         {
                             return;
                         }
-                        loader ??= await obj.GetDownloadQuiltLibs()
+                        loader ??= await obj.BuildQuiltAsync()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         break;
                     case Loaders.OptiFine:
@@ -830,7 +812,7 @@ public static class GameArg
                         {
                             return;
                         }
-                        loader ??= await obj.GetDownloadOptifineLibs()
+                        loader ??= await obj.BuildOptifineAsync()
                             ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
                         GameHelper.ReadyOptifineWrapper();
                         loader.Add(GameHelper.OptifineWrapper);
@@ -866,7 +848,7 @@ public static class GameArg
                 }
             }, cancel);
 
-            if (obj.JvmArg?.RemoveGameArg != true)
+            if (obj.JvmArg?.RemoveJvmArg != true)
             {
                 if (v2)
                 {
@@ -927,20 +909,16 @@ public static class GameArg
                     logging = item.Logging;
                 }
 
-                if (item.Downloads != null)
+                if (item.Downloads is { })
                 {
                     if (item.MinecraftVersion != null)
                     {
                         var file = LibrariesPath.GetGameFile(item.MinecraftVersion);
-                        if (string.IsNullOrWhiteSpace(arg.NativeDir))
-                        {
-                            arg.NativeDir = LibrariesPath.GetNativeDir(obj.Version);
-                        }
 
                         arg.GameJar = new FileItemObj
                         {
                             Url = CoreHttpClient.Source == SourceLocal.Offical ? item.Downloads.Client.Url
-                                : UrlHelper.DownloadGame(item.MinecraftVersion, CoreHttpClient.Source),
+                                : UrlHelper.DownloadGameOther(item.MinecraftVersion, CoreHttpClient.Source),
                             Sha1 = item.Downloads.Client.Sha1,
                             Local = file,
                             Name = $"{item.MinecraftVersion}.jar"
@@ -975,25 +953,9 @@ public static class GameArg
                 //运行库
                 if (item.Libraries != null)
                 {
-                    if (string.IsNullOrWhiteSpace(arg.NativeDir))
-                    {
-                        arg.NativeDir = LibrariesPath.GetNativeDir(null);
-                    }
-
                     foreach (var item1 in await item.BuildGameLibsAsync(arg.NativeDir, obj))
                     {
-                        if (!string.IsNullOrWhiteSpace(item1.Local))
-                        {
-                            arg.GameLibs.Add(item1);
-                        }
-                        if (item1.Later != null)
-                        {
-                            using var temp = PathHelper.OpenRead(item1.Local);
-                            if (temp != null)
-                            {
-                                item1.Later(temp);
-                            }
-                        }
+                        DoLibItem(item1);
                     }
                 }
 

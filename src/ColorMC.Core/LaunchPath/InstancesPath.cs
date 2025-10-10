@@ -566,7 +566,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateGame(CreateGameArg arg)
+    public static async Task<GameSettingObj?> CreateGameAsync(CreateGameArg arg)
     {
         try
         {
@@ -604,7 +604,7 @@ public static class InstancesPath
             var value = s_installGames.Values.FirstOrDefault(item => item.DirName == game.Name);
             if (value != null
                 && s_installGames.Remove(value.UUID, out var temp)
-                && !await Remove(temp))
+                && !await RemoveAsync(temp))
             {
                 return null;
             }
@@ -796,11 +796,11 @@ public static class InstancesPath
     /// <param name="obj">原始实例</param>
     /// <param name="arg">复制参数</param>
     /// <returns>复制的实例</returns>
-    public static async Task<GameSettingObj?> Copy(this GameSettingObj obj, CopyGameArg arg)
+    public static async Task<GameSettingObj?> CopyAsync(this GameSettingObj obj, CopyGameArg arg)
     {
         var obj1 = obj.CopyObj();
         obj1.Name = arg.Game;
-        obj1 = await CreateGame(new CreateGameArg
+        obj1 = await CreateGameAsync(new CreateGameArg
         {
             Game = obj1,
             Request = arg.Request,
@@ -1005,7 +1005,7 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="request">操作请求</param>
     /// <returns>是否成功删除</returns>
-    public static async Task<bool> Remove(this GameSettingObj obj)
+    public static async Task<bool> RemoveAsync(this GameSettingObj obj)
     {
         obj.RemoveFromGroup();
         return await PathHelper.MoveToTrashAsync(obj.GetBasePath());
@@ -1076,7 +1076,7 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="path">自定义加载器路径</param>
     /// <returns>数据</returns>
-    public static async Task<MessageRes> SetGameLoader(this GameSettingObj obj, string path)
+    public static async Task<MessageRes> SetGameLoaderAsync(this GameSettingObj obj, string path)
     {
         if (!File.Exists(path))
         {

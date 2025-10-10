@@ -103,7 +103,8 @@ public static class Media
     /// </summary>
     private static readonly Thread s_thread = new(Run)
     {
-        Name = "ColorMC Music"
+        Name = "ColorMC Music",
+        IsBackground = true
     };
     /// <summary>
     /// 播放通知

@@ -266,7 +266,7 @@ public static class GameHelper
     }
 
     /// <summary>
-    /// ColorMCASM加载器
+    /// ColorMCASM
     /// </summary>
     public static void ReadyColorMCASM()
     {
@@ -286,54 +286,6 @@ public static class GameHelper
         }
     }
 
-#if Phone
-    /// <summary>
-    /// 手机替换运行库
-    /// </summary>
-    /// <param name="item">运行库</param>
-    /// <returns>运行库</returns>
-    public static GameArgObj.LibrariesObj ReplaceLib(GameArgObj.LibrariesObj item)
-    {
-        if (item.Name.StartsWith("net.java.dev.jna:jna:"))
-        {
-            string[] version = item.Name.Split(":")[2].Split(".");
-            if (int.Parse(version[0]) >= 5 && int.Parse(version[1]) >= 13) return item;
-            item.Name = "net.java.dev.jna:jna:5.13.0";
-            item.Downloads.Artifact.Path = "net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
-            item.Downloads.Artifact.Sha1 = "1200e7ebeedbe0d10062093f32925a912020e747";
-            item.Downloads.Artifact.Url =
-                CoreHttpClient.Source == SourceLocal.Offical
-                ? $"{UrlHelper.MavenUrl[0]}net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar"
-                : $"{UrlHelper.MavenUrl[1]}net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar";
-        }
-        else if (item.Name.StartsWith("com.github.oshi:oshi-core:"))
-        {
-            string[] version = item.Name.Split(":")[2].Split(".");
-            if (int.Parse(version[0]) != 6 || int.Parse(version[1]) != 2) return item;
-            item.Name = "com.github.oshi:oshi-core:6.3.0";
-            item.Downloads.Artifact.Path = "com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
-            item.Downloads.Artifact.Sha1 = "9e98cf55be371cafdb9c70c35d04ec2a8c2b42ac";
-            item.Downloads.Artifact.Url =
-                CoreHttpClient.Source == SourceLocal.Offical
-                ? $"{UrlHelper.MavenUrl[0]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar"
-                : $"{UrlHelper.MavenUrl[1]}com/github/oshi/oshi-core/6.3.0/oshi-core-6.3.0.jar";
-        }
-        else if (item.Name.StartsWith("org.ow2.asm:asm-all:"))
-        {
-            string[] version = item.Name.Split(":")[2].Split(".");
-            if (int.Parse(version[0]) >= 5) return item;
-            item.Name = "org.ow2.asm:asm-all:5.0.4";
-            item.Downloads.Artifact.Path = "org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
-            item.Downloads.Artifact.Sha1 = "e6244859997b3d4237a552669279780876228909";
-            item.Downloads.Artifact.Url =
-                CoreHttpClient.Source == SourceLocal.Offical
-                ? $"{UrlHelper.MavenUrl[0]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar"
-                : $"{UrlHelper.MavenUrl[1]}org/ow2/asm/asm-all/5.0.4/asm-all-5.0.4.jar";
-        }
-
-        return item;
-    }
-#endif
     /// <summary>
     /// 解压native
     /// </summary>
@@ -650,7 +602,7 @@ public static class GameHelper
         }
         else
         {
-            var versions = VersionPath.GetVersions();
+            var versions = VersionPath.Version;
             if (versions == null)
             {
                 return null;

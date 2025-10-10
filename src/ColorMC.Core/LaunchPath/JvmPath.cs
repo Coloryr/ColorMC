@@ -16,12 +16,6 @@ public static class JvmPath
     /// </summary>
     public static Dictionary<string, JavaInfo> Jvms { get; } = [];
 
-#if Phone
-    /// <summary>
-    /// 基础位置
-    /// </summary>
-    public static string BaseDir { get; private set; }
-#endif
     /// <summary>
     /// 下载的Java位置
     /// </summary>
@@ -32,19 +26,8 @@ public static class JvmPath
     /// </summary>
     public static void Init()
     {
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            BaseDir = ColorMCCore.PhoneGetDataDir();
-        }
-        if (!BaseDir.EndsWith('/') && !BaseDir.EndsWith('\\'))
-        {
-            BaseDir += "/";
-        }
-        JavaDir = Path.Combine(BaseDir, Names.NameJavaDir);
-#else
         JavaDir = Path.Combine(ColorMCCore.BaseDir, Names.NameJavaDir);
-#endif
+
         Directory.CreateDirectory(JavaDir);
 
         if (ConfigUtils.Config.JavaList is { } list)
@@ -71,11 +54,7 @@ public static class JvmPath
     {
         if (info.Path.StartsWith(Names.NameJavaDir))
         {
-#if Phone
-            return Path.Combine(BaseDir, info.Path);
-#else
             return Path.Combine(ColorMCCore.BaseDir, info.Path);
-#endif
         }
 
         return info.Path;
@@ -156,9 +135,6 @@ public static class JvmPath
         {
             OsType.Windows => PathHelper.GetFile(path, Names.NameJavawFile),
             OsType.Linux or OsType.MacOS => PathHelper.GetFile(path, Names.NameJavaFile),
-#if Phone
-            OsType.Android => PathHelper.GetFile(path, Names.NameJavaFile),
-#endif
             _ => null,
         };
     }
@@ -178,25 +154,7 @@ public static class JvmPath
             return new MessageRes { Message = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
         }
 
-        (bool, Exception?) res;
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            res = await Task.Run(() =>
-            {
-                try
-                {
-                    ColorMCCore.PhoneJvmInstall(stream, path, arg.Zip);
-                    return (true, null!);
-                }
-                catch (Exception e)
-                {
-                    return (false, e);
-                }
-            });
-        }
-#else
-        res = await Task.Run(async () =>
+        var res = await Task.Run(async () =>
         {
             try
             {
@@ -210,11 +168,10 @@ public static class JvmPath
         });
 
         stream.Close();
-#endif
         if (!res.Item1)
         {
             string temp = LanguageHelper.Get("Core.Jvm.Error12");
-            Logs.Error(temp, res.Item2);
+            Logs.Error(temp, res.e);
             return new MessageRes { Message = temp };
         }
 
@@ -238,14 +195,10 @@ public static class JvmPath
             Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
         }
 
-#if Phone
-        JavaHelper.PerChmod(java);
-#else
         if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
         {
             JavaHelper.PerChmod(java);
         }
-#endif
         return AddItem(arg.Name, java);
     }
 
@@ -257,11 +210,7 @@ public static class JvmPath
     /// <returns>结果</returns>
     public static MessageRes AddItem(string name, string local)
     {
-#if Phone
-        var basedir =  BaseDir;
-#else
         var basedir = ColorMCCore.BaseDir;
-#endif
         if (local.StartsWith(basedir))
         {
             local = local[basedir.Length..];
@@ -317,11 +266,8 @@ public static class JvmPath
     /// <param name="list">列表</param>
     private static void AddList(List<JvmConfigObj> list)
     {
-#if Phone
-        var basedir = BaseDir;
-#else
         var basedir = ColorMCCore.BaseDir;
-#endif
+
         Logs.Info(LanguageHelper.Get("Core.Jvm.Info1"));
         Task.Run(() =>
         {
