@@ -73,7 +73,7 @@ public static class GameDownloadHelper
         return new FileItemObj
         {
             Url = CoreHttpClient.Source == SourceLocal.Offical ? game.Downloads.Client.Url
-                : UrlHelper.DownloadGame(mc, CoreHttpClient.Source),
+                : UrlHelper.DownloadGameOther(mc, CoreHttpClient.Source),
             Sha1 = game.Downloads.Client.Sha1,
             Local = file,
             Name = $"{mc}.jar"
@@ -635,9 +635,8 @@ public static class GameDownloadHelper
     /// 获取Forge下载项目
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="neo">是否为NeoForge</param>
     /// <returns>下载项目列表</returns>
-    public static Task<ForgeGetFilesRes?> GetDownloadForgeLibs(this GameSettingObj obj)
+    public static Task<ForgeGetFilesRes?> BuildForgeAsync(this GameSettingObj obj)
     {
         return BuildForgeAsync(obj.Version, obj.LoaderVersion!, obj.Loader == Loaders.NeoForge);
     }
@@ -790,7 +789,7 @@ public static class GameDownloadHelper
             mem.Seek(0, SeekOrigin.Begin);
             VersionPath.AddGame(info, mem, mc, version, neo);
 
-            return new()
+            return new ForgeGetFilesRes()
             {
                 Loaders = [.. BuildForgeLibs(info, mc, version, neo, v2, true)]
             };
@@ -807,7 +806,7 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目列表</returns>
-    public static Task<List<FileItemObj>?> GetDownloadFabricLibs(this GameSettingObj obj)
+    public static Task<List<FileItemObj>?> BuildFabricAsync(this GameSettingObj obj)
     {
         return BuildFabricAsync(obj.Version, obj.LoaderVersion!);
     }
@@ -880,7 +879,7 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目列表</returns>
-    public static Task<List<FileItemObj>?> GetDownloadQuiltLibs(this GameSettingObj obj)
+    public static Task<List<FileItemObj>?> BuildQuiltAsync(this GameSettingObj obj)
     {
         return BuildQuiltAsync(obj.Version, obj.LoaderVersion);
     }
@@ -953,7 +952,7 @@ public static class GameDownloadHelper
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目列表</returns>
-    public static Task<List<FileItemObj>?> GetDownloadOptifineLibs(this GameSettingObj obj)
+    public static Task<List<FileItemObj>?> BuildOptifineAsync(this GameSettingObj obj)
     {
         return BuildOptifineAsync(obj.Version, obj.LoaderVersion!);
     }
@@ -1014,7 +1013,7 @@ public static class GameDownloadHelper
     /// 获取自定义加载器运行库下载列表
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="path">下载路径</param>
+    /// <param name="path">运行库路径</param>
     /// <returns>下载项目列表</returns>
     public static Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path)
     {
@@ -1025,7 +1024,7 @@ public static class GameDownloadHelper
     /// 获取自定义加载器运行库下载列表
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="path">下载路径</param>
+    /// <param name="path">运行库路径</param>
     /// <param name="cancel">取消Token</param>
     /// <returns>下载项目列表</returns>
     public static async Task<MakeDownloadNameItemsRes?> DecodeLoaderJarAsync(GameSettingObj obj, string path, CancellationToken cancel)
@@ -1058,125 +1057,52 @@ public static class GameDownloadHelper
 
         var list = new ConcurrentBag<FileItemObj>();
 
-        //解包自定义加载器内容
-        async Task UnpackAsync(ForgeInstallObj obj1)
+        async Task GetDownloadAsync(ForgeLaunchObj.ForgeLibrariesObj item)
         {
-            foreach (var item in obj1.Libraries)
+            //有下载地址
+            if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
             {
-                if (cancel.IsCancellationRequested)
+                string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
+                using var read = PathHelper.OpenRead(local);
+                if (read != null)
                 {
-                    return;
-                }
-                //有原创下载地址
-                if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
-                {
-                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
+                    string sha1 = HashHelper.GenSha1(read);
+                    if (sha1 == item.Downloads.Artifact.Sha1)
                     {
-                        using var read = PathHelper.OpenRead(local);
-                        if (read != null)
-                        {
-                            string sha1 = HashHelper.GenSha1(read);
-                            if (sha1 == item.Downloads.Artifact.Sha1)
-                            {
-                                continue;
-                            }
-                        }
-                    }
-
-                    list.Add(new()
-                    {
-                        Name = item.Name,
-                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
-                        Sha1 = item.Downloads.Artifact.Sha1,
-                        Url = item.Downloads.Artifact.Url
-                    });
-                }
-                else
-                {
-                    //在压缩包里面的文件
-                    var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
-                    if (item1 != null)
-                    {
-                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
-                        {
-                            using var read = PathHelper.OpenRead(local);
-                            if (read != null)
-                            {
-                                string sha1 = HashHelper.GenSha1(read);
-                                if (sha1 == item.Downloads.Artifact.Sha1)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        {
-                            using var stream3 = item1.OpenEntryStream();
-                            await PathHelper.WriteBytesAsync(local, stream3);
-                        }
+                        return;
                     }
                 }
+
+                list.Add(new()
+                {
+                    Name = item.Name,
+                    Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
+                    Sha1 = item.Downloads.Artifact.Sha1,
+                    Url = item.Downloads.Artifact.Url
+                });
             }
-        }
-
-        //解包自定义加载器内容
-        async Task Unpack1Async(ForgeLaunchObj obj1)
-        {
-            foreach (var item in obj1.Libraries)
+            else
             {
-                if (cancel.IsCancellationRequested)
+                //在压缩包里面的文件
+                var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
+                if (item1 == null)
                 {
                     return;
                 }
-                //有原创下载地址
-                if (!string.IsNullOrWhiteSpace(item.Downloads.Artifact.Url))
-                {
-                    string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
-                    {
-                        using var read = PathHelper.OpenRead(local);
-                        if (read != null)
-                        {
-                            string sha1 = HashHelper.GenSha1(read);
-                            if (sha1 == item.Downloads.Artifact.Sha1)
-                            {
-                                continue;
-                            }
-                        }
-                    }
 
-                    list.Add(new()
-                    {
-                        Name = item.Name,
-                        Local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}"),
-                        Sha1 = item.Downloads.Artifact.Sha1,
-                        Url = item.Downloads.Artifact.Url
-                    });
-                }
-                else
+                string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
+                using var read = PathHelper.OpenRead(local);
+                if (read != null)
                 {
-                    //在zip里面的内容
-                    var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
-                    if (item1 != null)
+                    string sha1 = HashHelper.GenSha1(read);
+                    if (sha1 == item.Downloads.Artifact.Sha1)
                     {
-                        string local = Path.GetFullPath($"{LibrariesPath.BaseDir}/{item.Downloads.Artifact.Path}");
-                        {
-                            using var read = PathHelper.OpenRead(local);
-                            if (read != null)
-                            {
-                                string sha1 = HashHelper.GenSha1(read);
-                                if (sha1 == item.Downloads.Artifact.Sha1)
-                                {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        {
-                            using var stream3 = item1.OpenEntryStream();
-                            await PathHelper.WriteBytesAsync(local, stream3);
-                        }
+                        return;
                     }
                 }
+
+                using var stream3 = item1.OpenEntryStream();
+                await PathHelper.WriteBytesAsync(local, stream3);
             }
         }
 
@@ -1184,12 +1110,28 @@ public static class GameDownloadHelper
 
         try
         {
-            await Unpack1Async(obj1);
+            foreach (var item2 in obj1.Libraries)
+            {
+                if (cancel.IsCancellationRequested)
+                {
+                    return null;
+                }
+
+                await GetDownloadAsync(item2);
+            }
             if (cancel.IsCancellationRequested)
             {
                 return null;
             }
-            await UnpackAsync(obj2);
+            foreach (var item3 in obj2.Libraries)
+            {
+                if (cancel.IsCancellationRequested)
+                {
+                    return null;
+                }
+
+                await GetDownloadAsync(item3);
+            }
             if (cancel.IsCancellationRequested)
             {
                 return null;

@@ -31,7 +31,7 @@ public static class GameWorlds
         var list = new ConcurrentBag<WorldObj>();
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
-            var world = await ReadWorld(item);
+            var world = await ReadWorldAsync(item);
             if (world != null)
             {
                 world.Game = game;
@@ -201,7 +201,7 @@ public static class GameWorlds
     /// </summary>
     /// <param name="dir">文件夹</param>
     /// <returns>世界储存</returns>
-    private static async Task<WorldObj?> ReadWorld(DirectoryInfo dir)
+    private static async Task<WorldObj?> ReadWorldAsync(DirectoryInfo dir)
     {
         var file = Path.Combine(dir.FullName, Names.NameLevelFile);
         if (!File.Exists(file))

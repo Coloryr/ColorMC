@@ -13,7 +13,7 @@ namespace ColorMC.Gui.Net.Apis;
 /// </summary>
 public static class OpenFrpApi
 {
-    public const string Url = "https://of-dev-api.bfsea.xyz/api";
+    public const string Url = "https://of-dev-api.bfsea.com/api";
 
     /// <summary>
     /// 获取通道列表

@@ -64,7 +64,8 @@ public class LanClient
             }
         })
         {
-            Name = "ColorMC Lan Client V4"
+            Name = "ColorMC Lan Client V4",
+            IsBackground = true
         }.Start();
 
         new Thread(async () =>
@@ -97,7 +98,8 @@ public class LanClient
             }
         })
         {
-            Name = "ColorMC Lan Client V6"
+            Name = "ColorMC Lan Client V6",
+            IsBackground = true
         }.Start();
     }
 

@@ -149,7 +149,7 @@ public record GameArgObj
     //public string Assets { get; set; }
     //public int complianceLevel { get; set; }
     [JsonPropertyName("downloads")]
-    public GameDownloadsObj? Downloads { get; set; }
+    public GameDownloadsObj Downloads { get; set; }
     [JsonPropertyName("id")]
     public string Id { get; set; }
     [JsonPropertyName("javaVersion")]

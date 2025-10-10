@@ -283,7 +283,11 @@ public static class LaunchSocketUtils
         Port = await RunServerAsync();
         App.OnClose += App_OnClose;
         s_isRun = true;
-        new Thread(Run).Start();
+        new Thread(Run)
+        { 
+            Name = "ColorMC Launch Socket Thread",
+            IsBackground = true
+        }.Start();
     }
 
     /// <summary>

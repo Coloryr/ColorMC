@@ -66,31 +66,31 @@ public static class GameLang
 
                         list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
                             data.Name + "-" + data.Region);
-                    }
-                    else
-                    {
-                        //key: value格式
-                        string? name = null, region = null;
-                        while (reader.ReadLine() is { } line)
-                        {
-                            if (line.StartsWith("language.name="))
-                            {
-                                name = line[14..].Trim();
-                            }
-                            else if (line.StartsWith("language.region="))
-                            {
-                                region = line[16..].Trim();
-                            }
 
-                            if (name != null && region != null)
-                            {
-                                break;
-                            }
+                        return;
+                    }
+
+                    //key: value格式
+                    string? name = null, region = null;
+                    while (reader.ReadLine() is { } line)
+                    {
+                        if (line.StartsWith("language.name="))
+                        {
+                            name = line[14..].Trim();
+                        }
+                        else if (line.StartsWith("language.region="))
+                        {
+                            region = line[16..].Trim();
                         }
 
-                        list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".lang", ""),
-                            (name ?? "") + "-" + (region ?? ""));
+                        if (name != null && region != null)
+                        {
+                            break;
+                        }
                     }
+
+                    list.Add(item.Key.Replace(Names.NameLangKey1, "").Replace(".lang", ""),
+                        (name ?? "") + "-" + (region ?? ""));
                 }
                 catch (Exception e)
                 {

@@ -11,6 +11,9 @@ public enum StateType
     Error
 }
 
+/// <summary>
+/// 一段文字
+/// </summary>
 public class ChatObj
 {
     [JsonPropertyName("text")]
@@ -43,6 +46,9 @@ public class ChatObj
     }
 }
 
+/// <summary>
+/// 服务器Motd
+/// </summary>
 public record ServerMotdObj
 {
     public record ServerVersionInfoObj

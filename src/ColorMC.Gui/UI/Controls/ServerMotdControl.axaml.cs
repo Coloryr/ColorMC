@@ -109,7 +109,7 @@ public partial class ServerMotdControl : UserControl
 
         var motd = await Task.Run(() =>
         {
-            return ServerMotd.GetServerInfo(ip, port);
+            return ServerMotd.GetServerInfoAsync(ip, port);
         });
         if (motd.State == StateType.Ok)
         {

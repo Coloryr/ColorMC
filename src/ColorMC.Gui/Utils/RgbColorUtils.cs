@@ -12,7 +12,8 @@ public static class RgbColorUtils
 {
     private static readonly Thread t_tick = new(Tick)
     {
-        Name = "ColorMC_RGB"
+        Name = "ColorMC RGB Thread",
+        IsBackground = true
     };
 
     private static bool s_rgb;

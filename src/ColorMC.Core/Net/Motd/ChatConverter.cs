@@ -65,6 +65,11 @@ public static class ChatConverter
         return chat;
     }
 
+    /// <summary>
+    /// 复制一份
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     private static ChatObj Clone(this ChatObj source)
     {
         return new ChatObj
@@ -78,6 +83,10 @@ public static class ChatConverter
         };
     }
 
+    /// <summary>
+    /// 重置配置
+    /// </summary>
+    /// <param name="segment"></param>
     private static void ResetFormatting(ChatObj segment)
     {
         segment.Bold = segment.Italic = segment.Underlined =
@@ -85,6 +94,11 @@ public static class ChatConverter
         segment.Color = "#FFFFFF";
     }
 
+    /// <summary>
+    /// 读取配置
+    /// </summary>
+    /// <param name="segment"></param>
+    /// <param name="code"></param>
     private static void ApplyFormattingCode(ChatObj segment, char code)
     {
         code = char.ToLower(code);

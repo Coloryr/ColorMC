@@ -102,29 +102,29 @@ public static class LibrariesPath
         return Path.Combine(BaseDir, "optifine", "installer", $"OptiFine-{mc}-{version}.jar");
     }
 
-    /// <summary>
-    /// 获取自定义加载器运行库
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
-    {
-        if (obj.GetCustomLoaderObj() is { } obj1)
-        {
-            if (obj1.Loader is ForgeLaunchObj obj2)
-            {
-                var list = new List<(string, string)>();
-                foreach (var item in obj2.Libraries)
-                {
-                    list.Add((item.Name, Path.GetFullPath($"{BaseDir}/{item.Downloads.Artifact.Path}")));
-                }
+    ///// <summary>
+    ///// 获取自定义加载器运行库
+    ///// </summary>
+    ///// <param name="obj"></param>
+    ///// <returns></returns>
+    //public static List<(string Name, string Local)> GetCustomLoaderLibs(this GameSettingObj obj)
+    //{
+    //    if (obj.GetCustomLoaderObj() is { } obj1)
+    //    {
+    //        if (obj1.Loader is ForgeLaunchObj obj2)
+    //        {
+    //            var list = new List<(string, string)>();
+    //            foreach (var item in obj2.Libraries)
+    //            {
+    //                list.Add((item.Name, Path.GetFullPath($"{BaseDir}/{item.Downloads.Artifact.Path}")));
+    //            }
 
-                return list;
-            }
-        }
+    //            return list;
+    //        }
+    //    }
 
-        return [];
-    }
+    //    return [];
+    //}
 
     /// <summary>
     /// 获取自定义加载器游戏参数
@@ -176,13 +176,6 @@ public static class LibrariesPath
         {
             if (item.Later == null)
             {
-#if Phone
-                //不添加lwjgl
-                if (SystemInfo.Os == OsType.Android && item.Name.Contains("org.lwjgl"))
-                {
-                    continue;
-                }
-#endif
                 gameList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }

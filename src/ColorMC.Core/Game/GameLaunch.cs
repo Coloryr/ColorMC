@@ -75,42 +75,42 @@ public static class Launch
     /// <exception cref="LaunchException"></exception>
     private static async Task PackUpdateAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
-        if (obj.ModPackType == SourceType.ColorMC && !string.IsNullOrWhiteSpace(obj.ServerUrl))
+        if (obj.ModPackType != SourceType.ColorMC || string.IsNullOrWhiteSpace(obj.ServerUrl))
         {
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
+            return;
+        }
 
-            var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
-            {
-                State = larg.State,
-                Select = larg.Select
-            }, token);
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
 
-            stopwatch.Stop();
-            var temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
-                obj.Name, stopwatch.Elapsed.ToString());
-            ColorMCCore.OnGameLog(obj, temp);
-            Logs.Info(temp);
+        var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
+        {
+            State = larg.State,
+            Select = larg.Select
+        }, token);
 
-            if (token.IsCancellationRequested)
-            {
-                return;
-            }
+        stopwatch.Stop();
+        var temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
+            obj.Name, stopwatch.Elapsed.ToString());
+        ColorMCCore.OnGameLog(obj, temp);
+        Logs.Info(temp);
 
-            if (!pack)
-            {
-                if (larg.Request == null)
-                {
-                    throw new LaunchException(LaunchState.VersionError,
-                        string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
-                }
+        if (token.IsCancellationRequested || pack)
+        {
+            return;
+        }
 
-                var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
-                if (!res2)
-                {
-                    throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Launch.Error8"));
-                }
-            }
+        //检查失败询问是否取消启动
+        if (larg.Request == null)
+        {
+            throw new LaunchException(LaunchState.VersionError,
+                string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
+        }
+
+        var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
+        if (!res2)
+        {
+            throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Launch.Error8"));
         }
     }
 
@@ -244,44 +244,40 @@ public static class Launch
     /// <exception cref="LaunchException"></exception>
     private static async Task<string> FindJavaAsync(GameSettingObj obj, GameLaunchArg larg, GameLaunchObj arg1)
     {
-        var stopwatch = new Stopwatch();
-        stopwatch.Restart();
-        stopwatch.Start();
-        var path = obj.JvmLocal;
-        if (string.IsNullOrWhiteSpace(path))
+        if (!string.IsNullOrWhiteSpace(obj.JvmLocal))
         {
-            if (JvmPath.Jvms.Count == 0)
-            {
-                var list1 = await JavaHelper.FindJava();
-                list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
-            }
-
-            var jvm = JvmPath.GetInfo(obj.JvmName);
-            if (jvm == null)
-            {
-                foreach (var item in arg1.JavaVersions.OrderDescending())
-                {
-                    jvm = JvmPath.FindJava(item);
-                    if (jvm != null)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (jvm == null)
-            {
-                var jv = arg1.JavaVersions.First();
-                larg.Update2?.Invoke(obj, LaunchState.JavaError);
-                larg.Nojava?.Invoke(jv);
-                throw new LaunchException(LaunchState.JavaError,
-                    string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
-            }
-
-            path = jvm.GetPath();
+            return obj.JvmLocal;
         }
 
-        return path;
+        if (JvmPath.Jvms.Count == 0)
+        {
+            var list1 = await JavaHelper.FindJava();
+            list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
+        }
+
+        var jvm = JvmPath.GetInfo(obj.JvmName);
+        if (jvm == null)
+        {
+            foreach (var item in arg1.JavaVersions.OrderDescending())
+            {
+                jvm = JvmPath.FindJava(item);
+                if (jvm != null)
+                {
+                    break;
+                }
+            }
+        }
+
+        if (jvm == null)
+        {
+            var jv = arg1.JavaVersions.First();
+            larg.Update2?.Invoke(obj, LaunchState.JavaError);
+            larg.Nojava?.Invoke(jv);
+            throw new LaunchException(LaunchState.JavaError,
+                string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
+        }
+
+        return jvm.GetPath();
     }
 
     /// <summary>
@@ -339,7 +335,6 @@ public static class Launch
         };
         p.OutputDataReceived += (_, b) => { ColorMCCore.OnGameLog(obj, b.Data); };
         p.ErrorDataReceived += (_, b) => { ColorMCCore.OnGameLog(obj, b.Data); };
-
         p.Exited += (_, _) => { p.Dispose(); };
         ProcessUtils.Launch(p, admin);
         p.BeginOutputReadLine();
@@ -513,7 +508,7 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">请求参数</param>
     /// <returns>启动参数</returns>
-    public static async Task<CreateCmdRes> CreateGameCmd(this GameSettingObj obj, GameLaunchArg larg)
+    public static async Task<CreateCmdRes> CreateGameCmdAsync(this GameSettingObj obj, GameLaunchArg larg)
     {
         //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version)
@@ -529,27 +524,8 @@ public static class Launch
         //检查游戏文件
         var arg1 = await obj.MakeArgAsync(larg, CancellationToken.None);
 
-        var path = obj.JvmLocal;
-        var game = VersionPath.GetVersion(obj.Version)!;
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            if (JvmPath.Jvms.Count == 0)
-            {
-                var list1 = await JavaHelper.FindJava();
-                list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
-            }
-
-            var jv = game.JavaVersion?.MajorVersion ?? 8;
-            var jvm = JvmPath.GetInfo(obj.JvmName) ?? JvmPath.FindJava(jv);
-            if (jvm == null)
-            {
-                larg.Update2?.Invoke(obj, LaunchState.JavaError);
-                larg.Nojava?.Invoke(jv);
-                return new CreateCmdRes { Message = string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv) };
-            }
-
-            path = jvm.GetPath();
-        }
+        //查找Java
+        var path = await FindJavaAsync(obj, larg, arg1);
 
         if (!File.Exists(path))
         {
@@ -806,8 +782,7 @@ public static class Launch
             start1 = ConfigUtils.Config.DefaultJvmArg?.LaunchPostData;
         }
 
-        if (!string.IsNullOrWhiteSpace(start1) &&
-            (larg.Pre == null || await larg.Pre(false)))
+        if (!string.IsNullOrWhiteSpace(start1) && (larg.Pre == null || await larg.Pre(false)))
         {
             stopwatch.Start();
             larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
@@ -822,7 +797,6 @@ public static class Launch
             ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
                 obj.Name));
         }
-
 
         return handel;
     }

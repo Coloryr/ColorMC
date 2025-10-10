@@ -122,14 +122,9 @@ public static class GameLogs
             {
                 File = file
             };
-            for (; ; )
+            string? temp;
+            while((temp = reader.ReadLine()) != null)
             {
-                var temp = reader.ReadLine();
-                if (temp == null || reader.EndOfStream)
-                {
-                    break;
-                }
-
                 log.AddLog(temp);
             }
 

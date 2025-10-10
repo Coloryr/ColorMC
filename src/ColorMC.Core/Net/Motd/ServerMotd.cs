@@ -81,7 +81,7 @@ public static class ServerMotd
         { 'f', "#FFFFFF" }
     };
 
-    public static readonly Dictionary<string, string> ColorMap = new()
+    public static Dictionary<string, string> ColorMap { get; private set; } = new()
     {
         { "black", "#000000" },
         { "dark_blue", "#0000aa" },
@@ -107,7 +107,7 @@ public static class ServerMotd
     /// <param name="ip">地址</param>
     /// <param name="port">端口</param>
     /// <returns>服务器信息</returns>
-    public static async Task<ServerMotdObj> GetServerInfo(string ip, ushort port)
+    public static async Task<ServerMotdObj> GetServerInfoAsync(string ip, ushort port)
     {
         var info = new ServerMotdObj(ip, port);
         var tcp = new TcpClient()

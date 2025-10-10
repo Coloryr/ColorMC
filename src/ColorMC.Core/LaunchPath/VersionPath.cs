@@ -40,6 +40,8 @@ public static class VersionPath
     public static string QuiltDir { get; private set; }
     public static string NeoForgeDir { get; private set; }
 
+    public static VersionObj? Version => _version;
+
     /// <summary>
     /// 获取游戏版本列表
     /// </summary>
@@ -59,11 +61,6 @@ public static class VersionPath
             Logs.Error(LanguageHelper.Get("Core.Path.Error2"), e);
             return null;
         }
-    }
-
-    public static VersionObj? GetVersions()
-    {
-        return _version;
     }
 
     /// <summary>

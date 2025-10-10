@@ -104,7 +104,8 @@ internal class DownloadThread
             }
         })
         {
-            Name = "ColorMC Download Thread"
+            Name = "ColorMC Download Thread",
+            IsBackground = true
         };
         _thread.Start();
     }
