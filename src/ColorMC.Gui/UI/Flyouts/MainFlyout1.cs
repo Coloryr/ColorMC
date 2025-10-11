@@ -15,8 +15,8 @@ public static class MainFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text20"), true, model.Top.StartMut),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text22"), model.GameList.Any(item=>!item.IsNew), ()=>
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text20"), true, model.Top.StartMut),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text22"), model.GameList.Any(item=>!item.IsNew), ()=>
             {
                 model.Top.StartMut(model);
             })

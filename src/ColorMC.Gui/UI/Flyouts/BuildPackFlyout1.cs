@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.BuildPack;
 
@@ -14,7 +14,7 @@ public static class BuildPackFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text2"), true, model.DeleteFile),
+            new FlyoutMenuModel(App.Lang("SettingWindow.Flyouts.Text2"), true, model.DeleteFile),
         ]).Show(con);
     }
 }

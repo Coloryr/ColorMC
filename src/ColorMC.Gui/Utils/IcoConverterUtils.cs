@@ -1,10 +1,10 @@
-﻿using System.IO;
+using System.IO;
 using ColorMC.Core.Helpers;
 using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
 
-internal class IcoConverterUtils
+public class IcoConverterUtils
 {
     /// <summary>
     /// 将 SKBitmap 列表转换为 ICO 格式并保存到文件
@@ -15,21 +15,20 @@ internal class IcoConverterUtils
     {
         using var outputStream = PathHelper.OpenWrite(outputPath, true);
         using var writer = new BinaryWriter(outputStream);
-        // 1. 写入 ICO 文件头 (6 bytes)
+        //写入 ICO 文件头 (6 bytes)
         writer.Write((ushort)0); // 保留字段 (必须为0)
         writer.Write((ushort)1); // 图像类型 (1 表示图标)
         writer.Write((ushort)1); // 图像数量 (只有一个图像)
 
-        // 2. 准备图像数据
+        //准备图像数据
         byte[] pngData;
         using (var pngStream = new MemoryStream())
         {
-            // 将 SKBitmap 编码为 PNG 并存入内存流
             bitmap.Encode(pngStream, SKEncodedImageFormat.Png, 100);
             pngData = pngStream.ToArray();
         }
 
-        // 3. 写入图像条目信息 (ICONDIRENTRY) - 16 bytes
+        //写入图像条目信息 (ICONDIRENTRY) - 16 bytes
         byte width = (byte)(bitmap.Width == 256 ? 0 : bitmap.Width); // 宽度 (0 表示 256)
         byte height = (byte)(bitmap.Height == 256 ? 0 : bitmap.Height); // 高度 (0 表示 256)
         writer.Write(width);
@@ -41,7 +40,6 @@ internal class IcoConverterUtils
         writer.Write((uint)pngData.Length); // PNG 数据大小
         writer.Write((uint)22); // PNG 数据在文件中的偏移量 (6字节头 + 16字节条目 = 22字节)
 
-        // 4. 写入 PNG 数据
         writer.Write(pngData);
     }
 

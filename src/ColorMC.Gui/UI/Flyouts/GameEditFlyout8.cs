@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ public static class GameEditFlyout8
 
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text1"),
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text1"),
                 !run, ()=>
                 {
                     if (single)
@@ -43,7 +43,7 @@ public static class GameEditFlyout8
                         model.DisE(mods);
                     }
                 }),
-            new FlyoutMenuObj(App.Lang("Button.Delete"), !run, ()=>
+            new FlyoutMenuModel(App.Lang("Button.Delete"), !run, ()=>
             {
                 if (single)
                 {

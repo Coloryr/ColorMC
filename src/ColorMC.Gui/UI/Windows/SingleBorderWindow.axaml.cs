@@ -8,8 +8,8 @@ using ColorMC.Gui.UI.Controls;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// ´ø±ß¿òµÄµ¥´°¿Ú
-/// Ä³Ğ©ÏµÍ³ĞèÒªÓÃÕâ¸ö
+/// å¸¦è¾¹æ¡†çš„å•çª—å£
+/// æŸäº›ç³»ç»Ÿéœ€è¦ç”¨è¿™ä¸ª
 /// </summary>
 public partial class SingleBorderWindow : ABaseWindow
 {
@@ -38,7 +38,7 @@ public partial class SingleBorderWindow : ABaseWindow
     }
 
     /// <summary>
-    /// ´°¿Ú¹Ø±Õ
+    /// çª—å£å…³é—­
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

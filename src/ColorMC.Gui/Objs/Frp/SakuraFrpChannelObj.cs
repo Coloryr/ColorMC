@@ -1,7 +1,10 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace ColorMC.Gui.Objs.Frp;
 
+/// <summary>
+/// 通道列表
+/// </summary>
 public record SakuraFrpChannelObj
 {
     [JsonPropertyName("id")]

@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -17,11 +17,11 @@ public static class GameEditFlyout3
 
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(obj.Local);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text12"), true, model.DeleteResource)
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text12"), true, model.DeleteResource)
         ]).Show(con);
     }
 }

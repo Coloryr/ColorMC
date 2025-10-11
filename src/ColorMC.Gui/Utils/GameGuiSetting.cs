@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;

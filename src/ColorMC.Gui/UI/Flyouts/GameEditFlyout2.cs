@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Core.Helpers;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -17,31 +17,31 @@ public static class GameEditFlyout2
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenPath(model.World);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(model.World.Game.Version), ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(model.World.Game.Version), ()=>
             {
                 model.TopModel.LaunchWorld(model);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text7"), true, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text7"), true, ()=>
             {
                 model.TopModel.Export(model);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text10"), true, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text10"), true, ()=>
             {
                 WindowManager.ShowConfigEdit(model.World);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text9"), !model.World.Broken, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text9"), !model.World.Broken, ()=>
             {
                 model.TopModel.BackupWorld(model);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text8"), !model.World.Broken, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text8"), !model.World.Broken, ()=>
             {
                 model.TopModel.DeleteWorld(model);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text14"), !model.World.Broken, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text14"), !model.World.Broken, ()=>
             {
                 GameBinding.OpenWorldSeed(model);
             })

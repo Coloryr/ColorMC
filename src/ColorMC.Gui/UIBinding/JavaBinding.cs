@@ -13,11 +13,11 @@ namespace ColorMC.Gui.UIBinding;
 public static class JavaBinding
 {
     /// <summary>
-    /// µ¼ÈëJavaÑ¹Ëõ°ü
+    /// å¯¼å…¥Javaå‹ç¼©åŒ…
     /// </summary>
-    /// <param name="file">Ñ¹Ëõ°üÎ»ÖÃ</param>
-    /// <param name="name">Ãû×Ö</param>
-    /// <param name="zip">UIÏà¹Ø</param>
+    /// <param name="file">å‹ç¼©åŒ…ä½ç½®</param>
+    /// <param name="name">åå­—</param>
+    /// <param name="zip">UIç›¸å…³</param>
     /// <returns></returns>
     public static async Task<StringRes> AddJavaZipAsync(string file, string name, ColorMCCore.ZipUpdate zip)
     {
@@ -30,7 +30,7 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// »ñÈ¡JavaÃû×Ö
+    /// è·å–Javaåå­—
     /// </summary>
     /// <returns></returns>
     public static List<string> GetJavaName()
@@ -45,10 +45,10 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// ²âÊÔ²¢Ìí¼ÓJava
+    /// æµ‹è¯•å¹¶æ·»åŠ Java
     /// </summary>
-    /// <param name="name">Ãû×Ö</param>
-    /// <param name="local">Â·¾¶</param>
+    /// <param name="name">åå­—</param>
+    /// <param name="local">è·¯å¾„</param>
     /// <returns></returns>
     public static StringRes AddJava(string name, string local)
     {
@@ -69,9 +69,9 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// »ñÈ¡JavaĞÅÏ¢
+    /// è·å–Javaä¿¡æ¯
     /// </summary>
-    /// <param name="path">Â·¾¶</param>
+    /// <param name="path">è·¯å¾„</param>
     /// <returns></returns>
     public static JavaInfo? GetJavaInfo(string path)
     {
@@ -79,16 +79,16 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// É¾³ıJava
+    /// åˆ é™¤Java
     /// </summary>
-    /// <param name="name">Ãû×Ö</param>
+    /// <param name="name">åå­—</param>
     public static void RemoveJava(string name)
     {
         JvmPath.Remove(name);
     }
 
     /// <summary>
-    /// »ñÈ¡JavaÁĞ±í
+    /// è·å–Javaåˆ—è¡¨
     /// </summary>
     /// <returns></returns>
     public static List<JavaDisplayModel> GetJavas()
@@ -111,11 +111,11 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// ÏÂÔØJava
+    /// ä¸‹è½½Java
     /// </summary>
-    /// <param name="obj">JavaÏÂÔØÏîÄ¿</param>
-    /// <param name="zip">UIÏà¹Ø</param>
-    /// <param name="unzip">UIÏà¹Ø</param>
+    /// <param name="obj">Javaä¸‹è½½é¡¹ç›®</param>
+    /// <param name="zip">UIç›¸å…³</param>
+    /// <param name="unzip">UIç›¸å…³</param>
     /// <returns></returns>
     public static async Task<StringRes> DownloadJavaAsync(JavaDownloadModel obj,
         ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
@@ -138,7 +138,7 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ÍÆ¼öÂ·¾¶
+    /// è·å–æ¨èè·¯å¾„
     /// </summary>
     /// <returns></returns>
     public static DirectoryInfo? GetSuggestedStartLocation()
@@ -161,7 +161,7 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// É¾³ıËùÓĞJava
+    /// åˆ é™¤æ‰€æœ‰Java
     /// </summary>
     public static void RemoveAllJava()
     {
@@ -169,7 +169,7 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// ËÑË÷Java
+    /// æœç´¢Java
     /// </summary>
     /// <returns></returns>
     public static Task<List<JavaInfo>?> FindJavaAsync()
@@ -178,9 +178,9 @@ public static class JavaBinding
     }
 
     /// <summary>
-    /// ËÑË÷Java
+    /// æœç´¢Java
     /// </summary>
-    /// <param name="local">ËÑË÷Â·¾¶</param>
+    /// <param name="local">æœç´¢è·¯å¾„</param>
     /// <returns></returns>
     public static Task<List<JavaInfo>?> FindJavaAsync(string local)
     {

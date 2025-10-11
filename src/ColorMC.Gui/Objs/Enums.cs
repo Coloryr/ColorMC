@@ -174,13 +174,37 @@ public enum DisplayType
     TopBottom
 }
 
+/// <summary>
+/// 模组过滤
+/// </summary>
 public enum ModFilterType
 {
+    /// <summary>
+    /// 名字
+    /// </summary>
     Name,
+    /// <summary>
+    /// 文件名
+    /// </summary>
     FileName,
+    /// <summary>
+    /// 作者
+    /// </summary>
     Author,
+    /// <summary>
+    /// modid
+    /// </summary>
     Modid,
+    /// <summary>
+    /// 启用状态
+    /// </summary>
     Enabled,
+    /// <summary>
+    /// 禁用状态
+    /// </summary>
     Disabled,
+    /// <summary>
+    /// 有新版本
+    /// </summary>
     Newer
 }

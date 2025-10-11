@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
@@ -15,11 +15,11 @@ public static class GameEditFlyout7
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(model.SchematicItem!.Local);
             }),
-            new FlyoutMenuObj(App.Lang("Button.Delete"), true, model.DeleteSchematic)
+            new FlyoutMenuModel(App.Lang("Button.Delete"), true, model.DeleteSchematic)
         ]).Show(con);
     }
 }

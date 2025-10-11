@@ -16,9 +16,6 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFolder file)
     {
-#if Phone
-        return file.Path.AbsoluteUri;
-#endif
         return file.Path.LocalPath;
     }
 
@@ -29,9 +26,6 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageFile file)
     {
-#if Phone
-        return file.Path.AbsoluteUri;
-#endif
         return file.Path.LocalPath;
     }
 
@@ -42,9 +36,6 @@ public static class PathUtils
     /// <returns>路径字符串</returns>
     public static string? GetPath(this IStorageItem file)
     {
-#if Phone
-        return file.Path.AbsoluteUri;
-#endif
         return file.Path.LocalPath;
     }
 

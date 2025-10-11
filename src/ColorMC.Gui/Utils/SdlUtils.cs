@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;

@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Controls.Selection;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;
@@ -82,11 +82,11 @@ public static class ConfigFlyout1
 
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.Add"), add, () =>
+            new FlyoutMenuModel(App.Lang("Button.Add"), add, () =>
             {
                 model.AddItem(item);
             }),
-            new FlyoutMenuObj(App.Lang("Button.Delete"), delete, ()=>
+            new FlyoutMenuModel(App.Lang("Button.Delete"), delete, ()=>
             {
                 if (item == null)
                 {
@@ -97,15 +97,15 @@ public static class ConfigFlyout1
                     model.Delete(item!);
                 }
             }),
-            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
+            new FlyoutMenuModel(App.Lang("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
             {
                 model.SetKey(item);
             }),
-            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
+            new FlyoutMenuModel(App.Lang("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
             {
                 model.SetValue(item);
             }),
-            new FlyoutMenuObj(App.Lang("ConfigEditWindow.Flyouts.Text5"), true, model.Find),
+            new FlyoutMenuModel(App.Lang("ConfigEditWindow.Flyouts.Text5"), true, model.Find),
         ]).Show(con);
     }
 }

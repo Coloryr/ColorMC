@@ -71,7 +71,7 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 是否有新版本
     /// </summary>
-    public bool IsNew;
+    public bool IsNew { get; private set; }
     /// <summary>
     /// Mod信息
     /// </summary>
@@ -108,6 +108,14 @@ public partial class ModDisplayModel : ObservableObject
         _top?.EditModText(this);
     }
 
+    /// <summary>
+    /// 设置有新版本
+    /// </summary>
+    public void HaveNew()
+    {
+        IsNew = true;
+        OnPropertyChanged(nameof(Version));
+    }
     /// <summary>
     /// 文件位置修改后
     /// </summary>

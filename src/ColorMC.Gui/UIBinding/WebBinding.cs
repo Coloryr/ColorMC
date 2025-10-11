@@ -142,7 +142,7 @@ public static class WebBinding
             var list = await CurseForgeAPI.GetCurseForgeFilesAsync(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
             if (data1 == null || list == null)
             {
-                return new();
+                return new FileListRes();
             }
 
             var list1 = new List<FileVersionItemModel>();
@@ -151,7 +151,7 @@ public static class WebBinding
                 list1.Add(new(item, type1));
             });
 
-            return new()
+            return new FileListRes
             {
                 List = list1,
                 Count = list.Pagination.TotalCount,
@@ -164,7 +164,7 @@ public static class WebBinding
             var list = await ModrinthAPI.GetFileVersionsAsync(id, mc, loader);
             if (data1 == null || list == null)
             {
-                return new();
+                return new FileListRes();
             }
 
             var list1 = new List<FileVersionItemModel>();
@@ -173,7 +173,7 @@ public static class WebBinding
                 list1.Add(new(item, type1));
             });
 
-            return new()
+            return new FileListRes
             {
                 List = list1,
                 Count = list.Count,
@@ -388,7 +388,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModListAsync(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
+    public static async Task<ModDownloadListRes> GetDownloadModListAsync(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
         {
@@ -437,7 +437,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModListAsync(GameSettingObj obj, ModrinthVersionObj? data)
+    public static async Task<ModDownloadListRes> GetDownloadModListAsync(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
         {
@@ -760,7 +760,7 @@ public static class WebBinding
                     return;
                 }
 
-                item.IsNew = true;
+                item.HaveNew();
 
                 List<string> version = [];
                 List<DownloadModArg> items = [];

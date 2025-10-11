@@ -21,24 +21,24 @@ namespace ColorMC.Gui.UIBinding;
 public static class UserBinding
 {
     /// <summary>
-    /// ÕË»§±à¼­»Øµ÷
+    /// è´¦æˆ·ç¼–è¾‘å›è°ƒ
     /// </summary>
     public static event Action? UserEdit;
 
     /// <summary>
-    /// Ëø¶¨µÄÕË»§ÀàĞÍ
+    /// é”å®šçš„è´¦æˆ·ç±»å‹
     /// </summary>
     private static readonly List<UserKeyObj> s_lockUser = [];
 
     /// <summary>
-    /// Ìí¼ÓÕË»§
+    /// æ·»åŠ è´¦æˆ·
     /// </summary>
-    /// <param name="type">ÕË»§ÀàĞÍ</param>
-    /// <param name="loginOAuth">UIÏà¹Ø</param>
-    /// <param name="select">UIÏà¹Ø</param>
-    /// <param name="input1">¸½¼ÓĞÅÏ¢</param>
-    /// <param name="input2">¸½¼ÓĞÅÏ¢</param>
-    /// <param name="input3">¸½¼ÓĞÅÏ¢</param>
+    /// <param name="type">è´¦æˆ·ç±»å‹</param>
+    /// <param name="loginOAuth">UIç›¸å…³</param>
+    /// <param name="select">UIç›¸å…³</param>
+    /// <param name="input1">é™„åŠ ä¿¡æ¯</param>
+    /// <param name="input2">é™„åŠ ä¿¡æ¯</param>
+    /// <param name="input3">é™„åŠ ä¿¡æ¯</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
     public static async Task<StringRes> AddUserAsync(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
@@ -90,7 +90,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÕË»§
+    /// è·å–æ‰€æœ‰è´¦æˆ·
     /// </summary>
     /// <returns></returns>
     public static Dictionary<UserKeyObj, LoginObj> GetAllUser()
@@ -99,10 +99,10 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// É¾³ıÕË»§
+    /// åˆ é™¤è´¦æˆ·
     /// </summary>
     /// <param name="uuid">UUID</param>
-    /// <param name="type">ÕË»§ÀàĞÍ</param>
+    /// <param name="type">è´¦æˆ·ç±»å‹</param>
     public static void Remove(string uuid, AuthType type)
     {
         if (GuiConfigUtils.Config.LastUser is { } last
@@ -116,7 +116,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// »ñÈ¡ËùÓĞÕË»§
+    /// è·å–æ‰€æœ‰è´¦æˆ·
     /// </summary>
     /// <returns></returns>
     public static LoginObj? GetLastUser()
@@ -130,10 +130,10 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ÖØĞÂµÇÂ¼ÕË»§
+    /// é‡æ–°ç™»å½•è´¦æˆ·
     /// </summary>
     /// <param name="uuid">UUID</param>
-    /// <param name="type">ÕË»§ÀàĞÍ</param>
+    /// <param name="type">è´¦æˆ·ç±»å‹</param>
     /// <returns></returns>
     public static async Task<bool> ReLoginAsync(string uuid, AuthType type)
     {
@@ -147,10 +147,10 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ÉèÖÃÑ¡ÖĞÕË»§
+    /// è®¾ç½®é€‰ä¸­è´¦æˆ·
     /// </summary>
     /// <param name="uuid">UUID</param>
-    /// <param name="type">ÕË»§ÀàĞÍ</param>
+    /// <param name="type">è´¦æˆ·ç±»å‹</param>
     public static void SetSelectUser(string uuid, AuthType type)
     {
         GuiConfigUtils.Config.LastUser = new()
@@ -165,7 +165,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// É¾³ıÑ¡ÖĞÕË»§
+    /// åˆ é™¤é€‰ä¸­è´¦æˆ·
     /// </summary>
     public static void ClearLastUser()
     {
@@ -174,9 +174,9 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// Ëø¶¨ÕË»§
+    /// é”å®šè´¦æˆ·
     /// </summary>
-    /// <param name="obj">ÕË»§</param>
+    /// <param name="obj">è´¦æˆ·</param>
     public static void AddLockUser(LoginObj obj)
     {
         var key = obj.GetKey();
@@ -187,18 +187,18 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ½âËøÕË»§
+    /// è§£é”è´¦æˆ·
     /// </summary>
-    /// <param name="obj">ÕË»§</param>
+    /// <param name="obj">è´¦æˆ·</param>
     public static void UnLockUser(LoginObj obj)
     {
         s_lockUser.Remove(obj.GetKey());
     }
 
     /// <summary>
-    /// ÕË»§ÊÇ·ñËø¶¨
+    /// è´¦æˆ·æ˜¯å¦é”å®š
     /// </summary>
-    /// <param name="obj">ÕË»§</param>
+    /// <param name="obj">è´¦æˆ·</param>
     /// <returns></returns>
     public static bool IsLock(LoginObj obj)
     {
@@ -206,7 +206,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ¼ÓÔØÕË»§Æ¤·ô
+    /// åŠ è½½è´¦æˆ·çš®è‚¤
     /// </summary>
     /// <returns></returns>
     public static async Task LoadSkin()
@@ -223,7 +223,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ÖØĞÂ»æÖÆÕË»§Æ¤·ô
+    /// é‡æ–°ç»˜åˆ¶è´¦æˆ·çš®è‚¤
     /// </summary>
     public static void ReloadSkin()
     {
@@ -238,9 +238,9 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ±à¼­Æ¤·ô
+    /// ç¼–è¾‘çš®è‚¤
     /// </summary>
-    /// <param name="top">´°¿Ú</param>
+    /// <param name="top">çª—å£</param>
     public static async void EditSkin(TopLevel top)
     {
         var obj = GetLastUser();
@@ -277,7 +277,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// Çå¿ÕËùÓĞÕË»§
+    /// æ¸…ç©ºæ‰€æœ‰è´¦æˆ·
     /// </summary>
     public static void ClearAllUser()
     {
@@ -290,7 +290,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// È¡ÏûÎ¢ÈíµÇÂ¼
+    /// å–æ¶ˆå¾®è½¯ç™»å½•
     /// </summary>
     public static void OAuthCancel()
     {
@@ -298,11 +298,11 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ±à¼­ÕË»§
+    /// ç¼–è¾‘è´¦æˆ·
     /// </summary>
-    /// <param name="obj">Ô­À´µÄÕË»§</param>
-    /// <param name="text1">ĞÂµÄÃû×Ö</param>
-    /// <param name="text2">ĞÂµÄUUID</param>
+    /// <param name="obj">åŸæ¥çš„è´¦æˆ·</param>
+    /// <param name="text1">æ–°çš„åå­—</param>
+    /// <param name="text2">æ–°çš„UUID</param>
     public static void EditUser(LoginObj obj, string text1, string text2)
     {
         foreach (var item in AuthDatabase.Auths.Values)
@@ -318,7 +318,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ÊÇ·ñÓĞÎ¢ÈíÕË»§
+    /// æ˜¯å¦æœ‰å¾®è½¯è´¦æˆ·
     /// </summary>
     /// <returns></returns>
     public static bool HaveOnline()
@@ -327,9 +327,9 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// ²âÊÔµÇÂ¼
+    /// æµ‹è¯•ç™»å½•
     /// </summary>
-    /// <param name="user">ÕË»§</param>
+    /// <param name="user">è´¦æˆ·</param>
     /// <returns></returns>
     public static async Task<bool> TestLogin(LoginObj user)
     {
@@ -337,7 +337,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// µ±ÕË»§±à¼­ºó
+    /// å½“è´¦æˆ·ç¼–è¾‘å
     /// </summary>
     public static void OnUserEdit()
     {
@@ -345,7 +345,7 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// »ñÈ¡Ñ¡ÖĞµÄÕË»§
+    /// è·å–é€‰ä¸­çš„è´¦æˆ·
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>

@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.MusicPlayer.Decoder;
+namespace ColorMC.Gui.MusicPlayer.Decoder;
 
 /// <summary>
 /// 音乐文件格式
