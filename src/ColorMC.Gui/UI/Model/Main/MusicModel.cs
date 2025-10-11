@@ -124,7 +124,7 @@ public partial class MainModel
 
             MusicLoopStart();
 
-            var res = await BaseBinding.MusicStart(config.Music, config.MusicLoop, config.SlowVolume, config.Volume);
+            var res = await BaseBinding.MusicStartAsync(config.Music, config.MusicLoop, config.SlowVolume, config.Volume);
             if (!res.Res)
             {
                 if (!string.IsNullOrWhiteSpace(res.Message))

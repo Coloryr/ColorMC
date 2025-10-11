@@ -97,10 +97,10 @@ public partial class ErrorModel : TopModel
             }
             Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
-                await BaseBinding.CopyTextClipboard(top, url);
+                await BaseBinding.CopyTextClipboardAsync(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
             });
-            await BaseBinding.CopyTextClipboard(top, url);
+            await BaseBinding.CopyTextClipboardAsync(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }

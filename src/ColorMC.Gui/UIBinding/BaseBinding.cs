@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
@@ -33,6 +31,8 @@ using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using SharpCompress.Common;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Gui.UIBinding;
 
@@ -105,7 +105,7 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="text">文本</param>
-    public static async Task CopyTextClipboard(TopLevel top, string text)
+    public static async Task CopyTextClipboardAsync(TopLevel top, string text)
     {
         if (top.Clipboard is { } clipboard)
         {
@@ -118,7 +118,7 @@ public static class BaseBinding
     /// </summary>
     /// <param name="top"></param>
     /// <param name="file">文件列表</param>
-    public static async Task CopyFileClipboard(TopLevel top, List<IStorageFile> file)
+    public static async Task CopyFileClipboardAsync(TopLevel top, List<IStorageFile> file)
     {
         if (top.Clipboard is { } clipboard)
         {
@@ -163,11 +163,6 @@ public static class BaseBinding
             case OsType.MacOS:
                 Process.Start("open", '"' + url + '"');
                 break;
-#if Phone
-            case OsType.Android:
-                ColorMCGui.PhoneOpenUrl(url);
-                break;
-#endif
         }
     }
 
@@ -231,10 +226,10 @@ public static class BaseBinding
     /// <summary>
     /// 播放音乐
     /// </summary>
-    public static async Task<MusicPlayRes> MusicStart(string file, bool loop, bool slow, int volume)
+    public static async Task<MusicPlayRes> MusicStartAsync(string file, bool loop, bool slow, int volume)
     {
         Media.Loop = loop;
-        return await Media.PlayMusic(file, slow, volume);
+        return await Media.PlayMusicAsync(file, slow, volume);
     }
 
     /// <summary>
@@ -307,7 +302,7 @@ public static class BaseBinding
     /// <param name="item1">远程Frp项目</param>
     /// <param name="model">本地映射项目</param>
     /// <returns></returns>
-    public static Task<FrpLaunchRes> StartFrp(object item1, NetFrpLocalModel model)
+    public static Task<FrpLaunchRes> StartFrpAsync(object item1, NetFrpLocalModel model)
     {
         if (item1 is NetFrpRemoteModel model1)
         {
@@ -432,11 +427,10 @@ public static class BaseBinding
     /// <param name="file">文件名</param>
     /// <param name="path">文件路径</param>
     /// <returns></returns>
-    private static async Task PutFile(ZipArchive zip, string file, string path)
+    private static async Task PutFileAsync(ZipWriter zip, string file, string path)
     {
         using var buffer = PathHelper.OpenRead(path)!;
-        var entry = zip.CreateEntry(file);
-        using var stream = entry.Open();
+        using var stream = zip.WriteToStream(file, new ZipWriterEntryOptions());
         buffer.Seek(0, SeekOrigin.Begin);
         await buffer.CopyToAsync(stream);
     }
@@ -448,10 +442,9 @@ public static class BaseBinding
     /// <param name="file">文件名</param>
     /// <param name="data">文件内容</param>
     /// <returns></returns>
-    private static async Task PutFile(ZipArchive zip, string file, byte[] data)
+    private static async Task PutFileAsync(ZipWriter zip, string file, byte[] data)
     {
-        var entry = zip.CreateEntry(file);
-        using var stream = entry.Open();
+        using var stream = zip.WriteToStream(file, new ZipWriterEntryOptions());
         await stream.WriteAsync(data);
     }
 
@@ -463,16 +456,15 @@ public static class BaseBinding
     /// <param name="path">路径</param>
     /// <param name="basepath">基础路径，用于替换</param>
     /// <returns></returns>
-    private static async Task PutFile(ZipArchive zip, string file, string path, string basepath)
+    private static async Task PutFileAsync(ZipWriter zip, string file, string path, string basepath)
     {
         foreach (var item in PathHelper.GetAllFiles(path))
         {
             string tempfile = file + "/" + item.FullName[(basepath.Length + 1)..];
             tempfile = tempfile.Replace("\\", "/");
             using var buffer = PathHelper.OpenRead(item.FullName)!;
-            var entry = zip.CreateEntry(tempfile);
+            using var stream = zip.WriteToStream(file, new ZipWriterEntryOptions());
             buffer.Seek(0, SeekOrigin.Begin);
-            using var stream = entry.Open();
             await buffer.CopyToAsync(stream);
         }
     }
@@ -619,13 +611,13 @@ public static class BaseBinding
     /// <param name="model"></param>
     /// <param name="output"></param>
     /// <returns></returns>
-    public static async Task<bool> BuildPack(BuildPackModel model, string output)
+    public static async Task<bool> BuildPackAsync(BuildPackModel model, string output)
     {
         try
         {
             var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
             var stream = PathHelper.OpenWrite(file, true);
-            var zip = new ZipArchive(stream);
+            var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
             var conf = GuiConfigUtils.Config;
             var conf1 = ConfigUtils.Config;
             var conf2 = conf.ServerCustom;
@@ -638,7 +630,7 @@ public static class BaseBinding
             if (model.UiBg && File.Exists(conf.BackImage))
             {
                 var filename = Path.GetFileName(conf.BackImage);
-                await PutFile(zip, filename, conf.BackImage);
+                await PutFileAsync(zip, filename, conf.BackImage);
                 obj.Add(nameof(BuildPackModel.UiBg), JsonSerializer.SerializeToNode(new UiBackConfigObj()
                 {
                     EnableBG = conf.EnableBG,
@@ -726,17 +718,17 @@ public static class BaseBinding
                 var uiFile = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameCustomUIFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(zip, GuiNames.NameCustomUIFile, uiFile);
+                    await PutFileAsync(zip, GuiNames.NameCustomUIFile, uiFile);
                 }
                 uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.IconFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(zip, conf2.IconFile, uiFile);
+                    await PutFileAsync(zip, conf2.IconFile, uiFile);
                 }
                 uiFile = Path.Combine(ColorMCGui.BaseDir, conf2.StartIconFile);
                 if (File.Exists(uiFile))
                 {
-                    await PutFile(zip, conf2.StartIconFile, uiFile);
+                    await PutFileAsync(zip, conf2.StartIconFile, uiFile);
                 }
 
                 obj.Add(nameof(BuildPackModel.ServerUi), JsonSerializer.SerializeToNode(new ServerUiConfigObj()
@@ -757,7 +749,7 @@ public static class BaseBinding
                 var filename = Path.GetFileName(musicFile);
                 if (File.Exists(musicFile))
                 {
-                    await PutFile(zip, filename!, musicFile);
+                    await PutFileAsync(zip, filename!, musicFile);
                 }
 
                 obj.Add(nameof(BuildPackModel.ServerMusic), JsonSerializer.SerializeToNode(new ServerMusicConfigObj()
@@ -775,11 +767,11 @@ public static class BaseBinding
             {
                 if (File.Exists(UpdateUtils.LocalPath[0]))
                 {
-                    await PutFile(zip, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
+                    await PutFileAsync(zip, $"{GuiNames.NameDllDir}/ColorMC.Core.dll", UpdateUtils.LocalPath[0]);
                 }
                 if (File.Exists(UpdateUtils.LocalPath[1]))
                 {
-                    await PutFile(zip, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
+                    await PutFileAsync(zip, $"{GuiNames.NameDllDir}/ColorMC.Gui.dll", UpdateUtils.LocalPath[2]);
                 }
             }
 
@@ -795,15 +787,11 @@ public static class BaseBinding
                     {
                         continue;
                     }
-                    await PutFile(zip, Names.NameJavaDir, Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
+                    await PutFileAsync(zip, Names.NameJavaDir, Path.Combine(JvmPath.JavaDir, item.Name), JvmPath.JavaDir);
                     list.Add(new()
                     {
                         Name = item.Name,
-#if Phone
-                        Local = item.Path.Replace(JvmPath.BaseDir, "")
-#else
                         Local = item.Path.Replace(ColorMCGui.BaseDir, "")
-#endif
                     });
                 }
 
@@ -811,7 +799,7 @@ public static class BaseBinding
             }
 
             var data = obj.ToJsonString();
-            await PutFile(zip, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
+            await PutFileAsync(zip, GuiNames.NameClientConfigFile, Encoding.UTF8.GetBytes(data));
 
             //打包启动器
             if (model.PackLaunch)
@@ -822,7 +810,7 @@ public static class BaseBinding
                     item);
                     if (File.Exists(fileitem))
                     {
-                        await PutFile(zip, item, fileitem);
+                        await PutFileAsync(zip, item, fileitem);
                     }
                 }
             }
@@ -835,14 +823,14 @@ public static class BaseBinding
                 string tempfile = item[(ColorMCGui.BaseDir.Length)..];
                 tempfile = tempfile.Replace("\\", "/");
 
-                await PutFile(zip, tempfile, item);
+                await PutFileAsync(zip, tempfile, item);
             }
 
             model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info6"));
 
             foreach (var item in model.Files)
             {
-                await PutFile(zip, item.File, item.Local);
+                await PutFileAsync(zip, item.File, item.Local);
             }
 
             zip.Dispose();

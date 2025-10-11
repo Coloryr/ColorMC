@@ -275,10 +275,10 @@ public partial class GameLogModel : GameModel
             }
             Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
-                await BaseBinding.CopyTextClipboard(top, url);
+                await BaseBinding.CopyTextClipboardAsync(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
             });
-            await BaseBinding.CopyTextClipboard(top, url);
+            await BaseBinding.CopyTextClipboardAsync(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }
@@ -321,7 +321,7 @@ public partial class GameLogModel : GameModel
         _isKill = false;
         IsGameRun = true;
 
-        var res = await GameBinding.Launch(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.LaunchAsync(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             IsGameRun = false;
@@ -622,10 +622,10 @@ public partial class GameLogModel : GameModel
                     }
                     Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
                     {
-                        await BaseBinding.CopyTextClipboard(top, url);
+                        await BaseBinding.CopyTextClipboardAsync(top, url);
                         Model.Notify(App.Lang("GameLogWindow.Info7"));
                     });
-                    await BaseBinding.CopyTextClipboard(top, url);
+                    await BaseBinding.CopyTextClipboardAsync(top, url);
                     Model.Notify(App.Lang("GameLogWindow.Info7"));
                 }
             });

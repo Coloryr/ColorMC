@@ -105,7 +105,7 @@ public partial class AddGameModel
         }
         Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
         //开始导入压缩包
-        var res = await GameBinding.AddPack(ZipLocal, type, Name, Group,
+        var res = await GameBinding.AddPackAsync(ZipLocal, type, Name, Group,
         (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));

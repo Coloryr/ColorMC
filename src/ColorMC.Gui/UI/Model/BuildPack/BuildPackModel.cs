@@ -73,7 +73,7 @@ public partial class BuildPackModel : MenuModel
         }
 
         Model.Progress(App.Lang("BuildPackWindow.Info1"));
-        var res = await BaseBinding.BuildPack(this, local.GetPath()!);
+        var res = await BaseBinding.BuildPackAsync(this, local.GetPath()!);
         Model.ProgressClose();
         if (!res)
         {

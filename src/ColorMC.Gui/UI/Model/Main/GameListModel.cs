@@ -564,7 +564,7 @@ public partial class MainModel
         item.IsLaunch = false;
         item.IsLoad = true;
         Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
-        var res = await GameBinding.Launch(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.LaunchAsync(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
@@ -627,7 +627,7 @@ public partial class MainModel
         }
 
         Model.Progress(App.Lang("MainWindow.Info3"));
-        var res1 = await GameBinding.Launch(Model, list1);
+        var res1 = await GameBinding.LaunchAsync(Model, list1);
         Model.ProgressClose();
         if (res1.Message != null)
         {

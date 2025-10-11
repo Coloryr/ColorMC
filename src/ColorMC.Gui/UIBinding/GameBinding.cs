@@ -89,7 +89,7 @@ public static class GameBinding
     /// <param name="request">UI相关</param>
     /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
-    public static async Task<bool> AddGame(GameSettingObj game, ColorMCCore.Request request,
+    public static async Task<bool> AddGameAsync(GameSettingObj game, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte)
     {
         var game1 = await InstancesPath.CreateGameAsync(new CreateGameArg
@@ -116,7 +116,7 @@ public static class GameBinding
     /// <param name="request">UI相关</param>
     /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
-    public static async Task<GameRes> AddGame(string? name, string local, List<string>? unselect,
+    public static async Task<GameRes> AddGameAsync(string? name, string local, List<string>? unselect,
         string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.ZipUpdate state, bool open)
     {
@@ -157,7 +157,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static Task<GameRes> AddPack(string dir, PackType type, string? name,
+    public static Task<GameRes> AddPackAsync(string dir, PackType type, string? name,
         string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
         ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -188,7 +188,7 @@ public static class GameBinding
     /// 获取CF支持的游戏版本
     /// </summary>
     /// <returns></returns>
-    public static Task<List<string>?> GetCurseForgeGameVersions()
+    public static Task<List<string>?> GetCurseForgeGameVersionsAsync()
     {
         return CurseForgeHelper.GetGameVersionsAsync();
     }
@@ -197,7 +197,7 @@ public static class GameBinding
     /// 获取MO支持的游戏版本
     /// </summary>
     /// <returns></returns>
-    public static Task<List<string>?> GetModrinthGameVersions()
+    public static Task<List<string>?> GetModrinthGameVersionsAsync()
     {
         return ModrinthHelper.GetGameVersionAsync();
     }
@@ -207,7 +207,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static Task<Dictionary<string, string>?> GetCurseForgeCategories(
+    public static Task<Dictionary<string, string>?> GetCurseForgeCategoriesAsync(
         FileType type = FileType.ModPack)
     {
         return CurseForgeHelper.GetCategoriesAsync(type);
@@ -218,7 +218,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static Task<Dictionary<string, string>?> GetModrinthCategories(FileType type = FileType.ModPack)
+    public static Task<Dictionary<string, string>?> GetModrinthCategoriesAsync(FileType type = FileType.ModPack)
     {
         return ModrinthHelper.GetModrinthCategoriesAsync(type);
     }
@@ -235,7 +235,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static async Task<GameRes> InstallCurseForge(CurseForgeModObj.CurseForgeDataObj data,
+    public static async Task<GameRes> InstallCurseForgeAsync(CurseForgeModObj.CurseForgeDataObj data,
         CurseForgeListObj.CurseForgeListDataObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
@@ -265,7 +265,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static async Task<GameRes> InstallModrinth(ModrinthVersionObj data,
+    public static async Task<GameRes> InstallModrinthAsync(ModrinthVersionObj data,
         ModrinthSearchObj.HitObj data1, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
@@ -290,7 +290,7 @@ public static class GameBinding
     /// <param name="model">基础窗口模型</param>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task SetGameIconFromFile(TopLevel top, BaseModel model, GameSettingObj obj)
+    public static async Task SetGameIconFromFileAsync(TopLevel top, BaseModel model, GameSettingObj obj)
     {
         try
         {
@@ -332,7 +332,7 @@ public static class GameBinding
     /// <param name="model">基础窗口模型</param>
     /// <param name="objs">游戏实例列表</param>
     /// <returns></returns>
-    public static async Task<GameLaunchListRes> Launch(BaseModel model, ICollection<GameSettingObj> objs)
+    public static async Task<GameLaunchListRes> LaunchAsync(BaseModel model, ICollection<GameSettingObj> objs)
     {
         var list = objs.Where(item => !GameManager.IsGameRun(item))
             .ToList();
@@ -478,7 +478,7 @@ public static class GameBinding
     /// <param name="world">进入的存档</param>
     /// <param name="hide">是否隐藏启动器</param>
     /// <returns></returns>
-    public static async Task<GameLaunchOneRes> Launch(BaseModel model, GameSettingObj? obj,
+    public static async Task<GameLaunchOneRes> LaunchAsync(BaseModel model, GameSettingObj? obj,
         WorldObj? world = null, bool hide = false)
     {
         if (obj == null)
@@ -562,9 +562,6 @@ public static class GameBinding
         {
             return new() { Message = res.Message };
         }
-#if Phone
-        hide = false;
-#endif
         s_launchCancel = new();
 
         s_gameConnect[obj.UUID] = false;
@@ -824,7 +821,7 @@ public static class GameBinding
     /// 重新获取游戏版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<bool> ReloadVersion()
+    public static async Task<bool> ReloadVersionAsync()
     {
         await VersionPath.GetFromWebAsync();
 
@@ -895,7 +892,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="sha256"></param>
     /// <returns></returns>
-    public static async Task<List<ModDisplayModel>> GetGameMods(GameSettingObj obj, IModEdit? edit,
+    public static async Task<List<ModDisplayModel>> GetGameModsAsync(GameSettingObj obj, IModEdit? edit,
         bool sha256 = false)
     {
         var list = new List<ModDisplayModel>();
@@ -1688,7 +1685,7 @@ public static class GameBinding
     /// <param name="obj">服务器信息</param>
     public static async void CopyServer(TopLevel top, ServerInfoObj obj)
     {
-        await BaseBinding.CopyTextClipboard(top, obj.IP);
+        await BaseBinding.CopyTextClipboardAsync(top, obj.IP);
     }
 
     /// <summary>
@@ -2184,13 +2181,13 @@ public static class GameBinding
 
         GameCloudUtils.SetCloudData(game, cloud);
         string local = Path.GetFullPath(game.GetBasePath() + "/config.zip");
-        var res = await ColorMCCloudAPI.DownloadConfig(obj.UUID, local);
+        var res = await ColorMCCloudAPI.DownloadConfigAsync(obj.UUID, local);
         if (res == 100)
         {
             await UnZipCloudConfig(game, cloud, local);
         }
 
-        var temp = await ColorMCCloudAPI.HaveCloud(game);
+        var temp = await ColorMCCloudAPI.HaveCloudAsync(game);
         try
         {
             cloud.ConfigTime = DateTime.Parse(temp.Data2!);
@@ -2246,7 +2243,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     public static async void CheckCloudAndOpen(GameSettingObj obj)
     {
-        var res = await ColorMCCloudAPI.HaveCloud(obj);
+        var res = await ColorMCCloudAPI.HaveCloudAsync(obj);
         if (res.State && res.Data1)
         {
             Dispatcher.UIThread.Post(() =>
@@ -2802,7 +2799,7 @@ public static class GameBinding
             };
         }
 
-        var res = await ColorMCCloudAPI.StartCloud(obj);
+        var res = await ColorMCCloudAPI.StartCloudAsync(obj);
         if (res == 100)
         {
             return new()
@@ -2839,7 +2836,7 @@ public static class GameBinding
             };
         }
 
-        var res = await ColorMCCloudAPI.StopCloud(obj);
+        var res = await ColorMCCloudAPI.StopCloudAsync(obj);
 
         if (res == 100)
         {
@@ -2897,7 +2894,7 @@ public static class GameBinding
         files.Remove(name);
         await new ZipUtils().ZipFileAsync(name, files, dir);
         model.Update?.Invoke(App.Lang("GameCloudWindow.Info9"));
-        var res = await ColorMCCloudAPI.UploadConfig(obj, name);
+        var res = await ColorMCCloudAPI.UploadConfigAsync(obj, name);
         PathHelper.Delete(name);
         if (res.Data1 == 100)
         {
@@ -2948,7 +2945,7 @@ public static class GameBinding
         model.Update?.Invoke(App.Lang("GameCloudWindow.Info10"));
         var data = GameCloudUtils.GetCloudData(game);
         string local = Path.Combine(game.GetBasePath(), GuiNames.NameCloudConfigFile);
-        var res = await ColorMCCloudAPI.DownloadConfig(game.UUID, local);
+        var res = await ColorMCCloudAPI.DownloadConfigAsync(game.UUID, local);
         if (res == 101)
         {
             return new()
@@ -2992,7 +2989,7 @@ public static class GameBinding
             };
         }
 
-        return await ColorMCCloudAPI.HaveCloud(obj);
+        return await ColorMCCloudAPI.HaveCloudAsync(obj);
     }
 
     /// <summary>
@@ -3010,7 +3007,7 @@ public static class GameBinding
             };
         }
 
-        return await ColorMCCloudAPI.GetWorldList(game);
+        return await ColorMCCloudAPI.GetWorldListAsync(game);
     }
 
     /// <summary>
@@ -3043,7 +3040,7 @@ public static class GameBinding
         {
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info12"));
             //云端文件
-            var list = await ColorMCCloudAPI.GetWorldFiles(game, world.World);
+            var list = await ColorMCCloudAPI.GetWorldFilesAsync(game, world.World);
             if (list == null)
             {
                 return new()
@@ -3098,7 +3095,7 @@ public static class GameBinding
             }
         }
 
-        var res = await ColorMCCloudAPI.UploadWorld(game, world.World, local);
+        var res = await ColorMCCloudAPI.UploadWorldAsync(game, world.World, local);
         PathHelper.Delete(local);
         if (res == 100)
         {
@@ -3159,7 +3156,7 @@ public static class GameBinding
             }
         }
 
-        var res = await ColorMCCloudAPI.DownloadWorld(game, world.Cloud, local, list);
+        var res = await ColorMCCloudAPI.DownloadWorldAsync(game, world.Cloud, local, list);
         if (res == 100)
         {
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info11"));
@@ -3223,7 +3220,7 @@ public static class GameBinding
                 Message = App.Lang("GameCloudWindow.Error11")
             };
         }
-        var res = await ColorMCCloudAPI.DeleteWorld(game, name);
+        var res = await ColorMCCloudAPI.DeleteWorldAsync(game, name);
 
         if (res == 100)
         {

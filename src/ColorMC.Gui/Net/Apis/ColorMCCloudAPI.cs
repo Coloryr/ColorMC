@@ -56,7 +56,7 @@ public static class ColorMCCloudAPI
     /// 获取frp列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<Dictionary<string, FrpDownloadObj>?> GetFrpList()
+    public static async Task<Dictionary<string, FrpDownloadObj>?> GetFrpListAsync()
     {
         try
         {
@@ -75,7 +75,7 @@ public static class ColorMCCloudAPI
     /// 获取hdiff列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<Dictionary<string, HdiffDownloadObj>?> GetHdiffList()
+    public static async Task<Dictionary<string, HdiffDownloadObj>?> GetHdiffListAsync()
     {
         try
         {
@@ -94,7 +94,7 @@ public static class ColorMCCloudAPI
     /// 获取更新日志
     /// </summary>
     /// <returns>日志内容</returns>
-    public static async Task<string?> GetNewLog()
+    public static async Task<string?> GetNewLogAsync()
     {
         try
         {
@@ -112,7 +112,7 @@ public static class ColorMCCloudAPI
     /// 获取主版本号
     /// </summary>
     /// <returns></returns>
-    public static async Task<JsonDocument?> GetMainIndex()
+    public static async Task<JsonDocument?> GetMainIndexAsync()
     {
         string url = ColorMCAPI.BaseUrl + "colormc/update/index.json";
         using var stream = await ColorMCAPI.GetStreamAsync(url);
@@ -127,7 +127,7 @@ public static class ColorMCCloudAPI
     /// 获取文件修补
     /// </summary>
     /// <returns></returns>
-    public static async Task<JsonDocument?> GetUpdateIndex()
+    public static async Task<JsonDocument?> GetUpdateIndexAsync()
     {
         string url = UpdateUrl + "index.json";
         using var stream = await ColorMCAPI.GetStreamAsync(url);
@@ -143,7 +143,7 @@ public static class ColorMCCloudAPI
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static async Task<JsonDocument?> GetCloudServer(string version)
+    public static async Task<JsonDocument?> GetCloudServerAsync(string version)
     {
         try
         {
@@ -168,7 +168,7 @@ public static class ColorMCCloudAPI
     /// <param name="ip">IP地址</param>
     /// <param name="model">显示内容</param>
     /// <returns>是否上传成功</returns>
-    public static async Task<bool> PutCloudServer(string token, string ip, FrpShareModel model)
+    public static async Task<bool> PutCloudServerAsync(string token, string ip, FrpShareModel model)
     {
         var obj = new PutCloudServerObj()
         {
@@ -211,7 +211,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 检查云服务器是否在线
     /// </summary>
-    public static async Task Check()
+    public static async Task CheckAsync()
     {
         var requ = new HttpRequestMessage(HttpMethod.Post,
             new Uri(Server + "/check"));
@@ -240,14 +240,14 @@ public static class ColorMCCloudAPI
                 }
             }
             Connect = true;
-            await GetState();
+            await GetStateAsync();
         }
     }
 
     /// <summary>
     /// 检查游戏实例是否启用了云同步
     /// </summary>
-    public static async Task<CloudRes> HaveCloud(GameSettingObj obj)
+    public static async Task<CloudRes> HaveCloudAsync(GameSettingObj obj)
     {
         try
         {
@@ -294,7 +294,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 实例开启云同步
     /// </summary>
-    public static async Task<int> StartCloud(GameSettingObj obj)
+    public static async Task<int> StartCloudAsync(GameSettingObj obj)
     {
         try
         {
@@ -333,7 +333,7 @@ public static class ColorMCCloudAPI
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task<int> StopCloud(GameSettingObj obj)
+    public static async Task<int> StopCloudAsync(GameSettingObj obj)
     {
         try
         {
@@ -371,7 +371,7 @@ public static class ColorMCCloudAPI
     /// <param name="obj">游戏实例</param>
     /// <param name="path">配置文件路径</param>
     /// <returns></returns>
-    public static async Task<CloudUploadRes> UploadConfig(GameSettingObj obj, string path)
+    public static async Task<CloudUploadRes> UploadConfigAsync(GameSettingObj obj, string path)
     {
         try
         {
@@ -420,7 +420,7 @@ public static class ColorMCCloudAPI
     /// <param name="uuid">游戏实例UUID</param>
     /// <param name="local">压缩包位置</param>
     /// <returns></returns>
-    public static async Task<int> DownloadConfig(string uuid, string local)
+    public static async Task<int> DownloadConfigAsync(string uuid, string local)
     {
         try
         {
@@ -462,7 +462,7 @@ public static class ColorMCCloudAPI
     /// 获取云储存状态
     /// </summary>
     /// <returns></returns>
-    public static async Task GetState()
+    public static async Task GetStateAsync()
     {
         if (!Connect)
         {
@@ -511,7 +511,7 @@ public static class ColorMCCloudAPI
     /// 获取云端游戏实例
     /// </summary>
     /// <returns>云游戏实例列表</returns>
-    public static async Task<List<CloundListObj>?> GetList()
+    public static async Task<List<CloundListObj>?> GetListAsync()
     {
         if (!Connect)
         {
@@ -555,7 +555,7 @@ public static class ColorMCCloudAPI
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns></returns>
-    public static async Task<CloudWorldRes> GetWorldList(GameSettingObj game)
+    public static async Task<CloudWorldRes> GetWorldListAsync(GameSettingObj game)
     {
         try
         {
@@ -605,7 +605,7 @@ public static class ColorMCCloudAPI
     /// <param name="world">世界储存</param>
     /// <param name="local">压缩包路径</param>
     /// <returns></returns>
-    public static async Task<int> UploadWorld(GameSettingObj game, WorldObj world, string local)
+    public static async Task<int> UploadWorldAsync(GameSettingObj game, WorldObj world, string local)
     {
         try
         {
@@ -645,7 +645,7 @@ public static class ColorMCCloudAPI
     /// <param name="game">游戏实例</param>
     /// <param name="name">世界储存</param>
     /// <returns></returns>
-    public static async Task<Dictionary<string, string>?> GetWorldFiles(GameSettingObj game, WorldObj world)
+    public static async Task<Dictionary<string, string>?> GetWorldFilesAsync(GameSettingObj game, WorldObj world)
     {
         if (!Connect)
         {
@@ -693,7 +693,7 @@ public static class ColorMCCloudAPI
     /// <param name="local">压缩包路径</param>
     /// <param name="list">文件列表</param>
     /// <returns></returns>
-    public static async Task<int> DownloadWorld(GameSettingObj game, CloudWorldObj world,
+    public static async Task<int> DownloadWorldAsync(GameSettingObj game, CloudWorldObj world,
         string local, Dictionary<string, string> list)
     {
         if (!Connect)
@@ -746,7 +746,7 @@ public static class ColorMCCloudAPI
     /// <param name="game">游戏实例</param>
     /// <param name="name">存档</param>
     /// <returns></returns>
-    public static async Task<int> DeleteWorld(GameSettingObj game, string name)
+    public static async Task<int> DeleteWorldAsync(GameSettingObj game, string name)
     {
         try
         {
@@ -844,7 +844,7 @@ public static class ColorMCCloudAPI
     /// <param name="key"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static (string?, FileItemObj?) BuildFrpItem(string key, FrpDownloadObj value)
+    public static FileItemRes BuildFrpItem(string key, FrpDownloadObj value)
     {
         string data1;
         string sha1;
@@ -889,19 +889,23 @@ public static class ColorMCCloudAPI
         }
         else
         {
-            return (null, null);
+            return new FileItemRes();
         }
 
-        return (Path.Combine(FrpLaunchUtils.GetFrpLocal(key), FrpLaunchUtils.GetFrpcName()), new()
+        return new FileItemRes
         {
-            Name = $"Frp {data1}",
-            Local = FrpLaunchUtils.GetFrpLocal(key, data1),
-            Url = $"{ColorMCAPI.BaseWebUrl}frp/{key}/{data1}",
-            Sha1 = sha1,
-            Later = (stream) =>
+            Path = Path.Combine(FrpLaunchUtils.GetFrpLocal(key, FrpLaunchUtils.GetFrpcName())),
+            File = new()
             {
-                ToolUtils.Unzip(stream, FrpLaunchUtils.GetFrpLocal(key), data1);
+                Name = $"Frp {data1}",
+                Local = FrpLaunchUtils.GetFrpLocal(key, data1),
+                Url = $"{ColorMCAPI.BaseWebUrl}frp/{key}/{data1}",
+                Sha1 = sha1,
+                Later = (stream) =>
+                {
+                    ToolUtils.Unzip(stream, FrpLaunchUtils.GetFrpLocal(key), data1);
+                }
             }
-        });
+        };
     }
 }

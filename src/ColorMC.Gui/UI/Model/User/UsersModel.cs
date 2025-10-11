@@ -577,7 +577,7 @@ public partial class UsersModel : TopModel
             {
                 return;
             }
-            await BaseBinding.CopyTextClipboard(top, code);
+            await BaseBinding.CopyTextClipboardAsync(top, code);
         }
         else
         {

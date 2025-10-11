@@ -275,7 +275,7 @@ public partial class AddGameModel
             }
         };
 
-        var res = await GameBinding.AddGame(game, Tab1GameRequest, Tab1GameOverwirte);
+        var res = await GameBinding.AddGameAsync(game, Tab1GameRequest, Tab1GameOverwirte);
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error5"));
@@ -368,7 +368,7 @@ public partial class AddGameModel
         LoaderVersion = null;
         IsLoad = true;
         Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info12");
-        var res = await GameBinding.ReloadVersion();
+        var res = await GameBinding.ReloadVersionAsync();
         IsLoad = false;
         Model.SubTitle = "";
         if (!res)

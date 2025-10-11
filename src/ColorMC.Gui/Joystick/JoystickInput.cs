@@ -16,10 +16,6 @@ public static class JoystickInput
     /// </summary>
     public static bool IsRun { get; set; }
     /// <summary>
-    /// SDL句柄
-    /// </summary>
-    private static Sdl _sdl;
-    /// <summary>
     /// 是否在编辑模式
     /// </summary>
     public static bool IsEditMode { get; set; }
@@ -27,6 +23,15 @@ public static class JoystickInput
     /// 发生SDL事件时
     /// </summary>
     public static event Action<Event>? OnEvent;
+    /// <summary>
+    /// 获取手柄数量
+    /// </summary>
+    public static int Count => _sdl.NumJoysticks();
+
+    /// <summary>
+    /// SDL句柄
+    /// </summary>
+    private static Sdl _sdl;
 
     /// <summary>
     /// 手柄控制初始化
@@ -55,11 +60,6 @@ public static class JoystickInput
     {
         IsRun = false;
     }
-
-    /// <summary>
-    /// 获取手柄数量
-    /// </summary>
-    public static int Count => _sdl.NumJoysticks();
 
     /// <summary>
     /// 获取手柄名字列表

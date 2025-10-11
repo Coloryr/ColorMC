@@ -515,11 +515,11 @@ public partial class AddControlModel : GameModel
             //获取支持的游戏版本和分类
             Model.Progress(App.Lang("AddModPackWindow.Info4"));
             var list = type is SourceType.CurseForge
-                ? await GameBinding.GetCurseForgeGameVersions()
-                : await GameBinding.GetModrinthGameVersions();
+                ? await GameBinding.GetCurseForgeGameVersionsAsync()
+                : await GameBinding.GetModrinthGameVersionsAsync();
             var list1 = type is SourceType.CurseForge
-                ? await GameBinding.GetCurseForgeCategories(_now)
-                : await GameBinding.GetModrinthCategories(_now);
+                ? await GameBinding.GetCurseForgeCategoriesAsync(_now)
+                : await GameBinding.GetModrinthCategoriesAsync(_now);
             Model.ProgressClose();
             if (list == null || list1 == null)
             {

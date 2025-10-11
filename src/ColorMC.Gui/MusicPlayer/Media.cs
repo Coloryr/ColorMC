@@ -221,7 +221,7 @@ public static class Media
     /// <param name="type">播放类型</param>
     /// <returns>播放结果</returns>
     /// <exception cref="Exception">文件错误</exception>
-    private static async Task<MusicPlayRes> Play(Stream stream, MediaType type)
+    private static async Task<MusicPlayRes> PlayAsync(Stream stream, MediaType type)
     {
         PlayState = PlayState.Stop;
 
@@ -276,7 +276,7 @@ public static class Media
         var reader = File.OpenRead(file);
         var type = TestMediaType(reader);
         reader.Seek(0, SeekOrigin.Begin);
-        return await Play(reader, type);
+        return await PlayAsync(reader, type);
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ public static class Media
     /// </summary>
     /// <param name="url">网址</param>
     /// <returns>播放结果</returns>
-    private static async Task<MusicPlayRes> PlayUrl(string url)
+    private static async Task<MusicPlayRes> PlayUrlAsync(string url)
     {
         var stream = new MemoryStream();
         var res = await CoreHttpClient.GetAsync(url);
@@ -330,7 +330,7 @@ public static class Media
 
         var type = TestMediaType(stream);
         stream.Seek(0, SeekOrigin.Begin);
-        return await Play(stream, type);
+        return await PlayAsync(stream, type);
     }
 
     /// <summary>
@@ -339,7 +339,7 @@ public static class Media
     /// <param name="file">文件或者网址</param>
     /// <param name="value">是否渐变大声</param>
     /// <param name="value1">最大音量 0-100</param>
-    public static async Task<MusicPlayRes> PlayMusic(string file, bool value, int value1)
+    public static async Task<MusicPlayRes> PlayMusicAsync(string file, bool value, int value1)
     {
         if (s_player == null)
         {
@@ -359,7 +359,7 @@ public static class Media
         {
             if (file.StartsWith("http"))
             {
-                res = await PlayUrl(file);
+                res = await PlayUrlAsync(file);
             }
             else if (File.Exists(file))
             {

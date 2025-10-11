@@ -608,7 +608,7 @@ public static class TestItem
         SdlUtils.InitTest();
 
         Media.Init();
-        Media.PlayMusic("F:\\music\\AstroNoteS\\空飛ぶ旅 - AstroNoteS.mp3", false, 100);
+        Media.PlayMusicAsync("F:\\music\\AstroNoteS\\空飛ぶ旅 - AstroNoteS.mp3", false, 100);
     }
     public static void Item36()
     {
@@ -665,7 +665,7 @@ public static class TestItem
 
         Media.Init();
         //16
-        Media.PlayMusic("F:\\music\\Famishin\\リフレイン ~Piano Version~ - Famishin.flac", false, 100);
+        Media.PlayMusicAsync("F:\\music\\Famishin\\リフレイン ~Piano Version~ - Famishin.flac", false, 100);
 
         //24
         //Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false ,100);
@@ -680,7 +680,7 @@ public static class TestItem
         //Media.PlayMusic("F:\\music\\9-tie\\Naked Blue - 9-tie.flac", false, 100);
 
         //24
-        Media.PlayMusic("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false, 100);
+        Media.PlayMusicAsync("F:\\music\\777☆SISTERS\\Departures -あしたの歌- - 777☆SISTERS.flac", false, 100);
     }
 
     public static async void Item41()

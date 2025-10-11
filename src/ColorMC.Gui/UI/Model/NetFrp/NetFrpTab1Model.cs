@@ -101,7 +101,7 @@ public partial class NetFrpModel
     private async void LoadSakuraList()
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab1.Info2"));
-        var res = await SakuraFrpApi.GetChannel(KeySakura);
+        var res = await SakuraFrpApi.GetChannelAsync(KeySakura);
         Model.ProgressClose();
         if (res == null)
         {

@@ -180,11 +180,6 @@ public static class WindowManager
         //单窗口模式
         if (ConfigBinding.WindowMode())
         {
-#if Phone
-            AllWindow = new();
-            AllWindow.Model.HeadDisplay = false;
-            AllWindow.WindowOpened();
-#else
             if (SystemInfo.Os == OsType.Linux ||
                 (SystemInfo.Os == OsType.Windows && !SystemInfo.IsWin11))
             {
@@ -198,7 +193,6 @@ public static class WindowManager
                 AllWindow = win.Win;
                 win.Show();
             }
-#endif
         }
 
         //长按取消处理
@@ -348,9 +342,6 @@ public static class WindowManager
         {
             if (newwindow)
             {
-#if Phone
-                return;
-#endif
                 ShowWindow(con);
             }
             else
