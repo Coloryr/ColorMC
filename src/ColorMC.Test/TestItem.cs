@@ -64,7 +64,7 @@ public static class TestItem
 
     public static void Item4()
     {
-        var res = FabricAPI.GetMeta().Result;
+        var res = FabricAPI.GetMetaAsync().Result;
         if (res == null)
         {
             Console.WriteLine("Fabric信息为空");
@@ -91,7 +91,7 @@ public static class TestItem
 
     public static void Item6()
     {
-        var list = CurseForgeAPI.GetModPackList("1.16.5").Result;
+        var list = CurseForgeAPI.GetModPackListAsync("1.16.5").Result;
         if (list == null)
         {
             Console.WriteLine("整合包信息为空");
@@ -416,7 +416,7 @@ public static class TestItem
 
     public static void Item16()
     {
-        var list = ForgeAPI.GetVersionList(false, "1.12.2").Result;
+        var list = ForgeAPI.GetVersionListAsync(false, "1.12.2").Result;
         foreach (var item in list!)
         {
             Console.Write(item + " ");
@@ -424,7 +424,7 @@ public static class TestItem
 
         Console.WriteLine();
 
-        var list1 = ForgeAPI.GetSupportVersion(false).Result;
+        var list1 = ForgeAPI.GetSupportVersionAsync(false).Result;
         foreach (var item in list1!)
         {
             Console.Write(item + " ");
@@ -449,7 +449,7 @@ public static class TestItem
 
     public static void Item19()
     {
-        var res = OpenJ9Api.GetJavaList().Result;
+        var res = OpenJ9Api.GetJavaListAsync().Result;
     }
 
     public static void Item20()
@@ -461,9 +461,9 @@ public static class TestItem
 
     public static void Item21()
     {
-        var list = ModrinthAPI.GetModPackList().Result;
+        var list = ModrinthAPI.GetModPackListAsync().Result;
         var item = list!.Hits.First();
-        var list1 = ModrinthAPI.GetFileVersions(item.ProjectId, "", Loaders.Fabric).Result;
+        var list1 = ModrinthAPI.GetFileVersionsAsync(item.ProjectId, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
         AddGameHelper.InstallModrinth(new DownloadModrinthArg
@@ -477,8 +477,8 @@ public static class TestItem
 
     public static void Item22()
     {
-        var list = OptifineAPI.GetOptifineVersion().Result;
-        var data = OptifineAPI.GetOptifineDownloadUrl(new()
+        var list = OptifineAPI.GetOptifineVersionAsync().Result;
+        var data = OptifineAPI.GetOptifineDownloadUrlAsync(new()
         {
             Url1 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar",
             Url2 = "http://optifine.net/adloadx?f=preview_OptiFine_1.19.3_HD_U_I2_pre5.jar"
@@ -504,7 +504,7 @@ public static class TestItem
 
     public static void Item26()
     {
-        var list = ForgeAPI.GetSupportVersion(false).Result;
+        var list = ForgeAPI.GetSupportVersionAsync(false).Result;
     }
 
     public static void Item27()

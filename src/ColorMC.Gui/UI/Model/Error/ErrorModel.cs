@@ -57,7 +57,7 @@ public partial class ErrorModel : TopModel
         {
             return;
         }
-        var res = await PathBinding.SaveFile(top, FileType.Text, [Text.Text]);
+        var res = await PathBinding.SaveFileAsync(top, FileType.Text, [Text.Text]);
         if (res == true)
         {
             Model.Notify(App.Lang("ErrorWindow.Info1"));
@@ -81,7 +81,7 @@ public partial class ErrorModel : TopModel
         }
 
         Model.Progress(App.Lang("GameLogWindow.Info6"));
-        var url = await WebBinding.PushMclo(Text.Text);
+        var url = await WebBinding.PushMcloAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {

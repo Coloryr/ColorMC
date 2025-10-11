@@ -264,7 +264,7 @@ public partial class MainModel
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
         foreach (var item in list)
         {
-            await GameBinding.DeleteGame(item.Obj);
+            await GameBinding.DeleteGameAsync(item.Obj);
         }
         Model.ProgressClose();
         Model.InputClose();

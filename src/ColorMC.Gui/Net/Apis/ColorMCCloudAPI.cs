@@ -287,7 +287,7 @@ public static class ColorMCCloudAPI
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -577,10 +577,10 @@ public static class ColorMCCloudAPI
                     var value = res1.GetInt32();
                     if (value == 100)
                     {
-                        return new()
+                        return new CloudWorldRes
                         {
                             State = true,
-                            Data = json.GetProperty("list").Deserialize(JsonGuiType.ListCloudWorldObj)
+                            Worlds = json.GetProperty("list").Deserialize(JsonGuiType.ListCloudWorldObj)
                         };
                     }
                 }
@@ -594,7 +594,7 @@ public static class ColorMCCloudAPI
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 

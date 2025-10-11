@@ -203,10 +203,10 @@ public record GameRes
 /// <summary>
 /// 消息结果
 /// </summary>
-public record MessageRes
+public record StringRes
 {
     public bool State;
-    public string? Message;
+    public string? Data;
 }
 
 /// <summary>

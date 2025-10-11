@@ -158,7 +158,7 @@ public static class ModrinthHelper
     {
         if (s_categories == null)
         {
-            var list6 = await ModrinthAPI.GetCategories();
+            var list6 = await ModrinthAPI.GetCategoriesAsync();
             if (list6 == null)
             {
                 return null;
@@ -193,7 +193,7 @@ public static class ModrinthHelper
             return s_gameVersions;
         }
 
-        var list = await ModrinthAPI.GetGameVersions();
+        var list = await ModrinthAPI.GetGameVersionsAsync();
         if (list == null)
         {
             return null;
@@ -301,7 +301,7 @@ public static class ModrinthHelper
                 return;
             }
 
-            var data = await ModrinthAPI.GetVersionFromSha1(item.Sha1);
+            var data = await ModrinthAPI.GetVersionFromSha1Async(item.Sha1);
             if (data == null)
             {
                 error++;
@@ -381,14 +381,14 @@ public static class ModrinthHelper
             }
 
             ModrinthVersionObj? res = null;
-            var info = await ModrinthAPI.GetProject(item.ProjectId);
+            var info = await ModrinthAPI.GetProjectAsync(item.ProjectId);
             if (info == null)
             {
                 return;
             }
             if (item.VersionId == null)
             {
-                var res1 = await ModrinthAPI.GetFileVersions(item.ProjectId, mc, loader);
+                var res1 = await ModrinthAPI.GetFileVersionsAsync(item.ProjectId, mc, loader);
                 if (res1 == null || res1.Count == 0)
                 {
                     return;
@@ -397,7 +397,7 @@ public static class ModrinthHelper
             }
             else
             {
-                res = await ModrinthAPI.GetVersion(item.ProjectId, item.VersionId);
+                res = await ModrinthAPI.GetVersionAsync(item.ProjectId, item.VersionId);
             }
 
             if (res == null)

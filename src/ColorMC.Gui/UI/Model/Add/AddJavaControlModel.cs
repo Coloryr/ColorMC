@@ -43,7 +43,7 @@ public partial class AddJavaControlModel : TopModel
     /// <summary>
     /// Java类型
     /// </summary>
-    public List<string> JavaTypeList { get; init; } = WebBinding.GetJavaType();
+    public List<string> JavaTypeList { get; init; } = WebBinding.PCJavaType;
 
     /// <summary>
     /// 选中的Java类型
@@ -179,7 +179,7 @@ public partial class AddJavaControlModel : TopModel
         _javaList.Clear();
         JavaList.Clear();
 
-        var res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
+        var res = await WebBinding.GetJavaListAsync(TypeIndex, SystemList.IndexOf(System), VersionList.IndexOf(Version));
 
         if (res.Res)
         {
@@ -277,7 +277,7 @@ public partial class AddJavaControlModel : TopModel
 
             if (Arch != null || Version != null || System != null)
             {
-                res = await WebBinding.GetJavaList(TypeIndex, SystemList.IndexOf(System),
+                res = await WebBinding.GetJavaListAsync(TypeIndex, SystemList.IndexOf(System),
                     VersionList.IndexOf(Version!));
             }
 
@@ -318,7 +318,7 @@ public partial class AddJavaControlModel : TopModel
         }
         string temp = App.Lang("AddGameWindow.Tab1.Info21");
         //开始下载Java
-        var res1 = await JavaBinding.DownloadJava(obj, (a, b, c) =>
+        var res1 = await JavaBinding.DownloadJavaAsync(obj, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         }, () =>
@@ -328,7 +328,7 @@ public partial class AddJavaControlModel : TopModel
         Model.ProgressClose();
         if (!res1.State)
         {
-            Model.Show(res1.Message!);
+            Model.Show(res1.Data!);
             return;
         }
 

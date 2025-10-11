@@ -84,7 +84,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteScreenshot(obj.Obj);
+        await GameBinding.DeleteScreenshotAsync(obj.Obj);
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }

@@ -73,12 +73,18 @@ public record FileListRes
     public string Name;
 }
 
+/// <summary>
+/// 整合包列表获取结果
+/// </summary>
 public record ModPackListRes
 {
     public List<FileItemModel>? List;
     public int Count;
 }
 
+/// <summary>
+/// 输入信息结果
+/// </summary>
 public record InputRes
 {
     public bool Cancel;
@@ -86,6 +92,9 @@ public record InputRes
     public string? Text2;
 }
 
+/// <summary>
+/// 选中框选择结果
+/// </summary>
 public record ComboRes
 {
     public bool Cancel;
@@ -93,25 +102,46 @@ public record ComboRes
     public string? Item;
 }
 
-public record CloudRes : MessageRes
+/// <summary>
+/// 云同步结果
+/// </summary>
+public record CloudRes : StringRes
 {
     public bool Data1;
     public string? Data2;
 }
 
-public record CloudWorldRes : MessageRes
+/// <summary>
+/// 获取云同步存档结果
+/// </summary>
+public record CloudWorldRes : StringRes
 {
-    public List<CloudWorldObj>? Data;
+    public List<CloudWorldObj>? Worlds;
 }
 
-public record CloudUploadRes : MessageRes
+/// <summary>
+/// 云同步升级结果
+/// </summary>
+public record CloudUploadRes : StringRes
 {
     public int Data1;
     public string? Data2;
 }
 
+/// <summary>
+/// 文件下载获取结果
+/// </summary>
 public record FileItemRes
 {
     public string? Path;
     public FileItemObj? File;
+}
+
+/// <summary>
+/// 选中文件结果
+/// </summary>
+public record SelectRes
+{
+    public string? Path;
+    public string? FileName;
 }

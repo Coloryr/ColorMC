@@ -220,7 +220,7 @@ public static class CoreHttpClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<MessageRes> GetStringAsync(string url, CancellationToken token = default)
+    public static async Task<StringRes> GetStringAsync(string url, CancellationToken token = default)
     {
         using var data = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
         if (data.StatusCode != HttpStatusCode.OK)
@@ -229,7 +229,7 @@ public static class CoreHttpClient
         }
 
         var data1 = await data.Content.ReadAsStringAsync();
-        return new() { State = true, Message = data1 };
+        return new() { State = true, Data = data1 };
     }
 
     /// <summary>

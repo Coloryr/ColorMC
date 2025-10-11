@@ -32,7 +32,7 @@ public static class QuiltAPI
     /// <summary>
     /// 获取支持的版本
     /// </summary>
-    public static async Task<List<string>?> GetSupportVersion(SourceLocal? local = null)
+    public static async Task<List<string>?> GetSupportVersionAsync(SourceLocal? local = null)
     {
         try
         {
@@ -74,7 +74,7 @@ public static class QuiltAPI
     /// <summary>
     /// 获取元数据
     /// </summary>
-    public static async Task<QuiltMetaObj?> GetMeta(SourceLocal? local = null)
+    public static async Task<QuiltMetaObj?> GetMetaAsync(SourceLocal? local = null)
     {
         try
         {
@@ -93,7 +93,7 @@ public static class QuiltAPI
     /// 获取加载器版本
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static async Task<List<string>?> GetLoaders(string mc, SourceLocal? local = null)
+    public static async Task<List<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
     {
         try
         {
@@ -124,7 +124,7 @@ public static class QuiltAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<Stream?> GetLoader(string mc, string version, SourceLocal? local = null)
+    public static async Task<Stream?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
     {
         try
         {

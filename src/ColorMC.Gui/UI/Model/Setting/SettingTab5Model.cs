@@ -72,7 +72,7 @@ public partial class SettingModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
 
@@ -94,11 +94,11 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Java);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Java);
+        if (file.Path != null)
         {
-            JavaLocal = file.Item1;
-            var info = JavaBinding.GetJavaInfo(file.Item1);
+            JavaLocal = file.Path;
+            var info = JavaBinding.GetJavaInfo(file.Path);
             if (info != null)
             {
                 JavaName = info.Type + "_" + info.Version;
@@ -124,22 +124,22 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.JavaZip);
-        if (file.Item1 == null || file.Item2 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.JavaZip);
+        if (file.Path == null || file.FileName == null)
         {
             return;
         }
 
         Model.Progress(App.Lang("SettingWindow.Tab5.Info7"));
         string temp = App.Lang("AddGameWindow.Tab1.Info21");
-        var res = await JavaBinding.AddJavaZip(file.Item1, file.Item2, (a, b, c) =>
+        var res = await JavaBinding.AddJavaZipAsync(file.Path, file.FileName, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         });
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
         }
         else
         {
@@ -161,7 +161,7 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectPath(top, PathType.JavaPath);
+        var file = await PathBinding.SelectPathAsync(top, PathType.JavaPath);
         if (file == null)
         {
             return;
@@ -175,7 +175,7 @@ public partial class SettingModel
 
         JavaFinding = true;
         Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
-        var list = await JavaBinding.FindJava(file);
+        var list = await JavaBinding.FindJavaAsync(file);
         Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)
@@ -199,7 +199,7 @@ public partial class SettingModel
 #endif
         JavaFinding = true;
         Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
-        var list = await JavaBinding.FindJava();
+        var list = await JavaBinding.FindJavaAsync();
         Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)

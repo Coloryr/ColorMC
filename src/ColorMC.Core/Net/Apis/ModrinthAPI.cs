@@ -41,7 +41,7 @@ public static class ModrinthAPI
     /// <param name="type2">类型1</param>
     /// <param name="type3">类型2</param>
     /// <returns></returns>
-    private static async Task<ModrinthSearchObj?> Search(string version, string query, int sortOrder,
+    private static async Task<ModrinthSearchObj?> SearchAsync(string version, string query, int sortOrder,
         int offset, int limit, string categoryId, string type2, string? type3)
     {
         try
@@ -94,22 +94,22 @@ public static class ModrinthAPI
     /// <summary>
     /// 获取整合包列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetModPackList(string version = "",
+    public static Task<ModrinthSearchObj?> GetModPackListAsync(string version = "",
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(version, filter, sortOrder, page * pagesize,
+        return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassModPack, null);
     }
 
     /// <summary>
     /// 获取Mod列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetModList(string version = "",
+    public static Task<ModrinthSearchObj?> GetModListAsync(string version = "",
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
-        return Search(version, filter, sortOrder, page * pagesize,
+        return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassMod, loader is Loaders.Normal or Loaders.Custom ? "" :
             loader.GetName().ToLower());
     }
@@ -117,33 +117,33 @@ public static class ModrinthAPI
     /// <summary>
     /// 获取资源包列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetResourcepackList(string version = "",
+    public static Task<ModrinthSearchObj?> GetResourcepackListAsync(string version = "",
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(version, filter, sortOrder, page * pagesize,
+        return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassResourcepack, null);
     }
 
     /// <summary>
     /// 获取光影包列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetShaderpackList(string version = "",
+    public static Task<ModrinthSearchObj?> GetShaderpackListAsync(string version = "",
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(version, filter, sortOrder, page * pagesize,
+        return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassShaderpack, null);
     }
 
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    public static Task<ModrinthSearchObj?> GetDataPackList(string version = "",
+    public static Task<ModrinthSearchObj?> GetDataPackListAsync(string version = "",
         int page = 0, string filter = "", int pagesize = 20, int sortOrder = 0,
         string categoryId = "")
     {
-        return Search(version, filter, sortOrder, page * pagesize,
+        return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassMod, CategoriesDataPack);
     }
 
@@ -152,7 +152,7 @@ public static class ModrinthAPI
     /// </summary>
     /// <param name="id">项目ID</param>
     /// <param name="version">版本ID</param>
-    public static async Task<ModrinthVersionObj?> GetVersion(string id, string version)
+    public static async Task<ModrinthVersionObj?> GetVersionAsync(string id, string version)
     {
         try
         {
@@ -172,7 +172,7 @@ public static class ModrinthAPI
     /// </summary>
     /// <param name="id">项目ID</param>
     /// <param name="version">版本ID</param>
-    public static async Task<ModrinthProjectObj?> GetProject(string id)
+    public static async Task<ModrinthProjectObj?> GetProjectAsync(string id)
     {
         try
         {
@@ -194,7 +194,7 @@ public static class ModrinthAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="loader">加载器类型</param>
     /// <returns></returns>
-    public static async Task<List<ModrinthVersionObj>?> GetFileVersions(string id, string? mc, Loaders loader)
+    public static async Task<List<ModrinthVersionObj>?> GetFileVersionsAsync(string id, string? mc, Loaders loader)
     {
         try
         {
@@ -223,7 +223,7 @@ public static class ModrinthAPI
     /// <summary>
     /// 获取所有游戏版本
     /// </summary>
-    public static async Task<List<ModrinthGameVersionObj>?> GetGameVersions()
+    public static async Task<List<ModrinthGameVersionObj>?> GetGameVersionsAsync()
     {
         try
         {
@@ -242,7 +242,7 @@ public static class ModrinthAPI
     /// 获取所有类型
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<ModrinthCategoriesObj>?> GetCategories()
+    public static async Task<List<ModrinthCategoriesObj>?> GetCategoriesAsync()
     {
         try
         {
@@ -262,7 +262,7 @@ public static class ModrinthAPI
     /// </summary>
     /// <param name="sha1"></param>
     /// <returns></returns>
-    public static async Task<ModrinthVersionObj?> GetVersionFromSha1(string sha1)
+    public static async Task<ModrinthVersionObj?> GetVersionFromSha1Async(string sha1)
     {
         try
         {

@@ -113,10 +113,6 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             Flyout1((sender as Control)!);
         }
-        else
-        {
-            LongPressed.Pressed(() => Flyout1((sender as Control)!));
-        }
     }
 
     private void Flyout1(Control control)

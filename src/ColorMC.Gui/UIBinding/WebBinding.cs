@@ -34,10 +34,7 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class WebBinding
 {
-    private static readonly List<string> PCJavaType = ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
-#if Phone
-    private static readonly List<string> PhoneJavaType = ["PojavLauncherTeam"];
-#endif
+    public static readonly List<string> PCJavaType = ["Adoptium", "Zulu", "Dragonwell", "OpenJ9", "Graalvm"];
 
     /// <summary>
     /// 获取整合包列表
@@ -49,14 +46,14 @@ public static class WebBinding
     /// <param name="sort"></param>
     /// <param name="categoryId"></param>
     /// <returns></returns>
-    public static async Task<ModPackListRes> GetModPackList(SourceType type, string? version,
+    public static async Task<ModPackListRes> GetModPackListAsync(SourceType type, string? version,
         string? filter, int page, int sort, string categoryId)
     {
         version ??= "";
         filter ??= "";
         if (type == SourceType.CurseForge)
         {
-            var list = await CurseForgeAPI.GetModPackList(version, page, filter: filter,
+            var list = await CurseForgeAPI.GetModPackListAsync(version, page, filter: filter,
                 sortField: sort switch
                 {
                     0 => 1,
@@ -84,7 +81,7 @@ public static class WebBinding
             {
                 modlist.Add(item.Id.ToString());
             });
-            var list2 = await ColorMCAPI.GetMcModFromCF(modlist, 1);
+            var list2 = await ColorMCAPI.GetMcModFromCFAsync(modlist, 1);
             list.Data.ForEach(item =>
             {
                 var id = item.Id.ToString();
@@ -99,7 +96,7 @@ public static class WebBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var list = await ModrinthAPI.GetModPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
+            var list = await ModrinthAPI.GetModPackListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
             if (list == null)
             {
                 return new();
@@ -110,7 +107,7 @@ public static class WebBinding
             {
                 modlist.Add(item.ProjectId);
             });
-            var list2 = await ColorMCAPI.GetMcModFromMO(modlist, 1);
+            var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 1);
             list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
@@ -136,13 +133,13 @@ public static class WebBinding
     /// <param name="loader"></param>
     /// <param name="type1"></param>
     /// <returns></returns>
-    public static async Task<FileListRes> GetFileList(SourceType type, string id,
+    public static async Task<FileListRes> GetFileListAsync(SourceType type, string id,
         int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
     {
         if (type == SourceType.CurseForge)
         {
-            var data1 = await CurseForgeAPI.GetModInfo(id);
-            var list = await CurseForgeAPI.GetCurseForgeFiles(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
+            var data1 = await CurseForgeAPI.GetModInfoAsync(id);
+            var list = await CurseForgeAPI.GetCurseForgeFilesAsync(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
             if (data1 == null || list == null)
             {
                 return new();
@@ -163,8 +160,8 @@ public static class WebBinding
         }
         else if (type == SourceType.Modrinth)
         {
-            var data1 = await ModrinthAPI.GetProject(id);
-            var list = await ModrinthAPI.GetFileVersions(id, mc, loader);
+            var data1 = await ModrinthAPI.GetProjectAsync(id);
+            var list = await ModrinthAPI.GetFileVersionsAsync(id, mc, loader);
             if (data1 == null || list == null)
             {
                 return new();
@@ -229,7 +226,8 @@ public static class WebBinding
     /// <param name="categoryId"></param>
     /// <param name="loader"></param>
     /// <returns></returns>
-    public static async Task<ModPackListRes> GetList(FileType now, SourceType type, string? version, string? filter, int page, int sort, string categoryId, Loaders loader)
+    public static async Task<ModPackListRes> GetListAsync(FileType now, SourceType type, string? version, 
+        string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";
         filter ??= "";
@@ -237,7 +235,7 @@ public static class WebBinding
         {
             var list = now switch
             {
-                FileType.Mod => await CurseForgeAPI.GetModList(version, page, filter: filter,
+                FileType.Mod => await CurseForgeAPI.GetModListAsync(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -255,7 +253,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId, loader: loader),
-                FileType.World => await CurseForgeAPI.GetWorldList(version, page, filter: filter,
+                FileType.World => await CurseForgeAPI.GetWorldListAsync(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -273,7 +271,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId),
-                FileType.Resourcepack => await CurseForgeAPI.GetResourcepackList(version, page, filter: filter,
+                FileType.Resourcepack => await CurseForgeAPI.GetResourcepackListAsync(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -309,7 +307,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }),
-                FileType.Shaderpack => await CurseForgeAPI.GetShadersList(version, page, filter: filter,
+                FileType.Shaderpack => await CurseForgeAPI.GetShadersListAsync(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -337,7 +335,7 @@ public static class WebBinding
             {
                 modlist.Add(item.Id.ToString());
             });
-            var list2 = await ColorMCAPI.GetMcModFromCF(modlist, 0);
+            var list2 = await ColorMCAPI.GetMcModFromCFAsync(modlist, 0);
             list.Data.ForEach(item =>
             {
                 var id = item.Id.ToString();
@@ -354,10 +352,10 @@ public static class WebBinding
         {
             var list = now switch
             {
-                FileType.Mod => await ModrinthAPI.GetModList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId, loader: loader),
-                FileType.Resourcepack => await ModrinthAPI.GetResourcepackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
-                FileType.DataPacks => await ModrinthAPI.GetDataPackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
-                FileType.Shaderpack => await ModrinthAPI.GetShaderpackList(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.Mod => await ModrinthAPI.GetModListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId, loader: loader),
+                FileType.Resourcepack => await ModrinthAPI.GetResourcepackListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.DataPacks => await ModrinthAPI.GetDataPackListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
+                FileType.Shaderpack => await ModrinthAPI.GetShaderpackListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId),
                 _ => null
             };
             if (list == null)
@@ -368,7 +366,7 @@ public static class WebBinding
             {
                 modlist.Add(item.ProjectId);
             });
-            var list2 = await ColorMCAPI.GetMcModFromMO(modlist, 0);
+            var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 0);
             list.Hits.ForEach(item =>
             {
                 list1.Add(new(item, now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
@@ -390,7 +388,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
+    public static async Task<ModDownloadRes> GetDownloadModListAsync(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
         {
@@ -439,7 +437,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<ModDownloadRes> GetDownloadModList(GameSettingObj obj, ModrinthVersionObj? data)
+    public static async Task<ModDownloadRes> GetDownloadModListAsync(GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
         {
@@ -491,7 +489,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static async Task<bool> DownloadMod(GameSettingObj obj, ICollection<DownloadModArg> list)
+    public static async Task<bool> DownloadModAsync(GameSettingObj obj, ICollection<DownloadModArg> list)
     {
         var list1 = new List<FileItemObj>();
         var setting = GameGuiSetting.ReadConfig(obj);
@@ -535,10 +533,12 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
+    public static async Task<bool> DownloadAsync(FileType type, GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
+        {
             return false;
+        }
 
         data.FixDownloadUrl();
         bool res;
@@ -562,7 +562,7 @@ public static class WebBinding
                     return false;
                 }
 
-                return await GameBinding.AddWorld(obj, item.Local);
+                return await GameBinding.AddWorldAsync(obj, item.Local);
             case FileType.Resourcepack:
                 return await DownloadManager.StartAsync([new()
                 {
@@ -595,7 +595,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(FileType type, GameSettingObj obj, ModrinthVersionObj? data)
+    public static async Task<bool> DownloadAsync(FileType type, GameSettingObj obj, ModrinthVersionObj? data)
     {
         if (data == null)
         {
@@ -632,7 +632,7 @@ public static class WebBinding
     /// <param name="obj1"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(WorldObj obj1, CurseForgeModObj.CurseForgeDataObj? data)
+    public static async Task<bool> DownloadAsync(WorldObj obj1, CurseForgeModObj.CurseForgeDataObj? data)
     {
         if (data == null)
         {
@@ -658,7 +658,7 @@ public static class WebBinding
     /// <param name="obj1"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> Download(WorldObj obj1, ModrinthVersionObj? data)
+    public static async Task<bool> DownloadAsync(WorldObj obj1, ModrinthVersionObj? data)
     {
         if (data == null)
         {
@@ -713,9 +713,9 @@ public static class WebBinding
     /// 获取高清修复列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<OptifineObj>?> GetOptifine()
+    public static async Task<List<OptifineObj>?> GetOptifineAsync()
     {
-        return await OptifineAPI.GetOptifineVersion();
+        return await OptifineAPI.GetOptifineVersionAsync();
     }
 
     /// <summary>
@@ -724,9 +724,9 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="item"></param>
     /// <returns></returns>
-    public static Task<MessageRes> DownloadOptifine(GameSettingObj obj, OptifineObj item)
+    public static Task<StringRes> DownloadOptifineAsync(GameSettingObj obj, OptifineObj item)
     {
-        return OptifineAPI.DownloadOptifine(obj, item);
+        return OptifineAPI.DownloadOptifineAsync(obj, item);
     }
 
     /// <summary>
@@ -735,7 +735,7 @@ public static class WebBinding
     /// <param name="game"></param>
     /// <param name="mods"></param>
     /// <returns></returns>
-    public static async Task<List<ModUpgradeModel>> CheckModUpdate(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<ModUpgradeModel>> CheckModUpdateAsync(GameSettingObj game, List<ModDisplayModel> mods)
     {
         string path = game.GetModsPath();
         var list = new ConcurrentBag<ModUpgradeModel>();
@@ -750,7 +750,7 @@ public static class WebBinding
 
                 var type1 = GameDownloadHelper.TestSourceType(item.PID, item.FID);
 
-                var res = await GetFileList(type1, item.PID, 0,
+                var res = await GetFileListAsync(type1, item.PID, 0,
                    game.Version, game.Loader, FileType.Mod);
                 var list1 = res.List;
 
@@ -821,7 +821,7 @@ public static class WebBinding
     /// <param name="modtype"></param>
     /// <param name="sort"></param>
     /// <returns></returns>
-    public static async Task<List<FileItemModel>?> SearchMcmod(string name, int page, Loaders loader, string version, string modtype, int sort)
+    public static async Task<List<FileItemModel>?> SearchMcmodAsync(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
         var list = await ColorMCAPI.GetMcMod(name, page, loader, version, modtype, sort);
         if (list == null)
@@ -871,45 +871,45 @@ public static class WebBinding
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static Task<List<string>?> GetForgeVersion(string version)
+    public static Task<List<string>?> GetForgeVersionAsync(string version)
     {
-        return ForgeAPI.GetVersionList(false, version, CoreHttpClient.Source);
+        return ForgeAPI.GetVersionListAsync(false, version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Fabric版本
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static Task<List<string>?> GetFabricVersion(string version)
+    public static Task<List<string>?> GetFabricVersionAsync(string version)
     {
-        return FabricAPI.GetLoaders(version, CoreHttpClient.Source);
+        return FabricAPI.GetLoadersAsync(version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Quilt版本
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static Task<List<string>?> GetQuiltVersion(string version)
+    public static Task<List<string>?> GetQuiltVersionAsync(string version)
     {
-        return QuiltAPI.GetLoaders(version, CoreHttpClient.Source);
+        return QuiltAPI.GetLoadersAsync(version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取NeoForge版本
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static Task<List<string>?> GetNeoForgeVersion(string version)
+    public static Task<List<string>?> GetNeoForgeVersionAsync(string version)
     {
-        return ForgeAPI.GetVersionList(true, version, CoreHttpClient.Source);
+        return ForgeAPI.GetVersionListAsync(true, version, CoreHttpClient.Source);
     }
     /// <summary>
     /// 获取Optifine版本
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static async Task<List<string>?> GetOptifineVersion(string version)
+    public static async Task<List<string>?> GetOptifineVersionAsync(string version)
     {
-        var list = await GetOptifine();
+        var list = await GetOptifineAsync();
         if (list == null)
         {
             return null;
@@ -931,16 +931,16 @@ public static class WebBinding
     /// </summary>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static Task<string?> PushMclo(string data)
+    public static Task<string?> PushMcloAsync(string data)
     {
-        return McloAPI.Push(data);
+        return McloAPI.PushAsync(data);
     }
 
     /// <summary>
     /// 获取ColorMC更新日志
     /// </summary>
     /// <returns></returns>
-    public static Task<string?> GetNewLog()
+    public static Task<string?> GetNewLogAsync()
     {
         return ColorMCCloudAPI.GetNewLogAsync();
     }
@@ -949,7 +949,7 @@ public static class WebBinding
     /// 获取映射列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<ColorMCCloudServerObj>?> GetFrpServer(string version)
+    public static async Task<List<ColorMCCloudServerObj>?> GetFrpServerAsync(string version)
     {
         var list = await ColorMCCloudAPI.GetCloudServerAsync(version);
         if (list == null || !list.RootElement.TryGetProperty("list", out var list1)
@@ -971,32 +971,13 @@ public static class WebBinding
     /// <param name="token"></param>
     /// <param name="ip"></param>
     /// <returns></returns>
-    public static Task<bool> ShareIP(string token, string ip, FrpShareModel model)
+    public static Task<bool> ShareIPAsync(string token, string ip, FrpShareModel model)
     {
         return ColorMCCloudAPI.PutCloudServerAsync(token, ip, model);
     }
 
-    public static async Task<GetJavaListRes> GetJavaList(int type, int os, int mainversion)
+    public static async Task<GetJavaListRes> GetJavaListAsync(int type, int os, int mainversion)
     {
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            var res = await GetPojavLauncherTeamList();
-            if (res == null)
-            {
-                return new();
-            }
-
-            return new()
-            {
-                Res = true,
-                Arch = [Arm64],
-                Os = [Android],
-                MainVersion = ["", "8", "17", "21"],
-                Download = res
-            };
-        }
-#else
         if (mainversion == -1)
             mainversion = 0;
         if (os == -1)
@@ -1005,7 +986,7 @@ public static class WebBinding
         switch (type)
         {
             case 0:
-                var res = await GetAdoptiumList(mainversion, os);
+                var res = await GetAdoptiumListAsync(mainversion, os);
                 if (res.Res)
                 {
                     return new()
@@ -1013,15 +994,15 @@ public static class WebBinding
                         Res = true,
                         Arch = res.Arch,
                         Os = AdoptiumApi.SystemType,
-                        MainVersion = await AdoptiumApi.GetJavaVersion(),
+                        MainVersion = await AdoptiumApi.GetJavaVersionAsync(),
                         Download = res.Download
                     };
                 }
                 break;
             case 1:
-                return await GetZuluList();
+                return await GetZuluListAsync();
             case 2:
-                var res1 = await GetDragonwellList();
+                var res1 = await GetDragonwellListAsync();
                 if (res1 != null)
                 {
                     return new()
@@ -1032,7 +1013,7 @@ public static class WebBinding
                 }
                 break;
             case 3:
-                return await GetOpenJ9List();
+                return await GetOpenJ9ListAsync();
             case 4:
                 return new()
                 {
@@ -1040,15 +1021,14 @@ public static class WebBinding
                     Download = GetGraalvmList()
                 };
         }
-#endif
         return new();
     }
 
-    private static async Task<GetJavaListRes> GetZuluList()
+    private static async Task<GetJavaListRes> GetZuluListAsync()
     {
         try
         {
-            var list = await ZuluApi.GetJavaList();
+            var list = await ZuluApi.GetJavaListAsync();
             if (list == null)
             {
                 return new();
@@ -1228,17 +1208,17 @@ public static class WebBinding
         return a[..^1];
     }
 
-    private static async Task<GetJavaAdoptiumListRes> GetAdoptiumList(int mainversion, int os)
+    private static async Task<GetJavaAdoptiumListRes> GetAdoptiumListAsync(int mainversion, int os)
     {
         try
         {
-            var versions = await AdoptiumApi.GetJavaVersion();
+            var versions = await AdoptiumApi.GetJavaVersionAsync();
             if (versions == null)
             {
                 return new();
             }
             var version = versions[mainversion];
-            var list = await AdoptiumApi.GetJavaList(version, os);
+            var list = await AdoptiumApi.GetJavaListAsync(version, os);
             if (list == null)
             {
                 return new();
@@ -1479,11 +1459,11 @@ public static class WebBinding
         }
     }
 
-    private static async Task<List<JavaDownloadModel>?> GetDragonwellList()
+    private static async Task<List<JavaDownloadModel>?> GetDragonwellListAsync()
     {
         try
         {
-            var list = await Dragonwell.GetJavaList();
+            var list = await Dragonwell.GetJavaListAsync();
             if (list == null)
             {
                 return null;
@@ -1503,11 +1483,11 @@ public static class WebBinding
         }
     }
 
-    private static async Task<GetJavaListRes> GetOpenJ9List()
+    private static async Task<GetJavaListRes> GetOpenJ9ListAsync()
     {
         try
         {
-            var res = await OpenJ9Api.GetJavaList();
+            var res = await OpenJ9Api.GetJavaListAsync();
             if (res == null)
             {
                 return new();
@@ -1566,85 +1546,6 @@ public static class WebBinding
         }
     }
 
-#if Phone
-    private static async Task<List<JavaDownloadModel>?> GetPojavLauncherTeamList()
-    {
-        try
-        {
-            var list = new List<JavaDownloadModel>();
-            var res = await ColorMCAPI.GetJavaList();
-            if (res == null)
-            {
-                return null;
-            }
-            res.Jre8.ForEach(item =>
-            {
-                list.Add(new()
-                {
-                    Name = item.Name,
-                    Os = "Android",
-                    Arch = "Arm64",
-                    MainVersion = "8",
-                    Version = item.Name.Split('-')[2],
-                    Size = item.Size,
-                    Url = item.Url,
-                    Sha1 = item.Sha1,
-                    File = item.Name
-                });
-            });
-            res.Jre17.ForEach(item =>
-            {
-                list.Add(new()
-                {
-                    Name = item.Name,
-                    Os = "Android",
-                    Arch = "Arm64",
-                    MainVersion = "17",
-                    Version = item.Name.Split('-')[2],
-                    Size = item.Size,
-                    Url = item.Url,
-                    Sha1 = item.Sha1,
-                    File = item.Name
-                });
-            });
-            res.Jre21.ForEach(item =>
-            {
-                list.Add(new()
-                {
-                    Name = item.Name,
-                    Os = "Android",
-                    Arch = "Arm64",
-                    MainVersion = "21",
-                    Version = item.Name.Split('-')[2],
-                    Size = item.Size,
-                    Url = item.Url,
-                    Sha1 = item.Sha1,
-                    File = item.Name
-                });
-            });
-
-            return list;
-        }
-        catch
-        {
-            return null;
-        }
-    }
-#endif
-
-    /// <summary>
-    /// 获取Java类型
-    /// </summary>
-    /// <returns></returns>
-    public static List<string> GetJavaType()
-    {
-#if Phone
-        return SystemInfo.Os == OsType.Android ? PhoneJavaType : IosJavaType;
-#else
-        return PCJavaType;
-#endif
-    }
-
     /// <summary>
     /// 打开注册网页
     /// </summary>
@@ -1670,11 +1571,11 @@ public static class WebBinding
     /// 获取Minecraft News
     /// </summary>
     /// <returns></returns>
-    public static async Task<MinecraftNewObj?> LoadNews(int page)
+    public static async Task<MinecraftNewObj?> LoadNewsAsync(int page)
     {
         try
         {
-            return await MinecraftAPI.GetMinecraftNew(page);
+            return await MinecraftAPI.GetMinecraftNewAsync(page);
         }
         catch (Exception e)
         {
@@ -1690,7 +1591,7 @@ public static class WebBinding
     /// <param name="model">需要下载的内容</param>
     /// <param name="model1">窗口</param>
     /// <returns></returns>
-    public static async Task<FileItemObj?> MakeDownload(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
+    public static async Task<FileItemObj?> MakeDownloadAsync(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
     {
         Core.Objs.ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))

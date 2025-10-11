@@ -46,10 +46,6 @@ public partial class Tab12Control : UserControl
         {
             Flyout((sender as Control)!);
         }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
-        }
     }
 
     private void Flyout(Control control)

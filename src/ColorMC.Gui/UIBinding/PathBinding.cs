@@ -15,6 +15,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
@@ -30,7 +31,6 @@ public static class PathBinding
     private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
     private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
     private static readonly string[] AUDIO = ["*.mp3", "*.wav", "*.flac"];
-    private static readonly string[] MODEL = ["*.model3.json"];
     private static readonly string[] HEADFILE = ["*.png"];
     private static readonly string[] ZIPFILE = ["*.zip"];
     private static readonly string[] JARFILE = ["*.jar"];
@@ -225,7 +225,7 @@ public static class PathBinding
     /// <param name="window">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<string?> SelectPath(TopLevel top, PathType type)
+    public static async Task<string?> SelectPathAsync(TopLevel top, PathType type)
     {
         switch (type)
         {
@@ -282,7 +282,7 @@ public static class PathBinding
     /// <param name="ext">后缀</param>
     /// <param name="name">名字</param>
     /// <returns>文件路径</returns>
-    public static Task<IStorageFile?> SaveFile(TopLevel window, string title, string ext, string name)
+    public static Task<IStorageFile?> SaveFileAsync(TopLevel window, string title, string ext, string name)
     {
         return window.StorageProvider.SaveFilePickerAsync(new()
         {
@@ -299,12 +299,12 @@ public static class PathBinding
     /// <param name="type">类型</param>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<bool?> SaveFile(TopLevel top, FileType type, object[]? arg)
+    public static async Task<bool?> SaveFileAsync(TopLevel top, FileType type, object[]? arg)
     {
         switch (type)
         {
             case FileType.User:
-                var file = await SaveFile(top,
+                var file = await SaveFileAsync(top,
                     App.Lang("PathBinding.Text41"), ".json", "user.json");
                 if (file == null)
                     break;
@@ -323,14 +323,14 @@ public static class PathBinding
                     return false;
                 }
             case FileType.World:
-                file = await SaveFile(top,
+                file = await SaveFileAsync(top,
                     App.Lang("PathBinding.Text18"), ".zip", "world.zip");
                 if (file == null)
                     break;
 
                 try
                 {
-                    await GameBinding.ExportWorld((arg![0] as WorldObj)!,
+                    await GameBinding.ExportWorldAsync((arg![0] as WorldObj)!,
                         file.GetPath());
                     OpenFileWithExplorer(file.GetPath()!);
                     return true;
@@ -341,7 +341,7 @@ public static class PathBinding
                     return false;
                 }
             case FileType.Skin:
-                file = await SaveFile(top,
+                file = await SaveFileAsync(top,
                     App.Lang("PathBinding.Text1"), ".png", "skin.png");
                 if (file == null)
                     break;
@@ -363,7 +363,7 @@ public static class PathBinding
                     return false;
                 }
             case FileType.Text:
-                file = await SaveFile(top,
+                file = await SaveFileAsync(top,
                     App.Lang("PathBinding.Text3"), ".txt", "log.txt");
                 if (file == null)
                     break;
@@ -383,7 +383,7 @@ public static class PathBinding
                     return false;
                 }
             case FileType.InputConfig:
-                file = await SaveFile(top,
+                file = await SaveFileAsync(top,
                     App.Lang("PathBinding.Text15"), ".json", arg![0] + ".json");
                 if (file == null)
                     break;
@@ -403,7 +403,7 @@ public static class PathBinding
                     return false;
                 }
             case FileType.Cmd:
-                file = await SaveFile(top,
+                file = await SaveFileAsync(top,
                     App.Lang("MainWindow.Flyouts.Text23"), (string)arg![0], (string)arg![1]);
                 if (file == null)
                     break;
@@ -437,7 +437,7 @@ public static class PathBinding
     /// <param name="multiple">多选</param>
     /// <param name="storage">首选路径</param>
     /// <returns></returns>
-    private static async Task<IReadOnlyList<IStorageFile>?> SelectFile(TopLevel? top, string title,
+    private static async Task<IReadOnlyList<IStorageFile>?> SelectFileAsync(TopLevel? top, string title,
         string[]? ext, string name, bool multiple = false, DirectoryInfo? storage = null)
     {
         if (top == null)
@@ -466,164 +466,124 @@ public static class PathBinding
     /// <param name="top">窗口</param>
     /// <param name="type">类型</param>
     /// <returns>路径</returns>
-    public static async Task<(string?, string?)> SelectFile(TopLevel top, FileType type)
+    public static async Task<SelectRes> SelectFileAsync(TopLevel top, FileType type)
     {
+        IReadOnlyList<IStorageFile>? res = null;
         switch (type)
         {
             case FileType.File:
-                var res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text46"),
                     null,
                     App.Lang("PathBinding.Text47"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Java:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text26"),
                     SystemInfo.Os == OsType.Windows ? EXE : null,
                     App.Lang("PathBinding.Text27"),
                     storage: JavaBinding.GetSuggestedStartLocation());
                 if (res?.Any() == true)
                 {
-                    var file = res[0].GetPath();
-                    if (file == null)
-                        return (null, null);
+                    var file = res[0].GetPath()!;
                     if (SystemInfo.Os == OsType.Windows && file.EndsWith("java.exe"))
                     {
                         var file1 = file[..^4] + "w.exe";
                         if (File.Exists(file1))
-                            return (file1, "javaw.exe");
+                        {
+                            return new SelectRes
+                            {
+                                Path = file1,
+                                FileName = "javaw.exe"
+                            };
+                        }
                     }
-
-                    return (file, res[0].Name);
                 }
                 break;
             case FileType.JavaZip:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text28"),
                     ZIP,
                     App.Lang("PathBinding.Text29"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Config:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text30"),
                     JSON,
                     App.Lang("PathBinding.Text31"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.AuthConfig:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text32"),
                     JSON,
                     App.Lang("PathBinding.Text33"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.ModPack:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text4"),
                     MODPACK,
                     App.Lang("PathBinding.Text5"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Pic:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text34"),
                     PICFILE,
                     App.Lang("PathBinding.Text35"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Icon:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text42"),
                     PICFILE,
                     App.Lang("PathBinding.Text43"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Music:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text11"),
                     AUDIO,
                     App.Lang("PathBinding.Text12"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.GameIcon:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text7"),
                     PICFILE,
                     App.Lang("PathBinding.Text8"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.StartIcon:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text44"),
                     PICFILE,
                     App.Lang("PathBinding.Text45"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Head:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text9"),
                     HEADFILE,
                     App.Lang("PathBinding.Text10"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.Loader:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text24"),
                     JARFILE,
                     App.Lang("PathBinding.Text25"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
             case FileType.InputConfig:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text13"),
                     JSON,
                     App.Lang("PathBinding.Text14"));
-                if (res?.Any() == true)
-                {
-                    return (res[0].GetPath(), res[0].Name);
-                }
                 break;
         }
 
-        return (null, null);
+        if (res?.Any() == true)
+        {
+            return new SelectRes
+            {
+                Path = res[0].GetPath(),
+                FileName = res[0].Name
+            };
+        }
+
+        return new SelectRes();
     }
 
     /// <summary>
@@ -633,12 +593,12 @@ public static class PathBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="type">文件类型</param>
     /// <returns></returns>
-    public static async Task<bool?> AddFile(TopLevel top, GameSettingObj obj, FileType type)
+    public static async Task<bool?> AddFileAsync(TopLevel top, GameSettingObj obj, FileType type)
     {
         switch (type)
         {
             case FileType.Schematic:
-                var res = await SelectFile(top,
+                var res = await SelectFileAsync(top,
                       App.Lang("GameEditWindow.Tab12.Text1"),
                       [$"*{Names.NameLitematicExt}", $"*{Names.NameSchematicExt}"],
                       App.Lang("PathBinding.Text23"), true);
@@ -648,17 +608,17 @@ public static class PathBinding
                 }
                 return null;
             case FileType.Shaderpack:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("GameEditWindow.Tab11.Text1"),
                     ZIPFILE,
                     App.Lang("PathBinding.Text22"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddShaderpack(obj, res);
+                    return await GameBinding.AddShaderpackAsync(obj, res);
                 }
                 return null;
             case FileType.Mod:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text16"),
                     JARFILE,
                     App.Lang("PathBinding.Text17"), true);
@@ -668,23 +628,23 @@ public static class PathBinding
                 }
                 return null;
             case FileType.World:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text18"),
                     ZIPFILE,
                     App.Lang("PathBinding.Text19"));
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddWorld(obj, res[0].GetPath());
+                    return await GameBinding.AddWorldAsync(obj, res[0].GetPath());
                 }
                 return null;
             case FileType.Resourcepack:
-                res = await SelectFile(top,
+                res = await SelectFileAsync(top,
                     App.Lang("PathBinding.Text20"),
                     ZIPFILE,
                     App.Lang("PathBinding.Text21"), true);
                 if (res?.Any() == true)
                 {
-                    return await GameBinding.AddResourcepack(obj, res);
+                    return await GameBinding.AddResourcepackAsync(obj, res);
                 }
                 return null;
         }
@@ -698,12 +658,12 @@ public static class PathBinding
     /// <param name="top">窗口</param>
     /// <param name="model">导出信息</param>
     /// <returns></returns>
-    public static async Task<bool?> Export(TopLevel top, GameExportModel model)
+    public static async Task<bool?> ExportAsync(TopLevel top, GameExportModel model)
     {
         string? name = "";
         if (model.Type == PackType.ColorMC)
         {
-            var file = await SaveFile(top, App.Lang("PathBinding.Text40"),
+            var file = await SaveFileAsync(top, App.Lang("PathBinding.Text40"),
                   ".zip", $"{model.Obj.Name}.zip");
             if (file == null)
                 return null;
@@ -714,7 +674,7 @@ public static class PathBinding
         }
         else if (model.Type == PackType.CurseForge)
         {
-            var file = await SaveFile(top, App.Lang("PathBinding.Text40"),
+            var file = await SaveFileAsync(top, App.Lang("PathBinding.Text40"),
                ".zip", $"{model.Name}-{model.Version}.zip");
             if (file == null)
                 return null;
@@ -725,7 +685,7 @@ public static class PathBinding
         }
         else if (model.Type == PackType.Modrinth)
         {
-            var file = await SaveFile(top, App.Lang("PathBinding.Text40"),
+            var file = await SaveFileAsync(top, App.Lang("PathBinding.Text40"),
                ".zip", $"{model.Name}-{model.Version}.mrpack");
             if (file == null)
                 return null;
@@ -786,30 +746,6 @@ public static class PathBinding
             return false;
         }
     }
-
-#if Phone
-    public static async Task<string> CopyBG(string pic)
-    {
-        try
-        {
-            using var stream = PathHelper.OpenRead(pic);
-            if (stream == null)
-                return pic;
-            string file = Path.Combine(ColorMCGui.BaseDir, "BG");
-            PathHelper.Delete(file);
-            using var temp = PathHelper.OpenWrite(file, true);
-            await stream.CopyToAsync(temp);
-
-            return file;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(App.Lang("PathBinding.Error1"), e);
-        }
-
-        return pic;
-    }
-#endif
 
     /// <summary>
     /// 打开图片

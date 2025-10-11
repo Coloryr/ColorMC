@@ -90,7 +90,7 @@ public static class ImageManager
     /// <summary>
     /// 角色皮肤
     /// </summary>
-    private static readonly Dictionary<UserKeyObj, MessageRes> s_userSkins = [];
+    private static readonly Dictionary<UserKeyObj, StringRes> s_userSkins = [];
     /// <summary>
     /// 角色披风
     /// </summary>
@@ -213,14 +213,14 @@ public static class ImageManager
     {
         var task = new TaskCompletionSource();
         s_userGets[key] = task;
-        var temp1 = await PlayerSkinAPI.DownloadSkin(login);
+        var temp1 = await PlayerSkinAPI.DownloadSkinAsync(login);
         if (temp1.Skin != null)
         {
-            s_userSkins[key] = new MessageRes { Message = temp1.Skin, State = temp1.IsNewSlim };
+            s_userSkins[key] = new StringRes { Data = temp1.Skin, State = temp1.IsNewSlim };
         }
         else
         {
-            s_userSkins[key] = new MessageRes();
+            s_userSkins[key] = new StringRes();
         }
         if (temp1.Cape != null)
         {
@@ -262,7 +262,7 @@ public static class ImageManager
     /// </summary>
     /// <param name="login"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> GetUserSkinAsync(LoginObj login)
+    public static async Task<StringRes> GetUserSkinAsync(LoginObj login)
     {
         var key = login.GetKey();
         if (s_userGets.TryGetValue(key, out var temp))
@@ -282,7 +282,7 @@ public static class ImageManager
             return file;
         }
 
-        return new MessageRes();
+        return new StringRes();
     }
 
     /// <summary>
@@ -333,7 +333,7 @@ public static class ImageManager
     {
         var file = await GetUserSkinAsync(login);
         var file1 = await GetUserCapeAsync(login);
-        if (file.Message == null || !File.Exists(file.Message))
+        if (file.Data == null || !File.Exists(file.Data))
         {
             SetDefaultHead();
         }
@@ -343,7 +343,7 @@ public static class ImageManager
             {
                 var old = SkinBitmap;
                 var old1 = HeadBitmap;
-                SkinBitmap = SKBitmap.Decode(file.Message);
+                SkinBitmap = SKBitmap.Decode(file.Data);
                 HeadBitmap = GenHeadImage(SkinBitmap);
                 old?.Dispose();
                 old1?.Dispose();

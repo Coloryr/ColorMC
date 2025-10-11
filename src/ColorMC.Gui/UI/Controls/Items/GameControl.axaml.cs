@@ -106,7 +106,6 @@ public partial class GameControl : UserControl
             var pos = pro.Position;
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
             {
-                LongPressed.Cancel();
                 model.Move(TopLevel.GetTopLevel(this), e);
                 e.Handled = true;
             }
@@ -121,8 +120,6 @@ public partial class GameControl : UserControl
         {
             model.IsDrop = false;
         }
-
-        LongPressed.Released();
     }
 
     private void GameControl_DoubleTapped(object? sender, TappedEventArgs e)
@@ -163,17 +160,6 @@ public partial class GameControl : UserControl
             {
                 e.Handled = true;
                 Flyout((sender as Control)!);
-            }
-            else
-            {
-#if Phone
-                if (!select)
-                {
-                    return;
-                }
-#endif
-
-                LongPressed.Pressed(() => Flyout((sender as Control)!));
             }
         }
     }

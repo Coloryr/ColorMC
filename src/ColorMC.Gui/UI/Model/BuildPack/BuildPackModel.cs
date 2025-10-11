@@ -66,7 +66,7 @@ public partial class BuildPackModel : MenuModel
         }
 
         string ext = PackLaunch ? Names.NameZipExt : GuiNames.NameColorMCExt;
-        var local = await PathBinding.SaveFile(top, App.Lang("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
+        var local = await PathBinding.SaveFileAsync(top, App.Lang("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
         if (local == null)
         {
             return;

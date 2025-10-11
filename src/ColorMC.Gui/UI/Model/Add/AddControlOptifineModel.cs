@@ -92,7 +92,7 @@ public partial class AddControlModel : IAddOptifineControl
         _optifineList.Clear();
         DownloadOptifineList.Clear();
         Model.Progress(App.Lang("AddWindow.Info13"));
-        var list = await WebBinding.GetOptifine();
+        var list = await WebBinding.GetOptifineAsync();
         Model.ProgressClose();
         _load = false;
         if (list == null)
@@ -180,11 +180,11 @@ public partial class AddControlModel : IAddOptifineControl
             return;
         }
         Model.Progress(App.Lang("AddWindow.Info11"));
-        var res1 = await WebBinding.DownloadOptifine(Obj, item.Obj);
+        var res1 = await WebBinding.DownloadOptifineAsync(Obj, item.Obj);
         Model.ProgressClose();
         if (res1.State == false)
         {
-            Model.Show(res1.Message!);
+            Model.Show(res1.Data!);
         }
         else
         {

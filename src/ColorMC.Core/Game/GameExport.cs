@@ -102,7 +102,7 @@ public static class GameExport
         }
 
         //添加Mod网页链接信息
-        var data = await CurseForgeAPI.GetModsInfo(obj.Files);
+        var data = await CurseForgeAPI.GetModsInfoAsync(obj.Files);
         var html = new StringBuilder();
         html.AppendLine("<ul>");
         if (data != null)

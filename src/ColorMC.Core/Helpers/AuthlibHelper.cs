@@ -77,7 +77,7 @@ public static class AuthlibHelper
         }
         try
         {
-            var obj = JsonUtils.ReadObj(data.Message!)!;
+            var obj = JsonUtils.ReadObj(data.Data!)!;
             var sha1 = obj.GetString("jarHash")!;
             var item = BuildNide8Item(obj.GetString("jarVersion")!);
             NowNide8Injector = item.Local;
@@ -135,7 +135,7 @@ public static class AuthlibHelper
             {
                 return LocalAuthLib;
             }
-            var obj = JsonUtils.ToObj(meta.Message!, JsonType.AuthlibInjectorMetaObj);
+            var obj = JsonUtils.ToObj(meta.Data!, JsonType.AuthlibInjectorMetaObj);
             if (obj == null)
             {
                 return LocalAuthLib;
@@ -147,7 +147,7 @@ public static class AuthlibHelper
             {
                 return LocalAuthLib;
             }
-            return JsonUtils.ToObj(info.Message!, JsonType.AuthlibInjectorObj) ?? LocalAuthLib;
+            return JsonUtils.ToObj(info.Data!, JsonType.AuthlibInjectorObj) ?? LocalAuthLib;
         }
         catch
         {

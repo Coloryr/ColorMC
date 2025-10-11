@@ -77,9 +77,9 @@ public static class GameBinding
     /// </summary>
     /// <param name="type">发布类型</param>
     /// <returns></returns>
-    public static Task<List<string>> GetGameVersions(GameType type)
+    public static Task<List<string>> GetGameVersionsAsync(GameType type)
     {
-        return GameHelper.GetGameVersions(type);
+        return GameHelper.GetGameVersionsAsync(type);
     }
 
     /// <summary>
@@ -294,13 +294,13 @@ public static class GameBinding
     {
         try
         {
-            var file = await PathBinding.SelectFile(top, FileType.GameIcon);
-            if (file.Item1 != null)
+            var file = await PathBinding.SelectFileAsync(top, FileType.GameIcon);
+            if (file.Path != null)
             {
                 bool resize = await model.ShowAsync(App.Lang("GameBinding.Info14"));
 
                 model.Progress(App.Lang("GameBinding.Info4"));
-                using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Item1)!);
+                using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Path)!);
 
                 if (resize && (info.Width > 100 || info.Height > 100))
                 {
@@ -925,13 +925,13 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static MessageRes ModEnableDisable(ModObj obj)
+    public static StringRes ModEnableDisable(ModObj obj)
     {
         try
         {
             if (!File.Exists(obj.Local))
             {
-                return new() { Message = App.Lang("GameBinding.Error15") };
+                return new() { Data = App.Lang("GameBinding.Error15") };
             }
 
             if (obj.Disable)
@@ -949,7 +949,7 @@ public static class GameBinding
         {
             string temp = string.Format(App.Lang("GameBinding.Error14"), obj.Local);
             Logs.Error(temp, e);
-            return new() { Message = temp };
+            return new() { Data = temp };
         }
     }
 
@@ -1088,7 +1088,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="name">区块文件名</param>
     /// <returns></returns>
-    public static async Task<ChunkDataObj?> ReadMca(GameSettingObj obj, string name)
+    public static async Task<ChunkDataObj?> ReadMcaAsync(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
@@ -1101,7 +1101,7 @@ public static class GameBinding
     /// <param name="obj">存档</param>
     /// <param name="name">文件名</param>
     /// <returns></returns>
-    public static async Task<NbtBase?> ReadNbt(WorldObj obj, string name)
+    public static async Task<NbtBase?> ReadNbtAsync(WorldObj obj, string name)
     {
         var dir = obj.Local;
 
@@ -1114,7 +1114,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="name">文件名</param>
     /// <returns></returns>
-    public static async Task<NbtBase?> ReadNbt(GameSettingObj obj, string name)
+    public static async Task<NbtBase?> ReadNbtAsync(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
 
@@ -1241,7 +1241,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="file"></param>
     /// <returns></returns>
-    public static async Task<bool> AddWorld(GameSettingObj obj, string? file)
+    public static async Task<bool> AddWorldAsync(GameSettingObj obj, string? file)
     {
         if (string.IsNullOrWhiteSpace(file))
         {
@@ -1260,7 +1260,7 @@ public static class GameBinding
     /// 删除存档
     /// </summary>
     /// <param name="world">存档</param>
-    public static Task DeleteWorld(WorldObj world)
+    public static Task DeleteWorldAsync(WorldObj world)
     {
         return world.DeleteAsync();
     }
@@ -1271,7 +1271,7 @@ public static class GameBinding
     /// <param name="world">存档</param>
     /// <param name="file">导出路径</param>
     /// <returns></returns>
-    public static Task ExportWorld(WorldObj world, string? file)
+    public static Task ExportWorldAsync(WorldObj world, string? file)
     {
         if (file == null)
             return Task.CompletedTask;
@@ -1285,7 +1285,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="sha256">是否获取SHA256</param>
     /// <returns></returns>
-    public static Task<List<ResourcepackObj>> GetResourcepacks(GameSettingObj obj,
+    public static Task<List<ResourcepackObj>> GetResourcepacksAsync(GameSettingObj obj,
         bool sha256 = false)
     {
         return obj.GetResourcepacksAsync(sha256);
@@ -1295,7 +1295,7 @@ public static class GameBinding
     /// 删除资源包
     /// </summary>
     /// <param name="obj">资源包</param>
-    public static Task DeleteResourcepack(ResourcepackObj obj)
+    public static Task DeleteResourcepackAsync(ResourcepackObj obj)
     {
         return obj.Delete();
     }
@@ -1306,7 +1306,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns></returns>
-    public static Task<bool> AddResourcepack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddResourcepackAsync(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
@@ -1324,7 +1324,7 @@ public static class GameBinding
     /// 删除截图
     /// </summary>
     /// <param name="file">截图</param>
-    public static Task DeleteScreenshot(ScreenshotObj file)
+    public static Task DeleteScreenshotAsync(ScreenshotObj file)
     {
         return GameScreenshots.DeleteAsync(file);
     }
@@ -1363,7 +1363,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task<IEnumerable<ServerInfoObj>> GetServers(GameSettingObj obj)
+    public static async Task<IEnumerable<ServerInfoObj>> GetServersAsync(GameSettingObj obj)
     {
         return await obj.GetServerInfosAsync();
     }
@@ -1375,7 +1375,7 @@ public static class GameBinding
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
     /// <returns></returns>
-    public static Task AddServer(GameSettingObj obj, string name, string ip)
+    public static Task AddServerAsync(GameSettingObj obj, string name, string ip)
     {
         return obj.AddServerAsync(name, ip);
     }
@@ -1386,7 +1386,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="server">服务器信息</param>
     /// <returns></returns>
-    public static Task DeleteServer(GameSettingObj obj, ServerInfoObj server)
+    public static Task DeleteServerAsync(GameSettingObj obj, ServerInfoObj server)
     {
         return obj.RemoveServerAsync(server.Name, server.IP);
     }
@@ -1413,7 +1413,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static Task<List<ShaderpackObj>> GetShaderpacks(GameSettingObj obj)
+    public static Task<List<ShaderpackObj>> GetShaderpacksAsync(GameSettingObj obj)
     {
         return obj.GetShaderpacksAsync();
     }
@@ -1424,7 +1424,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="file">文件列表</param>
     /// <returns></returns>
-    public static Task<bool> AddShaderpack(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
+    public static Task<bool> AddShaderpackAsync(GameSettingObj obj, IReadOnlyList<IStorageFile> file)
     {
         var list = new List<string>();
         foreach (var item in file)
@@ -1443,7 +1443,7 @@ public static class GameBinding
     /// 删除光影包
     /// </summary>
     /// <param name="obj">光影包</param>
-    public static Task DeleteShaderpack(ShaderpackObj obj)
+    public static Task DeleteShaderpackAsync(ShaderpackObj obj)
     {
         return obj.DeleteAsync();
     }
@@ -1453,7 +1453,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task<List<SchematicObj>> GetSchematics(GameSettingObj obj)
+    public static async Task<List<SchematicObj>> GetSchematicsAsync(GameSettingObj obj)
     {
         var list = await obj.GetSchematicsAsync();
         var list1 = new List<SchematicObj>();
@@ -1501,7 +1501,7 @@ public static class GameBinding
     /// 删除结构文件
     /// </summary>
     /// <param name="obj">结构文件</param>
-    public static Task DeleteSchematic(SchematicObj obj)
+    public static Task DeleteSchematicAsync(SchematicObj obj)
     {
         return obj.DeleteAsync();
     }
@@ -1571,7 +1571,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="world">存档</param>
     /// <returns></returns>
-    public static async Task<bool> BackupWorld(WorldObj world)
+    public static async Task<bool> BackupWorldAsync(WorldObj world)
     {
         try
         {
@@ -1594,7 +1594,7 @@ public static class GameBinding
     /// <param name="item1">文件</param>
     /// <param name="request">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> BackupWorld(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
+    public static Task<bool> BackupWorldAsync(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
     {
         return obj.UnzipBackupWorldAsync(new UnzipBackupWorldArg { File = item1.FullName, Request = request });
     }
@@ -1621,7 +1621,7 @@ public static class GameBinding
     /// <param name="request">UI相关</param>
     /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
-    public static async Task<bool> CopyGame(GameSettingObj obj, string data,
+    public static async Task<bool> CopyGameAsync(GameSettingObj obj, string data,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         if (GameManager.IsGameRun(obj))
@@ -1668,7 +1668,7 @@ public static class GameBinding
     /// <param name="local">生成路径</param>
     /// <param name="request">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> GenServerPack(ServerPackObj obj, string local,
+    public static Task<bool> GenServerPackAsync(ServerPackObj obj, string local,
         ColorMCCore.Request request)
     {
         return obj.GenServerPackAsync(new ServerPackGenArg
@@ -1693,7 +1693,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="list">检测列表</param>
     /// <returns></returns>
-    public static Task<bool> ModCheck(List<ModDisplayModel> list)
+    public static Task<bool> ModCheckAsync(List<ModDisplayModel> list)
     {
         return Task.Run(() =>
         {
@@ -1833,7 +1833,7 @@ public static class GameBinding
     /// <param name="obj">游戏实例</param>
     /// <param name="name">文件名</param>
     /// <returns></returns>
-    public static async Task<GameRuntimeLog?> ReadLog(GameSettingObj obj, string name)
+    public static async Task<GameRuntimeLog?> ReadLogAsync(GameSettingObj obj, string name)
     {
         if (GameManager.IsGameRun(obj))
         {
@@ -1854,7 +1854,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpgrade(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj fid,
+    public static Task<bool> ModPackUpgradeAsync(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
@@ -1875,7 +1875,7 @@ public static class GameBinding
     /// <param name="update">UI相关</param>
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> ModPackUpgrade(GameSettingObj obj, ModrinthVersionObj fid,
+    public static Task<bool> ModPackUpgradeAsync(GameSettingObj obj, ModrinthVersionObj fid,
         ColorMCCore.PackUpdate update,
         ColorMCCore.PackState update2)
     {
@@ -1943,7 +1943,7 @@ public static class GameBinding
     /// <param name="data"></param>
     /// <param name="type"></param>
     /// <returns></returns>
-    public static async Task<bool> AddFile(GameSettingObj obj, IDataTransfer data, FileType type)
+    public static async Task<bool> AddFileAsync(GameSettingObj obj, IDataTransfer data, FileType type)
     {
         if (!data.Contains(DataFormat.File))
         {
@@ -2047,9 +2047,9 @@ public static class GameBinding
     /// <summary>
     /// 检测压缩包类型
     /// </summary>
-    /// <param name="local"></param>
-    /// <returns></returns>
-    public static async Task<PackType?> CheckType(string local)
+    /// <param name="local">文件位置</param>
+    /// <returns>压缩包类型</returns>
+    public static async Task<PackType?> CheckTypeAsync(string local)
     {
         Stream? stream = null;
         try
@@ -2123,7 +2123,7 @@ public static class GameBinding
     /// <param name="data"></param>
     /// <param name="local"></param>
     /// <returns></returns>
-    public static async Task<bool> UnZipCloudConfig(GameSettingObj obj, CloudDataObj data, string local)
+    public static async Task<bool> UnZipCloudConfigAsync(GameSettingObj obj, CloudDataObj data, string local)
     {
         data.Config.Clear();
         return await Task.Run(() =>
@@ -2155,7 +2155,7 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> DownloadCloud(CloundListObj obj, string? group,
+    public static async Task<StringRes> DownloadCloudAsync(CloundListObj obj, string? group,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
     {
         var game = await InstancesPath.CreateGameAsync(new CreateGameArg
@@ -2171,7 +2171,7 @@ public static class GameBinding
         });
         if (game == null)
         {
-            return new() { Message = App.Lang("GameBinding.Error9") };
+            return new() { Data = App.Lang("GameBinding.Error9") };
         }
 
         var cloud = new CloudDataObj()
@@ -2184,7 +2184,7 @@ public static class GameBinding
         var res = await ColorMCCloudAPI.DownloadConfigAsync(obj.UUID, local);
         if (res == 100)
         {
-            await UnZipCloudConfig(game, cloud, local);
+            await UnZipCloudConfigAsync(game, cloud, local);
         }
 
         var temp = await ColorMCCloudAPI.HaveCloudAsync(game);
@@ -2219,12 +2219,12 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return new() { Message = App.Lang("GameBinding.Error10") };
+                    return new() { Data = App.Lang("GameBinding.Error10") };
                 }
             }
         }
 
-        return new() { State = true, Message = game.UUID };
+        return new() { State = true, Data = game.UUID };
     }
 
     /// <summary>
@@ -2259,7 +2259,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteGame(GameSettingObj obj)
+    public static async Task<bool> DeleteGameAsync(GameSettingObj obj)
     {
         var res = await obj.RemoveAsync();
         if (res)
@@ -2279,7 +2279,7 @@ public static class GameBinding
     /// <param name="text"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> DownloadServerPack(BaseModel model,
+    public static async Task<StringRes> DownloadServerPackAsync(BaseModel model,
         string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte)
     {
         try
@@ -2287,12 +2287,12 @@ public static class GameBinding
             var data = await CoreHttpClient.GetStringAsync(text + "server.json");
             if (!data.State)
             {
-                return new() { Message = App.Lang("GameBinding.Error11") };
+                return new() { Data = App.Lang("GameBinding.Error11") };
             }
-            var obj = JsonUtils.ToObj(data.Message!, JsonType.ServerPackObj);
+            var obj = JsonUtils.ToObj(data.Data!, JsonType.ServerPackObj);
             if (obj == null)
             {
-                return new() { Message = App.Lang("GameBinding.Error12") };
+                return new() { Data = App.Lang("GameBinding.Error12") };
             }
 
             var game = obj.Game;
@@ -2317,7 +2317,7 @@ public static class GameBinding
 
             if (game == null)
             {
-                return new() { Message = App.Lang("GameBinding.Error9") };
+                return new() { Data = App.Lang("GameBinding.Error9") };
             }
 
             model.Progress(App.Lang("GameBinding.Info16"));
@@ -2344,15 +2344,15 @@ public static class GameBinding
                 return new();
             }
 
-            PathHelper.WriteText(game.GetServerPackFile(), data.Message!);
+            PathHelper.WriteText(game.GetServerPackFile(), data.Data!);
 
-            return new() { State = true, Message = game.UUID };
+            return new() { State = true, Data = game.UUID };
         }
         catch (Exception e)
         {
             string temp = App.Lang("GameBinding.Error12");
             Logs.Error(temp, e);
-            return new() { Message = temp };
+            return new() { Data = temp };
         }
     }
 
@@ -2373,9 +2373,9 @@ public static class GameBinding
     /// <summary>
     /// 启用/禁用数据包
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="pack">数据包列表</param>
     /// <returns></returns>
-    public static bool DataPackDisE(IEnumerable<DataPackModel> pack)
+    public static bool DataPackDisableOrEnable(IEnumerable<DataPackModel> pack)
     {
         var list = new List<DataPackObj>();
         foreach (var item in pack)
@@ -2395,7 +2395,7 @@ public static class GameBinding
     /// <param name="item"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteDataPack(DataPackModel item)
+    public static async Task<bool> DeleteDataPackAsync(DataPackModel item)
     {
         if (GameManager.IsGameRun(item.Pack.World.Game))
         {
@@ -2410,7 +2410,7 @@ public static class GameBinding
     /// <param name="items"></param>
     /// <param name="request"></param>
     /// <returns></returns>
-    public static async Task<bool> DeleteDataPack(IEnumerable<DataPackModel> items)
+    public static async Task<bool> DeleteDataPackAsync(IEnumerable<DataPackModel> items)
     {
         var list = new List<DataPackObj>();
         foreach (var item in items)
@@ -2424,14 +2424,12 @@ public static class GameBinding
         return await list[0].World.DeleteDataPackAsync(list);
     }
 
-
-
     /// <summary>
     /// 生成实例信息
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task GenGameInfo(GameSettingObj obj)
+    public static async Task GenGameInfoAsync(GameSettingObj obj)
     {
         var list = await obj.GetModsAsync(false);
         var info = new StringBuilder();
@@ -2450,7 +2448,7 @@ public static class GameBinding
                 if (obj.Loader == Loaders.Custom)
                 {
                     info.AppendLine(string.Format(App.Lang("GameBinding.Info8"),
-                        GetGameLoader(obj), obj.CustomLoader?.OffLib));
+                        GetGameLoaderAsync(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
@@ -2485,7 +2483,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task<string> GetGameLoader(GameSettingObj obj)
+    public static async Task<string> GetGameLoaderAsync(GameSettingObj obj)
     {
         var res = await obj.GetGameLoaderInfoAsync();
         if (res != null)
@@ -2504,7 +2502,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    public static Task<MessageRes> SetGameLoader(GameSettingObj obj, string path)
+    public static Task<StringRes> SetGameLoaderAsync(GameSettingObj obj, string path)
     {
         return obj.SetGameLoaderAsync(path);
     }
@@ -2513,9 +2511,9 @@ public static class GameBinding
     /// 获取McMod分类
     /// </summary>
     /// <returns></returns>
-    public static Task<McModTypsObj?> GetMcModCategories()
+    public static Task<McModTypsObj?> GetMcModCategoriesAsync()
     {
-        return ColorMCAPI.GetMcModGroup();
+        return ColorMCAPI.GetMcModGroupAsync();
     }
 
     /// <summary>
@@ -2524,7 +2522,7 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="cov"></param>
     /// <returns></returns>
-    public static Task<IntRes> AutoMarkMods(GameSettingObj obj, bool cov)
+    public static Task<IntRes> AutoMarkModsAsync(GameSettingObj obj, bool cov)
     {
         return ModrinthHelper.AutoMarkAsync(obj, cov);
     }
@@ -2655,7 +2653,7 @@ public static class GameBinding
             }
         })
         {
-            Name = "ColorMC_Game_" + handel.UUID + "_Handel",
+            Name = "ColorMC Game " + handel.UUID + " Handel",
             IsBackground = true
         }.Start();
     }
@@ -2767,7 +2765,7 @@ public static class GameBinding
             args = [".sh", "game.sh", str.ToString()];
         }
 
-        var res2 = await PathBinding.SaveFile(top, FileType.Cmd, args);
+        var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
         if (res2 == false)
         {
             model.Show(App.Lang("MainWindow.Error10"));
@@ -2789,13 +2787,13 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> StartCloud(GameSettingObj obj)
+    public static async Task<StringRes> StartCloudAsync(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -2811,13 +2809,13 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -2826,13 +2824,13 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> StopCloud(GameSettingObj obj)
+    public static async Task<StringRes> StopCloudAsync(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -2846,20 +2844,20 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error4")
+                Data = App.Lang("GameCloudWindow.Error4")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -2870,13 +2868,13 @@ public static class GameBinding
     /// <param name="files">选中的配置</param>
     /// <param name="model">Gui回调</param>
     /// <returns></returns>
-    public static async Task<MessageRes> UploadConfig(GameSettingObj obj, List<string> files, ProcessUpdateArg model)
+    public static async Task<StringRes> UploadConfigAsync(GameSettingObj obj, List<string> files, ProcessUpdateArg model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -2909,20 +2907,20 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error5")
+                Data = App.Lang("GameCloudWindow.Error5")
             };
         }
         else if (res.Data1 == 101)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -2932,13 +2930,13 @@ public static class GameBinding
     /// <param name="game">游戏实例</param>
     /// <param name="model">UI相关</param>
     /// <returns></returns>
-    public static async Task<MessageRes> DownloadConfig(GameSettingObj game, ProcessUpdateArg model)
+    public static async Task<StringRes> DownloadConfigAsync(GameSettingObj game, ProcessUpdateArg model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -2950,24 +2948,24 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
         else if (res != 100)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error3")
+                Data = App.Lang("GameCloudWindow.Error3")
             };
         }
 
         model.Update?.Invoke(App.Lang("GameCloudWindow.Info11"));
-        var res1 = await UnZipCloudConfig(game, data, local);
+        var res1 = await UnZipCloudConfigAsync(game, data, local);
         if (!res1)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error6")
+                Data = App.Lang("GameCloudWindow.Error6")
             };
         }
 
@@ -2979,13 +2977,13 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task<CloudRes> HaveCloud(GameSettingObj obj)
+    public static async Task<CloudRes> HaveCloudAsync(GameSettingObj obj)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -3003,7 +3001,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -3017,13 +3015,13 @@ public static class GameBinding
     /// <param name="world">存档</param>
     /// <param name="model">Gui回调</param>
     /// <returns></returns>
-    public static async Task<MessageRes> UploadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    public static async Task<StringRes> UploadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -3045,7 +3043,7 @@ public static class GameBinding
             {
                 return new()
                 {
-                    Message = App.Lang("GameCloudWindow.Error7")
+                    Data = App.Lang("GameCloudWindow.Error7")
                 };
             }
             //本地文件
@@ -3084,7 +3082,7 @@ public static class GameBinding
             {
                 return new()
                 {
-                    Message = App.Lang("GameCloudWindow.Info13")
+                    Data = App.Lang("GameCloudWindow.Info13")
                 };
             }
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
@@ -3105,20 +3103,20 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
         else if (res == 104)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error5")
+                Data = App.Lang("GameCloudWindow.Error5")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -3129,13 +3127,13 @@ public static class GameBinding
     /// <param name="world">云存档</param>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<MessageRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    public static async Task<StringRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
 
@@ -3170,7 +3168,7 @@ public static class GameBinding
             {
                 string temp = App.Lang("GameCloudWindow.Error9");
                 Logs.Error(temp, e);
-                return new() { Message = temp };
+                return new() { Data = temp };
             }
             finally
             {
@@ -3181,27 +3179,27 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error8")
+                Data = App.Lang("GameCloudWindow.Error8")
             };
         }
         else if (res == 103)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Info13")
+                Data = App.Lang("GameCloudWindow.Info13")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 
@@ -3211,13 +3209,13 @@ public static class GameBinding
     /// <param name="game">游戏实例</param>
     /// <param name="name">存档名字</param>
     /// <returns></returns>
-    public static async Task<MessageRes> DeleteCloudWorld(GameSettingObj game, string name)
+    public static async Task<StringRes> DeleteCloudWorldAsync(GameSettingObj game, string name)
     {
         if (!ColorMCCloudAPI.Connect)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error11")
+                Data = App.Lang("GameCloudWindow.Error11")
             };
         }
         var res = await ColorMCCloudAPI.DeleteWorldAsync(game, name);
@@ -3230,20 +3228,20 @@ public static class GameBinding
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error2")
+                Data = App.Lang("GameCloudWindow.Error2")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Message = App.Lang("GameCloudWindow.Error8")
+                Data = App.Lang("GameCloudWindow.Error8")
             };
         }
 
         return new()
         {
-            Message = App.Lang("GameCloudWindow.Error3")
+            Data = App.Lang("GameCloudWindow.Error3")
         };
     }
 

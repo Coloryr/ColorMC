@@ -68,7 +68,7 @@ public partial class NetFrpModel
     {
         Model.Progress(App.Lang("NetFrpWindow.Tab4.Info1"));
         CloudServers.Clear();
-        var list = await WebBinding.GetFrpServer(Version);
+        var list = await WebBinding.GetFrpServerAsync(Version);
         Model.ProgressClose();
         if (list == null)
         {

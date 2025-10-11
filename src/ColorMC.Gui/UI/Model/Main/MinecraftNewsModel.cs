@@ -51,7 +51,7 @@ public partial class MainModel
         var temp = NewsImage;
         NewsImage = null;
         temp?.Dispose();
-        var data = await WebBinding.LoadNews(0);
+        var data = await WebBinding.LoadNewsAsync(0);
         IsLoadNews = false;
         if (data == null)
         {

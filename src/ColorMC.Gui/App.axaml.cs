@@ -34,9 +34,7 @@ public partial class App : Application
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
-#if !Phone
         ColorMCGui.StartLock();
-#endif
     }
 
     /// <summary>

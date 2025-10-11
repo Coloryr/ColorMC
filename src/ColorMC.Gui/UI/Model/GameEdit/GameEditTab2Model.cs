@@ -636,10 +636,10 @@ public partial class GameEditModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Java);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Java);
+        if (file.Path != null)
         {
-            JvmLocal = file.Item1;
+            JvmLocal = file.Path;
         }
     }
 

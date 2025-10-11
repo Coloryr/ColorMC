@@ -195,12 +195,6 @@ public static class WindowManager
             }
         }
 
-        //长按取消处理
-        InputElement.PointerReleasedEvent.AddClassHandler<DataGridCell>((x, e) =>
-        {
-            LongPressed.Released();
-        }, handledEventsToo: true);
-
         //显示自定义窗口
         if (!ShowCustom())
         {
@@ -637,7 +631,7 @@ public static class WindowManager
 
         try
         {
-            var data = await ModrinthAPI.GetProject(name);
+            var data = await ModrinthAPI.GetProjectAsync(name);
             if (data?.ProjectType == "mod")
             {
                 var list = GameBinding.GetGames();

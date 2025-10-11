@@ -61,7 +61,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
-        await GameBinding.AddServer(_obj, res.Text1, res.Text2);
+        await GameBinding.AddServerAsync(_obj, res.Text1, res.Text2);
         Model.ProgressClose();
         Model.Notify(App.Lang("UserWindow.Info12"));
         LoadServer();
@@ -74,7 +74,7 @@ public partial class GameEditModel
     {
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
-        ServerList.AddRange(await GameBinding.GetServers(_obj));
+        ServerList.AddRange(await GameBinding.GetServersAsync(_obj));
         Model.ProgressClose();
         ServerEmptyDisplay = ServerList.Count == 0;
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info7"));
@@ -92,7 +92,7 @@ public partial class GameEditModel
             return;
         }
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
-        await GameBinding.DeleteServer(_obj, obj);
+        await GameBinding.DeleteServerAsync(_obj, obj);
         Model.ProgressClose();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadServer();

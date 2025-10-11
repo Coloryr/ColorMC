@@ -39,7 +39,7 @@ public partial class MinecraftNewsModel : TopModel
         News.Clear();
         _newsPage = 0;
         Model.Progress(App.Lang("UserWindow.Info1"));
-        var data = await WebBinding.LoadNews(_newsPage);
+        var data = await WebBinding.LoadNewsAsync(_newsPage);
         Model.ProgressClose();
         if (data == null)
         {
@@ -62,7 +62,7 @@ public partial class MinecraftNewsModel : TopModel
     public async Task NewsNextPage()
     {
         Model.Progress(App.Lang("UserWindow.Info1"));
-        var data = await WebBinding.LoadNews(++_newsPage);
+        var data = await WebBinding.LoadNewsAsync(++_newsPage);
         Model.ProgressClose();
         if (data == null)
         {

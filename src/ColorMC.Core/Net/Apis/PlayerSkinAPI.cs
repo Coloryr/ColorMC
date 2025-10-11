@@ -18,16 +18,16 @@ public static class PlayerSkinAPI
     /// </summary>
     /// <param name="obj">保存的账户</param>
     /// <returns>皮肤路径, 披风路径</returns>
-    public static async Task<DownloadSkinRes> DownloadSkin(LoginObj obj)
+    public static async Task<DownloadSkinRes> DownloadSkinAsync(LoginObj obj)
     {
         var url = obj.AuthType switch
         {
-            AuthType.Offline => await LoadFromMinecraft(obj),
-            AuthType.OAuth => await LoadFromMinecraft(obj),
-            AuthType.Nide8 => await LoadFromNide8(obj),
-            AuthType.AuthlibInjector => await LoadFromAuthlibInjector(obj),
-            AuthType.LittleSkin => await LoadFromLittleskin(obj),
-            AuthType.SelfLittleSkin => await LoadFromSelfLittleskin(obj),
+            AuthType.Offline => await LoadFromMinecraftAsync(obj),
+            AuthType.OAuth => await LoadFromMinecraftAsync(obj),
+            AuthType.Nide8 => await LoadFromNide8Async(obj),
+            AuthType.AuthlibInjector => await LoadFromAuthlibInjectorAsync(obj),
+            AuthType.LittleSkin => await LoadFromLittleskinAsync(obj),
+            AuthType.SelfLittleSkin => await LoadFromSelfLittleskinAsync(obj),
             _ => null
         };
 
@@ -85,11 +85,11 @@ public static class PlayerSkinAPI
     /// <param name="uuid">玩家UUID</param>
     /// <param name="url">网址</param>
     /// <returns>皮肤内容</returns>
-    private static async Task<MinecraftTexturesObj?> BaseLoad(string uuid, string? url = null)
+    private static async Task<MinecraftTexturesObj?> BaseLoadAsync(string uuid, string? url = null)
     {
         try
         {
-            var res = await MinecraftAPI.GetUserProfile(uuid, url);
+            var res = await MinecraftAPI.GetUserProfileAsync(uuid, url);
             if (res == null)
                 return null;
             if (res.Properties.Count == 0)
@@ -110,44 +110,44 @@ public static class PlayerSkinAPI
     /// </summary>
     /// <param name="obj">账户</param>
     /// <returns></returns>
-    private static Task<MinecraftTexturesObj?> LoadFromMinecraft(LoginObj obj)
+    private static Task<MinecraftTexturesObj?> LoadFromMinecraftAsync(LoginObj obj)
     {
-        return BaseLoad(obj.UUID);
+        return BaseLoadAsync(obj.UUID);
     }
     /// <summary>
     /// 从Nide8加载皮肤
     /// </summary>
     /// <param name="obj">账户</param>
     /// <returns></returns>
-    private static Task<MinecraftTexturesObj?> LoadFromNide8(LoginObj obj)
+    private static Task<MinecraftTexturesObj?> LoadFromNide8Async(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{UrlHelper.Nide8}{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj.UUID, $"{UrlHelper.Nide8}{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从外置登录加载皮肤
     /// </summary>
     /// <param name="obj">账户</param>
     /// <returns></returns>
-    private static Task<MinecraftTexturesObj?> LoadFromAuthlibInjector(LoginObj obj)
+    private static Task<MinecraftTexturesObj?> LoadFromAuthlibInjectorAsync(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从皮肤站加载皮肤
     /// </summary>
     /// <param name="obj">账户</param>
     /// <returns></returns>
-    private static Task<MinecraftTexturesObj?> LoadFromLittleskin(LoginObj obj)
+    private static Task<MinecraftTexturesObj?> LoadFromLittleskinAsync(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{UrlHelper.LittleSkin}api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj.UUID, $"{UrlHelper.LittleSkin}api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从自建皮肤站加载皮肤
     /// </summary>
     /// <param name="obj">账户</param>
     /// <returns></returns>
-    private static Task<MinecraftTexturesObj?> LoadFromSelfLittleskin(LoginObj obj)
+    private static Task<MinecraftTexturesObj?> LoadFromSelfLittleskinAsync(LoginObj obj)
     {
-        return BaseLoad(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 }

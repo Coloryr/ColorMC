@@ -16,18 +16,11 @@ public partial class ScreenshotControl : UserControl
         InitializeComponent();
 
         PointerPressed += ScreenshotControl_PointerPressed;
-        PointerReleased += ScreenshotControl_PointerReleased;
         DoubleTapped += ScreenshotControl_DoubleTapped;
-    }
-
-    private void ScreenshotControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
     }
 
     private void ScreenshotControl_DoubleTapped(object? sender, TappedEventArgs e)
     {
-        LongPressed.Cancel();
         var model = (DataContext as ScreenshotModel)!;
         PathBinding.OpenPicFile(model.Screenshot);
     }
@@ -39,10 +32,6 @@ public partial class ScreenshotControl : UserControl
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }
 

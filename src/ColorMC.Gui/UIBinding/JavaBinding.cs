@@ -19,7 +19,7 @@ public static class JavaBinding
     /// <param name="name">名字</param>
     /// <param name="zip">UI相关</param>
     /// <returns></returns>
-    public static async Task<MessageRes> AddJavaZip(string file, string name, ColorMCCore.ZipUpdate zip)
+    public static async Task<StringRes> AddJavaZipAsync(string file, string name, ColorMCCore.ZipUpdate zip)
     {
         return await JvmPath.UnzipJavaAsync(new UnzipArg
         {
@@ -50,19 +50,19 @@ public static class JavaBinding
     /// <param name="name">名字</param>
     /// <param name="local">路径</param>
     /// <returns></returns>
-    public static MessageRes AddJava(string name, string local)
+    public static StringRes AddJava(string name, string local)
     {
         var res = JvmPath.AddItem(name, local);
         if (res.State == false)
         {
-            return new() { Message = res.Message };
+            return res;
         }
         else
         {
-            var info = JvmPath.GetInfo(res.Message);
+            var info = JvmPath.GetInfo(res.Data);
             if (info == null)
             {
-                return new() { Message = App.Lang("JavaBinding.Error1") };
+                return new() { Data = App.Lang("JavaBinding.Error1") };
             }
             return new() { State = true };
         }
@@ -117,7 +117,7 @@ public static class JavaBinding
     /// <param name="zip">UI相关</param>
     /// <param name="unzip">UI相关</param>
     /// <returns></returns>
-    public static async Task<MessageRes> DownloadJava(JavaDownloadModel obj,
+    public static async Task<StringRes> DownloadJavaAsync(JavaDownloadModel obj,
         ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
     {
         var res = await JvmPath.InstallAsync(new InstallJvmArg
@@ -131,7 +131,7 @@ public static class JavaBinding
         });
         if (!res.State)
         {
-            return new() { Message = res.Message };
+            return new() { Data = res.Data };
         }
 
         return new() { State = true };
@@ -172,7 +172,7 @@ public static class JavaBinding
     /// 搜索Java
     /// </summary>
     /// <returns></returns>
-    public static Task<List<JavaInfo>?> FindJava()
+    public static Task<List<JavaInfo>?> FindJavaAsync()
     {
         return Task.Run(JavaHelper.FindJava);
     }
@@ -182,7 +182,7 @@ public static class JavaBinding
     /// </summary>
     /// <param name="local">搜索路径</param>
     /// <returns></returns>
-    public static Task<List<JavaInfo>?> FindJava(string local)
+    public static Task<List<JavaInfo>?> FindJavaAsync(string local)
     {
         return Task.Run(() => JavaHelper.FindJava(local));
     }

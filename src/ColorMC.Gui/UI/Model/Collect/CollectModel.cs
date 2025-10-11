@@ -185,7 +185,7 @@ public partial class CollectModel : TopModel, ICollectControl
             }
 
             var download = item.FileItems[item.SelectVersion];
-            var item2 = await WebBinding.MakeDownload(_choise, download, Model);
+            var item2 = await WebBinding.MakeDownloadAsync(_choise, download, Model);
             if (item2 == null)
             {
                 return;
@@ -319,7 +319,7 @@ public partial class CollectModel : TopModel, ICollectControl
         {
             if (item.IsCheck)
             {
-                var item1 = await WebBinding.GetFileList(item.Obj.Source, item.Obj.Pid, 0, _choise.Version, _choise.Loader, item.Obj.FileType);
+                var item1 = await WebBinding.GetFileListAsync(item.Obj.Source, item.Obj.Pid, 0, _choise.Version, _choise.Loader, item.Obj.FileType);
                 if (item1.Count == 0)
                 {
                     return;

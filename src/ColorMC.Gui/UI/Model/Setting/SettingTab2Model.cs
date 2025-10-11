@@ -480,13 +480,15 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Pic);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Pic);
+        if (file.Path != null)
         {
-            Pic = file.Item1;
+            Pic = file.Path;
 
             if (_load)
+            {
                 return;
+            }
 
             await SetPic();
         }

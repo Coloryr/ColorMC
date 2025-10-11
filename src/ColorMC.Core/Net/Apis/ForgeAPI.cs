@@ -35,7 +35,7 @@ public static class ForgeAPI
     /// 获取支持的版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetSupportVersion(bool neo, SourceLocal? local = null)
+    public static async Task<List<string>?> GetSupportVersionAsync(bool neo, SourceLocal? local = null)
     {
         try
         {
@@ -48,7 +48,7 @@ public static class ForgeAPI
                 {
                     if (s_neoSupportVersion == null)
                     {
-                        await LoadFromSource("", true);
+                        await LoadFromSourceAsync("", true);
                     }
                     return s_neoSupportVersion;
                 }
@@ -71,7 +71,7 @@ public static class ForgeAPI
             }
             else
             {
-                await LoadFromSource("", neo);
+                await LoadFromSourceAsync("", neo);
 
                 return neo ? s_neoSupportVersion : s_supportVersion;
             }
@@ -89,7 +89,7 @@ public static class ForgeAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="source">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<string>?> GetVersionList(bool neo, string mc, SourceLocal? source = null)
+    public static async Task<List<string>?> GetVersionListAsync(bool neo, string mc, SourceLocal? source = null)
     {
         try
         {
@@ -151,7 +151,7 @@ public static class ForgeAPI
                     return list2;
                 }
 
-                await LoadFromSource(mc, neo);
+                await LoadFromSourceAsync(mc, neo);
 
                 if (neo)
                 {
@@ -192,7 +192,7 @@ public static class ForgeAPI
     /// </summary>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns></returns>
-    public static async Task LoadFromSource(string mc, bool neo)
+    public static async Task LoadFromSourceAsync(string mc, bool neo)
     {
         var url = neo ? UrlHelper.NeoForgeVersions(mc, false, SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);

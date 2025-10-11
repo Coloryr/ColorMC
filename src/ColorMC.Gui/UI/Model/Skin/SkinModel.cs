@@ -386,7 +386,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         {
             return;
         }
-        var res = await PathBinding.SaveFile(top, FileType.Skin, null);
+        var res = await PathBinding.SaveFileAsync(top, FileType.Skin, null);
         if (res == true)
         {
             Model.Notify(App.Lang("ConfigEditWindow.Info9"));

@@ -184,7 +184,7 @@ public partial class GameEditModel : IModEdit
     private async void DependTestMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info15"));
-        var res = await GameBinding.ModCheck(_modItems);
+        var res = await GameBinding.ModCheckAsync(_modItems);
         Model.ProgressClose();
         if (res)
         {
@@ -214,7 +214,7 @@ public partial class GameEditModel : IModEdit
 
         _isModSet = true;
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
-        var res1 = await GameBinding.AutoMarkMods(_obj, res);
+        var res1 = await GameBinding.AutoMarkModsAsync(_obj, res);
         Model.ProgressClose();
         if (!res1.State)
         {
@@ -233,7 +233,7 @@ public partial class GameEditModel : IModEdit
     private async void CheckMod()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info10"));
-        var res = await WebBinding.CheckModUpdate(_obj, _modItems);
+        var res = await WebBinding.CheckModUpdateAsync(_obj, _modItems);
         Model.ProgressClose();
         if (res.Count > 0)
         {
@@ -261,7 +261,7 @@ public partial class GameEditModel : IModEdit
         {
             return;
         }
-        var res = await PathBinding.AddFile(top, _obj, FileType.Schematic);
+        var res = await PathBinding.AddFileAsync(top, _obj, FileType.Schematic);
 
         if (res == null)
             return;
@@ -274,7 +274,7 @@ public partial class GameEditModel : IModEdit
 
         Model.Show(App.Lang("GameEditWindow.Tab11.Info1"));
         LoadSchematic();
-        var file = await PathBinding.AddFile(top, _obj, FileType.Mod);
+        var file = await PathBinding.AddFileAsync(top, _obj, FileType.Mod);
 
         if (file == null)
             return;
@@ -295,7 +295,7 @@ public partial class GameEditModel : IModEdit
     /// <param name="data"></param>
     public async void DropMod(IDataTransfer data)
     {
-        var res = await GameBinding.AddFile(_obj, data, FileType.Mod);
+        var res = await GameBinding.AddFileAsync(_obj, data, FileType.Mod);
         if (res)
         {
             LoadMods();
@@ -392,7 +392,7 @@ public partial class GameEditModel : IModEdit
         var res = GameBinding.ModEnableDisable(item.Obj);
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
         }
         else
         {

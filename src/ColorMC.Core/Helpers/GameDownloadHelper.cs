@@ -820,7 +820,7 @@ public static class GameDownloadHelper
     private static async Task<List<FileItemObj>?> BuildFabricAsync(string mc, string version)
     {
         var list = new List<FileItemObj>();
-        var meta = await FabricAPI.GetMeta(CoreHttpClient.Source);
+        var meta = await FabricAPI.GetMetaAsync(CoreHttpClient.Source);
         if (meta == null)
         {
             return null;
@@ -843,7 +843,7 @@ public static class GameDownloadHelper
 
         version = fabric.Version;
 
-        using var stream = await FabricAPI.GetLoader(mc, version, CoreHttpClient.Source);
+        using var stream = await FabricAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
         if (stream == null)
         {
             return null;
@@ -893,7 +893,7 @@ public static class GameDownloadHelper
     private static async Task<List<FileItemObj>?> BuildQuiltAsync(string mc, string? version = null)
     {
         var list = new List<FileItemObj>();
-        var meta = await QuiltAPI.GetMeta(CoreHttpClient.Source);
+        var meta = await QuiltAPI.GetMetaAsync(CoreHttpClient.Source);
         if (meta == null)
         {
             return null;
@@ -916,7 +916,7 @@ public static class GameDownloadHelper
 
         version = quilt.Version;
 
-        using var stream = await QuiltAPI.GetLoader(mc, version, CoreHttpClient.Source);
+        using var stream = await QuiltAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
         if (stream == null)
         {
             return null;
@@ -965,7 +965,7 @@ public static class GameDownloadHelper
     /// <returns>下载项目列表</returns>
     private static async Task<List<FileItemObj>?> BuildOptifineAsync(string mc, string version)
     {
-        var list = await OptifineAPI.GetOptifineVersion();
+        var list = await OptifineAPI.GetOptifineVersionAsync();
         if (list == null)
         {
             return null;
@@ -977,7 +977,7 @@ public static class GameDownloadHelper
             {
                 if (item.Local == SourceLocal.Offical)
                 {
-                    await OptifineAPI.GetOptifineDownloadUrl(item);
+                    await OptifineAPI.GetOptifineDownloadUrlAsync(item);
                 }
 
                 VersionPath.AddOptifine(item);

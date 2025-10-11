@@ -48,7 +48,7 @@ public static class AdoptiumApi
     /// 获取Java版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetJavaVersion()
+    public static async Task<List<string>?> GetJavaVersionAsync()
     {
         if (s_javaVersion != null)
         {
@@ -81,7 +81,7 @@ public static class AdoptiumApi
     /// <param name="version">版本</param>
     /// <param name="os">系统</param>
     /// <returns></returns>
-    public static async Task<List<AdoptiumObj>?> GetJavaList(string version, int os)
+    public static async Task<List<AdoptiumObj>?> GetJavaListAsync(string version, int os)
     {
         string url;
         if (os == 0)

@@ -146,7 +146,7 @@ public partial class AddGameModel
         {
             return;
         }
-        var res = await PathBinding.SelectPath(top, PathType.GamePath);
+        var res = await PathBinding.SelectPathAsync(top, PathType.GamePath);
         if (string.IsNullOrWhiteSpace(res))
         {
             return;

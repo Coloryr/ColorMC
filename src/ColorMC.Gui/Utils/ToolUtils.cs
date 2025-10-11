@@ -147,7 +147,7 @@ public static class ToolUtils
     /// 打开存档编辑器
     /// </summary>
     /// <returns></returns>
-    public static async Task<MessageRes> OpenMapEditAsync()
+    public static async Task<StringRes> OpenMapEditAsync()
     {
         var item = BuildMcaselectorItem();
         if (!File.Exists(item.Local))
@@ -155,14 +155,14 @@ public static class ToolUtils
             var res = await DownloadManager.StartAsync([item]);
             if (!res)
             {
-                return new MessageRes { Message = LanguageHelper.Get("Core.Tool.Error1") };
+                return new StringRes { Data = LanguageHelper.Get("Core.Tool.Error1") };
             }
         }
 
         var java = JvmPath.FindJava(17);
         if (java == null)
         {
-            return new MessageRes { Message = LanguageHelper.Get("Core.Tool.Error2") };
+            return new StringRes { Data = LanguageHelper.Get("Core.Tool.Error2") };
         }
 
         var info = new ProcessStartInfo(java.Path)
@@ -183,6 +183,6 @@ public static class ToolUtils
         p.BeginOutputReadLine();
         p.BeginErrorReadLine();
 
-        return new MessageRes { State = true };
+        return new StringRes { State = true };
     }
 }
