@@ -18,15 +18,15 @@ public static class MainFlyout2
         var list = top.GetMut();
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text22"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text22"),
                 model.GameList.Any(item=>!item.IsNew), model.MutAll),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text21"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text21"),
                 list.Count != 0 && !list.Any(item=>GameManager.IsGameRun(item.Obj)), top.MutLaunch),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text2"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text2"),
                 list.Count != 0, top.MutEdit),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text7"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text7"),
                 list.Count != 0, top.MutEditGroup),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text11"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text11"),
                 list.Count != 0 && !list.Any(item=>GameManager.IsGameRun(item.Obj)), top.MutDelete)
         ]).Show(con);
     }

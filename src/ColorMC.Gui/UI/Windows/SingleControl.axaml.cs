@@ -19,37 +19,37 @@ using ColorMC.Gui.UI.Model;
 namespace ColorMC.Gui.UI.Windows;
 
 /// <summary>
-/// µ¥´°¿ÚÄ£Ê½Ö÷½çÃæ
+/// å•çª—å£æ¨¡å¼ä¸»ç•Œé¢
 /// </summary>
 public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 {
     /// <summary>
-    /// ×îµ×²ã½çÃæ
+    /// æœ€åº•å±‚ç•Œé¢
     /// </summary>
     private BaseUserControl _baseControl;
     /// <summary>
-    /// µ±Ç°²ã½çÃæ
+    /// å½“å‰å±‚ç•Œé¢
     /// </summary>
     private BaseUserControl _nowControl;
 
     /// <summary>
-    /// ½çÃæÁĞ±í
+    /// ç•Œé¢åˆ—è¡¨
     /// </summary>
     private readonly List<Control> controls = [];
     /// <summary>
-    /// µ±Ç°ÏÔÊ¾µÄ½çÃæ
+    /// å½“å‰æ˜¾ç¤ºçš„ç•Œé¢
     /// </summary>
     public BaseUserControl ICon => _nowControl;
     /// <summary>
-    /// »ù´¡´°¿ÚÄ£ĞÍ
+    /// åŸºç¡€çª—å£æ¨¡å‹
     /// </summary>
     public BaseModel Model => (DataContext as BaseModel)!;
     /// <summary>
-    /// ´°¿ÚID
+    /// çª—å£ID
     /// </summary>
     public string WindowId { get; init; }
     /// <summary>
-    /// ´°¿ÚÓÒÉÏ½ÇÌáÊ¾
+    /// çª—å£å³ä¸Šè§’æç¤º
     /// </summary>
     private WindowNotificationManager _windowNotification;
 
@@ -133,12 +133,12 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// Ìí¼ÓÒ»¸öÏÔÊ¾Ò³Ãæ
+    /// æ·»åŠ ä¸€ä¸ªæ˜¾ç¤ºé¡µé¢
     /// </summary>
     /// <param name="con"></param>
     public void Add(BaseUserControl con)
     {
-        //ÊÇ·ñÎªµ×²ãÒ³Ãæ
+        //æ˜¯å¦ä¸ºåº•å±‚é¡µé¢
         if (_baseControl == null)
         {
             _baseControl = con;
@@ -165,14 +165,14 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
             con.ControlOpened();
         }
 
-        //ÉèÖÃ¶ÔÓ¦ĞÅÏ¢
+        //è®¾ç½®å¯¹åº”ä¿¡æ¯
         _nowControl = con;
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
     }
 
     /// <summary>
-    /// ÈÃÒ³ÃæÏÔÊ¾ÔÚ×îÉÏÃæ
+    /// è®©é¡µé¢æ˜¾ç¤ºåœ¨æœ€ä¸Šé¢
     /// </summary>
     /// <param name="con"></param>
     public void Active(BaseUserControl con)
@@ -190,7 +190,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ¹Ø±ÕÒ»¸öÒ³Ãæ
+    /// å…³é—­ä¸€ä¸ªé¡µé¢
     /// </summary>
     /// <param name="con"></param>
     public async void Close(BaseUserControl con)
@@ -236,7 +236,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// »Øµ½ÉÏÒ»¸öÒ³Ãæ
+    /// å›åˆ°ä¸Šä¸€ä¸ªé¡µé¢
     /// </summary>
     private void Back()
     {
@@ -252,14 +252,14 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ¸üĞÂ±³¾°Í¼
+    /// æ›´æ–°èƒŒæ™¯å›¾
     /// </summary>
     private void PicUpdate()
     {
         WindowManager.UpdateWindow(Model);
     }
     /// <summary>
-    /// ÉèÖÃ±êÌâ
+    /// è®¾ç½®æ ‡é¢˜
     /// </summary>
     /// <param name="data"></param>
     public void SetTitle(string data)
@@ -283,7 +283,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ÉèÖÃÍ¼±ê
+    /// è®¾ç½®å›¾æ ‡
     /// </summary>
     /// <param name="icon"></param>
     public void SetIcon(Bitmap icon)
@@ -292,7 +292,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     }
 
     /// <summary>
-    /// ÉèÖÃ´°¿Ú×´Ì¬
+    /// è®¾ç½®çª—å£çŠ¶æ€
     /// </summary>
     /// <param name="windowState"></param>
     public void ControlStateChange(WindowState windowState)

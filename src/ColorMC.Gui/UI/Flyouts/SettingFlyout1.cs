@@ -20,7 +20,7 @@ public static class SettingFlyout1
 
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
+            new FlyoutMenuModel(App.Lang("SettingWindow.Flyouts.Text1"), true, ()=>
             {
                 foreach (var item in java)
                 {

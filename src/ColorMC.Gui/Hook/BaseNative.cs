@@ -4,32 +4,32 @@ using ColorMC.Gui.Objs.Config;
 namespace ColorMC.Gui.Hook;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀıÓëÏµÍ³Æ½Ì¨°ó¶¨
+/// æ¸¸æˆå®ä¾‹ä¸ç³»ç»Ÿå¹³å°ç»‘å®š
 /// </summary>
-/// <param name="id">½ø³Ì¾ä±ú</param>
+/// <param name="id">è¿›ç¨‹å¥æŸ„</param>
 public abstract class BaseNative(IntPtr id)
 {
     public IntPtr Target { get; init; } = id;
 
     /// <summary>
-    /// Í£Ö¹ËùÓĞ¹³×Ó
+    /// åœæ­¢æ‰€æœ‰é’©å­
     /// </summary>
     public abstract void Stop();
     /// <summary>
-    /// ·¢ËÍÊó±êÎ»ÖÃ
+    /// å‘é€é¼ æ ‡ä½ç½®
     /// </summary>
-    /// <param name="cursorX">XÎ»ÖÃ</param>
-    /// <param name="cursorY">YÎ»ÖÃ</param>
+    /// <param name="cursorX">Xä½ç½®</param>
+    /// <param name="cursorY">Yä½ç½®</param>
     public abstract void SendMouse(double cursorX, double cursorY);
     /// <summary>
-    /// ·¢ËÍ¼üÅÌ°¸¼ş
+    /// å‘é€é”®ç›˜æ¡ˆä»¶
     /// </summary>
-    /// <param name="key">°´¼üÖµ</param>
-    /// <param name="down">ÊÇ·ñ°´ÏÂ</param>
+    /// <param name="key">æŒ‰é”®å€¼</param>
+    /// <param name="down">æ˜¯å¦æŒ‰ä¸‹</param>
     public abstract void SendKey(InputKeyObj key, bool down);
     /// <summary>
-    /// ·¢ËÍ¹öÂÖ
+    /// å‘é€æ»šè½®
     /// </summary>
-    /// <param name="up">ÊÇ·ñÎ»ÏòÉÏ</param>
+    /// <param name="up">æ˜¯å¦ä½å‘ä¸Š</param>
     public abstract void SendScoll(bool up);
 }

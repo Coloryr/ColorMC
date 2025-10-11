@@ -15,14 +15,14 @@ public static class SettingFlyout2
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text2"), true, ()=>
+            new FlyoutMenuModel(App.Lang("SettingWindow.Flyouts.Text2"), true, ()=>
             {
                 if(data is InputButtonModel key)
                 {
                     model.SetKeyButton(key);
                 }
             }),
-            new FlyoutMenuObj(App.Lang("SettingWindow.Flyouts.Text3"), true, ()=>
+            new FlyoutMenuModel(App.Lang("SettingWindow.Flyouts.Text3"), true, ()=>
             {
                 if(data is InputButtonModel key)
                 {

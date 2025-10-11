@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using ColorMC.Gui.MusicPlayer.Decoder;
 using Silk.NET.SDL;

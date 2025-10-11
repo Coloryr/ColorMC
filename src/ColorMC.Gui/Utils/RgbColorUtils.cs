@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;

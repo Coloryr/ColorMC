@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;

@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
@@ -15,11 +15,11 @@ public static class GameEditFlyout5
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.Delete"), true, ()=>
+            new FlyoutMenuModel(App.Lang("Button.Delete"), true, ()=>
             {
                 model.DeleteServer(model.ServerItem!);
             }),
-            new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text13"), true, ()=>
+            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text13"), true, ()=>
             {
                 var top =TopLevel.GetTopLevel(con);
                 if (top == null)

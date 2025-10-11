@@ -23,68 +23,68 @@ public static class MainFlyout
 
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text3"), true, ()=>
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text3"), true, ()=>
             {
                 WindowManager.ShowAdd(obj.Obj, FileType.Mod);
             }),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text2"), true, null)
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text2"), true, null)
             {
                 SubItem =
                 [
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text19"), true, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text19"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text24"), true, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text24"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Arg);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text4"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.Mod);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text6"), true, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text6"), true, ()=>
                     {
                         WindowManager.ShowGameEdit(obj.Obj, GameEditWindowType.World);
                     })
                 ]
             },
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text1"), true, ()=>
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text1"), true, ()=>
             {
                 WindowManager.ShowGameLog(obj.Obj);
             }),
-            new FlyoutMenuObj(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenPath(obj.Obj, PathType.GamePath);
             }),
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text18"), true, null)
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text18"), true, null)
             {
                 SubItem =
                 [
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text15"), SystemInfo.Os == OsType.Windows, ()=>
                     {
                         HookUtils.CreateLaunch(obj.Obj);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text14"), ColorMCCloudAPI.Connect, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text14"), ColorMCCloudAPI.Connect, ()=>
                     {
                         WindowManager.ShowGameCloud(obj.Obj);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text9"), !run, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text9"), !run, ()=>
                     {
                         WindowManager.ShowGameExport(obj.Obj);
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text23"), true, obj.ExportCmd),
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text23"), true, obj.ExportCmd),
                 ]
             },
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text17"), true, null)
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text17"), true, null)
             {
                 SubItem =
                 [
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text10"), !run, obj.Rename),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text11"), !run, obj.DeleteGame),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text12"), !run, obj.Copy),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text7"), true, obj.EditGroup),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text8"), true, async ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text10"), !run, obj.Rename),
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text11"), !run, obj.DeleteGame),
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text12"), !run, obj.Copy),
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text7"), true, obj.EditGroup),
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text8"), true, async ()=>
                     {
                         var top = TopLevel.GetTopLevel(con);
                         if (top == null)
@@ -94,13 +94,13 @@ public static class MainFlyout
                         await GameBinding.SetGameIconFromFileAsync(top, obj.Model, obj.Obj);
                         obj.ReloadIcon();
                     }),
-                    new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
+                    new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text13"), run, ()=>
                     {
                         GameManager.KillGame(obj.Obj);
                     })
                 ]
             },
-            new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text16"),
+            new FlyoutMenuModel(App.Lang("MainWindow.Flyouts.Text16"),
                 GameJoystick.NowGameJoystick.ContainsKey(obj.Obj.UUID), obj.SetJoystick),
         ]).Show(con);
     }

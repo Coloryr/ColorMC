@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -15,15 +15,15 @@ public static class GameCloudFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuObj(App.Lang("Button.OpFile"), model.HaveLocal, () =>
+            new FlyoutMenuModel(App.Lang("Button.OpFile"), model.HaveLocal, () =>
             {
                 PathBinding.OpenPath(model.World);
             }),
-            new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text1"),
+            new FlyoutMenuModel(App.Lang("GameCloudWindow.Flyouts.Text1"),
                 model.HaveLocal, model.Upload),
-            new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text2"),
+            new FlyoutMenuModel(App.Lang("GameCloudWindow.Flyouts.Text2"),
                 model.HaveCloud, model.Download),
-            new FlyoutMenuObj(App.Lang("GameCloudWindow.Flyouts.Text3"),
+            new FlyoutMenuModel(App.Lang("GameCloudWindow.Flyouts.Text3"),
                 model.HaveCloud,model.DeleteCloud),
         ]).Show(con);
     }

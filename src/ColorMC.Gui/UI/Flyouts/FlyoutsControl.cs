@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.UI.Flyouts;
 
 /// <summary>
-/// ÓÒ¼ü²Ëµ¥
+/// å³é”®èœå•
 /// </summary>
 public class FlyoutsControl
 {
     private readonly MenuFlyout flyout;
 
-    public FlyoutsControl(ICollection<FlyoutMenuObj> list)
+    public FlyoutsControl(ICollection<FlyoutMenuModel> list)
     {
         flyout = new MenuFlyout();
         flyout.ItemsSource = BuildItems(flyout, list);
@@ -22,7 +22,7 @@ public class FlyoutsControl
         flyout.ShowAt(con, true);
     }
 
-    private static List<MenuItem> BuildItems(MenuFlyout flyout, ICollection<FlyoutMenuObj> list)
+    private static List<MenuItem> BuildItems(MenuFlyout flyout, ICollection<FlyoutMenuModel> list)
     {
         var list1 = new List<MenuItem>();
         foreach (var item in list)
@@ -33,12 +33,12 @@ public class FlyoutsControl
     }
 
     /// <summary>
-    /// ´´½¨Ò»¸ö²Ëµ¥ÏîÄ¿
+    /// åˆ›å»ºä¸€ä¸ªèœå•é¡¹ç›®
     /// </summary>
-    /// <param name="flyout">ÉÏ²ã</param>
-    /// <param name="item">²Ëµ¥ÏîÄ¿</param>
+    /// <param name="flyout">ä¸Šå±‚</param>
+    /// <param name="item">èœå•é¡¹ç›®</param>
     /// <returns></returns>
-    private static MenuItem BuildItem(MenuFlyout flyout, FlyoutMenuObj item)
+    private static MenuItem BuildItem(MenuFlyout flyout, FlyoutMenuModel item)
     {
         var button = new MenuItem()
         {
