@@ -458,7 +458,7 @@ public partial class AddControlModel
                 {
                     res = await WebBinding.DownloadModAsync(Obj,
                     [
-                        new()
+                        new DownloadModArg()
                         {
                             Item = list.Item!,
                             Info = list.Info!,
@@ -472,7 +472,7 @@ public partial class AddControlModel
                     //添加模组信息
                     _modList.Clear();
                     _modList.AddRange(list.List);
-                    _modsave = new()
+                    _modsave = new DownloadModArg()
                     {
                         Item = list.Item!,
                         Info = list.Info!,
