@@ -35,7 +35,6 @@ public partial class BuildPackControl : MenuControl
 
     protected override Control ViewChange(int old, int index)
     {
-        var model = (DataContext as BuildPackModel)!;
         switch (index)
         {
             case 0:
