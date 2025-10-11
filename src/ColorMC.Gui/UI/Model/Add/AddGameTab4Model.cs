@@ -18,7 +18,7 @@ public partial class AddGameModel
     public async void GameCloudDownload()
     {
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info9"));
-        var list = await ColorMCCloudAPI.GetList();
+        var list = await ColorMCCloudAPI.GetListAsync();
         Model.ProgressClose();
         if (list == null)
         {

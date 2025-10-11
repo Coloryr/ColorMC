@@ -137,7 +137,7 @@ public class GameJoystick
             }
         })
         {
-            Name = "ColorMC JoyDevice Mouse",
+            Name = "ColorMC JoyDevice",
             IsBackground = true
         }.Start();
     }

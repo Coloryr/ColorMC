@@ -220,7 +220,7 @@ public static class UserBinding
             return;
         }
 
-        await ImageManager.LoadSkinHead(obj);
+        await ImageManager.LoadSkinHeadAsync(obj);
     }
 
     /// <summary>

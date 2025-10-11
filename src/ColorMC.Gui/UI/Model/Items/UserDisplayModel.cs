@@ -103,14 +103,14 @@ public partial class UserDisplayModel : SelectItemModel
         {
             Task.Run(async () =>
             {
-                var temp = await ImageManager.GetUserSkin(obj);
-                if (temp.Item1 != null)
+                var temp = await ImageManager.GetUserSkinAsync(obj);
+                if (temp.Message != null)
                 {
-                    using var skin = SKBitmap.Decode(temp.Item1);
+                    using var skin = SKBitmap.Decode(temp.Message);
                     _img = ImageManager.GenHeadImage(skin);
-                    _img1 = ImageManager.GenSkinImage(skin, temp.Item2);
+                    _img1 = ImageManager.GenSkinImage(skin, temp.State);
                 }
-                var temp1 = await ImageManager.GetUserCape(obj);
+                var temp1 = await ImageManager.GetUserCapeAsync(obj);
                 if (temp1 != null)
                 {
                     using var cape = SKBitmap.Decode(temp1);
@@ -208,10 +208,10 @@ public partial class UserDisplayModel : SelectItemModel
         _img?.Dispose();
         Task.Run(async () =>
         {
-            var temp = await ImageManager.GetUserSkin(_obj);
-            if (temp.Item1 != null)
+            var temp = await ImageManager.GetUserSkinAsync(_obj);
+            if (temp.Message != null)
             {
-                using var skin = SKBitmap.Decode(temp.Item1);
+                using var skin = SKBitmap.Decode(temp.Message);
                 _img = ImageManager.GenHeadImage(skin);
             }
             Dispatcher.UIThread.Post(() =>

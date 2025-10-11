@@ -88,7 +88,7 @@ public partial class NetFrpModel
 
         //选择一个通道
         var item1 = list1[res.Index];
-        var res1 = await BaseBinding.StartFrp(item1, local);
+        var res1 = await BaseBinding.StartFrpAsync(item1, local);
         if (!res1.Res)
         {
             Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));

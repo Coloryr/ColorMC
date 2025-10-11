@@ -73,7 +73,7 @@ public static class GameEditFlyout1
                             continue;
                         list.Add(data);
                     }
-                    await BaseBinding.CopyFileClipboard(top, list);
+                    await BaseBinding.CopyFileClipboardAsync(top, list);
                 }
             }),
             new FlyoutMenuObj(App.Lang("GameEditWindow.Flyouts.Text3"), single, () =>

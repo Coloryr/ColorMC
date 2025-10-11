@@ -59,7 +59,7 @@ public partial class UIModel(BaseModel model) : TopModel(model)
         }
 
         Model.Progress("正在启动游戏");
-        var res = await GameBinding.Launch(Model, SelectGame.Obj, hide: true);
+        var res = await GameBinding.LaunchAsync(Model, SelectGame.Obj, hide: true);
         Model.ProgressClose();
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {

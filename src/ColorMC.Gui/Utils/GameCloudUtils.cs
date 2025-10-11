@@ -159,7 +159,7 @@ public static class GameCloudUtils
                 return;
             }
 
-            await ColorMCCloudAPI.Check();
+            await ColorMCCloudAPI.CheckAsync();
         }
         catch (Exception e)
         {

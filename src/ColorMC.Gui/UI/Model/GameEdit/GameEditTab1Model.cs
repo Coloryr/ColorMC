@@ -743,7 +743,7 @@ public partial class GameEditModel
         EnableLoader = false;
         IsLoad = true;
         Model.SubTitle = App.Lang("GameEditWindow.Tab1.Info12");
-        var res = await GameBinding.ReloadVersion();
+        var res = await GameBinding.ReloadVersionAsync();
         IsLoad = false;
         Model.SubTitle = "";
         if (!res)

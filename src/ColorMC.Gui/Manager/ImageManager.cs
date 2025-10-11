@@ -90,7 +90,7 @@ public static class ImageManager
     /// <summary>
     /// 角色皮肤
     /// </summary>
-    private static readonly Dictionary<UserKeyObj, (string?, bool)> s_userSkins = [];
+    private static readonly Dictionary<UserKeyObj, MessageRes> s_userSkins = [];
     /// <summary>
     /// 角色披风
     /// </summary>
@@ -139,22 +139,18 @@ public static class ImageManager
     /// </summary>
     public static void Init()
     {
-        {
-            //加载游戏图标
-            using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
-            GameIcon = new Bitmap(asset);
-        }
-        {
-            //加载程序图标
-            using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
-                ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
-            _windowIcon = new(asset1!);
-        }
-        {
-            //加载图片
-            using var asset1 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
-            LoadBitmap = new(asset1!);
-        }
+        //加载游戏图标
+        using var asset = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.game.png"));
+        GameIcon = new Bitmap(asset);
+
+        //加载程序图标
+        using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
+            ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
+        _windowIcon = new(asset1!);
+
+        //加载图片
+        using var asset2 = AssetLoader.Open(new Uri("resm:ColorMC.Gui.Resource.Pic.load.png"));
+        LoadBitmap = new(asset2!);
 
         s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameImageDir);
 
@@ -213,18 +209,18 @@ public static class ImageManager
     /// <param name="key"></param>
     /// <param name="login"></param>
     /// <returns></returns>
-    private static async Task GetSkin(UserKeyObj key, LoginObj login)
+    private static async Task GetSkinAsync(UserKeyObj key, LoginObj login)
     {
         var task = new TaskCompletionSource();
         s_userGets[key] = task;
         var temp1 = await PlayerSkinAPI.DownloadSkin(login);
         if (temp1.Skin != null)
         {
-            s_userSkins[key] = (temp1.Skin, temp1.IsNewSlim);
+            s_userSkins[key] = new MessageRes { Message = temp1.Skin, State = temp1.IsNewSlim };
         }
         else
         {
-            s_userSkins[key] = (null, false);
+            s_userSkins[key] = new MessageRes();
         }
         if (temp1.Cape != null)
         {
@@ -238,7 +234,7 @@ public static class ImageManager
     /// </summary>
     /// <param name="login"></param>
     /// <returns></returns>
-    public static async Task<string?> GetUserCape(LoginObj login)
+    public static async Task<string?> GetUserCapeAsync(LoginObj login)
     {
         var key = login.GetKey();
         if (s_userGets.TryGetValue(key, out var temp))
@@ -251,7 +247,7 @@ public static class ImageManager
             return file;
         }
 
-        await GetSkin(key, login);
+        await GetSkinAsync(key, login);
 
         if (s_userCapes.TryGetValue(key, out file))
         {
@@ -266,7 +262,7 @@ public static class ImageManager
     /// </summary>
     /// <param name="login"></param>
     /// <returns></returns>
-    public static async Task<(string?, bool)> GetUserSkin(LoginObj login)
+    public static async Task<MessageRes> GetUserSkinAsync(LoginObj login)
     {
         var key = login.GetKey();
         if (s_userGets.TryGetValue(key, out var temp))
@@ -279,14 +275,14 @@ public static class ImageManager
             return file;
         }
 
-        await GetSkin(key, login);
+        await GetSkinAsync(key, login);
 
         if (s_userSkins.TryGetValue(key, out file))
         {
             return file;
         }
 
-        return (null, false);
+        return new MessageRes();
     }
 
     /// <summary>
@@ -333,11 +329,11 @@ public static class ImageManager
     /// 生成皮肤头像
     /// </summary>
     /// <param name="login">登录的账户</param>
-    public static async Task LoadSkinHead(LoginObj login)
+    public static async Task LoadSkinHeadAsync(LoginObj login)
     {
-        var file = await GetUserSkin(login);
-        var file1 = await GetUserCape(login);
-        if (file.Item1 == null || !File.Exists(file.Item1))
+        var file = await GetUserSkinAsync(login);
+        var file1 = await GetUserCapeAsync(login);
+        if (file.Message == null || !File.Exists(file.Message))
         {
             SetDefaultHead();
         }
@@ -347,7 +343,7 @@ public static class ImageManager
             {
                 var old = SkinBitmap;
                 var old1 = HeadBitmap;
-                SkinBitmap = SKBitmap.Decode(file.Item1);
+                SkinBitmap = SKBitmap.Decode(file.Message);
                 HeadBitmap = GenHeadImage(SkinBitmap);
                 old?.Dispose();
                 old1?.Dispose();

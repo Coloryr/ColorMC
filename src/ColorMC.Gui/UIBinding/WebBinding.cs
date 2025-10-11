@@ -942,7 +942,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<string?> GetNewLog()
     {
-        return ColorMCCloudAPI.GetNewLog();
+        return ColorMCCloudAPI.GetNewLogAsync();
     }
 
     /// <summary>
@@ -951,7 +951,7 @@ public static class WebBinding
     /// <returns></returns>
     public static async Task<List<ColorMCCloudServerObj>?> GetFrpServer(string version)
     {
-        var list = await ColorMCCloudAPI.GetCloudServer(version);
+        var list = await ColorMCCloudAPI.GetCloudServerAsync(version);
         if (list == null || !list.RootElement.TryGetProperty("list", out var list1)
             || list1.ValueKind is not JsonValueKind.Array)
         {
@@ -973,7 +973,7 @@ public static class WebBinding
     /// <returns></returns>
     public static Task<bool> ShareIP(string token, string ip, FrpShareModel model)
     {
-        return ColorMCCloudAPI.PutCloudServer(token, ip, model);
+        return ColorMCCloudAPI.PutCloudServerAsync(token, ip, model);
     }
 
     public static async Task<GetJavaListRes> GetJavaList(int type, int os, int mainversion)

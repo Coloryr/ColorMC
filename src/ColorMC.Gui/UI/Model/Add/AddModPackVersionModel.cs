@@ -137,7 +137,7 @@ public partial class AddModPackControlModel
         {
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
 
-            var res = await GameBinding.InstallCurseForge((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
+            var res = await GameBinding.InstallCurseForgeAsync((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
                 (select!.Data as CurseForgeListObj.CurseForgeListDataObj)!, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
@@ -154,7 +154,7 @@ public partial class AddModPackControlModel
         else if (data.SourceType == SourceType.Modrinth)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
-            var res = await GameBinding.InstallModrinth((data.Data as ModrinthVersionObj)!,
+            var res = await GameBinding.InstallModrinthAsync((data.Data as ModrinthVersionObj)!,
                 (select!.Data as ModrinthSearchObj.HitObj)!, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();

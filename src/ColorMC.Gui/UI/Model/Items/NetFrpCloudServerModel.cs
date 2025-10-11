@@ -93,7 +93,7 @@ public partial class NetFrpCloudServerModel(ColorMCCloudServerObj obj, NetFrpMod
         {
             return;
         }
-        await BaseBinding.CopyTextClipboard(toplevel, IP);
+        await BaseBinding.CopyTextClipboardAsync(toplevel, IP);
     }
     /// <summary>
     /// 获取Motd

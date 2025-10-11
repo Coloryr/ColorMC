@@ -283,11 +283,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
                 Model.Progress(App.Lang("AddModPackWindow.Info4"));
                 var list = Source == 0 ?
-                    await GameBinding.GetCurseForgeGameVersions() :
-                    await GameBinding.GetModrinthGameVersions();
+                    await GameBinding.GetCurseForgeGameVersionsAsync() :
+                    await GameBinding.GetModrinthGameVersionsAsync();
                 var list1 = Source == 0 ?
-                    await GameBinding.GetCurseForgeCategories() :
-                    await GameBinding.GetModrinthCategories();
+                    await GameBinding.GetCurseForgeCategoriesAsync() :
+                    await GameBinding.GetModrinthCategoriesAsync();
                 Model.ProgressClose();
                 if (list == null || list1 == null)
                 {

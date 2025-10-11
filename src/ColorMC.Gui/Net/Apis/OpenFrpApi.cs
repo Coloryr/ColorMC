@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.Utils;
 
@@ -20,7 +21,7 @@ public static class OpenFrpApi
     /// </summary>
     /// <param name="key">API KEY</param>
     /// <returns>通道列表</returns>
-    public static async Task<OpenFrpChannelObj?> GetChannel(string key)
+    public static async Task<OpenFrpChannelObj?> GetChannelAsync(string key)
     {
         try
         {
@@ -42,7 +43,7 @@ public static class OpenFrpApi
     /// <param name="key">API KEY</param>
     /// <param name="id">通道ID</param>
     /// <returns>通道配置</returns>
-    public static async Task<OpenFrpChannelInfoObj?> GetChannelConfig(string key, int id)
+    public static async Task<OpenFrpChannelInfoObj?> GetChannelConfigAsync(string key, int id)
     {
         try
         {
@@ -62,12 +63,12 @@ public static class OpenFrpApi
     /// 创建Frp下载项目
     /// </summary>
     /// <returns></returns>
-    public static async Task<(FileItemObj?, string?)> BuildFrpItem()
+    public static async Task<FileItemRes> BuildFrpItemAsync()
     {
-        var data = await GetDownload();
+        var data = await GetDownloadAsync();
         if (data == null || data.Data == null)
         {
-            return (null, null);
+            return new FileItemRes();
         }
 
         string data1;
@@ -107,26 +108,30 @@ public static class OpenFrpApi
         }
         else
         {
-            return (null, null);
+            return new FileItemRes();
         }
 
-        return (new()
+        return new FileItemRes
         {
-            Name = $"OpenFrp {data1}",
-            Local = FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull, data1),
-            Url = data.Data.Source[0].Value + data.Data.Latest + data1,
-            Later = (stream) =>
+            Path = FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull),
+            File = new()
             {
-                ToolUtils.Unzip(stream, FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull), data1);
+                Name = $"OpenFrp {data1}",
+                Local = FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull, data1),
+                Url = data.Data.Source[0].Value + data.Data.Latest + data1,
+                Later = (stream) =>
+                {
+                    ToolUtils.Unzip(stream, FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull), data1);
+                }
             }
-        }, FrpLaunchUtils.GetOpenFrpLocal(data.Data.LatestFull));
+        };
     }
 
     /// <summary>
     /// 获取下载列表
     /// </summary>
     /// <returns></returns>
-    private static async Task<OpenFrpDownloadObj?> GetDownload()
+    private static async Task<OpenFrpDownloadObj?> GetDownloadAsync()
     {
         try
         {

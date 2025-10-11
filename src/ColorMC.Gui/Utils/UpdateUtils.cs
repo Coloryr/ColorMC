@@ -67,7 +67,7 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCCloudAPI.GetMainIndex();
+            var obj = await ColorMCCloudAPI.GetMainIndexAsync();
             if (obj == null)
             {
                 UpdateCheckFail();
@@ -250,7 +250,7 @@ public static class UpdateUtils
 
         try
         {
-            var obj = await ColorMCCloudAPI.GetUpdateIndex();
+            var obj = await ColorMCCloudAPI.GetUpdateIndexAsync();
             if (obj == null)
             {
                 WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");

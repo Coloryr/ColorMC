@@ -411,7 +411,7 @@ public partial class SettingModel
         {
             return;
         }
-        await BaseBinding.MusicStart(Music!, Loop, SlowVolume, Volume);
+        await BaseBinding.MusicStartAsync(Music!, Loop, SlowVolume, Volume);
     }
     /// <summary>
     /// 背景音乐停止

@@ -44,7 +44,7 @@ public static class SakuraFrpApi
     /// </summary>
     /// <param name="key">API KEY</param>
     /// <returns></returns>
-    public static async Task<List<SakuraFrpChannelObj>?> GetChannel(string key)
+    public static async Task<List<SakuraFrpChannelObj>?> GetChannelAsync(string key)
     {
         try
         {
@@ -67,7 +67,7 @@ public static class SakuraFrpApi
     /// <param name="id">通道ID</param>
     /// <param name="version">版本号</param>
     /// <returns>通道配置</returns>
-    public static async Task<string?> GetChannelConfig(string key, int id, string version)
+    public static async Task<string?> GetChannelConfigAsync(string key, int id, string version)
     {
         try
         {
@@ -159,7 +159,7 @@ public static class SakuraFrpApi
     /// 获取下载列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<SakuraFrpDownloadObj?> GetDownload()
+    public static async Task<SakuraFrpDownloadObj?> GetDownloadAsync()
     {
         try
         {

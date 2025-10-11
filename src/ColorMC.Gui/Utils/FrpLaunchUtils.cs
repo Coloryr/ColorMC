@@ -78,7 +78,7 @@ public static class FrpLaunchUtils
     /// <returns></returns>
     public static async Task<FrpLaunchRes> StartFrp(NetFrpSelfItemModel item1, NetFrpLocalModel model)
     {
-        var obj1 = await ColorMCCloudAPI.GetFrpList();
+        var obj1 = await ColorMCCloudAPI.GetFrpListAsync();
         if (obj1 == null)
         {
             return new();
@@ -86,19 +86,19 @@ public static class FrpLaunchUtils
         var item = obj1.FirstOrDefault();
         var obj = ColorMCCloudAPI.BuildFrpItem(item.Key, item.Value);
 
-        if (obj.Item1 == null)
+        if (obj.Path == null)
         {
             return new();
         }
-        if (!File.Exists(obj.Item1))
+        if (!File.Exists(obj.Path))
         {
-            var res = await DownloadManager.StartAsync([obj.Item2!]);
+            var res = await DownloadManager.StartAsync([obj.File!]);
             if (!res)
             {
                 return new();
             }
         }
-        var file = obj.Item1;
+        var file = obj.Path;
         var info2 = new FileInfo(file);
         var dir = info2.DirectoryName!;
 
@@ -170,20 +170,11 @@ public static class FrpLaunchUtils
         string file;
         string dir;
         string version = GuiNames.NameSakuraFrpVersion;
-#if Phone
-        if (SystemInfo.Os == OsType.Android)
-        {
-            file = ColorMCGui.PhoneGetFrp!(item1.FrpType);
-            dir = BaseDir;
-        }
-        else
-        {
-#endif
         FileItemObj? obj = null;
         string? local = "";
         if (item1.FrpType == FrpType.SakuraFrp)
         {
-            var obj1 = await SakuraFrpApi.GetDownload();
+            var obj1 = await SakuraFrpApi.GetDownloadAsync();
             if (obj1 == null)
             {
                 return new();
@@ -194,7 +185,9 @@ public static class FrpLaunchUtils
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
-            (obj, local) = await OpenFrpApi.BuildFrpItem();
+            var res = await OpenFrpApi.BuildFrpItemAsync();
+            obj = res.File;
+            local = res.Path;
         }
         if (obj == null)
         {
@@ -211,17 +204,15 @@ public static class FrpLaunchUtils
         file = local!;
         var info2 = new FileInfo(file);
         dir = info2.DirectoryName!;
-#if Phone
-        }
-#endif
+
         string? info = null;
         if (item1.FrpType == FrpType.SakuraFrp)
         {
-            info = await SakuraFrpApi.GetChannelConfig(item1.Key, item1.ID, version);
+            info = await SakuraFrpApi.GetChannelConfigAsync(item1.Key, item1.ID, version);
         }
         else if (item1.FrpType == FrpType.OpenFrp)
         {
-            var temp = await OpenFrpApi.GetChannelConfig(item1.Key, item1.ID);
+            var temp = await OpenFrpApi.GetChannelConfigAsync(item1.Key, item1.ID);
             if (temp != null && temp.Proxies?.Count > 0)
             {
                 info = temp.Proxies.Values.First();

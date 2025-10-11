@@ -91,7 +91,7 @@ public static class MainFlyout
                         {
                             return;
                         }
-                        await GameBinding.SetGameIconFromFile(top, obj.Model, obj.Obj);
+                        await GameBinding.SetGameIconFromFileAsync(top, obj.Model, obj.Obj);
                         obj.ReloadIcon();
                     }),
                     new FlyoutMenuObj(App.Lang("MainWindow.Flyouts.Text13"), run, ()=>

@@ -313,7 +313,7 @@ public partial class GameEditModel
             return;
         }
 
-        var res = await GameBinding.Launch(Model, world.World.Game, world.World, GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.LaunchAsync(Model, world.World.Game, world.World, GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             Model.Show(res.Message!);

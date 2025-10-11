@@ -459,7 +459,7 @@ public partial class GameEditModel : IModEdit
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
         _modItems.Clear();
-        var res = await GameBinding.GetGameMods(_obj, this);
+        var res = await GameBinding.GetGameModsAsync(_obj, this);
         Model.ProgressClose();
         if (res == null)
         {

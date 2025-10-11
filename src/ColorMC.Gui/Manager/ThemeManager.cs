@@ -94,9 +94,8 @@ public static class ThemeManager
         }
 
         LoadColor();
-#if !Phone
         LoadFont();
-#endif
+
         RgbColorUtils.Load();
         ColorManager.Load();
 

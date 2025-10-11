@@ -109,3 +109,9 @@ public record CloudUploadRes : MessageRes
     public int Data1;
     public string? Data2;
 }
+
+public record FileItemRes
+{
+    public string? Path;
+    public FileItemObj? File;
+}
