@@ -15,18 +15,6 @@ public partial class WorldCloudControl : UserControl
         InitializeComponent();
 
         PointerPressed += WorldCloudControl_PointerPressed;
-        PointerReleased += WorldCloudControl_PointerReleased;
-        PointerMoved += WorldCloudControl_PointerMoved;
-    }
-
-    private void WorldCloudControl_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        LongPressed.Cancel();
-    }
-
-    private void WorldCloudControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
     }
 
     private void WorldCloudControl_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -36,10 +24,6 @@ public partial class WorldCloudControl : UserControl
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }
 

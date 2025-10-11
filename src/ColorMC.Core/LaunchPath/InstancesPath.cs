@@ -1076,18 +1076,18 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="path">自定义加载器路径</param>
     /// <returns>数据</returns>
-    public static async Task<MessageRes> SetGameLoaderAsync(this GameSettingObj obj, string path)
+    public static async Task<StringRes> SetGameLoaderAsync(this GameSettingObj obj, string path)
     {
         if (!File.Exists(path))
         {
-            return new() { Message = LanguageHelper.Get("Core.Game.Error16") };
+            return new() { Data = LanguageHelper.Get("Core.Game.Error16") };
         }
 
         var list = await GameDownloadHelper.DecodeLoaderJarAsync(obj, path);
 
         if (list == null)
         {
-            return new() { Message = LanguageHelper.Get("Core.Game.Error17") };
+            return new() { Data = LanguageHelper.Get("Core.Game.Error17") };
         }
 
         var local = obj.GetGameLoaderFile();

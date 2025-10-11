@@ -25,8 +25,6 @@ public partial class ResourcePackControl : UserControl
         InitializeComponent();
 
         PointerPressed += ResourcePackControl_PointerPressed;
-        PointerReleased += ResourcePackControl_PointerReleased;
-
         DataContextChanged += ResourcePackControl_DataContextChanged;
     }
 
@@ -106,11 +104,6 @@ public partial class ResourcePackControl : UserControl
         }
     }
 
-    private void ResourcePackControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
-    }
-
     private void ResourcePackControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var model = (DataContext as ResourcePackModel)!;
@@ -118,10 +111,6 @@ public partial class ResourcePackControl : UserControl
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }
 

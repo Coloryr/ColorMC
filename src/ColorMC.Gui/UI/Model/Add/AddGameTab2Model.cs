@@ -42,7 +42,7 @@ public partial class AddGameModel
         {
             //测试获取压缩包类型
             Model.Progress(App.Lang("AddGameWindow.Tab2.Info8"));
-            var res = await GameBinding.CheckType(value);
+            var res = await GameBinding.CheckTypeAsync(value);
             Model.ProgressClose();
             if (res == null)
             {
@@ -83,10 +83,10 @@ public partial class AddGameModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.ModPack);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.ModPack);
+        if (file.Path != null)
         {
-            ZipLocal = file.Item1;
+            ZipLocal = file.Path;
         }
     }
 

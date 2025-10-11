@@ -31,10 +31,6 @@ public partial class NbtDialogEditControl : UserControl
         {
             Flyout2((sender as Control)!);
         }
-        else
-        {
-            LongPressed.Pressed(() => Flyout2((sender as Control)!));
-        }
     }
 
     private void Flyout2(Control control)

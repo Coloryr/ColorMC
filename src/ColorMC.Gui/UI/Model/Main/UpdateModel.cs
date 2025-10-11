@@ -38,7 +38,7 @@ public partial class MainModel
         }
         _isGetNewInfo = true;
 
-        var data = await WebBinding.GetNewLog();
+        var data = await WebBinding.GetNewLogAsync();
         if (data == null)
         {
             Model.Show(App.Lang("MainWindow.Error1"));

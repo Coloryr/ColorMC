@@ -493,7 +493,7 @@ public static class ServerPack
         {
             return false;
         }
-        if (obj2.Sha1 == null || obj2.Sha1 != res.Message)
+        if (obj2.Sha1 == null || obj2.Sha1 != res.Data)
         {
             var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameServerFile}", token);
             if (!res1.State)
@@ -504,7 +504,7 @@ public static class ServerPack
             ServerPackObj? obj1;
             try
             {
-                obj1 = JsonUtils.ToObj(res1.Message!, JsonType.ServerPackObj);
+                obj1 = JsonUtils.ToObj(res1.Data!, JsonType.ServerPackObj);
                 if (obj1 == null)
                 {
                     return false;
@@ -526,7 +526,7 @@ public static class ServerPack
             var res2 = await obj1.UpdateAsync(arg.State, token);
             if (res2)
             {
-                await PathHelper.WriteTextAsync(obj.GetServerPackFile(), res1.Message!);
+                await PathHelper.WriteTextAsync(obj.GetServerPackFile(), res1.Data!);
             }
 
             return res2;

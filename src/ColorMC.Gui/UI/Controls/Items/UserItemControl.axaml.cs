@@ -35,7 +35,6 @@ public partial class UserItemControl : UserControl
 
         DoubleTapped += UserItemControl_DoubleTapped;
         PointerPressed += UserItemControl_PointerPressed;
-        PointerReleased += UserItemControl_PointerReleased;
 
         Border1.PointerPressed += Border1_PointerPressed;
         Border1.PointerReleased += Border1_PointerReleased;
@@ -51,24 +50,26 @@ public partial class UserItemControl : UserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == UserDisplayModel.NameReload)
+        if (e.PropertyName != UserDisplayModel.NameReload)
         {
-            _cancel?.Cancel();
-            _cancel?.Dispose();
-            _cancel = new();
-            if (Border1.RenderTransform is TransformGroup group)
+            return;
+        }
+
+        _cancel?.Cancel();
+        _cancel?.Dispose();
+        _cancel = new();
+        if (Border1.RenderTransform is TransformGroup group)
+        {
+            foreach (var item in group.Children)
             {
-                foreach (var item in group.Children)
+                if (item is RotateTransform rotate)
                 {
-                    if (item is RotateTransform rotate)
-                    {
-                        rotate.Angle = 0;
-                    }
-                    else if (item is Rotate3DTransform rotate3d)
-                    {
-                        rotate3d.AngleX = 0;
-                        rotate3d.AngleY = 0;
-                    }
+                    rotate.Angle = 0;
+                }
+                else if (item is Rotate3DTransform rotate3d)
+                {
+                    rotate3d.AngleX = 0;
+                    rotate3d.AngleY = 0;
                 }
             }
         }
@@ -96,24 +97,13 @@ public partial class UserItemControl : UserControl
         }
     }
 
-    private void UserItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
-    }
-
     private void UserItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        var model = (DataContext as UserDisplayModel)!;
-
         var pro = e.GetCurrentPoint(this);
 
         if (pro.Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }
 

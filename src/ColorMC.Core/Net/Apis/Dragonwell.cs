@@ -13,7 +13,7 @@ public static class Dragonwell
     /// <summary>
     /// 获取列表
     /// </summary>
-    public static async Task<DragonwellObj?> GetJavaList()
+    public static async Task<DragonwellObj?> GetJavaListAsync()
     {
         using var data = await CoreHttpClient.GetAsync(Url);
         if (data.StatusCode != HttpStatusCode.OK)

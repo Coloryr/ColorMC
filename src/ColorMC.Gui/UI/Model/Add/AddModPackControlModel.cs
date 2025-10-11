@@ -500,7 +500,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         }
 
         Model.Progress(App.Lang("AddModPackWindow.Info2"));
-        var res = await WebBinding.GetModPackList((SourceType)Source,
+        var res = await WebBinding.GetModPackListAsync((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 

@@ -60,7 +60,7 @@ public static class MinecraftAPI
     /// <param name="uuid">uuid</param>
     /// <param name="url">网址</param>
     /// <returns>皮肤信息</returns>
-    public static async Task<UserProfileObj?> GetUserProfile(string? uuid, string? url = null)
+    public static async Task<UserProfileObj?> GetUserProfileAsync(string? uuid, string? url = null)
     {
         url ??= $"{UserProfile}/{uuid}";
         using var data = await CoreHttpClient.LoginGetAsync(url);
@@ -111,7 +111,7 @@ public static class MinecraftAPI
     /// </summary>
     /// <param name="page"></param>
     /// <returns></returns>
-    public static async Task<MinecraftNewObj?> GetMinecraftNew(int page = 0)
+    public static async Task<MinecraftNewObj?> GetMinecraftNewAsync(int page = 0)
     {
         var url = string.Format(News, page + 1);
         var data = await _client.GetAsync(url);

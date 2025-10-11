@@ -259,7 +259,7 @@ public partial class GameLogModel : GameModel
         }
 
         Model.Progress(App.Lang("GameLogWindow.Info6"));
-        var url = await WebBinding.PushMclo(Text.Text);
+        var url = await WebBinding.PushMcloAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
@@ -487,7 +487,7 @@ public partial class GameLogModel : GameModel
             {
                 _nowLog = null;
                 Model.Progress(App.Lang("GameLogWindow.Info1"));
-                _nowLog = await GameBinding.ReadLog(Obj, File);
+                _nowLog = await GameBinding.ReadLogAsync(Obj, File);
                 Model.ProgressClose();
                 if (_nowLog == null)
                 {
@@ -606,7 +606,7 @@ public partial class GameLogModel : GameModel
             {
                 Model.ShowClose();
                 Model.Progress(App.Lang("GameLogWindow.Info6"));
-                var url = await WebBinding.PushMclo(Text.Text);
+                var url = await WebBinding.PushMcloAsync(Text.Text);
                 Model.ProgressClose();
                 if (url == null)
                 {

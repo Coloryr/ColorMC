@@ -20,10 +20,6 @@ public partial class Tab3Control : UserControl
         {
             Flyout1((sender as Control)!);
         }
-        else
-        {
-            LongPressed.Pressed(() => Flyout1((sender as Control)!));
-        }
     }
 
     private void Flyout1(Control control)

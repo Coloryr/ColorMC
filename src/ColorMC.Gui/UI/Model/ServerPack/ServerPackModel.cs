@@ -95,7 +95,7 @@ public partial class ServerPackModel : MenuModel
         {
             return;
         }
-        var local = await PathBinding.SelectPath(top, PathType.ServerPackPath);
+        var local = await PathBinding.SelectPathAsync(top, PathType.ServerPackPath);
         if (local == null)
         {
             return;
@@ -104,7 +104,7 @@ public partial class ServerPackModel : MenuModel
         Obj.Text = Text;
 
         Model.Progress(App.Lang("ServerPackWindow.Tab1.Info1"));
-        var res = await GameBinding.GenServerPack(Obj, local, Model.ShowAsync);
+        var res = await GameBinding.GenServerPackAsync(Obj, local, Model.ShowAsync);
         Model.ProgressClose();
         if (res)
         {

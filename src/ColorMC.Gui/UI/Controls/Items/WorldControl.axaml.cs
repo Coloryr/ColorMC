@@ -16,8 +16,6 @@ public partial class WorldControl : UserControl
         InitializeComponent();
 
         PointerPressed += WorldControl_PointerPressed;
-        PointerReleased += WorldControl_PointerReleased;
-        PointerMoved += WorldControl_PointerMoved;
 
         DataGridDataPack.DoubleTapped += DataGridDataPack_DoubleTapped;
         DataGridDataPack.CellPointerPressed += DataGridDataPack_CellPointerPressed;
@@ -35,26 +33,12 @@ public partial class WorldControl : UserControl
             {
                 Flyout1((sender as Control)!);
             }
-            else
-            {
-                LongPressed.Pressed(() => Flyout1((sender as Control)!));
-            }
         });
     }
 
     private void DataGridDataPack_DoubleTapped(object? sender, TappedEventArgs e)
     {
         (DataContext as WorldModel)!.DisE();
-    }
-
-    private void WorldControl_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        LongPressed.Cancel();
-    }
-
-    private void WorldControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
     }
 
     private void WorldControl_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -64,10 +48,6 @@ public partial class WorldControl : UserControl
         if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
         }
     }
 

@@ -83,7 +83,7 @@ public partial class SettingModel
         {
             return;
         }
-        var path = await PathBinding.SelectPath(top, PathType.RunDir);
+        var path = await PathBinding.SelectPathAsync(top, PathType.RunDir);
         if (path == null)
         {
             return;
@@ -107,10 +107,10 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Config);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Config);
+        if (file.Path != null)
         {
-            Local1 = file.Item1;
+            Local1 = file.Path;
         }
     }
 
@@ -126,10 +126,10 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.AuthConfig);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.AuthConfig);
+        if (file.Path != null)
         {
-            Local2 = file.Item1;
+            Local2 = file.Path;
         }
     }
 
@@ -146,10 +146,10 @@ public partial class SettingModel
             return;
         }
 
-        var file = await PathBinding.SelectFile(top, FileType.Config);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Config);
+        if (file.Path != null)
         {
-            Local3 = file.Item1;
+            Local3 = file.Path;
         }
     }
 
@@ -165,10 +165,10 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Config);
-        if (file.Item1 != null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Config);
+        if (file.Path != null)
         {
-            Local4 = file.Item1;
+            Local4 = file.Path;
         }
     }
 
@@ -385,7 +385,7 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SaveFile(top, FileType.User, null);
+        var res = await PathBinding.SaveFileAsync(top, FileType.User, null);
         if (res == true)
         {
             Model.Notify(App.Lang("SettingWindow.Tab1.Info17"));

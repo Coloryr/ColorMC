@@ -52,7 +52,7 @@ public static class ColorMCAPI
     /// <param name="type">类型</param>
     /// <param name="ids">数据</param>
     /// <returns></returns>
-    private static async Task<Dictionary<string, McModSearchItemObj>?> GetList(int type, List<string> ids, int mcmod_type)
+    private static async Task<Dictionary<string, McModSearchItemObj>?> GetListAsync(int type, List<string> ids, int mcmod_type)
     {
         try
         {
@@ -92,9 +92,9 @@ public static class ColorMCAPI
     /// </summary>
     /// <param name="ids">id列表</param>
     /// <returns>数据</returns>
-    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromCF(List<string> ids, int mcmod_type)
+    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromCFAsync(List<string> ids, int mcmod_type)
     {
-        return GetList(0, ids, mcmod_type);
+        return GetListAsync(0, ids, mcmod_type);
     }
 
     /// <summary>
@@ -102,9 +102,9 @@ public static class ColorMCAPI
     /// </summary>
     /// <param name="ids">id列表</param>
     /// <returns>数据</returns>
-    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromMO(List<string> ids, int mcmod_type)
+    public static Task<Dictionary<string, McModSearchItemObj>?> GetMcModFromMOAsync(List<string> ids, int mcmod_type)
     {
-        return GetList(1, ids, mcmod_type);
+        return GetListAsync(1, ids, mcmod_type);
     }
 
     /// <summary>
@@ -115,14 +115,14 @@ public static class ColorMCAPI
     /// <returns>数据</returns>
     public static Task<Dictionary<string, McModSearchItemObj>?> GetMcMod(string name, int page, Loaders loader, string version, string modtype, int sort)
     {
-        return GetList(2, [name, page.ToString(), modtype, version, ((int)loader).ToString(), sort.ToString()], 0);
+        return GetListAsync(2, [name, page.ToString(), modtype, version, ((int)loader).ToString(), sort.ToString()], 0);
     }
 
     /// <summary>
     /// 获取McMod分组列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<McModTypsObj?> GetMcModGroup()
+    public static async Task<McModTypsObj?> GetMcModGroupAsync()
     {
         try
         {
@@ -143,17 +143,4 @@ public static class ColorMCAPI
             return null;
         }
     }
-#if Phone
-    /// <summary>
-    /// 获取列表
-    /// </summary>
-    /// <returns></returns>
-    public static async Task<AndroidJavaObj?> GetJavaList()
-    {
-        string url = BaseUrl + "update/java.json";
-        var str = await CoreHttpClient.DownloadClient.GetStringAsync(url);
-
-        return JsonConvert.DeserializeObject<AndroidJavaObj>(str);
-    }
-#endif
 }

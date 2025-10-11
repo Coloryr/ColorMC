@@ -38,6 +38,11 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class BaseBinding
 {
+    /// <summary>
+    /// 快捷启动
+    /// </summary>
+    private static string[]? s_startLaunch;
+
     public static readonly DataFormat<string> DrapType = DataFormat.CreateStringApplicationFormat("Game");
 
     /// <summary>
@@ -53,11 +58,6 @@ public static class BaseBinding
     /// 启动完成回调
     /// </summary>
     public static event Action? LoadDone;
-
-    /// <summary>
-    /// 快捷启动
-    /// </summary>
-    public static string[]? StartLaunch { get; private set; }
 
     /// <summary>
     /// 是否处于添加游戏实例中
@@ -79,9 +79,9 @@ public static class BaseBinding
 
         await GameCloudUtils.StartConnect();
 
-        if (StartLaunch != null)
+        if (s_startLaunch != null)
         {
-            Launch(StartLaunch);
+            Launch(s_startLaunch);
         }
     }
 
@@ -283,7 +283,7 @@ public static class BaseBinding
     /// <param name="uuid"></param>
     public static void SetLaunch(string[] uuid)
     {
-        StartLaunch = uuid;
+        s_startLaunch = uuid;
     }
 
     /// <summary>

@@ -55,20 +55,6 @@ public static class ColorMCGui
     /// </summary>
     public static RunType RunType { get; private set; } = RunType.AppBuilder;
 
-#if Phone
-    /// <summary>
-    /// 手机端打开设置
-    /// </summary>
-    public static Func<Control>? PhoneGetSetting { get; set; }
-    /// <summary>
-    /// 手机端获取Frp
-    /// </summary>
-    public static Func<FrpType, string>? PhoneGetFrp { get; set; }
-    /// <summary>
-    /// 手机端打开网页
-    /// </summary>
-    public static Action<string?> PhoneOpenUrl { get; set; }
-#endif
     /// <summary>
     /// 是否为Aot模式
     /// </summary>
@@ -121,37 +107,6 @@ public static class ColorMCGui
         RunType = RunType.Program;
 
         SystemInfo.Init();
-
-        //try
-        //{
-        //    if (SystemInfo.Os == OsType.Windows)
-        //    {
-        //        var dir = AppContext.BaseDirectory;
-        //        Directory.CreateDirectory(BaseDir);
-        //        string[] list = ["download", "frpc", "image", "inputs", "java", "minecraft", "music", "tools", "dll"];
-        //        foreach (var item in list)
-        //        {
-        //            var temp = dir + item;
-        //            if (Directory.Exists(temp))
-        //            {
-        //                Directory.Move(temp, BaseDir + item);
-        //            }
-        //        }
-        //        list = ["cloud.json", "collect.json", "config.json", "count.dat", "frp.json", "gui.json", "logs.log", "window.json", "maven.json", "star.json"];
-        //        foreach (var item in list)
-        //        {
-        //            var temp = dir + item;
-        //            if (File.Exists(temp))
-        //            {
-        //                File.Move(temp, BaseDir + item, true);
-        //            }
-        //        }
-        //    }
-        //}
-        //catch
-        //{
-
-        //}
 
         Console.WriteLine($@"RunDir: {BaseDir}");
 

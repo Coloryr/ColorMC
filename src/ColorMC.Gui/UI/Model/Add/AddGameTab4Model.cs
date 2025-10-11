@@ -66,17 +66,17 @@ public partial class AddGameModel
             }
         }
         //下载游戏实例
-        var res3 = await GameBinding.DownloadCloud(obj, Group, Model.ShowAsync,
+        var res3 = await GameBinding.DownloadCloudAsync(obj, Group, Model.ShowAsync,
             Tab1GameOverwirte);
         Model.ProgressClose();
         if (!res3.State)
         {
-            Model.Show(res3.Message!);
+            Model.Show(res3.Data!);
             return;
         }
 
         WindowManager.ShowGameCloud(GameBinding.GetGame(obj.UUID!)!);
-        Done(res3.Message);
+        Done(res3.Data);
     }
 
     /// <summary>
@@ -102,19 +102,19 @@ public partial class AddGameModel
         }
         //下载服务器包
         Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
-        var res1 = await GameBinding.DownloadServerPack(Model, Name, Group, res.Text1,
+        var res1 = await GameBinding.DownloadServerPackAsync(Model, Name, Group, res.Text1,
             Tab1GameOverwirte);
         Model.ProgressClose();
         if (!res1.State)
         {
-            if (res1.Message != null)
+            if (res1.Data != null)
             {
-                Model.Show(res1.Message!);
+                Model.Show(res1.Data!);
             }
         }
         else
         {
-            Done(res1.Message!);
+            Done(res1.Data!);
         }
     }
 }

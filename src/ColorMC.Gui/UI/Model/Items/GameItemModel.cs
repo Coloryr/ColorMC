@@ -529,7 +529,7 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        var res1 = await GameBinding.CopyGame(Obj, res.Text1, Model.ShowAsync, GameOverwirte);
+        var res1 = await GameBinding.CopyGameAsync(Obj, res.Text1, Model.ShowAsync, GameOverwirte);
         if (!res1)
         {
             Model.Show(App.Lang("MainWindow.Error5"));
@@ -553,7 +553,7 @@ public partial class GameItemModel : GameModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
-        res = await GameBinding.DeleteGame(Obj);
+        res = await GameBinding.DeleteGameAsync(Obj);
         Model.ProgressClose();
         Model.InputClose();
         if (!res)

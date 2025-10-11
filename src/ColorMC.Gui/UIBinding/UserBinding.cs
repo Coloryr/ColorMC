@@ -41,7 +41,7 @@ public static class UserBinding
     /// <param name="input3">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<MessageRes> AddUser(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
+    public static async Task<StringRes> AddUserAsync(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
         string? input1 = null, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)
@@ -72,17 +72,17 @@ public static class UserBinding
             if (res1.Ex != null)
             {
                 WindowManager.ShowError(res1.Message!, res1.Ex);
-                return new() { Message = App.Lang("UserBinding.Error1") };
+                return new() { Data = App.Lang("UserBinding.Error1") };
             }
             else
             {
-                return new() { Message = res1.Message };
+                return new() { Data = res1.Message };
             }
         }
         if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
             WebBinding.OpenWeb(WebType.Minecraft);
-            return new() { Message = App.Lang("UserBinding.Error3") };
+            return new() { Data = App.Lang("UserBinding.Error3") };
         }
         res1.Auth!.Save();
         SetSelectUser(res1.Auth.UUID, res1.Auth.AuthType);
@@ -135,7 +135,7 @@ public static class UserBinding
     /// <param name="uuid">UUID</param>
     /// <param name="type">账户类型</param>
     /// <returns></returns>
-    public static async Task<bool> ReLogin(string uuid, AuthType type)
+    public static async Task<bool> ReLoginAsync(string uuid, AuthType type)
     {
         var obj = AuthDatabase.Get(uuid, type);
         if (obj == null)
@@ -143,7 +143,6 @@ public static class UserBinding
             return false;
         }
 
-        //obj.AccessToken = "";
         return (await obj.RefreshTokenAsync()).LoginState == LoginState.Done;
     }
 
@@ -253,10 +252,10 @@ public static class UserBinding
         switch (obj.AuthType)
         {
             case AuthType.Offline:
-                var file = await PathBinding.SelectFile(top, FileType.Head);
-                if (file.Item1 != null)
+                var file = await PathBinding.SelectFileAsync(top, FileType.Head);
+                if (file.Path != null)
                 {
-                    obj.SaveSkin(file.Item1);
+                    obj.SaveSkin(file.Path);
                 }
                 break;
             case AuthType.OAuth:

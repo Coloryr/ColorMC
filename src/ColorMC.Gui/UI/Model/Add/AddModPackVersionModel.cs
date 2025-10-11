@@ -187,7 +187,7 @@ public partial class AddModPackControlModel
         string title = "";
         if (Source == 0)
         {
-            var res = await WebBinding.GetFileList((SourceType)Source,
+            var res = await WebBinding.GetFileListAsync((SourceType)Source,
                 _lastId ?? (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
@@ -196,7 +196,7 @@ public partial class AddModPackControlModel
         }
         else if (Source == 1)
         {
-            var res = await WebBinding.GetFileList((SourceType)Source,
+            var res = await WebBinding.GetFileListAsync((SourceType)Source,
                 _lastId ?? (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;

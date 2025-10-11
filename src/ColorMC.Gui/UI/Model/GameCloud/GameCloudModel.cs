@@ -120,11 +120,11 @@ public partial class GameCloudModel : MenuModel
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info3"));
-        var res = await GameBinding.StartCloud(Obj);
+        var res = await GameBinding.StartCloudAsync(Obj);
         Model.ProgressClose();
         if (res.State == false)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
 
@@ -151,11 +151,11 @@ public partial class GameCloudModel : MenuModel
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info5"));
-        var res1 = await GameBinding.StopCloud(Obj);
+        var res1 = await GameBinding.StopCloudAsync(Obj);
         Model.ProgressClose();
         if (!res1.State)
         {
-            Model.Show(res1.Message!);
+            Model.Show(res1.Data!);
             return;
         }
 
@@ -172,14 +172,14 @@ public partial class GameCloudModel : MenuModel
     {
         var files = _files.GetSelectItems(true);
         Model.Progress();
-        var res = await GameBinding.UploadConfig(Obj, files, new()
+        var res = await GameBinding.UploadConfigAsync(Obj, files, new()
         {
             Update = ProgressUpdate
         });
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info14"));
@@ -195,14 +195,14 @@ public partial class GameCloudModel : MenuModel
     public async Task DownloadConfig()
     {
         Model.Progress();
-        var res = await GameBinding.DownloadConfig(Obj, new()
+        var res = await GameBinding.DownloadConfigAsync(Obj, new()
         {
             Update = ProgressUpdate
         });
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info15"));
@@ -217,11 +217,11 @@ public partial class GameCloudModel : MenuModel
     public async Task LoadCloud()
     {
         Model.Progress(App.Lang("GameCloudWindow.Info1"));
-        var res = await GameBinding.HaveCloud(Obj);
+        var res = await GameBinding.HaveCloudAsync(Obj);
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
         Enable = res.Data1;
@@ -316,12 +316,12 @@ public partial class GameCloudModel : MenuModel
         var res = await GameBinding.GetCloudWorldListAsync(Obj);
         var worlds = await GameBinding.GetWorldsAsync(Obj);
         Model.ProgressClose();
-        if (!res.State || res.Data == null)
+        if (!res.State || res.Worlds == null)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
-        foreach (var item in res.Data)
+        foreach (var item in res.Worlds)
         {
             var obj = worlds.Find(a => a.LevelName == item.Name);
             if (obj != null)
@@ -367,7 +367,7 @@ public partial class GameCloudModel : MenuModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info14"));
@@ -388,7 +388,7 @@ public partial class GameCloudModel : MenuModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
             return;
         }
         Model.Notify(App.Lang("GameCloudWindow.Info15"));
@@ -408,11 +408,11 @@ public partial class GameCloudModel : MenuModel
         }
 
         Model.Progress(App.Lang("GameCloudWindow.Info18"));
-        var res1 = await GameBinding.DeleteCloudWorld(Obj, world.Cloud.Name);
+        var res1 = await GameBinding.DeleteCloudWorldAsync(Obj, world.Cloud.Name);
         Model.ProgressClose();
         if (!res1.State)
         {
-            Model.Show(res1.Message!);
+            Model.Show(res1.Data!);
         }
         else
         {

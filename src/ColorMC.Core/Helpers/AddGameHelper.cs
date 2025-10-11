@@ -86,7 +86,7 @@ public static class AddGameHelper
 
         game ??= new GameSettingObj()
         {
-            Version = (await GameHelper.GetGameVersions(GameType.Release))[0],
+            Version = (await GameHelper.GetGameVersionsAsync(GameType.Release))[0],
             Loader = Loaders.Normal,
             GroupName = arg.Group
         };

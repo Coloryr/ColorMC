@@ -28,7 +28,7 @@ public static class CurseForgeAPI
     /// <param name="httpRequest"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    private static async Task<Stream?> Send(HttpRequestMessage httpRequest)
+    private static async Task<Stream?> SendAsync(HttpRequestMessage httpRequest)
     {
         httpRequest.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey ?? throw new Exception("CurseForge key is empty"));
         var data = await CoreHttpClient.SendAsync(httpRequest);
@@ -51,7 +51,7 @@ public static class CurseForgeAPI
     /// <param name="pagesize">页大小</param>
     /// <param name="sortOrder">排序</param>
     /// <returns></returns>
-    private static async Task<CurseForgeListObj?> GetList(int classid, string version, int page,
+    private static async Task<CurseForgeListObj?> GetListAsync(int classid, string version, int page,
         int sortField, string filter, int pagesize, int sortOrder, string categoryId,
         int modLoaderType)
     {
@@ -65,7 +65,7 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={modLoaderType}";
             }
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
@@ -82,21 +82,21 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取整合包列表
     /// </summary>
-    public static Task<CurseForgeListObj?> GetModPackList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetModPackListAsync(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassModPack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
+        return GetListAsync(ClassModPack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
     /// 获取Mod列表
     /// </summary>
-    public static Task<CurseForgeListObj?> GetModList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetModListAsync(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "", Loaders loader = Loaders.Normal)
     {
-        return GetList(ClassMod, version, page, sortField, filter, pagesize, sortOrder, categoryId, Loader(loader));
+        return GetListAsync(ClassMod, version, page, sortField, filter, pagesize, sortOrder, categoryId, Loader(loader));
     }
 
     /// <summary>
@@ -119,21 +119,21 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取世界列表
     /// </summary>
-    public static Task<CurseForgeListObj?> GetWorldList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetWorldListAsync(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassWorld, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
+        return GetListAsync(ClassWorld, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
     /// 获取资源包列表
     /// </summary>
-    public static Task<CurseForgeListObj?> GetResourcepackList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetResourcepackListAsync(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1,
         string categoryId = "")
     {
-        return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
+        return GetListAsync(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, categoryId, 0);
     }
 
     /// <summary>
@@ -142,27 +142,27 @@ public static class CurseForgeAPI
     public static Task<CurseForgeListObj?> GetDataPacksList(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
-        return GetList(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
+        return GetListAsync(ClassResourcepack, version, page, sortField, filter, pagesize, sortOrder, CategoryIdDataPacks.ToString(), 0);
     }
 
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    public static Task<CurseForgeListObj?> GetShadersList(string version = "", int page = 0,
+    public static Task<CurseForgeListObj?> GetShadersListAsync(string version = "", int page = 0,
         int sortField = 2, string filter = "", int pagesize = 20, int sortOrder = 1)
     {
-        return GetList(ClassShaderpack, version, page, sortField, filter, pagesize, sortOrder, "", 0);
+        return GetListAsync(ClassShaderpack, version, page, sortField, filter, pagesize, sortOrder, "", 0);
     }
 
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeModObj?> GetMod(CurseForgePackObj.FilesObj obj)
+    public static async Task<CurseForgeModObj?> GetModAsync(CurseForgePackObj.FilesObj obj)
     {
         try
         {
             string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
@@ -179,13 +179,13 @@ public static class CurseForgeAPI
     /// <summary>
     /// 查询Mod信息
     /// </summary>
-    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> GetFiles(List<CurseForgePackObj.FilesObj> obj)
+    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> GetFilesAsync(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {
             var arg1 = new CurseForgeGetFilesObj { FileIds = [] };
             obj.ForEach(a => arg1.FileIds.Add(a.FileID));
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods/files"),
@@ -204,11 +204,11 @@ public static class CurseForgeAPI
     /// 获取分类信息
     /// </summary>
     /// <returns>信息</returns>
-    public static async Task<CurseForgeCategoriesObj?> GetCategories()
+    public static async Task<CurseForgeCategoriesObj?> GetCategoriesAsync()
     {
         try
         {
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}categories?gameId={GameID}")
@@ -225,11 +225,11 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取版本信息
     /// </summary>
-    public static async Task<CurseForgeVersionObj?> GetCurseForgeVersion()
+    public static async Task<CurseForgeVersionObj?> GetCurseForgeVersionAsync()
     {
         try
         {
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/versions")
@@ -250,7 +250,7 @@ public static class CurseForgeAPI
     {
         try
         {
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/version-types")
@@ -267,11 +267,11 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeObj?> GetModInfo(long id)
+    public static async Task<CurseForgeObj?> GetModInfoAsync(long id)
     {
         try
         {
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
@@ -288,11 +288,11 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeObj?> GetModInfo(string id)
+    public static async Task<CurseForgeObj?> GetModInfoAsync(string id)
     {
         try
         {
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
@@ -309,7 +309,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeListObj?> GetModsInfo(List<CurseForgePackObj.FilesObj> obj)
+    public static async Task<CurseForgeListObj?> GetModsInfoAsync(List<CurseForgePackObj.FilesObj> obj)
     {
         try
         {
@@ -319,7 +319,7 @@ public static class CurseForgeAPI
                 FilterPcOnly = true
             };
             obj.ForEach(a => arg1.ModIds.Add(a.ProjectID));
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{UrlHelper.CurseForge}mods"),
@@ -337,7 +337,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取文件列表
     /// </summary>
-    public static async Task<CurseForgeFileObj?> GetCurseForgeFiles(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
+    public static async Task<CurseForgeFileObj?> GetCurseForgeFilesAsync(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
     {
         try
         {
@@ -347,7 +347,7 @@ public static class CurseForgeAPI
             {
                 temp += $"&modLoaderType={Loader(loader)}";
             }
-            using var data = await Send(new()
+            using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)

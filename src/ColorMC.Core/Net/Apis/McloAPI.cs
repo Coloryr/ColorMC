@@ -15,7 +15,7 @@ public static class McloAPI
     /// </summary>
     /// <param name="arg">日志内容</param>
     /// <returns>返回的网址</returns>
-    public static async Task<string?> Push(string arg)
+    public static async Task<string?> PushAsync(string arg)
     {
         try
         {

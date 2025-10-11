@@ -120,7 +120,7 @@ public partial class GameEditModel
 
         //开始备份
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info11"));
-        res1 = await GameBinding.BackupWorld(_obj, item1, Model.ShowAsync);
+        res1 = await GameBinding.BackupWorldAsync(_obj, item1, Model.ShowAsync);
         Model.ProgressClose();
         if (!res1)
         {
@@ -143,7 +143,7 @@ public partial class GameEditModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
         }
     }
 
@@ -174,7 +174,7 @@ public partial class GameEditModel
             return;
         }
 
-        var file = await PathBinding.AddFile(top, _obj, FileType.World);
+        var file = await PathBinding.AddFileAsync(top, _obj, FileType.World);
         if (file == null)
         {
             return;
@@ -214,7 +214,7 @@ public partial class GameEditModel
     /// <param name="data"></param>
     public async void DropWorld(IDataTransfer data)
     {
-        var res = await GameBinding.AddFile(_obj, data, FileType.World);
+        var res = await GameBinding.AddFileAsync(_obj, data, FileType.World);
         if (res)
         {
             await LoadWorld();
@@ -248,7 +248,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteWorld(obj.World);
+        await GameBinding.DeleteWorldAsync(obj.World);
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadWorld();
     }
@@ -266,7 +266,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info4"));
-        var file = await PathBinding.SaveFile(top, FileType.World, [obj]);
+        var file = await PathBinding.SaveFileAsync(top, FileType.World, [obj]);
         Model.ProgressClose();
         if (file == null)
         {
@@ -290,7 +290,7 @@ public partial class GameEditModel
     public async void BackupWorld(WorldModel obj)
     {
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info7"));
-        var res = await GameBinding.BackupWorld(obj.World);
+        var res = await GameBinding.BackupWorldAsync(obj.World);
         Model.ProgressClose();
         if (res)
         {

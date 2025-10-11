@@ -685,7 +685,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="type">类型</param>
     /// <returns>游戏版本</returns>
-    public static async Task<List<string>> GetGameVersions(GameType type)
+    public static async Task<List<string>> GetGameVersionsAsync(GameType type)
     {
         var list = new List<string>();
         var ver = await VersionPath.GetVersionsAsync();
@@ -987,7 +987,7 @@ public static class GameHelper
     /// </summary>
     /// <param name="version"></param>
     /// <returns></returns>
-    public static async Task<SupportLoaderRes> GetSupportLoader(string version)
+    public static async Task<SupportLoaderRes> GetSupportLoaderAsync(string version)
     {
         var res = new SupportLoaderRes()
         {
@@ -998,7 +998,7 @@ public static class GameHelper
         [
             Task.Run(async () =>
             {
-                var list = await ForgeAPI.GetSupportVersion(false, CoreHttpClient.Source);
+                var list = await ForgeAPI.GetSupportVersionAsync(false, CoreHttpClient.Source);
                 if (list != null)
                 {
                     if(list.Contains(version))
@@ -1013,7 +1013,7 @@ public static class GameHelper
             }),
             Task.Run(async () =>
             {
-                var list = await FabricAPI.GetSupportVersion(CoreHttpClient.Source);
+                var list = await FabricAPI.GetSupportVersionAsync(CoreHttpClient.Source);
                 if (list != null)
                 {
                     if(list.Contains(version))
@@ -1028,7 +1028,7 @@ public static class GameHelper
             }),
             Task.Run(async () =>
             {
-                var list = await QuiltAPI.GetSupportVersion(CoreHttpClient.Source);
+                var list = await QuiltAPI.GetSupportVersionAsync(CoreHttpClient.Source);
                 if (list != null)
                 {
                     if(list.Contains(version))
@@ -1043,7 +1043,7 @@ public static class GameHelper
             }),
             Task.Run(async () =>
             {
-                var list = await ForgeAPI.GetSupportVersion(true, CoreHttpClient.Source);
+                var list = await ForgeAPI.GetSupportVersionAsync(true, CoreHttpClient.Source);
                 if (list != null)
                 {
                     if(list.Contains(version))
@@ -1058,7 +1058,7 @@ public static class GameHelper
             }),
             Task.Run(async () =>
             {
-                var list = await OptifineAPI.GetSupportVersion();
+                var list = await OptifineAPI.GetSupportVersionAsync();
                 if (list != null)
                 {
                     if(list.Contains(version))

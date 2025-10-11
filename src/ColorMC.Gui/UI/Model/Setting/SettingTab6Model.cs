@@ -334,13 +334,13 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SelectFile(top, FileType.StartIcon);
-        if (res.Item1 == null)
+        var res = await PathBinding.SelectFileAsync(top, FileType.StartIcon);
+        if (res.Path == null)
         {
             return;
         }
 
-        BaseBinding.SetStartIcon(res.Item1);
+        BaseBinding.SetStartIcon(res.Path);
         StartImage = BaseBinding.GetStartIcon();
     }
     /// <summary>
@@ -355,13 +355,13 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SelectFile(top, FileType.Icon);
-        if (res.Item1 == null)
+        var res = await PathBinding.SelectFileAsync(top, FileType.Icon);
+        if (res.Path == null)
         {
             return;
         }
 
-        BaseBinding.SetWindowIcon(res.Item1);
+        BaseBinding.SetWindowIcon(res.Path);
         IconImage = BaseBinding.GetWindowIcon();
     }
     /// <summary>
@@ -433,13 +433,13 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Music);
-        if (file.Item1 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Music);
+        if (file.Path == null)
         {
             return;
         }
 
-        Music = file.Item1;
+        Music = file.Path;
     }
     /// <summary>
     /// 添加账户类型锁定

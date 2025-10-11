@@ -95,7 +95,7 @@ public partial class NetFrpModel : MenuModel
 
         LoadSelfFrp();
 
-        var list = await GameBinding.GetGameVersions(GameType.All);
+        var list = await GameBinding.GetGameVersionsAsync(GameType.All);
         Versions.Add("");
         Versions.AddRange(list);
 

@@ -129,10 +129,10 @@ public partial class UsersModel : TopModel
                     Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                var res = await UserBinding.AddUser(AuthType.Offline, LoginOAuthCode, LoginSelect, name);
+                var res = await UserBinding.AddUserAsync(AuthType.Offline, LoginOAuthCode, LoginSelect, name);
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -141,7 +141,7 @@ public partial class UsersModel : TopModel
                 _cancel = false;
                 _isOAuth = true;
                 Model.Progress(App.Lang("UserWindow.Info1"));
-                res = await UserBinding.AddUser(AuthType.OAuth, LoginOAuthCode, LoginSelect);
+                res = await UserBinding.AddUserAsync(AuthType.OAuth, LoginOAuthCode, LoginSelect);
                 Model.ProgressClose();
                 if (_cancel)
                 {
@@ -149,7 +149,7 @@ public partial class UsersModel : TopModel
                 }
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -170,12 +170,12 @@ public partial class UsersModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.Nide8, LoginOAuthCode, LoginSelect,
+                res = await UserBinding.AddUserAsync(AuthType.Nide8, LoginOAuthCode, LoginSelect,
                     server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -195,12 +195,12 @@ public partial class UsersModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.AuthlibInjector, LoginOAuthCode,
+                res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, LoginOAuthCode,
                     LoginSelect, server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -214,12 +214,12 @@ public partial class UsersModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.LittleSkin, LoginOAuthCode,
+                res = await UserBinding.AddUserAsync(AuthType.LittleSkin, LoginOAuthCode,
                     LoginSelect, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -239,12 +239,12 @@ public partial class UsersModel : TopModel
                     break;
                 }
                 Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUser(AuthType.SelfLittleSkin, LoginOAuthCode,
+                res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, LoginOAuthCode,
                     LoginSelect, model.User, model.Password, server);
                 Model.ProgressClose();
                 if (!res.State)
                 {
-                    Model.Show(res.Message!);
+                    Model.Show(res.Data!);
                     break;
                 }
                 Model.Notify(App.Lang("UserWindow.Info12"));
@@ -347,7 +347,7 @@ public partial class UsersModel : TopModel
     public async void Refresh(UserDisplayModel obj)
     {
         Model.Progress(App.Lang("UserWindow.Info3"));
-        var res = await UserBinding.ReLogin(obj.UUID, obj.AuthType);
+        var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType);
         Model.ProgressClose();
         if (!res)
         {

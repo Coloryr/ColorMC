@@ -27,7 +27,7 @@ public static class GameAPI
     /// 下载资源文件
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<GetAssetsRes?> GetAssets(string url)
+    public static async Task<GetAssetsRes?> GetAssetsAsync(string url)
     {
         try
         {
@@ -58,7 +58,7 @@ public static class GameAPI
     /// 下载游戏数据
     /// </summary>
     /// <param name="url">网址</param>
-    public static async Task<GetGameArgRes?> GetGame(string url)
+    public static async Task<GetGameArgRes?> GetGameAsync(string url)
     {
         try
         {
@@ -88,7 +88,7 @@ public static class GameAPI
     /// <summary>
     /// 下载版本数据
     /// </summary>
-    public static async Task<GetVersionsRes?> GetVersions(SourceLocal? local = null)
+    public static async Task<GetVersionsRes?> GetVersionsAsync(SourceLocal? local = null)
     {
         try
         {

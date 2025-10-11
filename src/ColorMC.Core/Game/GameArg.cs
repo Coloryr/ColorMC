@@ -509,7 +509,7 @@ public static class GameArg
                     throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
             case AuthType.LittleSkin:
@@ -519,7 +519,7 @@ public static class GameArg
                     throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
             case AuthType.SelfLittleSkin:
@@ -529,7 +529,7 @@ public static class GameArg
                     throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Message!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
         }
@@ -887,7 +887,7 @@ public static class GameArg
                 if (assets == null)
                 {
                     //不存在json文件
-                    var res = await GameAPI.GetAssets(game.AssetIndex.Url)
+                    var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url)
                               ?? throw new LaunchException(LaunchState.AssetsError,
                                   LanguageHelper.Get("Core.Launch.Error2"));
                     // assets = res.Assets;
@@ -942,7 +942,7 @@ public static class GameArg
                     var assets = item.AssetIndex.GetIndex();
                     if (assets == null)
                     {
-                        var res = await GameAPI.GetAssets(item.AssetIndex.Url)
+                        var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url)
                             ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
                         // assets = res.Assets;
                         item.AddIndex(res.Text);

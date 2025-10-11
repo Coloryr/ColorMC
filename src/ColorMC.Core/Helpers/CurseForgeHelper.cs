@@ -127,7 +127,7 @@ public static class CurseForgeHelper
     {
         if (s_categories == null)
         {
-            var list6 = await CurseForgeAPI.GetCategories();
+            var list6 = await CurseForgeAPI.GetCategoriesAsync();
             if (list6 == null)
             {
                 return null;
@@ -182,7 +182,7 @@ public static class CurseForgeHelper
                          orderby item.Id ascending
                          select item);
 
-        var list2 = await CurseForgeAPI.GetCurseForgeVersion();
+        var list2 = await CurseForgeAPI.GetCurseForgeVersionAsync();
         if (list2 == null)
         {
             return null;
@@ -249,7 +249,7 @@ public static class CurseForgeHelper
         }
 
         //一次性获取
-        var res = await CurseForgeAPI.GetFiles(arg.Info.Files);
+        var res = await CurseForgeAPI.GetFilesAsync(arg.Info.Files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
@@ -271,7 +271,7 @@ public static class CurseForgeHelper
             bool done = true;
             await Parallel.ForEachAsync(arg.Info.Files, async (item, token) =>
             {
-                var res = await CurseForgeAPI.GetMod(item);
+                var res = await CurseForgeAPI.GetModAsync(item);
                 if (res == null || res.Data == null)
                 {
                     done = false;
@@ -315,7 +315,7 @@ public static class CurseForgeHelper
         }
 
         //将各类文件放在正确的文件夹
-        var info1 = await CurseForgeAPI.GetModInfo(item.ModId);
+        var info1 = await CurseForgeAPI.GetModInfoAsync(item.ModId);
         if (info1 != null)
         {
             if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassResourcepack)
@@ -383,12 +383,12 @@ public static class CurseForgeHelper
             }
 
             var opt = item.RelationType != 2;
-            var res1 = await CurseForgeAPI.GetCurseForgeFiles(item.ModId.ToString(), mc, loader: loader);
+            var res1 = await CurseForgeAPI.GetCurseForgeFilesAsync(item.ModId.ToString(), mc, loader: loader);
             if (res1 == null || res1.Data.Count == 0)
             {
                 return;
             }
-            var res2 = await CurseForgeAPI.GetModInfo(item.ModId);
+            var res2 = await CurseForgeAPI.GetModInfoAsync(item.ModId);
             if (res2 == null)
             {
                 return;
@@ -599,7 +599,7 @@ public static class CurseForgeHelper
 
             foreach (var item in addlist)
             {
-                var res = await CurseForgeAPI.GetMod(item);
+                var res = await CurseForgeAPI.GetModAsync(item);
                 if (res == null || res.Data == null)
                 {
                     return false;

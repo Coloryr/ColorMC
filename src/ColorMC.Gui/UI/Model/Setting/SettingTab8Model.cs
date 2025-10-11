@@ -419,7 +419,7 @@ public partial class SettingModel
         {
             return;
         }
-        var res = await PathBinding.SaveFile(top, FileType.InputConfig, [_controlObj.Name, _controlObj]);
+        var res = await PathBinding.SaveFileAsync(top, FileType.InputConfig, [_controlObj.Name, _controlObj]);
         if (res == null)
         {
             return;
@@ -444,13 +444,13 @@ public partial class SettingModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.InputConfig);
-        if (file.Item1 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.InputConfig);
+        if (file.Path == null)
         {
             return;
         }
 
-        var obj = JoystickConfig.Load(file.Item1);
+        var obj = JoystickConfig.Load(file.Path);
         if (obj == null)
         {
             Model.Show(App.Lang("SettingWindow.Tab8.Error2"));

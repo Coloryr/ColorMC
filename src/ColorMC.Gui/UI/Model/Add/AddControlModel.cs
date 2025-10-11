@@ -307,7 +307,7 @@ public partial class AddControlModel : GameModel
         if (type == SourceType.McMod)
         {
             //McMod搜索源
-            var data = await WebBinding.SearchMcmod(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
+            var data = await WebBinding.SearchMcmodAsync(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
             if (data == null)
             {
                 Model.ProgressClose();
@@ -332,7 +332,7 @@ public partial class AddControlModel : GameModel
         else
         {
             //其他搜索源
-            var res = await WebBinding.GetList(_now, type, GameVersion, Name, Page ?? 0,
+            var res = await WebBinding.GetListAsync(_now, type, GameVersion, Name, Page ?? 0,
                 SortType, Categorie < 0 ? "" : _categories[Categorie], Obj.Loader);
 
             var data = res.List;
@@ -563,7 +563,7 @@ public partial class AddControlModel : GameModel
         {
             Model.Progress(App.Lang("AddModPackWindow.Info4"));
             //获取分类
-            var list = await GameBinding.GetMcModCategories();
+            var list = await GameBinding.GetMcModCategoriesAsync();
             Model.ProgressClose();
             if (list == null)
             {

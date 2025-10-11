@@ -499,7 +499,7 @@ public partial class GameEditModel
         //尝试通过ID获取版本号
         if (GameDownloadHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
-            var list = await ModrinthAPI.GetFileVersions(PID, _obj.Version, _obj.Loader);
+            var list = await ModrinthAPI.GetFileVersionsAsync(PID, _obj.Version, _obj.Loader);
             Model.ProgressClose();
             if (list == null)
             {
@@ -523,7 +523,7 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list[0];
-                res = await GameBinding.ModPackUpgrade(_obj, item, ProgressUpdate, PackState);
+                res = await GameBinding.ModPackUpgradeAsync(_obj, item, ProgressUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -538,7 +538,7 @@ public partial class GameEditModel
         }
         else
         {
-            var list = await CurseForgeAPI.GetCurseForgeFiles(PID, _obj.Version);
+            var list = await CurseForgeAPI.GetCurseForgeFilesAsync(PID, _obj.Version);
             Model.ProgressClose();
             if (list == null)
             {
@@ -562,7 +562,7 @@ public partial class GameEditModel
 
                 Model.Progress(App.Lang("GameEditWindow.Tab1.Info8"));
                 var item = list.Data[0];
-                res = await GameBinding.ModPackUpgrade(_obj, item, ProgressUpdate, PackState);
+                res = await GameBinding.ModPackUpgradeAsync(_obj, item, ProgressUpdate, PackState);
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -645,11 +645,11 @@ public partial class GameEditModel
         };
         var list = loader switch
         {
-            Loaders.Forge => await WebBinding.GetForgeVersion(_obj.Version),
-            Loaders.NeoForge => await WebBinding.GetNeoForgeVersion(_obj.Version),
-            Loaders.Fabric => await WebBinding.GetFabricVersion(_obj.Version),
-            Loaders.Quilt => await WebBinding.GetQuiltVersion(_obj.Version),
-            Loaders.OptiFine => await WebBinding.GetOptifineVersion(_obj.Version),
+            Loaders.Forge => await WebBinding.GetForgeVersionAsync(_obj.Version),
+            Loaders.NeoForge => await WebBinding.GetNeoForgeVersionAsync(_obj.Version),
+            Loaders.Fabric => await WebBinding.GetFabricVersionAsync(_obj.Version),
+            Loaders.Quilt => await WebBinding.GetQuiltVersionAsync(_obj.Version),
+            Loaders.OptiFine => await WebBinding.GetOptifineVersionAsync(_obj.Version),
             _ => null
         };
 
@@ -703,7 +703,7 @@ public partial class GameEditModel
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
-        var res = await GameHelper.GetSupportLoader(GameVersion);
+        var res = await GameHelper.GetSupportLoaderAsync(GameVersion);
         foreach (var item in res.Done)
         {
             _loaderTypeList.Add(item);
@@ -771,20 +771,20 @@ public partial class GameEditModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Loader);
-        if (file.Item1 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Loader);
+        if (file.Path == null)
         {
             return;
         }
 
-        var res = await GameBinding.SetGameLoader(_obj, file.Item1);
+        var res = await GameBinding.SetGameLoaderAsync(_obj, file.Path);
         if (res.State)
         {
             ReadCustomLoader();
         }
         else
         {
-            Model.Show(res.Message!);
+            Model.Show(res.Data!);
         }
     }
 
@@ -847,7 +847,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
-        var res1 = await GameBinding.DeleteGame(_obj);
+        var res1 = await GameBinding.DeleteGameAsync(_obj);
         Model.ProgressClose();
         if (!res1)
         {
@@ -861,7 +861,7 @@ public partial class GameEditModel
     private async void GenGameInfo()
     {
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info10"));
-        await GameBinding.GenGameInfo(_obj);
+        await GameBinding.GenGameInfoAsync(_obj);
         Model.ProgressClose();
     }
 
@@ -870,7 +870,7 @@ public partial class GameEditModel
     /// </summary>
     private async void ReadCustomLoader()
     {
-        LoaderInfo = await GameBinding.GetGameLoader(_obj);
+        LoaderInfo = await GameBinding.GetGameLoaderAsync(_obj);
     }
 
     /// <summary>
@@ -893,7 +893,7 @@ public partial class GameEditModel
                 break;
         }
 
-        GameVersionList.AddRange(await GameBinding.GetGameVersions(_obj.GameType));
+        GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(_obj.GameType));
         if (GameVersionList.Contains(version))
         {
             GameVersion = version;

@@ -65,7 +65,7 @@ public static class JvmPath
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<MessageRes> InstallAsync(InstallJvmArg arg)
+    public static async Task<StringRes> InstallAsync(InstallJvmArg arg)
     {
         try
         {
@@ -73,28 +73,28 @@ public static class JvmPath
             var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
             if (!res.State)
             {
-                return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error5") };
+                return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error5") };
             }
             arg.Unzip?.Invoke();
             res = await UnzipJavaAsync(new UnzipArg
             {
                 Name = arg.Name,
-                File = res.Message!,
+                File = res.Data!,
                 Zip = arg.Zip
             });
             if (!res.State)
             {
-                return new MessageRes { Message = res.Message };
+                return new StringRes { Data = res.Data };
             }
         }
         catch (Exception e)
         {
             string text = LanguageHelper.Get("Core.Jvm.Error7");
             Logs.Error(text, e);
-            return new MessageRes { Message = text };
+            return new StringRes { Data = text };
         }
 
-        return new MessageRes { State = true };
+        return new StringRes { State = true };
     }
 
     /// <summary>
@@ -104,7 +104,7 @@ public static class JvmPath
     /// <param name="sha256">校验</param>
     /// <param name="url">网址</param>
     /// <returns>结果</returns>
-    private static async Task<MessageRes> DownloadAsync(string name, string sha256, string url)
+    private static async Task<StringRes> DownloadAsync(string name, string sha256, string url)
     {
         var item = new FileItemObj()
         {
@@ -121,7 +121,7 @@ public static class JvmPath
             return new();
         }
 
-        return new MessageRes { State = true, Message = item.Local };
+        return new StringRes { State = true, Data = item.Local };
     }
 
     /// <summary>
@@ -144,14 +144,14 @@ public static class JvmPath
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<MessageRes> UnzipJavaAsync(UnzipArg arg)
+    public static async Task<StringRes> UnzipJavaAsync(UnzipArg arg)
     {
         string path = Path.Combine(JavaDir, arg.Name);
         Directory.CreateDirectory(path);
         var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
         {
-            return new MessageRes { Message = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
+            return new StringRes { Data = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
         }
 
         var res = await Task.Run(async () =>
@@ -172,13 +172,13 @@ public static class JvmPath
         {
             string temp = LanguageHelper.Get("Core.Jvm.Error12");
             Logs.Error(temp, res.e);
-            return new MessageRes { Message = temp };
+            return new StringRes { Data = temp };
         }
 
         var java = Find(path);
         if (java == null)
         {
-            return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error6") };
+            return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error6") };
         }
         else
         {
@@ -208,7 +208,7 @@ public static class JvmPath
     /// <param name="name">名字</param>
     /// <param name="local">路径</param>
     /// <returns>结果</returns>
-    public static MessageRes AddItem(string name, string local)
+    public static StringRes AddItem(string name, string local)
     {
         var basedir = ColorMCCore.BaseDir;
         if (local.StartsWith(basedir))
@@ -236,14 +236,14 @@ public static class JvmPath
                 Local = local
             });
             ConfigUtils.Save();
-            return new MessageRes { State = true, Message = name };
+            return new StringRes { State = true, Data = name };
         }
         else
         {
             Logs.Info(LanguageHelper.Get("Core.Jvm.Error8"));
         }
 
-        return new MessageRes { Message = LanguageHelper.Get("Core.Jvm.Error1") };
+        return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error1") };
     }
 
     /// <summary>

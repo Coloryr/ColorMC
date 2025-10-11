@@ -24,20 +24,12 @@ public partial class Tab8Control : UserControl
         {
             Flyout((sender as Control)!);
         }
-        else
-        {
-            LongPressed.Pressed(() => Flyout((sender as Control)!));
-        }
     }
     private void DataGrid2_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
     {
         if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout1((sender as Control)!);
-        }
-        else
-        {
-            LongPressed.Pressed(() => Flyout1((sender as Control)!));
         }
     }
 

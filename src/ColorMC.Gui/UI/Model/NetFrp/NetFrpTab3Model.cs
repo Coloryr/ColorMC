@@ -245,7 +245,7 @@ public partial class NetFrpModel
         }
 
         Model.Progress(App.Lang("NetFrpWindow.Tab3.Info5"));
-        res = await WebBinding.ShareIP(user.AccessToken, _remoteIP, model);
+        res = await WebBinding.ShareIPAsync(user.AccessToken, _remoteIP, model);
         Model.ProgressClose();
         if (!res)
         {

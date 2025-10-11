@@ -14,7 +14,7 @@ public static class ZuluApi
     /// <summary>
     /// 获取列表
     /// </summary>
-    public static async Task<List<ZuluObj>?> GetJavaList()
+    public static async Task<List<ZuluObj>?> GetJavaListAsync()
     {
         var data = await CoreHttpClient.GetAsync(Url);
         if (data.StatusCode != HttpStatusCode.OK)

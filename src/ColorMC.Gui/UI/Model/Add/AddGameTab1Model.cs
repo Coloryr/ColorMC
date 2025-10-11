@@ -153,13 +153,13 @@ public partial class AddGameModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.Loader);
-        if (file.Item1 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.Loader);
+        if (file.Path == null)
         {
             return;
         }
 
-        LoaderLocal = file.Item1;
+        LoaderLocal = file.Path;
     }
 
     /// <summary>
@@ -196,23 +196,23 @@ public partial class AddGameModel
         {
             case Loaders.Forge:
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info1");
-                list = await WebBinding.GetForgeVersion(Version);
+                list = await WebBinding.GetForgeVersionAsync(Version);
                 break;
             case Loaders.NeoForge:
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info19");
-                list = await WebBinding.GetNeoForgeVersion(Version);
+                list = await WebBinding.GetNeoForgeVersionAsync(Version);
                 break;
             case Loaders.Fabric:
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info2");
-                list = await WebBinding.GetFabricVersion(Version);
+                list = await WebBinding.GetFabricVersionAsync(Version);
                 break;
             case Loaders.Quilt:
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info3");
-                list = await WebBinding.GetQuiltVersion(Version);
+                list = await WebBinding.GetQuiltVersionAsync(Version);
                 break;
             case Loaders.OptiFine:
                 Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info16");
-                list = await WebBinding.GetOptifineVersion(Version);
+                list = await WebBinding.GetOptifineVersionAsync(Version);
                 break;
         }
 
@@ -285,7 +285,7 @@ public partial class AddGameModel
             //自定义加载器还需要加载其他信息
             if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
             {
-                var res1 = await GameBinding.SetGameLoader(game, LoaderLocal);
+                var res1 = await GameBinding.SetGameLoaderAsync(game, LoaderLocal);
                 if (!res1.State)
                 {
                     Model.ShowWithOk(App.Lang("AddGameWindow.Tab1.Error18"), () =>
@@ -331,7 +331,7 @@ public partial class AddGameModel
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
-        var res = await GameHelper.GetSupportLoader(Version);
+        var res = await GameHelper.GetSupportLoaderAsync(Version);
         foreach (var item in res.Done)
         {
             _loaderTypeList.Add(item);
@@ -391,13 +391,13 @@ public partial class AddGameModel
         switch (VersionType)
         {
             case 0:
-                GameVersionList.AddRange(await GameBinding.GetGameVersions(GameType.Release));
+                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Release));
                 break;
             case 1:
-                GameVersionList.AddRange(await GameBinding.GetGameVersions(GameType.Snapshot));
+                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Snapshot));
                 break;
             case 2:
-                GameVersionList.AddRange(await GameBinding.GetGameVersions(GameType.Other));
+                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Other));
                 break;
         }
     }

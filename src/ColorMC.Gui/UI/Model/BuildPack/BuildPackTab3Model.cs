@@ -37,16 +37,16 @@ public partial class BuildPackModel
         {
             return;
         }
-        var file = await PathBinding.SelectFile(top, FileType.File);
-        if (file.Item1 == null)
+        var file = await PathBinding.SelectFileAsync(top, FileType.File);
+        if (file.Path == null)
         {
             return;
         }
 
         Files.Add(new PackFileItem()
         {
-            Local = file.Item1,
-            File = file.Item2!
+            Local = file.Path,
+            File = file.FileName!
         });
     }
 

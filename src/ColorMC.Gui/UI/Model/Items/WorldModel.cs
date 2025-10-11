@@ -155,7 +155,7 @@ public partial class WorldModel : SelectItemModel
     /// <param name="pack"></param>
     public async void DisE(IEnumerable<DataPackModel> pack)
     {
-        var res = await Task.Run(() => GameBinding.DataPackDisE(pack));
+        var res = await Task.Run(() => GameBinding.DataPackDisableOrEnable(pack));
         if (res)
         {
             LoadList();
@@ -175,7 +175,7 @@ public partial class WorldModel : SelectItemModel
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(item);
+        res = await GameBinding.DeleteDataPackAsync(item);
         if (res)
         {
             LoadList();
@@ -195,7 +195,7 @@ public partial class WorldModel : SelectItemModel
             return;
         }
 
-        res = await GameBinding.DeleteDataPack(items);
+        res = await GameBinding.DeleteDataPackAsync(items);
         if (res)
         {
             LoadList();

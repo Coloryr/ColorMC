@@ -21,11 +21,9 @@ public partial class FileItemControl : UserControl
         InitializeComponent();
 
         PointerPressed += FileItemControl_PointerPressed;
-        PointerReleased += FileItemControl_PointerReleased;
         DoubleTapped += FileItemControl_DoubleTapped;
         PointerEntered += FileItemControl_PointerEntered;
         PointerExited += FileItemControl_PointerExited;
-        PointerMoved += FileItemControl_PointerMoved;
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -38,16 +36,6 @@ public partial class FileItemControl : UserControl
                 ItemAnimation.Make().RunAsync(this);
             });
         }
-    }
-
-    private void FileItemControl_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        LongPressed.Cancel();
-    }
-
-    private void FileItemControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
-    {
-        LongPressed.Released();
     }
 
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
@@ -107,10 +95,6 @@ public partial class FileItemControl : UserControl
         {
             model.Next();
             e.Handled = true;
-        }
-        else
-        {
-            LongPressed.Pressed(OpenFlyout);
         }
     }
 }

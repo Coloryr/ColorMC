@@ -104,9 +104,9 @@ public partial class UserDisplayModel : SelectItemModel
             Task.Run(async () =>
             {
                 var temp = await ImageManager.GetUserSkinAsync(obj);
-                if (temp.Message != null)
+                if (temp.Data != null)
                 {
-                    using var skin = SKBitmap.Decode(temp.Message);
+                    using var skin = SKBitmap.Decode(temp.Data);
                     _img = ImageManager.GenHeadImage(skin);
                     _img1 = ImageManager.GenSkinImage(skin, temp.State);
                 }
@@ -209,9 +209,9 @@ public partial class UserDisplayModel : SelectItemModel
         Task.Run(async () =>
         {
             var temp = await ImageManager.GetUserSkinAsync(_obj);
-            if (temp.Message != null)
+            if (temp.Data != null)
             {
-                using var skin = SKBitmap.Decode(temp.Message);
+                using var skin = SKBitmap.Decode(temp.Data);
                 _img = ImageManager.GenHeadImage(skin);
             }
             Dispatcher.UIThread.Post(() =>

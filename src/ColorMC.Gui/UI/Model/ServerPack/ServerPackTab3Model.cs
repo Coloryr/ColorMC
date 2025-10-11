@@ -62,7 +62,7 @@ public partial class ServerPackModel
     public async void LoadResourceList()
     {
         ResourceList.Clear();
-        var mods = await GameBinding.GetResourcepacks(Obj.Game, true);
+        var mods = await GameBinding.GetResourcepacksAsync(Obj.Game, true);
 
         Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Sha256) == null);
 

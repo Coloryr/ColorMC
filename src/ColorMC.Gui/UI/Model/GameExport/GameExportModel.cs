@@ -290,7 +290,7 @@ public partial class GameExportModel : MenuModel
         {
             return;
         }
-        var file = await PathBinding.Export(top, this);
+        var file = await PathBinding.ExportAsync(top, this);
         Model.ProgressClose();
         if (file == null)
         {

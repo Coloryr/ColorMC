@@ -15,7 +15,7 @@ public static class OpenJ9Api
     /// <summary>
     /// 获取列表
     /// </summary>
-    public static async Task<GetOpenJ9ListRes?> GetJavaList()
+    public static async Task<GetOpenJ9ListRes?> GetJavaListAsync()
     {
         using var data = await CoreHttpClient.GetAsync(Url);
         if (data.StatusCode != HttpStatusCode.OK)

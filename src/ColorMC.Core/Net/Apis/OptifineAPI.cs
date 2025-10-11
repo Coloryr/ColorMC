@@ -22,7 +22,7 @@ public static class OptifineAPI
     /// <summary>
     /// 获取高清修复版本
     /// </summary>
-    public static async Task<List<OptifineObj>?> GetOptifineVersion()
+    public static async Task<List<OptifineObj>?> GetOptifineVersionAsync()
     {
         string url = UrlHelper.GetOptifine(CoreHttpClient.Source);
         try
@@ -130,7 +130,7 @@ public static class OptifineAPI
     /// </summary>
     /// <param name="obj">高清修复信息</param>
     /// <returns>下载地址</returns>
-    public static async Task<string?> GetOptifineDownloadUrl(OptifineObj obj)
+    public static async Task<string?> GetOptifineDownloadUrlAsync(OptifineObj obj)
     {
         try
         {
@@ -145,7 +145,7 @@ public static class OptifineAPI
                     return null;
                 }
                 HtmlDocument html = new();
-                html.LoadHtml(data.Message!);
+                html.LoadHtml(data.Data!);
                 var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
                 if (list1 == null)
                     return null;
@@ -168,13 +168,13 @@ public static class OptifineAPI
     /// <param name="obj">游戏实例</param>
     /// <param name="item">高清修复信息</param>
     /// <returns>结果</returns>
-    public static async Task<MessageRes> DownloadOptifine(GameSettingObj obj, OptifineObj item)
+    public static async Task<StringRes> DownloadOptifineAsync(GameSettingObj obj, OptifineObj item)
     {
         FileItemObj item1;
-        var data = await GetOptifineDownloadUrl(item);
+        var data = await GetOptifineDownloadUrlAsync(item);
         if (data == null)
         {
-            return new() { Message = LanguageHelper.Get("Core.Http.OptiFine.Error3") };
+            return new() { Data = LanguageHelper.Get("Core.Http.OptiFine.Error3") };
         }
 
         item1 = new()
@@ -190,7 +190,7 @@ public static class OptifineAPI
         var res = await DownloadManager.StartAsync([item1]);
         if (!res)
         {
-            return new() { Message = LanguageHelper.Get("Core.Http.OptiFine.Error4") };
+            return new() { Data = LanguageHelper.Get("Core.Http.OptiFine.Error4") };
         }
         return new() { State = true };
     }
@@ -199,13 +199,13 @@ public static class OptifineAPI
     /// 获取支持的游戏版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetSupportVersion()
+    public static async Task<List<string>?> GetSupportVersionAsync()
     {
         if (s_OptifneMcVersion != null)
         {
             return s_OptifneMcVersion;
         }
-        var list = await GetOptifineVersion();
+        var list = await GetOptifineVersionAsync();
         if (list == null)
         {
             return null;

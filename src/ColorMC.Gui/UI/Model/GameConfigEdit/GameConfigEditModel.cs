@@ -164,11 +164,11 @@ public partial class GameConfigEditModel : GameModel
             NbtBase? nbt;
             if (World != null)
             {
-                nbt = await GameBinding.ReadNbt(World, value);
+                nbt = await GameBinding.ReadNbtAsync(World, value);
             }
             else
             {
-                nbt = await GameBinding.ReadNbt(Obj, value);
+                nbt = await GameBinding.ReadNbtAsync(Obj, value);
             }
 
             Model.ProgressClose();
@@ -193,7 +193,7 @@ public partial class GameConfigEditModel : GameModel
             }
             else
             {
-                ChunkData = await GameBinding.ReadMca(Obj, value);
+                ChunkData = await GameBinding.ReadMcaAsync(Obj, value);
             }
 
             Model.ProgressClose();

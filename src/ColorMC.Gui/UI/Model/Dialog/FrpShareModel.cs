@@ -51,7 +51,7 @@ public partial class FrpShareModel : ObservableObject
     /// <returns></returns>
     public async Task Init(string version)
     {
-        var list = await GameBinding.GetGameVersions(GameType.All);
+        var list = await GameBinding.GetGameVersionsAsync(GameType.All);
         VersionList.AddRange(list);
         if (VersionList.Contains(version))
         {

@@ -58,7 +58,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab8.Info3"));
         _resourceItems.Clear();
 
-        var res = await GameBinding.GetResourcepacks(_obj);
+        var res = await GameBinding.GetResourcepacksAsync(_obj);
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -105,7 +105,7 @@ public partial class GameEditModel
         {
             return;
         }
-        var file = await PathBinding.AddFile(top, _obj, FileType.Resourcepack);
+        var file = await PathBinding.AddFileAsync(top, _obj, FileType.Resourcepack);
         if (file == null)
             return;
 
@@ -140,7 +140,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteResourcepack(obj);
+        await GameBinding.DeleteResourcepackAsync(obj);
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadResource();
     }
@@ -151,7 +151,7 @@ public partial class GameEditModel
     /// <param name="data">资源包</param>
     public async void DropResource(IDataTransfer data)
     {
-        var res = await GameBinding.AddFile(_obj, data, FileType.Resourcepack);
+        var res = await GameBinding.AddFileAsync(_obj, data, FileType.Resourcepack);
         if (res)
         {
             await LoadResource();

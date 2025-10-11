@@ -128,14 +128,14 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWebAsync()
     {
-        var res = await GameAPI.GetVersions();
+        var res = await GameAPI.GetVersionsAsync();
         if (res != null)
         {
             _version = res.Version;
             SaveVersions(res.Text);
             return;
         }
-        res = await GameAPI.GetVersions(SourceLocal.Offical);
+        res = await GameAPI.GetVersionsAsync(SourceLocal.Offical);
         if (res == null)
         {
             Logs.Error(LanguageHelper.Get("Core.Path.Error3"));
@@ -190,7 +190,7 @@ public static class VersionPath
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
         var url = UrlHelper.DownloadSourceChange(obj.Url, CoreHttpClient.Source);
-        var res = await GameAPI.GetGame(url);
+        var res = await GameAPI.GetGameAsync(url);
         if (res == null)
         {
             return null;
