@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using ColorMC.Core.Helpers;
@@ -119,44 +119,43 @@ public partial class ServerPackModel
     public async void LoadMod()
     {
         ModList.Clear();
-        var mods = await GameBinding.GetGameModsAsync(Obj.Game, null, true);
+        var mods = await GameBinding.GetGameModsAsync(Obj.Game, true);
 
-        Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Obj.Sha256) == null);
+        Obj.Mod?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Sha256) == null);
 
         mods.ForEach(item =>
         {
-            if (item.Obj.ReadFail)
+            if (item.ReadFail)
+            {
                 return;
+            }
 
-            string file = Path.GetFileName(item.Obj.Local);
+            string file = Path.GetFileName(item.Local);
 
-            var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha256 == item.Obj.Sha256
+            var item1 = Obj.Mod?.FirstOrDefault(a => a.Sha256 == item.Sha256
                         && a.File == file);
+
+            var obj1 = Obj.Game.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
 
             var item2 = new ServerPackItemModel()
             {
                 FileName = file,
-                Check = item1 != null,
-                PID = item.PID,
-                FID = item.FID,
-                Sha256 = item.Obj.Sha256,
-                Mod = item
+                Sha256 = item.Sha256,
+                Mod = new ModDisplayModel(item, obj1, null)
             };
 
-            if (item2.Check)
+            if (item1 != null)
             {
-                if (item1 != null)
+                item2.PID = item1.Projcet;
+                item2.FID = item1.FileId;
+                item2.Check = true;
+                if (!string.IsNullOrWhiteSpace(item1.Url))
                 {
-                    item2.PID = item1.Projcet;
-                    item2.FID = item1.FileId;
-                    if (!string.IsNullOrWhiteSpace(item1.Url))
-                    {
-                        item2.Url = item1.Url;
-                    }
-                    else
-                    {
-                        item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Game.ServerUrl);
-                    }
+                    item2.Url = item1.Url;
+                }
+                else
+                {
+                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Game.ServerUrl);
                 }
             }
 

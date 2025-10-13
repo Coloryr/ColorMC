@@ -12,6 +12,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
+    d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -72,10 +73,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text24}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border
-                    Margin="10,5,10,3"
-                    Classes="t2"
-                    IsVisible="{Binding !Phone}">
+                <Border Margin="10,5,10,3" Classes="t2">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                             <svg:SvgControl
@@ -138,10 +136,7 @@
                         <TextBlock Text="{setting:Localize SettingWindow.Tab3.Text12}" TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Border
-                    Margin="10,5,10,3"
-                    Classes="t2"
-                    IsVisible="{Binding !Phone}">
+                <Border Margin="10,5,10,3" Classes="t2">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl
@@ -209,10 +204,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Border>
-                <Border
-                    Margin="10,5,10,3"
-                    Classes="t2"
-                    IsEnabled="{Binding !Phone}">
+                <Border Margin="10,5,10,3" Classes="t2">
                     <StackPanel Margin="15">
                         <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                             <svg:SvgControl

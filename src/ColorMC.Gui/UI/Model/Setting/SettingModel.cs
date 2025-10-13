@@ -1,4 +1,4 @@
-﻿using System.Timers;
+using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -14,10 +14,6 @@ namespace ColorMC.Gui.UI.Model.Setting;
 /// </summary>
 public partial class SettingModel : MenuModel
 {
-    /// <summary>
-    /// 是否为手机模式
-    /// </summary>
-    public bool Phone { get; init; }
     /// <summary>
     /// 是否启用手柄
     /// </summary>
@@ -39,10 +35,6 @@ public partial class SettingModel : MenuModel
     public SettingModel(BaseModel model) : base(model)
     {
         IsWindows = SystemInfo.Os == OsType.Windows;
-#if Phone
-        Phone = true;
-        _enableWindowMode = false;
-#endif
 
         //更新定制器用于内存
         _timer = new Timer(1000);
@@ -96,14 +88,12 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text7"),
-                        Func = FindJava,
-                        Hide = Phone
+                        Func = FindJava
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text12"),
-                        Func = FindJavaDir,
-                        Hide = Phone
+                        Func = FindJavaDir
                     },
                     new SubMenuItemModel()
                     {
@@ -144,8 +134,7 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text18"),
-                        Func = DumpUser,
-                        Hide = Phone
+                        Func = DumpUser
                     },
                     new SubMenuItemModel()
                     {
@@ -155,32 +144,27 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text19"),
-                        Func = ClearWindow,
-                        Hide = Phone
+                        Func = ClearWindow
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab1.Text3"),
-                        Func = Open,
-                        Hide = Phone
+                        Func = Open
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab5.Text6"),
-                        Func = OpenJavaPath,
-                        Hide = Phone
+                        Func = OpenJavaPath
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab3.Text13"),
-                        Func = OpenDownloadPath,
-                        Hide = Phone
+                        Func = OpenDownloadPath
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab3.Text18"),
-                        Func = OpenPicPath,
-                        Hide = Phone
+                        Func = OpenPicPath
                     }
                 ]
             },
@@ -193,8 +177,7 @@ public partial class SettingModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("SettingWindow.Tab8.Info8"),
-                        Func = ReloadInput,
-                        Hide = Phone
+                        Func = ReloadInput
                     }
                 ]
             },

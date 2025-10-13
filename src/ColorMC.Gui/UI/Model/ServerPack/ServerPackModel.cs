@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;

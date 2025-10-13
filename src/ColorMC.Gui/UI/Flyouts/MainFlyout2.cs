@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Avalonia.Controls;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;

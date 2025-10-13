@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 

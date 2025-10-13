@@ -6,12 +6,12 @@ using CommunityToolkit.Mvvm.Input;
 namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
-/// MacosÏÂµÄ×óÉÏ½Ç²Ëµ¥
+/// Macosä¸‹çš„å·¦ä¸Šè§’èœå•
 /// </summary>
 public partial class AppModel : ObservableObject
 {
     /// <summary>
-    /// ÏÔÊ¾Ö÷Ò³Ãæ
+    /// æ˜¾ç¤ºä¸»é¡µé¢
     /// </summary>
     [RelayCommand]
     public void ShowMain()
@@ -19,7 +19,7 @@ public partial class AppModel : ObservableObject
         WindowManager.ShowMain();
     }
     /// <summary>
-    /// ÏÔÊ¾ÉèÖÃ
+    /// æ˜¾ç¤ºè®¾ç½®
     /// </summary>
     [RelayCommand]
     public void ShowSetting()
@@ -27,7 +27,7 @@ public partial class AppModel : ObservableObject
         WindowManager.ShowSetting(SettingType.Normal);
     }
     /// <summary>
-    /// Ìí¼ÓÕË»§
+    /// æ·»åŠ è´¦æˆ·
     /// </summary>
     [RelayCommand]
     public void AddUser()
@@ -35,7 +35,7 @@ public partial class AppModel : ObservableObject
         WindowManager.ShowUser(true);
     }
     /// <summary>
-    /// Ìí¼ÓÓÎÏ·ÊµÀı
+    /// æ·»åŠ æ¸¸æˆå®ä¾‹
     /// </summary>
     [RelayCommand]
     public void AddGame()
@@ -43,7 +43,7 @@ public partial class AppModel : ObservableObject
         WindowManager.ShowAddGame(null);
     }
     /// <summary>
-    /// ÍË³öÆô¶¯Æ÷
+    /// é€€å‡ºå¯åŠ¨å™¨
     /// </summary>
     [RelayCommand]
     public void Exit()

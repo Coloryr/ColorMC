@@ -18,11 +18,6 @@ public partial class GameEditModel : MenuModel
     private readonly GameSettingObj _obj;
 
     /// <summary>
-    /// 是否为手机界面
-    /// </summary>
-    public bool Phone { get; } = false;
-
-    /// <summary>
     /// 更新内存用
     /// </summary>
     private readonly Timer _timer;
@@ -30,9 +25,6 @@ public partial class GameEditModel : MenuModel
     public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
     {
         _obj = obj;
-#if Phone
-        Phone = true;
-#endif
 
         _timer = new Timer(1000);
         _timer.Elapsed += Timer_Elapsed;
@@ -60,8 +52,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("GameEditWindow.Tab1.Text11"),
-                        Func = ExportGame,
-                        Hide = Phone
+                        Func = ExportGame
                     },
                     new SubMenuItemModel()
                     {
@@ -76,14 +67,12 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("Button.OpFile"),
-                        Func = OpPath,
-                        Hide = Phone
+                        Func = OpPath
                     },
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("GameEditWindow.Tab1.Text5"),
-                        Func = OpenServerPack,
-                        Hide = Phone
+                        Func = OpenServerPack
                     },
                     new SubMenuItemModel()
                     {
@@ -159,8 +148,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("Button.OpFile"),
-                        Func = OpenMod,
-                        Hide = Phone
+                        Func = OpenMod
                     }
                 ]
             },
@@ -183,8 +171,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("GameEditWindow.Tab5.Text3"),
-                        Func = EditWorld,
-                        Hide = Phone
+                        Func = EditWorld
                     },
                     new SubMenuItemModel()
                     {
@@ -199,8 +186,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("Button.OpFile"),
-                        Func = OpenWorld,
-                        Hide = Phone
+                        Func = OpenWorld
                     }
                 ]
             },
@@ -223,8 +209,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("Button.OpFile"),
-                        Func = OpenResource,
-                        Hide = Phone
+                        Func = OpenResource
                     },
                 ]
             },
@@ -247,8 +232,7 @@ public partial class GameEditModel : MenuModel
                     new SubMenuItemModel()
                     {
                         Name = App.Lang("Button.OpFile"),
-                        Func = OpenScreenshot,
-                        Hide = Phone
+                        Func = OpenScreenshot
                     }
                 ]
             },

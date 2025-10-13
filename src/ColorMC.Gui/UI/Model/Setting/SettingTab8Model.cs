@@ -21,192 +21,192 @@ using GameControllerAxis = Silk.NET.SDL.GameControllerAxis;
 namespace ColorMC.Gui.UI.Model.Setting;
 
 /// <summary>
-/// ÉèÖÃÒ³Ãæ
+/// è®¾ç½®é¡µé¢
 /// </summary>
 public partial class SettingModel
 {
     /// <summary>
-    /// ÊÖ±úÅäÖÃÁĞ±í
+    /// æ‰‹æŸ„é…ç½®åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> Configs { get; init; } = [];
     /// <summary>
-    /// ÊÖ±ú°´Å¥ÁĞ±í
+    /// æ‰‹æŸ„æŒ‰é’®åˆ—è¡¨
     /// </summary>
     public ObservableCollection<InputButtonModel> InputList { get; init; } = [];
     /// <summary>
-    /// ÊÖ±úÁĞ±í
+    /// æ‰‹æŸ„åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> InputNames { get; init; } = [];
     /// <summary>
-    /// Ò¡¸ËÁĞ±í
+    /// æ‘‡æ†åˆ—è¡¨
     /// </summary>
     public ObservableCollection<InputAxisButtonModel> InputAxisList { get; init; } = [];
 
     /// <summary>
-    /// Ò¡¸ËÀàĞÍ
+    /// æ‘‡æ†ç±»å‹
     /// </summary>
     public string[] AxisType { get; init; } = LanguageBinding.GetAxisTypeName();
 
     /// <summary>
-    /// Ñ¡ÖĞµÄ°´Å¥
+    /// é€‰ä¸­çš„æŒ‰é’®
     /// </summary>
     [ObservableProperty]
     private InputButtonModel _inputItem;
     /// <summary>
-    /// Ñ¡ÖĞµÄÒ¡¸Ë
+    /// é€‰ä¸­çš„æ‘‡æ†
     /// </summary>
     [ObservableProperty]
     private InputAxisButtonModel _inputAxisItem;
 
     /// <summary>
-    /// ÊÇ·ñ³õÊ¼»¯ÁËÊÖ±úÊäÈë
+    /// æ˜¯å¦åˆå§‹åŒ–äº†æ‰‹æŸ„è¾“å…¥
     /// </summary>
     [ObservableProperty]
     private bool _inputInit;
     /// <summary>
-    /// ÊÇ·ñ´æÔÚÊÖ±ú
+    /// æ˜¯å¦å­˜åœ¨æ‰‹æŸ„
     /// </summary>
     [ObservableProperty]
     private bool _inputExist;
     /// <summary>
-    /// ÊÇ·ñÆôÓÃÊÖ±úÓ³Éä
+    /// æ˜¯å¦å¯ç”¨æ‰‹æŸ„æ˜ å°„
     /// </summary>
     [ObservableProperty]
     private bool _inputEnable;
     /// <summary>
-    /// ÊÇ·ñÆôÓÃÎïÆ·Ñ­»·
+    /// æ˜¯å¦å¯ç”¨ç‰©å“å¾ªç¯
     /// </summary>
     [ObservableProperty]
     private bool _itemCycle;
     /// <summary>
-    /// ÊÇ·ñÆôÓÃÎïÆ·Ñ­»·
+    /// æ˜¯å¦å¯ç”¨ç‰©å“å¾ªç¯
     /// </summary>
     [ObservableProperty]
     private bool _inputDisable;
 
     /// <summary>
-    /// ÊÖ±úÊıÁ¿
+    /// æ‰‹æŸ„æ•°é‡
     /// </summary>
     [ObservableProperty]
     private int _inputNum;
     /// <summary>
-    /// Ñ¡ÖĞµÄÊÖ±ú
+    /// é€‰ä¸­çš„æ‰‹æŸ„
     /// </summary>
     [ObservableProperty]
     private int _inputIndex = -1;
     /// <summary>
-    /// Ñ¡ÖĞµÄÒ¡¸Ë
+    /// é€‰ä¸­çš„æ‘‡æ†
     /// </summary>
     [ObservableProperty]
     private int _inputRotateAxis = 0;
     /// <summary>
-    /// ¹â±êÒ¡¸ËËÀÇø´óĞ¡
+    /// å…‰æ ‡æ‘‡æ†æ­»åŒºå¤§å°
     /// </summary>
     [ObservableProperty]
     private int _cursorDeath;
     /// <summary>
-    /// ÒÆ¶¯Ò¡¸ËËÀÇø´óĞ¡
+    /// ç§»åŠ¨æ‘‡æ†æ­»åŒºå¤§å°
     /// </summary>
     [ObservableProperty]
     private int _rotateDeath;
     /// <summary>
-    /// ¹â±êÒ¡¸Ë
+    /// å…‰æ ‡æ‘‡æ†
     /// </summary>
     [ObservableProperty]
     private int _inputCursorAxis = 0;
     /// <summary>
-    /// »Ø¹öÖµ
+    /// å›æ»šå€¼
     /// </summary>
     [ObservableProperty]
     private int _toBackValue;
 
     /// <summary>
-    /// µ±Ç°ÅäÖÃ
+    /// å½“å‰é…ç½®
     /// </summary>
     [ObservableProperty]
     private int _nowConfig = -1;
     /// <summary>
-    /// Ñ¡ÖĞµÄÅäÖÃ
+    /// é€‰ä¸­çš„é…ç½®
     /// </summary>
     [ObservableProperty]
     private int _selectConfig = -1;
     /// <summary>
-    /// Ñ¡ÖĞµÄÒ¡¸Ë
+    /// é€‰ä¸­çš„æ‘‡æ†
     /// </summary>
     [ObservableProperty]
     private int _nowAxis1;
     /// <summary>
-    /// Ñ¡ÖĞµÄÒ¡¸Ë
+    /// é€‰ä¸­çš„æ‘‡æ†
     /// </summary>
     [ObservableProperty]
     private int _nowAxis2;
 
     /// <summary>
-    /// ÎïÆ·Ñ­»·°´Å¥
+    /// ç‰©å“å¾ªç¯æŒ‰é’®
     /// </summary>
     [ObservableProperty]
     private byte _itemCycleLeft;
     /// <summary>
-    /// ÎïÆ·Ñ­»·°´Å¥
+    /// ç‰©å“å¾ªç¯æŒ‰é’®
     /// </summary>
     [ObservableProperty]
     private byte _itemCycleRight;
 
     /// <summary>
-    /// ÎïÆ·Ñ­»·Í¼±ê
+    /// ç‰©å“å¾ªç¯å›¾æ ‡
     /// </summary>
     [ObservableProperty]
     private string _cycleLeftIcon;
     /// <summary>
-    /// ÎïÆ·Ñ­»·Í¼±ê
+    /// ç‰©å“å¾ªç¯å›¾æ ‡
     /// </summary>
     [ObservableProperty]
     private string _cycleRightIcon;
 
     /// <summary>
-    /// ÒÆ¶¯±¶ÂÊ
+    /// ç§»åŠ¨å€ç‡
     /// </summary>
     [ObservableProperty]
     private float _rotateRate;
     /// <summary>
-    /// ¹â±ê±¶ÂÊ
+    /// å…‰æ ‡å€ç‡
     /// </summary>
     [ObservableProperty]
     private float _cursorRate;
     /// <summary>
-    /// ½µËÙ
+    /// é™é€Ÿ
     /// </summary>
     [ObservableProperty]
     private float _downRate;
 
     /// <summary>
-    /// ¿ØÖÆÆ÷ÁĞ±í
+    /// æ§åˆ¶å™¨åˆ—è¡¨
     /// </summary>
     private readonly List<string> _controlUUIDs = [];
     /// <summary>
-    /// µ±Ç°ÊıÖµ
+    /// å½“å‰æ•°å€¼
     /// </summary>
     private short _leftX, _leftY, _rightX, _rightY;
 
-    //ÊıÖµ¸üĞÂ»Øµ÷
+    //æ•°å€¼æ›´æ–°å›è°ƒ
     private Action<byte>? _input;
     private Action<byte, bool>? _inputAxis;
     private Action<InputKeyObj>? _inputKey;
 
-    //µ±Ç°ÊÖ±ú
+    //å½“å‰æ‰‹æŸ„
     private IntPtr _controlPtr;
     private int _joystickID;
 
     /// <summary>
-    /// µ±Ç°¿ØÖÆÆ÷
+    /// å½“å‰æ§åˆ¶å™¨
     /// </summary>
     private InputControlObj? _controlObj;
 
-    //ÊÇ·ñ¼ÓÔØÅäÖÃÖĞ
+    //æ˜¯å¦åŠ è½½é…ç½®ä¸­
     private bool _isInputConfigLoad;
     private bool _isInputLoad;
 
-    //ÅäÖÃĞŞ¸Ä
+    //é…ç½®ä¿®æ”¹
     partial void OnNowConfigChanged(int value)
     {
         if (_isInputLoad)
@@ -404,7 +404,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// µ¼³öÊÖ±úÉèÖÃ
+    /// å¯¼å‡ºæ‰‹æŸ„è®¾ç½®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -433,7 +433,7 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info14"));
     }
     /// <summary>
-    /// µ¼ÈëÊÖ±úÉèÖÃ
+    /// å¯¼å…¥æ‰‹æŸ„è®¾ç½®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -466,7 +466,7 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info15"));
     }
     /// <summary>
-    /// É¾³ıÊÖ±úÉèÖÃ
+    /// åˆ é™¤æ‰‹æŸ„è®¾ç½®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -494,7 +494,7 @@ public partial class SettingModel
         }
     }
     /// <summary>
-    /// ÖØÃüÃûÊÖ±úÉèÖÃ
+    /// é‡å‘½åæ‰‹æŸ„è®¾ç½®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -524,7 +524,7 @@ public partial class SettingModel
         ConfigBinding.SaveInputConfig(_controlObj);
     }
     /// <summary>
-    /// ĞÂ½¨ÊÖ±úÉèÖÃ
+    /// æ–°å»ºæ‰‹æŸ„è®¾ç½®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -543,7 +543,7 @@ public partial class SettingModel
         SelectConfig = Configs.Count - 1;
     }
     /// <summary>
-    /// Ìí¼ÓÒ¡¸ËÊäÈë
+    /// æ·»åŠ æ‘‡æ†è¾“å…¥
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -588,7 +588,7 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info5"));
     }
     /// <summary>
-    /// Ìí¼Ó°´Å¥ÊäÈë
+    /// æ·»åŠ æŒ‰é’®è¾“å…¥
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -639,7 +639,7 @@ public partial class SettingModel
         Model.Notify(App.Lang("SettingWindow.Tab8.Info7"));
     }
     /// <summary>
-    /// ÉèÖÃ°´Å¥
+    /// è®¾ç½®æŒ‰é’®
     /// </summary>
     /// <param name="right"></param>
     /// <returns></returns>
@@ -670,7 +670,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ±£´æÉèÖÃ
+    /// ä¿å­˜è®¾ç½®
     /// </summary>
     /// <param name="model"></param>
     public void InputSave(InputAxisButtonModel model)
@@ -683,7 +683,7 @@ public partial class SettingModel
         ConfigBinding.AddAxisInput(_controlObj, model.UUID, model.GenObj());
     }
     /// <summary>
-    /// ¿ªÊ¼¶ÁÈ¡ÊÖ±ú
+    /// å¼€å§‹è¯»å–æ‰‹æŸ„
     /// </summary>
     private void StartRead()
     {
@@ -695,7 +695,7 @@ public partial class SettingModel
         JoystickInput.OnEvent += InputControl_OnEvent;
     }
     /// <summary>
-    /// ¸üĞÂÒ¡¸ËÖµ
+    /// æ›´æ–°æ‘‡æ†å€¼
     /// </summary>
     private void UpdateType1()
     {
@@ -712,7 +712,7 @@ public partial class SettingModel
         });
     }
     /// <summary>
-    /// ¸üĞÂÒ¡¸ËÖµ
+    /// æ›´æ–°æ‘‡æ†å€¼
     /// </summary>
     private void UpdateType2()
     {
@@ -730,7 +730,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ¿ªÊ¼¶ÁÈ¡ÅäÖÃ
+    /// å¼€å§‹è¯»å–é…ç½®
     /// </summary>
     public void LoadInput()
     {
@@ -770,9 +770,9 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ¼ÓÔØÊÖ±úÉèÖÃ
+    /// åŠ è½½æ‰‹æŸ„è®¾ç½®
     /// </summary>
-    /// <param name="config">ÊÖ±úÉèÖÃ</param>
+    /// <param name="config">æ‰‹æŸ„è®¾ç½®</param>
     private void LoadInputConfig(InputControlObj config)
     {
         _isInputConfigLoad = true;
@@ -819,7 +819,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ÖØÔØÊÖ±úÁĞ±í
+    /// é‡è½½æ‰‹æŸ„åˆ—è¡¨
     /// </summary>
     public void ReloadInput()
     {
@@ -842,7 +842,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ÉèÖÃÊÖ±úÅäÖÃ°´Å¥
+    /// è®¾ç½®æ‰‹æŸ„é…ç½®æŒ‰é’®
     /// </summary>
     /// <param name="item"></param>
     public async void SetKeyButton(InputButtonModel item)
@@ -877,7 +877,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// É¾³ıÊÖ±úÅäÖÃ°´Å¥
+    /// åˆ é™¤æ‰‹æŸ„é…ç½®æŒ‰é’®
     /// </summary>
     /// <param name="item"></param>
     public void DeleteInput(InputButtonModel item)
@@ -900,7 +900,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ÊäÈëÊó±ê°´Å¥
+    /// è¾“å…¥é¼ æ ‡æŒ‰é’®
     /// </summary>
     /// <param name="modifiers"></param>
     /// <param name="properties"></param>
@@ -954,7 +954,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ÊäÈë¼üÅÌ°´Å¥
+    /// è¾“å…¥é”®ç›˜æŒ‰é’®
     /// </summary>
     /// <param name="modifiers"></param>
     /// <param name="key"></param>
@@ -989,7 +989,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// µÈ´ıÓÃ»§ÊäÈë°´Å¥
+    /// ç­‰å¾…ç”¨æˆ·è¾“å…¥æŒ‰é’®
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
@@ -1021,7 +1021,7 @@ public partial class SettingModel
         });
     }
     /// <summary>
-    /// µÈ´ıÓÃ»§ÊäÈë°´Å¥
+    /// ç­‰å¾…ç”¨æˆ·è¾“å…¥æŒ‰é’®
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
@@ -1050,7 +1050,7 @@ public partial class SettingModel
         });
     }
     /// <summary>
-    /// µÈ´ıÓÃ»§Ò¡¸ËÊäÈë
+    /// ç­‰å¾…ç”¨æˆ·æ‘‡æ†è¾“å…¥
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
@@ -1082,7 +1082,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ÊÖ±úÊÂ¼ş
+    /// æ‰‹æŸ„äº‹ä»¶
     /// </summary>
     /// <param name="sdlEvent"></param>
     private void InputControl_OnEvent(Event sdlEvent)
@@ -1159,7 +1159,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// ¹Ø±Õµ±Ç°ÊÖ±ú
+    /// å…³é—­å½“å‰æ‰‹æŸ„
     /// </summary>
     private void InputClose()
     {
@@ -1172,7 +1172,7 @@ public partial class SettingModel
     }
 
     /// <summary>
-    /// Í£Ö¹»ñÈ¡ÊÖ±úÊäÈë
+    /// åœæ­¢è·å–æ‰‹æŸ„è¾“å…¥
     /// </summary>
     private void StopRead()
     {

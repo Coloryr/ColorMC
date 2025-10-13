@@ -1,6 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model.GameEdit;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -83,9 +84,9 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 顶层
     /// </summary>
-    private readonly IModEdit? _top;
+    private readonly GameEditModel? _top;
 
-    public ModDisplayModel(ModObj obj, ModInfoObj? obj1, IModEdit? top)
+    public ModDisplayModel(ModObj obj, ModInfoObj? obj1, GameEditModel? top)
     {
         _top = top;
         Obj = obj;

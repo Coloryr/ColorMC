@@ -40,6 +40,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
@@ -892,22 +893,9 @@ public static class GameBinding
     /// <param name="obj"></param>
     /// <param name="sha256"></param>
     /// <returns></returns>
-    public static async Task<List<ModDisplayModel>> GetGameModsAsync(GameSettingObj obj, IModEdit? edit,
-        bool sha256 = false)
+    public static Task<List<ModObj>> GetGameModsAsync(GameSettingObj obj, bool sha256 = false)
     {
-        var list = new List<ModDisplayModel>();
-        var list1 = await obj.GetModsAsync(sha256);
-        if (list1 == null)
-        {
-            return list;
-        }
-
-        list1.ForEach(item =>
-        {
-            var obj1 = obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
-            list.Add(new ModDisplayModel(item, obj1, edit));
-        });
-        return list;
+        return obj.GetModsAsync(sha256);
     }
 
     /// <summary>

@@ -12,12 +12,12 @@ using ColorMC.Gui.UI.Model.Items;
 namespace ColorMC.Gui.UI.Controls.Add;
 
 /// <summary>
-/// 添加资源窗口
+/// 娣诲姞璧勬簮绐楀彛
 /// </summary>
 public partial class AddControl : BaseUserControl
 {
     /// <summary>
-    /// 游戏实例
+    /// 娓告垙瀹炰緥
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -165,7 +165,7 @@ public partial class AddControl : BaseUserControl
     }
 
     /// <summary>
-    /// 转到模组升级
+    /// 杞埌妯＄粍鍗囩骇
     /// </summary>
     /// <param name="list"></param>
     public void GoUpgrade(ICollection<ModUpgradeModel> list)
@@ -174,7 +174,7 @@ public partial class AddControl : BaseUserControl
     }
 
     /// <summary>
-    /// 重新加载标题
+    /// 閲嶆柊鍔犺浇鏍囬
     /// </summary>
     public void ReloadTitle()
     {

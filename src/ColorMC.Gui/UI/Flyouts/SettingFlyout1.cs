@@ -1,7 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
