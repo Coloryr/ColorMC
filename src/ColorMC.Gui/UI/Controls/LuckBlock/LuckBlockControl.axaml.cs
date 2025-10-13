@@ -37,6 +37,11 @@ public partial class LuckBlockControl : BaseUserControl
         (DataContext as LuckBlockModel)?.LoadBlocks();
     }
 
+    public override void Closed()
+    {
+        WindowManager.LuckBlockWindow = null;
+    }
+
     protected override TopModel GenModel(BaseModel model)
     {
         return new LuckBlockModel(model);

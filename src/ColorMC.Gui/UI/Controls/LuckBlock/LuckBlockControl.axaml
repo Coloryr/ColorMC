@@ -22,34 +22,40 @@
         </Style>
     </UserControl.Styles>
     <Panel>
-        <DockPanel>
-            <StackPanel
-                Margin="20"
-                HorizontalAlignment="Center"
-                DockPanel.Dock="Bottom"
-                Orientation="Horizontal"
-                Spacing="20">
-                <Button
-                    Width="120"
-                    Height="40"
-                    Background="#4CAF50"
-                    BorderThickness="0"
-                    Command="{Binding StartCommand}"
-                    Content="开始抽奖"
-                    CornerRadius="6"
-                    FontSize="16"
+        <Border
+            x:Name="ItemsContainer"
+            Background="#252525"
+            ClipToBounds="True">
+            <DockPanel Margin="20">
+                <TextBlock
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    DockPanel.Dock="Top"
+                    FontSize="24"
                     FontWeight="Bold"
-                    Foreground="White" />
-            </StackPanel>
-            <Border
-                Margin="40,20"
-                Background="#252525"
-                CornerRadius="12">
-                <Border
-                    x:Name="ItemsContainer"
+                    Foreground="#ffd700"
+                    IsVisible="{Binding CanRun}"
+                    Text="抽取您的今日幸运方块" />
+                <StackPanel
                     Margin="20"
-                    Background="Transparent"
-                    ClipToBounds="True">
+                    HorizontalAlignment="Center"
+                    DockPanel.Dock="Bottom"
+                    IsVisible="{Binding CanRun}"
+                    Orientation="Horizontal"
+                    Spacing="20">
+                    <Button
+                        Width="120"
+                        Height="40"
+                        Background="#4CAF50"
+                        BorderThickness="0"
+                        Command="{Binding StartCommand}"
+                        Content="开始抽取"
+                        CornerRadius="6"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="White" />
+                </StackPanel>
+                <Panel>
                     <ItemsControl ItemsSource="{Binding LotteryItems}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -96,9 +102,24 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </Border>
-            </Border>
-        </DockPanel>
+                    <Svg
+                        Width="50"
+                        Height="50"
+                        Margin="0,0,0,200"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Path="/Resource/Icon/LuckBlock/down.svg" />
+                    <Svg
+                        Width="50"
+                        Height="50"
+                        Margin="0,120,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Path="/Resource/Icon/LuckBlock/up.svg" />
+                </Panel>
+            </DockPanel>
+        </Border>
+
         <!--  结果显示  -->
         <Border
             Width="300"
@@ -107,7 +128,7 @@
             VerticalAlignment="Center"
             Background="#1a1a1a"
             CornerRadius="12"
-            IsVisible="{Binding ShowResult}"
+            IsVisible="{Binding ShowResult, FallbackValue=false}"
             Opacity="0.9">
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -117,8 +138,7 @@
                     FontSize="24"
                     FontWeight="Bold"
                     Foreground="#ffd700"
-                    Text="恭喜获得!" />
-
+                    Text="今天您的幸运方块是" />
                 <Border
                     Width="120"
                     HorizontalAlignment="Center"
@@ -150,15 +170,6 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
                 </Border>
-                <Button
-                    Width="80"
-                    Height="30"
-                    Margin="0,20,0,0"
-                    HorizontalAlignment="Center"
-                    Background="#2196F3"
-                    Command="{Binding CloseResult}"
-                    Content="确定"
-                    Foreground="White" />
             </StackPanel>
         </Border>
     </Panel>

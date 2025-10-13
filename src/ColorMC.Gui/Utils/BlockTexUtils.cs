@@ -57,6 +57,26 @@ public static class BlockTexUtils
         LoadUnlock();
     }
 
+    public static bool IsGet()
+    {
+        var time = DateTime.Now;
+        if (Blocks.Time.Year != time.Year
+            || Blocks.Time.Month != time.Month
+            || Blocks.Time.Day != time.Day)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void SetToday(string key)
+    {
+        Blocks.Time = DateTime.Now;
+        Blocks.Today = key;
+        SaveState();
+    }
+
     public static string GetTex(string file)
     {
         return Path.Combine(s_local, file);
@@ -166,21 +186,19 @@ public static class BlockTexUtils
                 }
 
                 Blocks = state;
-                Blocks.Tex ??= [];
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("App.Error3"), e);
+                Logs.Error(App.Lang("App.Error4"), e);
             }
         }
-        else
+        Blocks ??= new()
         {
-            Blocks = new()
-            {
-                Tex = []
-            };
-            SaveState();
-        }
+            Tex = []
+        };
+        Blocks.Tex ??= [];
+        
+        SaveState();
     }
 
     /// <summary>
