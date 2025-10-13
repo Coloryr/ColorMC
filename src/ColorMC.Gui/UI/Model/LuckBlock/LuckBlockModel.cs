@@ -23,9 +23,11 @@ public partial class LuckBlockModel : TopModel
     [ObservableProperty]
     private bool _isAnimating;
     [ObservableProperty]
-    private double _scrollSpeed;
+    private double _scrollSpeed = 5;
     [ObservableProperty]
     private bool _showResult;
+    [ObservableProperty]
+    private bool _canRun;
     [ObservableProperty]
     private LotteryItemViewModel? _selectedItem;
 
@@ -34,12 +36,12 @@ public partial class LuckBlockModel : TopModel
 
     public LuckBlockModel(BaseModel model) : base(model)
     {
-
+        
     }
 
     public bool CanStart()
     {
-        return !IsAnimating;
+        return !IsAnimating && CanRun;
     }
 
     [RelayCommand]
@@ -98,6 +100,20 @@ public partial class LuckBlockModel : TopModel
         LotteryItems.AddRange(list);
 
         Reset();
+
+        if (BlockTexUtils.IsGet())
+        {
+            CanRun = false;
+
+            var block = BlockTexUtils.Blocks.Today;
+            SelectedItem = LotteryItems.FirstOrDefault(item => item.Key == block);
+            ShowResult = true;
+        }
+        else
+        {
+            CanRun = true;
+        }
+        IsAnimating = true;
     }
 
     public async void StopLottery()
@@ -135,6 +151,11 @@ public partial class LuckBlockModel : TopModel
             IsAnimating = false;
             EnsureCenterItemSelected();
             ShowResult = true;
+            CanRun = false;
+            if (SelectedItem != null)
+            {
+                BlockTexUtils.SetToday(SelectedItem.Key);
+            }
         }
         catch (TaskCanceledException)
         {
@@ -157,8 +178,10 @@ public partial class LuckBlockModel : TopModel
 
             itemVm.Left = newLeft;
         }
-
-        CheckCenterItem();
+        if (CanRun)
+        {
+            CheckCenterItem();
+        }
     }
 
     private void CheckCenterItem()

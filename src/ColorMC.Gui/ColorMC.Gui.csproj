@@ -100,6 +100,8 @@
     <None Remove="Resource\Icon\launch.svg" />
     <None Remove="Resource\Icon\left.svg" />
     <None Remove="Resource\Icon\left1.svg" />
+    <None Remove="Resource\Icon\LuckBlock\down.svg" />
+    <None Remove="Resource\Icon\LuckBlock\up.svg" />
     <None Remove="Resource\Icon\Main\svg1.svg" />
     <None Remove="Resource\Icon\Main\svg2.svg" />
     <None Remove="Resource\Icon\menu.svg" />
@@ -252,6 +254,8 @@
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
     <AvaloniaResource Include="Resource\Icon\left.svg" />
     <AvaloniaResource Include="Resource\Icon\left1.svg" />
+    <AvaloniaResource Include="Resource\Icon\LuckBlock\down.svg" />
+    <AvaloniaResource Include="Resource\Icon\LuckBlock\up.svg" />
     <AvaloniaResource Include="Resource\Icon\Main\svg1.svg" />
     <AvaloniaResource Include="Resource\Icon\Main\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\menu.svg" />

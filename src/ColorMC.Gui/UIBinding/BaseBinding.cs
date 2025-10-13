@@ -951,13 +951,13 @@ public static class BaseBinding
             if (json.RootElement.TryGetProperty("block.minecraft." + item.Key, out var name)
                 && name.ValueKind == JsonValueKind.String)
             {
-                list.Add(new LotteryItemViewModel(name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                list.Add(new LotteryItemViewModel(item.Key, name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
                     ImageManager.GetBlockIcon(item.Value)));
             }
             else if (json.RootElement.TryGetProperty("block.minecraft." + item.Key.Replace("_powered", ""), out var name1)
                 && name.ValueKind == JsonValueKind.String)
             {
-                list.Add(new LotteryItemViewModel(name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                list.Add(new LotteryItemViewModel(item.Key, name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
                     ImageManager.GetBlockIcon(item.Value)));
             }
         }
