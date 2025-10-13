@@ -492,7 +492,7 @@ public static class WebBinding
     public static async Task<bool> DownloadModAsync(GameSettingObj obj, ICollection<DownloadModArg> list)
     {
         var list1 = new List<FileItemObj>();
-        var setting = GameGuiSetting.ReadConfig(obj);
+        var setting = GameManager.ReadConfig(obj);
         foreach (var item in list)
         {
             item.Item.Later = (s) =>
@@ -522,7 +522,7 @@ public static class WebBinding
             list1.Add(item.Item);
         }
 
-        GameGuiSetting.WriteConfig(obj, setting);
+        GameManager.WriteConfig(obj, setting);
         return await DownloadManager.StartAsync(list1);
     }
 
@@ -1607,7 +1607,7 @@ public static class WebBinding
         {
             try
             {
-                var setting = GameGuiSetting.ReadConfig(obj);
+                var setting = GameManager.ReadConfig(obj);
                 DownloadModArg? arg = null;
                 if (model.SourceType == SourceType.CurseForge)
                 {
@@ -1654,7 +1654,7 @@ public static class WebBinding
                     }
                 }
 
-                GameGuiSetting.WriteConfig(obj, setting);
+                GameManager.WriteConfig(obj, setting);
 
                 return arg.Item;
             }

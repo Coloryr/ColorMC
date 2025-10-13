@@ -1,10 +1,165 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="ColorMC.Gui.UI.Controls.LuckBlock.LuckBlockControl">
-	<StackPanel>
-		
-	</StackPanel>
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.LuckBlock.LuckBlockControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:items="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.LuckBlock"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:LuckBlockModel"
+    mc:Ignorable="d">
+    <UserControl.Styles>
+        <Style Selector="Border.ItemContainer">
+            <Setter Property="Width" Value="120" />
+            <Setter Property="Height" Value="120" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Background" Value="#2d2d2d" />
+            <Setter Property="BorderBrush" Value="#444" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="8" />
+        </Style>
+    </UserControl.Styles>
+    <Panel>
+        <DockPanel>
+            <StackPanel
+                Margin="20"
+                HorizontalAlignment="Center"
+                DockPanel.Dock="Bottom"
+                Orientation="Horizontal"
+                Spacing="20">
+                <Button
+                    Width="120"
+                    Height="40"
+                    Background="#4CAF50"
+                    BorderThickness="0"
+                    Command="{Binding StartCommand}"
+                    Content="开始抽奖"
+                    CornerRadius="6"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="White" />
+            </StackPanel>
+            <Border
+                Margin="40,20"
+                Background="#252525"
+                CornerRadius="12">
+                <Border
+                    x:Name="ItemsContainer"
+                    Margin="20"
+                    Background="Transparent"
+                    ClipToBounds="True">
+                    <ItemsControl ItemsSource="{Binding LotteryItems}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Height="200" VerticalAlignment="Center" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.Styles>
+                            <Style x:DataType="items:LotteryItemViewModel" Selector="ContentPresenter">
+                                <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                                <Setter Property="Canvas.Top" Value="10" />
+                            </Style>
+                        </ItemsControl.Styles>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Width="120"
+                                    Height="120"
+                                    Classes="ItemContainer">
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Vertical">
+                                        <Image
+                                            Width="60"
+                                            Height="60"
+                                            Margin="0,0,0,5"
+                                            Source="{Binding Bitmap}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Center"
+                                            FontSize="15"
+                                            FontWeight="Bold"
+                                            Foreground="#FFFFFF"
+                                            Text="{Binding Name}" />
+                                        <TextBlock
+                                            MaxWidth="100"
+                                            HorizontalAlignment="Center"
+                                            FontSize="10"
+                                            Foreground="White"
+                                            Text="{Binding Group}"
+                                            TextAlignment="Center"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </Border>
+        </DockPanel>
+        <!--  结果显示  -->
+        <Border
+            Width="300"
+            Padding="20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="#1a1a1a"
+            CornerRadius="12"
+            IsVisible="{Binding ShowResult}"
+            Opacity="0.9">
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock
+                    Margin="0,0,0,20"
+                    HorizontalAlignment="Center"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Foreground="#ffd700"
+                    Text="恭喜获得!" />
+
+                <Border
+                    Width="120"
+                    HorizontalAlignment="Center"
+                    Classes="ItemContainer">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                        <Image
+                            Width="60"
+                            Height="60"
+                            Margin="0,0,0,5"
+                            Source="{Binding SelectedItem.Bitmap}" />
+
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            FontSize="15"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="{Binding SelectedItem.Name}" />
+
+                        <TextBlock
+                            MaxWidth="100"
+                            HorizontalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="{Binding SelectedItem.Group}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Border>
+                <Button
+                    Width="80"
+                    Height="30"
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Center"
+                    Background="#2196F3"
+                    Command="{Binding CloseResult}"
+                    Content="确定"
+                    Foreground="White" />
+            </StackPanel>
+        </Border>
+    </Panel>
 </UserControl>

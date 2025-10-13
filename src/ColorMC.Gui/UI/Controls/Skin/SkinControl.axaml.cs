@@ -28,7 +28,6 @@ public partial class SkinControl : BaseUserControl
 
         Title = App.Lang("SkinWindow.Title");
 
-        DataContextChanged += SkinControl_DataContextChanged;
         SidePanel3.PointerPressed += SidePanel3_PointerPressed;
 
         ImageManager.SkinChange += SkinChange;
@@ -67,8 +66,10 @@ public partial class SkinControl : BaseUserControl
         SidePanel3.IsVisible = !SidePanel3.IsVisible;
     }
 
-    private void SkinControl_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is SkinModel model)
         {
             model.PropertyChanged += Model_PropertyChanged1;

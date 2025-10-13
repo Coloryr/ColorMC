@@ -1,0 +1,25 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Main.Cards.LuckControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Main"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    x:DataType="model:MainModel"
+    mc:Ignorable="d">
+    <Border Classes="t2">
+        <Panel>
+            <StackPanel Margin="15">
+                <Button
+                    Height="35"
+                    Margin="-3"
+                    HorizontalAlignment="Stretch"
+                    Classes="top"
+                    Command="{Binding LaunchLuck}"
+                    Content="{setting:Localize MainWindow.Text40}" />
+            </StackPanel>
+        </Panel>
+    </Border>
+</UserControl>

@@ -8,11 +8,12 @@ namespace ColorMC.Core.Objs.Minecraft;
 /// <value></value>
 public record VersionObj
 {
-    //public record Lastest
-    //{
-    //    public string release { get; set; }
-    //    public string snapshot { get; set; }
-    //}
+    public record Lastestbj
+    {
+        [JsonPropertyName("release")]
+        public string Release { get; set; }
+        //public string snapshot { get; set; }
+    }
 
     public record VersionsObj
     {
@@ -29,7 +30,8 @@ public record VersionObj
         //public int complianceLevel { get; set; }
     }
 
-    //public Lastest lastest { get; set; }
+    [JsonPropertyName("latest")]
+    public Lastestbj Latest { get; set; }
     [JsonPropertyName("versions")]
     public List<VersionsObj> Versions { get; set; }
 }

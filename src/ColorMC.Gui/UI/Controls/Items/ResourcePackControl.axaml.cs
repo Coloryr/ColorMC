@@ -25,11 +25,12 @@ public partial class ResourcePackControl : UserControl
         InitializeComponent();
 
         PointerPressed += ResourcePackControl_PointerPressed;
-        DataContextChanged += ResourcePackControl_DataContextChanged;
     }
 
-    private void ResourcePackControl_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is ResourcePackModel model)
         {
             MakeText(model.Description);

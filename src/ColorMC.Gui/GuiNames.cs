@@ -6,6 +6,7 @@ public static class GuiNames
 {
     public const string NameJoyDir = "inputs";
     public const string NameImageDir = "image";
+    public const string NameBlockDir = "block";
     public const string NameDllDir = "dll";
     public const string NameDllNewDir = "dllnew";
     public const string NameTooslDir = "tools";
@@ -14,6 +15,7 @@ public static class GuiNames
     public const string NameSakuraFrpDir = "sakurafrp";
     public const string NameHdiffDir = "hdiff";
 
+    public const string NameBlockFile = "block.json";
     public const string NameWindowFile = "window.json";
     public const string NameCloudConfigFile = "config.zip";
     public const string NameCloudDeleteFile = "delete.json";

@@ -107,37 +107,37 @@ public partial class GameEditModel
     partial void OnDisplayModTextChanged(bool value)
     {
         _setting.Mod.EnableText = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModIdChanged(bool value)
     {
         _setting.Mod.EnableModId = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModNameChanged(bool value)
     {
         _setting.Mod.EnableName = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModVersionChanged(bool value)
     {
         _setting.Mod.EnableVersion = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModLoaderChanged(bool value)
     {
         _setting.Mod.EnableLoader = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnDisplayModSideChanged(bool value)
     {
         _setting.Mod.EnableSide = value;
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     partial void OnModFilterChanged(ModFilterType value)
@@ -524,7 +524,7 @@ public partial class GameEditModel
             _setting.ModName[item.Obj.Sha1] = item.Text;
         }
 
-        GameGuiSetting.WriteConfig(_obj, _setting);
+        GameManager.WriteConfig(_obj, _setting);
     }
 
     /// <summary>

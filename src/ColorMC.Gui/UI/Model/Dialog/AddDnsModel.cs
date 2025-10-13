@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.UI.Model.Setting;
+using ColorMC.Gui.UI.Model.Setting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
