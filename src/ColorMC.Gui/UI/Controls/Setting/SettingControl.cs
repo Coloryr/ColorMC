@@ -10,7 +10,7 @@ using ColorMC.Gui.UI.Model.Setting;
 namespace ColorMC.Gui.UI.Controls.Setting;
 
 /// <summary>
-/// Æô¶¯Æ÷ÉèÖÃ´°¿Ú
+/// å¯åŠ¨å™¨è®¾ç½®çª—å£
 /// </summary>
 public partial class SettingControl : MenuControl
 {
@@ -25,7 +25,7 @@ public partial class SettingControl : MenuControl
     private Tab9Control _tab9;
 
     /// <summary>
-    /// ĞèÒªµÄJavaÖ÷°æ±¾
+    /// éœ€è¦çš„Javaä¸»ç‰ˆæœ¬
     /// </summary>
     private readonly int _needJava;
 

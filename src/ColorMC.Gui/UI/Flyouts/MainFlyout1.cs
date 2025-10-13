@@ -1,6 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
 using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Main;
 
 namespace ColorMC.Gui.UI.Flyouts;

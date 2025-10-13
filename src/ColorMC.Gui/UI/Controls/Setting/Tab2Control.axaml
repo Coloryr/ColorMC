@@ -20,10 +20,7 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="0,0,10,15">
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsVisible="{Binding Phone}">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Name="PhoneSetting" Margin="15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
@@ -35,10 +32,7 @@
                     </StackPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsEnabled="{Binding !Phone}">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15,15,5,15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl

@@ -1,4 +1,4 @@
-﻿using System.Numerics;
+using System.Numerics;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;

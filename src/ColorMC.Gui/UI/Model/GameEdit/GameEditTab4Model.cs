@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 /// <summary>
 /// 游戏实例编辑
 /// </summary>
-public partial class GameEditModel : IModEdit
+public partial class GameEditModel
 {
     /// <summary>
     /// 显示的模组列表
@@ -459,7 +459,7 @@ public partial class GameEditModel : IModEdit
     {
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info1"));
         _modItems.Clear();
-        var res = await GameBinding.GetGameModsAsync(_obj, this);
+        var res = await GameBinding.GetGameModsAsync(_obj);
         Model.ProgressClose();
         if (res == null)
         {
@@ -467,13 +467,17 @@ public partial class GameEditModel : IModEdit
             return;
         }
 
+        res.ForEach(item =>
+        {
+            var obj1 = _obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
+            _modItems.Add(new ModDisplayModel(item, obj1, this));
+        });
+
         int count = 0;
 
-        _modItems.AddRange(res);
-
         //自动处理modid冲突
-        var list = res.Where(a => a.Obj.ReadFail == false && !a.Obj.Disable
-            && !string.IsNullOrWhiteSpace(a.Obj.ModId)).GroupBy(a => a.Obj.ModId);
+        var list = res.Where(a => a.ReadFail == false && !a.Disable
+            && !string.IsNullOrWhiteSpace(a.ModId)).GroupBy(a => a.ModId);
         var list1 = new List<string>();
 
         foreach (var item in list)

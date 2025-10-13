@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core;
 using ColorMC.Gui.Manager;

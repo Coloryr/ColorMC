@@ -9,7 +9,7 @@ using ColorMC.Gui.UI.Model.Add;
 namespace ColorMC.Gui.UI.Controls.Add;
 
 /// <summary>
-/// ÏÂÔØÕûºÏ°ü´°¿Ú
+/// ä¸‹è½½æ•´åˆåŒ…çª—å£
 /// </summary>
 public partial class AddModPackControl : BaseUserControl
 {

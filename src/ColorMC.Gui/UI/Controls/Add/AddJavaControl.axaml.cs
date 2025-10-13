@@ -8,12 +8,12 @@ using ColorMC.Gui.UI.Model.Items;
 namespace ColorMC.Gui.UI.Controls.Add;
 
 /// <summary>
-/// JavaÏÂÔØ´°¿Ú
+/// Javaä¸‹è½½çª—å£
 /// </summary>
 public partial class AddJavaControl : BaseUserControl
 {
     /// <summary>
-    /// ĞèÒªÏÂÔØµÄJAVAÖ÷°æ±¾
+    /// éœ€è¦ä¸‹è½½çš„JAVAä¸»ç‰ˆæœ¬
     /// </summary>
     public int NeedJava { get; set; }
 

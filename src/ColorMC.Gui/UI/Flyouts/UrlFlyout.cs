@@ -1,5 +1,5 @@
-﻿using Avalonia.Controls;
-using ColorMC.Gui.Objs;
+using Avalonia.Controls;
+using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Flyouts;

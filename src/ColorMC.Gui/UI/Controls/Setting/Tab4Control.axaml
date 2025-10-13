@@ -8,6 +8,7 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -124,10 +125,7 @@
                     </WrapPanel>
                 </StackPanel>
             </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsEnabled="{Binding !Phone}">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15,15,5,15">
                     <!--  分辨率  -->
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
@@ -295,10 +293,7 @@
                         Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                 </StackPanel>
             </Border>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t2"
-                IsEnabled="{Binding !Phone}">
+            <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
                     <!--  运行后  -->
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">

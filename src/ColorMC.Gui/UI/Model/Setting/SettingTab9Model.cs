@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Utils;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
