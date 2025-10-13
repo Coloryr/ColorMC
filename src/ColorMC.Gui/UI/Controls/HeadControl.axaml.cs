@@ -68,8 +68,6 @@ public partial class HeadControl : UserControl
         TitleShow.DoubleTapped += Border1_DoubleTapped;
         TitleShow.DoubleTapped += Border1_DoubleTapped;
 
-        DataContextChanged += HeadControl_DataContextChanged;
-
         var time = DateTime.Now;
         //macos风格
         if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
@@ -250,8 +248,10 @@ public partial class HeadControl : UserControl
         WindowMax();
     }
 
-    private void HeadControl_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is BaseModel model)
         {
             _buttonMin.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());

@@ -2,6 +2,7 @@ using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Hook;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
@@ -31,7 +32,7 @@ public partial class GameEditModel : MenuModel
         _timer.AutoReset = true;
 
         //加载设置
-        _setting = GameGuiSetting.ReadConfig(_obj);
+        _setting = GameManager.ReadConfig(_obj);
         _displayModText = _setting.Mod.EnableText;
         _displayModId = _setting.Mod.EnableModId;
         _displayModName = _setting.Mod.EnableName;

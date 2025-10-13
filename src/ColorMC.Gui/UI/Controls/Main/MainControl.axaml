@@ -118,7 +118,6 @@
                                         Margin="0,0,5,0"
                                         Command="{Binding ShowCount}"
                                         CornerRadius="5"
-                                        IsVisible="{Binding !IsPhone}"
                                         ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                                         <StackPanel Orientation="Horizontal">
                                             <svg:SvgControl Path="/Resource/Icon/count.svg" />
@@ -161,6 +160,7 @@
                             Margin="0,0,20,10">
                             <StackPanel Name="RightSide">
                                 <cards:NewsControl Margin="0,0,0,10" IsVisible="{Binding CardNews}" />
+                                <cards:LuckControl Margin="0,0,0,10" />
                                 <cards:MusicControl Margin="0,0,0,10" IsVisible="{Binding MusicDisplay}" />
                                 <cards:UpdateControl Margin="0,0,0,10" IsVisible="{Binding HaveUpdate}" />
                                 <cards:OnlineControl Margin="0,0,0,10" IsVisible="{Binding IsOnlineMode}" />

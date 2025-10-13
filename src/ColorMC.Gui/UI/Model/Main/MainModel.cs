@@ -24,17 +24,6 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     public bool IsFirst = true;
 
-#if Phone
-    /// <summary>
-    /// 是否为手机模式
-    /// </summary>
-    public bool IsPhone => true;
-#else
-    /// <summary>
-    /// 是否为手机模式
-    /// </summary>
-    public bool IsPhone => false;
-#endif
     /// <summary>
     /// Motd地址
     /// </summary>
@@ -186,6 +175,14 @@ public partial class MainModel : TopModel, IMutTop
     public void OpenNews()
     {
         WindowManager.ShowNews();
+    }
+    /// <summary>
+    /// 打开幸运方块窗口
+    /// </summary>
+    [RelayCommand]
+    public void LaunchLuck()
+    {
+        WindowManager.ShowLuck();
     }
 
     protected override void MinModeChange()

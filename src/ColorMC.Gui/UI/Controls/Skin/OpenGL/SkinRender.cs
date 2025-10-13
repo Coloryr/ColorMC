@@ -20,16 +20,16 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
 
     public SkinRender()
     {
-        DataContextChanged += SkinRender_DataContextChanged;
-
         PointerWheelChanged += OpenGlPageControl_PointerWheelChanged;
         PointerPressed += OpenGlPageControl_PointerPressed;
         PointerReleased += OpenGlPageControl_PointerReleased;
         PointerMoved += OpenGlPageControl_PointerMoved;
     }
 
-    private void SkinRender_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is SkinModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -159,7 +159,7 @@ public partial class GameLogModel : GameModel
         _timer.Start();
 
         //读取设置
-        _setting = GameGuiSetting.ReadConfig(obj);
+        _setting = GameManager.ReadConfig(obj);
         _enableDebug = _setting.Log.EnableDebug;
         _enableError = _setting.Log.EnableError;
         _enableInfo = _setting.Log.EnableInfo;
@@ -191,13 +191,13 @@ public partial class GameLogModel : GameModel
     partial void OnIsAutoChanged(bool value)
     {
         _setting.Log.Auto = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnIsWordWrapChanged(bool value)
     {
         _setting.Log.WordWrap = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableNoneChanged(bool value)
@@ -205,7 +205,7 @@ public partial class GameLogModel : GameModel
         LoadLast();
 
         _setting.Log.EnableNone = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableInfoChanged(bool value)
@@ -213,7 +213,7 @@ public partial class GameLogModel : GameModel
         LoadLast();
 
         _setting.Log.EnableInfo = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableWarnChanged(bool value)
@@ -221,7 +221,7 @@ public partial class GameLogModel : GameModel
         LoadLast();
 
         _setting.Log.EnableWarn = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableErrorChanged(bool value)
@@ -229,7 +229,7 @@ public partial class GameLogModel : GameModel
         LoadLast();
 
         _setting.Log.EnableError = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     partial void OnEnableDebugChanged(bool value)
@@ -237,7 +237,7 @@ public partial class GameLogModel : GameModel
         LoadLast();
 
         _setting.Log.EnableDebug = value;
-        GameGuiSetting.WriteConfig(Obj, _setting);
+        GameManager.WriteConfig(Obj, _setting);
     }
 
     /// <summary>

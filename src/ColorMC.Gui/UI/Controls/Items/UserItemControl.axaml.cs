@@ -31,8 +31,6 @@ public partial class UserItemControl : UserControl
     {
         InitializeComponent();
 
-        DataContextChanged += UserItemControl_DataContextChanged;
-
         DoubleTapped += UserItemControl_DoubleTapped;
         PointerPressed += UserItemControl_PointerPressed;
 
@@ -40,8 +38,10 @@ public partial class UserItemControl : UserControl
         Border1.PointerReleased += Border1_PointerReleased;
     }
 
-    private void UserItemControl_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is UserDisplayModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;

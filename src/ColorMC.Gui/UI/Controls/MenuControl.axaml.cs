@@ -28,7 +28,6 @@ public abstract partial class MenuControl : BaseUserControl
         _control = new();
         _sideControl = new();
 
-        DataContextChanged += MenuControl_DataContextChanged;
         SizeChanged += MenuControl_SizeChanged;
 
         _control.SidePanel3.PointerPressed += SidePanel2_PointerPressed;
@@ -113,8 +112,10 @@ public abstract partial class MenuControl : BaseUserControl
         _switch1 = !_switch1;
     }
 
-    private void MenuControl_DataContextChanged(object? sender, EventArgs e)
+    protected override void OnDataContextChanged(EventArgs e)
     {
+        base.OnDataContextChanged(e);
+
         if (DataContext is MenuModel model)
         {
             model.PropertyChanged += Model_PropertyChanged;

@@ -99,6 +99,7 @@ public static class ImageManager
     /// 角色皮肤获取锁
     /// </summary>
     private static readonly Dictionary<UserKeyObj, TaskCompletionSource> s_userGets = [];
+    private static readonly Dictionary<string, Bitmap> s_blocks = [];
 
     /// <summary>
     /// 背景图片更新
@@ -123,7 +124,7 @@ public static class ImageManager
     public static readonly string[] MaxIcon = ["/Resource/Icon/Head/max1.svg", "/Resource/Icon/Head/max.svg"];
 
     /// <summary>
-    /// 运行路径
+    /// 缓存路径
     /// </summary>
     private static string s_local;
 
@@ -476,6 +477,29 @@ public static class ImageManager
         {
             var icon = new Bitmap(file);
             s_gameIcons.Add(obj.UUID, icon);
+
+            return icon;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取方块图片
+    /// </summary>
+    /// <param name="key">方块ID</param>
+    /// <returns></returns>
+    public static Bitmap? GetBlockIcon(string key)
+    {
+        if (s_blocks.TryGetValue(key, out var image))
+        {
+            return image;
+        }
+        var file = BlockTexUtils.GetTex(key);
+        if (File.Exists(file))
+        {
+            var icon = new Bitmap(file);
+            s_blocks.Add(key, icon);
 
             return icon;
         }

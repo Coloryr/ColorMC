@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -30,6 +31,7 @@ using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.LuckBlock;
 using ColorMC.Gui.Utils;
 using SharpCompress.Common;
 using SharpCompress.Writers.Zip;
@@ -916,5 +918,51 @@ public static class BaseBinding
         model.ProgressClose();
 
         ColorMCGui.Reboot();
+    }
+
+    /// <summary>
+    /// 生成幸运方块列表
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<List<LotteryItemViewModel>?> BuildLotteryItems()
+    {
+        var version = BlockTexUtils.Blocks.Id;
+        var obj = VersionPath.GetVersion(version);
+        var ass = obj?.AssetIndex?.GetIndex();
+        if (ass == null || !ass.Objects.TryGetValue("minecraft/lang/zh_cn.json", out var zh))
+        {
+            return null;
+        }
+        var file = GameDownloadHelper.BuildAssetsItem("minecraft/lang/zh_cn.json", zh.Hash);
+        if (!File.Exists(file.Local))
+        {
+             await DownloadManager.StartAsync([file]);
+        }
+        using var stream = AssetsPath.ReadAssets(zh.Hash);
+        if (stream == null)
+        {
+            return null;
+        }
+        var json = JsonDocument.Parse(stream);
+        var list = new List<LotteryItemViewModel>();
+
+        foreach (var item in BlockTexUtils.Blocks.Tex)
+        {
+            if (json.RootElement.TryGetProperty("block.minecraft." + item.Key, out var name)
+                && name.ValueKind == JsonValueKind.String)
+            {
+                list.Add(new LotteryItemViewModel(name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                    ImageManager.GetBlockIcon(item.Value)));
+            }
+            else if (json.RootElement.TryGetProperty("block.minecraft." + item.Key.Replace("_powered", ""), out var name1)
+                && name.ValueKind == JsonValueKind.String)
+            {
+                list.Add(new LotteryItemViewModel(name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                    ImageManager.GetBlockIcon(item.Value)));
+            }
+        }
+
+        var random = new Random();
+        return [.. list.OrderBy(x => random.Next())];
     }
 }

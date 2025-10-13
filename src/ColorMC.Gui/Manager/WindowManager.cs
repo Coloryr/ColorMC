@@ -29,6 +29,7 @@ using ColorMC.Gui.UI.Controls.GameConfigEdit;
 using ColorMC.Gui.UI.Controls.GameEdit;
 using ColorMC.Gui.UI.Controls.GameExport;
 using ColorMC.Gui.UI.Controls.GameLog;
+using ColorMC.Gui.UI.Controls.LuckBlock;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Controls.NetFrp;
 using ColorMC.Gui.UI.Controls.News;
@@ -114,6 +115,7 @@ public static class WindowManager
     /// 生成客户端包窗口
     /// </summary>
     public static BuildPackControl? BuildPackWindow { get; set; }
+    public static LuckBlockControl? LuckBlockWindow { get; set; }
 
     /// <summary>
     /// 游戏实例编辑窗口
@@ -955,6 +957,22 @@ public static class WindowManager
         {
             NewsWindow = new();
             AWindow(NewsWindow);
+        }
+    }
+
+    /// <summary>
+    /// 显示幸运方块窗口
+    /// </summary>
+    public static void ShowLuck()
+    {
+        if (LuckBlockWindow != null)
+        {
+            LuckBlockWindow.Window?.WindowActivate();
+        }
+        else
+        {
+            LuckBlockWindow = new();
+            AWindow(LuckBlockWindow);
         }
     }
 

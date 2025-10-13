@@ -117,18 +117,17 @@ public partial class App : Application
 
         CollectUtils.Init();
         GameCountUtils.Init();
-#if !Phone
         FrpConfigUtils.Init();
         FrpLaunchUtils.Init();
         JoystickConfig.Init();
         ToolUtils.Init();
+        BlockTexUtils.Init();
         Task.Run(() =>
         {
             SdlUtils.Init();
             Media.Init();
         });
         UpdateUtils.Init();
-#endif
         GameCloudUtils.Init();
 
         if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
