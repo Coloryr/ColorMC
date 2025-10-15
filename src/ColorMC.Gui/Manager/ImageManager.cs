@@ -445,25 +445,30 @@ public static class ImageManager
         CapeBitmap = null;
     }
 
-    /// <summary>
-    /// 重载游戏实例图标
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>图标</returns>
-    public static Bitmap? ReloadImage(GameSettingObj obj)
+    private static Bitmap? GetGameBlockIcon(GameSettingObj obj)
     {
         var block = GameManager.GetGameBlock(obj);
         if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
         {
             return GetBlockIconWithKey(block);
         }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 重载游戏实例图标
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>图标</returns>
+    public static void ReloadImage(GameSettingObj obj)
+    {
         if (s_gameIcons.Remove(obj.UUID, out var temp))
         {
             Dispatcher.UIThread.Post(temp.Dispose);
         }
         var icon = GetGameIcon(obj);
-        WindowManager.ReloadIcon(obj);
-        return icon;
+        EventManager.OnGameIconChange(obj.UUID);
     }
 
     /// <summary>
@@ -473,17 +478,17 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? GetGameIcon(GameSettingObj obj)
     {
-        var block = GameManager.GetGameBlock(obj);
-        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
+        var file = obj.GetIconFile();
+        var ex = File.Exists(file);
+        if (!ex && GetGameBlockIcon(obj) is { } img)
         {
-            return GetBlockIconWithKey(block);
+            return img;
         }
         if (s_gameIcons.TryGetValue(obj.UUID, out var image))
         {
             return image;
         }
-        var file = obj.GetIconFile();
-        if (File.Exists(file))
+        if (ex)
         {
             var icon = new Bitmap(file);
             s_gameIcons.Add(obj.UUID, icon);

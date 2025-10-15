@@ -47,6 +47,18 @@ public partial class GameLogControl : BaseUserControl
         //textMateInstallation.SetGrammar(temp);
 
         TextEditor1.TextArea.TextView.LineTransformers.Add(new LogTransformer());
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     /// <summary>
@@ -149,6 +161,8 @@ public partial class GameLogControl : BaseUserControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameLogWindows.Remove(_obj.UUID);
     }
 

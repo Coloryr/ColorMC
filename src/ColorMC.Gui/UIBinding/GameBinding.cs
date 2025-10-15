@@ -42,6 +42,7 @@ using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using SkiaSharp;
 
@@ -3258,6 +3259,18 @@ public static class GameBinding
     public static void SetGameIconBlock(GameSettingObj obj, string key)
     {
         GameManager.SetGameBlock(obj, key);
-        WindowManager.MainWindow?.IconChange(obj.UUID);
+        EventManager.OnGameIconChange(obj.UUID);
+    }
+
+    public static void SelectAndReloadGame(string? uuid)
+    {
+        if (WindowManager.MainWindow?.DataContext is MainModel model)
+        {
+            model.Select(uuid);
+            if (model.Game != null)
+            {
+                ImageManager.ReloadImage(model.Game.Obj);
+            }
+        }
     }
 }

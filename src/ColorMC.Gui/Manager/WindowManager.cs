@@ -1300,40 +1300,4 @@ public static class WindowManager
             window6.ReloadTitle();
         }
     }
-
-    /// <summary>
-    /// 重载窗口图标
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static void ReloadIcon(GameSettingObj obj)
-    {
-        if (GameEditWindows.TryGetValue(obj.UUID, out var window))
-        {
-            window.ReloadIcon();
-        }
-        if (GameExportWindows.TryGetValue(obj.UUID, out var window1))
-        {
-            window1.ReloadIcon();
-        }
-        if (GameCloudWindows.TryGetValue(obj.UUID, out var window2))
-        {
-            window2.ReloadIcon();
-        }
-        if (GameLogWindows.TryGetValue(obj.UUID, out var window3))
-        {
-            window3.ReloadIcon();
-        }
-        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
-        {
-            window4.ReloadIcon();
-        }
-        if (GameAddWindows.TryGetValue(obj.UUID, out var window5))
-        {
-            window5.ReloadIcon();
-        }
-        if (ServerPackWindows.TryGetValue(obj.UUID, out var window6))
-        {
-            window6.ReloadIcon();
-        }
-    }
 }

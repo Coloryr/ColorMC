@@ -315,26 +315,6 @@ public partial class GameGroupModel : TopModel
     }
 
     /// <summary>
-    /// 图标刷新
-    /// </summary>
-    /// <param name="uuid">游戏实例UUID</param>
-    public void IconChange(string uuid)
-    {
-        foreach (var item in GameList)
-        {
-            if (item.IsNew)
-            {
-                continue;
-            }
-
-            if (item.UUID == uuid)
-            {
-                item.LoadIcon();
-            }
-        }
-    }
-
-    /// <summary>
     /// 星标
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>

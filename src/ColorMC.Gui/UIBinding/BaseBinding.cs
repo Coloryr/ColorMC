@@ -1062,4 +1062,24 @@ public static class BaseBinding
         var random = new Random();
         return [.. list.OrderBy(x => random.Next())];
     }
+
+    public static async Task<StringRes> StartLoadBlock()
+    {
+        var temp = TaskManager.StartMutexTask(GuiNames.NameKeyLoadBlock);
+        if (temp != null)
+        {
+            var res = await temp;
+            if (res is StringRes res1)
+            {
+                return res1;
+            }
+
+            return new StringRes();
+        }
+
+        var res2 = await BlockTexUtils.LoadNow();
+        TaskManager.StopMutexTask(GuiNames.NameKeyLoadBlock, res2);
+
+        return res2;
+    }
 }

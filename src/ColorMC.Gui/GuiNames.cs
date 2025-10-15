@@ -78,4 +78,6 @@ public static class GuiNames
     public const string NameUrlRun = "//run/";
     public const string NameUrlInstall = "//install/";
     public const string NameUrlMod = "//mod/";
+
+    public const string NameKeyLoadBlock = "LoadBlock";
 }

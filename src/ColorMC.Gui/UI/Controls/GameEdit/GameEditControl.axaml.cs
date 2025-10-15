@@ -36,6 +36,18 @@ public partial class GameEditControl : MenuControl
         _obj = obj;
 
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     public override async Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -76,6 +88,8 @@ public partial class GameEditControl : MenuControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
 

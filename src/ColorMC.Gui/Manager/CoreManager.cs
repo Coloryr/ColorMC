@@ -34,7 +34,7 @@ public static class CoreManager
     /// <param name="obj"></param>
     private static void InstanceIconChange(GameSettingObj obj)
     {
-        WindowManager.MainWindow?.IconChange(obj.UUID);
+        ImageManager.ReloadImage(obj);
     }
 
     /// <summary>

@@ -27,6 +27,18 @@ public partial class GameCloudControl : MenuControl
         _obj = obj;
 
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     public override async void Opened()
@@ -39,6 +51,8 @@ public partial class GameCloudControl : MenuControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
 
