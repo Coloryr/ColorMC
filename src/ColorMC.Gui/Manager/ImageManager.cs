@@ -455,7 +455,7 @@ public static class ImageManager
         var block = GameManager.GetGameBlock(obj);
         if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
         {
-            return GetBlockIcon(block);
+            return GetBlockIconWithKey(block);
         }
         if (s_gameIcons.Remove(obj.UUID, out var temp))
         {
@@ -474,10 +474,9 @@ public static class ImageManager
     public static Bitmap? GetGameIcon(GameSettingObj obj)
     {
         var block = GameManager.GetGameBlock(obj);
-        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block)
-            && BlockTexUtils.Blocks.Tex.TryGetValue(block, out var tex))
+        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
         {
-            return GetBlockIcon(tex);
+            return GetBlockIconWithKey(block);
         }
         if (s_gameIcons.TryGetValue(obj.UUID, out var image))
         {
@@ -500,13 +499,36 @@ public static class ImageManager
     /// </summary>
     /// <param name="key">方块ID</param>
     /// <returns></returns>
-    public static Bitmap? GetBlockIcon(string key)
+    public static Bitmap? GetBlockIconWithKey(string key)
     {
         if (s_blocks.TryGetValue(key, out var image))
         {
             return image;
         }
-        var file = BlockTexUtils.GetTex(key);
+        var file = BlockTexUtils.GetTexWithKey(key);
+        if (file != null && File.Exists(file))
+        {
+            var icon = new Bitmap(file);
+            s_blocks.Add(key, icon);
+
+            return icon;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取方块图片
+    /// </summary>
+    /// <param name="key">方块ID</param>
+    /// <returns></returns>
+    public static Bitmap? GetBlockIcon(string key, string path)
+    {
+        if (s_blocks.TryGetValue(key, out var image))
+        {
+            return image;
+        }
+        var file = BlockTexUtils.GetTex(path);
         if (File.Exists(file))
         {
             var icon = new Bitmap(file);
