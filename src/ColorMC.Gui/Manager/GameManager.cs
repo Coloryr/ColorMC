@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using ColorMC.Core;
@@ -236,5 +237,28 @@ public static class GameManager
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 设置方块
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="key">方块ID</param>
+    public static void SetGameBlock(GameSettingObj game, string key)
+    {
+        var config = ReadConfig(game);
+        config.Block = key;
+        WriteConfig(game, config);
+    }
+
+    /// <summary>
+    /// 获取方块
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>方块ID</returns>
+    public static string GetGameBlock(GameSettingObj game)
+    {
+        var config = ReadConfig(game);
+        return config.Block;
     }
 }

@@ -840,7 +840,7 @@ public partial class BaseModel : ObservableObject
     /// <param name="title">标题</param>
     /// <param name="data1">下拉内容</param>
     /// <returns></returns>
-    public async Task<ComboRes> Combo(string title, IEnumerable<string> data1)
+    public async Task<ComboRes> ShowCombo(string title, IEnumerable<string> data1)
     {
         ShowClose();
 

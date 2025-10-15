@@ -1,0 +1,45 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.BlockItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:items="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="120"
+    d:DesignWidth="120"
+    x:DataType="items:BlockItemModel"
+    mc:Ignorable="d">
+    <Border
+        Width="120"
+        Height="120"
+        Margin="10"
+        Background="#2d2d2d"
+        BorderBrush="#444"
+        BorderThickness="2"
+        CornerRadius="8">
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <Image
+                Width="60"
+                Height="60"
+                Margin="0,0,0,5"
+                Source="{Binding Bitmap}" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="15"
+                FontWeight="Bold"
+                Foreground="#FFFFFF"
+                Text="{Binding Name}" />
+            <TextBlock
+                MaxWidth="100"
+                HorizontalAlignment="Center"
+                FontSize="10"
+                Foreground="White"
+                Text="{Binding Group}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </Border>
+</UserControl>

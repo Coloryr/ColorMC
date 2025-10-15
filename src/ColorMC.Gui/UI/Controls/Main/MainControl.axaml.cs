@@ -446,4 +446,15 @@ public partial class MainControl : BaseUserControl
             model.Render = true;
         }
     }
+
+    /// <summary>
+    /// 显示今日幸运方块
+    /// </summary>
+    public void ReloadBlock()
+    {
+        if (DataContext is MainModel model)
+        {
+            model.LoadBlock();
+        }
+    }
 }

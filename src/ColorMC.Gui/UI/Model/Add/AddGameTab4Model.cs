@@ -33,7 +33,7 @@ public partial class AddGameModel
                 list1.Add(item.Name);
             }
         });
-        var res = await Model.Combo(App.Lang("AddGameWindow.Tab1.Info10"), list1);
+        var res = await Model.ShowCombo(App.Lang("AddGameWindow.Tab1.Info10"), list1);
         if (res.Cancel)
         {
             return;

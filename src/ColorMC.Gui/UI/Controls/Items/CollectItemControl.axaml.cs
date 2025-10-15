@@ -28,17 +28,12 @@ public partial class CollectItemControl : UserControl
 
         model.SetSelect();
 
-        void OpenFlyout()
-        {
-            CollectFlyout.Show((sender as Control)!, model);
-            e.Handled = true;
-        }
-
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsRightButtonPressed)
         {
             model.IsCheck = true;
-            OpenFlyout();
+            CollectFlyout.Show((sender as Control)!, model);
+            e.Handled = true;
         }
     }
 

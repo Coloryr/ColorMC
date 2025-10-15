@@ -452,6 +452,11 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? ReloadImage(GameSettingObj obj)
     {
+        var block = GameManager.GetGameBlock(obj);
+        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
+        {
+            return GetBlockIcon(block);
+        }
         if (s_gameIcons.Remove(obj.UUID, out var temp))
         {
             Dispatcher.UIThread.Post(temp.Dispose);
@@ -468,6 +473,12 @@ public static class ImageManager
     /// <returns>图标</returns>
     public static Bitmap? GetGameIcon(GameSettingObj obj)
     {
+        var block = GameManager.GetGameBlock(obj);
+        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block)
+            && BlockTexUtils.Blocks.Tex.TryGetValue(block, out var tex))
+        {
+            return GetBlockIcon(tex);
+        }
         if (s_gameIcons.TryGetValue(obj.UUID, out var image))
         {
             return image;
