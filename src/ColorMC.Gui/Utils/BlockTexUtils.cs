@@ -18,6 +18,9 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.Utils;
 
+/// <summary>
+/// 幸运方块处理
+/// </summary>
 public static class BlockTexUtils
 {
     /// <summary>
@@ -33,14 +36,92 @@ public static class BlockTexUtils
     /// </summary>
     private static string s_unlockFile;
 
+    /// <summary>
+    /// 方块贴图列表
+    /// </summary>
     public static BlocksObj Blocks { get; private set; }
     /// <summary>
     /// 方块背包
     /// </summary>
     public static BlockUnlockObj Unlocks { get; private set; }
 
+    /// <summary>
+    /// 随机数
+    /// </summary>
     private static readonly Random s_random = new();
 
+    /// <summary>
+    /// 贴图顶点 Vertice
+    /// </summary>
+    private static readonly SKPoint3[] s_cubeVertices =
+    [
+        // Front face
+        new SKPoint3(-1, -1,  1),
+        new SKPoint3( 1, -1,  1),
+        new SKPoint3( 1,  1,  1),
+        new SKPoint3(-1,  1,  1),
+        // Back face
+        new SKPoint3(-1, -1, -1),
+        new SKPoint3( 1, -1, -1),
+        new SKPoint3( 1,  1, -1),
+        new SKPoint3(-1,  1, -1),
+    ];
+
+    /// <summary>
+    /// 定义立方体索引 Index
+    /// </summary>
+    private static readonly ushort[] s_cubeIndices =
+    [
+        0, 4, 7, 3, // Back face
+        0, 4, 5, 1, // Bottom face
+        0, 1, 2, 3, // Right face
+        3, 7, 6, 2, // Top face
+        4, 5, 6, 7, // Left face
+        1, 5, 6, 2, // Front face
+    ];
+
+    /// <summary>
+    /// 定义原始图像的四个顶点 UV
+    /// </summary>
+    private static readonly SKPoint[] s_sourceUV =
+    [
+        // Back face
+        new SKPoint(0, 1),
+        new SKPoint(1, 1),
+        new SKPoint(1, 0),
+        new SKPoint(0, 0),
+        // Bottom face
+        new SKPoint(1, 0),
+        new SKPoint(0, 0),
+        new SKPoint(0, 1),
+        new SKPoint(1, 1),
+        // Right face
+        new SKPoint(1, 1),
+        new SKPoint(0, 1),
+        new SKPoint(0, 0),
+        new SKPoint(1, 0),
+        // Top face
+        new SKPoint(0, 0),
+        new SKPoint(0, 1),
+        new SKPoint(1, 1),
+        new SKPoint(1, 0),
+        // Left face
+        new SKPoint(0, 1),
+        new SKPoint(1, 1),
+        new SKPoint(1, 0),
+        new SKPoint(0, 0),
+        // Front face
+        new SKPoint(1, 1),
+        new SKPoint(0, 1),
+        new SKPoint(0, 0),
+        new SKPoint(1, 0),
+    ];
+
+    private static DateTime _checkTime;
+
+    /// <summary>
+    /// 初始化
+    /// </summary>
     public static void Init()
     {
         s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameBlockDir);
@@ -58,24 +139,38 @@ public static class BlockTexUtils
         LoadState();
         LoadUnlock();
 
-        new Thread(() =>
-        {
-            while (true)
-            {
-                if (IsGet())
-                {
-                    WindowManager.MainWindow?.ReloadBlock();
-                }
-
-                Thread.Sleep(1000);
-            }
-        })
+        new Thread(CheckTime)
         { 
             Name = "ColorMC Block Day Check",
             IsBackground = true
         }.Start();
     }
 
+    /// <summary>
+    /// 检查日期线程
+    /// </summary>
+    private static void CheckTime()
+    {
+        _checkTime = DateTime.Now;
+        while (true)
+        {
+            var time = DateTime.Now;
+            if (_checkTime.Year != time.Year
+                || _checkTime.Month != time.Month
+                || _checkTime.Day != time.Day)
+            {
+                _checkTime = time;
+                WindowManager.MainWindow?.ReloadBlock();
+            }
+
+            Thread.Sleep(1000);
+        }
+    }
+
+    /// <summary>
+    /// 是否已经抽过了
+    /// </summary>
+    /// <returns>今日是否已经抽取</returns>
     public static bool IsGet()
     {
         var time = DateTime.Now;
@@ -89,6 +184,10 @@ public static class BlockTexUtils
         return true;
     }
 
+    /// <summary>
+    /// 设置今日抽取
+    /// </summary>
+    /// <param name="key">方块ID</param>
     public static void SetToday(string key)
     {
         Unlocks.List.Add(key);
@@ -100,11 +199,35 @@ public static class BlockTexUtils
         WindowManager.MainWindow?.ReloadBlock();
     }
 
+    /// <summary>
+    /// 获取贴图路径
+    /// </summary>
+    /// <param name="key">方块ID</param>
+    /// <returns>贴图路径</returns>
+    public static string? GetTexWithKey(string key)
+    {
+        if (Blocks.Tex.TryGetValue(key, out var tex))
+        {
+            return Path.Combine(s_local, tex);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取贴图路径
+    /// </summary>
+    /// <param name="file">文件名</param>
+    /// <returns>贴图路径</returns>
     public static string GetTex(string file)
     {
         return Path.Combine(s_local, file);
     }
 
+    /// <summary>
+    /// 加载游戏版本的所有方块贴图
+    /// </summary>
+    /// <returns>是否成功加载</returns>
     public static async Task<StringRes> LoadNow()
     {
         var versions = await VersionPath.GetVersionsAsync();
@@ -113,6 +236,7 @@ public static class BlockTexUtils
             return new StringRes { Data = App.Lang("LuckBlockWindow.Error1") };
         }
 
+        //获取最新游戏版本
         var last = versions.Latest.Release;
 
         if (Blocks.Id == last)
@@ -126,6 +250,7 @@ public static class BlockTexUtils
             return new StringRes { Data = App.Lang("LuckBlockWindow.Error1") };
         }
 
+        //下载游戏核心
         var ass = GameDownloadHelper.BuildGameItem(last);
         if (!File.Exists(ass.Local))
         {
@@ -140,6 +265,8 @@ public static class BlockTexUtils
         {
             return new StringRes { Data = App.Lang("LuckBlockWindow.Error3") };
         }
+        
+        //提取贴图
         using var reader = ZipArchive.Open(stream);
         foreach (var item in reader.Entries)
         {
@@ -159,6 +286,7 @@ public static class BlockTexUtils
                 || temp.ValueKind != JsonValueKind.String
                 || temp.GetString() != "minecraft:block/cube_all")
             {
+                //只要完整方块
                 continue;
             }
 
@@ -178,6 +306,7 @@ public static class BlockTexUtils
             using var stream2 = item1.OpenEntryStream();
             var img = SKBitmap.Decode(stream2);
 
+            //渲染方块
             var block = MakeBlockImage(ref img);
 
             img.Dispose();
@@ -267,68 +396,14 @@ public static class BlockTexUtils
         ConfigSave.AddItem(ConfigSaveObj.Build("ColorMC_Block", s_file, Blocks, JsonGuiType.BlocksObj));
     }
 
-    private static readonly SKPoint3[] s_cubeVertices =
-    [
-        // Front face
-        new SKPoint3(-1, -1,  1),
-        new SKPoint3( 1, -1,  1),
-        new SKPoint3( 1,  1,  1),
-        new SKPoint3(-1,  1,  1),
-        // Back face
-        new SKPoint3(-1, -1, -1),
-        new SKPoint3( 1, -1, -1),
-        new SKPoint3( 1,  1, -1),
-        new SKPoint3(-1,  1, -1),
-    ];
-
-    // 定义立方体索引
-    private static readonly ushort[] s_cubeIndices =
-    [
-        0, 4, 7, 3, // Back face
-        0, 4, 5, 1, // Bottom face
-        0, 1, 2, 3, // Right face
-        3, 7, 6, 2, // Top face
-        4, 5, 6, 7, // Left face
-        1, 5, 6, 2, // Front face
-    ];
-
-    // 定义原始图像的四个顶点
-    private static readonly SKPoint[] s_sourceVertices =
-    [
-        // Back face
-        new SKPoint(0, 1),
-        new SKPoint(1, 1),
-        new SKPoint(1, 0),
-        new SKPoint(0, 0),
-        // Bottom face
-        new SKPoint(1, 0),
-        new SKPoint(0, 0),
-        new SKPoint(0, 1),
-        new SKPoint(1, 1),
-        // Right face
-        new SKPoint(1, 1),
-        new SKPoint(0, 1),
-        new SKPoint(0, 0),
-        new SKPoint(1, 0),
-        // Top face
-        new SKPoint(0, 0),
-        new SKPoint(0, 1),
-        new SKPoint(1, 1),
-        new SKPoint(1, 0),
-        // Left face
-        new SKPoint(0, 1),
-        new SKPoint(1, 1),
-        new SKPoint(1, 0),
-        new SKPoint(0, 0),
-        // Front face
-        new SKPoint(1, 1),
-        new SKPoint(0, 1),
-        new SKPoint(0, 0),
-        new SKPoint(1, 0),
-    ];
-
+    /// <summary>
+    /// 创建方块图片
+    /// </summary>
+    /// <param name="tex">方块贴图</param>
+    /// <returns>方块图片</returns>
     public static SKImage MakeBlockImage(ref SKBitmap tex)
     {
+        //有动态材质则随便选中一个
         if (tex.Height > 16)
         {
             var size = tex.Height / 16;
@@ -346,7 +421,7 @@ public static class BlockTexUtils
         using var surface = SKSurface.Create(new SKImageInfo(width, height));
         var canvas = surface.Canvas;
 
-        // 绘制头部
+        // 绘制方块
         DrawBlock3D(canvas, tex);
 
         // 保存结果到文件
@@ -363,7 +438,10 @@ public static class BlockTexUtils
         }
     }
 
-    // 创建3D变换矩阵
+    /// <summary>
+    /// 创建3D变换矩阵
+    /// </summary>
+    /// <returns></returns>
     private static SKMatrix44 CreateTransformMatrix()
     {
         var transform = SKMatrix44.CreateIdentity();
@@ -394,7 +472,14 @@ public static class BlockTexUtils
         return transform;
     }
 
-    // 创建旋转矩阵
+    /// <summary>
+    /// 创建旋转矩阵
+    /// </summary>
+    /// <param name="degrees"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
     private static SKMatrix44 CreateRotationMatrix(float degrees, float x, float y, float z)
     {
         var radians = degrees * (float)Math.PI / 180.0f;
@@ -417,7 +502,12 @@ public static class BlockTexUtils
     }
 
 
-    // 应用3D变换并投影到2D
+    /// <summary>
+    /// 应用3D变换并投影到2D
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="v"></param>
+    /// <returns></returns>
     private static SKPoint Project(SKMatrix44 mat, SKPoint3 v)
     {
         // 创建一个4D向量
@@ -454,7 +544,7 @@ public static class BlockTexUtils
         for (int j = 0; j < 4; ++j)
         {
             vertices[j] = Project(transform, s_cubeVertices[s_cubeIndices[index + j]]);
-            texCoords[j] = new SKPoint(s_sourceVertices[index + j].X * texture.Width, s_sourceVertices[index + j].Y * texture.Height);
+            texCoords[j] = new SKPoint(s_sourceUV[index + j].X * texture.Width, s_sourceUV[index + j].Y * texture.Height);
         }
 
         var skVertices = SKVertices.CreateCopy(SKVertexMode.TriangleFan, vertices, texCoords, null);
