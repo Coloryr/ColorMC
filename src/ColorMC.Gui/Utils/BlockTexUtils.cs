@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Config;
@@ -56,6 +57,23 @@ public static class BlockTexUtils
 
         LoadState();
         LoadUnlock();
+
+        new Thread(() =>
+        {
+            while (true)
+            {
+                if (IsGet())
+                {
+                    WindowManager.MainWindow?.ReloadBlock();
+                }
+
+                Thread.Sleep(1000);
+            }
+        })
+        { 
+            Name = "ColorMC Block Day Check",
+            IsBackground = true
+        }.Start();
     }
 
     public static bool IsGet()
