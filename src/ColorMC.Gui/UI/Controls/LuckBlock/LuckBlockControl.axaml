@@ -2,30 +2,18 @@
     x:Class="ColorMC.Gui.UI.Controls.LuckBlock.LuckBlockControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:con="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.LuckBlock"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:LuckBlockModel"
     mc:Ignorable="d">
-    <UserControl.Styles>
-        <Style Selector="Border.ItemContainer">
-            <Setter Property="Width" Value="120" />
-            <Setter Property="Height" Value="120" />
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="Background" Value="#2d2d2d" />
-            <Setter Property="BorderBrush" Value="#444" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="CornerRadius" Value="8" />
-        </Style>
-    </UserControl.Styles>
     <Panel>
-        <Border
-            x:Name="ItemsContainer"
-            Background="#252525"
-            ClipToBounds="True">
+        <Border Background="#252525" ClipToBounds="True">
             <DockPanel Margin="20">
                 <TextBlock
                     Margin="0,0,0,20"
@@ -35,7 +23,7 @@
                     FontWeight="Bold"
                     Foreground="#ffd700"
                     IsVisible="{Binding CanRun}"
-                    Text="抽取您的今日幸运方块" />
+                    Text="{setting:Localize LuckBlockWindow.Text1}" />
                 <StackPanel
                     Margin="20"
                     HorizontalAlignment="Center"
@@ -48,57 +36,30 @@
                         Height="40"
                         Background="#4CAF50"
                         BorderThickness="0"
-                        Command="{Binding StartCommand}"
-                        Content="开始抽取"
+                        Command="{Binding Start}"
+                        Content="{setting:Localize LuckBlockWindow.Text2}"
                         CornerRadius="6"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="White" />
+                        Foreground="White"
+                        IsEnabled="{Binding CanStart}" />
                 </StackPanel>
                 <Panel>
-                    <ItemsControl ItemsSource="{Binding LotteryItems}">
+                    <ItemsControl Name="ItemsPanel" ItemsSource="{Binding LotteryItems}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <Canvas Height="200" VerticalAlignment="Center" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.Styles>
-                            <Style x:DataType="items:LotteryItemViewModel" Selector="ContentPresenter">
+                            <Style x:DataType="items:BlockItemModel" Selector="ContentPresenter">
                                 <Setter Property="Canvas.Left" Value="{Binding Left}" />
                                 <Setter Property="Canvas.Top" Value="10" />
                             </Style>
                         </ItemsControl.Styles>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border
-                                    Width="120"
-                                    Height="120"
-                                    Classes="ItemContainer">
-                                    <StackPanel
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Orientation="Vertical">
-                                        <Image
-                                            Width="60"
-                                            Height="60"
-                                            Margin="0,0,0,5"
-                                            Source="{Binding Bitmap}" />
-                                        <TextBlock
-                                            HorizontalAlignment="Center"
-                                            FontSize="15"
-                                            FontWeight="Bold"
-                                            Foreground="#FFFFFF"
-                                            Text="{Binding Name}" />
-                                        <TextBlock
-                                            MaxWidth="100"
-                                            HorizontalAlignment="Center"
-                                            FontSize="10"
-                                            Foreground="White"
-                                            Text="{Binding Group}"
-                                            TextAlignment="Center"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </Border>
+                                <con:BlockItemControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -138,38 +99,21 @@
                     FontSize="24"
                     FontWeight="Bold"
                     Foreground="#ffd700"
-                    Text="今天您的幸运方块是" />
-                <Border
+                    Text="{setting:Localize LuckBlockWindow.Text3}" />
+                <con:BlockItemControl DataContext="{Binding SelectedItem}" />
+                <Button
                     Width="120"
+                    Height="40"
                     HorizontalAlignment="Center"
-                    Classes="ItemContainer">
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Orientation="Vertical">
-                        <Image
-                            Width="60"
-                            Height="60"
-                            Margin="0,0,0,5"
-                            Source="{Binding SelectedItem.Bitmap}" />
-
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="15"
-                            FontWeight="Bold"
-                            Foreground="White"
-                            Text="{Binding SelectedItem.Name}" />
-
-                        <TextBlock
-                            MaxWidth="100"
-                            HorizontalAlignment="Center"
-                            FontSize="10"
-                            Foreground="White"
-                            Text="{Binding SelectedItem.Group}"
-                            TextAlignment="Center"
-                            TextWrapping="Wrap" />
-                    </StackPanel>
-                </Border>
+                    VerticalAlignment="Center"
+                    Background="#4CAF50"
+                    BorderThickness="0"
+                    Command="{Binding Backpack}"
+                    Content="{setting:Localize LuckBlockWindow.Text4}"
+                    CornerRadius="6"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="White" />
             </StackPanel>
         </Border>
     </Panel>

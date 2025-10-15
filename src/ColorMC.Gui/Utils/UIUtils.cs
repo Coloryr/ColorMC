@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
@@ -12,6 +13,29 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UIUtils
 {
+    public static double SumLeft(this Control control)
+    {
+        if (!control.IsMeasureValid)
+        {
+            return 0;
+        }
+
+        double left = control.Bounds.Left;
+        var par = control.Parent;
+        for (; ; )
+        {
+            if (par == null)
+            {
+                return left;
+            }
+            if (par is Visual visual)
+            {
+                left += visual.Bounds.Left;
+            }
+            par = par.Parent;
+        }
+    }
+
     public static string GetName(this DnsType type)
     {
         return type switch

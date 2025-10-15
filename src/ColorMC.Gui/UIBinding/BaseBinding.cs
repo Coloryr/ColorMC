@@ -921,10 +921,111 @@ public static class BaseBinding
     }
 
     /// <summary>
+    /// 获取方块列表
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<List<BlockItemModel>?> BuildUnlockItems()
+    {
+        var version = BlockTexUtils.Blocks.Id;
+        var obj = VersionPath.GetVersion(version);
+        var ass = obj?.AssetIndex?.GetIndex();
+        if (ass == null || !ass.Objects.TryGetValue("minecraft/lang/zh_cn.json", out var zh))
+        {
+            return null;
+        }
+        var file = GameDownloadHelper.BuildAssetsItem("minecraft/lang/zh_cn.json", zh.Hash);
+        if (!File.Exists(file.Local))
+        {
+            await DownloadManager.StartAsync([file]);
+        }
+        using var stream = AssetsPath.ReadAssets(zh.Hash);
+        if (stream == null)
+        {
+            return null;
+        }
+        var json = JsonDocument.Parse(stream);
+        var list = new List<BlockItemModel>();
+
+        foreach (var item in BlockTexUtils.Unlocks.List)
+        {
+            if (!BlockTexUtils.Blocks.Tex.TryGetValue(item, out var tex))
+            {
+                continue;
+            }
+            if (json.RootElement.TryGetProperty("block.minecraft." + item, out var name)
+                && name.ValueKind == JsonValueKind.String
+                )
+            {
+                list.Add(new BlockItemModel(item, name.GetString()!, item,
+                    ImageManager.GetBlockIcon(tex)));
+            }
+            else if (json.RootElement.TryGetProperty("block.minecraft." + item.Replace("_powered", ""), out var name1)
+                && name.ValueKind == JsonValueKind.String
+                )
+            {
+                list.Add(new BlockItemModel(item, name1.GetString()!, item,
+                    ImageManager.GetBlockIcon(tex)));
+            }
+        }
+
+        return list;
+    }
+
+    public static async Task<BlockItemModel?> GetBlock()
+    {
+        if (!BlockTexUtils.IsGet())
+        {
+            return null;
+        }
+
+        var version = BlockTexUtils.Blocks.Id;
+        var obj = VersionPath.GetVersion(version);
+        var ass = obj?.AssetIndex?.GetIndex();
+        if (ass == null || !ass.Objects.TryGetValue("minecraft/lang/zh_cn.json", out var zh))
+        {
+            return null;
+        }
+        var file = GameDownloadHelper.BuildAssetsItem("minecraft/lang/zh_cn.json", zh.Hash);
+        if (!File.Exists(file.Local))
+        {
+            await DownloadManager.StartAsync([file]);
+        }
+        using var stream = AssetsPath.ReadAssets(zh.Hash);
+        if (stream == null)
+        {
+            return null;
+        }
+        var json = JsonDocument.Parse(stream);
+
+        var item = BlockTexUtils.Unlocks.Today;
+
+        if (!BlockTexUtils.Blocks.Tex.TryGetValue(item, out var tex))
+        {
+            return null;
+        }
+        if (json.RootElement.TryGetProperty("block.minecraft." + item, out var name)
+            && name.ValueKind == JsonValueKind.String
+            )
+        {
+            return new BlockItemModel(item, name.GetString()!, item,
+                 ImageManager.GetBlockIcon(tex));
+        }
+        else if (json.RootElement.TryGetProperty("block.minecraft." + item.Replace("_powered", ""), out var name1)
+            && name.ValueKind == JsonValueKind.String
+            )
+        {
+            return new BlockItemModel(item, name1.GetString()!, item,
+                ImageManager.GetBlockIcon(tex));
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// 生成幸运方块列表
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<LotteryItemViewModel>?> BuildLotteryItems()
+    public static async Task<List<BlockItemModel>?> BuildLotteryItems()
     {
         var version = BlockTexUtils.Blocks.Id;
         var obj = VersionPath.GetVersion(version);
@@ -944,20 +1045,20 @@ public static class BaseBinding
             return null;
         }
         var json = JsonDocument.Parse(stream);
-        var list = new List<LotteryItemViewModel>();
+        var list = new List<BlockItemModel>();
 
         foreach (var item in BlockTexUtils.Blocks.Tex)
         {
             if (json.RootElement.TryGetProperty("block.minecraft." + item.Key, out var name)
                 && name.ValueKind == JsonValueKind.String)
             {
-                list.Add(new LotteryItemViewModel(item.Key, name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                list.Add(new BlockItemModel(item.Key, name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
                     ImageManager.GetBlockIcon(item.Value)));
             }
             else if (json.RootElement.TryGetProperty("block.minecraft." + item.Key.Replace("_powered", ""), out var name1)
                 && name.ValueKind == JsonValueKind.String)
             {
-                list.Add(new LotteryItemViewModel(item.Key, name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
+                list.Add(new BlockItemModel(item.Key, name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
                     ImageManager.GetBlockIcon(item.Value)));
             }
         }

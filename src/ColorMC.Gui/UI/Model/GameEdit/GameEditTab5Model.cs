@@ -106,7 +106,7 @@ public partial class GameEditModel
             Model.Show(App.Lang("GameEditWindow.Tab5.Error5"));
             return;
         }
-        var res = await Model.Combo(App.Lang("GameEditWindow.Tab5.Info9"), names);
+        var res = await Model.ShowCombo(App.Lang("GameEditWindow.Tab5.Info9"), names);
         if (res.Cancel)
         {
             return;

@@ -115,7 +115,14 @@ public static class WindowManager
     /// 生成客户端包窗口
     /// </summary>
     public static BuildPackControl? BuildPackWindow { get; set; }
+    /// <summary>
+    /// 幸运方块窗口
+    /// </summary>
     public static LuckBlockControl? LuckBlockWindow { get; set; }
+    /// <summary>
+    /// 方块背包窗口
+    /// </summary>
+    public static BlockBackpackControl? BlockBackpackWindow { get; set; }
 
     /// <summary>
     /// 游戏实例编辑窗口
@@ -645,7 +652,7 @@ public static class WindowManager
                     return;
                 }
 
-                var res = await MainWindow.Window.Model.Combo(App.Lang(App.Lang("MainWindow.Info47")), list.Select(item => item.Name));
+                var res = await MainWindow.Window.Model.ShowCombo(App.Lang(App.Lang("MainWindow.Info47")), list.Select(item => item.Name));
                 if (res.Cancel)
                 {
                     return;
@@ -973,6 +980,19 @@ public static class WindowManager
         {
             LuckBlockWindow = new();
             AWindow(LuckBlockWindow);
+        }
+    }
+
+    public static void ShowBlockBackpack()
+    {
+        if (BlockBackpackWindow != null)
+        {
+            BlockBackpackWindow.Window?.WindowActivate();
+        }
+        else
+        {
+            BlockBackpackWindow = new();
+            AWindow(BlockBackpackWindow);
         }
     }
 

@@ -110,7 +110,7 @@ public partial class NetFrpModel
             }
         }
         //选择一个游戏实例
-        var select = await Model.Combo(App.Lang("NetFrpWindow.Tab4.Info3"), list1);
+        var select = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab4.Info3"), list1);
         if (select.Cancel)
         {
             return;

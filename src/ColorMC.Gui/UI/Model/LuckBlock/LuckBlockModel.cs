@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -29,19 +30,17 @@ public partial class LuckBlockModel : TopModel
     [ObservableProperty]
     private bool _canRun;
     [ObservableProperty]
-    private LotteryItemViewModel? _selectedItem;
+    private bool _canStart;
+    [ObservableProperty]
+    private BlockItemModel? _selectedItem;
 
-    public ObservableCollection<LotteryItemViewModel> LotteryItems { get; init; } = [];
+    public ObservableCollection<BlockItemModel> LotteryItems { get; init; } = [];
     public double ContainerWidth { get; set; } = 800;
+    public double Left { get; set; } = 0;
 
     public LuckBlockModel(BaseModel model) : base(model)
     {
         
-    }
-
-    public bool CanStart()
-    {
-        return !IsAnimating && CanRun;
     }
 
     [RelayCommand]
@@ -51,21 +50,22 @@ public partial class LuckBlockModel : TopModel
     }
 
     [RelayCommand]
-    public void CloseResult()
+    public void Backpack()
     {
-        ShowResult = false;
+        WindowManager.ShowBlockBackpack();
     }
 
     public void StartLottery()
     {
+        CanStart = false;
         IsAnimating = true;
-        ScrollSpeed = _random.Next(20, 40);
+        ScrollSpeed = _random.Next(80, 120);
         SelectedItem = null;
         ShowResult = false;
 
         Reset();
 
-        DispatcherTimer.RunOnce(StopLottery, TimeSpan.FromMilliseconds(_random.Next(1000, 5000)));
+        DispatcherTimer.RunOnce(StopLottery, TimeSpan.FromMilliseconds(_random.Next(1000, 3000)));
     }
 
     private void Reset()
@@ -105,12 +105,13 @@ public partial class LuckBlockModel : TopModel
         {
             CanRun = false;
 
-            var block = BlockTexUtils.Blocks.Today;
+            var block = BlockTexUtils.Unlocks.Today;
             SelectedItem = LotteryItems.FirstOrDefault(item => item.Key == block);
             ShowResult = true;
         }
         else
         {
+            CanStart = true;
             CanRun = true;
         }
         IsAnimating = true;
@@ -150,6 +151,19 @@ public partial class LuckBlockModel : TopModel
 
             IsAnimating = false;
             EnsureCenterItemSelected();
+            double containerCenter = ContainerWidth / 2 - Left;
+            double fix = containerCenter - SelectedItem!.Left - 70;
+            bool dis = fix > 0;
+            while (double.Abs(fix) > 1)
+            {
+                ScrollSpeed = dis ? -1 : 1;
+                UpdateItemsPosition();
+                await Task.Delay(10);
+                fix += ScrollSpeed;
+            }
+
+            await Task.Delay(200);
+
             ShowResult = true;
             CanRun = false;
             if (SelectedItem != null)
@@ -165,57 +179,57 @@ public partial class LuckBlockModel : TopModel
 
     public void UpdateItemsPosition()
     {
-        if (!IsAnimating) return;
+        //if (!IsAnimating) return;
 
         foreach (var itemVm in LotteryItems)
         {
             double newLeft = itemVm.Left - ScrollSpeed;
 
-            if (newLeft + 120 < 0) // 120是物品宽度
+            if (newLeft + 120 < -120) // 120是物品宽度
             {
                 newLeft = LotteryItems.Last().Left + 140;
             }
 
             itemVm.Left = newLeft;
         }
-        if (CanRun)
-        {
-            CheckCenterItem();
-        }
+        //if (CanRun)
+        //{
+        //    CheckCenterItem();
+        //}
     }
 
-    private void CheckCenterItem()
-    {
-        if (ContainerWidth <= 0) return;
+    //private void CheckCenterItem()
+    //{
+    //    if (ContainerWidth <= 0) return;
 
-        double containerCenter = ContainerWidth / 2;
-        LotteryItemViewModel? closestItem = null;
-        double closestDistance = double.MaxValue;
+    //    double containerCenter = ContainerWidth / 2;
+    //    BlockItemModel? closestItem = null;
+    //    double closestDistance = double.MaxValue;
 
-        foreach (var itemVm in LotteryItems)
-        {
-            double itemCenter = itemVm.Left + 60; // 物品宽度的一半
-            double distance = Math.Abs(itemCenter - containerCenter);
+    //    foreach (var itemVm in LotteryItems)
+    //    {
+    //        double itemCenter = itemVm.Left + 60; // 物品宽度的一半
+    //        double distance = Math.Abs(itemCenter - containerCenter);
 
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                closestItem = itemVm;
-            }
-        }
+    //        if (distance < closestDistance)
+    //        {
+    //            closestDistance = distance;
+    //            closestItem = itemVm;
+    //        }
+    //    }
 
-        if (closestItem != null && closestDistance <= 10) // 容差范围
-        {
-            SelectedItem = closestItem;
-        }
-    }
+    //    if (closestItem != null && closestDistance <= 10) // 容差范围
+    //    {
+    //        SelectedItem = closestItem;
+    //    }
+    //}
 
     private void EnsureCenterItemSelected()
     {
         if (ContainerWidth <= 0) return;
 
-        double containerCenter = ContainerWidth / 2;
-        LotteryItemViewModel? centerItem = null;
+        double containerCenter = ContainerWidth / 2 - Left;
+        BlockItemModel? centerItem = null;
         double minDistance = double.MaxValue;
 
         foreach (var itemVm in LotteryItems)

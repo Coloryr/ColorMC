@@ -3254,4 +3254,10 @@ public static class GameBinding
         var url = ChunkbaseApi.GenUrl(game.Version, obj.RandomSeed, obj.GeneratorName == "minecraft:large_biomes");
         BaseBinding.OpenUrl(url);
     }
+
+    public static void SetGameIconBlock(GameSettingObj obj, string key)
+    {
+        GameManager.SetGameBlock(obj, key);
+        WindowManager.MainWindow?.IconChange(obj.UUID);
+    }
 }

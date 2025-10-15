@@ -301,7 +301,7 @@ public partial class CollectModel : TopModel, ICollectControl
         }
 
         //选择一个游戏实例
-        var res = await Model.Combo(App.Lang("CollectWindow.Info6"), items);
+        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
         if (res.Cancel)
         {
             return;
@@ -575,7 +575,7 @@ public partial class CollectModel : TopModel, ICollectControl
         var list = new List<string>(CollectUtils.Collect.Groups.Keys);
         list.Remove(Group);
 
-        var res = await Model.Combo(App.Lang("CollectWindow.Info13"), list);
+        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
         if (res.Cancel)
         {
             return;

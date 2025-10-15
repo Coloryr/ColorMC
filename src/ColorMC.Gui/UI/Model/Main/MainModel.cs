@@ -146,7 +146,7 @@ public partial class MainModel : TopModel, IMutTop
     public async Task OpenGuide()
     {
         var list = LanguageBinding.GetGuide();
-        var res = await Model.Combo(App.Lang("SettingWindow.Tab7.Info3"), list);
+        var res = await Model.ShowCombo(App.Lang("SettingWindow.Tab7.Info3"), list);
         if (res.Cancel)
         {
             return;
@@ -175,14 +175,6 @@ public partial class MainModel : TopModel, IMutTop
     public void OpenNews()
     {
         WindowManager.ShowNews();
-    }
-    /// <summary>
-    /// 打开幸运方块窗口
-    /// </summary>
-    [RelayCommand]
-    public void LaunchLuck()
-    {
-        WindowManager.ShowLuck();
     }
 
     protected override void MinModeChange()
@@ -230,6 +222,7 @@ public partial class MainModel : TopModel, IMutTop
         LoadNews();
         LoadMusic();
         LoadCard();
+        LoadBlock();
     }
 
     /// <summary>

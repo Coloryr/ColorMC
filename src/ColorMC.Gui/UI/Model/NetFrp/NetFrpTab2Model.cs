@@ -80,7 +80,7 @@ public partial class NetFrpModel
             list.Add($"{App.Lang("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
         }
 
-        var res = await Model.Combo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
+        var res = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
         if (res.Cancel)
         {
             return;

@@ -264,7 +264,7 @@ public partial class UsersModel : TopModel
     /// <returns></returns>
     private async Task<int> LoginSelect(string title, List<string> items)
     {
-        var res = await Model.Combo(title, items);
+        var res = await Model.ShowCombo(title, items);
         if (res.Cancel)
         {
             return -1;

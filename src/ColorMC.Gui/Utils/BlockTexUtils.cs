@@ -9,6 +9,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using MinecraftSkinRender.Image;
 using SharpCompress.Archives.Zip;
@@ -60,9 +61,9 @@ public static class BlockTexUtils
     public static bool IsGet()
     {
         var time = DateTime.Now;
-        if (Blocks.Time.Year != time.Year
-            || Blocks.Time.Month != time.Month
-            || Blocks.Time.Day != time.Day)
+        if (Unlocks.Time.Year != time.Year
+            || Unlocks.Time.Month != time.Month
+            || Unlocks.Time.Day != time.Day)
         {
             return false;
         }
@@ -72,9 +73,13 @@ public static class BlockTexUtils
 
     public static void SetToday(string key)
     {
-        Blocks.Time = DateTime.Now;
-        Blocks.Today = key;
-        SaveState();
+        Unlocks.List.Add(key);
+        Unlocks.Time = DateTime.Now;
+        Unlocks.Today = key;
+        SaveUnlock();
+
+        WindowManager.BlockBackpackWindow?.Reload();
+        WindowManager.MainWindow?.ReloadBlock();
     }
 
     public static string GetTex(string file)

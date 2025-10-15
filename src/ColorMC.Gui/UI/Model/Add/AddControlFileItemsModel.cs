@@ -250,7 +250,7 @@ public partial class AddControlModel
                 var obj1 = (_last!.Data as McModSearchItemObj)!;
                 if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
                 {
-                    var res = await Model.Combo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
+                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
                     if (res.Cancel)
                     {
                         return;
@@ -408,7 +408,7 @@ public partial class AddControlModel
 
             var world = new List<string>();
             list.ForEach(item => world.Add(item.LevelName));
-            var res1 = await Model.Combo(App.Lang("AddWindow.Info7"), world);
+            var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
             if (res1.Cancel)
             {
                 IsDownload = false;

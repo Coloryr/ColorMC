@@ -6,6 +6,7 @@ using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.LuckBlock;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.LuckBlock;
 
@@ -26,9 +27,10 @@ public partial class LuckBlockControl : BaseUserControl
 
     private void LuckBlockControl_Loaded(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is LuckBlockModel model && ItemsContainer.IsMeasureValid)
+        if (DataContext is LuckBlockModel model && ItemsPanel.IsMeasureValid)
         {
-            model.ContainerWidth = ItemsContainer.Bounds.Width;
+            model.ContainerWidth = Bounds.Width;
+            model.Left = ItemsPanel.SumLeft();
         }
     }
 
@@ -89,7 +91,8 @@ public partial class LuckBlockControl : BaseUserControl
 
         if (DataContext is LuckBlockModel model)
         {
-            model.ContainerWidth = ItemsContainer.Bounds.Width;
+            model.ContainerWidth = Bounds.Width;
+            model.Left = ItemsPanel.Bounds.Left;
         }
     }
 }
