@@ -32,7 +32,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     {
         Blocks.Clear();
         Model.Progress(App.Lang("LuckBlockWindow.Info1"));
-        var res = await BlockTexUtils.LoadNow();
+        var res = await BaseBinding.StartLoadBlock();
         Model.ProgressClose();
         if (!res.State)
         {

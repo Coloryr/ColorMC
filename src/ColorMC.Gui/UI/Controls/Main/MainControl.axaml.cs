@@ -414,18 +414,6 @@ public partial class MainControl : BaseUserControl
     }
 
     /// <summary>
-    /// 游戏实例图标修改
-    /// </summary>
-    /// <param name="uuid">游戏实例UUID</param>
-    public void IconChange(string uuid)
-    {
-        if (DataContext is MainModel model)
-        {
-            model.IconChange(uuid);
-        }
-    }
-
-    /// <summary>
     /// 主界面隐藏
     /// </summary>
     public void Hide()

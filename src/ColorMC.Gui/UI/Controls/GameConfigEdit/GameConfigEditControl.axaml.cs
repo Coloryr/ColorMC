@@ -59,6 +59,16 @@ public partial class GameConfigEditControl : BaseUserControl
         Hook();
     }
 
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
+    }
+
     private void Hook()
     {
         NbtViewer.PointerPressed += NbtViewer_PointerPressed;
@@ -66,6 +76,8 @@ public partial class GameConfigEditControl : BaseUserControl
 
         TextEditor1.KeyDown += NbtViewer_KeyDown;
         TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
 
         //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
         //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
@@ -146,6 +158,9 @@ public partial class GameConfigEditControl : BaseUserControl
         {
             key = model.Obj.UUID;
         }
+
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameConfigEditWindows.Remove(key);
     }
 

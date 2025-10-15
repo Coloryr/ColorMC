@@ -177,8 +177,10 @@ public partial class GameItemModel : GameModel
     {
         _top = top;
         _group = obj.GroupName;
-        LoadIcon();
+        Pic = ImageManager.GetGameIcon(Obj) ?? ImageManager.GameIcon;
         IsStar = GameManager.IsStar(obj);
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
     }
 
     /// <summary>
@@ -354,22 +356,6 @@ public partial class GameItemModel : GameModel
     }
 
     /// <summary>
-    /// 加载图标
-    /// </summary>
-    public void LoadIcon()
-    {
-        Pic = GetImage();
-    }
-
-    /// <summary>
-    /// 重载图标
-    /// </summary>
-    public void ReloadIcon()
-    {
-        Pic = ReloadImage();
-    }
-
-    /// <summary>
     /// 更新悬浮
     /// </summary>
     public void SetTips()
@@ -398,7 +384,6 @@ public partial class GameItemModel : GameModel
     /// <param name="e"></param>
     public async void Move(TopLevel? top, PointerEventArgs e)
     {
-#if !Phone
         if (ShowCheck)
         {
             return;
@@ -422,7 +407,6 @@ public partial class GameItemModel : GameModel
         {
             DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
         });
-#endif
     }
 
     /// <summary>
@@ -440,24 +424,6 @@ public partial class GameItemModel : GameModel
     public void Flyout(Control con)
     {
         MainFlyout.Show(con, this);
-    }
-
-    /// <summary>
-    /// 获取图标
-    /// </summary>
-    /// <returns></returns>
-    private Bitmap GetImage()
-    {
-        return ImageManager.GetGameIcon(Obj) ?? ImageManager.GameIcon;
-    }
-
-    /// <summary>
-    /// 重载图标
-    /// </summary>
-    /// <returns></returns>
-    private Bitmap ReloadImage()
-    {
-        return ImageManager.ReloadImage(Obj) ?? ImageManager.GameIcon;
     }
 
     /// <summary>
@@ -574,8 +540,21 @@ public partial class GameItemModel : GameModel
         _top?.ExportCmd(Obj);
     }
 
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != UUID)
+        {
+            return;
+        }
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            Pic = ImageManager.GetGameIcon(Obj) ?? ImageManager.GameIcon;
+        });
+    }
+
     public override void Close()
     {
-
+        EventManager.GameIconChange -= EventManager_GameIconChange;
     }
 }

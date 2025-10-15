@@ -33,7 +33,20 @@ public partial class ServerPackControl : MenuControl
     {
         _obj = obj;
         Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
     }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
+    }
+
 
     public override void Opened()
     {
@@ -45,6 +58,8 @@ public partial class ServerPackControl : MenuControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
 

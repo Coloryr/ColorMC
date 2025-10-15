@@ -28,6 +28,18 @@ public partial class GameExportControl : MenuControl
         _obj = obj;
 
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     public override async void Opened()
@@ -44,6 +56,8 @@ public partial class GameExportControl : MenuControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
 

@@ -37,6 +37,18 @@ public partial class AddControl : BaseUserControl
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
+
+        EventManager.GameIconChange += EventManager_GameIconChange;
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     protected override TopModel GenModel(BaseModel model)
@@ -65,6 +77,8 @@ public partial class AddControl : BaseUserControl
 
     public override void Closed()
     {
+        EventManager.GameIconChange -= EventManager_GameIconChange;
+
         WindowManager.GameAddWindows.Remove(_obj.UUID);
     }
 

@@ -309,18 +309,6 @@ public partial class MainModel
     }
 
     /// <summary>
-    /// 游戏图标修改
-    /// </summary>
-    /// <param name="uuid">游戏实例UUID</param>
-    public void IconChange(string uuid)
-    {
-        foreach (var item in GameGroups)
-        {
-            item.IconChange(uuid);
-        }
-    }
-
-    /// <summary>
     /// 搜索游戏实例
     /// </summary>
     public void Search()

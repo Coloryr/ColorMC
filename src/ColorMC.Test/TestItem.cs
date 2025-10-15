@@ -9,6 +9,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CoreHttpClient = ColorMC.Core.Net.CoreHttpClient;
 using ZipArchive = SharpCompress.Archives.Zip.ZipArchive;
@@ -19,9 +20,9 @@ public static class TestItem
 {
     private static GameHandel? Start(GameSettingObj obj, LoginObj obj1)
     {
-        return obj.StartGameAsync(new GameLaunchArg 
-        { 
-            Auth = obj1 
+        return obj.StartGameAsync(new GameLaunchArg
+        {
+            Auth = obj1
         }, CancellationToken.None).Result as GameHandel;
     }
 
@@ -746,5 +747,18 @@ public static class TestItem
     public static void Item44()
     {
         using var temp = ZipArchive.Open("H:\\2025年7月30号_版本0.3.4_客户端导入包.zip");
+    }
+
+    public static void Item45()
+    {
+        for (int a = 0; a < 5; a++)
+        {
+            new Thread(async () =>
+            {
+                var res = await BaseBinding.StartLoadBlock();
+            }).Start();
+
+            Thread.Sleep(500);
+        }
     }
 }

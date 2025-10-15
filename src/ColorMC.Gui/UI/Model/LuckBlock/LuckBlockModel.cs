@@ -82,7 +82,7 @@ public partial class LuckBlockModel : TopModel
     public async void LoadBlocks()
     {
         Model.Progress(App.Lang("LuckBlockWindow.Info1"));
-        var res = await BlockTexUtils.LoadNow();
+        var res = await BaseBinding.StartLoadBlock();
         Model.ProgressClose();
         if (!res.State)
         {
