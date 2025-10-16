@@ -194,7 +194,7 @@ public partial class AddControlModel : IAddOptifineControl
     }
 
     /// <summary>
-    /// 加载模组列表
+    /// 加载可选模组列表
     /// </summary>
     public void ModsLoad(bool ischange = false)
     {
@@ -247,7 +247,6 @@ public partial class AddControlModel : IAddOptifineControl
         _modList.Clear();
         _modList.AddRange(list);
         OpenModDownloadDisplay();
-        _modsave = null;
         _modList.ForEach(item =>
         {
             item.Download = true;
@@ -269,17 +268,8 @@ public partial class AddControlModel : IAddOptifineControl
     /// </summary>
     private void CloseModDownloadDisplay()
     {
-        if (IsUpgrade)
-        {
-            WindowClose();
-        }
         ModDownloadDisplay = false;
         Model.PopBack();
-        if (_last != null)
-        {
-            _last.NowDownload = false;
-        }
         DownloadModList.Clear();
-        IsDownload = false;
     }
 }

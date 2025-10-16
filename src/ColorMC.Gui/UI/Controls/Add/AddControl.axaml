@@ -21,8 +21,7 @@
                 <Border
                     Margin="10,0,10,5"
                     Classes="t2"
-                    DockPanel.Dock="Top"
-                    IsEnabled="{Binding !IsDownload}">
+                    DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
                         <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">

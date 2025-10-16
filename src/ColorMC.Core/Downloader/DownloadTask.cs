@@ -10,6 +10,10 @@ namespace ColorMC.Core.Downloader;
 /// </summary>
 internal class DownloadTask
 {
+    /// <summary>
+    /// 任务是否已经取消
+    /// </summary>
+    /// <returns></returns>
     internal CancellationToken Token => _cancel.Token;
 
     /// <summary>
@@ -19,7 +23,7 @@ internal class DownloadTask
     /// <summary>
     /// 下载项目队列
     /// </summary>
-    private readonly ConcurrentQueue<FileItemObj> _items = [];
+    private readonly ConcurrentQueue<DownloadItem> _items = [];
     /// <summary>
     /// 总下载数量
     /// </summary>
@@ -33,9 +37,9 @@ internal class DownloadTask
     /// </summary>
     private int _doneSize;
     /// <summary>
-    /// 结束线程数量
+    /// 下次错误数量
     /// </summary>
-    private int _doneThreadCount;
+    private int _errorSize;
 
     /// <summary>
     /// 处理完成信号量
@@ -63,13 +67,22 @@ internal class DownloadTask
             {
                 continue;
             }
-            _items.Enqueue(item);
-            item.UpdateD = arg.UpdateItem;
+            _items.Enqueue(new DownloadItem
+            {
+                Task = this,
+                File = item
+            });
             names.Add(item.Name);
         }
 
         _doneSize = 0;
         _allSize = _items.Count;
+        _arg.UpdateTask?.Invoke(UpdateType.AddItems, _allSize);
+    }
+
+    public IEnumerable<DownloadItem> GetItems()
+    {
+        return _items;
     }
 
     /// <summary>
@@ -92,14 +105,6 @@ internal class DownloadTask
     }
 
     /// <summary>
-    /// 更新数据
-    /// </summary>
-    public void Update()
-    {
-        _arg.UpdateTask?.Invoke(_allSize, _doneSize);
-    }
-
-    /// <summary>
     /// 取消下载
     /// </summary>
     public void Cancel()
@@ -110,26 +115,25 @@ internal class DownloadTask
     }
 
     /// <summary>
-    /// 获取下载项目
-    /// </summary>
-    /// <returns>下载项目</returns>
-    public FileItemObj? GetItem()
-    {
-        if (_items.TryDequeue(out var item))
-        {
-            return item;
-        }
-
-        return null;
-    }
-
-    /// <summary>
     /// 下载线程完成
     /// </summary>
     public void Done()
     {
         _doneSize++;
-        Update();
+        _arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+
+        ThreadDone();
+    }
+
+    /// <summary>
+    /// 任务下载错误
+    /// </summary>
+    public void Error()
+    {
+        _errorSize++;
+        _arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+
+        ThreadDone();
     }
 
     /// <summary>
@@ -137,17 +141,21 @@ internal class DownloadTask
     /// </summary>
     public void ThreadDone()
     {
-        lock (this)
+        if (_doneSize + _errorSize >= _items.Count)
         {
-            _doneThreadCount++;
-            if (_doneThreadCount < DownloadManager.ThreadCount)
-            {
-                return;
-            }
+            //任务结束
+            _semaphore.Release();
+            DownloadManager.TaskRunNext(_arg, this);
         }
+    }
 
-        //任务结束
-        _semaphore.Release();
-        DownloadManager.TaskRunNext(_arg);
+    /// <summary>
+    /// 更新线程状态
+    /// </summary>
+    /// <param name="index">线程</param>
+    /// <param name="obj">下载文件</param>
+    public void UpdateItem(int index, FileItemObj obj)
+    {
+        _arg.UpdateItem?.Invoke(index, obj);
     }
 }

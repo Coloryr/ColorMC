@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ColorMC;
@@ -14,7 +12,6 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -132,7 +129,10 @@ public partial class AddControlModel
             return;
         }
 
-        LoadFile();
+        if (_lastSelect != null)
+        {
+            LoadFile(_lastSelect);
+        }
     }
 
     /// <summary>
@@ -146,102 +146,30 @@ public partial class AddControlModel
             return;
         }
 
-        LoadFile();
-    }
-
-    /// <summary>
-    /// 下载模组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task DownloadMod()
-    {
-        GameManager.StartAdd(Obj.UUID);
-        Model.Progress(App.Lang("AddWindow.Info5"));
-        bool res;
-        if (DownloadModList.Any(item => item is ModUpgradeModel))
+        if (_lastSelect != null)
         {
-            var list = DownloadModList.Where(item => item is ModUpgradeModel && item.Download)
-                .Select(item => new DownloadModArg()
-                {
-                    Info = item.Items[item.SelectVersion].Info,
-                    Item = item.Items[item.SelectVersion].Item,
-                    Old = (item as ModUpgradeModel)!.Obj
-                }).ToList();
-
-            res = await WebBinding.DownloadModAsync(Obj, list);
+            LoadFile(_lastSelect);
         }
-        else
-        {
-            var list = DownloadModList.Where(item => item.Download)
-                                .Select(item => item.Items[item.SelectVersion]).ToList();
-            if (_modsave != null)
-            {
-                list.Add(_modsave);
-            }
-
-            res = await WebBinding.DownloadModAsync(Obj, list);
-        }
-        Model.ProgressClose();
-        if (!res)
-        {
-            Model.Show(App.Lang("AddWindow.Error5"));
-            if (_last != null)
-            {
-                _last.IsDownload = false;
-                _last.NowDownload = false;
-            }
-        }
-        else
-        {
-            if (_last != null)
-            {
-                _last.NowDownload = false;
-                _last.IsDownload = true;
-            }
-        }
-        CloseModDownloadDisplay();
-        GameManager.StopAdd(Obj.UUID);
-    }
-
-    /// <summary>
-    /// 选择下载所有模组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task DownloadAllMod()
-    {
-        foreach (var item in DownloadModList)
-        {
-            item.Download = true;
-        }
-        await DownloadMod();
     }
 
     /// <summary>
     /// 打开文件列表
     /// </summary>
-    public void Install()
+    private void InstallItem(FileItemModel item)
     {
-        if (IsDownload)
-        {
-            Model.Show(App.Lang("AddWindow.Info9"));
-            return;
-        }
-
         _lastType = SourceType.McMod;
         _lastId = null;
 
         _load = true;
         PageDownload = 0;
-        LoadFile();
+        LoadFile(item);
         _load = false;
     }
 
     /// <summary>
     /// 加载文件列表
     /// </summary>
-    private async void LoadFile()
+    private async void LoadFile(FileItemModel item)
     {
         FileList.Clear();
 
@@ -250,7 +178,7 @@ public partial class AddControlModel
         {
             if (_lastType == SourceType.McMod)
             {
-                var obj1 = (_last!.Data as McModSearchItemObj)!;
+                var obj1 = (item.Data as McModSearchItemObj)!;
                 if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
                 {
                     var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
@@ -291,7 +219,7 @@ public partial class AddControlModel
         if (type == SourceType.CurseForge)
         {
             var res = await WebBinding.GetFileListAsync(type, _lastId ??
-                (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
+                (item.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
                 GameVersionDownload, Obj.Loader, _now);
             list = res.List;
             MaxPageDownload = res.Count / 50;
@@ -299,7 +227,7 @@ public partial class AddControlModel
         else if (type == SourceType.Modrinth)
         {
             var res = await WebBinding.GetFileListAsync(type, _lastId ??
-                (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, 0,
+                (item.Data as ModrinthSearchObj.HitObj)!.ProjectId, 0,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
             list = res.List;
             MaxPageDownload = res.Count / 50;
@@ -324,14 +252,14 @@ public partial class AddControlModel
                 {
                     break;
                 }
-                var item = list[a];
-                item.Add = this;
-                if (Obj.Mods.TryGetValue(item.ID, out var value)
-                    && value.FileId == item.ID1)
+                var item1 = list[a];
+                item1.Add = this;
+                if (Obj.Mods.TryGetValue(item1.ID, out var value)
+                    && value.FileId == item1.ID1)
                 {
-                    item.IsDownload = true;
+                    item1.IsDownload = true;
                 }
-                FileList.Add(item);
+                FileList.Add(item1);
             }
         }
         else
@@ -343,9 +271,9 @@ public partial class AddControlModel
                 {
                     break;
                 }
-                var item = list[a];
-                item.Add = this;
-                FileList.Add(item);
+                var item1 = list[a];
+                item1.Add = this;
+                FileList.Add(item1);
             }
         }
 
@@ -361,6 +289,11 @@ public partial class AddControlModel
     /// <param name="data"></param>
     public async void Install(FileVersionItemModel data)
     {
+        if (data.IsDownload)
+        {
+            return;
+        }
+
         var type = _sourceTypeList[DownloadSource];
         if (Set)
         {
@@ -387,154 +320,157 @@ public partial class AddControlModel
             }
         }
 
-        var last = _last!;
-        IsDownload = true;
-        if (last != null)
-        {
-            last.NowDownload = true;
-        }
-
         VersionDisplay = false;
         bool res = false;
 
-        //数据包
-        if (_now == FileType.DataPacks)
+        GameManager.StartAdd(Obj.UUID);
+        try
         {
-            //选择存档
-            var list = await GameBinding.GetWorldsAsync(Obj);
-            if (list.Count == 0)
+            //数据包
+            if (_now == FileType.DataPacks)
             {
-                Model.Show(App.Lang("AddWindow.Error6"));
-                IsDownload = false;
-                return;
-            }
-
-            var world = new List<string>();
-            list.ForEach(item => world.Add(item.LevelName));
-            var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
-            if (res1.Cancel)
-            {
-                IsDownload = false;
-                return;
-            }
-            var item = list[res1.Index];
-
-            try
-            {
-                res = type switch
+                //选择存档
+                var list = await GameBinding.GetWorldsAsync(Obj);
+                if (list.Count == 0)
                 {
-                    SourceType.CurseForge => await WebBinding.DownloadAsync(item,
-                        data.Data as CurseForgeModObj.CurseForgeDataObj),
-                    SourceType.Modrinth => await WebBinding.DownloadAsync(item,
-                        data.Data as ModrinthVersionObj),
-                    _ => false
-                };
-                IsDownload = false;
-            }
-            catch (Exception e)
-            {
-                Logs.Error(App.Lang("AddWindow.Error7"), e);
-                res = false;
-            }
-        }
-        //模组
-        else if (_now == FileType.Mod)
-        {
-            try
-            {
-                var list = (type == SourceType.McMod ? _lastType : type) switch
-                {
-                    SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(Obj,
-                    data.Data as CurseForgeModObj.CurseForgeDataObj),
-                    SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(Obj,
-                    data.Data as ModrinthVersionObj),
-                    _ => null
-                };
-                if (list == null)
-                {
-                    Model.Show(App.Lang("AddWindow.Error9"));
-                    IsDownload = false;
+                    Model.Show(App.Lang("AddWindow.Error6"));
                     return;
                 }
 
-                if (list.List!.Count == 0)
+                var world = new List<string>();
+                list.ForEach(item => world.Add(item.LevelName));
+                var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
+                if (res1.Cancel)
                 {
-                    res = await WebBinding.DownloadModAsync(Obj,
-                    [
-                        new DownloadModArg()
-                        {
-                            Item = list.Item!,
-                            Info = list.Info!,
-                            Old = await Obj.ReadModAsync(mod)
-                        }
-                    ]);
-                    IsDownload = false;
+                    return;
                 }
-                else
+                var item = list[res1.Index];
+
+                try
                 {
-                    //添加模组信息
-                    _modList.Clear();
-                    _modList.AddRange(list.List);
-                    _modsave = new DownloadModArg()
+                    DownloadItemInfo? info = null;
+                    if (type == SourceType.CurseForge
+                        && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                     {
-                        Item = list.Item!,
-                        Info = list.Info!,
-                        Old = await Obj.ReadModAsync(mod)
+                        info = new DownloadItemInfo
+                        {
+                            Type = FileType.DataPacks,
+                            Source = type,
+                            PID = data1.ModId.ToString()
+                        };
+                        StartDownload(info);
+
+                        res = await WebBinding.DownloadAsync(item, data1);
+                    }
+                    else if (type == SourceType.Modrinth
+                        && data.Data is ModrinthVersionObj data2)
+                    {
+                        info = new DownloadItemInfo
+                        {
+                            Type = FileType.DataPacks,
+                            Source = type,
+                            PID = data2.ProjectId
+                        };
+                        StartDownload(info);
+
+                        res = await WebBinding.DownloadAsync(item, data2);
+                    }
+                    if (info != null)
+                    {
+                        StopDownload(info, res);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("AddWindow.Error7"), e);
+                    res = false;
+                }
+            }
+            //模组
+            else if (_now == FileType.Mod)
+            {
+                try
+                {
+                    var list = (type == SourceType.McMod ? _lastType : type) switch
+                    {
+                        SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(Obj,
+                        data.Data as CurseForgeModObj.CurseForgeDataObj),
+                        SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(Obj,
+                        data.Data as ModrinthVersionObj),
+                        _ => null
                     };
-                    OpenModDownloadDisplay();
-                    _modList.ForEach(item =>
+                    if (list == null)
                     {
-                        if (item.Optional == false)
+                        Model.Show(App.Lang("AddWindow.Error9"));
+                        return;
+                    }
+
+                    if (list.List!.Count == 0)
+                    {
+                        var info = new DownloadItemInfo
                         {
-                            item.Download = true;
-                        }
-                    });
-                    ModsLoad();
-                    return;
+                            Type = FileType.Mod,
+                            Source = type,
+                            PID = list.Info.ModId
+                        };
+                        StartDownload(info);
+
+                        res = await WebBinding.DownloadModAsync(Obj,
+                        [
+                            new DownloadModArg()
+                            {
+                                Item = list.Item!,
+                                Info = list.Info!,
+                                Old = await Obj.ReadModAsync(mod)
+                            }
+                        ]);
+
+                        StopDownload(info, res);
+                    }
+                    else
+                    {
+                        res = await StartListTask(list, mod, type);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("AddWindow.Error8"), e);
+                    res = false;
                 }
             }
-            catch (Exception e)
+            else
             {
-                Logs.Error(App.Lang("AddWindow.Error8"), e);
-                res = false;
-            }
-        }
-        else
-        {
-            try
-            {
-                res = type switch
+                try
                 {
-                    SourceType.CurseForge => await WebBinding.DownloadAsync(_now, Obj,
-                        data.Data as CurseForgeModObj.CurseForgeDataObj),
-                    SourceType.Modrinth => await WebBinding.DownloadAsync(_now, Obj,
-                        data.Data as ModrinthVersionObj),
-                    _ => false
-                };
-                IsDownload = false;
+                    res = type switch
+                    {
+                        SourceType.CurseForge => await WebBinding.DownloadAsync(_now, Obj,
+                            data.Data as CurseForgeModObj.CurseForgeDataObj),
+                        SourceType.Modrinth => await WebBinding.DownloadAsync(_now, Obj,
+                            data.Data as ModrinthVersionObj),
+                        _ => false
+                    };
+                }
+                catch (Exception e)
+                {
+                    Logs.Error(App.Lang("AddWindow.Error8"), e);
+                    res = false;
+                }
             }
-            catch (Exception e)
+
+            //下载结束
+            if (res)
             {
-                Logs.Error(App.Lang("AddWindow.Error8"), e);
-                res = false;
+                Model.Notify(App.Lang("Text.Downloaded"));
+            }
+            else
+            {
+                Model.Show(App.Lang("AddWindow.Error5"));
             }
         }
-        if (res)
+        finally
         {
-            Model.Notify(App.Lang("Text.Downloaded"));
-            if (last != null)
-            {
-                last.NowDownload = false;
-                last.IsDownload = true;
-            }
-        }
-        else
-        {
-            if (last != null)
-            {
-                last.NowDownload = false;
-            }
-            Model.Show(App.Lang("AddWindow.Error5"));
+            GameManager.StopAdd(Obj.UUID);
         }
     }
 }

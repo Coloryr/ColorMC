@@ -190,6 +190,21 @@ public static class CoreHttpClient
     }
 
     /// <summary>
+    /// 进行一次GET请求<br/>
+    /// 指定ranges
+    /// </summary>
+    /// <param name="url"></param>
+    /// <param name="pos"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    public static Task<HttpResponseMessage> GetRangesAsync(string url, long pos, CancellationToken token)
+    {
+        var message = new HttpRequestMessage(HttpMethod.Get, url);
+        message.Headers.Range = new RangeHeaderValue(pos, null);
+        return _downloadClient.SendAsync(message, HttpCompletionOption.ResponseHeadersRead, token);
+    }
+
+    /// <summary>
     /// 进行一次Get请求
     /// </summary>
     /// <param name="url"></param>

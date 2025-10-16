@@ -54,7 +54,7 @@ public partial class DownloadModel : TopModel
     [ObservableProperty]
     private double _value;
     /// <summary>
-    /// 总计下载数量
+    /// 总计下载任务数量
     /// </summary>
     [ObservableProperty]
     private int _size;
@@ -63,6 +63,15 @@ public partial class DownloadModel : TopModel
     /// </summary>
     [ObservableProperty]
     private bool _isPause;
+
+    /// <summary>
+    /// 已下载数量
+    /// </summary>
+    private int _doneNum;
+    /// <summary>
+    /// 任务数量
+    /// </summary>
+    private int _taskNum;
 
     private readonly string _useName;
 
@@ -249,12 +258,20 @@ public partial class DownloadModel : TopModel
     /// </summary>
     /// <param name="all">总计任务</param>
     /// <param name="now">当前任务</param>
-    private void DownloadTaskUpdate(int all, int now)
+    private void DownloadTaskUpdate(UpdateType type, int num)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Value = (double)now / all * 100;
-            Now = $"{now}/{all}";
+            if (type == UpdateType.AddItems)
+            {
+                _taskNum += num;
+            }
+            else
+            {
+                _doneNum++;
+            }
+            Value = (double)_doneNum / _taskNum * 100;
+            Now = $"{_doneNum}/{_taskNum}";
         });
     }
 
