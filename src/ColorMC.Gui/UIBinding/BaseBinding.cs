@@ -31,7 +31,6 @@ using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.LuckBlock;
 using ColorMC.Gui.Utils;
 using SharpCompress.Common;
 using SharpCompress.Writers.Zip;

@@ -39,6 +39,28 @@ public partial class AddControl : BaseUserControl
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -78,6 +100,8 @@ public partial class AddControl : BaseUserControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameAddWindows.Remove(_obj.UUID);
     }
@@ -185,13 +209,5 @@ public partial class AddControl : BaseUserControl
     public void GoUpgrade(ICollection<ModUpgradeModel> list)
     {
         (DataContext as AddControlModel)!.Upgrade(list);
-    }
-
-    /// <summary>
-    /// 重新加载标题
-    /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);
     }
 }

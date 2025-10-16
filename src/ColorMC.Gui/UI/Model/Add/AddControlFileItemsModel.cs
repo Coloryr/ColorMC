@@ -9,6 +9,7 @@ using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -155,6 +156,7 @@ public partial class AddControlModel
     [RelayCommand]
     public async Task DownloadMod()
     {
+        GameManager.StartAdd(Obj.UUID);
         Model.Progress(App.Lang("AddWindow.Info5"));
         bool res;
         if (DownloadModList.Any(item => item is ModUpgradeModel))
@@ -199,6 +201,7 @@ public partial class AddControlModel
             }
         }
         CloseModDownloadDisplay();
+        GameManager.StopAdd(Obj.UUID);
     }
 
     /// <summary>

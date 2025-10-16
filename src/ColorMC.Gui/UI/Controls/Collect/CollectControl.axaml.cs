@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Model.Collect;
 namespace ColorMC.Gui.UI.Controls.Collect;
 
 /// <summary>
-/// 资源收藏窗口
+/// 璧勬簮鏀惰棌绐楀彛
 /// </summary>
 public partial class CollectControl : BaseUserControl
 {

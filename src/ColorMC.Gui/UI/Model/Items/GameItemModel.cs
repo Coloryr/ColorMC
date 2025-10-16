@@ -181,6 +181,17 @@ public partial class GameItemModel : GameModel
         IsStar = GameManager.IsStar(obj);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != Obj.UUID)
+        {
+            return;
+        }
+
+        OnPropertyChanged(nameof(Name));
     }
 
     /// <summary>
@@ -497,6 +508,12 @@ public partial class GameItemModel : GameModel
     /// </summary>
     public async void DeleteGame()
     {
+        if (GameManager.IsAdd(Obj))
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error5"));
+            return;
+        }
+
         var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
         if (!res)
         {
@@ -556,5 +573,6 @@ public partial class GameItemModel : GameModel
     public override void Close()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
     }
 }

@@ -10,12 +10,12 @@ using ColorMC.Gui.UIBinding;
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 
 /// <summary>
-/// ·şÎñÆ÷ÊµÀıÉú³É´°¿Ú
+/// æœåŠ¡å™¨å®ä¾‹ç”Ÿæˆçª—å£
 /// </summary>
 public partial class ServerPackControl : MenuControl
 {
     /// <summary>
-    /// ÓÎÏ·ÊµÀı
+    /// æ¸¸æˆå®ä¾‹
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -35,6 +35,28 @@ public partial class ServerPackControl : MenuControl
         Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -59,6 +81,8 @@ public partial class ServerPackControl : MenuControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
@@ -106,13 +130,5 @@ public partial class ServerPackControl : MenuControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
-    }
-
-    /// <summary>
-    /// ÖØĞÂ¼ÓÔØ±êÌâ
-    /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
     }
 }

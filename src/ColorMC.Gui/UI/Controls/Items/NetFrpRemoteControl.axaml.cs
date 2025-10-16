@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Model.Items;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// Ó³Éä×ÓÏîÄ¿
+/// æ˜ å°„å­é¡¹ç›®
 /// </summary>
 public partial class NetFrpRemoteControl : UserControl
 {

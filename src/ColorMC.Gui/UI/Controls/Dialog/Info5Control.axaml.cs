@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// ÏÂÀ­¿òµ¯´°
+/// ä¸‹æ‹‰æ¡†å¼¹çª—
 /// </summary>
 public partial class Info5Control : UserControl
 {

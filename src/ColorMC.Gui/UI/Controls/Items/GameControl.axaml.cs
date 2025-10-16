@@ -14,16 +14,16 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀı×ÓÏîÄ¿
+/// æ¸¸æˆå®ä¾‹å­é¡¹ç›®
 /// </summary>
 public partial class GameControl : UserControl
 {
     /// <summary>
-    /// ÊÇ·ñ´¦ÓÚ°´ÏÂ×´Ì¬
+    /// æ˜¯å¦å¤„äºæŒ‰ä¸‹çŠ¶æ€
     /// </summary>
     private bool press;
     /// <summary>
-    /// °´ÏÂµÄÎ»ÖÃ
+    /// æŒ‰ä¸‹çš„ä½ç½®
     /// </summary>
     private Point point;
 

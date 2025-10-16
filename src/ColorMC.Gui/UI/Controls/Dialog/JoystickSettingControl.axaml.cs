@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// ÊÖ±úÉèÖÃ
+/// æ‰‹æŸ„è®¾ç½®
 /// </summary>
 public partial class JoystickSettingControl : UserControl
 {

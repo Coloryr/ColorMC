@@ -9,12 +9,12 @@ using ColorMC.Gui.UI.Model.GameExport;
 namespace ColorMC.Gui.UI.Controls.GameExport;
 
 /// <summary>
-/// 游戏实例导出
+/// 娓告垙瀹炰緥瀵煎嚭
 /// </summary>
 public partial class GameExportControl : MenuControl
 {
     /// <summary>
-    /// 游戏实例
+    /// 娓告垙瀹炰緥
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -30,6 +30,28 @@ public partial class GameExportControl : MenuControl
         Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -57,6 +79,8 @@ public partial class GameExportControl : MenuControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
@@ -96,13 +120,5 @@ public partial class GameExportControl : MenuControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
-    }
-
-    /// <summary>
-    /// 重载标题
-    /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
     }
 }

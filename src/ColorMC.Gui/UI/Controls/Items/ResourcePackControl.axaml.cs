@@ -11,12 +11,12 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// 资源包子项目
+/// 璧勬簮鍖呭瓙椤圭洰
 /// </summary>
 public partial class ResourcePackControl : UserControl
 {
     /// <summary>
-    /// 用于随机颜色
+    /// 鐢ㄤ簬闅忔満棰滆壊
     /// </summary>
     private readonly Random _random = new();
 
@@ -38,9 +38,9 @@ public partial class ResourcePackControl : UserControl
     }
 
     /// <summary>
-    /// 创建文本
+    /// 鍒涘缓鏂囨湰
     /// </summary>
-    /// <param name="chat">内容</param>
+    /// <param name="chat">鍐呭</param>
     private void MakeText(ChatObj chat)
     {
         if (chat.Text == "\n")

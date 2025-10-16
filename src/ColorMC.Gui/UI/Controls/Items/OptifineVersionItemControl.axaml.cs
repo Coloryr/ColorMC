@@ -10,7 +10,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// Optifine¹âÓ°ÎÄ¼ş°æ±¾×ÓÏîÄ¿
+/// Optifineå…‰å½±æ–‡ä»¶ç‰ˆæœ¬å­é¡¹ç›®
 /// </summary>
 public partial class OptifineVersionItemControl : UserControl
 {

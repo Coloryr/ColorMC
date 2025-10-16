@@ -1,7 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Items;
 
@@ -18,7 +16,7 @@ public partial class BlockItemControl : UserControl
 
     private void BlockItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is not BlockItemModel model 
+        if (DataContext is not BlockItemModel model
             || model.Top == null)
         {
             return;

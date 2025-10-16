@@ -7,7 +7,7 @@ using ColorMC.Gui.UI.Model.Download;
 namespace ColorMC.Gui.UI.Controls.Download;
 
 /// <summary>
-/// ÏÂÔØ´°¿Ú
+/// ä¸‹è½½çª—å£
 /// </summary>
 public partial class DownloadControl : BaseUserControl
 {
@@ -34,7 +34,7 @@ public partial class DownloadControl : BaseUserControl
     }
 
     /// <summary>
-    /// ¿ªÊ¼ÏÂÔØ¸üĞÂ
+    /// å¼€å§‹ä¸‹è½½æ›´æ–°
     /// </summary>
     /// <returns></returns>
     public DownloadArg Start()

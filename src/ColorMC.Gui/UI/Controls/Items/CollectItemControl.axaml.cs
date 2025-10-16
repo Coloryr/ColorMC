@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Model.Items;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ×ÊÔ´ÊÕ²Ø×ÓÏîÄ¿
+/// èµ„æºæ”¶è—å­é¡¹ç›®
 /// </summary>
 public partial class CollectItemControl : UserControl
 {

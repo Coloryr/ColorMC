@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Platform;
 using Avalonia.Styling;
 using Avalonia.Threading;
@@ -172,6 +171,9 @@ public static class WindowManager
     /// </summary>
     private static Dictionary<string, WindowStateObj> s_WindowState;
 
+    /// <summary>
+    /// 窗口信息存储文件
+    /// </summary>
     private static string s_file;
 
     /// <summary>
@@ -1026,45 +1028,6 @@ public static class WindowManager
     }
 
     /// <summary>
-    /// 关闭该游戏实例的所有窗口
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static void CloseGameWindow(GameSettingObj obj)
-    {
-        if (GameEditWindows.TryGetValue(obj.UUID, out var win))
-        {
-            win.Window?.Close();
-        }
-        if (GameLogWindows.TryGetValue(obj.UUID, out var win5))
-        {
-            win5.Window?.Close();
-        }
-        if (GameAddWindows.TryGetValue(obj.UUID, out var win1))
-        {
-            win1.Window?.Close();
-        }
-        if (GameCloudWindows.TryGetValue(obj.UUID, out var win2))
-        {
-            win2.Window?.Close();
-        }
-        if (GameExportWindows.TryGetValue(obj.UUID, out var win3))
-        {
-            win3.Window?.Close();
-        }
-        if (ServerPackWindows.TryGetValue(obj.UUID, out var win4))
-        {
-            win4.Window?.Close();
-        }
-        foreach (var item in GameConfigEditWindows)
-        {
-            if (item.Key.StartsWith(obj.UUID))
-            {
-                item.Value.Window?.Close();
-            }
-        }
-    }
-
-    /// <summary>
     /// 获取当前主窗口
     /// </summary>
     /// <returns>窗口</returns>
@@ -1263,41 +1226,5 @@ public static class WindowManager
     public static void ActivatedWindow(Window window)
     {
         LastWindow = window;
-    }
-
-    /// <summary>
-    /// 重载窗口标题
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static void ReloadTitle(GameSettingObj obj)
-    {
-        if (GameEditWindows.TryGetValue(obj.UUID, out var window))
-        {
-            window.ReloadTitle();
-        }
-        if (GameExportWindows.TryGetValue(obj.UUID, out var window1))
-        {
-            window1.ReloadTitle();
-        }
-        if (GameCloudWindows.TryGetValue(obj.UUID, out var window2))
-        {
-            window2.ReloadTitle();
-        }
-        if (GameLogWindows.TryGetValue(obj.UUID, out var window3))
-        {
-            window3.ReloadTitle();
-        }
-        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var window4))
-        {
-            window4.ReloadTitle();
-        }
-        if (GameAddWindows.TryGetValue(obj.UUID, out var window5))
-        {
-            window5.ReloadTitle();
-        }
-        if (ServerPackWindows.TryGetValue(obj.UUID, out var window6))
-        {
-            window6.ReloadTitle();
-        }
     }
 }

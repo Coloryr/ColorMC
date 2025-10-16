@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// Ó³Éä×ÓÏîÄ¿
+/// æ˜ å°„å­é¡¹ç›®
 /// </summary>
 public partial class NetFrpCloudControl : UserControl
 {

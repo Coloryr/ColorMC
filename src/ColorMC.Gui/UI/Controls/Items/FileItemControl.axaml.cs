@@ -12,7 +12,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ÏîÄ¿ÁĞ±í×ÓÏîÄ¿
+/// é¡¹ç›®åˆ—è¡¨å­é¡¹ç›®
 /// </summary>
 public partial class FileItemControl : UserControl
 {

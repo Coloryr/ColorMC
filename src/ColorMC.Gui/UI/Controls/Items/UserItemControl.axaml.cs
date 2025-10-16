@@ -16,7 +16,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ÓÃ»§×ÓÏîÄ¿
+/// ç”¨æˆ·å­é¡¹ç›®
 /// </summary>
 public partial class UserItemControl : UserControl
 {

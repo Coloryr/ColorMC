@@ -284,7 +284,7 @@ public static class LaunchSocketUtils
         App.OnClose += App_OnClose;
         s_isRun = true;
         new Thread(Run)
-        { 
+        {
             Name = "ColorMC Launch Socket Thread",
             IsBackground = true
         }.Start();

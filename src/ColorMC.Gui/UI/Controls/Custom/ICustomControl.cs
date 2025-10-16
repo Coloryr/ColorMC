@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.UI.Controls.Custom;
+namespace ColorMC.Gui.UI.Controls.Custom;
 
 /// <summary>
 /// 自定义窗口

@@ -13,12 +13,12 @@ using ColorMC.Gui.UI.Model.GameLog;
 namespace ColorMC.Gui.UI.Controls.GameLog;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀıÈÕÖ¾
+/// æ¸¸æˆå®ä¾‹æ—¥å¿—
 /// </summary>
 public partial class GameLogControl : BaseUserControl
 {
     /// <summary>
-    /// ÓÎÏ·ÊµÀı
+    /// æ¸¸æˆå®ä¾‹
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -49,6 +49,28 @@ public partial class GameLogControl : BaseUserControl
         TextEditor1.TextArea.TextView.LineTransformers.Add(new LogTransformer());
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -62,7 +84,7 @@ public partial class GameLogControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÈÕÖ¾×ÅÉ«ÓÃ
+    /// æ—¥å¿—ç€è‰²ç”¨
     /// </summary>
     private class LogTransformer : DocumentColorizingTransformer
     {
@@ -136,7 +158,7 @@ public partial class GameLogControl : BaseUserControl
     }
 
     /// <summary>
-    /// ¸üĞÂÈÕÖ¾
+    /// æ›´æ–°æ—¥å¿—
     /// </summary>
     public override void Update()
     {
@@ -162,6 +184,8 @@ public partial class GameLogControl : BaseUserControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameLogWindows.Remove(_obj.UUID);
     }
@@ -172,7 +196,7 @@ public partial class GameLogControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÇåÀíµ±Ç°ÈÕÖ¾
+    /// æ¸…ç†å½“å‰æ—¥å¿—
     /// </summary>
     public void ClearLog()
     {
@@ -183,9 +207,9 @@ public partial class GameLogControl : BaseUserControl
     }
 
     /// <summary>
-    /// Ìí¼ÓĞÂµÄÈÕÖ¾
+    /// æ·»åŠ æ–°çš„æ—¥å¿—
     /// </summary>
-    /// <param name="data">ÈÕÖ¾ÄÚÈİ</param>
+    /// <param name="data">æ—¥å¿—å†…å®¹</param>
     public void Log(GameLogItemObj? data)
     {
         if (data == null)
@@ -223,17 +247,9 @@ public partial class GameLogControl : BaseUserControl
     }
 
     /// <summary>
-    /// ÖØÔØ±êÌâ
+    /// æ¸¸æˆé€€å‡ºè§¦å‘
     /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
-    }
-
-    /// <summary>
-    /// ÓÎÏ·ÍË³ö´¥·¢
-    /// </summary>
-    /// <param name="code">´íÎóÂë</param>
+    /// <param name="code">é”™è¯¯ç </param>
     public void GameExit(int code)
     {
         (DataContext as GameLogModel)?.GameExit(code);

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// 锁定游戏实例界面
+/// 閿佸畾娓告垙瀹炰緥鐣岄潰
 /// </summary>
 public partial class MainOneGameControl : UserControl
 {

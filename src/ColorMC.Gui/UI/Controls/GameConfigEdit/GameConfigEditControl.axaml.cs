@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -59,16 +59,6 @@ public partial class GameConfigEditControl : BaseUserControl
         Hook();
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
-    {
-        if (uuid != _obj.UUID)
-        {
-            return;
-        }
-
-        ReloadIcon();
-    }
-
     private void Hook()
     {
         NbtViewer.PointerPressed += NbtViewer_PointerPressed;
@@ -78,9 +68,50 @@ public partial class GameConfigEditControl : BaseUserControl
         TextEditor1.TextArea.TextEntered += TextEditor1_TextInput;
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
 
         //registryOptions = new RegistryOptions(ThemeManager.NowTheme == PlatformThemeVariant.Light ? ThemeName.LightPlus : ThemeName.DarkPlus);
         //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        if (_world == null)
+        {
+            Title = string.Format(App.Lang("ConfigEditWindow.Title"),
+                    _obj.Name);
+        }
+        else
+        {
+            Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
+                    _world.Game.Name, _world.LevelName);
+        }
+    }
+
+    private void EventManager_GameIconChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        ReloadIcon();
     }
 
     private void TextEditor1_TextInput(object? sender, TextInputEventArgs e)
@@ -152,7 +183,7 @@ public partial class GameConfigEditControl : BaseUserControl
         var model = (DataContext as GameConfigEditModel)!;
         if (model.World != null)
         {
-            key = model.World.Game.UUID + ":" + model.World.LevelName;
+            key = model.World.Game.UUID + ":" + model.World.Local;
         }
         else
         {
@@ -160,6 +191,8 @@ public partial class GameConfigEditControl : BaseUserControl
         }
 
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameConfigEditWindows.Remove(key);
     }
@@ -174,22 +207,5 @@ public partial class GameConfigEditControl : BaseUserControl
     public override Bitmap GetIcon()
     {
         return ImageManager.GetGameIcon(_obj) ?? ImageManager.GameIcon;
-    }
-
-    /// <summary>
-    /// 重载标题
-    /// </summary>
-    public void ReloadTitle()
-    {
-        if (_world == null)
-        {
-            Title = string.Format(App.Lang("ConfigEditWindow.Title"),
-                    _obj.Name);
-        }
-        else
-        {
-            Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
-                    _world.Game.Name, _world.LevelName);
-        }
     }
 }

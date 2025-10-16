@@ -82,7 +82,7 @@ public static class JoystickConfig
     /// </summary>
     public static void Save(InputControlObj obj)
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build(obj.UUID + Names.NameJsonExt, 
+        ConfigSave.AddItem(ConfigSaveObj.Build(obj.UUID + Names.NameJsonExt,
             Path.Combine(s_local, $"{obj.UUID}{Names.NameJsonExt}"), obj, JsonGuiType.InputControlObj));
     }
 

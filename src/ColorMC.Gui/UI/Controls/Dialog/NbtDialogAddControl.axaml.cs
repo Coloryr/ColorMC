@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// NBT±êÇ©ÉèÖÃ
+/// NBTæ ‡ç­¾è®¾ç½®
 /// </summary>
 public partial class NbtDialogAddControl : UserControl
 {

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.GameExport;
 
 /// <summary>
-/// 游戏实例导出
+/// 娓告垙瀹炰緥瀵煎嚭
 /// </summary>
 public partial class Tab2Control : UserControl
 {

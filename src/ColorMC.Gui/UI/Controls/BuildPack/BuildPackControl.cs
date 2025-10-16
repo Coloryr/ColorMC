@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Avalonia.Controls;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Download;

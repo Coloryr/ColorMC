@@ -104,20 +104,20 @@ public partial class MainControl : BaseUserControl
                     Label1.Text = App.Lang("AddGameWindow.Text2");
                     break;
                 default:
-                {
-                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                     {
-                        Grid2.IsVisible = true;
-                        Label1.Text = App.Lang("MainWindow.Text25");
-                    }
-                    else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
-                    {
-                        Grid2.IsVisible = true;
-                        Label1.Text = App.Lang("MainWindow.Text38");
-                    }
+                        if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
+                        {
+                            Grid2.IsVisible = true;
+                            Label1.Text = App.Lang("MainWindow.Text25");
+                        }
+                        else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
+                        {
+                            Grid2.IsVisible = true;
+                            Label1.Text = App.Lang("MainWindow.Text38");
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
     }
@@ -165,30 +165,30 @@ public partial class MainControl : BaseUserControl
                     WindowManager.ShowAddGame(null, true, forder.GetPath());
                     break;
                 default:
-                {
-                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                     {
-                        WindowManager.ShowAddGame(null, false, item.GetPath());
-                    }
-                    else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
-                    {
-                        if (DataContext is not MainModel model)
+                        if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                         {
-                            return;
+                            WindowManager.ShowAddGame(null, false, item.GetPath());
                         }
-                        if (!GameBinding.IsNotGame)
+                        else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
                         {
-                            var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
-                            if (res is not true)
+                            if (DataContext is not MainModel model)
                             {
                                 return;
                             }
+                            if (!GameBinding.IsNotGame)
+                            {
+                                var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
+                                if (res is not true)
+                                {
+                                    return;
+                                }
+                            }
+                            BaseBinding.ReadBuildConfig(model.Model, item);
                         }
-                        BaseBinding.ReadBuildConfig(model.Model, item);
-                    }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
     }
