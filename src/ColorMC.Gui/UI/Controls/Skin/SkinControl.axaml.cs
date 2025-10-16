@@ -11,12 +11,12 @@ using ColorMC.Gui.UI.Model.Skin;
 namespace ColorMC.Gui.UI.Controls.Skin;
 
 /// <summary>
-/// Æ¤·ôÏÔÊ¾´°¿Ú
+/// çš®è‚¤æ˜¾ç¤ºçª—å£
 /// </summary>
 public partial class SkinControl : BaseUserControl
 {
     /// <summary>
-    /// äÖÈ¾¶¨Ê±Æ÷
+    /// æ¸²æŸ“å®šæ—¶å™¨
     /// </summary>
     private FpsTimer _renderTimer;
 
