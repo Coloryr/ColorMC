@@ -98,8 +98,9 @@ public static class ColorMCCore
     /// <summary>
     /// 下载任务状态更新
     /// </summary>
-    /// <param name="state">状态</param>
-    public delegate void DownloadTaskUpdate(int all, int now);
+    /// <param name="type">更新类型</param>
+    /// <param name="type">更新数据</param>
+    public delegate void DownloadTaskUpdate(UpdateType type, int data);
     /// <summary>
     /// 下载项目状态更新
     /// </summary>

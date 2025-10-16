@@ -6,6 +6,12 @@ using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Downloader;
 
+internal record DownloadItem
+{
+    public DownloadTask Task;
+    public FileItemObj File;
+}
+
 /// <summary>
 /// 下载器
 /// </summary>
@@ -32,11 +38,12 @@ public static class DownloadManager
     /// <summary>
     /// 下载任务
     /// </summary>
-    private static readonly ConcurrentQueue<DownloadTask> s_tasks = [];
+    private static readonly List<DownloadTask> s_tasks = [];
     /// <summary>
-    /// 当前任务
+    /// 下载任务
     /// </summary>
-    private static DownloadTask? s_nowTask;
+    private static readonly ConcurrentQueue<DownloadItem> s_download = [];
+
     /// <summary>
     /// 是否停止
     /// </summary>
@@ -65,7 +72,6 @@ public static class DownloadManager
         {
             return;
         }
-        s_nowTask?.Cancel();
         foreach (var item in s_tasks)
         {
             item.Cancel();
@@ -125,20 +131,30 @@ public static class DownloadManager
     /// 进行下一个任务
     /// </summary>
     /// <param name="arg">下载参数</param>
-    internal static void TaskRunNext(DownloadArg arg)
+    internal static void TaskRunNext(DownloadArg arg, DownloadTask task)
     {
-        s_nowTask = null;
+        s_tasks.Remove(task);
+
         //若没有下一个任务则全部完成
-        if (s_tasks.TryDequeue(out s_nowTask))
+        if (s_tasks.Count > 0)
         {
-            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count + 1);
-            Start(s_nowTask);
+            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
         }
         else
         {
             State = false;
             arg.Update?.Invoke(s_threads.Count, State, 0);
         }
+    }
+
+    internal static DownloadItem? GetDownloadItem()
+    {
+        if (s_download.TryDequeue(out var item))
+        {
+            return item;
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -150,19 +166,19 @@ public static class DownloadManager
     private static Task<bool> StartAsync(ICollection<FileItemObj> list, DownloadArg arg)
     {
         var task = new DownloadTask(list, arg);
-        s_tasks.Enqueue(task);
+        s_tasks.Add(task);
+        foreach (var item in task.GetItems())
+        {
+            s_download.Enqueue(item);
+        }
 
         if (State == false)
         {
             State = true;
-            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
-            TaskRunNext(arg);
+            Start();
         }
-        else
-        {
-            arg.Update?.Invoke(s_threads.Count, State,
-                s_tasks.Count + (s_nowTask != null ? 1 : 0));
-        }
+
+        arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
 
         return task.WaitDone();
     }
@@ -186,7 +202,6 @@ public static class DownloadManager
     private static void Close()
     {
         s_stop = true;
-        s_nowTask?.Cancel();
         s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
 
@@ -197,12 +212,11 @@ public static class DownloadManager
     /// 开始下载任务
     /// </summary>
     /// <param name="task">下载任务</param>
-    private static void Start(DownloadTask task)
+    private static void Start()
     {
-        task.Update();
         foreach (var item in s_threads)
         {
-            item.Start(task);
+            item.Start();
         }
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -30,10 +29,6 @@ public partial class AddControlModel : GameModel
     /// 类型列表
     /// </summary>
     private readonly Dictionary<int, string> _categories = [];
-    /// <summary>
-    /// Mod下载项目显示列表
-    /// </summary>
-    private readonly List<FileModVersionModel> _modList = [];
 
     /// <summary>
     /// 下载源列表
@@ -70,11 +65,6 @@ public partial class AddControlModel : GameModel
     /// </summary>
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
 
-    /// <summary>
-    /// 是否在下载
-    /// </summary>
-    [ObservableProperty]
-    private bool _isDownload;
     /// <summary>
     /// 是否没有项目
     /// </summary>
@@ -153,14 +143,6 @@ public partial class AddControlModel : GameModel
     /// </summary>
     private FileType _now;
     /// <summary>
-    /// 下载项目
-    /// </summary>
-    private FileItemModel? _last;
-    /// <summary>
-    /// 下载的模组项目
-    /// </summary>
-    private DownloadModArg? _modsave;
-    /// <summary>
     /// 是否在加载
     /// </summary>
     private bool _load = false;
@@ -177,6 +159,11 @@ public partial class AddControlModel : GameModel
     /// 上一个下载ID
     /// </summary>
     private string? _lastId;
+
+    /// <summary>
+    /// 选中的下载项目
+    /// </summary>
+    private FileItemModel? _lastSelect;
 
     /// <summary>
     /// 是否已经显示
@@ -320,10 +307,11 @@ public partial class AddControlModel : GameModel
             foreach (var item in data)
             {
                 item.Add = this;
+                TestFileItem(item);
                 DisplayList.Add(item);
             }
 
-            _last = null;
+            _lastSelect = null;
 
             EmptyDisplay = DisplayList.Count == 0;
 
@@ -371,6 +359,7 @@ public partial class AddControlModel : GameModel
                     {
                         item.IsDownload = true;
                     }
+                    TestFileItem(item);
                     DisplayList.Add(item);
                 }
             }
@@ -385,11 +374,12 @@ public partial class AddControlModel : GameModel
                     }
                     var item = data[a];
                     item.Add = this;
+                    TestFileItem(item);
                     DisplayList.Add(item);
                 }
             }
 
-            _last = null;
+            _lastSelect = null;
 
             EmptyDisplay = DisplayList.Count == 0;
 
@@ -445,7 +435,10 @@ public partial class AddControlModel : GameModel
     [RelayCommand]
     public void Refresh1()
     {
-        LoadFile();
+        if (_lastSelect != null)
+        {
+            LoadFile(_lastSelect);
+        }
     }
 
     /// <summary>
@@ -454,13 +447,13 @@ public partial class AddControlModel : GameModel
     [RelayCommand]
     public void GoInstall()
     {
-        if (_last == null)
+        if (_lastSelect == null)
         {
             Model.Show(App.Lang("AddWindow.Error1"));
             return;
         }
 
-        Install();
+        InstallItem(_lastSelect);
     }
 
     /// <summary>
@@ -469,7 +462,7 @@ public partial class AddControlModel : GameModel
     [RelayCommand]
     public void Next()
     {
-        if (_load || IsDownload)
+        if (_load)
         {
             return;
         }
@@ -625,7 +618,10 @@ public partial class AddControlModel : GameModel
 
         _load = true;
         PageDownload = 0;
-        LoadFile();
+        if (_lastSelect != null)
+        {
+            LoadFile(_lastSelect);
+        }
         _load = false;
     }
 
@@ -686,7 +682,7 @@ public partial class AddControlModel : GameModel
     /// </summary>
     public void Back()
     {
-        if (_load || IsDownload || Page <= 0)
+        if (_load || Page <= 0)
         {
             return;
         }
@@ -741,7 +737,7 @@ public partial class AddControlModel : GameModel
     public void Install(FileItemModel item)
     {
         SetSelect(item);
-        Install();
+        InstallItem(item);
     }
 
     /// <summary>
@@ -750,18 +746,13 @@ public partial class AddControlModel : GameModel
     /// <param name="last"></param>
     public void SetSelect(FileItemModel last)
     {
-        if (IsDownload)
-        {
-            return;
-        }
-
         IsSelect = true;
-        if (_last != null)
+        if (_lastSelect != null)
         {
-            _last.IsSelect = false;
+            _lastSelect.IsSelect = false;
         }
-        _last = last;
-        _last.IsSelect = true;
+        _lastSelect = last;
+        _lastSelect.IsSelect = true;
     }
 
     /// <summary>

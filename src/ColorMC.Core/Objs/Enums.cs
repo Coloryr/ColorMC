@@ -455,3 +455,18 @@ public enum LogEncoding
     UTF8 = 0,
     GBK
 }
+
+/// <summary>
+/// 下载器进度更新类型
+/// </summary>
+public enum UpdateType
+{ 
+    /// <summary>
+    /// 添加下载项目
+    /// </summary>
+    AddItems,
+    /// <summary>
+    /// 下载项目下载结束
+    /// </summary>
+    ItemDone
+}

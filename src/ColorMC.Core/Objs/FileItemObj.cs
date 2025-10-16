@@ -45,14 +45,4 @@ public record FileItemObj
     /// 错误次数
     /// </summary>
     public int ErrorTime { get; set; }
-
-    internal ColorMCCore.DownloadItemUpdate? UpdateD;
-
-    /// <summary>
-    /// 更新操作
-    /// </summary>
-    internal void Update(int thread)
-    {
-        UpdateD?.Invoke(thread, this);
-    }
 }
