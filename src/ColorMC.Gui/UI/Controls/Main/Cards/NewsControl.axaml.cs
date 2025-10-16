@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Animations;
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
 /// <summary>
-/// Minecraft News¿¨Æ¬
+/// Minecraft Newså¡ç‰‡
 /// </summary>
 public partial class NewsControl : UserControl
 {

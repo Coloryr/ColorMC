@@ -40,7 +40,7 @@ public partial class LuckBlockModel : TopModel
 
     public LuckBlockModel(BaseModel model) : base(model)
     {
-        
+
     }
 
     [RelayCommand]

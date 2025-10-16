@@ -226,7 +226,7 @@ public static class WebBinding
     /// <param name="categoryId"></param>
     /// <param name="loader"></param>
     /// <returns></returns>
-    public static async Task<ModPackListRes> GetListAsync(FileType now, SourceType type, string? version, 
+    public static async Task<ModPackListRes> GetListAsync(FileType now, SourceType type, string? version,
         string? filter, int page, int sort, string categoryId, Loaders loader)
     {
         version ??= "";

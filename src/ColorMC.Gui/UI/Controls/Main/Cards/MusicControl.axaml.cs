@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Animations;
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
 /// <summary>
-/// ÒôÀÖ¿ØÖÆ¿¨Æ¬
+/// éŸ³ä¹æ§åˆ¶å¡ç‰‡
 /// </summary>
 public partial class MusicControl : UserControl
 {

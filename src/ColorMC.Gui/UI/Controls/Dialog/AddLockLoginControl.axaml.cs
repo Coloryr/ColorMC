@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// Ìí¼ÓµÇÂ¼Ëø¶¨
+/// æ·»åŠ ç™»å½•é”å®š
 /// </summary>
 public partial class AddLockLoginControl : UserControl
 {

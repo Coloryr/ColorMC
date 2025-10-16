@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
@@ -140,7 +140,7 @@ public static class BlockTexUtils
         LoadUnlock();
 
         new Thread(CheckTime)
-        { 
+        {
             Name = "ColorMC Block Day Check",
             IsBackground = true
         }.Start();
@@ -265,7 +265,7 @@ public static class BlockTexUtils
         {
             return new StringRes { Data = App.Lang("LuckBlockWindow.Error3") };
         }
-        
+
         //提取贴图
         using var reader = ZipArchive.Open(stream);
         foreach (var item in reader.Entries)
@@ -349,7 +349,7 @@ public static class BlockTexUtils
             Tex = []
         };
         Blocks.Tex ??= [];
-        
+
         SaveState();
     }
 

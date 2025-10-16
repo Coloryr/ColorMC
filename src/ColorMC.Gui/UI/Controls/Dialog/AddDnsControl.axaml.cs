@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// Ìí¼ÓDNS
+/// æ·»åŠ DNS
 /// </summary>
 public partial class AddDnsControl : UserControl
 {

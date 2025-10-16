@@ -40,7 +40,7 @@ public static class GuiNames
     public const string NameGameIcoFile = "icon.ico";
 
     public const string NameColorMCExt = ".colormc";
-    
+
     public const string NameAuthlibKey = "authlib-injector:yggdrasil-server:";
     public const string NameColorMCCloudKey = "cloudkey:";
     public const string NameLangKey = "lang";

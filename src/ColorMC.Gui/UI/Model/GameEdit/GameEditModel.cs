@@ -4,7 +4,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 

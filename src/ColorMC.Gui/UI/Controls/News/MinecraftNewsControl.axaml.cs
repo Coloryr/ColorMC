@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Model.News;
 namespace ColorMC.Gui.UI.Controls.News;
 
 /// <summary>
-/// Minecraft News´°¿Ú
+/// Minecraft Newsçª—å£
 /// </summary>
 public partial class MinecraftNewsControl : BaseUserControl
 {

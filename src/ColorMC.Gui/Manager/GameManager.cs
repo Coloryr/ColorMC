@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using ColorMC.Core;
@@ -18,14 +17,46 @@ namespace ColorMC.Gui.Manager;
 public static class GameManager
 {
     /// <summary>
-    /// 正在运行的游戏
+    /// 正在运行的游戏实例
     /// </summary>
-    public static readonly List<string> RunGames = [];
+    public static readonly HashSet<string> RunGames = [];
+
+    /// <summary>
+    /// 正在下载资源的游戏实例
+    /// </summary>
+    public static readonly HashSet<string> AddRunGames = [];
 
     /// <summary>
     /// 界面设置
     /// </summary>
     private readonly static Dictionary<string, GameGuiSettingObj> s_datas = [];
+
+    /// <summary>
+    /// 游戏实例开始添加资源
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    public static void StartAdd(string uuid)
+    {
+        AddRunGames.Add(uuid);
+    }
+
+    /// <summary>
+    /// 游戏实例结束添加资源
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    public static void StopAdd(string uuid)
+    {
+        AddRunGames.Remove(uuid);
+    }
+
+    /// <summary>
+    /// 游戏实例是否正在添加资源
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    public static bool IsAdd(GameSettingObj game)
+    {
+        return AddRunGames.Contains(game.UUID);
+    }
 
     /// <summary>
     /// 获取游戏实例对应的界面设置

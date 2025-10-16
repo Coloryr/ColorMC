@@ -12,12 +12,12 @@ using ColorMC.Gui.UI.Model.GameEdit;
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 /// <summary>
-/// 游戏实例编辑
+/// 娓告垙瀹炰緥缂栬緫
 /// </summary>
 public partial class GameEditControl : MenuControl
 {
     /// <summary>
-    /// 游戏实例
+    /// 娓告垙瀹炰緥
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -38,6 +38,28 @@ public partial class GameEditControl : MenuControl
         Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -89,6 +111,8 @@ public partial class GameEditControl : MenuControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameEditWindows.Remove(_obj.UUID);
     }
@@ -148,9 +172,9 @@ public partial class GameEditControl : MenuControl
     }
 
     /// <summary>
-    /// 设置当前修改页面
+    /// 璁剧疆褰撳墠淇敼椤甸潰
     /// </summary>
-    /// <param name="type">修改类型</param>
+    /// <param name="type">淇敼绫诲瀷</param>
     public void SetType(GameEditWindowType type)
     {
         var model = (DataContext as GameEditModel)!;
@@ -169,13 +193,5 @@ public partial class GameEditControl : MenuControl
                 model.NowView = 1;
                 break;
         }
-    }
-
-    /// <summary>
-    /// 重载标题
-    /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
     }
 }

@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Animations;
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
 /// <summary>
-/// Æô¶¯Æ÷¸üĞÂ¿¨Æ¬
+/// å¯åŠ¨å™¨æ›´æ–°å¡ç‰‡
 /// </summary>
 public partial class UpdateControl : UserControl
 {

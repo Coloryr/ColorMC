@@ -116,15 +116,15 @@ public partial class AddGameControl : BaseUserControl
                     Label1.Text = App.Lang("AddGameWindow.Text2");
                     break;
                 default:
-                {
-                    if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                     {
-                        Grid2.IsVisible = true;
-                        Label1.Text = App.Lang("MainWindow.Text25");
-                    }
+                        if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
+                        {
+                            Grid2.IsVisible = true;
+                            Label1.Text = App.Lang("MainWindow.Text25");
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
     }

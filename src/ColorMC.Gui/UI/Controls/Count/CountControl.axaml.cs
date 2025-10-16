@@ -5,7 +5,7 @@ using ColorMC.Gui.UI.Model.Count;
 namespace ColorMC.Gui.UI.Controls.Count;
 
 /// <summary>
-/// 游戏统计窗口
+/// 娓告垙缁熻绐楀彛
 /// </summary>
 public partial class CountControl : BaseUserControl
 {

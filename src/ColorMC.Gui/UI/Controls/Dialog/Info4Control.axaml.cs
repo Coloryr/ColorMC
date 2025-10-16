@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// ѡ�񵯴�
+/// 选择弹窗
 /// </summary>
 public partial class Info4Control : UserControl
 {

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// 没有游戏实例界面
+/// 娌℃湁娓告垙瀹炰緥鐣岄潰
 /// </summary>
 public partial class MainEmptyControl : UserControl
 {

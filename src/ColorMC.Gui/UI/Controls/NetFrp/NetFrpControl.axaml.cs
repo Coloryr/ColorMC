@@ -8,7 +8,7 @@ using ColorMC.Gui.UI.Model.NetFrp;
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 
 /// <summary>
-/// Ó³ÉäÁª»ú´°¿Ú
+/// æ˜ å°„è”æœºçª—å£
 /// </summary>
 public partial class NetFrpControl : MenuControl
 {

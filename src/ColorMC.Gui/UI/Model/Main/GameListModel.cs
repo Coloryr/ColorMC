@@ -264,6 +264,11 @@ public partial class MainModel
         Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
         foreach (var item in list)
         {
+            if (GameManager.IsAdd(item.Obj))
+            {
+                Model.Show(App.Lang("GameEditWindow.Tab1.Error5"));
+                continue;
+            }
             await GameBinding.DeleteGameAsync(item.Obj);
         }
         Model.ProgressClose();

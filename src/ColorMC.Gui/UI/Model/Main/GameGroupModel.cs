@@ -348,7 +348,7 @@ public partial class GameGroupModel : TopModel
             {
                 continue;
             }
-            
+
             GameList.Move(GameList.IndexOf(item), GameList.Count - 2);
             return true;
         }

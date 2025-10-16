@@ -6,21 +6,21 @@ using ColorMC.Gui.UI.Model.Error;
 namespace ColorMC.Gui.UI.Controls.Error;
 
 /// <summary>
-/// ´íÎó´°¿Ú
+/// é”™è¯¯çª—å£
 /// </summary>
 public partial class ErrorControl : BaseUserControl
 {
     /// <summary>
-    /// ´íÎóĞÅÏ¢
+    /// é”™è¯¯ä¿¡æ¯
     /// </summary>
     private readonly string? _data;
     /// <summary>
-    /// Òì³£
+    /// å¼‚å¸¸
     /// </summary>
     private readonly Exception? _e;
     private readonly string _e1;
     /// <summary>
-    /// ÊÇ·ñÍ¬Ê±¹Ø±ÕÆô¶¯Æ÷
+    /// æ˜¯å¦åŒæ—¶å…³é—­å¯åŠ¨å™¨
     /// </summary>
     private readonly bool _close;
     private readonly bool _type = false;

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ÏÂÔØ×ÓÏîÄ¿
+/// ä¸‹è½½å­é¡¹ç›®
 /// </summary>
 public partial class DownloadItemControl : UserControl
 {

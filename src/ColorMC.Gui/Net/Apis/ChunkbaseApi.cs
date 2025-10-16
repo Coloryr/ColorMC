@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ColorMC.Gui.Net.Apis;
 
@@ -67,8 +63,8 @@ public static class ChunkbaseApi
             }
         }
         catch
-        { 
-            
+        {
+
         }
         return $"{Url}seed={seed}&platform=java_{ver}{(islb ? "_lb" : "")}&dimension=overworld&x=0&z=0&zoom=0.5";
     }

@@ -7,7 +7,7 @@ using ColorMC.Gui.UIBinding;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ½ØÍ¼ÏîÄ¿
+/// æˆªå›¾é¡¹ç›®
 /// </summary>
 public partial class ScreenshotControl : UserControl
 {

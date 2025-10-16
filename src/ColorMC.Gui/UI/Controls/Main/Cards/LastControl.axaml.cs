@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Animations;
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
 /// <summary>
-/// ÉÏ´ÎÆô¶¯¿¨Æ¬
+/// ä¸Šæ¬¡å¯åŠ¨å¡ç‰‡
 /// </summary>
 public partial class LastControl : UserControl
 {

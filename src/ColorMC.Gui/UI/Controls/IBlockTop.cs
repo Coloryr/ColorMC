@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ColorMC.Gui.UI.Model.Items;
+﻿using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls;
 

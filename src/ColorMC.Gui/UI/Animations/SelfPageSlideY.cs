@@ -13,7 +13,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Animations;
 
 /// <summary>
-/// Ò³ÃæÇĞ»»¶¯»­
+/// é¡µé¢åˆ‡æ¢åŠ¨ç”»
 /// </summary>
 /// <param name="duration"></param>
 public class SelfPageSlideY(TimeSpan duration) : IPageTransition

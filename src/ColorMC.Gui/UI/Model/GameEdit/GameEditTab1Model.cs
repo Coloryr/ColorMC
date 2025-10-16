@@ -699,7 +699,7 @@ public partial class GameEditModel
         LoaderTypeList.Add(Loaders.Normal.GetName());
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
-        
+
         IsLoad = true;
         Model.SubTitle = App.Lang("AddGameWindow.Tab1.Info4");
 
@@ -836,6 +836,12 @@ public partial class GameEditModel
         if (GameManager.IsGameRun(_obj))
         {
             Model.Show(App.Lang("GameEditWindow.Tab1.Error1"));
+            return;
+        }
+
+        if (GameManager.IsAdd(_obj))
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab1.Error5"));
             return;
         }
 

@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
 /// <summary>
-/// ÓÎÏ·ÊµÀı±à¼­
+/// æ¸¸æˆå®ä¾‹ç¼–è¾‘
 /// </summary>
 public partial class Tab9Control : UserControl
 {

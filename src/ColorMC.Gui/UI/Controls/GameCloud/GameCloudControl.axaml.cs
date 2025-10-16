@@ -9,7 +9,7 @@ using ColorMC.Gui.UI.Model.GameCloud;
 namespace ColorMC.Gui.UI.Controls.GameCloud;
 
 /// <summary>
-/// ÓÎÏ·ÔÆ´æ´¢
+/// æ¸¸æˆäº‘å­˜å‚¨
 /// </summary>
 public partial class GameCloudControl : MenuControl
 {
@@ -18,7 +18,7 @@ public partial class GameCloudControl : MenuControl
     private Tab3Control _tab3;
 
     /// <summary>
-    /// ÓÎÏ·ÊµÀı
+    /// æ¸¸æˆå®ä¾‹
     /// </summary>
     private readonly GameSettingObj _obj;
 
@@ -29,6 +29,28 @@ public partial class GameCloudControl : MenuControl
         Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
+        EventManager.GameNameChange += EventManager_GameNameChange;
+        EventManager.GameDelete += EventManager_GameDelete;
+    }
+
+    private void EventManager_GameDelete(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Window?.Close();
+    }
+
+    private void EventManager_GameNameChange(object? sender, string uuid)
+    {
+        if (uuid != _obj.UUID)
+        {
+            return;
+        }
+
+        Title = string.Format(App.Lang("GameCloudWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -52,6 +74,8 @@ public partial class GameCloudControl : MenuControl
     public override void Closed()
     {
         EventManager.GameIconChange -= EventManager_GameIconChange;
+        EventManager.GameNameChange -= EventManager_GameNameChange;
+        EventManager.GameDelete -= EventManager_GameDelete;
 
         WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
@@ -78,7 +102,7 @@ public partial class GameCloudControl : MenuControl
     }
 
     /// <summary>
-    /// ×ªµ½´æµµ
+    /// è½¬åˆ°å­˜æ¡£
     /// </summary>
     public void GoWorld()
     {
@@ -86,13 +110,5 @@ public partial class GameCloudControl : MenuControl
         {
             model.NowView = 2;
         }
-    }
-
-    /// <summary>
-    /// Ë¢ĞÂ´°¿Ú±êÌâ
-    /// </summary>
-    public void ReloadTitle()
-    {
-        Title = string.Format(App.Lang("GameCloudWindow.Title"), _obj.Name);
     }
 }

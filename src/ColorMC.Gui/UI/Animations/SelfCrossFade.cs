@@ -11,7 +11,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Animations;
 
 /// <summary>
-/// ÇĞ»»¶¯»­
+/// åˆ‡æ¢åŠ¨ç”»
 /// </summary>
 public class SelfCrossFade : IPageTransition
 {

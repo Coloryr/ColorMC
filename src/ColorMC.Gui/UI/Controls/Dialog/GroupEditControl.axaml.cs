@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// 游戏分组编辑
+/// 娓告垙鍒嗙粍缂栬緫
 /// </summary>
 public partial class GroupEditControl : UserControl
 {

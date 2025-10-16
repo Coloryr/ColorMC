@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.GameCloud;
 
 /// <summary>
-/// ��Ϸ�ƴ洢
+/// 游戏云存储
 /// </summary>
 public partial class Tab3Control : UserControl
 {

@@ -13,7 +13,7 @@ using ColorMC.Gui.Objs;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// ¿ªÊ¼»¶Ó­½çÃæ
+/// å¼€å§‹æ¬¢è¿ç•Œé¢
 /// </summary>
 public partial class MainStartControl : UserControl
 {

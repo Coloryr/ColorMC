@@ -10,7 +10,7 @@ using ColorMC.Gui.Utils;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ÎÄ¼ş°æ±¾×ÓÏîÄ¿
+/// æ–‡ä»¶ç‰ˆæœ¬å­é¡¹ç›®
 /// </summary>
 public partial class FileVersionItemControl : UserControl
 {

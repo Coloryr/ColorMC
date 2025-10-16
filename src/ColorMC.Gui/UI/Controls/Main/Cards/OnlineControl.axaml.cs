@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Animations;
 namespace ColorMC.Gui.UI.Controls.Main.Cards;
 
 /// <summary>
-/// Áª»ú¿¨Æ¬
+/// è”æœºå¡ç‰‡
 /// </summary>
 public partial class OnlineControl : UserControl
 {

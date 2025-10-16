@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// ӳ�乲��
+/// 映射共享
 /// </summary>
 public partial class FrpShareControl : UserControl
 {

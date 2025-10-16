@@ -40,7 +40,6 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
@@ -1598,8 +1597,7 @@ public static class GameBinding
         obj.Name = data;
         obj.Save();
 
-        WindowManager.MainWindow?.LoadGameItem();
-        WindowManager.ReloadTitle(obj);
+        EventManager.OnGameNameChange(obj.UUID);
     }
 
     /// <summary>
@@ -1827,8 +1825,8 @@ public static class GameBinding
         if (GameManager.IsGameRun(obj))
         {
             if (name.EndsWith("latest.log") || name.EndsWith("debug.log"))
-            { 
-            return null;
+            {
+                return null;
             }
         }
 
@@ -2246,14 +2244,13 @@ public static class GameBinding
     /// 删除游戏实例
     /// </summary>
     /// <param name="obj"></param>
-    /// <param name="request"></param>
     /// <returns></returns>
     public static async Task<bool> DeleteGameAsync(GameSettingObj obj)
     {
         var res = await obj.RemoveAsync();
         if (res)
         {
-            WindowManager.CloseGameWindow(obj);
+            EventManager.OnGameDelete(obj.UUID);
         }
 
         return res;

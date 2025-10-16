@@ -3,7 +3,7 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Main;
 
 /// <summary>
-/// ÓÃ»§ÏÔÊ¾
+/// ç”¨æˆ·æ˜¾ç¤º
 /// </summary>
 public partial class MainUserControl : UserControl
 {

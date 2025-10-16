@@ -6,7 +6,7 @@ using ColorMC.Gui.UI.Model.Items;
 namespace ColorMC.Gui.UI.Controls.Items;
 
 /// <summary>
-/// ´æµµÔÆÍ¬²½ÏîÄ¿
+/// å­˜æ¡£äº‘åŒæ­¥é¡¹ç›®
 /// </summary>
 public partial class WorldCloudControl : UserControl
 {
