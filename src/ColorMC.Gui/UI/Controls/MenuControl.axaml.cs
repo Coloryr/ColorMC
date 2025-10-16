@@ -10,7 +10,7 @@ using ColorMC.Gui.UI.Model;
 namespace ColorMC.Gui.UI.Controls;
 
 /// <summary>
-/// ´øÓĞ×ó²à²Ëµ¥µÄ´°¿Ú
+/// å¸¦æœ‰å·¦ä¾§èœå•çš„çª—å£
 /// </summary>
 public abstract partial class MenuControl : BaseUserControl
 {
