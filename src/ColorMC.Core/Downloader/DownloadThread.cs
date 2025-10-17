@@ -74,6 +74,10 @@ internal class DownloadThread
     /// 是否在运行
     /// </summary>
     private bool _run;
+    /// <summary>
+    /// 是否在等待中
+    /// </summary>
+    private bool _isWait;
 
     /// <summary>
     /// 线程号
@@ -132,7 +136,10 @@ internal class DownloadThread
     /// </summary>
     internal void Start()
     {
-        _semaphoreWait.Release();
+        if (_isWait)
+        {
+            _semaphoreWait.Release();
+        }
     }
 
     /// <summary>
@@ -212,11 +219,101 @@ internal class DownloadThread
     }
 
     /// <summary>
+    /// 写文件
+    /// </summary>
+    /// <param name="item">下载项目</param>
+    /// <param name="file">临时文件</param>
+    /// <param name="buffer">缓存</param>
+    /// <param name="stream1">网络流</param>
+    /// <returns>是否下载失败</returns>
+    private bool Download(DownloadItem item, string file, byte[] buffer, Stream stream1, bool isKeep)
+    {
+        //获取buffer
+        using var stream = isKeep ? PathHelper.OpenAppend(file) : PathHelper.OpenWrite(file);
+
+        int bytesRead;
+        //写文件
+        while ((bytesRead = stream1.ReadAsync(buffer, item.Task.Token).AsTask().Result) != 0)
+        {
+            stream.WriteAsync(buffer, 0, bytesRead, item.Task.Token).Wait();
+
+            CheckPause(item);
+
+            if (item.Task.Token.IsCancellationRequested)
+            {
+                break;
+            }
+
+            item.File.State = DownloadItemState.Download;
+            item.File.NowSize += bytesRead;
+            item.Task.UpdateItem(_index, item.File);
+        }
+
+        CheckPause(item);
+
+        if (item.Task.Token.IsCancellationRequested)
+        {
+            return true;
+        }
+
+        //检查文件
+        if (ConfigUtils.Config.Http.CheckFile)
+        {
+            if (stream.Position != item.File.AllSize)
+            {
+                item.File.State = DownloadItemState.Error;
+                item.Task.UpdateItem(_index, item.File);
+                Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                return true;
+            }
+            if (!string.IsNullOrWhiteSpace(item.File.Md5))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                if (HashHelper.GenMd5(stream) != item.File.Md5)
+                {
+                    item.File.State = DownloadItemState.Error;
+                    item.Task.UpdateItem(_index, item.File);
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    return true;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(item.File.Sha1))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                if (HashHelper.GenSha1(stream) != item.File.Sha1)
+                {
+                    item.File.State = DownloadItemState.Error;
+                    item.Task.UpdateItem(_index, item.File);
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    return true;
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(item.File.Sha256))
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                if (HashHelper.GenSha256(stream) != item.File.Sha256)
+                {
+                    item.File.State = DownloadItemState.Error;
+                    item.Task.UpdateItem(_index, item.File);
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    return true;
+                }
+            }
+        }
+
+        CheckPause(item);
+
+        return false;
+    }
+
+    /// <summary>
     /// 线程运行
     /// </summary>
     private void Run()
     {
+        _isWait = true;
         _semaphoreWait.WaitOne();
+        _isWait = false;
         if (!_run)
         {
             return;
@@ -244,17 +341,18 @@ internal class DownloadThread
                     }
                     else if (ConfigUtils.Config.Http.CheckFile && CheckFile(item))
                     {
+                        //已经有了跳过
+                        item.Task.Done();
                         continue;
                     }
-
                 }
                 catch (Exception e)
                 {
+                    //读取或者判断时错误 则强制覆盖原文件
                     item.File.State = DownloadItemState.Error;
                     item.File.ErrorTime++;
                     item.Task.UpdateItem(_index, item.File);
                     Error(item.File, e);
-                    continue;
                 }
             }
 
@@ -265,9 +363,15 @@ internal class DownloadThread
 
             //尝试下载次数
             int time = 0;
+            //返回头是否支持断续
             bool useBreak = false;
+            //是否真正支持断续
             bool serverRanges = true;
-            for(; ; )
+            //是否正在断点续传
+            bool isKeep = false;
+            //创建临时文件
+            var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+            for (; ; )
             {
                 byte[]? buffer = null;
                 try
@@ -289,100 +393,29 @@ internal class DownloadThread
                             serverRanges = false;
                             continue;
                         }
+                        isKeep = true;
                     }
                     else
                     {
                         data = CoreHttpClient.GetAsync(item.File.Url, item.Task.Token).Result;
                         item.File.NowSize = 0;
+                        item.File.AllSize = data.Content.Headers.ContentLength ?? 0;
                     }
                     if (data.Headers.AcceptRanges.FirstOrDefault() == "bytes")
                     {
                         useBreak = true;
                     }
-                    item.File.AllSize = data.Content.Headers.ContentLength ?? 0;
+
                     item.File.State = DownloadItemState.GetInfo;
                     item.Task.UpdateItem(_index, item.File);
 
-                    //创建临时文件
-                    var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+                    using var stream1 = data.Content.ReadAsStream();
 
-                    bool Download()
-                    {
-                        using var stream1 = data.Content.ReadAsStream();
-                        //获取buffer
-                        buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
-                        using var stream = PathHelper.OpenWrite(file, true);
+                    buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
 
-                        int bytesRead;
-                        //写文件
-                        while ((bytesRead = stream1.ReadAsync(buffer, item.Task.Token).AsTask().Result) != 0)
-                        {
-                            stream.WriteAsync(buffer, 0, bytesRead, item.Task.Token).Wait();
-
-                            CheckPause(item);
-
-                            if (item.Task.Token.IsCancellationRequested)
-                            {
-                                break;
-                            }
-
-                            item.File.State = DownloadItemState.Download;
-                            item.File.NowSize += bytesRead;
-                            item.Task.UpdateItem(_index, item.File);
-                        }
-
-                        CheckPause(item);
-
-                        if (item.Task.Token.IsCancellationRequested)
-                        {
-                            return true;
-                        }
-
-                        //检查文件
-                        if (ConfigUtils.Config.Http.CheckFile)
-                        {
-                            if (!string.IsNullOrWhiteSpace(item.File.Md5))
-                            {
-                                stream.Seek(0, SeekOrigin.Begin);
-                                if (HashHelper.GenMd5(stream) != item.File.Md5)
-                                {
-                                    item.File.State = DownloadItemState.Error;
-                                    item.Task.UpdateItem(_index, item.File);
-                                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-                                    return true;
-                                }
-                            }
-                            if (!string.IsNullOrWhiteSpace(item.File.Sha1))
-                            {
-                                stream.Seek(0, SeekOrigin.Begin);
-                                if (HashHelper.GenSha1(stream) != item.File.Sha1)
-                                {
-                                    item.File.State = DownloadItemState.Error;
-                                    item.Task.UpdateItem(_index, item.File);
-                                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-                                    return true;
-                                }
-                            }
-                            if (!string.IsNullOrWhiteSpace(item.File.Sha256))
-                            {
-                                stream.Seek(0, SeekOrigin.Begin);
-                                if (HashHelper.GenSha256(stream) != item.File.Sha256)
-                                {
-                                    item.File.State = DownloadItemState.Error;
-                                    item.Task.UpdateItem(_index, item.File);
-                                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
-                                    return true;
-                                }
-                            }
-                        }
-
-                        CheckPause(item);
-
-                        return false;
-                    }
-
-                    //开始下载
-                    if (Download() || item.Task.Token.IsCancellationRequested)
+                    //开始下载，断点续传时不覆盖原有文件
+                    if (Download(item, file, buffer, stream1, isKeep) 
+                        || item.Task.Token.IsCancellationRequested)
                     {
                         break;
                     }
@@ -398,6 +431,7 @@ internal class DownloadThread
                         item.File.Later(stream2);
                     }
 
+                    //下载完成
                     item.File.State = DownloadItemState.Done;
                     item.Task.UpdateItem(_index, item.File);
                     item.Task.Done();
@@ -417,7 +451,7 @@ internal class DownloadThread
                     time++;
                     Error(item.File, e);
 
-                    if (time == 5)
+                    if (time >= 5)
                     {
                         var res = UrlHelper.UrlChange(item.File.Url);
                         if (res != null)
@@ -428,6 +462,7 @@ internal class DownloadThread
                         else
                         {
                             item.Task.Error();
+                            continue;
                         }
                     }
                 }

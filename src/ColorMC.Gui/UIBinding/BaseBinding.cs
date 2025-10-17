@@ -617,7 +617,7 @@ public static class BaseBinding
         try
         {
             var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
-            var stream = PathHelper.OpenWrite(file, true);
+            var stream = PathHelper.OpenWrite(file);
             var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
             var conf = GuiConfigUtils.Config;
             var conf1 = ConfigUtils.Config;

@@ -315,7 +315,7 @@ public abstract class NbtBase
     {
         return Task.Run(() =>
         {
-            using var stream = PathHelper.OpenWrite(file, true);
+            using var stream = PathHelper.OpenWrite(file);
             Save(nbt, stream);
         });
     }

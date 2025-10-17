@@ -266,7 +266,7 @@ public static class PathHelper
     public static void CopyFile(string input, string output)
     {
         using var stream = OpenRead(input);
-        using var stream1 = OpenWrite(output, true);
+        using var stream1 = OpenWrite(output);
         if (stream == null)
         {
             return;
@@ -361,30 +361,36 @@ public static class PathHelper
     /// <returns>流</returns>
     public static Stream? OpenRead(string local)
     {
-#if Phone
-        if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
-        {
-            return ColorMCCore.PhoneReadFile(local);
-        }
-#else
         local = Path.GetFullPath(local);
         return File.Exists(local) ? File.Open(local, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) : null;
-#endif
     }
 
     /// <summary>
     /// 写文件
     /// </summary>
     /// <param name="local">路径</param>
-    /// <param name="create">是否创建</param>
     /// <returns>流</returns>
-    public static Stream OpenWrite(string local, bool create)
+    public static Stream OpenWrite(string local)
     {
         local = Path.GetFullPath(local);
         var info = new FileInfo(local);
         info.Directory?.Create();
-        return File.Open(local, create ? FileMode.Create : FileMode.OpenOrCreate,
-            FileAccess.ReadWrite, FileShare.ReadWrite);
+        return File.Open(local, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+    }
+
+    /// <summary>
+    /// 继续写文件
+    /// </summary>
+    /// <param name="local">路径</param>
+    /// <returns>流</returns>
+    public static Stream OpenAppend(string local)
+    {
+        local = Path.GetFullPath(local);
+        var info = new FileInfo(local);
+        info.Directory?.Create();
+        var stream = File.Open(local, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+        stream.Seek(0, SeekOrigin.End);
+        return stream;
     }
 
     /// <summary>
@@ -464,7 +470,7 @@ public static class PathHelper
     /// <param name="data">数据</param>
     public static void WriteBytes(string local, byte[] data)
     {
-        using var stream = OpenWrite(local, true);
+        using var stream = OpenWrite(local);
         stream.Write(data, 0, data.Length);
     }
 
@@ -475,7 +481,7 @@ public static class PathHelper
     /// <param name="data">数据</param>
     public static void WriteBytes(string local, Stream data)
     {
-        using var stream = OpenWrite(local, true);
+        using var stream = OpenWrite(local);
         data.CopyTo(stream);
     }
 
@@ -487,7 +493,7 @@ public static class PathHelper
     /// <returns></returns>
     public static async Task WriteBytesAsync(string local, Stream data)
     {
-        using var stream = OpenWrite(local, true);
+        using var stream = OpenWrite(local);
         await data.CopyToAsync(stream);
     }
 
@@ -499,7 +505,7 @@ public static class PathHelper
     /// <returns></returns>
     public static async Task WriteBytesAsync(string local, byte[] data)
     {
-        using var stream = OpenWrite(local, true);
+        using var stream = OpenWrite(local);
         await stream.WriteAsync(data);
     }
 

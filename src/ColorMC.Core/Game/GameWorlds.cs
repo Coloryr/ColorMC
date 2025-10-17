@@ -134,7 +134,7 @@ public static class GameWorlds
     /// <param name="file">输出文件位置</param>
     public static async Task ExportWorldZip(this WorldObj world, string file)
     {
-        using var stream = PathHelper.OpenWrite(file, true);
+        using var stream = PathHelper.OpenWrite(file);
         using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
     }
 
@@ -162,7 +162,7 @@ public static class GameWorlds
         var file = Path.Combine(path, world.LevelName + "_" + DateTime.Now
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
-        using var stream = PathHelper.OpenWrite(file, true);
+        using var stream = PathHelper.OpenWrite(file);
         using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
     }
 

@@ -35,12 +35,32 @@ public static class CurseForgeHelper
     }
 
     /// <summary>
+    /// 创建CurseForge下载项目
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static FileItemObj MakeDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, string file)
+    {
+        data.FixDownloadUrl();
+
+        return new FileItemObj()
+        {
+            Url = data.DownloadUrl,
+            Name = data.DisplayName,
+            Local = file,
+            Sha1 = data.Hashes.Where(a => a.Algo == 1)
+                    .Select(a => a.Value).FirstOrDefault()
+        };
+    }
+
+    /// <summary>
     /// 创建下载项目
     /// </summary>
     /// <param name="data">CurseForge数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj)
+    public static FileItemObj MakeDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj)
     {
         data.FixDownloadUrl();
 
@@ -61,7 +81,7 @@ public static class CurseForgeHelper
     /// <param name="obj">游戏实例</param>
     /// <param name="info">下载项目</param>
     /// <returns></returns>
-    public static FileItemObj MakeModDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj, ItemPathRes info)
+    public static FileItemObj MakeDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, GameSettingObj obj, ItemPathRes info)
     {
         data.FixDownloadUrl();
 
@@ -227,7 +247,7 @@ public static class CurseForgeHelper
         async Task BuildItem(CurseForgeModObj.CurseForgeDataObj item)
         {
             var path = await GetItemPathAsync(arg.Game, item);
-            var item1 = item.MakeModDownloadObj(arg.Game, path);
+            var item1 = item.MakeDownloadObj(arg.Game, path);
             list.Add(item1);
             var modid = item.ModId.ToString();
             mods.TryRemove(modid, out _);
@@ -503,7 +523,7 @@ public static class CurseForgeHelper
                 using var stream = e.OpenEntryStream();
                 string file = Path.GetFullPath(arg.Game.GetGamePath() + e.Key[info.Overrides.Length..]);
                 file = PathHelper.ReplacePathName(file);
-                using var stream1 = PathHelper.OpenWrite(file, true);
+                using var stream1 = PathHelper.OpenWrite(file);
                 await stream.CopyToAsync(stream1);
             }
             else
@@ -511,7 +531,7 @@ public static class CurseForgeHelper
                 using var stream = e.OpenEntryStream();
                 string file = Path.GetFullPath(arg.Game.GetBasePath() + "/" + e.Key);
                 file = PathHelper.ReplacePathName(file);
-                using var stream1 = PathHelper.OpenWrite(file, true);
+                using var stream1 = PathHelper.OpenWrite(file);
                 await stream.CopyToAsync(stream1);
             }
         }
@@ -607,7 +627,7 @@ public static class CurseForgeHelper
 
                 var path1 = await CurseForgeHelper.GetItemPathAsync(arg.Game, res.Data);
                 var modid = res.Data.ModId.ToString();
-                var item1 = res.Data.MakeModDownloadObj(arg.Game, path1);
+                var item1 = res.Data.MakeDownloadObj(arg.Game, path1);
                 list1.Add(item1);
 
                 arg.Game.Mods.Remove(modid, out _);

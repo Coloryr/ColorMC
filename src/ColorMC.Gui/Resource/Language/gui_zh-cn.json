@@ -705,7 +705,7 @@
 	"DownloadWindow.Text4": "继续下载",
 	"DownloadWindow.Text5": "下载线程",
 	"DownloadWindow.Text6": "剩余下载任务数：",
-	"DownloadWindow.Text7": "当前任务进度：",
+	"DownloadWindow.Text7": "当前下载进度：",
 	"DownloadWindow.Text8": "错误次数：",
 	"DownloadWindow.Info1": "是否要停止下载",
 	"DownloadWindow.Info2": "下载已暂停",

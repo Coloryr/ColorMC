@@ -13,7 +13,7 @@ public class IcoConverterUtils
     /// <param name="outputPath">输出 ICO 文件的路径</param>
     public static void ConvertToIco(SKBitmap bitmap, string outputPath)
     {
-        using var outputStream = PathHelper.OpenWrite(outputPath, true);
+        using var outputStream = PathHelper.OpenWrite(outputPath);
         using var writer = new BinaryWriter(outputStream);
         //写入 ICO 文件头 (6 bytes)
         writer.Write((ushort)0); // 保留字段 (必须为0)

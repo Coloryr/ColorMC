@@ -415,7 +415,7 @@ public static class WebBinding
                     version.Add(item2.DisplayName);
                     items.Add(new()
                     {
-                        Item = item2.MakeModDownloadObj(obj),
+                        Item = item2.MakeDownloadObj(obj),
                         Info = item2.MakeModInfo(Names.NameGameModDir)
                     });
                 }
@@ -425,7 +425,7 @@ public static class WebBinding
 
         return new()
         {
-            Item = data.MakeModDownloadObj(obj),
+            Item = data.MakeDownloadObj(obj),
             Info = data.MakeModInfo(Names.NameGameModDir),
             List = [.. res.Values]
         };
@@ -462,7 +462,7 @@ public static class WebBinding
                     version.Add(item2.Name);
                     items.Add(new()
                     {
-                        Item = item2.MakeModDownloadObj(obj),
+                        Item = item2.MakeDownloadObj(obj),
                         Info = item2.MakeModInfo(Names.NameGameModDir)
                     });
                 }
@@ -472,7 +472,7 @@ public static class WebBinding
 
         return new()
         {
-            Item = data.MakeModDownloadObj(obj),
+            Item = data.MakeDownloadObj(obj),
             Info = data.MakeModInfo(Names.NameGameModDir),
             List = [.. res.Values]
         };
@@ -776,7 +776,7 @@ public static class WebBinding
                         version.Add(data.DisplayName);
                         items.Add(new()
                         {
-                            Item = data.MakeModDownloadObj(game),
+                            Item = data.MakeDownloadObj(game),
                             Info = data.MakeModInfo(Names.NameGameModDir)
                         });
                     }
@@ -785,7 +785,7 @@ public static class WebBinding
                         version.Add(data1.Name);
                         items.Add(new()
                         {
-                            Item = data1.MakeModDownloadObj(game),
+                            Item = data1.MakeDownloadObj(game),
                             Info = data1.MakeModInfo(Names.NameGameModDir)
                         });
                     }
@@ -1614,7 +1614,7 @@ public static class WebBinding
                     var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                     arg = new DownloadModArg()
                     {
-                        Item = data.MakeModDownloadObj(obj),
+                        Item = data.MakeDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),
                         Old = await obj.ReadModAsync(mod)
                     };
@@ -1624,7 +1624,7 @@ public static class WebBinding
                     var data = (model.Data as ModrinthVersionObj)!;
                     arg = new DownloadModArg()
                     {
-                        Item = data.MakeModDownloadObj(obj),
+                        Item = data.MakeDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),
                         Old = await obj.ReadModAsync(mod)
                     };

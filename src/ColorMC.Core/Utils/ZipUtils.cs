@@ -76,7 +76,7 @@ public class ZipUtils(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Reque
     /// <returns></returns>
     public async Task ZipFileAsync(string zipFile, List<string> zipList, string rootPath)
     {
-        using var stream = PathHelper.OpenWrite(zipFile, true);
+        using var stream = PathHelper.OpenWrite(zipFile);
         var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
         _size = zipList.Count;
         _now = 0;
