@@ -20,7 +20,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载状态
     /// </summary>
-    public static bool State { get; private set; }
+    public static bool State => s_download.Count > 0;
     /// <summary>
     /// 缓存路径
     /// </summary>
@@ -72,13 +72,12 @@ public static class DownloadManager
         {
             return;
         }
-        foreach (var item in s_tasks)
+        s_download.Clear();
+        foreach (var item in s_tasks.ToArray())
         {
             item.Cancel();
         }
-        s_tasks.Clear();
         s_threads.ForEach(a => a.DownloadStop());
-        State = false;
     }
 
     /// <summary>
@@ -131,20 +130,12 @@ public static class DownloadManager
     /// 进行下一个任务
     /// </summary>
     /// <param name="arg">下载参数</param>
-    internal static void TaskRunNext(DownloadArg arg, DownloadTask task)
+    internal static void TaskDone(DownloadArg arg, DownloadTask task)
     {
         s_tasks.Remove(task);
 
         //若没有下一个任务则全部完成
-        if (s_tasks.Count > 0)
-        {
-            arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
-        }
-        else
-        {
-            State = false;
-            arg.Update?.Invoke(s_threads.Count, State, 0);
-        }
+        arg.Update?.Invoke(s_threads.Count, s_tasks.Count > 0, s_tasks.Count);
     }
 
     internal static DownloadItem? GetDownloadItem()
@@ -165,20 +156,32 @@ public static class DownloadManager
     /// <returns>是否完成</returns>
     private static Task<bool> StartAsync(ICollection<FileItemObj> list, DownloadArg arg)
     {
-        var task = new DownloadTask(list, arg);
+        var task = new DownloadTask(arg);
         s_tasks.Add(task);
-        foreach (var item in task.GetItems())
+
+        Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
+
+        var names = new List<string>();
+        //装填下载内容
+        foreach (var item in list)
         {
-            s_download.Enqueue(item);
+            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) || names.Contains(item.Name))
+            {
+                continue;
+            }
+            s_download.Enqueue(new DownloadItem
+            {
+                Task = task,
+                File = item
+            });
+            names.Add(item.Name);
         }
 
-        if (State == false)
-        {
-            State = true;
-            Start();
-        }
+        task.SetSize(names.Count);
 
-        arg.Update?.Invoke(s_threads.Count, State, s_tasks.Count);
+        Start();
+
+        arg.Update?.Invoke(s_threads.Count, true, s_tasks.Count);
 
         return task.WaitDone();
     }
@@ -204,8 +207,6 @@ public static class DownloadManager
         s_stop = true;
         s_tasks.Clear();
         s_threads.ForEach(a => a.Close());
-
-        State = false;
     }
 
     /// <summary>

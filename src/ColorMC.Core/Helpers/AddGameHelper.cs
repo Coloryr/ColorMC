@@ -805,13 +805,7 @@ public static class AddGameHelper
     public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
         var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
-        var item = new FileItemObj()
-        {
-            Url = file.Url,
-            Name = file.Filename,
-            Sha1 = file.Hashes.Sha1,
-            Local = Path.Combine(DownloadManager.DownloadDir, file.Filename),
-        };
+        var item = arg.Data.MakeDownloadObj(Path.Combine(DownloadManager.DownloadDir, file.Filename));
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)
@@ -853,14 +847,7 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallCurseForge(DownloadCurseForgeArg arg)
     {
-        arg.Data.FixDownloadUrl();
-
-        var item = new FileItemObj()
-        {
-            Url = arg.Data.DownloadUrl,
-            Name = arg.Data.FileName,
-            Local = Path.Combine(DownloadManager.DownloadDir, arg.Data.FileName),
-        };
+        var item = arg.Data.MakeDownloadObj(Path.Combine(DownloadManager.DownloadDir, arg.Data.FileName));
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)

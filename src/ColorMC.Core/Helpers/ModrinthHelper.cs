@@ -98,9 +98,27 @@ public static class ModrinthHelper
     /// 创建下载项目
     /// </summary>
     /// <param name="data">数据</param>
+    /// <param name="path">文件路径</param>
+    /// <returns>下载项目</returns>
+    public static FileItemObj MakeDownloadObj(this ModrinthVersionObj data, string path)
+    {
+        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
+        return new FileItemObj()
+        {
+            Name = data.Name,
+            Url = file.Url,
+            Local = path,
+            Sha1 = file.Hashes.Sha1
+        };
+    }
+
+    /// <summary>
+    /// 创建下载项目
+    /// </summary>
+    /// <param name="data">数据</param>
     /// <param name="obj">游戏实例</param>
     /// <returns>下载项目</returns>
-    public static FileItemObj MakeModDownloadObj(this ModrinthVersionObj data, GameSettingObj obj)
+    public static FileItemObj MakeDownloadObj(this ModrinthVersionObj data, GameSettingObj obj)
     {
         var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         return new FileItemObj()

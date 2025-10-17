@@ -8,7 +8,11 @@ namespace ColorMC.Core.Downloader;
 /// <summary>
 /// 下载任务
 /// </summary>
-internal class DownloadTask
+/// <remarks>
+/// 下载任务
+/// </remarks>
+/// <param name="arg">GUI下载参数</param>
+internal class DownloadTask(DownloadArg arg)
 {
     /// <summary>
     /// 任务是否已经取消
@@ -20,22 +24,15 @@ internal class DownloadTask
     /// 取消下载
     /// </summary>
     private readonly CancellationTokenSource _cancel = new();
-    /// <summary>
-    /// 下载项目队列
-    /// </summary>
-    private readonly ConcurrentQueue<DownloadItem> _items = [];
+
     /// <summary>
     /// 总下载数量
     /// </summary>
-    private readonly int _allSize;
-    /// <summary>
-    /// 下载时GUI返回参数
-    /// </summary>
-    private readonly DownloadArg _arg;
+    private int _allSize;
     /// <summary>
     /// 已下载数量
     /// </summary>
-    private int _doneSize;
+    private int _doneSize = 0;
     /// <summary>
     /// 下次错误数量
     /// </summary>
@@ -44,45 +41,15 @@ internal class DownloadTask
     /// <summary>
     /// 处理完成信号量
     /// </summary>
-    private readonly Semaphore _semaphore;
+    private readonly Semaphore _semaphore = new(0, 2);
 
     /// <summary>
-    /// 下载任务
+    /// 设置任务数量
     /// </summary>
-    /// <param name="list">下载项目列表</param>
-    /// <param name="arg">GUI下载参数</param>
-    public DownloadTask(ICollection<FileItemObj> list, DownloadArg arg)
+    public void SetSize(int size)
     {
-        var names = new List<string>();
-
-        _semaphore = new Semaphore(0, 2);
-        _arg = arg;
-
-        Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
-
-        //装填下载内容
-        foreach (var item in list)
-        {
-            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) || names.Contains(item.Name))
-            {
-                continue;
-            }
-            _items.Enqueue(new DownloadItem
-            {
-                Task = this,
-                File = item
-            });
-            names.Add(item.Name);
-        }
-
-        _doneSize = 0;
-        _allSize = _items.Count;
-        _arg.UpdateTask?.Invoke(UpdateType.AddItems, _allSize);
-    }
-
-    public IEnumerable<DownloadItem> GetItems()
-    {
-        return _items;
+        _allSize = size;
+        arg.UpdateTask?.Invoke(UpdateType.AddItems, _allSize);
     }
 
     /// <summary>
@@ -100,7 +67,7 @@ internal class DownloadTask
                 return false;
             }
 
-            return _allSize == _doneSize;
+            return _errorSize == 0;
         }, Token);
     }
 
@@ -109,9 +76,10 @@ internal class DownloadTask
     /// </summary>
     public void Cancel()
     {
-        _semaphore.Release();
-        _items.Clear();
         _cancel.Cancel();
+        _semaphore.Release();
+
+        DownloadManager.TaskDone(arg, this);
     }
 
     /// <summary>
@@ -120,9 +88,9 @@ internal class DownloadTask
     public void Done()
     {
         _doneSize++;
-        _arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+        arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
 
-        ThreadDone();
+        ItemDone();
     }
 
     /// <summary>
@@ -131,21 +99,21 @@ internal class DownloadTask
     public void Error()
     {
         _errorSize++;
-        _arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+        arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
 
-        ThreadDone();
+        ItemDone();
     }
 
     /// <summary>
     /// 线程完成
     /// </summary>
-    public void ThreadDone()
+    private void ItemDone()
     {
-        if (_doneSize + _errorSize >= _items.Count)
+        if (_doneSize + _errorSize >= _allSize)
         {
             //任务结束
             _semaphore.Release();
-            DownloadManager.TaskRunNext(_arg, this);
+            DownloadManager.TaskDone(arg, this);
         }
     }
 
@@ -156,6 +124,6 @@ internal class DownloadTask
     /// <param name="obj">下载文件</param>
     public void UpdateItem(int index, FileItemObj obj)
     {
-        _arg.UpdateItem?.Invoke(index, obj);
+        arg.UpdateItem?.Invoke(index, obj);
     }
 }

@@ -256,7 +256,7 @@ public static class GameExport
     /// <returns></returns>
     public static async Task<bool> ExportAsync(GameExportArg arg)
     {
-        using var stream = PathHelper.OpenWrite(arg.File, true);
+        using var stream = PathHelper.OpenWrite(arg.File);
 
         try
         {
