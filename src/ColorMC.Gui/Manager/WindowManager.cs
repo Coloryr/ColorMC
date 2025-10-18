@@ -212,6 +212,10 @@ public static class WindowManager
             //显示主窗口
             ShowMain();
         }
+
+#if DEBUG
+        new TestWindow().Show();
+#endif
     }
 
     /// <summary>

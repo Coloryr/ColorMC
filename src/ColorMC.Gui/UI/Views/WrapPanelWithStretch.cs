@@ -6,8 +6,8 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Views;
 
 /// <summary>
-/// 自动换行控件
-/// 当设置RightMax时，最右侧的控件获取剩余宽度
+/// 自动换行控件<br/>
+/// 当设置RightMax时，最右侧的控件获取剩余宽度<br/>
 /// 当设置LeftMax时，最左侧的控件获得剩余宽度
 /// </summary>
 public class WrapPanelWithStretch : Panel
