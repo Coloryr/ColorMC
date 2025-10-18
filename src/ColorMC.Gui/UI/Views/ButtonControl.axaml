@@ -1,0 +1,49 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Views.ButtonControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Button
+        Name="Button1"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        HorizontalContentAlignment="Stretch"
+        VerticalContentAlignment="Stretch"
+        Background="Transparent"
+        BorderBrush="Transparent"
+        BorderThickness="0"
+        Classes="none1">
+        <Panel>
+            <Border
+                Name="Left"
+                Width="5"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Stretch" />
+            <Border
+                Name="Right"
+                Width="5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Stretch" />
+            <Border
+                Name="Top"
+                Height="5"
+                Margin="5,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top" />
+            <Border
+                Name="Bottom"
+                Height="5"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom" />
+            <TextBlock
+                Name="TextShow"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="16" />
+        </Panel>
+    </Button>
+</UserControl>
