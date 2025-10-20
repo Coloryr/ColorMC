@@ -261,14 +261,19 @@ public static class ForgeAPI
                 }
             }
         }
-
-        foreach (var item in s_neoForgeVersion.Values)
+        if (neo)
         {
-            StringHelper.VersionSort(item);
+            foreach (var item in s_neoForgeVersion.Values)
+            {
+                StringHelper.VersionSort(item);
+            }
         }
-        foreach (var item in s_forgeVersion.Values)
+        else
         {
-            StringHelper.VersionSort(item);
+            foreach (var item in s_forgeVersion.Values)
+            {
+                StringHelper.VersionSort(item);
+            }
         }
 
         if (neo)

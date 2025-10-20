@@ -220,6 +220,10 @@ public static partial class CheckHelpers
     /// <returns>是否需要添加</returns>
     public static bool CheckToAdd(this FileItemObj obj, bool sha1)
     {
+        if (string.IsNullOrWhiteSpace(obj.Url))
+        {
+            return false;
+        }
         if (!File.Exists(obj.Local))
         {
             return true;
