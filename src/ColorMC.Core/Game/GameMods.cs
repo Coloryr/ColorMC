@@ -359,54 +359,69 @@ public static class GameMods
             Author = []
         };
 
-        void ForgeOld(JsonObject obj)
+        void ForgeOld(JsonElement obj)
         {
-            mod.ModId = obj.GetString("modid") ?? "";
-            mod.Name = obj.GetString("name") ?? mod.ModId;
-            mod.Description = obj.GetString("description");
-            mod.Version = obj.GetString("version");
-            mod.Url = obj.GetString("url");
+            if (obj.TryGetProperty("modid", out var temp))
+            {
+                mod.ModId = temp.GetString() ?? "";
+            }
+            if (obj.TryGetProperty("name", out temp))
+            {
+                mod.Name = temp.GetString() ?? mod.ModId;
+            }
+            if (obj.TryGetProperty("description", out temp))
+            {
+                mod.Description = temp.GetString();
+            }
+            if (obj.TryGetProperty("version", out temp))
+            {
+                mod.Version = temp.GetString();
+            }
+            if (obj.TryGetProperty("url", out temp))
+            {
+                mod.Url = temp.GetString();
+            }
             mod.Loaders.Add(Loaders.Forge);
             mod.Side = SideType.None; //无法判断sideonly
 
-            if (obj.GetArray("authorList") is { } list1)
+            if (obj.TryGetProperty("authorList", out var list1) && list1.ValueKind == JsonValueKind.Array)
             {
-                foreach (var item in list1)
+                foreach (var item in list1.EnumerateArray())
                 {
-                    if (item?.GetValue<string>() is { } str)
+                    if (item.GetString() is { } str)
                     {
                         mod.Author.Add(str);
                     }
                 }
             }
 
-            if (obj.GetArray("dependants") is { } list2)
+            if (obj.TryGetProperty("dependants", out var list2) && list1.ValueKind == JsonValueKind.Array)
             {
-                foreach (var item in list2)
+                foreach (var item in list2.EnumerateArray())
                 {
-                    if (item?.GetValue<string>() is { } str)
+                    if (item.GetString() is { } str)
                     {
                         mod.Dependants.Add(str);
                     }
                 }
             }
 
-            if (obj.GetArray("dependencies") is { } list3)
+            if (obj.TryGetProperty("dependencies", out var list3) && list1.ValueKind == JsonValueKind.Array)
             {
-                foreach (var item in list3)
+                foreach (var item in list3.EnumerateArray())
                 {
-                    if (item?.GetValue<string>() is { } str)
+                    if (item.GetString() is { } str)
                     {
                         mod.Dependants.Add(str);
                     }
                 }
             }
 
-            if (obj.GetArray("requiredMods") is { } list4)
+            if (obj.TryGetProperty("requiredMods", out var list4) && list1.ValueKind == JsonValueKind.Array)
             {
-                foreach (var item in list4)
+                foreach (var item in list4.EnumerateArray())
                 {
-                    if (item?.GetValue<string>() is { } str)
+                    if (item.GetString() is { } str)
                     {
                         mod.Dependants.Add(str);
                     }
@@ -500,37 +515,56 @@ public static class GameMods
             istest = true;
         }
 
-        async Task FabricAsync(JsonObject obj)
+        async Task FabricAsync(JsonElement obj)
         {
-            mod.ModId = obj.GetString("id") ?? "";
-            mod.Name = obj.GetString("name") ?? mod.ModId;
-            mod.Description = obj.GetString("description");
-            mod.Version = obj.GetString("version");
-            mod.Url = obj.GetObj("contact")?.GetString("homepage");
-
-            var side = obj.GetString("environment")?.ToLower();
-            mod.Side = side switch
+            if (obj.TryGetProperty("id", out var obj1))
             {
-                null => SideType.None,
-                "*" => SideType.Both,
-                "client" => SideType.Client,
-                "server" => SideType.Server,
-                _ => mod.Side
-            };
-
-            if (obj.GetArray("authors") is { } list1)
+                mod.ModId = obj1.GetString() ?? "";
+            }
+            if (obj.TryGetProperty("name", out obj1))
             {
-                foreach (var item in list1.ToStringList())
+                mod.Name = obj1.GetString() ?? mod.ModId;
+            }
+            if (obj.TryGetProperty("description", out obj1))
+            {
+                mod.Description = obj1.GetString();
+            }
+            if (obj.TryGetProperty("version", out obj1))
+            {
+                mod.Version = obj1.GetString();
+            }
+            if (obj.TryGetProperty("version", out obj1) && obj1.TryGetProperty("homepage", out var obj2))
+            {
+                mod.Url = obj2.GetString();
+            }
+
+            if (obj.TryGetProperty("environment", out obj1))
+            {
+                var side = obj1.GetString()?.ToLower();
+                mod.Side = side switch
                 {
-                    mod.Dependants.Add(item);
+                    null => SideType.None,
+                    "*" => SideType.Both,
+                    "client" => SideType.Client,
+                    "server" => SideType.Server,
+                    _ => mod.Side
+                };
+            }
+            
+
+            if (obj.TryGetProperty("authors", out var list1))
+            {
+                foreach (var item in list1.EnumerateObject())
+                {
+                    mod.Author.Add(item.Name);
                 }
             }
 
-            if (obj.GetObj("depends") is { } array2)
+            if (obj.TryGetProperty("depends", out var array2))
             {
-                foreach (var item3 in array2)
+                foreach (var item3 in array2.EnumerateObject())
                 {
-                    mod.Dependants.Add(item3.Key);
+                    mod.Dependants.Add(item3.Name);
                 }
             }
 
@@ -539,33 +573,46 @@ public static class GameMods
             istest = true;
         }
 
-        async Task QuiltAsync(JsonObject obj)
+        async Task QuiltAsync(JsonElement obj)
         {
-            mod.ModId = obj.GetString("id") ?? "";
-            mod.Version = obj.GetString("version");
-            mod.Url = obj.GetObj("contact")?.GetString("homepage");
-            var meta = obj.GetObj("metadata");
-            if (meta != null)
+            if (obj.TryGetProperty("id", out var obj1))
             {
-                mod.Name = meta.GetString("name") ?? mod.ModId;
-                mod.Description = meta.GetString("description");
-
-                if (meta.GetObj("contributors") is { } array)
+                mod.ModId = obj1.GetString() ?? "";
+            }
+            if (obj.TryGetProperty("version", out obj1))
+            {
+                mod.Version = obj1.GetString();
+            }
+            if (obj.TryGetProperty("contact", out obj1) && obj1.TryGetProperty("homepage", out var obj2))
+            {
+                mod.Url = obj2.GetString();
+            }
+            if (obj.TryGetProperty("metadata", out obj1))
+            {
+                if (obj1.TryGetProperty("name", out obj2))
                 {
-                    var list = array.ToStringList();
-                    foreach (var item in list)
+                    mod.Name = obj2.GetString() ?? mod.ModId;
+                }
+                if (obj1.TryGetProperty("description", out obj2))
+                {
+                    mod.Description = obj2.GetString();
+                }
+                if (obj1.TryGetProperty("contributors", out obj2))
+                {
+                    foreach (var item in obj2.EnumerateObject())
                     {
-                        mod.Author.Add(item);
+                        mod.Author.Add(item.Name);
                     }
                 }
             }
-            if (obj.GetArray("depends") is { } obj5)
+
+            if (obj.TryGetProperty("depends", out obj1))
             {
-                foreach (var item3 in obj5)
+                foreach (var item3 in obj1.EnumerateArray())
                 {
-                    if (item3?.AsObject().GetString("id") is { } str)
+                    if (item3.TryGetProperty("id", out obj2))
                     {
-                        mod.Dependants.Add(str);
+                        mod.Dependants.Add(obj2.GetString()!);
                     }
                 }
             }
@@ -582,19 +629,21 @@ public static class GameMods
             {
                 using var stream1 = item1.OpenEntryStream();
                 var data = await StringHelper.GetStringAsync(stream1);
-                var obj1 = Parse(data);
-                JsonObject? obj3;
-                if (obj1 is JsonArray array)
+                data = data.Replace("\n", "");
+                var obj1 = JsonDocument.Parse(data);
+                var obj2 = obj1.RootElement;
+                JsonElement? obj3 = null;
+                if (obj2.ValueKind == JsonValueKind.Array)
                 {
-                    obj3 = array[0]?.AsObject();
+                    obj3 = obj2.EnumerateArray().FirstOrDefault();
                 }
-                else
+                else if(obj2.TryGetProperty("modList", out var list1) && list1.ValueKind == JsonValueKind.Array)
                 {
-                    obj3 = obj1?.AsObject().GetArray("modList")?[0]?.AsObject();
+                    obj3 = list1.EnumerateArray().FirstOrDefault();
                 }
-                if (obj3 != null)
+                if (obj3 is { } obj4)
                 {
-                    ForgeOld(obj3);
+                    ForgeOld(obj4);
                 }
             }
             catch (Exception ex)
@@ -645,11 +694,8 @@ public static class GameMods
                 try
                 {
                     using var stream = item1.OpenEntryStream();
-                    var obj1 = await JsonUtils.ReadAsObjAsync(stream);
-                    if (obj1 != null)
-                    {
-                        await FabricAsync(obj1);
-                    }
+                    var obj1 = JsonDocument.Parse(stream);
+                    await FabricAsync(obj1.RootElement);
                 }
                 catch (Exception ex)
                 {
@@ -668,10 +714,11 @@ public static class GameMods
                 try
                 {
                     using var stream = item1.OpenEntryStream();
-                    var obj = await JsonUtils.ReadAsObjAsync(stream);
-                    if (obj?.GetObj("quilt_loader") is { } obj1)
+                    var obj1 = JsonDocument.Parse(stream);
+                    var obj2 = obj1.RootElement;
+                    if (obj2.TryGetProperty("quilt_loader", out var obj3))
                     {
-                        await QuiltAsync(obj1);
+                        await QuiltAsync(obj3);
                     }
                 }
                 catch (Exception ex)
@@ -840,51 +887,51 @@ public static class GameMods
         return null;
     }
 
-    /// <summary>
-    /// 解析数据
-    /// </summary>
-    /// <param name="data">Json数据</param>
-    /// <returns>数据</returns>
-    private static JsonNode? Parse(string data)
-    {
-        //var options = new JsonSerializerOptions
-        //{
-        //    ReadCommentHandling = JsonCommentHandling.Skip,
-        //    AllowTrailingCommas = true
-        //};
+    ///// <summary>
+    ///// 解析数据
+    ///// </summary>
+    ///// <param name="data">Json数据</param>
+    ///// <returns>数据</returns>
+    //private static JsonDocument? Parse(string data)
+    //{
+    //    //var options = new JsonSerializerOptions
+    //    //{
+    //    //    ReadCommentHandling = JsonCommentHandling.Skip,
+    //    //    AllowTrailingCommas = true
+    //    //};
 
-        try
-        {
-            return JsonNode.Parse(data);
-        }
-        catch (JsonException)
-        {
-            var s_separator = new[] { "\r\n", "\n" };
-            var lines = data.Split(s_separator, StringSplitOptions.RemoveEmptyEntries);
+    //    try
+    //    {
+    //        return JsonDocument.Parse(data);
+    //    }
+    //    catch (JsonException)
+    //    {
+    //        var s_separator = new[] { "\r\n", "\n" };
+    //        var lines = data.Split(s_separator, StringSplitOptions.RemoveEmptyEntries);
 
-            var rootObject = new JsonObject();
-            foreach (var line in lines)
-            {
-                try
-                {
-                    var wrappedLine = "{" + line + "}";
-                    var parsedLine = JsonNode.Parse(wrappedLine);
+    //        var rootObject = new JsonObject();
+    //        foreach (var line in lines)
+    //        {
+    //            try
+    //            {
+    //                var wrappedLine = "{" + line + "}";
+    //                var parsedLine = JsonNode.Parse(wrappedLine);
 
-                    if (parsedLine is JsonObject lineObj && lineObj.First() is KeyValuePair<string, JsonNode?> firstProp)
-                    {
-                        var copiedValue = JsonNode.Parse(firstProp.Value!.ToJsonString());
-                        rootObject[firstProp.Key] = copiedValue;
-                    }
-                }
-                catch (JsonException)
-                {
+    //                if (parsedLine is JsonObject lineObj && lineObj.First() is KeyValuePair<string, JsonNode?> firstProp)
+    //                {
+    //                    var copiedValue = JsonNode.Parse(firstProp.Value!.ToJsonString());
+    //                    rootObject[firstProp.Key] = copiedValue;
+    //                }
+    //            }
+    //            catch (JsonException)
+    //            {
 
-                }
-            }
+    //            }
+    //        }
 
-            return new JsonArray { rootObject };
-        }
-    }
+    //        return new JsonDocument { rootObject };
+    //    }
+    //}
 
     /// <summary>
     /// 作者分割
@@ -928,21 +975,21 @@ public static class GameMods
         return list;
     }
 
-    /// <summary>
-    /// 作者分割
-    /// </summary>
-    /// <param name="array">数据</param>
-    /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JsonObject array)
-    {
-        var list = new List<string>();
-        foreach (var item in array)
-        {
-            list.Add(item.Key.ToString());
-        }
+    ///// <summary>
+    ///// 作者分割
+    ///// </summary>
+    ///// <param name="array">数据</param>
+    ///// <returns>整理好的作者名</returns>
+    //private static List<string> ToStringList(this JsonObject array)
+    //{
+    //    var list = new List<string>();
+    //    foreach (var item in array)
+    //    {
+    //        list.Add(item.Key.ToString());
+    //    }
 
-        return list;
-    }
+    //    return list;
+    //}
 
     /// <summary>
     /// 找到指定数据

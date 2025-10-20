@@ -210,12 +210,22 @@ public static partial class StringHelper
         foreach (var item in list)
         {
             var version = regex.Match(item.Replace("+build", ""));
-            var version1 = new Version(version.Groups[0].Value);
-            list1.Add(new()
+            if (Version.TryParse(version.Groups[0].Value, out var version1))
             {
-                Version = version1,
-                VersionStr = item
-            });
+                list1.Add(new()
+                {
+                    Version = version1,
+                    VersionStr = item
+                });
+            }
+            else
+            {
+                list1.Add(new()
+                {
+                    Version = new Version(0, 0, 0),
+                    VersionStr = item
+                });
+            }
         }
 
         list1.Sort(VersionStrObjComparer.Instance);

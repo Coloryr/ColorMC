@@ -53,7 +53,7 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        if (sender is not DataGrid data)
+        if (sender is not DataGrid data || data.CurrentColumn == null)
         {
             return;
         }
