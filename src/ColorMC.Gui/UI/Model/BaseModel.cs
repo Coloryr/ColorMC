@@ -595,9 +595,8 @@ public partial class BaseModel : ObservableObject
     /// </summary>
     /// <param name="title1">输入框提示1</param>
     /// <param name="title2">输入框提示2</param>
-    /// <param name="password">是否为密码输入</param>
     /// <returns></returns>
-    public async Task<InputRes> InputAsync(string title1, string title2, bool password)
+    public async Task<InputRes> InputAsync(string title1, string title2)
     {
         ShowClose();
         _info3.TextReadonly = false;
@@ -616,8 +615,6 @@ public partial class BaseModel : ObservableObject
 
         _info3.CancelEnable = true;
         _info3.CancelVisible = true;
-
-        _info3.Password = password ? '*' : '\0';
 
         _info3.ChoiseVisible = false;
 

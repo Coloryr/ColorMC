@@ -108,7 +108,6 @@ public partial class AddControlModel
         {
             Model.PushBack(back: () =>
             {
-                _lastId = null;
                 VersionDisplay = false;
             });
         }
@@ -157,81 +156,94 @@ public partial class AddControlModel
     /// </summary>
     private void InstallItem(FileItemModel item)
     {
-        _lastType = SourceType.McMod;
-        _lastId = null;
-
         _load = true;
         PageDownload = 0;
         LoadFile(item);
         _load = false;
     }
 
-    /// <summary>
-    /// 加载文件列表
-    /// </summary>
     private async void LoadFile(FileItemModel item)
     {
-        FileList.Clear();
+        string? loadid = null;
+        SourceType loadtype = SourceType.McMod;
 
         var type = _sourceTypeList[DownloadSource];
-        if (type == SourceType.McMod)
-        {
-            if (_lastType == SourceType.McMod)
-            {
-                var obj1 = (item.Data as McModSearchItemObj)!;
-                if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
-                {
-                    var res = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
-                    if (res.Cancel)
-                    {
-                        return;
-                    }
-                    _lastType = type = res.Index == 0 ? SourceType.CurseForge : SourceType.Modrinth;
-                    _lastId = type == SourceType.CurseForge ? obj1.CurseforgeId : obj1.ModrinthId;
-                }
-                else if (obj1.CurseforgeId != null)
-                {
-                    _lastId = obj1.CurseforgeId;
-                    _lastType = type = SourceType.CurseForge;
-                }
-                else if (obj1.ModrinthId != null)
-                {
-                    _lastId = obj1.ModrinthId;
-                    _lastType = type = SourceType.Modrinth;
-                }
-            }
-            else
-            {
-                type = _lastType;
-            }
-        }
 
         if (type == SourceType.McMod)
+        {
+            var obj1 = item.McMod!;
+            if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
+            {
+                var mcmod = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
+                if (mcmod.Cancel)
+                {
+                    return;
+                }
+                loadtype = mcmod.Index == 0 ? SourceType.CurseForge : SourceType.Modrinth;
+                loadid = type == SourceType.CurseForge ? obj1.CurseforgeId : obj1.ModrinthId;
+            }
+            else if (obj1.CurseforgeId != null)
+            {
+                loadid = obj1.CurseforgeId;
+                loadtype = SourceType.CurseForge;
+            }
+            else if (obj1.ModrinthId != null)
+            {
+                loadid = obj1.ModrinthId;
+                loadtype = SourceType.Modrinth;
+            }
+        }
+        else if (type == SourceType.CurseForge)
+        {
+            loadid = item.Pid;
+            loadtype = SourceType.CurseForge;
+            
+        }
+        else if (type == SourceType.Modrinth)
+        {
+            loadid = item.Pid;
+            loadtype = SourceType.Modrinth;
+        }
+
+        if (loadtype == SourceType.McMod || loadid == null)
         {
             Model.Show(App.Lang("AddWindow.Error11"));
             return;
         }
 
-        VersionDisplay = true;
-        var page = 0;
-        List<FileVersionItemModel>? list = null;
-        Model.Progress(App.Lang("AddWindow.Info3"));
+        LoadFile(loadtype, loadid);
+    }
+
+    /// <summary>
+    /// 加载文件列表
+    /// </summary>
+    /// <param name="type">下载源</param>
+    /// <param name="pid">资源ID</param>
+    private async void LoadFile(SourceType type, string pid)
+    {
+        FileList.Clear();
+
+        int page = 0;
+
+        PageDownload ??= 0;
+
         if (type == SourceType.CurseForge)
         {
-            var res = await WebBinding.GetFileListAsync(type, _lastId ??
-                (item.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
-                GameVersionDownload, Obj.Loader, _now);
-            list = res.List;
-            MaxPageDownload = res.Count / 50;
-        }
-        else if (type == SourceType.Modrinth)
-        {
-            var res = await WebBinding.GetFileListAsync(type, _lastId ??
-                (item.Data as ModrinthSearchObj.HitObj)!.ProjectId, 0,
-                GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
-            list = res.List;
-            MaxPageDownload = res.Count / 50;
             page = PageDownload ?? 0;
+        }
+
+        VersionDisplay = true;
+        Model.Progress(App.Lang("AddWindow.Info3"));
+
+        var res = await WebBinding.GetFileListAsync(type, pid, page,
+                GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
+        var list = res.List;
+        MaxPageDownload = res.Count / 50;
+
+        //curseforge只有50个项目
+        if (type == SourceType.CurseForge)
+        {
+            page = 0;
         }
 
         NextPageDisplay = (MaxPageDownload - PageDownload) > 0;
@@ -294,22 +306,6 @@ public partial class AddControlModel
             return;
         }
 
-        var type = _sourceTypeList[DownloadSource];
-        if (Set)
-        {
-            if (type == SourceType.CurseForge)
-            {
-                GameBinding.SetModInfo(Obj,
-                    data.Data as CurseForgeModObj.CurseForgeDataObj);
-            }
-            else if (type == SourceType.Modrinth)
-            {
-                GameBinding.SetModInfo(Obj,
-                    data.Data as ModrinthVersionObj);
-            }
-            return;
-        }
-
         ModInfoObj? mod = null;
         if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
         {
@@ -349,26 +345,24 @@ public partial class AddControlModel
                 try
                 {
                     DownloadItemInfo? info = null;
-                    if (type == SourceType.CurseForge
-                        && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
+                    if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                     {
                         info = new DownloadItemInfo
                         {
                             Type = FileType.DataPacks,
-                            Source = type,
+                            Source = data.SourceType,
                             PID = data1.ModId.ToString()
                         };
                         StartDownload(info);
 
                         res = await WebBinding.DownloadAsync(item, data1);
                     }
-                    else if (type == SourceType.Modrinth
-                        && data.Data is ModrinthVersionObj data2)
+                    else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                     {
                         info = new DownloadItemInfo
                         {
                             Type = FileType.DataPacks,
-                            Source = type,
+                            Source = data.SourceType,
                             PID = data2.ProjectId
                         };
                         StartDownload(info);
@@ -391,7 +385,7 @@ public partial class AddControlModel
             {
                 try
                 {
-                    var list = (type == SourceType.McMod ? _lastType : type) switch
+                    var list = data.SourceType switch
                     {
                         SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(Obj,
                         data.Data as CurseForgeModObj.CurseForgeDataObj),
@@ -410,7 +404,7 @@ public partial class AddControlModel
                         var info = new DownloadItemInfo
                         {
                             Type = FileType.Mod,
-                            Source = type,
+                            Source = data.SourceType,
                             PID = list.Info.ModId
                         };
                         StartDownload(info);
@@ -429,7 +423,7 @@ public partial class AddControlModel
                     }
                     else
                     {
-                        res = await StartListTask(list, mod, type);
+                        res = await StartListTask(list, mod, data.SourceType);
                     }
                 }
                 catch (Exception e)
@@ -442,7 +436,7 @@ public partial class AddControlModel
             {
                 try
                 {
-                    res = type switch
+                    res = data.SourceType switch
                     {
                         SourceType.CurseForge => await WebBinding.DownloadAsync(_now, Obj,
                             data.Data as CurseForgeModObj.CurseForgeDataObj),

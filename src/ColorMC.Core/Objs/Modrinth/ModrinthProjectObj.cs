@@ -12,19 +12,23 @@ public record ModrinthProjectObj
     //public string team { get; set; }
     [JsonPropertyName("title")]
     public string Title { get; set; }
-    //public string description { get; set; }
+    [JsonPropertyName("description")]
+    public string Description { get; set; }
     //public string published { get; set; }
-    //public string updated { get; set; }
+    [JsonPropertyName("updated")]
+    public string Updated { get; set; }
     //public string approved { get; set; }
     //public string status { get; set; }
     //public string client_side { get; set; }
     //public string server_side { get; set; }
-    //public int downloads { get; set; }
+    [JsonPropertyName("downloads")]
+    public int Downloads { get; set; }
     //public int followers { get; set; }
     //public List<string> game_versions { get; set; }
     //public List<string> loaders { get; set; }
     //public List<string> versions { get; set; }
-    //public string icon_url { get; set; }
+    [JsonPropertyName("icon_url")]
+    public string IconUrl { get; set; }
     //public string issues_url { get; set; }
     //public string source_url { get; set; }
     //public string wiki_url { get; set; }

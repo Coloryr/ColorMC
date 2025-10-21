@@ -234,7 +234,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">获取信息</param>
     /// <returns>项目信息</returns>
-    public static async Task<MakeDownloadItemsRes> GetModInfoAsync(GetCurseForgeModInfoArg arg)
+    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GetCurseForgeModInfoArg arg)
     {
         var size = arg.Info.Files.Count;
         var now = 0;
@@ -645,7 +645,7 @@ public static class CurseForgeHelper
             var obj1 = arg.Game.CopyObj();
             obj1.Mods.Clear();
 
-            var list = await CurseForgeHelper.GetModInfoAsync(new GetCurseForgeModInfoArg
+            var list = await CurseForgeHelper.GetModPackInfoAsync(new GetCurseForgeModInfoArg
             {
                 Game = obj1,
                 Info = info,

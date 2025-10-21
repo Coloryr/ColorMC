@@ -533,7 +533,7 @@ public static class GameMods
             {
                 mod.Version = obj1.GetString();
             }
-            if (obj.TryGetProperty("version", out obj1) && obj1.TryGetProperty("homepage", out var obj2))
+            if (obj.TryGetProperty("contact", out obj1) && obj1.TryGetProperty("homepage", out var obj2))
             {
                 mod.Url = obj2.GetString();
             }
@@ -554,9 +554,9 @@ public static class GameMods
 
             if (obj.TryGetProperty("authors", out var list1))
             {
-                foreach (var item in list1.EnumerateObject())
+                foreach (var item in list1.EnumerateArray())
                 {
-                    mod.Author.Add(item.Name);
+                    mod.Author.Add(item.GetString()!);
                 }
             }
 

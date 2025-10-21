@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
@@ -194,9 +195,38 @@ public partial class GameEditModel
     /// <summary>
     /// 开始标记模组
     /// </summary>
-    public void StartSetMod()
+    public async void StartSetMod()
     {
-        WindowManager.ShowAddSet(_obj);
+        var res = await Model.InputAsync(App.Lang("GameEditWindow.Tab4.Info24"), 
+            App.Lang("GameEditWindow.Tab4.Info25"));
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(res.Text1) && string.IsNullOrWhiteSpace(res.Text2))
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error8"));
+            return;
+        }
+
+        Model.Progress(App.Lang("GameEditWindow.Tab4.Info26"));
+        var res1 = await GameBinding.MarkModsAsync(_obj, res.Text1, res.Text2);
+        Model.ProgressClose();
+        if (!res1)
+        {
+            Model.Show(App.Lang("GameEditWindow.Tab4.Error9"));
+            return;
+        }
+        else
+        {
+            Model.Notify(App.Lang("GameEditWindow.Tab4.Info27"));
+        }
     }
 
     /// <summary>

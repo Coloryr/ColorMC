@@ -48,7 +48,7 @@ public partial class GameEditModel
     {
         var res = await Model.InputAsync(
             App.Lang("GameEditWindow.Tab10.Info1"),
-            App.Lang("GameEditWindow.Tab10.Info2"), false);
+            App.Lang("GameEditWindow.Tab10.Info2"));
         if (res.Cancel)
         {
             return;

@@ -123,6 +123,30 @@ public static class WebBinding
         return new();
     }
 
+    public static async Task<FileItemModel?> GetFileItemAsync(SourceType type, string id, FileType file)
+    {
+        if (type == SourceType.CurseForge)
+        {
+            var res = await CurseForgeAPI.GetModInfoAsync(id);
+            if (res == null)
+            {
+                return null;
+            }
+            return new FileItemModel(res.Data, file, null);
+        }
+        else if (type == SourceType.Modrinth)
+        {
+            var res = await ModrinthAPI.GetProjectAsync(id);
+            if (res == null)
+            {
+                return null;
+            }
+            return new FileItemModel(res, file, null);
+        }
+
+        return null;
+    }
+
     /// <summary>
     /// 获取文件列表
     /// </summary>
@@ -148,7 +172,7 @@ public static class WebBinding
             var list1 = new List<FileVersionItemModel>();
             list.Data.ForEach(item =>
             {
-                list1.Add(new(item, type1));
+                list1.Add(new FileVersionItemModel(item, type1));
             });
 
             return new FileListRes
@@ -170,7 +194,7 @@ public static class WebBinding
             var list1 = new List<FileVersionItemModel>();
             list.ForEach(item =>
             {
-                list1.Add(new(item, type1));
+                list1.Add(new FileVersionItemModel(item, type1));
             });
 
             return new FileListRes
@@ -697,6 +721,18 @@ public static class WebBinding
             FileType.DataPacks => "https://modrinth.com/datapacks/",
             _ => "https://modrinth.com/mod/"
         } + obj.ProjectId;
+    }
+
+    public static string GetUrl(this ModrinthProjectObj obj, FileType fileType)
+    {
+        return fileType switch
+        {
+            FileType.ModPack => "https://modrinth.com/modpack/",
+            FileType.Shaderpack => "https://modrinth.com/shaders/",
+            FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
+            FileType.DataPacks => "https://modrinth.com/datapacks/",
+            _ => "https://modrinth.com/mod/"
+        } + obj.Id;
     }
 
     /// <summary>

@@ -470,7 +470,7 @@ public static class TestItem
         AddGameHelper.InstallModrinth(new DownloadModrinthArg
         {
             Data = item1,
-            Data1 = item,
+            IconUrl = item.IconUrl,
             Request = Program.Download,
             Overwirte = (_) => Task.FromResult(true),
         }).Wait();

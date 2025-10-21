@@ -138,7 +138,7 @@ public partial class AddModPackControlModel
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
 
             var res = await GameBinding.InstallCurseForgeAsync((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
-                (select!.Data as CurseForgeListObj.CurseForgeListDataObj)!, group,
+                select!.IconUrl, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -155,7 +155,7 @@ public partial class AddModPackControlModel
         {
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
             var res = await GameBinding.InstallModrinthAsync((data.Data as ModrinthVersionObj)!,
-                (select!.Data as ModrinthSearchObj.HitObj)!, group,
+                select!.IconUrl, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -188,7 +188,7 @@ public partial class AddModPackControlModel
         if (Source == 0)
         {
             var res = await WebBinding.GetFileListAsync((SourceType)Source,
-                _lastId ?? (_last!.Data as CurseForgeListObj.CurseForgeListDataObj)!.Id.ToString(), PageDownload ?? 0,
+                _lastId ?? _last!.Pid, PageDownload ?? 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
             title = res.Name;
@@ -197,7 +197,7 @@ public partial class AddModPackControlModel
         else if (Source == 1)
         {
             var res = await WebBinding.GetFileListAsync((SourceType)Source,
-                _lastId ?? (_last!.Data as ModrinthSearchObj.HitObj)!.ProjectId, PageDownload ?? 0,
+                _lastId ?? _last!.Pid, 0,
                 GameVersionDownload, Loaders.Normal);
             list = res.List;
             title = res.Name;

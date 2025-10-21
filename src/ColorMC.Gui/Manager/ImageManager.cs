@@ -490,7 +490,8 @@ public static class ImageManager
         }
         if (ex)
         {
-            var icon = new Bitmap(file);
+            using var stream = PathHelper.OpenRead(file)!;
+            var icon = Bitmap.DecodeToWidth(stream, 70);
             s_gameIcons.Add(obj.UUID, icon);
 
             return icon;

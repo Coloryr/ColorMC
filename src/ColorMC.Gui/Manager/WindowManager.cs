@@ -726,26 +726,7 @@ public static class WindowManager
             con.GoFile(type1, obj1.PID!);
         }
     }
-    /// <summary>
-    /// 显示添加资源窗口，并进入标记模式
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static void ShowAddSet(GameSettingObj obj)
-    {
-        if (GameAddWindows.TryGetValue(obj.UUID, out var value))
-        {
-            value.Window?.WindowActivate();
-            value.GoSet();
-        }
-        else
-        {
-            var con = new AddControl(obj);
-            GameAddWindows.Add(obj.UUID, con);
-            AWindow(con);
-            con.GoSet();
-        }
-    }
+
     /// <summary>
     /// 显示添加资源窗口，并跳转到模组升级
     /// </summary>

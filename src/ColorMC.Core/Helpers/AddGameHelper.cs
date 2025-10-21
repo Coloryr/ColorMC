@@ -409,7 +409,7 @@ public static class AddGameHelper
         arg.Update2?.Invoke(CoreRunState.GetInfo);
 
         //获取Mod信息
-        var list = await CurseForgeHelper.GetModInfoAsync(new GetCurseForgeModInfoArg
+        var list = await CurseForgeHelper.GetModPackInfoAsync(new GetCurseForgeModInfoArg
         {
             Game = game,
             Info = info,
@@ -831,9 +831,9 @@ public static class AddGameHelper
             res2.Game.FID = arg.Data.Id;
             res2.Game.Save();
 
-            if (arg.Data1.IconUrl != null)
+            if (arg.IconUrl != null)
             {
-                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.IconUrl);
+                await res2.Game.SetGameIconFromUrlAsync(arg.IconUrl);
             }
         }
 
@@ -873,9 +873,9 @@ public static class AddGameHelper
             res2.Game.FID = arg.Data.Id.ToString();
             res2.Game.Save();
 
-            if (arg.Data1.Logo != null)
+            if (arg.IconUrl != null)
             {
-                await res2.Game.SetGameIconFromUrlAsync(arg.Data1.Logo.Url);
+                await res2.Game.SetGameIconFromUrlAsync(arg.IconUrl);
             }
         }
 
