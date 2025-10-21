@@ -76,11 +76,6 @@ public partial class AddControlModel : GameModel
     [ObservableProperty]
     private bool _isSelect;
     /// <summary>
-    /// 是否为标记模式
-    /// </summary>
-    [ObservableProperty]
-    private bool _set;
-    /// <summary>
     /// 搜索源数据是否加载了
     /// </summary>
     [ObservableProperty]
@@ -150,15 +145,6 @@ public partial class AddControlModel : GameModel
     /// 是否关闭
     /// </summary>
     private bool _close = false;
-
-    /// <summary>
-    /// 上一个下载源
-    /// </summary>
-    private SourceType _lastType = SourceType.McMod;
-    /// <summary>
-    /// 上一个下载ID
-    /// </summary>
-    private string? _lastId;
 
     /// <summary>
     /// 选中的下载项目
@@ -420,9 +406,7 @@ public partial class AddControlModel : GameModel
             return;
         }
 
-        var res = await Model.ShowAsync(
-            string.Format(Set ? App.Lang("AddWindow.Info8") : App.Lang("AddWindow.Info1"),
-            item.Name));
+        var res = await Model.ShowAsync(string.Format(App.Lang("AddWindow.Info1"), item.Name));
         if (res)
         {
             Install(item);
@@ -614,14 +598,15 @@ public partial class AddControlModel : GameModel
             }
         });
 
-        _lastId = pid;
-
         _load = true;
-        PageDownload = 0;
-        if (_lastSelect != null)
+
+        var res = await WebBinding.GetFileItemAsync(type, pid, FileType.Mod);
+        if (res != null)
         {
+            _lastSelect = res;
             LoadFile(_lastSelect);
         }
+
         _load = false;
     }
 
@@ -716,18 +701,6 @@ public partial class AddControlModel : GameModel
         {
             Refresh();
         }
-    }
-
-    /// <summary>
-    /// 转到标记
-    /// </summary>
-    public void GoSet()
-    {
-        Set = true;
-
-        //跳转到模组
-        Type = 0;
-        DownloadSource = 0;
     }
 
     /// <summary>

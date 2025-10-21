@@ -269,7 +269,7 @@ public record InstallZipArg : UnpackGameZipArg
 public record DownloadModrinthArg : UnpackGameZipArg
 {
     public required ModrinthVersionObj Data;
-    public required ModrinthSearchObj.HitObj Data1;
+    public required string? IconUrl;
 }
 
 /// <summary>
@@ -278,7 +278,7 @@ public record DownloadModrinthArg : UnpackGameZipArg
 public record DownloadCurseForgeArg : UnpackGameZipArg
 {
     public required CurseForgeModObj.CurseForgeDataObj Data;
-    public required CurseForgeListObj.CurseForgeListDataObj Data1;
+    public required string? IconUrl;
 }
 
 ///// <summary>

@@ -228,7 +228,7 @@ public static class GameBinding
     /// 安装CF整合包
     /// </summary>
     /// <param name="data">整合包信息</param>
-    /// <param name="data1">整合包信息</param>
+    /// <param name="icon">整合包图标</param>
     /// <param name="group">游戏分组</param>
     /// <param name="zip">UI相关</param>
     /// <param name="request">UI相关</param>
@@ -237,14 +237,14 @@ public static class GameBinding
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallCurseForgeAsync(CurseForgeModObj.CurseForgeDataObj data,
-        CurseForgeListObj.CurseForgeListDataObj data1, string? group, ColorMCCore.ZipUpdate zip,
+        string icon, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         return await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
         {
             Data = data,
-            Data1 = data1,
+            IconUrl = icon,
             Group = group,
             Zip = zip,
             Request = request,
@@ -258,7 +258,7 @@ public static class GameBinding
     /// 安装MO整合包
     /// </summary>
     /// <param name="data">整合包信息</param>
-    /// <param name="data1">整合包信息</param>
+    /// <param name="icon">整合包图标</param>
     /// <param name="group">游戏分组</param>
     /// <param name="zip">UI相关</param>
     /// <param name="request">UI相关</param>
@@ -267,14 +267,14 @@ public static class GameBinding
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallModrinthAsync(ModrinthVersionObj data,
-        ModrinthSearchObj.HitObj data1, string? group, ColorMCCore.ZipUpdate zip,
+        string icon, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
         return await AddGameHelper.InstallModrinth(new DownloadModrinthArg
         {
             Data = data,
-            Data1 = data1,
+            IconUrl = icon,
             Group = group,
             Zip = zip,
             Request = request,
@@ -1506,7 +1506,7 @@ public static class GameBinding
 
         data.FixDownloadUrl();
 
-        var obj1 = new Core.Objs.ModInfoObj()
+        var obj1 = new ModInfoObj()
         {
             FileId = data.Id.ToString(),
             ModId = data.ModId.ToString(),
@@ -2511,6 +2511,78 @@ public static class GameBinding
     public static Task<IntRes> AutoMarkModsAsync(GameSettingObj obj, bool cov)
     {
         return ModrinthHelper.AutoMarkAsync(obj, cov);
+    }
+
+    /// <summary>
+    /// 标记模组
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="pid">项目ID</param>
+    /// <param name="fid">文件ID</param>
+    /// <returns>标记结果</returns>
+    public static async Task<bool> MarkModsAsync(GameSettingObj obj, string pid, string fid)
+    {
+        var source = GameDownloadHelper.TestSourceType(pid, fid);
+        if (source == SourceType.CurseForge)
+        {
+            var res = await CurseForgeAPI.GetModInfoAsync(pid);
+            if (res == null)
+            {
+                return false;
+            }
+
+            int page = 0;
+
+            for (; ; )
+            {
+                var list = await CurseForgeAPI.GetCurseForgeFilesAsync(pid, null, page);
+                if (list == null)
+                {
+                    return false;
+                }
+
+                foreach (var item in list.Data)
+                {
+                    if (item.Id.ToString() != fid)
+                    {
+                        continue;
+                    }
+
+                    obj.AddModInfo(CurseForgeHelper.MakeModInfo(item, obj.GetModsPath()));
+                    return true;
+                }
+
+                if (list.Pagination.TotalCount < page)
+                {
+                    page++;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else if (source == SourceType.Modrinth)
+        {
+            var res = await ModrinthAPI.GetFileVersionsAsync(pid, null, Loaders.Normal);
+            if (res == null)
+            {
+                return false;
+            }
+
+            foreach (var item in res)
+            {
+                if (item.Id != fid)
+                {
+                    continue;
+                }
+
+                obj.AddModInfo(ModrinthHelper.MakeModInfo(item, obj.GetModsPath()));
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /// <summary>

@@ -111,11 +111,6 @@ public partial class AddControl : BaseUserControl
         (DataContext as AddControlModel)!.Display = true;
     }
 
-    public void GoSet()
-    {
-        (DataContext as AddControlModel)?.GoSet();
-    }
-
     public void GoTo(FileType type)
     {
         (DataContext as AddControlModel)?.GoTo(type);

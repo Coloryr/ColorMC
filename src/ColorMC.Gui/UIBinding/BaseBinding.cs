@@ -373,20 +373,9 @@ public static class BaseBinding
             Url = model.Url,
             FileType = model.FileType,
             Source = model.SourceType,
-            Name = model.Name
+            Name = model.Name,
+            Pid = model.Pid
         };
-
-        if (model.SourceType == SourceType.CurseForge)
-        {
-            var obj1 = (model.Data as CurseForgeListObj.CurseForgeListDataObj)!;
-            obj.Pid = obj1.Id.ToString();
-
-        }
-        else if (model.SourceType == SourceType.Modrinth)
-        {
-            var obj1 = (model.Data as ModrinthSearchObj.HitObj)!;
-            obj.Pid = obj1.ProjectId;
-        }
 
         if (model.IsStar)
         {

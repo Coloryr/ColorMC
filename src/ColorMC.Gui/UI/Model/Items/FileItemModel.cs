@@ -118,6 +118,10 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public string Url;
     /// <summary>
+    /// 图标网址
+    /// </summary>
+    public string IconUrl;
+    /// <summary>
     /// Mcmod信息
     /// </summary>
     public McModSearchItemObj? McMod;
@@ -131,9 +135,9 @@ public partial class FileItemModel : SelectItemModel
     public string ID;
 
     /// <summary>
-    /// 数据
+    /// 项目ID
     /// </summary>
-    public object Data;
+    public string Pid;
 
     /// <summary>
     /// 是否已经关闭
@@ -143,7 +147,7 @@ public partial class FileItemModel : SelectItemModel
     public FileItemModel(CurseForgeListObj.CurseForgeListDataObj data, FileType type, McModSearchItemObj? mcmod)
     {
         McMod = mcmod;
-        Data = data;
+        Pid = data.Id.ToString();
 
         ID = data.Id.ToString();
         Name = mcmod?.McmodName ?? data.Name;
@@ -169,7 +173,7 @@ public partial class FileItemModel : SelectItemModel
     public FileItemModel(ModrinthSearchObj.HitObj data, FileType type, McModSearchItemObj? mcmod)
     {
         McMod = mcmod;
-        Data = data;
+        Pid = data.ProjectId;
 
         ID = data.ProjectId;
         Name = data.Title;
@@ -192,9 +196,34 @@ public partial class FileItemModel : SelectItemModel
         }
     }
 
+    public FileItemModel(ModrinthProjectObj data, FileType type, McModSearchItemObj? mcmod)
+    {
+        McMod = mcmod;
+        Pid = data.Id;
+
+        ID = data.Id;
+        Name = data.Title;
+        Summary = data.Description;
+        //Author = data.Author;
+        DownloadCount = data.Downloads;
+        ModifiedDate = DateTime.Parse(data.Updated);
+        Logo = data.IconUrl;
+        FileType = type;
+        SourceType = SourceType.Modrinth;
+        Url = data.GetUrl(type);
+
+        HaveDownload = true;
+        IsModPack = type == FileType.ModPack;
+
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        if (ShowStar)
+        {
+            IsStar = BaseBinding.IsStar(SourceType, data.Id);
+        }
+    }
+
     public FileItemModel(McModSearchItemObj data, FileType type)
     {
-        Data = data;
         McMod = data;
 
         Logo = data.McmodIcon.StartsWith("//") ? "https:" + data.McmodIcon : data.McmodIcon;
