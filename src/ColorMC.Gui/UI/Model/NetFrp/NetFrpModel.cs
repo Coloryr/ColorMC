@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -95,7 +96,7 @@ public partial class NetFrpModel : MenuModel
 
         LoadSelfFrp();
 
-        var list = await GameBinding.GetGameVersionsAsync(GameType.All);
+        var list = await GameHelper.GetGameVersionsAsync(GameType.All);
         Versions.Add("");
         Versions.AddRange(list);
 

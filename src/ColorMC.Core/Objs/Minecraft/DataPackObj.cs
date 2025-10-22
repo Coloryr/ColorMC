@@ -28,5 +28,5 @@ public record DataPackObj
     /// <summary>
     /// 存档
     /// </summary>
-    public WorldObj World;
+    public SaveObj World;
 }

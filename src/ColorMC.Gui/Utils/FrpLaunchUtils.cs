@@ -128,7 +128,7 @@ public static class FrpLaunchUtils
         {
             if (SystemInfo.Os != OsType.Windows)
             {
-                PathBinding.Chmod(file);
+                PathHelper.Chmod(file);
             }
 
             var p = new Process
@@ -276,7 +276,7 @@ public static class FrpLaunchUtils
         {
             if (SystemInfo.Os != OsType.Windows)
             {
-                PathBinding.Chmod(file);
+                PathHelper.Chmod(file);
             }
 
             var p = new Process

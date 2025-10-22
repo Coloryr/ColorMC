@@ -406,7 +406,7 @@ public static class TestItem
     public static void Item15()
     {
         var games = InstancesPath.Games;
-        var packs = games[0].GetWorldsAsync().Result;
+        var packs = games[0].GetSavesAsync().Result;
 
         foreach (var item in packs)
         {
@@ -437,8 +437,8 @@ public static class TestItem
     public static void Item17()
     {
         var game = InstancesPath.Games[0];
-        var list = game.GetWorldsAsync().Result;
-        list[0].ExportWorldZip("test.zip").Wait();
+        var list = game.GetSavesAsync().Result;
+        list[0].ExportSaveZip("test.zip").Wait();
     }
 
     public static void Item18()
@@ -557,7 +557,7 @@ public static class TestItem
     public static void Item30()
     {
         string temp = "H:\\jre17-arm64-20230721-release.tar.gz";
-        new ZipUtils().UnzipAsync("H:\\jre17", temp, File.OpenRead(temp)).Wait();
+        new ZipProcess().UnzipAsync("H:\\jre17", temp, File.OpenRead(temp)).Wait();
     }
 
     public static void Item31()

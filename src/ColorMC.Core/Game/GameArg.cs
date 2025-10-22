@@ -279,7 +279,7 @@ public static class GameArg
     /// <param name="world">启动的世界</param>
     /// <param name="server">加入的服务器</param>
     /// <returns>游戏启动参数</returns>
-    private static List<string> MakeGameArg(this GameSettingObj obj, WorldObj? world, ServerObj? server)
+    private static List<string> MakeGameArg(this GameSettingObj obj, SaveObj? world, ServerObj? server)
     {
         var gameArg = new List<string>();
         //设置游戏窗口大小

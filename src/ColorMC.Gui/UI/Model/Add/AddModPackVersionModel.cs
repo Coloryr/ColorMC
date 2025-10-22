@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -224,7 +225,7 @@ public partial class AddModPackControlModel
             }
             var item = list[a];
             item.Add = this;
-            var games = GameBinding.GetGames();
+            var games = InstancesPath.Games;
             if (games.Any(item1 => item1.ModPack && item1.ModPackType == (SourceType)Source
             && item1.PID == item.ID && item1.FID == item.ID1))
             {

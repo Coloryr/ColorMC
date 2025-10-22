@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,7 +19,7 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     /// <summary>
     /// 游戏分组列表
     /// </summary>
-    public ObservableCollection<string> GroupList { get; init; } = [.. GameBinding.GetGameGroups().Keys];
+    public ObservableCollection<string> GroupList { get; init; } = [.. InstancesPath.GroupKeys];
 
     /// <summary>
     /// 选择的群组

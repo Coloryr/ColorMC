@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UIBinding;
@@ -51,7 +52,7 @@ public partial class FrpShareModel : ObservableObject
     /// <returns></returns>
     public async Task Init(string version)
     {
-        var list = await GameBinding.GetGameVersionsAsync(GameType.All);
+        var list = await GameHelper.GetGameVersionsAsync(GameType.All);
         VersionList.AddRange(list);
         if (VersionList.Contains(version))
         {

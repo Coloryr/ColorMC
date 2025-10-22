@@ -70,7 +70,7 @@ public record GameLaunchArg
     /// <summary>
     /// 自动进入的世界
     /// </summary>
-    public WorldObj? World;
+    public SaveObj? World;
     /// <summary>
     /// 自动加入的服务器
     /// </summary>

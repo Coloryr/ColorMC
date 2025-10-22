@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -154,7 +155,7 @@ public partial class CountModel : TopModel
                 }
             }
             _timeDate = _timeToday = temp.ToString();
-            var list = GameBinding.GetGames();
+            var list = InstancesPath.Games;
             foreach (var item in list)
             {
                 _list.Add(item);

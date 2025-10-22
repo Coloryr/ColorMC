@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -38,7 +39,7 @@ public partial class MainModel
         }
         _isGetNewInfo = true;
 
-        var data = await WebBinding.GetNewLogAsync();
+        var data = await ColorMCCloudAPI.GetNewLogAsync();
         if (data == null)
         {
             Model.Show(App.Lang("MainWindow.Error1"));

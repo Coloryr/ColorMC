@@ -949,6 +949,7 @@
 	"ConfigEditWindow.Info13": "标签已删除",
 	"ConfigEditWindow.Info14": "键已修改",
 	"ConfigEditWindow.Info15": "值已修改",
+	"ConfigEditWindow.Info16": "正在保存",
 	"ConfigEditWindow.Error1": "键名为空",
 	"ConfigEditWindow.Error2": "键名重复",
 	"ConfigEditWindow.Error3": "值非法",

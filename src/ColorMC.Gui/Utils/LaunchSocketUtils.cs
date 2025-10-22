@@ -13,6 +13,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UIBinding;
 using DotNetty.Buffers;
@@ -379,7 +380,7 @@ public static class LaunchSocketUtils
                         string uuid = buffer.ReadString();
                         _gameChannels[uuid] = context.Channel;
 
-                        GameBinding.GameConnect(uuid);
+                        GameManager.GameConnect(uuid);
                     }
                     else if (type == TypeGameWindowSize)
                     {

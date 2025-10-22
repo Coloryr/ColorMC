@@ -11,7 +11,7 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 压缩包处理
 /// </summary>
-public class ZipUtils(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Request? gameRequest = null)
+public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Request? gameRequest = null)
 {
     private int _size = 0;
     private int _now = 0;
@@ -19,18 +19,18 @@ public class ZipUtils(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Reque
     /// <summary>
     /// 压缩文件
     /// </summary>
-    /// <param name="zipDir">路径</param>
+    /// <param name="dir">压缩路径</param>
     /// <param name="stream">文件流</param>
     /// <param name="filter">过滤</param>
     /// <returns>压缩流</returns>
-    public async Task<ZipWriter> ZipFileAsync(string zipDir, Stream stream, List<string>? filter = null)
+    public async Task<ZipWriter> ZipFileAsync(string dir, Stream stream, List<string>? filter = null)
     {
-        if (zipDir[^1] != Path.DirectorySeparatorChar)
-            zipDir += Path.DirectorySeparatorChar;
+        if (dir[^1] != Path.DirectorySeparatorChar)
+            dir += Path.DirectorySeparatorChar;
         var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
-        _size = PathHelper.GetAllFiles(zipDir).Count;
+        _size = PathHelper.GetAllFiles(dir).Count;
         _now = 0;
-        await ZipAsync(zipDir, zip, zipDir, filter);
+        await ZipAsync(dir, zip, dir, filter);
         return zip;
     }
 

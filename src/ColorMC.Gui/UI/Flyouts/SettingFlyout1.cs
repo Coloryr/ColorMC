@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using Avalonia.Controls;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
@@ -24,7 +25,7 @@ public static class SettingFlyout1
             {
                 foreach (var item in java)
                 {
-                    JavaBinding.RemoveJava(item.Name);
+                    JvmPath.Remove(item.Name);
                 }
 
                 model.LoadJava();

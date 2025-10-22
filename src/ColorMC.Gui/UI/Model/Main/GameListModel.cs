@@ -352,7 +352,7 @@ public partial class MainModel
     /// </summary>
     public void LoadGameItem()
     {
-        IsNotGame = GameBinding.IsNotGame;
+        IsNotGame = InstancesPath.IsNotGame;
 
         var config = GuiConfigUtils.Config.ServerCustom;
 
@@ -362,7 +362,7 @@ public partial class MainModel
         {
             GameGroups.Clear();
             IsFirst = true;
-            var game = GameBinding.GetGame(config?.GameName);
+            var game = InstancesPath.GetGame(config?.GameName);
             if (game == null)
             {
                 IsGameError = true;
@@ -383,7 +383,7 @@ public partial class MainModel
         {
             IsGameError = false;
             IsOneGame = false;
-            var list = GameBinding.GetGameGroups();
+            var list = InstancesPath.Groups;
             var uuid = ConfigBinding.GetLastLaunch();
 
             if (IsFirst)

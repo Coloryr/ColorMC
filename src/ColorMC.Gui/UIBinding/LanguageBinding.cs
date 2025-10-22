@@ -1,12 +1,15 @@
+using System.Collections.Generic;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 
 namespace ColorMC.Gui.UIBinding;
 
+/// <summary>
+/// 获取文本
+/// </summary>
 public static class LanguageBinding
 {
-    //获取一些文本
     public static string[] GetDisplayList()
     {
         return
@@ -268,6 +271,18 @@ public static class LanguageBinding
             "NbtCompound",
             "NbtIntArray",
             "NbtLongArray",
+        ];
+    }
+
+    public static string[] GetPCJavaType()
+    {
+        return 
+        [
+            "Adoptium", 
+            "Zulu", 
+            "Dragonwell", 
+            "OpenJ9", 
+            //"Graalvm"
         ];
     }
 

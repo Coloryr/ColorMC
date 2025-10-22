@@ -8,6 +8,7 @@ using AvaloniaEdit.Document;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -245,7 +246,7 @@ public partial class NetFrpModel
         }
 
         Model.Progress(App.Lang("NetFrpWindow.Tab3.Info5"));
-        res = await WebBinding.ShareIPAsync(user.AccessToken, _remoteIP, model);
+        res = await ColorMCCloudAPI.PutCloudServerAsync(user.AccessToken, _remoteIP, model);
         Model.ProgressClose();
         if (!res)
         {

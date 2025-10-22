@@ -35,7 +35,7 @@ public partial class WorldCloudModel : SelectItemModel
     /// <summary>
     /// 本地游戏存档
     /// </summary>
-    public WorldObj World { get; init; }
+    public SaveObj World { get; init; }
     /// <summary>
     /// 云存档
     /// </summary>
@@ -61,7 +61,7 @@ public partial class WorldCloudModel : SelectItemModel
     /// </summary>
     public readonly bool HaveLocal;
 
-    public WorldCloudModel(GameCloudModel model, CloudWorldObj cloud, WorldObj world)
+    public WorldCloudModel(GameCloudModel model, CloudWorldObj cloud, SaveObj world)
     {
         _model = model;
         World = world;
@@ -76,7 +76,7 @@ public partial class WorldCloudModel : SelectItemModel
         HaveLocal = true;
     }
 
-    public WorldCloudModel(GameCloudModel model, WorldObj world)
+    public WorldCloudModel(GameCloudModel model, SaveObj world)
     {
         _model = model;
         World = world;

@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -61,7 +62,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
-        await GameBinding.AddServerAsync(_obj, res.Text1, res.Text2);
+        await _obj.AddServerAsync(res.Text1, res.Text2);
         Model.ProgressClose();
         Model.Notify(App.Lang("UserWindow.Info12"));
         LoadServer();
@@ -74,7 +75,7 @@ public partial class GameEditModel
     {
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
-        ServerList.AddRange(await GameBinding.GetServersAsync(_obj));
+        ServerList.AddRange(await _obj.GetServerInfosAsync());
         Model.ProgressClose();
         ServerEmptyDisplay = ServerList.Count == 0;
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info7"));
@@ -92,7 +93,7 @@ public partial class GameEditModel
             return;
         }
         Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
-        await GameBinding.DeleteServerAsync(_obj, obj);
+        await obj.DeleteAsync();
         Model.ProgressClose();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadServer();

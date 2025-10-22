@@ -445,12 +445,40 @@ public static class ImageManager
         CapeBitmap = null;
     }
 
+    /// <summary>
+    /// 获取方块图片
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <returns>图片</returns>
     private static Bitmap? GetGameBlockIcon(GameSettingObj obj)
     {
         var block = GameManager.GetGameBlock(obj);
         if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
         {
             return GetBlockIconWithKey(block);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取方块图片
+    /// </summary>
+    /// <param name="key">方块ID</param>
+    /// <returns>图片</returns>
+    private static Bitmap? GetBlockIconWithKey(string key)
+    {
+        if (s_blocks.TryGetValue(key, out var image))
+        {
+            return image;
+        }
+        var file = BlockTexUtils.GetTexWithKey(key);
+        if (file != null && File.Exists(file))
+        {
+            var icon = new Bitmap(file);
+            s_blocks.Add(key, icon);
+
+            return icon;
         }
 
         return null;
@@ -504,30 +532,7 @@ public static class ImageManager
     /// 获取方块图片
     /// </summary>
     /// <param name="key">方块ID</param>
-    /// <returns></returns>
-    public static Bitmap? GetBlockIconWithKey(string key)
-    {
-        if (s_blocks.TryGetValue(key, out var image))
-        {
-            return image;
-        }
-        var file = BlockTexUtils.GetTexWithKey(key);
-        if (file != null && File.Exists(file))
-        {
-            var icon = new Bitmap(file);
-            s_blocks.Add(key, icon);
-
-            return icon;
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 获取方块图片
-    /// </summary>
-    /// <param name="key">方块ID</param>
-    /// <returns></returns>
+    /// <returns>图片</returns>
     public static Bitmap? GetBlockIcon(string key, string path)
     {
         if (s_blocks.TryGetValue(key, out var image))

@@ -93,7 +93,6 @@ public partial class MainModel : TopModel, IMutTop
     public MainModel(BaseModel model) : base(model)
     {
         ImageManager.SkinChange += SkinChange;
-        UserBinding.UserEdit += LoadUser;
 
         MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
     }

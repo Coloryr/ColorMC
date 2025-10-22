@@ -62,29 +62,10 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Data);
             if (info == null)
             {
-                return new() { Data = App.Lang("JavaBinding.Error1") };
+                return new StringRes { Data = App.Lang("JavaBinding.Error1") };
             }
-            return new() { State = true };
+            return new StringRes { State = true };
         }
-    }
-
-    /// <summary>
-    /// 获取Java信息
-    /// </summary>
-    /// <param name="path">路径</param>
-    /// <returns></returns>
-    public static JavaInfo? GetJavaInfo(string path)
-    {
-        return JavaHelper.GetJavaInfo(path);
-    }
-
-    /// <summary>
-    /// 删除Java
-    /// </summary>
-    /// <param name="name">名字</param>
-    public static void RemoveJava(string name)
-    {
-        JvmPath.Remove(name);
     }
 
     /// <summary>
@@ -96,7 +77,7 @@ public static class JavaBinding
         var res = new List<JavaDisplayModel>();
         foreach (var item in JvmPath.Jvms)
         {
-            res.Add(new()
+            res.Add(new JavaDisplayModel
             {
                 Name = item.Key,
                 Path = item.Value.Path,
@@ -131,10 +112,10 @@ public static class JavaBinding
         });
         if (!res.State)
         {
-            return new() { Data = res.Data };
+            return new StringRes { Data = res.Data };
         }
 
-        return new() { State = true };
+        return new StringRes { State = true };
     }
 
     /// <summary>
@@ -158,32 +139,5 @@ public static class JavaBinding
         }
 
         return new DirectoryInfo(JvmPath.JavaDir);
-    }
-
-    /// <summary>
-    /// 删除所有Java
-    /// </summary>
-    public static void RemoveAllJava()
-    {
-        JvmPath.RemoveAll();
-    }
-
-    /// <summary>
-    /// 搜索Java
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<JavaInfo>?> FindJavaAsync()
-    {
-        return Task.Run(JavaHelper.FindJava);
-    }
-
-    /// <summary>
-    /// 搜索Java
-    /// </summary>
-    /// <param name="local">搜索路径</param>
-    /// <returns></returns>
-    public static Task<List<JavaInfo>?> FindJavaAsync(string local)
-    {
-        return Task.Run(() => JavaHelper.FindJava(local));
     }
 }

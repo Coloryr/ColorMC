@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -99,7 +100,7 @@ public partial class ServerPackModel
                 Obj.Mod.Add(item);
             }
 
-            model.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Mod, Obj.Game.ServerUrl);
+            model.Url = item.Url = UrlHelper.MakeUrl(item, FileType.Mod, Obj.Game.ServerUrl);
         }
         else
         {
@@ -110,7 +111,7 @@ public partial class ServerPackModel
             }
         }
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 
     /// <summary>
@@ -155,13 +156,13 @@ public partial class ServerPackModel
                 }
                 else
                 {
-                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Mod, Obj.Game.ServerUrl);
+                    item2.Url = UrlHelper.MakeUrl(item1, FileType.Mod, Obj.Game.ServerUrl);
                 }
             }
 
             ModList.Add(item2);
         });
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 }

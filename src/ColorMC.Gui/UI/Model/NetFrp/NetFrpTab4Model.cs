@@ -98,7 +98,7 @@ public partial class NetFrpModel
     /// <param name="model"></param>
     public async void Join(NetFrpCloudServerModel model)
     {
-        var list = GameBinding.GetGames();
+        var list = InstancesPath.Games;
         var list1 = new List<string>();
         var list2 = new List<GameSettingObj>();
         foreach (var item in list)

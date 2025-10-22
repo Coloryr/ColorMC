@@ -143,9 +143,9 @@ public abstract class NbtBase
     /// 保存到文件
     /// </summary>
     /// <param name="file">文件名</param>
-    public async void Save(string file)
+    public async Task SaveAsync(string file)
     {
-        await Save(this, file);
+        await SaveAsync(this, file);
     }
 
     /// <summary>
@@ -276,7 +276,7 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="file">文件名</param>
     /// <returns>NBT标签</returns>
-    public static async Task<NbtBase?> Read(string file)
+    public static async Task<NbtBase?> ReadAsync(string file)
     {
         using var stream = PathHelper.OpenRead(file)!;
         return await ReadAsync(stream);
@@ -311,7 +311,7 @@ public abstract class NbtBase
     /// </summary>
     /// <param name="file">文件名</param>
     /// <param name="nbt">标签</param>
-    public static Task Save(NbtBase nbt, string file)
+    private static Task SaveAsync(NbtBase nbt, string file)
     {
         return Task.Run(() =>
         {

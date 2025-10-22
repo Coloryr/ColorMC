@@ -23,6 +23,9 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
 
+/// <summary>
+/// 路径相关
+/// </summary>
 public static class PathBinding
 {
     private static readonly string[] EXE = ["*.exe"];
@@ -48,7 +51,7 @@ public static class PathBinding
     /// <summary>
     /// 获取文件夹占用大小
     /// </summary>
-    /// <param name="bytes"></param>
+    /// <param name="bytes">大小</param>
     /// <returns></returns>
     private static string GetSizeReadable(long bytes)
     {
@@ -60,34 +63,6 @@ public static class PathBinding
             bytes /= 1024;
         }
         return $"{bytes:0.##} {sizes[order]}";
-    }
-
-    /// <summary>
-    /// 提升权限
-    /// </summary>
-    /// <param name="path">文件</param>
-    public static void Chmod(string path)
-    {
-        try
-        {
-            using var p = new Process();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-
-            p.StandardInput.WriteLine("chmod a+x " + path);
-
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
-        }
-        catch (Exception e)
-        {
-            Logs.Error("chmod error", e);
-        }
     }
 
     /// <summary>
@@ -130,7 +105,7 @@ public static class PathBinding
                 OpenPathWithExplorer(obj.GetResourcepacksPath());
                 break;
             case PathType.WorldBackPath:
-                OpenPathWithExplorer(obj.GetWorldBackupPath());
+                OpenPathWithExplorer(obj.GetSaveBackupPath());
                 break;
             case PathType.SavePath:
                 OpenPathWithExplorer(obj.GetSavesPath());
@@ -183,7 +158,7 @@ public static class PathBinding
     /// 打开路径
     /// </summary>
     /// <param name="obj">世界存储</param>
-    public static void OpenPath(WorldObj obj)
+    public static void OpenPath(SaveObj obj)
     {
         OpenPathWithExplorer(obj.Local);
     }
@@ -330,8 +305,7 @@ public static class PathBinding
 
                 try
                 {
-                    await GameBinding.ExportWorldAsync((arg![0] as WorldObj)!,
-                        file.GetPath());
+                    await (arg![0] as SaveObj)!.ExportSaveZip(file.GetPath()!);
                     OpenFileWithExplorer(file.GetPath()!);
                     return true;
                 }

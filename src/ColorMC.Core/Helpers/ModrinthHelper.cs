@@ -172,7 +172,7 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="type">文件类型</param>
     /// <returns>分组列表</returns>
-    public static async Task<Dictionary<string, string>?> GetModrinthCategoriesAsync(FileType type)
+    public static async Task<Dictionary<string, string>?> GetCategoriesAsync(FileType type)
     {
         if (s_categories == null)
         {

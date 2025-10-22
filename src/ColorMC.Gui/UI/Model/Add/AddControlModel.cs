@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -421,7 +422,7 @@ public partial class AddControlModel : GameModel
     {
         if (_lastSelect != null)
         {
-            LoadFile(_lastSelect);
+            LoadVersions(_lastSelect);
         }
     }
 
@@ -492,11 +493,11 @@ public partial class AddControlModel : GameModel
             //获取支持的游戏版本和分类
             Model.Progress(App.Lang("AddModPackWindow.Info4"));
             var list = type is SourceType.CurseForge
-                ? await GameBinding.GetCurseForgeGameVersionsAsync()
-                : await GameBinding.GetModrinthGameVersionsAsync();
+                ? await CurseForgeHelper.GetGameVersionsAsync()
+                : await ModrinthHelper.GetGameVersionAsync();
             var list1 = type is SourceType.CurseForge
-                ? await GameBinding.GetCurseForgeCategoriesAsync(_now)
-                : await GameBinding.GetModrinthCategoriesAsync(_now);
+                ? await CurseForgeHelper.GetCategoriesAsync(_now)
+                : await ModrinthHelper.GetCategoriesAsync(_now);
             Model.ProgressClose();
             if (list == null || list1 == null)
             {
@@ -540,7 +541,7 @@ public partial class AddControlModel : GameModel
         {
             Model.Progress(App.Lang("AddModPackWindow.Info4"));
             //获取分类
-            var list = await GameBinding.GetMcModCategoriesAsync();
+            var list = await ColorMCAPI.GetMcModGroupAsync();
             Model.ProgressClose();
             if (list == null)
             {
@@ -604,7 +605,7 @@ public partial class AddControlModel : GameModel
         if (res != null)
         {
             _lastSelect = res;
-            LoadFile(_lastSelect);
+            LoadVersions(_lastSelect);
         }
 
         _load = false;

@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
@@ -283,11 +284,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
                 Model.Progress(App.Lang("AddModPackWindow.Info4"));
                 var list = Source == 0 ?
-                    await GameBinding.GetCurseForgeGameVersionsAsync() :
-                    await GameBinding.GetModrinthGameVersionsAsync();
+                    await CurseForgeHelper.GetGameVersionsAsync() :
+                    await ModrinthHelper.GetGameVersionAsync();
                 var list1 = Source == 0 ?
-                    await GameBinding.GetCurseForgeCategoriesAsync() :
-                    await GameBinding.GetModrinthCategoriesAsync();
+                    await CurseForgeHelper.GetCategoriesAsync(FileType.ModPack) :
+                    await ModrinthHelper.GetCategoriesAsync(FileType.ModPack);
                 Model.ProgressClose();
                 if (list == null || list1 == null)
                 {

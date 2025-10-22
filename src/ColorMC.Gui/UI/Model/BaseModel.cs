@@ -297,13 +297,11 @@ public partial class BaseModel : ObservableObject
     public void Unlock()
     {
         _isWork = false;
-#if !Phone
         if (!_listBack.IsEmpty)
         {
             HeadBackEnable = true;
             HeadBackDisplay = true;
         }
-#endif
         HeadCloseDisplay = true;
     }
 

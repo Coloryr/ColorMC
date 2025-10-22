@@ -3,6 +3,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
+using ColorMC.Core.Game;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -35,7 +36,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
-        var res = GameBinding.GetScreenshots(_obj);
+        var res = _obj.GetScreenshots();
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -66,7 +67,7 @@ public partial class GameEditModel
             return;
         }
 
-        GameBinding.ClearScreenshots(_obj);
+        _obj.ClearScreenshots();
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }
@@ -84,7 +85,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteScreenshotAsync(obj.Obj);
+        await obj.Obj.DeleteAsync();
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }

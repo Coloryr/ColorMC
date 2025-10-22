@@ -520,7 +520,7 @@ public partial class SettingModel
 
         FontList.Clear();
 
-        foreach (var item in BaseBinding.GetFontList())
+        foreach (var item in FontManager.Current.SystemFonts)
         {
             FontList.Add(new()
             {

@@ -43,7 +43,7 @@ public partial class AddJavaControlModel : TopModel
     /// <summary>
     /// Java类型
     /// </summary>
-    public List<string> JavaTypeList { get; init; } = WebBinding.PCJavaType;
+    public string[] JavaTypeList { get; init; } = LanguageBinding.GetPCJavaType();
 
     /// <summary>
     /// 选中的Java类型

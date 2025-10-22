@@ -86,14 +86,14 @@ public partial class NetFrpCloudServerModel(ColorMCCloudServerObj obj, NetFrpMod
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
-    public async Task Copy()
+    public void Copy()
     {
         var toplevel = top.Model.GetTopLevel();
         if (toplevel == null)
         {
             return;
         }
-        await BaseBinding.CopyTextClipboardAsync(toplevel, IP);
+        BaseBinding.CopyTextClipboardAsync(toplevel, IP);
     }
     /// <summary>
     /// 获取Motd

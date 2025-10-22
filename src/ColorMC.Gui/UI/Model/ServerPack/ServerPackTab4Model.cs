@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -116,7 +117,7 @@ public partial class ServerPackModel
             }
         });
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 
     /// <summary>

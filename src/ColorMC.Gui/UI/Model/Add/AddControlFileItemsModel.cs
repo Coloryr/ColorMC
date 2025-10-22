@@ -130,7 +130,7 @@ public partial class AddControlModel
 
         if (_lastSelect != null)
         {
-            LoadFile(_lastSelect);
+            LoadVersions(_lastSelect);
         }
     }
 
@@ -147,7 +147,7 @@ public partial class AddControlModel
 
         if (_lastSelect != null)
         {
-            LoadFile(_lastSelect);
+            LoadVersions(_lastSelect);
         }
     }
 
@@ -158,17 +158,22 @@ public partial class AddControlModel
     {
         _load = true;
         PageDownload = 0;
-        LoadFile(item);
+        LoadVersions(item);
         _load = false;
     }
 
-    private async void LoadFile(FileItemModel item)
+    /// <summary>
+    /// 加载项目版本列表
+    /// </summary>
+    /// <param name="item">项目</param>
+    private async void LoadVersions(FileItemModel item)
     {
         string? loadid = null;
         SourceType loadtype = SourceType.McMod;
 
         var type = _sourceTypeList[DownloadSource];
 
+        //如果是mcmod需要选择下载源
         if (type == SourceType.McMod)
         {
             var obj1 = item.McMod!;
@@ -211,7 +216,7 @@ public partial class AddControlModel
             return;
         }
 
-        LoadFile(loadtype, loadid);
+        LoadVersions(loadtype, loadid);
     }
 
     /// <summary>
@@ -219,7 +224,7 @@ public partial class AddControlModel
     /// </summary>
     /// <param name="type">下载源</param>
     /// <param name="pid">资源ID</param>
-    private async void LoadFile(SourceType type, string pid)
+    private async void LoadVersions(SourceType type, string pid)
     {
         FileList.Clear();
 
@@ -326,7 +331,7 @@ public partial class AddControlModel
             if (_now == FileType.DataPacks)
             {
                 //选择存档
-                var list = await GameBinding.GetWorldsAsync(Obj);
+                var list = await Obj.GetSavesAsync();
                 if (list.Count == 0)
                 {
                     Model.Show(App.Lang("AddWindow.Error6"));

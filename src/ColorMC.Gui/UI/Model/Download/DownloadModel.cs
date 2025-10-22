@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Threading;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -104,14 +105,14 @@ public partial class DownloadModel : TopModel
     {
         if (!value)
         {
-            BaseBinding.DownloadResume();
+            DownloadManager.Resume();
             Model.SetChoiseContent(_useName,
                 App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text1"));
             Model.Notify(App.Lang("DownloadWindow.Info3"));
         }
         else
         {
-            BaseBinding.DownloadPause();
+            DownloadManager.Pause();
             Model.SetChoiseContent(_useName,
                 App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text4"));
             Model.Notify(App.Lang("DownloadWindow.Info2"));
@@ -145,7 +146,7 @@ public partial class DownloadModel : TopModel
         {
             DisplayList.Clear();
             _downloadList.Clear();
-            BaseBinding.DownloadStop();
+            DownloadManager.Stop();
             Model.Notify(App.Lang("DownloadWindow.Info5"));
             return true;
         }

@@ -1,5 +1,6 @@
 using System.IO;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Gui.Manager;
@@ -33,7 +34,7 @@ public partial class ResourcePackModel : SelectItemModel
     /// <summary>
     /// 资源包描述
     /// </summary>
-    public ChatObj Description => GameBinding.StringToChat(Obj.Description);
+    public ChatObj Description => ChatConverter.StringToChar(Obj.Description);
     /// <summary>
     /// 是否为损坏的资源包
     /// </summary>

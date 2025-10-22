@@ -1,3 +1,4 @@
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -41,6 +42,6 @@ public partial class ServerPackModel
             return;
         }
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 }

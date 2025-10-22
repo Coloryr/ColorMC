@@ -67,7 +67,7 @@ public static class CoreManager
     {
         GameManager.GameExit(obj);
         GameCountUtils.GameClose(obj);
-        UserBinding.UnLockUser(obj1);
+        UserManager.UnlockUser(obj1);
         Dispatcher.UIThread.Post(() =>
         {
             WindowManager.MainWindow?.GameClose(obj.UUID);

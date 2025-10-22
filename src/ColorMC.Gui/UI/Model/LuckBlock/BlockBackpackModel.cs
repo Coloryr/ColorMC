@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
@@ -62,7 +63,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
 
     public async void Use(BlockItemModel model)
     {
-        var list = GameBinding.GetGames();
+        var list = InstancesPath.Games;
         var names = list.Select(item => item.Name);
         var res = await Model.ShowCombo(App.Lang("BlockBackpackWindow.Info1"), names);
         if (res.Cancel || res.Index == -1)

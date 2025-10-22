@@ -21,4 +21,9 @@ public record ServerInfoObj
     /// 接收材质包
     /// </summary>
     public bool AcceptTextures { get; set; }
+
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game;
 }
