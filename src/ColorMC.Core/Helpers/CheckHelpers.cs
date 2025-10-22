@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -166,7 +165,7 @@ public static partial class CheckHelpers
         }
         catch
         {
-            var obj1 = VersionPath.GetVersion(version) 
+            var obj1 = VersionPath.GetVersion(version)
                 ?? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Check.Error1"), version));
             return obj1.JavaVersion?.MajorVersion > 8;
         }

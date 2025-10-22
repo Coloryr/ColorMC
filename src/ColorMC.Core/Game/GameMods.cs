@@ -550,7 +550,7 @@ public static class GameMods
                     _ => mod.Side
                 };
             }
-            
+
 
             if (obj.TryGetProperty("authors", out var list1))
             {
@@ -637,7 +637,7 @@ public static class GameMods
                 {
                     obj3 = obj2.EnumerateArray().FirstOrDefault();
                 }
-                else if(obj2.TryGetProperty("modList", out var list1) && list1.ValueKind == JsonValueKind.Array)
+                else if (obj2.TryGetProperty("modList", out var list1) && list1.ValueKind == JsonValueKind.Array)
                 {
                     obj3 = list1.EnumerateArray().FirstOrDefault();
                 }

@@ -1,5 +1,4 @@
 using ColorMC.Core.Utils;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;

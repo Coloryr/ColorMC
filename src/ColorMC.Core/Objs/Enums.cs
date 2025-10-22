@@ -451,7 +451,7 @@ public enum LogLevel
 /// 编码模式
 /// </summary>
 public enum LogEncoding
-{ 
+{
     UTF8 = 0,
     GBK
 }
@@ -460,7 +460,7 @@ public enum LogEncoding
 /// 下载器进度更新类型
 /// </summary>
 public enum UpdateType
-{ 
+{
     /// <summary>
     /// 添加下载项目
     /// </summary>

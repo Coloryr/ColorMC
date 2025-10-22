@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using ColorMC.Core.Helpers;
+﻿using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model.NetFrp;

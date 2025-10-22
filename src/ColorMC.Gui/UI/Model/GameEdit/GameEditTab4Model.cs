@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
@@ -198,7 +197,7 @@ public partial class GameEditModel
     /// </summary>
     public async void StartSetMod()
     {
-        var res = await Model.InputAsync(App.Lang("GameEditWindow.Tab4.Info24"), 
+        var res = await Model.InputAsync(App.Lang("GameEditWindow.Tab4.Info24"),
             App.Lang("GameEditWindow.Tab4.Info25"));
         if (res.Cancel)
         {

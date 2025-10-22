@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -276,11 +275,11 @@ public static class LanguageBinding
 
     public static string[] GetPCJavaType()
     {
-        return 
+        return
         [
-            "Adoptium", 
-            "Zulu", 
-            "Dragonwell", 
+            "Adoptium",
+            "Zulu",
+            "Dragonwell",
             "OpenJ9", 
             //"Graalvm"
         ];

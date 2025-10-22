@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using ColorMC.Gui.Net.Apis;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

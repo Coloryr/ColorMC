@@ -6,7 +6,6 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

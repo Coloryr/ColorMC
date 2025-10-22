@@ -414,7 +414,7 @@ internal class DownloadThread
                     buffer = ArrayPool<byte>.Shared.Rent(GetCopyBufferSize(stream1));
 
                     //开始下载，断点续传时不覆盖原有文件
-                    if (Download(item, file, buffer, stream1, isKeep) 
+                    if (Download(item, file, buffer, stream1, isKeep)
                         || item.Task.Token.IsCancellationRequested)
                     {
                         break;

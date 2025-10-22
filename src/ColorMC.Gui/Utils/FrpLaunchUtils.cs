@@ -11,7 +11,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.Utils;
 

@@ -19,14 +19,12 @@ using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
@@ -1018,12 +1016,12 @@ public static class WebBinding
                 break;
             case 3:
                 return await GetOpenJ9ListAsync();
-            //case 4:
-            //    return new GetJavaListRes
-            //    {
-            //        Res = true,
-            //        Download = GetGraalvmList()
-            //    };
+                //case 4:
+                //    return new GetJavaListRes
+                //    {
+                //        Res = true,
+                //        Download = GetGraalvmList()
+                //    };
         }
         return new();
     }
