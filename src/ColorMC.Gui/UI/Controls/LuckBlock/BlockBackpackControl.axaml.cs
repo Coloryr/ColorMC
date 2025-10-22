@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.LuckBlock;
@@ -28,10 +29,13 @@ public partial class BlockBackpackControl : BaseUserControl
 
     public void Reload()
     {
-        if (DataContext is BlockBackpackModel model)
+        Dispatcher.UIThread.Post(() =>
         {
-            model.Load();
-        }
+            if (DataContext is BlockBackpackModel model)
+            {
+                model.Load();
+            }
+        });
     }
 
     protected override TopModel GenModel(BaseModel model)
