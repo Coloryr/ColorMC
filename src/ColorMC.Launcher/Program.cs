@@ -3,8 +3,6 @@ using System.IO;
 using Avalonia;
 
 #if !DEBUG
-using Avalonia.Media;
-using System.IO;
 using System.Linq;
 using System.Runtime.Loader;
 using System.Runtime.InteropServices;
@@ -143,6 +141,7 @@ public static class Program
 #else
 
 #if !AOT
+            //现在无热更新
             //if (!Load())
             //{
             //    LoadError(args);

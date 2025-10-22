@@ -439,9 +439,12 @@ public partial class MainControl : BaseUserControl
     /// </summary>
     public void ReloadBlock()
     {
-        if (DataContext is MainModel model)
+        Dispatcher.UIThread.Post(() =>
         {
-            model.LoadBlock();
-        }
+            if (DataContext is MainModel model)
+            {
+                model.LoadBlock();
+            }
+        });
     }
 }
