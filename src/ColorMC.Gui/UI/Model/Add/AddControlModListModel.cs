@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
-using ColorMC.Core.Game;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.Input;
@@ -42,7 +40,7 @@ public partial class AddControlModel
     /// 多个模组下载任务
     /// </summary>
     private ModListDownloadTask? _nowTask;
-    
+
     /// <summary>
     /// Mod下载项目显示列表
     /// </summary>

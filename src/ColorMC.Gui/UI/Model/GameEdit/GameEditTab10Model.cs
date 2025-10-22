@@ -2,7 +2,6 @@ using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;

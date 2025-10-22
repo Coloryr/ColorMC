@@ -6,7 +6,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.ServerPack;
-using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.ServerPack;
 

@@ -123,7 +123,7 @@ public static class GameLogs
                 File = file
             };
             string? temp;
-            while((temp = reader.ReadLine()) != null)
+            while ((temp = reader.ReadLine()) != null)
             {
                 log.AddLog(temp);
             }

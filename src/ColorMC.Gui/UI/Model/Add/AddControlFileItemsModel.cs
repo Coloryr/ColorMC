@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
@@ -202,7 +201,7 @@ public partial class AddControlModel
         {
             loadid = item.Pid;
             loadtype = SourceType.CurseForge;
-            
+
         }
         else if (type == SourceType.Modrinth)
         {

@@ -6,7 +6,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

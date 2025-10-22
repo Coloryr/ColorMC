@@ -231,7 +231,7 @@ public static class GameSaves
             {
                 obj.RandomSeed = seed.Value;
             }
-            if (tag1.TryGet<NbtCompound>("WorldGenSettings") is { } setting  )
+            if (tag1.TryGet<NbtCompound>("WorldGenSettings") is { } setting)
             {
                 if (setting.TryGet<NbtLong>("seed") is { } seed1)
                 {
@@ -249,7 +249,7 @@ public static class GameSaves
             {
                 obj.GeneratorName = "minecraft:" + name1.Value;
             }
-            
+
             obj.GameType = tag1.TryGet<NbtInt>("GameType")!.Value;
             obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.Value;
             obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;

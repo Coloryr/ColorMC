@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 

@@ -7,7 +7,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Utils;
 
