@@ -168,7 +168,7 @@ public static class ServerPack
                         {
                             if (item.IsZip)
                             {
-                                new ZipUtils().UnzipAsync(Path.Combine(path, item.Group), item.FileName, stream).Wait();
+                                new ZipProcess().UnzipAsync(Path.Combine(path, item.Group), item.FileName, stream).Wait();
                             }
                         }
                     });
@@ -298,6 +298,7 @@ public static class ServerPack
             Local = arg.Local,
             Request = arg.Request
         });
+
         Directory.CreateDirectory(arg.Local);
 
         bool fail = false;
@@ -370,7 +371,7 @@ public static class ServerPack
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
                             var stream1 = PathHelper.OpenWrite(file.FullName);
-                            var zip = await new ZipUtils(gameRequest: arg.Request).ZipFileAsync(path1, stream1);
+                            var zip = await new ZipProcess(gameRequest: arg.Request).ZipFileAsync(path1, stream1);
                             zip.Dispose();
                             stream1.Dispose();
 

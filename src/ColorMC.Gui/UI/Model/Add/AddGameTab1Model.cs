@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -275,7 +276,7 @@ public partial class AddGameModel
             }
         };
 
-        var res = await GameBinding.AddGameAsync(game, Tab1GameRequest, Tab1GameOverwirte);
+        var res = await GameBinding.AddGameAsync(game, GameRequestAsync, GameOverwirteAsync);
         if (!res)
         {
             Model.Show(App.Lang("AddGameWindow.Tab1.Error5"));
@@ -285,7 +286,7 @@ public partial class AddGameModel
             //自定义加载器还需要加载其他信息
             if (game.Loader == Loaders.Custom && !string.IsNullOrWhiteSpace(LoaderLocal))
             {
-                var res1 = await GameBinding.SetGameLoaderAsync(game, LoaderLocal);
+                var res1 = await game.SetGameLoaderAsync(LoaderLocal);
                 if (!res1.State)
                 {
                     Model.ShowWithOk(App.Lang("AddGameWindow.Tab1.Error18"), () =>
@@ -391,13 +392,13 @@ public partial class AddGameModel
         switch (VersionType)
         {
             case 0:
-                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Release));
+                GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(GameType.Release));
                 break;
             case 1:
-                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Snapshot));
+                GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(GameType.Snapshot));
                 break;
             case 2:
-                GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(GameType.Other));
+                GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(GameType.Other));
                 break;
         }
     }
@@ -407,7 +408,7 @@ public partial class AddGameModel
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    private async Task<bool> Tab1GameOverwirte(GameSettingObj obj)
+    private async Task<bool> GameOverwirteAsync(GameSettingObj obj)
     {
         Model.ProgressClose();
         var test = await Model.ShowAsync(
@@ -420,7 +421,7 @@ public partial class AddGameModel
     /// </summary>
     /// <param name="state"></param>
     /// <returns></returns>
-    private Task<bool> Tab1GameRequest(string state)
+    private Task<bool> GameRequestAsync(string state)
     {
         Model.ProgressClose();
         return Model.ShowAsync(state);

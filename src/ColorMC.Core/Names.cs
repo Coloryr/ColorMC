@@ -60,6 +60,8 @@ public static class Names
     public const string NameJavawFile = "javaw.exe";
     public const string NameOptifineFile = "optifine.json";
     public const string NameModListFile = "modlist.html";
+    public const string NameLatestLogFile = "latest.log";
+    public const string NameDebugLogFile = "debug.log";
 
     public const string NameMinecraftKey = "minecraft";
     public const string NameLangKey1 = "minecraft/lang/";

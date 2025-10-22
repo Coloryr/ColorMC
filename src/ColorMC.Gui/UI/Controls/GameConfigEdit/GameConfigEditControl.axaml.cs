@@ -19,7 +19,7 @@ public partial class GameConfigEditControl : BaseUserControl
     /// <summary>
     /// 存档
     /// </summary>
-    private readonly WorldObj _world;
+    private readonly SaveObj _world;
     /// <summary>
     /// 游戏实例
     /// </summary>
@@ -35,7 +35,7 @@ public partial class GameConfigEditControl : BaseUserControl
         InitializeComponent();
     }
 
-    public GameConfigEditControl(WorldObj world) : base(WindowManager.GetUseName<GameConfigEditControl>(world.Game) + ":" + world.LevelName)
+    public GameConfigEditControl(SaveObj world) : base(WindowManager.GetUseName<GameConfigEditControl>(world.Game) + ":" + world.LevelName)
     {
         InitializeComponent();
 

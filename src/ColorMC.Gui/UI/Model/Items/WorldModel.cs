@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
@@ -21,7 +22,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 存档
     /// </summary>
-    public readonly WorldObj World;
+    public readonly SaveObj World;
     /// <summary>
     /// 游戏设置
     /// </summary>
@@ -72,7 +73,7 @@ public partial class WorldModel : SelectItemModel
     /// </summary>
     public ObservableCollection<DataPackModel> DataPackList { get; init; } = [];
 
-    public WorldModel(GameEditModel top, WorldObj world)
+    public WorldModel(GameEditModel top, SaveObj world)
     {
         TopModel = top;
         World = world;
@@ -97,7 +98,7 @@ public partial class WorldModel : SelectItemModel
     public async Task Load()
     {
         DataPackList.Clear();
-        var list = await GameBinding.GetWorldDataPackAsync(World);
+        var list = await World.GetDataPacksAsync();
         foreach (var item in list)
         {
             DataPackList.Add(new(item));

@@ -27,6 +27,11 @@ public static class InstancesPath
     public static Dictionary<string, List<GameSettingObj>> Groups => new(s_gameGroups);
 
     /// <summary>
+    /// 获取所有分组名
+    /// </summary>
+    public static IEnumerable<string> GroupKeys => s_gameGroups.Keys;
+
+    /// <summary>
     /// 是否没有游戏实例
     /// </summary>
     public static bool IsNotGame => s_installGames.Count == 0;
@@ -402,7 +407,7 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 获取游戏实例世界路径
+    /// 获取游戏实例存档路径
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns>路径</returns>
@@ -422,11 +427,11 @@ public static class InstancesPath
     }
 
     /// <summary>
-    /// 世界备份
+    /// 存档备份文件夹
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <returns>路径</returns>
-    public static string GetWorldBackupPath(this GameSettingObj obj)
+    /// <returns>存档路径</returns>
+    public static string GetSaveBackupPath(this GameSettingObj obj)
     {
         return Path.Combine(s_baseDir, obj.DirName, Names.NameBackupDir);
     }

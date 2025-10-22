@@ -689,7 +689,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        await new ZipUtils(zipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
+        await new ZipProcess(zipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
 
         //尝试解析版本号
         var files = Directory.GetFiles(game!.GetGamePath());

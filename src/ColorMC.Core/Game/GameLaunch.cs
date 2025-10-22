@@ -353,10 +353,10 @@ public static class Launch
     /// </summary>
     /// <param name="objs">启动的游戏列表</param>
     /// <param name="larg">启动参数</param>
-    /// <param name="token">取消Token</param>
+    /// <param name="cancels">取消Token</param>
     /// <returns>启动结果</returns>
     public static async Task<Dictionary<GameSettingObj, GameLaunchRes>>
-        StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, CancellationToken token)
+        StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, Dictionary<string, CancellationToken> cancels)
     {
         //清理存在的实例日志
         foreach (var item in objs)
@@ -378,7 +378,7 @@ public static class Launch
             return list;
         }
 
-        if (token.IsCancellationRequested)
+        if (cancels.Values.Any(item => item.IsCancellationRequested))
         {
             return list;
         }
@@ -396,9 +396,11 @@ public static class Launch
                     throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
                 }
 
+                var cancel = cancels[obj.UUID];
+
                 //服务器实例更新
-                await PackUpdateAsync(obj, larg, token);
-                if (token.IsCancellationRequested)
+                await PackUpdateAsync(obj, larg, cancel);
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }
@@ -406,16 +408,16 @@ public static class Launch
                 larg.Update2?.Invoke(obj, LaunchState.Check);
 
                 //检查游戏文件
-                var arg1 = await CheckGameFileAsync(obj, larg, token);
+                var arg1 = await CheckGameFileAsync(obj, larg, cancel);
 
-                if (token.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }
 
                 //查找合适的JAVA
                 var path = await FindJavaAsync(obj, larg, arg1);
-                if (token.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }
@@ -424,7 +426,7 @@ public static class Launch
                 larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
                 var arg = obj.MakeRunArg(larg, arg1, true);
 
-                if (token.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }
@@ -454,7 +456,7 @@ public static class Launch
                 ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
                 ColorMCCore.OnGameLog(obj, path);
 
-                if (token.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }
@@ -462,7 +464,7 @@ public static class Launch
                 //自定义启动参数
                 var env = MakeEnv(obj);
 
-                if (token.IsCancellationRequested)
+                if (cancel.IsCancellationRequested)
                 {
                     return list;
                 }

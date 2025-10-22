@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
@@ -18,7 +20,6 @@ public partial class AddGameModel : TopModel
     public const string NameTab1 = ":1";
     public const string NameTab2 = ":2";
     public const string NameTab3 = ":3";
-    public const string NameTab4 = ":4";
     public const string NameBack = "Back";
 
     /// <summary>
@@ -48,18 +49,6 @@ public partial class AddGameModel : TopModel
     [ObservableProperty]
     private bool _main = true;
 
-#if Phone
-    /// <summary>
-    /// 是否为手机模式
-    /// </summary>
-    public bool IsPhone => true;
-#else
-    /// <summary>
-    /// 是否为手机模式
-    /// </summary>
-    public bool IsPhone => false;
-#endif
-
     /// <summary>
     /// 添加到的分组
     /// </summary>
@@ -77,7 +66,7 @@ public partial class AddGameModel : TopModel
     public AddGameModel(BaseModel model) : base(model)
     {
         GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+        GroupList.AddRange(InstancesPath.GroupKeys);
 
         GameVersionUpdate();
 
@@ -112,7 +101,7 @@ public partial class AddGameModel : TopModel
         Model.Notify(App.Lang("AddGameWindow.Tab1.Info6"));
 
         GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+        GroupList.AddRange(InstancesPath.GroupKeys);
         Group = res.Text1;
     }
 
@@ -135,7 +124,7 @@ public partial class AddGameModel : TopModel
     public void GoModPack()
     {
         Main = false;
-        Model.PushBack(BackDownload);
+        Model.PushBack(BackMain);
         OnPropertyChanged(NameTab1);
         if (!ConfigBinding.WindowMode())
         {
@@ -152,7 +141,7 @@ public partial class AddGameModel : TopModel
     public void GoCloud()
     {
         Main = false;
-        Model.PushBack(BackDownload);
+        Model.PushBack(BackMain);
         GameCloudDownload();
     }
 
@@ -163,19 +152,8 @@ public partial class AddGameModel : TopModel
     public void GoServer()
     {
         Main = false;
-        Model.PushBack(BackDownload);
-        ServerPackDownload();
-    }
-
-    /// <summary>
-    /// 转到下载实例
-    /// </summary>
-    [RelayCommand]
-    public void GoDownload()
-    {
         Model.PushBack(BackMain);
-        Main = false;
-        OnPropertyChanged(NameTab4);
+        ServerPackDownload();
     }
 
     /// <summary>
@@ -186,15 +164,6 @@ public partial class AddGameModel : TopModel
         Model.PopBack();
         OnPropertyChanged(NameBack);
         Main = true;
-    }
-
-    /// <summary>
-    /// 转到下载实例
-    /// </summary>
-    public void BackDownload()
-    {
-        Model.PopBack();
-        OnPropertyChanged(NameTab4);
     }
 
     /// <summary>
@@ -327,6 +296,113 @@ public partial class AddGameModel : TopModel
         else
         {
             _keep = true;
+        }
+    }
+
+    /// <summary>
+    /// 下载云同步游戏实例
+    /// </summary>
+    /// <returns></returns>
+    public async void GameCloudDownload()
+    {
+        Model.Progress(App.Lang("AddGameWindow.Tab1.Info9"));
+        var list = await ColorMCCloudAPI.GetListAsync();
+        Model.ProgressClose();
+        if (list == null)
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error9"));
+            return;
+        }
+        var list1 = new List<string>();
+        list.ForEach(item =>
+        {
+            if (!string.IsNullOrEmpty(item.Name) && InstancesPath.GetGame(item.UUID) == null)
+            {
+                list1.Add(item.Name);
+            }
+        });
+        var res = await Model.ShowCombo(App.Lang("AddGameWindow.Tab1.Info10"), list1);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        Model.Progress(App.Lang("AddGameWindow.Tab1.Info11"));
+        var obj = list[res.Index];
+        while (true)
+        {
+            //替换冲突的名字
+            if (GameBinding.GetGameByName(obj.Name) != null)
+            {
+                var res1 = await Model.ShowAsync(App.Lang("AddGameWindow.Tab1.Info12"));
+                if (!res1)
+                {
+                    Model.ProgressClose();
+                    return;
+                }
+                var res2 = await Model.Input(App.Lang("AddGameWindow.Tab1.Text2"), obj.Name);
+                if (res2.Cancel)
+                {
+                    return;
+                }
+
+                obj.Name = res2.Text1!;
+            }
+            else
+            {
+                break;
+            }
+        }
+        //下载游戏实例
+        var res3 = await GameBinding.DownloadCloudAsync(obj, Group, Model.ShowAsync,
+            GameOverwirteAsync);
+        Model.ProgressClose();
+        if (!res3.State)
+        {
+            Model.Show(res3.Data!);
+            return;
+        }
+
+        WindowManager.ShowGameCloud(InstancesPath.GetGame(obj.UUID!)!);
+        Done(res3.Data);
+    }
+
+    /// <summary>
+    /// 下载服务器实例
+    /// </summary>
+    public async void ServerPackDownload()
+    {
+        var res = await Model.InputWithEditAsync(App.Lang("AddGameWindow.Tab1.Info13"), false);
+        if (res.Cancel)
+        {
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(res.Text1))
+        {
+            Model.Show(App.Lang("AddGameWindow.Tab1.Error14"));
+            return;
+        }
+
+        if (!res.Text1.EndsWith('/'))
+        {
+            res.Text1 += '/';
+        }
+        //下载服务器包
+        Model.Progress(App.Lang("AddGameWindow.Tab1.Info14"));
+        var res1 = await GameBinding.DownloadServerPackAsync(Model, Name, Group, res.Text1,
+            GameOverwirteAsync);
+        Model.ProgressClose();
+        if (!res1.State)
+        {
+            if (res1.Data != null)
+            {
+                Model.Show(res1.Data!);
+            }
+        }
+        else
+        {
+            Done(res1.Data!);
         }
     }
 }

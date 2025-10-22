@@ -10,6 +10,7 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -166,7 +167,7 @@ public partial class FileItemModel : SelectItemModel
         ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
         if (ShowStar)
         {
-            IsStar = BaseBinding.IsStar(SourceType, data.Id.ToString());
+            IsStar = CollectUtils.IsCollect(SourceType, data.Id.ToString());
         }
     }
 
@@ -192,7 +193,7 @@ public partial class FileItemModel : SelectItemModel
         ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
         if (ShowStar)
         {
-            IsStar = BaseBinding.IsStar(SourceType, data.ProjectId);
+            IsStar = CollectUtils.IsCollect(SourceType, data.ProjectId);
         }
     }
 
@@ -218,7 +219,7 @@ public partial class FileItemModel : SelectItemModel
         ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
         if (ShowStar)
         {
-            IsStar = BaseBinding.IsStar(SourceType, data.Id);
+            IsStar = CollectUtils.IsCollect(SourceType, data.Id);
         }
     }
 

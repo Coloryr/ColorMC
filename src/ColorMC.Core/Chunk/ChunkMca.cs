@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
@@ -16,13 +17,16 @@ public static class ChunkMca
     /// </summary>
     /// <param name="data">区块数据</param>
     /// <param name="file">文件名</param>
-    public static void Save(this ChunkDataObj data, string file)
+    public static async Task SaveAsync(this ChunkDataObj data, string file)
     {
-        using var stream = new MemoryStream();
-        WriteChunk(data, stream);
-        WriteHead(data, stream);
-        stream.Seek(0, SeekOrigin.Begin);
-        PathHelper.WriteBytes(file, stream);
+        await Task.Run(() =>
+        {
+            using var stream = new MemoryStream();
+            WriteChunk(data, stream);
+            WriteHead(data, stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            PathHelper.WriteBytes(file, stream);
+        });
     }
 
     /// <summary>

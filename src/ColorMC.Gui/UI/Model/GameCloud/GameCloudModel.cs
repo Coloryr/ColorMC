@@ -12,6 +12,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using ColorMC.Core.Game;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -314,7 +315,7 @@ public partial class GameCloudModel : MenuModel
         WorldCloudList.Clear();
         Model.Progress(App.Lang("GameCloudWindow.Info20"));
         var res = await GameBinding.GetCloudWorldListAsync(Obj);
-        var worlds = await GameBinding.GetWorldsAsync(Obj);
+        var worlds = await Obj.GetSavesAsync();
         Model.ProgressClose();
         if (!res.State || res.Worlds == null)
         {

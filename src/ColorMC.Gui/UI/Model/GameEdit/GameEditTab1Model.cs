@@ -418,7 +418,7 @@ public partial class GameEditModel
     [RelayCommand]
     public void ReloadJson()
     {
-        GameBinding.ReloadJson(_obj);
+        _obj.ReadCustomJson();
         JsonList.Clear();
         foreach (var item in _obj.CustomJson)
         {
@@ -777,7 +777,7 @@ public partial class GameEditModel
             return;
         }
 
-        var res = await GameBinding.SetGameLoaderAsync(_obj, file.Path);
+        var res = await _obj.SetGameLoaderAsync(file.Path);
         if (res.State)
         {
             ReadCustomLoader();
@@ -899,7 +899,7 @@ public partial class GameEditModel
                 break;
         }
 
-        GameVersionList.AddRange(await GameBinding.GetGameVersionsAsync(_obj.GameType));
+        GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(_obj.GameType));
         if (GameVersionList.Contains(version))
         {
             GameVersion = version;
@@ -931,7 +931,7 @@ public partial class GameEditModel
     private void GroupLoad()
     {
         GroupList.Clear();
-        GroupList.AddRange(GameBinding.GetGameGroups().Keys);
+        GroupList.AddRange(InstancesPath.GroupKeys);
     }
 
     /// <summary>

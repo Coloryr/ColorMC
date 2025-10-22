@@ -104,7 +104,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
             {
                 Name = App.Lang("BuildPackWindow.Tab2.Text1");
                 _isExpanded = true;
-                foreach (var item in GameBinding.GetGames())
+                foreach (var item in InstancesPath.Games)
                 {
                     Children.Add(new GameFileTreeNodeModel(this, item.Name, true, item.GetBasePath(), true));
                 }

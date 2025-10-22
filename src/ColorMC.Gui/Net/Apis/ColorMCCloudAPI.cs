@@ -605,7 +605,7 @@ public static class ColorMCCloudAPI
     /// <param name="world">世界储存</param>
     /// <param name="local">压缩包路径</param>
     /// <returns></returns>
-    public static async Task<int> UploadWorldAsync(GameSettingObj game, WorldObj world, string local)
+    public static async Task<int> UploadWorldAsync(GameSettingObj game, SaveObj world, string local)
     {
         try
         {
@@ -645,7 +645,7 @@ public static class ColorMCCloudAPI
     /// <param name="game">游戏实例</param>
     /// <param name="name">世界储存</param>
     /// <returns></returns>
-    public static async Task<Dictionary<string, string>?> GetWorldFilesAsync(GameSettingObj game, WorldObj world)
+    public static async Task<Dictionary<string, string>?> GetWorldFilesAsync(GameSettingObj game, SaveObj world)
     {
         if (!Connect)
         {

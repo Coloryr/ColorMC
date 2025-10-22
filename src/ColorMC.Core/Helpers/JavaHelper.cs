@@ -11,39 +11,6 @@ namespace ColorMC.Core.Helpers;
 public static class JavaHelper
 {
     /// <summary>
-    /// 提升权限
-    /// </summary>
-    /// <param name="path">文件</param>
-    public static void PerChmod(string path)
-    {
-        try
-        {
-            using var p = new Process();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
-
-            var info = new FileInfo(path);
-            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/*");
-            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.Parent!.FullName + "/lib/*");
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
-
-            string temp = p.StandardOutput.ReadToEnd();
-
-            p.Dispose();
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Jvm.Error9"), e);
-        }
-    }
-
-    /// <summary>
     /// 获取主版本
     /// </summary>
     /// <param name="version">版本号</param>

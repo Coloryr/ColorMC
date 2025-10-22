@@ -17,7 +17,7 @@ public static class WorldDataPack
     /// </summary>
     /// <param name="world">世界存储</param>
     /// <returns>数据包列表</returns>
-    public static Task<List<DataPackObj>> GetDataPacksAsync(this WorldObj world)
+    public static Task<List<DataPackObj>> GetDataPacksAsync(this SaveObj world)
     {
         return Task.Run(world.GetDataPacks);
     }
@@ -27,9 +27,9 @@ public static class WorldDataPack
     /// </summary>
     /// <param name="world">世界存储</param>
     /// <returns>数据包列表</returns>
-    private static List<DataPackObj> GetDataPacks(this WorldObj world)
+    private static List<DataPackObj> GetDataPacks(this SaveObj world)
     {
-        var path = world.GetWorldDataPacksPath();
+        var path = world.GetSaveDataPacksPath();
         if (!Directory.Exists(path))
         {
             return [];
@@ -148,7 +148,7 @@ public static class WorldDataPack
     /// <param name="world">世界储存</param>
     /// <param name="list">数据包列表</param>
     /// <returns>是否成功设置</returns>
-    public static bool DisableOrEnableDataPack(this WorldObj world, IEnumerable<DataPackObj> list)
+    public static bool DisableOrEnableDataPack(this SaveObj world, IEnumerable<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -217,7 +217,7 @@ public static class WorldDataPack
             }
         }
 
-        world.Nbt.Save(Path.Combine(world.Local, Names.NameLevelFile));
+        world.Nbt.SaveAsync(Path.Combine(world.Local, Names.NameLevelFile));
 
         return true;
     }
@@ -228,7 +228,7 @@ public static class WorldDataPack
     /// <param name="world">世界存储</param>
     /// <param name="list">删除列表</param>
     /// <returns>是否删除成功</returns>
-    public static async Task<bool> DeleteDataPackAsync(this WorldObj world, ICollection<DataPackObj> list)
+    public static async Task<bool> DeleteDataPackAsync(this SaveObj world, ICollection<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -265,7 +265,7 @@ public static class WorldDataPack
                     }
                 }
 
-                world.Nbt.Save(Path.Combine(world.Local, Names.NameLevelFile));
+                world.Nbt.SaveAsync(Path.Combine(world.Local, Names.NameLevelFile));
             }
             catch (Exception e)
             {

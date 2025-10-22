@@ -257,7 +257,7 @@ public static class GameCountUtils
 
         nbt.ZipType = ZipType.GZip;
 
-        nbt.Save(s_local);
+        nbt.SaveAsync(s_local);
 
         s_isSave = false;
     }

@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
@@ -259,7 +260,7 @@ public partial class GameLogModel : GameModel
         }
 
         Model.Progress(App.Lang("GameLogWindow.Info6"));
-        var url = await WebBinding.PushMcloAsync(Text.Text);
+        var url = await McloAPI.PushAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
@@ -275,10 +276,10 @@ public partial class GameLogModel : GameModel
             }
             Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
-                await BaseBinding.CopyTextClipboardAsync(top, url);
+                BaseBinding.CopyTextClipboardAsync(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
             });
-            await BaseBinding.CopyTextClipboardAsync(top, url);
+            BaseBinding.CopyTextClipboardAsync(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }
@@ -302,7 +303,7 @@ public partial class GameLogModel : GameModel
     {
         _isKill = true;
         GameManager.KillGame(Obj);
-        GameBinding.CancelLaunch();
+        GameManager.CancelLaunch(Obj);
         IsGameRun = false;
     }
 
@@ -606,7 +607,7 @@ public partial class GameLogModel : GameModel
             {
                 Model.ShowClose();
                 Model.Progress(App.Lang("GameLogWindow.Info6"));
-                var url = await WebBinding.PushMcloAsync(Text.Text);
+                var url = await McloAPI.PushAsync(Text.Text);
                 Model.ProgressClose();
                 if (url == null)
                 {
@@ -622,16 +623,16 @@ public partial class GameLogModel : GameModel
                     }
                     Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
                     {
-                        await BaseBinding.CopyTextClipboardAsync(top, url);
+                        BaseBinding.CopyTextClipboardAsync(top, url);
                         Model.Notify(App.Lang("GameLogWindow.Info7"));
                     });
-                    await BaseBinding.CopyTextClipboardAsync(top, url);
+                    BaseBinding.CopyTextClipboardAsync(top, url);
                     Model.Notify(App.Lang("GameLogWindow.Info7"));
                 }
             });
         }, TimeSpan.FromMilliseconds(200));
         LoadFileList();
-        var item = GameBinding.GetLastCrash(Obj);
+        var item = Obj.GetLastCrash();
         File = item;
         if (File != null)
         {

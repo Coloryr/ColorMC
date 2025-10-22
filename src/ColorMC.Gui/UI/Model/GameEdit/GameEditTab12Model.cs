@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UIBinding;
@@ -47,7 +48,21 @@ public partial class GameEditModel
     {
         Model.Progress(App.Lang("GameEditWindow.Tab12.Info3"));
         SchematicList.Clear();
-        SchematicList.AddRange(await GameBinding.GetSchematicsAsync(_obj));
+        foreach (var item in await _obj.GetSchematicsAsync())
+        {
+            if (item.Broken)
+            {
+                SchematicList.Add(new SchematicObj()
+                {
+                    Name = App.Lang("GameBinding.Info17"),
+                    Local = item.Local,
+                });
+            }
+            else
+            {
+                SchematicList.Add(item);
+            }
+        }
         Model.ProgressClose();
         SchematicEmptyDisplay = SchematicList.Count == 0;
         Model.Notify(App.Lang("GameEditWindow.Tab12.Info1"));
@@ -103,7 +118,7 @@ public partial class GameEditModel
         {
             return;
         }
-        await GameBinding.DeleteSchematicAsync(obj);
+        await obj.DeleteAsync();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadSchematic();
     }

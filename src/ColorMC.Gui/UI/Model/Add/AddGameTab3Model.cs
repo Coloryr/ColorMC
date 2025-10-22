@@ -56,6 +56,7 @@ public partial class AddGameModel
                 return;
             }
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
+
             //测试是否是其他启动器的游戏版本
             var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
@@ -63,7 +64,7 @@ public partial class AddGameModel
                 res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
                 if (res)
                 {
-                    await Import(list);
+                    await ImportAsync(list);
                     return;
                 }
             }
@@ -180,14 +181,14 @@ public partial class AddGameModel
     /// </summary>
     /// <param name="list">路径列表</param>
     /// <returns></returns>
-    private async Task Import(List<string> list)
+    private async Task ImportAsync(List<string> list)
     {
-        BaseBinding.IsAddGames = true;
         bool ok = false;
         foreach (var item in list)
         {
             Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGameAsync(null, item, null, Group, GameRequest, GameOverwirte, Update, false);
+            var res = await GameBinding.AddGameAsync(null, item, null, Group, 
+                GameRequest, GameOverwirte, Update, false);
             Model.ProgressClose();
 
             if (!res.State)
@@ -202,7 +203,6 @@ public partial class AddGameModel
 
             ok = true;
         }
-        BaseBinding.IsAddGames = false;
 
         if (ok)
         {

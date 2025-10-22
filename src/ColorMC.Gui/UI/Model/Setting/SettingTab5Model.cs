@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -98,7 +99,7 @@ public partial class SettingModel
         if (file.Path != null)
         {
             JavaLocal = file.Path;
-            var info = JavaBinding.GetJavaInfo(file.Path);
+            var info = JavaHelper.GetJavaInfo(file.Path);
             if (info != null)
             {
                 JavaName = info.Type + "_" + info.Version;
@@ -175,7 +176,7 @@ public partial class SettingModel
 
         JavaFinding = true;
         Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
-        var list = await JavaBinding.FindJavaAsync(file);
+        var list = await Task.Run(() => JavaHelper.FindJava(file));
         Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)
@@ -194,12 +195,9 @@ public partial class SettingModel
     /// </summary>
     public async void FindJava()
     {
-#if Phone
-        return;
-#endif
         JavaFinding = true;
         Model.SubTitle = App.Lang("SettingWindow.Tab5.Info8");
-        var list = await JavaBinding.FindJavaAsync();
+        var list = await Task.Run(JavaHelper.FindJava);
         Model.SubTitle = null;
         JavaFinding = false;
         if (list == null)
@@ -231,7 +229,7 @@ public partial class SettingModel
         if (!res)
             return;
 
-        JavaBinding.RemoveAllJava();
+        JvmPath.RemoveAll();
         LoadJava();
     }
 

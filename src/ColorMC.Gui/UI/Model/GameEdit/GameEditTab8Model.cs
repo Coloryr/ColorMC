@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;
@@ -58,7 +59,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab8.Info3"));
         _resourceItems.Clear();
 
-        var res = await GameBinding.GetResourcepacksAsync(_obj);
+        var res = await _obj.GetResourcepacksAsync(false);
         Model.ProgressClose();
         foreach (var item in res)
         {
@@ -140,7 +141,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteResourcepackAsync(obj);
+        await obj.Delete();
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadResource();
     }

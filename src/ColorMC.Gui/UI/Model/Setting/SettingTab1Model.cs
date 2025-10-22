@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -223,7 +225,7 @@ public partial class SettingModel
 
         try
         {
-            var res = ConfigBinding.LoadAuthDatabase(local);
+            var res = AuthDatabase.LoadData(local);
             if (!res)
             {
                 Model.Show(App.Lang("SettingWindow.Tab1.Error4"));
@@ -292,7 +294,7 @@ public partial class SettingModel
 
         try
         {
-            var res = ConfigBinding.LoadFrpConfig(local);
+            var res = FrpConfigUtils.Load(local, true);
             if (!res)
             {
                 Model.Show(App.Lang("SettingWindow.Tab1.Error2"));
@@ -371,7 +373,7 @@ public partial class SettingModel
         if (!res)
             return;
 
-        BaseBinding.ClearWindowSetting();
+        WindowManager.Reset();
         Model.Notify(App.Lang("SettingWindow.Tab1.Info19"));
     }
 

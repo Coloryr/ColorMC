@@ -21,16 +21,6 @@ namespace ColorMC.Gui.UIBinding;
 public static class UserBinding
 {
     /// <summary>
-    /// 账户编辑回调
-    /// </summary>
-    public static event Action? UserEdit;
-
-    /// <summary>
-    /// 锁定的账户类型
-    /// </summary>
-    private static readonly List<UserKeyObj> s_lockUser = [];
-
-    /// <summary>
     /// 添加账户
     /// </summary>
     /// <param name="type">账户类型</param>
@@ -72,30 +62,21 @@ public static class UserBinding
             if (res1.Ex != null)
             {
                 WindowManager.ShowError(res1.Message!, res1.Ex);
-                return new() { Data = App.Lang("UserBinding.Error1") };
+                return new StringRes { Data = App.Lang("UserBinding.Error1") };
             }
             else
             {
-                return new() { Data = res1.Message };
+                return new StringRes { Data = res1.Message };
             }
         }
         if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
         {
             WebBinding.OpenWeb(WebType.Minecraft);
-            return new() { Data = App.Lang("UserBinding.Error3") };
+            return new StringRes { Data = App.Lang("UserBinding.Error3") };
         }
         res1.Auth!.Save();
         SetSelectUser(res1.Auth.UUID, res1.Auth.AuthType);
-        return new() { State = true };
-    }
-
-    /// <summary>
-    /// 获取所有账户
-    /// </summary>
-    /// <returns></returns>
-    public static Dictionary<UserKeyObj, LoginObj> GetAllUser()
-    {
-        return AuthDatabase.Auths;
+        return new StringRes { State = true };
     }
 
     /// <summary>
@@ -108,7 +89,7 @@ public static class UserBinding
         if (GuiConfigUtils.Config.LastUser is { } last
             && type == last.Type && uuid == last.UUID)
         {
-            ClearLastUser();
+            ConfigBinding.ClearLastUser();
         }
         AuthDatabase.Get(uuid, type)?.Delete();
 
@@ -162,47 +143,6 @@ public static class UserBinding
         GuiConfigUtils.Save();
 
         OnUserEdit();
-    }
-
-    /// <summary>
-    /// 删除选中账户
-    /// </summary>
-    public static void ClearLastUser()
-    {
-        GuiConfigUtils.Config.LastUser = null;
-        GuiConfigUtils.Save();
-    }
-
-    /// <summary>
-    /// 锁定账户
-    /// </summary>
-    /// <param name="obj">账户</param>
-    public static void AddLockUser(LoginObj obj)
-    {
-        var key = obj.GetKey();
-        if (!s_lockUser.Contains(key))
-        {
-            s_lockUser.Add(key);
-        }
-    }
-
-    /// <summary>
-    /// 解锁账户
-    /// </summary>
-    /// <param name="obj">账户</param>
-    public static void UnLockUser(LoginObj obj)
-    {
-        s_lockUser.Remove(obj.GetKey());
-    }
-
-    /// <summary>
-    /// 账户是否锁定
-    /// </summary>
-    /// <param name="obj">账户</param>
-    /// <returns></returns>
-    public static bool IsLock(LoginObj obj)
-    {
-        return s_lockUser.Contains(obj.GetKey());
     }
 
     /// <summary>
@@ -290,14 +230,6 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// 取消微软登录
-    /// </summary>
-    public static void OAuthCancel()
-    {
-        GameAuth.CancelWithOAuth();
-    }
-
-    /// <summary>
     /// 编辑账户
     /// </summary>
     /// <param name="obj">原来的账户</param>
@@ -341,7 +273,7 @@ public static class UserBinding
     /// </summary>
     public static void OnUserEdit()
     {
-        UserEdit?.Invoke();
+        WindowManager.UserWindow?.LoadUsers();
     }
 
     /// <summary>
@@ -354,7 +286,7 @@ public static class UserBinding
         var login = GetLastUser();
         if (login == null)
         {
-            return new() { Message = App.Lang("GameBinding.Error3") };
+            return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error3") };
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -362,16 +294,16 @@ public static class UserBinding
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return new() { Message = App.Lang("GameBinding.Error4") };
+                return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error4") };
             }
         }
 
-        if (IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
+        if (UserManager.IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
             var res = await model.ShowAsync(App.Lang("GameBinding.Error1"));
             if (!res)
             {
-                return new() { Message = App.Lang("GameBinding.Error5") };
+                return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error5") };
             }
 
             res = await model.ShowAsync(App.Lang("GameBinding.Info18"));
@@ -382,6 +314,6 @@ public static class UserBinding
             }
         }
 
-        return new() { User = login };
+        return new GameLaunchUserRes { User = login };
     }
 }

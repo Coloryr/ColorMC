@@ -1,7 +1,10 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -62,7 +65,7 @@ public partial class ServerPackModel
     public async void LoadResourceList()
     {
         ResourceList.Clear();
-        var mods = await GameBinding.GetResourcepacksAsync(Obj.Game, true);
+        var mods = await Obj.Game.GetResourcepacksAsync(true);
 
         Obj.Resourcepack?.RemoveAll(a => mods.Find(b => a.Sha256 == b.Sha256) == null);
 
@@ -91,14 +94,14 @@ public partial class ServerPackModel
                 }
                 else
                 {
-                    item2.Url = BaseBinding.MakeUrl(item1, FileType.Resourcepack, Obj.Game.ServerUrl);
+                    item2.Url = UrlHelper.MakeUrl(item1, FileType.Resourcepack, Obj.Game.ServerUrl);
                 }
             }
 
             ResourceList.Add(item2);
         });
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 
     /// <summary>
@@ -127,7 +130,7 @@ public partial class ServerPackModel
                 Obj.Resourcepack.Add(item);
             }
 
-            obj.Url = item.Url = BaseBinding.MakeUrl(item, FileType.Resourcepack, Obj.Game.ServerUrl);
+            obj.Url = item.Url = UrlHelper.MakeUrl(item, FileType.Resourcepack, Obj.Game.ServerUrl);
         }
         else
         {
@@ -138,6 +141,6 @@ public partial class ServerPackModel
             }
         }
 
-        GameBinding.SaveServerPack(Obj);
+        Obj.Save();
     }
 }

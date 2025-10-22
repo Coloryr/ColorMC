@@ -5,7 +5,7 @@ namespace ColorMC.Core.Objs.Minecraft;
 /// <summary>
 /// 游戏存档
 /// </summary>
-public record WorldObj
+public record SaveObj
 {
     //public byte Raining { get; set; }
     /// <summary>

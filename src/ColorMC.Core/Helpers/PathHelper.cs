@@ -11,6 +11,67 @@ namespace ColorMC.Core.Helpers;
 /// </summary>
 public static class PathHelper
 {
+    /// <summary>
+    /// 提升权限
+    /// </summary>
+    /// <param name="path">文件</param>
+    public static void Chmod(string path)
+    {
+        try
+        {
+            using var p = new Process();
+            p.StartInfo.FileName = "sh";
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+
+            p.StandardInput.WriteLine("chmod a+x " + path);
+
+            p.StandardInput.WriteLine("exit");
+            p.WaitForExit();
+        }
+        catch (Exception e)
+        {
+            Logs.Error("chmod error", e);
+        }
+    }
+
+    /// <summary>
+    /// 提升Java文件夹权限
+    /// </summary>
+    /// <param name="path">文件</param>
+    public static void PerJavaChmod(string path)
+    {
+        try
+        {
+            using var p = new Process();
+            p.StartInfo.FileName = "sh";
+            p.StartInfo.RedirectStandardInput = true;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.RedirectStandardError = true;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+
+            var info = new FileInfo(path);
+            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/*");
+            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.Parent!.FullName + "/lib/*");
+            p.StandardInput.WriteLine("exit");
+            p.WaitForExit();
+
+            string temp = p.StandardOutput.ReadToEnd();
+
+            p.Dispose();
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageHelper.Get("Core.Jvm.Error9"), e);
+        }
+    }
+
     private static string GetTrashFilesPath()
     {
         string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ??
@@ -128,11 +189,11 @@ public static class PathHelper
             || (name.All('.'.Equals) && name.StartsWith('.') && name.EndsWith('.')) || name.Length > 80;
     }
 
-    /// <summary>
-    /// 检查路径非法名字
-    /// </summary>
-    /// <param name="name">名字</param>
-    /// <returns>是否合理</returns>
+    ///// <summary>
+    ///// 检查路径非法名字
+    ///// </summary>
+    ///// <param name="name">名字</param>
+    ///// <returns>是否合理</returns>
     //public static bool PathHasInvalidChars(string name)
     //{
     //    return string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidPathChars()) >= 0
@@ -320,20 +381,7 @@ public static class PathHelper
             }
         }
 
-        return await Task.Run(() =>
-        {
-            try
-            {
-                Directory.Delete(arg.Local, true);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error10"), e);
-                return false;
-            }
-        });
+        return await MoveToTrashAsync(arg.Local);
     }
 
     /// <summary>
@@ -397,22 +445,22 @@ public static class PathHelper
     /// 写文本
     /// </summary>
     /// <param name="local">路径</param>
-    /// <param name="str">数据</param>
-    public static void WriteText(string local, string str)
+    /// <param name="str">文本</param>
+    public static void WriteText(string local, string? str)
     {
-        var data = Encoding.UTF8.GetBytes(str);
-        WriteBytes(local, data);
+        local = Path.GetFullPath(local);
+        File.WriteAllText(local, str);
     }
 
     /// <summary>
-    /// 
+    /// 异步写文本
     /// </summary>
-    /// <param name="local"></param>
-    /// <param name="str"></param>
-    public static async Task WriteTextAsync(string local, string str)
+    /// <param name="local">路径</param>
+    /// <param name="str">文本</param>
+    public static async Task WriteTextAsync(string local, string? str)
     {
-        var data = Encoding.UTF8.GetBytes(str);
-        await WriteBytesAsync(local, data);
+        local = Path.GetFullPath(local);
+        await File.WriteAllTextAsync(local, str);
     }
 
     /// <summary>
@@ -427,9 +475,8 @@ public static class PathHelper
         {
             return null;
         }
-        using var stream1 = new MemoryStream();
-        stream.CopyTo(stream1);
-        return Encoding.UTF8.GetString(stream1.ToArray());
+        using var stream1 = new StreamReader(stream, Encoding.UTF8);
+        return stream1.ReadToEnd();
     }
 
     /// <summary>

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
@@ -39,7 +40,9 @@ public static class GameServers
             {
                 if (item is NbtCompound tag1)
                 {
-                    list.Add(ToServerInfo(tag1));
+                    var obj = ToServerInfo(tag1);
+                    obj.Game = game;
+                    list.Add(obj);
                 }
             }
         }
@@ -64,7 +67,17 @@ public static class GameServers
             Name = name,
             IP = ip
         });
-        game.SaveServer(list);
+        await game.SaveServerAsync(list);
+    }
+
+    /// <summary>
+    /// 删除服务器
+    /// </summary>
+    /// <param name="obj">服务器</param>
+    /// <returns></returns>
+    public static Task DeleteAsync(this ServerInfoObj obj)
+    {
+        return RemoveServerAsync(obj.Game, obj.Name, obj.IP);
     }
 
     /// <summary>
@@ -73,7 +86,7 @@ public static class GameServers
     /// <param name="game">游戏实例</param>
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
-    public static async Task RemoveServerAsync(this GameSettingObj game, string name, string ip)
+    private static async Task RemoveServerAsync(this GameSettingObj game, string name, string ip)
     {
         var list = (await game.GetServerInfosAsync()).ToList();
         foreach (var item in list)
@@ -84,7 +97,7 @@ public static class GameServers
                 break;
             }
         }
-        game.SaveServer(list);
+        await game.SaveServerAsync(list);
     }
 
     /// <summary>
@@ -92,7 +105,7 @@ public static class GameServers
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <param name="list">服务器列表</param>
-    public static void SaveServer(this GameSettingObj game, IEnumerable<ServerInfoObj> list)
+    private static async Task SaveServerAsync(this GameSettingObj game, IEnumerable<ServerInfoObj> list)
     {
         var nbtTag = new NbtCompound();
 
@@ -118,7 +131,7 @@ public static class GameServers
         }
 
         nbtTag.Add("servers", list1);
-        nbtTag.Save(game.GetServersFile());
+        await nbtTag.SaveAsync(game.GetServersFile());
     }
 
     /// <summary>

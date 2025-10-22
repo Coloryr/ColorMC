@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Config;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.Utils;
 
@@ -32,7 +36,28 @@ public static class GameManager
     private readonly static Dictionary<string, GameGuiSettingObj> s_datas = [];
 
     /// <summary>
-    /// 游戏实例开始添加资源
+    /// 游戏是否链接到ColorMC
+    /// </summary>
+    private readonly static Dictionary<string, bool> s_gameConnect = [];
+
+    /// <summary>
+    /// 游戏实例启动取消操作
+    /// </summary>
+    private readonly static Dictionary<string, CancellationTokenSource> s_gameCancel = [];
+
+    /// <summary>
+    /// 设置ColorMCASM链接状态
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    /// <param name="connect">是否链接</param>
+    public static void SetConnect(string uuid, bool connect)
+    {
+        s_gameConnect[uuid] = false;
+    }
+
+    /// <summary>
+    /// 游戏实例开始添加资源<br/>
+    /// 锁定该游戏实例无法删除
     /// </summary>
     /// <param name="uuid">游戏实例</param>
     public static void StartAdd(string uuid)
@@ -237,9 +262,19 @@ public static class GameManager
     /// 游戏实例启动
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void StartGame(GameSettingObj obj)
+    public static CancellationToken StartGame(GameSettingObj obj)
     {
         RunGames.Add(obj.UUID);
+        if (s_gameCancel.TryGetValue(obj.UUID, out var temp))
+        {
+            temp.Cancel();
+            temp.Dispose();
+        }
+
+        var cancel = new CancellationTokenSource();
+        s_gameCancel[obj.UUID] = cancel;
+
+        return cancel.Token;
     }
 
     /// <summary>
@@ -274,11 +309,11 @@ public static class GameManager
     /// 设置方块
     /// </summary>
     /// <param name="game">游戏实例</param>
-    /// <param name="key">方块ID</param>
-    public static void SetGameBlock(GameSettingObj game, string key)
+    /// <param name="block">方块ID</param>
+    public static void SetGameBlock(GameSettingObj game, string block)
     {
         var config = ReadConfig(game);
-        config.Block = key;
+        config.Block = block;
         WriteConfig(game, config);
     }
 
@@ -291,5 +326,148 @@ public static class GameManager
     {
         var config = ReadConfig(game);
         return config.Block;
+    }
+
+    /// <summary>
+    /// 取消启动游戏实例
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    public static void CancelLaunch(GameSettingObj obj)
+    {
+        if (s_gameCancel.TryGetValue(obj.UUID, out var cancel))
+        {
+            if (!cancel.IsCancellationRequested)
+            {
+                cancel.Cancel();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 游戏进程已通过netty连接启动器
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    public static void GameConnect(string uuid)
+    {
+        s_gameConnect[uuid] = true;
+    }
+
+    /// <summary>
+    /// 游戏进程是否已经链接
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
+    /// <returns></returns>
+    public static bool IsConnect(string uuid)
+    {
+        if (s_gameConnect.TryGetValue(uuid, out var value))
+        {
+            return value;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 游戏进程启动后
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="handel"></param>
+    public static void StartGameHandel(GameSettingObj obj, GameHandel handel)
+    {
+        new Thread(() =>
+        {
+            try
+            {
+                var conf = obj.Window;
+
+                do
+                {
+                    if (handel.IsExit || IsConnect(obj.UUID))
+                    {
+                        break;
+                    }
+                    Thread.Sleep(500);
+                }
+                while (true);
+
+                if (handel.IsExit)
+                {
+                    return;
+                }
+
+                var config = GuiConfigUtils.Config.Input;
+
+                //启用手柄支持
+                if (config.Enable && !config.Disable && !handel.IsOutAdmin)
+                {
+                    GameJoystick.Start(obj, handel);
+                }
+
+                //修改窗口标题
+                if (string.IsNullOrWhiteSpace(conf?.GameTitle))
+                {
+                    return;
+                }
+
+                var ran = new Random();
+                int i = 0;
+                var list = new List<string>();
+                var list1 = conf.GameTitle.Split('\n');
+
+                foreach (var item in list1)
+                {
+                    var temp = item.Trim();
+                    if (string.IsNullOrWhiteSpace(temp))
+                    {
+                        continue;
+                    }
+
+                    list.Add(temp);
+                }
+                if (list.Count == 0)
+                {
+                    return;
+                }
+
+                Thread.Sleep(1000);
+
+                //循环设置窗口标题
+                do
+                {
+                    string title1 = "";
+                    if (conf.RandomTitle)
+                    {
+                        title1 = list[ran.Next(list.Count)];
+                    }
+                    else
+                    {
+                        i++;
+                        if (i >= list.Count)
+                        {
+                            i = 0;
+                        }
+                        title1 = list[i];
+                    }
+
+                    LaunchSocketUtils.SetTitle(obj, title1);
+
+                    if (!conf.CycTitle || conf.TitleDelay <= 0 || handel.IsExit)
+                    {
+                        break;
+                    }
+
+                    Thread.Sleep(conf.TitleDelay);
+                }
+                while (!ColorMCGui.IsClose && !handel.IsExit);
+            }
+            catch
+            {
+
+            }
+        })
+        {
+            Name = "ColorMC Game " + handel.UUID + " Handel",
+            IsBackground = true
+        }.Start();
     }
 }

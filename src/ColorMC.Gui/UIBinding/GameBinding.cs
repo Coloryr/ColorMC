@@ -47,42 +47,11 @@ using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
 
+/// <summary>
+/// 游戏实例相关操作
+/// </summary>
 public static class GameBinding
 {
-    /// <summary>
-    /// 是否不存在游戏
-    /// </summary>
-    public static bool IsNotGame => InstancesPath.IsNotGame;
-
-    /// <summary>
-    /// 停止启动游戏
-    /// </summary>
-    private static CancellationTokenSource s_launchCancel = new();
-
-    /// <summary>
-    /// 游戏是否链接到ColorMC
-    /// </summary>
-    private readonly static Dictionary<string, bool> s_gameConnect = [];
-
-    /// <summary>
-    /// 获取游戏实例列表
-    /// </summary>
-    /// <returns></returns>
-    public static List<GameSettingObj> GetGames()
-    {
-        return InstancesPath.Games;
-    }
-
-    /// <summary>
-    /// 获取游戏版本号
-    /// </summary>
-    /// <param name="type">发布类型</param>
-    /// <returns></returns>
-    public static Task<List<string>> GetGameVersionsAsync(GameType type)
-    {
-        return GameHelper.GetGameVersionsAsync(type);
-    }
-
     /// <summary>
     /// 添加游戏实例
     /// </summary>
@@ -174,54 +143,6 @@ public static class GameBinding
             Update = update,
             Update2 = update2
         });
-    }
-
-    /// <summary>
-    /// 获取游戏分组
-    /// </summary>
-    /// <returns></returns>
-    public static Dictionary<string, List<GameSettingObj>> GetGameGroups()
-    {
-        return InstancesPath.Groups;
-    }
-
-    /// <summary>
-    /// 获取CF支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetCurseForgeGameVersionsAsync()
-    {
-        return CurseForgeHelper.GetGameVersionsAsync();
-    }
-
-    /// <summary>
-    /// 获取MO支持的游戏版本
-    /// </summary>
-    /// <returns></returns>
-    public static Task<List<string>?> GetModrinthGameVersionsAsync()
-    {
-        return ModrinthHelper.GetGameVersionAsync();
-    }
-
-    /// <summary>
-    /// 获取CF分组
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static Task<Dictionary<string, string>?> GetCurseForgeCategoriesAsync(
-        FileType type = FileType.ModPack)
-    {
-        return CurseForgeHelper.GetCategoriesAsync(type);
-    }
-
-    /// <summary>
-    /// 获取MO分组
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static Task<Dictionary<string, string>?> GetModrinthCategoriesAsync(FileType type = FileType.ModPack)
-    {
-        return ModrinthHelper.GetModrinthCategoriesAsync(type);
     }
 
     /// <summary>
@@ -352,17 +273,16 @@ public static class GameBinding
             return new() { Message = res.Message };
         }
 
-        s_launchCancel = new();
-
         var port = LaunchSocketUtils.Port;
 
         //锁定账户
-        UserBinding.AddLockUser(user);
+        UserManager.LockUser(user);
+        var cancels = new Dictionary<string, CancellationToken>();
         foreach (var item in list)
         {
-            s_gameConnect[item.UUID] = false;
+            GameManager.SetConnect(item.UUID, false);
             GameManager.ClearGameLog(item);
-            GameManager.StartGame(item);
+            cancels[item.UUID] = GameManager.StartGame(item);
         }
 
         var state1 = LaunchState.End;
@@ -385,21 +305,21 @@ public static class GameBinding
 
         var res1 = await Task.Run(async () =>
         {
-            return await objs.StartGameAsync(arg, s_launchCancel.Token);
+            return await objs.StartGameAsync(arg, cancels);
         });
 
         model.SubTitle = "";
         FuntionUtils.RunGC();
 
-        if (s_launchCancel.IsCancellationRequested)
-        {
-            UserBinding.UnLockUser(user);
-            foreach (var item in list)
-            {
-                GameManager.GameExit(item);
-            }
-            return new() { User = user };
-        }
+        //if (s_launchCancel.IsCancellationRequested)
+        //{
+        //    UserBinding.UnLockUser(user);
+        //    foreach (var item in list)
+        //    {
+        //        GameManager.GameExit(item);
+        //    }
+        //    return new() { User = user };
+        //}
 
         if (GuiConfigUtils.Config.ServerCustom.RunPause)
         {
@@ -411,7 +331,7 @@ public static class GameBinding
         //逐一启动
         foreach (var item in res1)
         {
-            if (item.Value.Handel is { } pr)
+            if (item.Value.Handel is { } handel)
             {
                 item.Key.LaunchData.LastTime = DateTime.Now;
                 item.Key.SaveLaunchData();
@@ -419,10 +339,7 @@ public static class GameBinding
                 GameCountUtils.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
-                if (pr is GameHandel handel)
-                {
-                    GameHandel(item.Key, handel);
-                }
+                GameManager.StartGameHandel(item.Key, handel);
 
                 list2.Add(item.Key.UUID);
             }
@@ -460,7 +377,7 @@ public static class GameBinding
         //游戏实例只要有一个启动成功了就不解锁账户
         if (list2.Count == 0)
         {
-            UserBinding.UnLockUser(user);
+            UserManager.UnlockUser(user);
         }
 
         return new()
@@ -480,7 +397,7 @@ public static class GameBinding
     /// <param name="hide">是否隐藏启动器</param>
     /// <returns></returns>
     public static async Task<GameLaunchOneRes> LaunchAsync(BaseModel model, GameSettingObj? obj,
-        WorldObj? world = null, bool hide = false)
+        SaveObj? world = null, bool hide = false)
     {
         if (obj == null)
         {
@@ -563,16 +480,15 @@ public static class GameBinding
         {
             return new() { Message = res.Message };
         }
-        s_launchCancel = new();
 
-        s_gameConnect[obj.UUID] = false;
+        GameManager.SetConnect(obj.UUID, false);
         GameManager.ClearGameLog(obj);
-        GameManager.StartGame(obj);
+        var cancel = GameManager.StartGame(obj);
 
         var port = LaunchSocketUtils.Port;
 
         //锁定账户
-        UserBinding.AddLockUser(user);
+        UserManager.LockUser(user);
 
         var state1 = LaunchState.End;
         string? temp = null;
@@ -596,7 +512,7 @@ public static class GameBinding
         {
             try
             {
-                return await obj.StartGameAsync(arg, s_launchCancel.Token);
+                return await obj.StartGameAsync(arg, cancel);
             }
             catch (Exception e)
             {
@@ -630,9 +546,9 @@ public static class GameBinding
         FuntionUtils.RunGC();
 
         //是否取消启动
-        if (s_launchCancel.IsCancellationRequested)
+        if (cancel.IsCancellationRequested)
         {
-            UserBinding.UnLockUser(user);
+            UserManager.UnlockUser(user);
             GameManager.GameExit(obj);
             return new() { Res = true };
         }
@@ -651,9 +567,9 @@ public static class GameBinding
             GameCountUtils.LaunchDone(obj);
             GameStateUpdate(obj);
 
-            if (pr is GameHandel handel)
+            if (pr is { } handel)
             {
-                GameHandel(obj, handel);
+                GameManager.StartGameHandel(obj, handel);
 
                 if (hide)
                 {
@@ -671,7 +587,7 @@ public static class GameBinding
         {
             GameCountUtils.LaunchError(obj.UUID);
             GameManager.GameExit(obj);
-            UserBinding.UnLockUser(user);
+            UserManager.UnlockUser(user);
         }
 
         return new()
@@ -1013,7 +929,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">存档</param>
     /// <returns></returns>
-    public static List<string> GetAllConfig(WorldObj obj)
+    public static List<string> GetAllConfig(SaveObj obj)
     {
         var list = new List<string>();
         var dir = obj.Local.Length + 1;
@@ -1063,11 +979,16 @@ public static class GameBinding
     /// <param name="obj">存档</param>
     /// <param name="name">区块文件名</param>
     /// <returns></returns>
-    public static async Task<ChunkDataObj?> ReadMcaAsync(WorldObj obj, string name)
+    public static async Task<ChunkDataObj?> ReadMcaAsync(SaveObj obj, string name)
     {
         var dir = obj.Local;
+        var file = Path.GetFullPath(dir + "/" + name);
+        if (!File.Exists(file))
+        {
+            return null;
+        }
 
-        return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
+        return await ChunkMca.ReadAsync(file);
     }
 
     /// <summary>
@@ -1079,8 +1000,13 @@ public static class GameBinding
     public static async Task<ChunkDataObj?> ReadMcaAsync(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
+        var file = Path.GetFullPath(dir + "/" + name);
+        if (!File.Exists(file))
+        {
+            return null;
+        }
 
-        return await ChunkMca.ReadAsync(Path.GetFullPath(dir + "/" + name));
+        return await ChunkMca.ReadAsync(file);
     }
 
     /// <summary>
@@ -1089,11 +1015,16 @@ public static class GameBinding
     /// <param name="obj">存档</param>
     /// <param name="name">文件名</param>
     /// <returns></returns>
-    public static async Task<NbtBase?> ReadNbtAsync(WorldObj obj, string name)
+    public static async Task<NbtBase?> ReadNbtAsync(SaveObj obj, string name)
     {
         var dir = obj.Local;
+        var file = Path.GetFullPath(dir + "/" + name);
+        if (!File.Exists(file))
+        {
+            return null;
+        }
 
-        return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
+        return await NbtBase.ReadAsync(file);
     }
 
     /// <summary>
@@ -1105,122 +1036,13 @@ public static class GameBinding
     public static async Task<NbtBase?> ReadNbtAsync(GameSettingObj obj, string name)
     {
         var dir = obj.GetGamePath();
+        var file = Path.GetFullPath(dir + "/" + name);
+        if (!File.Exists(file))
+        {
+            return null;
+        }
 
-        return await NbtBase.Read(Path.GetFullPath(dir + "/" + name));
-    }
-
-    /// <summary>
-    /// 读取配置文件
-    /// </summary>
-    /// <param name="obj">存档</param>
-    /// <param name="name">文件名</param>
-    /// <returns></returns>
-    public static string ReadConfigFile(WorldObj obj, string name)
-    {
-        var dir = obj.Local;
-
-        return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
-    }
-
-    /// <summary>
-    /// 读取配置文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="name">文件名</param>
-    /// <returns></returns>
-    public static string ReadConfigFile(GameSettingObj obj, string name)
-    {
-        var dir = obj.GetGamePath();
-
-        return File.ReadAllText(Path.GetFullPath(dir + "/" + name));
-    }
-
-    /// <summary>
-    /// 保存配置文件
-    /// </summary>
-    /// <param name="obj">存档</param>
-    /// <param name="name">文件名</param>
-    /// <param name="text">文件内容</param>
-    public static void SaveConfigFile(WorldObj obj, string name, string? text)
-    {
-        var dir = obj.Local;
-
-        File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
-    }
-
-    /// <summary>
-    /// 保存配置文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="name">文件名</param>
-    /// <param name="text">文件内容</param>
-    public static void SaveConfigFile(GameSettingObj obj, string name, string? text)
-    {
-        var dir = obj.GetGamePath();
-
-        File.WriteAllText(Path.GetFullPath(dir + "/" + name), text);
-    }
-
-    /// <summary>
-    /// 保存Nbt文件
-    /// </summary>
-    /// <param name="obj">存档</param>
-    /// <param name="file">文件名</param>
-    /// <param name="nbt">文件内容</param>
-    public static void SaveNbtFile(WorldObj obj, string file, NbtBase nbt)
-    {
-        var dir = obj.Local;
-
-        nbt.Save(Path.GetFullPath(dir + "/" + file));
-    }
-
-    /// <summary>
-    /// 保存Nbt文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">文件名</param>
-    /// <param name="nbt">文件内容</param>
-    public static void SaveNbtFile(GameSettingObj obj, string file, NbtBase nbt)
-    {
-        var dir = obj.GetGamePath();
-
-        nbt.Save(Path.GetFullPath(dir + "/" + file));
-    }
-
-    /// <summary>
-    /// 保存区块文件
-    /// </summary>
-    /// <param name="obj">存档</param>
-    /// <param name="file">文件名</param>
-    /// <param name="data">文件内容</param>
-    public static void SaveMcaFile(WorldObj obj, string file, ChunkDataObj data)
-    {
-        var dir = obj.Local;
-
-        data.Save(Path.GetFullPath(dir + "/" + file));
-    }
-
-    /// <summary>
-    /// 保存区块文件
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="file">文件名</param>
-    /// <param name="data">文件内容</param>
-    public static void SaveMcaFile(GameSettingObj obj, string file, ChunkDataObj data)
-    {
-        var dir = obj.GetGamePath();
-
-        data.Save(Path.GetFullPath(dir + "/" + file));
-    }
-
-    /// <summary>
-    /// 获取存档列表
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static Task<List<WorldObj>> GetWorldsAsync(GameSettingObj obj)
-    {
-        return obj.GetWorldsAsync();
+        return await NbtBase.ReadAsync(file);
     }
 
     /// <summary>
@@ -1245,50 +1067,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 删除存档
-    /// </summary>
-    /// <param name="world">存档</param>
-    public static Task DeleteWorldAsync(WorldObj world)
-    {
-        return world.DeleteAsync();
-    }
-
-    /// <summary>
-    /// 导出存档
-    /// </summary>
-    /// <param name="world">存档</param>
-    /// <param name="file">导出路径</param>
-    /// <returns></returns>
-    public static Task ExportWorldAsync(WorldObj world, string? file)
-    {
-        if (file == null)
-            return Task.CompletedTask;
-
-        return world.ExportWorldZip(file);
-    }
-
-    /// <summary>
-    /// 获取资源包列表
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="sha256">是否获取SHA256</param>
-    /// <returns></returns>
-    public static Task<List<ResourcepackObj>> GetResourcepacksAsync(GameSettingObj obj,
-        bool sha256 = false)
-    {
-        return obj.GetResourcepacksAsync(sha256);
-    }
-
-    /// <summary>
-    /// 删除资源包
-    /// </summary>
-    /// <param name="obj">资源包</param>
-    public static Task DeleteResourcepackAsync(ResourcepackObj obj)
-    {
-        return obj.Delete();
-    }
-
-    /// <summary>
     /// 导入资源包
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1309,77 +1087,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 删除截图
-    /// </summary>
-    /// <param name="file">截图</param>
-    public static Task DeleteScreenshotAsync(ScreenshotObj file)
-    {
-        return GameScreenshots.DeleteAsync(file);
-    }
-
-    /// <summary>
-    /// 删除所有截图
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    public static void ClearScreenshots(GameSettingObj obj)
-    {
-        obj.ClearScreenshots();
-    }
-
-    /// <summary>
-    /// 获取所有截图
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static List<ScreenshotObj> GetScreenshots(GameSettingObj obj)
-    {
-        return obj.GetScreenshots();
-    }
-
-    /// <summary>
-    /// 获取游戏实例
-    /// </summary>
-    /// <param name="uuid">游戏实例</param>
-    /// <returns></returns>
-    public static GameSettingObj? GetGame(string? uuid)
-    {
-        return InstancesPath.GetGame(uuid);
-    }
-
-    /// <summary>
-    /// 获取服务器列表
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static async Task<IEnumerable<ServerInfoObj>> GetServersAsync(GameSettingObj obj)
-    {
-        return await obj.GetServerInfosAsync();
-    }
-
-    /// <summary>
-    /// 添加服务器
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="name">名字</param>
-    /// <param name="ip">地址</param>
-    /// <returns></returns>
-    public static Task AddServerAsync(GameSettingObj obj, string name, string ip)
-    {
-        return obj.AddServerAsync(name, ip);
-    }
-
-    /// <summary>
-    /// 删除服务器
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="server">服务器信息</param>
-    /// <returns></returns>
-    public static Task DeleteServerAsync(GameSettingObj obj, ServerInfoObj server)
-    {
-        return obj.RemoveServerAsync(server.Name, server.IP);
-    }
-
-    /// <summary>
     /// 删除配置文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1394,16 +1101,6 @@ public static class GameBinding
         obj.AdvanceJvm = null;
 
         obj.Save();
-    }
-
-    /// <summary>
-    /// 获取光影包列表
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static Task<List<ShaderpackObj>> GetShaderpacksAsync(GameSettingObj obj)
-    {
-        return obj.GetShaderpacksAsync();
     }
 
     /// <summary>
@@ -1428,43 +1125,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 删除光影包
-    /// </summary>
-    /// <param name="obj">光影包</param>
-    public static Task DeleteShaderpackAsync(ShaderpackObj obj)
-    {
-        return obj.DeleteAsync();
-    }
-
-    /// <summary>
-    /// 获取结构文件列表
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static async Task<List<SchematicObj>> GetSchematicsAsync(GameSettingObj obj)
-    {
-        var list = await obj.GetSchematicsAsync();
-        var list1 = new List<SchematicObj>();
-        foreach (var item in list)
-        {
-            if (item.Broken)
-            {
-                list1.Add(new()
-                {
-                    Name = App.Lang("GameBinding.Info17"),
-                    Local = item.Local,
-                });
-            }
-            else
-            {
-                list1.Add(item);
-            }
-        }
-
-        return list1;
-    }
-
-    /// <summary>
     /// 添加结构文件
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1486,80 +1146,11 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 删除结构文件
-    /// </summary>
-    /// <param name="obj">结构文件</param>
-    public static Task DeleteSchematicAsync(SchematicObj obj)
-    {
-        return obj.DeleteAsync();
-    }
-
-    /// <summary>
-    /// 设置模组信息
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data">信息</param>
-    public static void SetModInfo(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj? data)
-    {
-        if (data == null)
-            return;
-
-        data.FixDownloadUrl();
-
-        var obj1 = new ModInfoObj()
-        {
-            FileId = data.Id.ToString(),
-            ModId = data.ModId.ToString(),
-            File = data.FileName,
-            Name = data.DisplayName,
-            Url = data.DownloadUrl,
-            Sha1 = data.Hashes.Where(a => a.Algo == 1)
-                .Select(a => a.Value).FirstOrDefault()!
-        };
-        if (!obj.Mods.TryAdd(obj1.ModId, obj1))
-        {
-            obj.Mods[obj1.ModId] = obj1;
-        }
-
-        obj.SaveModInfo();
-    }
-
-    /// <summary>
-    /// 设置模组信息
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="data">信息</param>
-    public static void SetModInfo(GameSettingObj obj, ModrinthVersionObj? data)
-    {
-        if (data == null)
-        {
-            return;
-        }
-
-        var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
-        var obj1 = new Core.Objs.ModInfoObj()
-        {
-            FileId = data.Id.ToString(),
-            ModId = data.ProjectId,
-            File = file.Filename,
-            Name = data.Name,
-            Url = file.Url,
-            Sha1 = file.Hashes.Sha1
-        };
-        if (!obj.Mods.TryAdd(obj1.ModId, obj1))
-        {
-            obj.Mods[obj1.ModId] = obj1;
-        }
-
-        obj.SaveModInfo();
-    }
-
-    /// <summary>
     /// 备份存档
     /// </summary>
     /// <param name="world">存档</param>
     /// <returns></returns>
-    public static async Task<bool> BackupWorldAsync(WorldObj world)
+    public static async Task<bool> BackupWorldAsync(SaveObj world)
     {
         try
         {
@@ -1630,25 +1221,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 保存服务器包
-    /// </summary>
-    /// <param name="obj1">服务器包</param>
-    public static void SaveServerPack(ServerPackObj obj1)
-    {
-        obj1.Save();
-    }
-
-    /// <summary>
-    /// 获取服务器包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns></returns>
-    public static ServerPackObj? GetServerPack(GameSettingObj obj)
-    {
-        return obj.GetServerPack().Pack;
-    }
-
-    /// <summary>
     /// 生成服务器包
     /// </summary>
     /// <param name="obj">服务器包</param>
@@ -1663,16 +1235,6 @@ public static class GameBinding
             Local = local,
             Request = request
         });
-    }
-
-    /// <summary>
-    /// 复制服务器地址到剪贴板
-    /// </summary>
-    /// <param name="top">窗口</param>
-    /// <param name="obj">服务器信息</param>
-    public static async void CopyServer(TopLevel top, ServerInfoObj obj)
-    {
-        await BaseBinding.CopyTextClipboardAsync(top, obj.IP);
     }
 
     /// <summary>
@@ -1822,12 +1384,9 @@ public static class GameBinding
     /// <returns></returns>
     public static async Task<GameRuntimeLog?> ReadLogAsync(GameSettingObj obj, string name)
     {
-        if (GameManager.IsGameRun(obj))
+        if (GameManager.IsGameRun(obj) && (name.EndsWith(Names.NameLatestLogFile) || name.EndsWith(Names.NameDebugLogFile)))
         {
-            if (name.EndsWith("latest.log") || name.EndsWith("debug.log"))
-            {
-                return null;
-            }
+            return null;
         }
 
         return await Task.Run(() => obj.ReadLog(name));
@@ -2059,28 +1618,28 @@ public static class GameBinding
                 return null;
             }
 
-            if (local.EndsWith(".mrpack"))
+            if (local.EndsWith(Names.NameMrpackExt))
             {
                 return PackType.Modrinth;
             }
-            if (local.EndsWith(".zip"))
+            if (local.EndsWith(Names.NameZipExt))
             {
                 using var zFile = new ZipArchive(stream);
                 foreach (var item in zFile.Entries)
                 {
-                    if (item.Name == "game.json")
+                    if (item.Name == Names.NameGameFile)
                     {
                         return PackType.ColorMC;
                     }
-                    else if (item.Name == "mcbbs.packmeta")
+                    else if (item.Name == Names.NameHMCLFile)
                     {
                         return PackType.HMCL;
                     }
-                    else if (item.Name == "instance.cfg")
+                    else if (item.Name == Names.NameMMCCfgFile)
                     {
                         return PackType.MMC;
                     }
-                    else if (item.Name == "manifest.json")
+                    else if (item.Name == Names.NameManifestFile)
                     {
                         return PackType.CurseForge;
                     }
@@ -2483,37 +2042,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 设置自定义加载器
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="path"></param>
-    /// <returns></returns>
-    public static Task<StringRes> SetGameLoaderAsync(GameSettingObj obj, string path)
-    {
-        return obj.SetGameLoaderAsync(path);
-    }
-
-    /// <summary>
-    /// 获取McMod分类
-    /// </summary>
-    /// <returns></returns>
-    public static Task<McModTypsObj?> GetMcModCategoriesAsync()
-    {
-        return ColorMCAPI.GetMcModGroupAsync();
-    }
-
-    /// <summary>
-    /// 自动标记模组
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="cov"></param>
-    /// <returns></returns>
-    public static Task<IntRes> AutoMarkModsAsync(GameSettingObj obj, bool cov)
-    {
-        return ModrinthHelper.AutoMarkAsync(obj, cov);
-    }
-
-    /// <summary>
     /// 标记模组
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -2586,150 +2114,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 消息解析
-    /// </summary>
-    /// <param name="description"></param>
-    /// <returns></returns>
-    public static ChatObj StringToChat(string description)
-    {
-        return ChatConverter.StringToChar(description);
-    }
-
-    /// <summary>
-    /// 取消启动
-    /// </summary>
-    public static void CancelLaunch()
-    {
-        s_launchCancel.Cancel();
-    }
-
-    /// <summary>
-    /// 游戏进程已通过netty连接启动器
-    /// </summary>
-    /// <param name="uuid"></param>
-    public static void GameConnect(string uuid)
-    {
-        s_gameConnect[uuid] = true;
-    }
-
-    /// <summary>
-    /// 游戏进程启动后
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="handel"></param>
-    private static void GameHandel(GameSettingObj obj, GameHandel handel)
-    {
-        new Thread(() =>
-        {
-            try
-            {
-                var conf = obj.Window;
-
-                do
-                {
-                    if (handel.IsExit || (s_gameConnect.TryGetValue(obj.UUID, out var temp) && temp))
-                    {
-                        break;
-                    }
-                    Thread.Sleep(500);
-                }
-                while (true);
-
-                if (handel.IsExit)
-                {
-                    return;
-                }
-
-                var config = GuiConfigUtils.Config.Input;
-
-                //启用手柄支持
-                if (config.Enable && !config.Disable && !handel.IsOutAdmin)
-                {
-                    GameJoystick.Start(obj, handel);
-                }
-
-                //修改窗口标题
-                if (string.IsNullOrWhiteSpace(conf?.GameTitle))
-                {
-                    return;
-                }
-
-                var ran = new Random();
-                int i = 0;
-                var list = new List<string>();
-                var list1 = conf.GameTitle.Split('\n');
-
-                foreach (var item in list1)
-                {
-                    var temp = item.Trim();
-                    if (string.IsNullOrWhiteSpace(temp))
-                    {
-                        continue;
-                    }
-
-                    list.Add(temp);
-                }
-                if (list.Count == 0)
-                {
-                    return;
-                }
-
-                Thread.Sleep(1000);
-
-                //循环设置窗口标题
-                do
-                {
-                    string title1 = "";
-                    if (conf.RandomTitle)
-                    {
-                        title1 = list[ran.Next(list.Count)];
-                    }
-                    else
-                    {
-                        i++;
-                        if (i >= list.Count)
-                        {
-                            i = 0;
-                        }
-                        title1 = list[i];
-                    }
-
-                    LaunchSocketUtils.SetTitle(obj, title1);
-
-                    if (!conf.CycTitle || conf.TitleDelay <= 0 || handel.IsExit)
-                    {
-                        break;
-                    }
-
-                    Thread.Sleep(conf.TitleDelay);
-                }
-                while (!ColorMCGui.IsClose && !handel.IsExit);
-            }
-            catch
-            {
-
-            }
-        })
-        {
-            Name = "ColorMC Game " + handel.UUID + " Handel",
-            IsBackground = true
-        }.Start();
-    }
-
-    /// <summary>
-    /// 获取存档数据包列表
-    /// </summary>
-    /// <param name="world"></param>
-    /// <returns></returns>
-    public static Task<List<DataPackObj>> GetWorldDataPackAsync(WorldObj world)
-    {
-        return world.GetDataPacksAsync();
-    }
-
-    /// <summary>
     /// 导出启动参数
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <param name="model"></param>
     public static async void ExportCmd(GameSettingObj obj, BaseModel model)
     {
@@ -2831,19 +2218,9 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 获取最后崩溃日志
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    public static string? GetLastCrash(GameSettingObj obj)
-    {
-        return obj.GetLastCrash();
-    }
-
-    /// <summary>
     /// 启用云同步
     /// </summary>
-    /// <param name="obj"></param>
+    /// <param name="obj">游戏实例</param>
     /// <returns></returns>
     public static async Task<StringRes> StartCloudAsync(GameSettingObj obj)
     {
@@ -2948,7 +2325,7 @@ public static class GameBinding
         }
         string name = Path.Combine(dir, GuiNames.NameCloudConfigFile);
         files.Remove(name);
-        await new ZipUtils().ZipFileAsync(name, files, dir);
+        await new ZipProcess().ZipFileAsync(name, files, dir);
         model.Update?.Invoke(App.Lang("GameCloudWindow.Info9"));
         var res = await ColorMCCloudAPI.UploadConfigAsync(obj, name);
         PathHelper.Delete(name);
@@ -3090,7 +2467,7 @@ public static class GameBinding
         {
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
             using var stream = PathHelper.OpenWrite(local);
-            using var zip = await new ZipUtils().ZipFileAsync(dir, stream);
+            using var zip = await new ZipProcess().ZipFileAsync(dir, stream);
         }
         else
         {
@@ -3144,7 +2521,7 @@ public static class GameBinding
                 };
             }
             model.Update?.Invoke(App.Lang("GameCloudWindow.Info8"));
-            await new ZipUtils().ZipFileAsync(local, pack, dir);
+            await new ZipProcess().ZipFileAsync(local, pack, dir);
             if (have)
             {
                 PathHelper.Delete(delete);
@@ -3219,7 +2596,7 @@ public static class GameBinding
             try
             {
                 using var file = PathHelper.OpenRead(local)!;
-                await new ZipUtils().UnzipAsync(dir, local, file);
+                await new ZipProcess().UnzipAsync(dir, local, file);
                 return new() { State = true };
             }
             catch (Exception e)
@@ -3304,15 +2681,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 重读自定义启动配置
-    /// </summary>
-    /// <param name="obj"></param>
-    public static void ReloadJson(GameSettingObj obj)
-    {
-        obj.ReadCustomJson();
-    }
-
-    /// <summary>
     /// 打开种子信息
     /// </summary>
     /// <param name="model"></param>
@@ -3325,14 +2693,27 @@ public static class GameBinding
         BaseBinding.OpenUrl(url);
     }
 
-    public static void SetGameIconBlock(GameSettingObj obj, string key)
+    /// <summary>
+    /// 设置游戏实例方块图标
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="block">方块</param>
+    public static void SetGameIconBlock(GameSettingObj obj, string block)
     {
-        GameManager.SetGameBlock(obj, key);
+        GameManager.SetGameBlock(obj, block);
         EventManager.OnGameIconChange(obj.UUID);
     }
 
+    /// <summary>
+    /// 主页面选择游戏实例，并刷新实例图标
+    /// </summary>
+    /// <param name="uuid">游戏实例</param>
     public static void SelectAndReloadGame(string? uuid)
     {
+        if (uuid == null)
+        {
+            return;
+        }
         if (WindowManager.MainWindow?.DataContext is MainModel model)
         {
             model.Select(uuid);

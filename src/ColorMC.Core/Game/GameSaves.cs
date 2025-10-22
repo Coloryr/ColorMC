@@ -10,16 +10,16 @@ using SharpCompress.Archives.Zip;
 namespace ColorMC.Core.Game;
 
 /// <summary>
-/// 世界相关操作
+/// 存档相关操作
 /// </summary>
-public static class GameWorlds
+public static class GameSaves
 {
     /// <summary>
-    /// 获取世界列表
+    /// 获取存档列表
     /// </summary>
     /// <param name="game">游戏实例</param>
-    /// <returns>世界列表</returns>
-    public static async Task<List<WorldObj>> GetWorldsAsync(this GameSettingObj game)
+    /// <returns>存档列表</returns>
+    public static async Task<List<SaveObj>> GetSavesAsync(this GameSettingObj game)
     {
         var dir = game.GetSavesPath();
         var info = new DirectoryInfo(dir);
@@ -28,10 +28,10 @@ public static class GameWorlds
             return [];
         }
 
-        var list = new ConcurrentBag<WorldObj>();
+        var list = new ConcurrentBag<SaveObj>();
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
-            var world = await ReadWorldAsync(item);
+            var world = await ReadSaveAsync(item);
             if (world != null)
             {
                 world.Game = game;
@@ -46,7 +46,7 @@ public static class GameWorlds
     /// 删除世界
     /// </summary>
     /// <param name="world">世界储存</param>
-    public static Task DeleteAsync(this WorldObj world)
+    public static Task DeleteAsync(this SaveObj world)
     {
         return PathHelper.MoveToTrashAsync(world.Local);
     }
@@ -130,40 +130,40 @@ public static class GameWorlds
     /// <summary>
     /// 导出世界
     /// </summary>
-    /// <param name="world">世界实例</param>
+    /// <param name="save">存档</param>
     /// <param name="file">输出文件位置</param>
-    public static async Task ExportWorldZip(this WorldObj world, string file)
+    public static async Task ExportSaveZip(this SaveObj save, string file)
     {
         using var stream = PathHelper.OpenWrite(file);
-        using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
+        using var zip = await new ZipProcess().ZipFileAsync(save.Local, stream);
     }
 
     /// <summary>
-    /// 获取世界数据包储存
+    /// 获取存档数据包文件夹
     /// </summary>
-    /// <param name="world">世界储存</param>
-    /// <returns>位置</returns>
-    public static string GetWorldDataPacksPath(this WorldObj world)
+    /// <param name="save">存档储存</param>
+    /// <returns>文件夹位置</returns>
+    public static string GetSaveDataPacksPath(this SaveObj save)
     {
-        return Path.Combine(world.Local, Names.NameGameDatapackDir);
+        return Path.Combine(save.Local, Names.NameGameDatapackDir);
     }
 
     /// <summary>
     /// 备份世界
     /// </summary>
     /// <param name="world">世界储存</param>
-    public static async Task BackupAsync(this WorldObj world)
+    public static async Task BackupAsync(this SaveObj world)
     {
         var game = world.Game;
 
-        var path = game.GetWorldBackupPath();
+        var path = game.GetSaveBackupPath();
         Directory.CreateDirectory(path);
 
         var file = Path.Combine(path, world.LevelName + "_" + DateTime.Now
             .ToString("yyyy_MM_dd_HH_mm_ss") + ".zip");
 
         using var stream = PathHelper.OpenWrite(file);
-        using var zip = await new ZipUtils().ZipFileAsync(world.Local, stream);
+        using var zip = await new ZipProcess().ZipFileAsync(world.Local, stream);
     }
 
     /// <summary>
@@ -185,7 +185,7 @@ public static class GameWorlds
         }
         try
         {
-            await new ZipUtils().UnzipAsync(local, arg.File,
+            await new ZipProcess().UnzipAsync(local, arg.File,
                 PathHelper.OpenRead(arg.File)!);
             return true;
         }
@@ -197,11 +197,11 @@ public static class GameWorlds
     }
 
     /// <summary>
-    /// 读取世界信息
+    /// 读取存档信息
     /// </summary>
-    /// <param name="dir">文件夹</param>
-    /// <returns>世界储存</returns>
-    private static async Task<WorldObj?> ReadWorldAsync(DirectoryInfo dir)
+    /// <param name="dir">存档文件夹</param>
+    /// <returns>存档</returns>
+    private static async Task<SaveObj?> ReadSaveAsync(DirectoryInfo dir)
     {
         var file = Path.Combine(dir.FullName, Names.NameLevelFile);
         if (!File.Exists(file))
@@ -209,18 +209,20 @@ public static class GameWorlds
             return null;
         }
 
+        var obj = new SaveObj()
+        {
+            Local = dir.FullName
+        };
+
         try
         {
             //读NBT
-            if (await NbtBase.Read(file) is not NbtCompound tag)
+            if (await NbtBase.ReadAsync(file) is not NbtCompound tag)
             {
                 throw new Exception("NBT tag error");
             }
 
-            var obj = new WorldObj()
-            {
-                Nbt = tag
-            };
+            obj.Nbt = tag;
 
             //读数据
             var tag1 = tag.TryGet<NbtCompound>("Data")!;
@@ -253,8 +255,6 @@ public static class GameWorlds
             obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;
             obj.LevelName = tag1.TryGet<NbtString>("LevelName")!.Value;
 
-            obj.Local = dir.FullName;
-
             var icon = dir.GetFiles().Where(a => a.Name == Names.NameIconFile).FirstOrDefault();
             if (icon != null)
             {
@@ -268,10 +268,9 @@ public static class GameWorlds
             Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
         }
 
-        return new()
-        {
-            Broken = true,
-            Local = dir.FullName
-        };
+        //无法读取
+        obj.Broken = true;
+
+        return obj;
     }
 }

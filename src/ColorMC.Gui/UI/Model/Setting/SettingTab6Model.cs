@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -341,7 +342,7 @@ public partial class SettingModel
         }
 
         BaseBinding.SetStartIcon(res.Path);
-        StartImage = BaseBinding.GetStartIcon();
+        StartImage = ImageManager.GetStartIcon();
     }
     /// <summary>
     /// 选择图标
@@ -362,7 +363,7 @@ public partial class SettingModel
         }
 
         BaseBinding.SetWindowIcon(res.Path);
-        IconImage = BaseBinding.GetWindowIcon();
+        IconImage = ImageManager.GetCustomIcon();
     }
     /// <summary>
     /// 测试自定义界面
@@ -508,11 +509,10 @@ public partial class SettingModel
     {
         _serverLoad = true;
 
-        var list = from item in GameBinding.GetGames() select (item.UUID, item.Name);
         var list1 = new List<string>();
 
         _uuids.Clear();
-        foreach (var (UUID, Name) in list)
+        foreach (var (UUID, Name) in from item in InstancesPath.Games select (item.UUID, item.Name))
         {
             list1.Add(Name);
             _uuids.Add(UUID);
@@ -561,8 +561,8 @@ public partial class SettingModel
 
             EnableUI = config.EnableUI;
             CustomIcon = config.CustomIcon;
-            IconImage = BaseBinding.GetWindowIcon();
-            StartImage = BaseBinding.GetStartIcon();
+            IconImage = ImageManager.GetCustomIcon();
+            StartImage = ImageManager.GetStartIcon();
             CustomStart = config.CustomStart;
             StartText = config.StartText;
             DisplayType = config.DisplayType;

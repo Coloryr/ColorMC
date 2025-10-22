@@ -47,7 +47,7 @@ public static class GameExport
             }
         }
 
-        using var zip = await new ZipUtils().ZipFileAsync(arg.Obj.GetBasePath(), stream, list);
+        using var zip = await new ZipProcess().ZipFileAsync(arg.Obj.GetBasePath(), stream, list);
         await WriteItemAsync(zip, Names.NameModInfoFile, JsonUtils.ToString(obj1, JsonType.DictionaryStringModInfoObj));
     }
 

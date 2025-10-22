@@ -158,7 +158,7 @@ public static class JvmPath
         {
             try
             {
-                await new ZipUtils(zipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
+                await new ZipProcess(zipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
                 return (true, null!);
             }
             catch (Exception e)
@@ -197,7 +197,7 @@ public static class JvmPath
 
         if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
         {
-            JavaHelper.PerChmod(java);
+            PathHelper.PerJavaChmod(java);
         }
         return AddItem(arg.Name, java);
     }

@@ -20,8 +20,6 @@ using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.CurseForge;
-using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
@@ -56,27 +54,11 @@ public static class BaseBinding
     public static bool IsDownload => DownloadManager.State;
 
     /// <summary>
-    /// 启动完成回调
-    /// </summary>
-    public static event Action? LoadDone;
-
-    /// <summary>
-    /// 是否处于添加游戏实例中
-    /// </summary>
-    public static bool IsAddGames
-    {
-        set
-        {
-            InstancesPath.DisableWatcher = value;
-        }
-    }
-
-    /// <summary>
     /// 核心初始化完成
     /// </summary>
     public static async void Init1()
     {
-        LoadDone?.Invoke();
+        WindowManager.MainWindow?.LoadDone();
 
         await GameCloudUtils.StartConnect();
 
@@ -106,7 +88,7 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="text">文本</param>
-    public static async Task CopyTextClipboardAsync(TopLevel top, string text)
+    public static async void CopyTextClipboardAsync(TopLevel top, string text)
     {
         if (top.Clipboard is { } clipboard)
         {
@@ -168,58 +150,15 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 获取字体列表
-    /// </summary>
-    /// <returns></returns>
-    public static FontFamily[] GetFontList()
-    {
-        return [.. FontManager.Current.SystemFonts];
-    }
-
-    /// <summary>
-    /// 停止下载DownloadStop
-    /// </summary>
-    public static void DownloadStop()
-    {
-        DownloadManager.Stop();
-    }
-
-    /// <summary>
-    /// 暂停下载
-    /// </summary>
-    public static void DownloadPause()
-    {
-        DownloadManager.Pause();
-    }
-
-    /// <summary>
-    /// 继续下载
-    /// </summary>
-    public static void DownloadResume()
-    {
-        DownloadManager.Resume();
-    }
-
-    /// <summary>
-    /// 转网址
-    /// </summary>
-    /// <param name="item">项目</param>
-    /// <param name="type">类型</param>
-    /// <param name="url">网址</param>
-    /// <returns>网址</returns>
-    public static string MakeUrl(ServerModItemObj item, FileType type, string url)
-    {
-        return UrlHelper.MakeUrl(item, type, url);
-    }
-
-    /// <summary>
     /// 设置音量
     /// </summary>
     /// <param name="value">音量</param>
     public static void SetVolume(int value)
     {
         if (value > 100 || value < 0)
+        {
             return;
+        }
 
         Media.Volume = (float)value / 100;
     }
@@ -327,14 +266,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 清理窗口状态
-    /// </summary>
-    public static void ClearWindowSetting()
-    {
-        WindowManager.Reset();
-    }
-
-    /// <summary>
     /// 获取当前音乐播放状态
     /// </summary>
     /// <returns></returns>
@@ -387,17 +318,6 @@ public static class BaseBinding
             CollectUtils.AddItem(obj);
             return true;
         }
-    }
-
-    /// <summary>
-    /// 资源是否收藏
-    /// </summary>
-    /// <param name="type">资源类型</param>
-    /// <param name="pid">项目ID</param>
-    /// <returns></returns>
-    public static bool IsStar(SourceType type, string pid)
-    {
-        return CollectUtils.IsCollect(type, pid);
     }
 
     /// <summary>
@@ -856,24 +776,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 获取窗口图标
-    /// </summary>
-    /// <returns></returns>
-    public static Bitmap? GetWindowIcon()
-    {
-        return ImageManager.GetCustomIcon();
-    }
-
-    /// <summary>
-    /// 获取启动图标
-    /// </summary>
-    /// <returns></returns>
-    public static Bitmap? GetStartIcon()
-    {
-        return ImageManager.GetStartIcon();
-    }
-
-    /// <summary>
     /// 设置启动页图标
     /// </summary>
     /// <param name="file"></param>
@@ -902,7 +804,7 @@ public static class BaseBinding
 
         using var temp = PathHelper.OpenRead(file)!;
         model.Progress(App.Lang("MainWindow.Info46"));
-        await new ZipUtils().UnzipAsync(ColorMCGui.BaseDir, file, temp);
+        await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
         model.ProgressClose();
 
         ColorMCGui.Reboot();
@@ -1051,6 +953,10 @@ public static class BaseBinding
         return [.. list.OrderBy(x => random.Next())];
     }
 
+    /// <summary>
+    /// 开始加载方块列表
+    /// </summary>
+    /// <returns>加载结果</returns>
     public static async Task<StringRes> StartLoadBlock()
     {
         var temp = TaskManager.StartMutexTask(GuiNames.NameKeyLoadBlock);

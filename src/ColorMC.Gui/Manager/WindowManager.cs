@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
@@ -649,7 +650,7 @@ public static class WindowManager
             var data = await ModrinthAPI.GetProjectAsync(name);
             if (data?.ProjectType == "mod")
             {
-                var list = GameBinding.GetGames();
+                var list = InstancesPath.Games;
                 if (list.Count == 0)
                 {
                     MainWindow.Window.Show();
@@ -845,7 +846,7 @@ public static class WindowManager
     /// 显示游戏实例配置修改窗口
     /// </summary>
     /// <param name="obj">存档</param>
-    public static void ShowConfigEdit(WorldObj obj)
+    public static void ShowConfigEdit(SaveObj obj)
     {
         string key = obj.Game.UUID + ":" + obj.Local;
         if (GameConfigEditWindows.TryGetValue(key, out var win1))

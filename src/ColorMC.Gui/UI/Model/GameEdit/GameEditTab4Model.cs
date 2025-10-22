@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -243,7 +244,7 @@ public partial class GameEditModel
 
         _isModSet = true;
         Model.Progress(App.Lang("GameEditWindow.Tab4.Info19"));
-        var res1 = await GameBinding.AutoMarkModsAsync(_obj, res);
+        var res1 = await ModrinthHelper.AutoMarkAsync(_obj, res);
         Model.ProgressClose();
         if (!res1.State)
         {

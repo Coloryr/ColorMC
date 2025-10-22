@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
@@ -167,7 +168,7 @@ public partial class CollectModel : TopModel, ICollectControl
             return;
         }
 
-        if (GameBinding.GetGame(_choise.UUID) == null)
+        if (InstancesPath.GetGame(_choise.UUID) == null)
         {
             Model.Show(App.Lang("CollectWindow.Error2"));
             Model.BackClick();
@@ -291,7 +292,7 @@ public partial class CollectModel : TopModel, ICollectControl
         var items = new List<string>();
         var items1 = new List<GameSettingObj>();
 
-        foreach (var item in GameBinding.GetGameGroups())
+        foreach (var item in InstancesPath.Groups)
         {
             foreach (var item1 in item.Value)
             {

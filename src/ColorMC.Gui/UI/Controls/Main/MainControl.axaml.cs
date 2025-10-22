@@ -9,6 +9,7 @@ using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
@@ -51,8 +52,6 @@ public partial class MainControl : BaseUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, DropAsync);
-
-        BaseBinding.LoadDone += LoadDone;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -176,7 +175,7 @@ public partial class MainControl : BaseUserControl
                             {
                                 return;
                             }
-                            if (!GameBinding.IsNotGame)
+                            if (!InstancesPath.IsNotGame)
                             {
                                 var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
                                 if (res is not true)

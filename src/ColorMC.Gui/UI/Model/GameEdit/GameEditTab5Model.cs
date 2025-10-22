@@ -11,6 +11,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using ColorMC.Core.Game;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -62,7 +63,7 @@ public partial class GameEditModel
         Model.Progress(App.Lang("GameEditWindow.Tab5.Info5"));
         _worldItems.Clear();
 
-        var res = await GameBinding.GetWorldsAsync(_obj!);
+        var res = await _obj.GetSavesAsync();
         foreach (var item in res)
         {
             var item1 = new WorldModel(this, item);
@@ -88,7 +89,7 @@ public partial class GameEditModel
     /// </summary>
     private async void BackupWorld()
     {
-        var info = new DirectoryInfo(_obj.GetWorldBackupPath());
+        var info = new DirectoryInfo(_obj.GetSaveBackupPath());
         if (!info.Exists)
         {
             info.Create();
@@ -248,7 +249,7 @@ public partial class GameEditModel
             return;
         }
 
-        await GameBinding.DeleteWorldAsync(obj.World);
+        await obj.World.DeleteAsync();
         Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
         await LoadWorld();
     }

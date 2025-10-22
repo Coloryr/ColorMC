@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Manager;
@@ -46,7 +47,7 @@ public partial class GameEditModel
     {
         Model.Progress(App.Lang("GameEditWindow.Tab11.Info4"));
         ShaderpackList.Clear();
-        ShaderpackList.AddRange(await GameBinding.GetShaderpacksAsync(_obj));
+        ShaderpackList.AddRange(await _obj.GetShaderpacksAsync());
         Model.ProgressClose();
 
         ShaderpackEmptyDisplay = ShaderpackList.Count == 0;
@@ -109,7 +110,7 @@ public partial class GameEditModel
         {
             return;
         }
-        await GameBinding.DeleteShaderpackAsync(obj);
+        await obj.DeleteAsync();
         Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
         LoadShaderpack();
     }

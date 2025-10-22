@@ -4,7 +4,6 @@ using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -16,16 +15,6 @@ namespace ColorMC.Gui.UIBinding;
 
 public static class ConfigBinding
 {
-    /// <summary>
-    /// 加载账户数据库
-    /// </summary>
-    /// <param name="dir"></param>
-    /// <returns></returns>
-    public static bool LoadAuthDatabase(string dir)
-    {
-        return AuthDatabase.LoadData(dir);
-    }
-
     /// <summary>
     /// 加载配置文件
     /// </summary>
@@ -55,16 +44,6 @@ public static class ConfigBinding
         }
 
         return res;
-    }
-
-    /// <summary>
-    /// 加载Frp配置文件
-    /// </summary>
-    /// <param name="local"></param>
-    /// <returns></returns>
-    public static bool LoadFrpConfig(string local)
-    {
-        return FrpConfigUtils.Load(local, true);
     }
 
     /// <summary>
@@ -1027,6 +1006,15 @@ public static class ConfigBinding
         GuiConfigUtils.Config.LauncherFunction.FastLaunch = value;
         GuiConfigUtils.Config.LauncherFunction.FastModrinth = value1;
 
+        GuiConfigUtils.Save();
+    }
+
+    /// <summary>
+    /// 删除选中账户
+    /// </summary>
+    public static void ClearLastUser()
+    {
+        GuiConfigUtils.Config.LastUser = null;
         GuiConfigUtils.Save();
     }
 }

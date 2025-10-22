@@ -22,11 +22,11 @@ public static class GameEditFlyout5
             new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text13"), true, ()=>
             {
                 var top =TopLevel.GetTopLevel(con);
-                if (top == null)
+                if (top == null || model.ServerItem == null)
                 {
                     return;
                 }
-                GameBinding.CopyServer(top, model.ServerItem!);
+                BaseBinding.CopyTextClipboardAsync(top, model.ServerItem!.IP);
             })
         ]).Show(con);
     }

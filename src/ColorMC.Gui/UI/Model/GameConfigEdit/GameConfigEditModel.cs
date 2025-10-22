@@ -9,6 +9,7 @@ using AvaloniaEdit.Document;
 using AvaloniaEdit.Utils;
 using ColorMC.Core;
 using ColorMC.Core.Chunk;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
@@ -36,7 +37,7 @@ public partial class GameConfigEditModel : GameModel
     /// <summary>
     /// 存档
     /// </summary>
-    public WorldObj? World { get; init; }
+    public SaveObj? World { get; init; }
 
     /// <summary>
     /// 显示的配置文件
@@ -110,7 +111,7 @@ public partial class GameConfigEditModel : GameModel
     /// </summary>
     public ChunkDataObj? ChunkData;
 
-    public GameConfigEditModel(BaseModel model, GameSettingObj obj, WorldObj? world)
+    public GameConfigEditModel(BaseModel model, GameSettingObj obj, SaveObj? world)
         : base(model, obj)
     {
         UseName = (ToString() ?? "GameConfigEditModel") + ":"
@@ -212,19 +213,19 @@ public partial class GameConfigEditModel : GameModel
         {
             NbtEnable = false;
 
-            string text;
+            string? text;
             if (World != null)
             {
-                text = GameBinding.ReadConfigFile(World, value);
+                text = PathHelper.ReadText(World.Local + "/" + value);
             }
             else
             {
-                text = GameBinding.ReadConfigFile(Obj, value);
+                text = PathHelper.ReadText(Obj.GetGamePath() + "/" + value);
             }
 
             Model.ProgressClose();
 
-            Text = new(text);
+            Text = new TextDocument(text);
         }
         IsEdit = false;
         Model.Notify(App.Lang("ConfigEditWindow.Info10"));
@@ -286,44 +287,49 @@ public partial class GameConfigEditModel : GameModel
     /// 保存文件
     /// </summary>
     [RelayCommand]
-    public void Save()
+    public async Task Save()
     {
+        Model.Progress(App.Lang("ConfigEditWindow.Info16"));
         var info = new FileInfo(File);
         if (info.Extension is Names.NameDatExt or Names.
             NameDatOldExt or Names.NameRioExt)
         {
             if (World != null)
             {
-                GameBinding.SaveNbtFile(World, File, NbtView.Nbt);
+                await NbtView.Nbt.SaveAsync(World.Local + "/" + File);
             }
             else
             {
-                GameBinding.SaveNbtFile(Obj, File, NbtView.Nbt);
+                await NbtView.Nbt.SaveAsync(Obj.GetGamePath() + "/" + File);
             }
         }
         else if (info.Extension is Names.NameMcaExt)
         {
-            if (World != null)
+            if (ChunkData != null)
             {
-                GameBinding.SaveMcaFile(World, File, ChunkData!);
-            }
-            else
-            {
-                GameBinding.SaveMcaFile(Obj, File, ChunkData!);
+                if (World != null)
+                {
+                    await ChunkData.SaveAsync(World.Local + "/" + File);
+                }
+                else
+                {
+                    await ChunkData.SaveAsync(Obj.GetGamePath() + "/" + File);
+                }
             }
         }
         else
         {
             if (World != null)
             {
-                GameBinding.SaveConfigFile(World, File, Text?.Text);
+                await PathHelper.WriteTextAsync(World.Local + "/" + File, Text?.Text);
             }
             else
             {
-                GameBinding.SaveConfigFile(Obj, File, Text?.Text);
+                await PathHelper.WriteTextAsync(Obj.GetGamePath() + "/" + File, Text?.Text);
             }
         }
 
+        Model.ProgressClose();
         Model.Notify(App.Lang("ConfigEditWindow.Info9"));
         IsEdit = false;
     }

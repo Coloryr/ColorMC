@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -503,7 +505,7 @@ public partial class UsersModel : TopModel
             item.Close();
         }
         UserList.Clear();
-        foreach (var item in UserBinding.GetAllUser())
+        foreach (var item in AuthDatabase.Auths)
         {
             //是否为锁定账户模式
             if (LockLogin)
@@ -560,7 +562,7 @@ public partial class UsersModel : TopModel
     /// </summary>
     /// <param name="url"></param>
     /// <param name="code"></param>
-    private async void LoginOAuthCode(string url, bool iscode, string code)
+    private void LoginOAuthCode(string url, bool iscode, string code)
     {
         if (iscode)
         {
@@ -569,7 +571,7 @@ public partial class UsersModel : TopModel
                 string.Format(App.Lang("UserWindow.Info7"), code), true, false, true, () =>
                 {
                     _cancel = true;
-                    UserBinding.OAuthCancel();
+                    GameAuth.CancelWithOAuth();
                 });
             BaseBinding.OpenUrl($"{url}?otc={code}");
             var top = Model.GetTopLevel();
@@ -577,7 +579,7 @@ public partial class UsersModel : TopModel
             {
                 return;
             }
-            await BaseBinding.CopyTextClipboardAsync(top, code);
+            BaseBinding.CopyTextClipboardAsync(top, code);
         }
         else
         {
@@ -594,7 +596,7 @@ public partial class UsersModel : TopModel
         UserList.Clear();
         if (_isOAuth)
         {
-            UserBinding.OAuthCancel();
+            GameAuth.CancelWithOAuth();
         }
     }
 

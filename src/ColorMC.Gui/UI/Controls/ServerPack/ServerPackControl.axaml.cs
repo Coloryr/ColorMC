@@ -2,6 +2,7 @@ using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.ServerPack;
@@ -89,7 +90,7 @@ public partial class ServerPackControl : MenuControl
 
     protected override TopModel GenModel(BaseModel model)
     {
-        var pack = GameBinding.GetServerPack(_obj);
+        var pack = _obj.GetServerPack().Pack;
         if (pack == null)
         {
             pack = new()
@@ -100,7 +101,7 @@ public partial class ServerPackControl : MenuControl
                 Config = []
             };
 
-            GameBinding.SaveServerPack(pack);
+            pack.Save();
         }
 
         return new ServerPackModel(model, pack);

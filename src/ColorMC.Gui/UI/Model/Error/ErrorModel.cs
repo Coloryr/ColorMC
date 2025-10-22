@@ -1,5 +1,6 @@
 using System;
 using AvaloniaEdit.Document;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -81,7 +82,7 @@ public partial class ErrorModel : TopModel
         }
 
         Model.Progress(App.Lang("GameLogWindow.Info6"));
-        var url = await WebBinding.PushMcloAsync(Text.Text);
+        var url = await McloAPI.PushAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
@@ -97,10 +98,10 @@ public partial class ErrorModel : TopModel
             }
             Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
             {
-                await BaseBinding.CopyTextClipboardAsync(top, url);
+                BaseBinding.CopyTextClipboardAsync(top, url);
                 Model.Notify(App.Lang("GameLogWindow.Info7"));
             });
-            await BaseBinding.CopyTextClipboardAsync(top, url);
+            BaseBinding.CopyTextClipboardAsync(top, url);
             Model.Notify(App.Lang("GameLogWindow.Info7"));
         }
     }
