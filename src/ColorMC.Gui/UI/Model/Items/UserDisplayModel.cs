@@ -15,7 +15,7 @@ using SkiaSharp;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// ÕË»§ÏÔÊ¾
+/// è´¦æˆ·æ˜¾ç¤º
 /// </summary>
 public partial class UserDisplayModel : SelectItemModel
 {
@@ -26,7 +26,7 @@ public partial class UserDisplayModel : SelectItemModel
     public LoginObj Obj => _obj;
 
     /// <summary>
-    /// ÓÃ»§Ãû
+    /// ç”¨æˆ·å
     /// </summary>
     public string Name => _obj.UserName;
     /// <summary>
@@ -34,60 +34,60 @@ public partial class UserDisplayModel : SelectItemModel
     /// </summary>
     public string UUID => _obj.UUID;
     /// <summary>
-    /// ÀàĞÍ
+    /// ç±»å‹
     /// </summary>
     public string Type => _obj.AuthType.GetName();
     /// <summary>
-    /// ¸½¼ÓĞÅÏ¢
+    /// é™„åŠ ä¿¡æ¯
     /// </summary>
     public string Text1 => _obj.Text1;
     /// <summary>
-    /// ¸½¼ÓĞÅÏ¢
+    /// é™„åŠ ä¿¡æ¯
     /// </summary>
     public string Text2 => _obj.Text2;
 
     /// <summary>
-    /// ¿í¶È
+    /// å®½åº¦
     /// </summary>
     [ObservableProperty]
     private double _width = DefaultWidth;
 
     /// <summary>
-    /// ÊÇ·ñÓĞÆ¤·ôÎÄ¼ş
+    /// æ˜¯å¦æœ‰çš®è‚¤æ–‡ä»¶
     /// </summary>
     [ObservableProperty]
     private bool _haveSkin;
     /// <summary>
-    /// ÊÇ·ñÓĞÅû·çÎÄ¼ş
+    /// æ˜¯å¦æœ‰æŠ«é£æ–‡ä»¶
     /// </summary>
     [ObservableProperty]
     private bool _haveCape;
 
     /// <summary>
-    /// ÕË»§ÀàĞÍ
+    /// è´¦æˆ·ç±»å‹
     /// </summary>
     public AuthType AuthType => _obj.AuthType;
 
     /// <summary>
-    /// Í·Ïñ
+    /// å¤´åƒ
     /// </summary>
     [ObservableProperty]
     public Bitmap? image = ImageManager.LoadBitmap;
 
     /// <summary>
-    /// Æ¤·ô
+    /// çš®è‚¤
     /// </summary>
     [ObservableProperty]
     public Bitmap? _skin = ImageManager.LoadBitmap;
 
     /// <summary>
-    /// Åû·ç
+    /// æŠ«é£
     /// </summary>
     [ObservableProperty]
     public Bitmap? _cape = ImageManager.LoadBitmap;
 
     /// <summary>
-    /// Í·Ïñ Æ¤·ô Åû·ç
+    /// å¤´åƒ çš®è‚¤ æŠ«é£
     /// </summary>
     private Bitmap? _img, _img1, _img2;
 
@@ -133,7 +133,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÉèÖÃĞ¡Ä£Ê½
+    /// è®¾ç½®å°æ¨¡å¼
     /// </summary>
     /// <param name="mode"></param>
     public void SetMin(bool mode)
@@ -149,7 +149,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// Ñ¡ÖĞ
+    /// é€‰ä¸­
     /// </summary>
     public void Select()
     {
@@ -157,7 +157,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// Ë¢ĞÂ
+    /// åˆ·æ–°
     /// </summary>
     public void Refresh()
     {
@@ -165,7 +165,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÖØĞÂµÇÂ¼
+    /// é‡æ–°ç™»å½•
     /// </summary>
     public void Relogin()
     {
@@ -173,7 +173,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// É¾³ı
+    /// åˆ é™¤
     /// </summary>
     public void Remove()
     {
@@ -181,7 +181,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// ±à¼­
+    /// ç¼–è¾‘
     /// </summary>
     public void Edit()
     {
@@ -189,7 +189,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÇåÀí×ÊÔ´
+    /// æ¸…ç†èµ„æº
     /// </summary>
     public void Close()
     {
@@ -198,7 +198,7 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÖØÔØÍ·Ïñ
+    /// é‡è½½å¤´åƒ
     /// </summary>
     public void ReloadHead()
     {

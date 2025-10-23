@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Nbt;
+using ColorMC.Core.Nbt;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;

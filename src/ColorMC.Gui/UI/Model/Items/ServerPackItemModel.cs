@@ -6,43 +6,43 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// ·şÎñÆ÷°üÏîÄ¿
+/// æœåŠ¡å™¨åŒ…é¡¹ç›®
 /// </summary>
 public partial class ServerPackItemModel : ObservableObject
 {
     /// <summary>
-    /// ÏÂÔØµØÖ·
+    /// ä¸‹è½½åœ°å€
     /// </summary>
     [ObservableProperty]
     private string _url;
     /// <summary>
-    /// ÏîÄ¿ID
+    /// é¡¹ç›®ID
     /// </summary>
     [ObservableProperty]
     private string? _pID;
     /// <summary>
-    /// ÎÄ¼şID
+    /// æ–‡ä»¶ID
     /// </summary>
     [ObservableProperty]
     private string? _fID;
     /// <summary>
-    /// Ğ£Ñé
+    /// æ ¡éªŒ
     /// </summary>
     [ObservableProperty]
     public string _sha256;
     /// <summary>
-    /// ÊÇ·ñÑ¡ÖĞ
+    /// æ˜¯å¦é€‰ä¸­
     /// </summary>
     [ObservableProperty]
     public bool _check;
     /// <summary>
-    /// ÎÄ¼şÃû
+    /// æ–‡ä»¶å
     /// </summary>
     [ObservableProperty]
     public string _fileName;
 
     /// <summary>
-    /// ÏÂÔØÔ´Ãû×Ö
+    /// ä¸‹è½½æºåå­—
     /// </summary>
     public string Source
     {
@@ -60,16 +60,16 @@ public partial class ServerPackItemModel : ObservableObject
     }
 
     /// <summary>
-    /// ÏÂÔØÔ´
+    /// ä¸‹è½½æº
     /// </summary>
     public SourceType? SourceType;
 
     /// <summary>
-    /// Ä£×éĞÅÏ¢
+    /// æ¨¡ç»„ä¿¡æ¯
     /// </summary>
     public ModDisplayModel Mod;
     /// <summary>
-    /// ×ÊÔ´°üĞÅÏ¢
+    /// èµ„æºåŒ…ä¿¡æ¯
     /// </summary>
     public ResourcepackObj Resourcepack;
 
@@ -84,7 +84,7 @@ public partial class ServerPackItemModel : ObservableObject
     }
 
     /// <summary>
-    /// ¸üĞÂĞÅÏ¢
+    /// æ›´æ–°ä¿¡æ¯
     /// </summary>
     public void Update()
     {

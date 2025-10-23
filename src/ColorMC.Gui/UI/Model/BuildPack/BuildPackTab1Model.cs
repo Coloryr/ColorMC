@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.IO;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;

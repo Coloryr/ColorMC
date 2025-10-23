@@ -1113,10 +1113,10 @@ public static class InstancesPath
     {
         try
         {
-            var data = await CoreHttpClient.GetBytesAsync(url);
-            if (data.State)
+            var data = await CoreHttpClient.GetStreamAsync(url);
+            if (data != null)
             {
-                PathHelper.WriteBytes(obj.GetIconFile(), data.Data!);
+                await PathHelper.WriteBytesAsync(obj.GetIconFile(), data);
                 ColorMCCore.OnInstanceIconChange(obj);
                 return true;
             }

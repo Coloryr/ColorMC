@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.UI.Model.NetFrp;
+using ColorMC.Gui.UI.Model.NetFrp;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

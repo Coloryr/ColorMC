@@ -155,7 +155,7 @@ public static class GameBinding
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallCurseForgeAsync(CurseForgeModObj.CurseForgeDataObj data,
-        string icon, string? group, ColorMCCore.ZipUpdate zip,
+        string? icon, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {
@@ -185,7 +185,7 @@ public static class GameBinding
     /// <param name="update2">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> InstallModrinthAsync(ModrinthVersionObj data,
-        string icon, string? group, ColorMCCore.ZipUpdate zip,
+        string? icon, string? group, ColorMCCore.ZipUpdate zip,
         ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
         ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
     {

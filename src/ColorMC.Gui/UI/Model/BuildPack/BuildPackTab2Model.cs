@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Gui.UI.Model.Items;
@@ -18,6 +18,9 @@ public partial class BuildPackModel
     [ObservableProperty]
     private HierarchicalTreeDataGridSource<GameFileTreeNodeModel> _games;
 
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
     private GamesPage _gamesPage;
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -15,33 +15,59 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.LuckBlock;
 
-public partial class LuckBlockModel : TopModel
+/// <summary>
+/// 方块抽奖界面
+/// </summary>
+/// <param name="model"></param>
+public partial class LuckBlockModel(BaseModel model) : TopModel(model)
 {
     private readonly Random _random = new();
 
     private CancellationTokenSource? _decelerationCancellation;
 
+    /// <summary>
+    /// 是否在循环动画
+    /// </summary>
     [ObservableProperty]
     private bool _isAnimating;
+    /// <summary>
+    /// 动画移动速度
+    /// </summary>
     [ObservableProperty]
     private double _scrollSpeed = 5;
+    /// <summary>
+    /// 是否在展示结果
+    /// </summary>
     [ObservableProperty]
     private bool _showResult;
+    /// <summary>
+    /// 是否可以抽取
+    /// </summary>
     [ObservableProperty]
     private bool _canRun;
+    /// <summary>
+    /// 是否可以开始抽取
+    /// </summary>
     [ObservableProperty]
     private bool _canStart;
+    /// <summary>
+    /// 抽中的项目
+    /// </summary>
     [ObservableProperty]
     private BlockItemModel? _selectedItem;
 
+    /// <summary>
+    /// 方块列表
+    /// </summary>
     public ObservableCollection<BlockItemModel> LotteryItems { get; init; } = [];
+    /// <summary>
+    /// 界面宽度
+    /// </summary>
     public double ContainerWidth { get; set; } = 800;
+    /// <summary>
+    /// 左边
+    /// </summary>
     public double Left { get; set; } = 0;
-
-    public LuckBlockModel(BaseModel model) : base(model)
-    {
-
-    }
 
     [RelayCommand]
     public void Start()

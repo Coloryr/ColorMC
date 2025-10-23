@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;

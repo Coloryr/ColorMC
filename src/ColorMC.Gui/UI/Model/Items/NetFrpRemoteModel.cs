@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Frp;
 using ColorMC.Gui.UI.Model.NetFrp;
 

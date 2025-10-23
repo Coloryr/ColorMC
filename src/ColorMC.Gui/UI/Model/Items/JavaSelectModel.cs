@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.UI.Model.Items;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 可选中Java列表项目

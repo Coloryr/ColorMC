@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Gui.UI.Model.Items;
+namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 打包自定义文件

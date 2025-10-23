@@ -33,7 +33,7 @@ public partial class ButtonControl : UserControl
     }
 
     /// <summary>
-    /// ±³¾°É«
+    /// èƒŒæ™¯è‰²
     /// </summary>
     public IBrush Color
     {
@@ -42,7 +42,7 @@ public partial class ButtonControl : UserControl
     }
 
     /// <summary>
-    /// ÏÔÊ¾ÎÄ×Ö
+    /// æ˜¾ç¤ºæ–‡å­—
     /// </summary>
     public string? Text
     {

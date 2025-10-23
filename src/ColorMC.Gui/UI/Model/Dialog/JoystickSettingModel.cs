@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.UI.Controls.Main;

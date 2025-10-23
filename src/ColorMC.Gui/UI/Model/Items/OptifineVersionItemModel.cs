@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs.OptiFine;
+using ColorMC.Core.Objs.OptiFine;
 using ColorMC.Gui.UI.Controls;
 
 namespace ColorMC.Gui.UI.Model.Items;
