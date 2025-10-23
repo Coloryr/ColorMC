@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ColorMC.Core.Helpers;
 using CommunityToolkit.Mvvm.ComponentModel;
 

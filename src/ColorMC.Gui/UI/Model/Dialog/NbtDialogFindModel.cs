@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Chunk;
+using ColorMC.Core.Chunk;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;

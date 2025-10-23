@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.LaunchPath;
@@ -73,7 +73,6 @@ public partial class AddModPackControlModel
         {
             Model.PushBack(back: () =>
             {
-                _lastId = null;
                 DisplayVersion = false;
             });
         }
@@ -139,7 +138,7 @@ public partial class AddModPackControlModel
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
 
             var res = await GameBinding.InstallCurseForgeAsync((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
-                select!.IconUrl, group,
+                select?.Logo, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -156,7 +155,7 @@ public partial class AddModPackControlModel
         {
             Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
             var res = await GameBinding.InstallModrinthAsync((data.Data as ModrinthVersionObj)!,
-                select!.IconUrl, group,
+                select?.Logo, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -171,10 +170,22 @@ public partial class AddModPackControlModel
         }
     }
 
+    private void LoadVersion()
+    {
+        SourceType type = (SourceType)Source;
+        if (_last == null)
+        {
+            return;
+        }
+        string id = _last.Pid;
+        
+        LoadVersion(type, id);
+    }
+
     /// <summary>
     /// 加载项目文件版本列表
     /// </summary>
-    private async void LoadVersion()
+    private async void LoadVersion(SourceType type, string pid)
     {
         if (DisplayVersion == false)
         {
@@ -185,25 +196,24 @@ public partial class AddModPackControlModel
         Model.Progress(App.Lang("AddModPackWindow.Info3"));
         List<FileVersionItemModel>? list = null;
         var page = 0;
-        string title = "";
-        if (Source == 0)
+        PageDownload ??= 0;
+
+        if (type == SourceType.CurseForge)
         {
-            var res = await WebBinding.GetFileListAsync((SourceType)Source,
-                _lastId ?? _last!.Pid, PageDownload ?? 0,
-                GameVersionDownload, Loaders.Normal);
-            list = res.List;
-            title = res.Name;
-            MaxPageDownload = res.Count / 50;
-        }
-        else if (Source == 1)
-        {
-            var res = await WebBinding.GetFileListAsync((SourceType)Source,
-                _lastId ?? _last!.Pid, 0,
-                GameVersionDownload, Loaders.Normal);
-            list = res.List;
-            title = res.Name;
-            MaxPageDownload = res.Count / 50;
             page = PageDownload ?? 0;
+        }
+
+        var res = await WebBinding.GetFileListAsync(type,
+               pid, page,
+                GameVersionDownload, Loaders.Normal);
+        MaxPageDownload = res.Count / 50;
+        list = res.List;
+        var title = res.Name;
+
+        //curseforge只有50个项目
+        if (type == SourceType.CurseForge)
+        {
+            page = 0;
         }
 
         EnableNextPageDownload = (MaxPageDownload - PageDownload) > 0;
@@ -226,7 +236,7 @@ public partial class AddModPackControlModel
             var item = list[a];
             item.Add = this;
             var games = InstancesPath.Games;
-            if (games.Any(item1 => item1.ModPack && item1.ModPackType == (SourceType)Source
+            if (games.Any(item1 => item1.ModPack && item1.ModPackType == type
             && item1.PID == item.ID && item1.FID == item.ID1))
             {
                 item.IsDownload = true;

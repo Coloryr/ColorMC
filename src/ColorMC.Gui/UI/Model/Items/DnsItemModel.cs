@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Objs;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 

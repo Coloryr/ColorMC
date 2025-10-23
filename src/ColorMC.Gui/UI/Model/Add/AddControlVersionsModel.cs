@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ColorMC.Core.Game;
@@ -113,6 +113,7 @@ public partial class AddControlModel
         else
         {
             Model.PopBack();
+            Model.Title = App.Lang("AddGameWindow.Title");
         }
     }
 
@@ -242,6 +243,7 @@ public partial class AddControlModel
         var res = await WebBinding.GetFileListAsync(type, pid, page,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
         var list = res.List;
+        var title = res.Name;
         MaxPageDownload = res.Count / 50;
 
         //curseforge只有50个项目
@@ -297,6 +299,7 @@ public partial class AddControlModel
 
         Model.ProgressClose();
         Model.Notify(App.Lang("AddWindow.Info16"));
+        Model.Title = App.Lang("AddGameWindow.Title") + ": " + title;
     }
 
     /// <summary>

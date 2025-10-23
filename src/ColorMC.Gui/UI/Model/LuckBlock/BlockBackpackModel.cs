@@ -1,4 +1,4 @@
-锘縰sing System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
@@ -10,10 +10,19 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.LuckBlock;
 
+/// <summary>
+/// 方块背包界面
+/// </summary>
 public partial class BlockBackpackModel : TopModel, IBlockTop
 {
+    /// <summary>
+    /// 方块列表
+    /// </summary>
     public ObservableCollection<BlockItemModel> Blocks { get; init; } = [];
 
+    /// <summary>
+    /// 是否没有方块列表
+    /// </summary>
     [ObservableProperty]
     private bool _isEmpty;
 
@@ -28,6 +37,9 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
         WindowManager.ShowLuck();
     }
 
+    /// <summary>
+    /// 加载方块列表
+    /// </summary>
     public async void Load()
     {
         Blocks.Clear();
@@ -61,6 +73,10 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
         Blocks.Clear();
     }
 
+    /// <summary>
+    /// 右键使用改方块
+    /// </summary>
+    /// <param name="model">方块</param>
     public async void Use(BlockItemModel model)
     {
         var list = InstancesPath.Games;

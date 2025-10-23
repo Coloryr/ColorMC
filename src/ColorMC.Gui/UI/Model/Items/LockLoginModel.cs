@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Helpers;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Setting;

@@ -17,131 +17,127 @@ using CommunityToolkit.Mvvm.Input;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// ÏÂÔØÎÄ¼şÏîÄ¿
+/// ä¸‹è½½æ–‡ä»¶é¡¹ç›®
 /// </summary>
 public partial class FileItemModel : SelectItemModel
 {
     /// <summary>
-    /// ÏÂÔØ
+    /// ä¸‹è½½
     /// </summary>
     public IAddControl Add { get; set; }
 
     /// <summary>
-    /// Í¼±ê
+    /// å›¾æ ‡
     /// </summary>
     public Task<Bitmap?> Image => GetImage();
     /// <summary>
-    /// Í¼±ê
+    /// å›¾æ ‡
     /// </summary>
     private Bitmap? _img;
 
     /// <summary>
-    /// Ãû×Ö
+    /// åå­—
     /// </summary>
     public string Name { get; init; }
     /// <summary>
-    /// ¼ò½é
+    /// ç®€ä»‹
     /// </summary>
     public string Summary { get; init; }
     /// <summary>
-    /// ×÷Õß
+    /// ä½œè€…
     /// </summary>
     public string Author { get; init; }
     /// <summary>
-    /// ÏÂÔØ´ÎÊı
+    /// ä¸‹è½½æ¬¡æ•°
     /// </summary>
     public long DownloadCount { get; init; }
     /// <summary>
-    /// ¸üĞÂÊ±¼ä
+    /// æ›´æ–°æ—¶é—´
     /// </summary>
     public DateTime ModifiedDate { get; init; }
 
     /// <summary>
-    /// ÊÇ·ñÎªÕûºÏ°ü
+    /// æ˜¯å¦ä¸ºæ•´åˆåŒ…
     /// </summary>
     public bool IsModPack { get; init; }
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­ÏÂÔØ
+    /// æ˜¯å¦å·²ç»ä¸‹è½½
     /// </summary>
     public bool HaveDownload { get; init; }
     /// <summary>
-    /// ÊÇ·ñÏÔÊ¾±êĞÇ
+    /// æ˜¯å¦æ˜¾ç¤ºæ ‡æ˜Ÿ
     /// </summary>
     public bool ShowStar { get; init; }
 
     /// <summary>
-    /// ĞÇµÄÍ¼±ê
+    /// æ˜Ÿçš„å›¾æ ‡
     /// </summary>
     [ObservableProperty]
     private string _star = ImageManager.Stars[1];
     /// <summary>
-    /// ÊÇ·ñ±êĞÇ
+    /// æ˜¯å¦æ ‡æ˜Ÿ
     /// </summary>
     [ObservableProperty]
     private bool _isStar;
     /// <summary>
-    /// ÊÇ·ñÏÔÊ¾ĞÇ
+    /// æ˜¯å¦æ˜¾ç¤ºæ˜Ÿ
     /// </summary>
     [ObservableProperty]
     private bool _starVis;
 
     /// <summary>
-    /// ÊÇ·ñÒÑÏÂÔØ
+    /// æ˜¯å¦å·²ä¸‹è½½
     /// </summary>
     [ObservableProperty]
     private bool _isDownload = false;
     /// <summary>
-    /// ÊÇ·ñÕıÔÚÏÂÔØ
+    /// æ˜¯å¦æ­£åœ¨ä¸‹è½½
     /// </summary>
     [ObservableProperty]
     private bool _nowDownload = false;
     /// <summary>
-    /// ÊÇ·ñÊó±êÔÚÉÏÃæ
+    /// æ˜¯å¦é¼ æ ‡åœ¨ä¸Šé¢
     /// </summary>
     [ObservableProperty]
     private bool _top;
     /// <summary>
-    /// ÊÇ·ñÆôÓÃ°´Å¥
+    /// æ˜¯å¦å¯ç”¨æŒ‰é’®
     /// </summary>
     [ObservableProperty]
     private bool _enableButton;
 
     /// <summary>
-    /// ÎÄ¼şÀàĞÍ
+    /// æ–‡ä»¶ç±»å‹
     /// </summary>
     public FileType FileType;
     /// <summary>
-    /// ÏÂÔØÔ´
+    /// ä¸‹è½½æº
     /// </summary>
     public SourceType SourceType;
     /// <summary>
-    /// ÍøÖ·
+    /// ç½‘å€
     /// </summary>
     public string Url;
     /// <summary>
-    /// Í¼±êÍøÖ·
-    /// </summary>
-    public string IconUrl;
-    /// <summary>
-    /// McmodĞÅÏ¢
+    /// Mcmodä¿¡æ¯
     /// </summary>
     public McModSearchItemObj? McMod;
     /// <summary>
-    /// Í¼±êµØÖ·
+    /// å›¾æ ‡åœ°å€
     /// </summary>
     public string? Logo;
     /// <summary>
-    /// ÎÄ¼şID
+    /// æ–‡ä»¶ID
     /// </summary>
     public string ID;
 
     /// <summary>
-    /// ÏîÄ¿ID
+    /// é¡¹ç›®ID
     /// </summary>
     public string Pid;
 
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­¹Ø±Õ
+    /// æ˜¯å¦å·²ç»å…³é—­
     /// </summary>
     private bool _close;
 
@@ -261,7 +257,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// ±êĞÇ
+    /// æ ‡æ˜Ÿ
     /// </summary>
     [RelayCommand]
     public void DoStar()
@@ -274,7 +270,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// ´ò¿ªÍøÒ³
+    /// æ‰“å¼€ç½‘é¡µ
     /// </summary>
     [RelayCommand]
     public void OpenWeb()
@@ -286,7 +282,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// »ñÈ¡Í¼±ê
+    /// è·å–å›¾æ ‡
     /// </summary>
     /// <returns></returns>
     private async Task<Bitmap?> GetImage()
@@ -313,7 +309,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// °²×°
+    /// å®‰è£…
     /// </summary>
     public void Install()
     {
@@ -325,7 +321,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// Ñ¡Ôñ
+    /// é€‰æ‹©
     /// </summary>
     public void SetSelect()
     {
@@ -333,7 +329,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÉÏÒ»Ò³
+    /// ä¸Šä¸€é¡µ
     /// </summary>
     public void Back()
     {
@@ -341,7 +337,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÏÂÒ»Ò³
+    /// ä¸‹ä¸€é¡µ
     /// </summary>
     public void Next()
     {
@@ -349,7 +345,7 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
-    /// ÇåÀíÍ¼±ê
+    /// æ¸…ç†å›¾æ ‡
     /// </summary>
     public void Close()
     {

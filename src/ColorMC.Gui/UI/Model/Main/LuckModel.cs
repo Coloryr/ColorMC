@@ -1,4 +1,4 @@
-﻿using ColorMC.Gui.Manager;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Objs;
 

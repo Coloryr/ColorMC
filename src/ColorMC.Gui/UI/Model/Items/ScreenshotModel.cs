@@ -7,38 +7,38 @@ using ColorMC.Gui.UI.Model.GameEdit;
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
-/// 截图项目
+/// 鎴浘椤圭洰
 /// </summary>
 /// <param name="top"></param>
 /// <param name="obj"></param>
 public partial class ScreenshotModel(GameEditModel top, ScreenshotObj obj) : SelectItemModel
 {
     /// <summary>
-    /// 截图项目
+    /// 鎴浘椤圭洰
     /// </summary>
     public ScreenshotObj Obj => obj;
     /// <summary>
-    /// 截图路径
+    /// 鎴浘璺緞
     /// </summary>
     public string Screenshot => obj.File;
     /// <summary>
-    /// 游戏实例编辑
+    /// 娓告垙瀹炰緥缂栬緫
     /// </summary>
     public GameEditModel TopModel => top;
     /// <summary>
-    /// 名字
+    /// 鍚嶅瓧
     /// </summary>
     public string Name => obj.Name;
     /// <summary>
-    /// 图片
+    /// 鍥剧墖
     /// </summary>
     public Task<Bitmap> Image => GetImage();
     /// <summary>
-    /// 图片
+    /// 鍥剧墖
     /// </summary>
     private Bitmap _img;
     /// <summary>
-    /// 获取图片
+    /// 鑾峰彇鍥剧墖
     /// </summary>
     /// <returns></returns>
     private async Task<Bitmap> GetImage()
@@ -53,7 +53,7 @@ public partial class ScreenshotModel(GameEditModel top, ScreenshotObj obj) : Sel
     }
 
     /// <summary>
-    /// 选中文件
+    /// 閫変腑鏂囦欢
     /// </summary>
     public void Select()
     {
@@ -61,7 +61,7 @@ public partial class ScreenshotModel(GameEditModel top, ScreenshotObj obj) : Sel
     }
 
     /// <summary>
-    /// 清理图片
+    /// 娓呯悊鍥剧墖
     /// </summary>
     public void Close()
     {

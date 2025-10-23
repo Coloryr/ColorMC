@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using ColorMC.Core.Chunk;
 using ColorMC.Core.Nbt;

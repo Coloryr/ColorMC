@@ -316,7 +316,7 @@ public partial class AddGameModel : TopModel
         var list1 = new List<string>();
         list.ForEach(item =>
         {
-            if (!string.IsNullOrEmpty(item.Name) && InstancesPath.GetGame(item.UUID) == null)
+            if (!string.IsNullOrWhiteSpace(item.Name) && InstancesPath.GetGame(item.UUID) == null)
             {
                 list1.Add(item.Name);
             }

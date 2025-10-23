@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;

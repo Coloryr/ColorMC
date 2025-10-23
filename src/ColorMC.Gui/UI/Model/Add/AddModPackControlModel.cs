@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
@@ -18,116 +19,112 @@ using CommunityToolkit.Mvvm.Input;
 namespace ColorMC.Gui.UI.Model.Add;
 
 /// <summary>
-/// Ìí¼ÓÕûºÏ°ü
+/// æ·»åŠ æ•´åˆåŒ…
 /// </summary>
 public partial class AddModPackControlModel : TopModel, IAddControl
 {
     /// <summary>
-    /// ÏÂÔØÔ´ÁĞ±í
+    /// ä¸‹è½½æºåˆ—è¡¨
     /// </summary>
     public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
 
     /// <summary>
-    /// ÓÎÏ·°æ±¾ÁĞ±í
+    /// æ¸¸æˆç‰ˆæœ¬åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> GameVersionList { get; init; } = [];
     /// <summary>
-    /// ·ÖÀàÁĞ±í
+    /// åˆ†ç±»åˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> CategorieList { get; init; } = [];
     /// <summary>
-    /// ÅÅĞòÁĞ±í
+    /// æ’åºåˆ—è¡¨
     /// </summary>
     public ObservableCollection<string> SortTypeList { get; init; } = [];
     /// <summary>
-    /// ÏîÄ¿ÁĞ±í
+    /// é¡¹ç›®åˆ—è¡¨
     /// </summary>
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
 
     /// <summary>
-    /// ·ÖÀà
+    /// åˆ†ç±»
     /// </summary>
     private readonly Dictionary<int, string> _categories = [];
     /// <summary>
-    /// Ñ¡ÖĞµÄÏîÄ¿
+    /// é€‰ä¸­çš„é¡¹ç›®
     /// </summary>
     private FileItemModel? _last;
     /// <summary>
-    /// ÊÇ·ñÔÚ¼ÓÔØ
+    /// æ˜¯å¦åœ¨åŠ è½½
     /// </summary>
     private bool _load = false;
     /// <summary>
-    /// ÊÇ·ñ¹Ø±Õ
+    /// æ˜¯å¦å…³é—­
     /// </summary>
     private bool _close = false;
-    /// <summary>
-    /// ÉÏÒ»¸öÏÂÔØID
-    /// </summary>
-    private string? _lastId;
 
     /// <summary>
-    /// ÏÂÔØÔ´
+    /// ä¸‹è½½æº
     /// </summary>
     [ObservableProperty]
     private int _source = -1;
     /// <summary>
-    /// ·ÖÀà
+    /// åˆ†ç±»
     /// </summary>
     [ObservableProperty]
     private int _categorie;
     /// <summary>
-    /// ÅÅĞò
+    /// æ’åº
     /// </summary>
     [ObservableProperty]
     private int _sortType;
     /// <summary>
-    /// µ±Ç°Ò³Êı
+    /// å½“å‰é¡µæ•°
     /// </summary>
     [ObservableProperty]
     private int? _page = 0;
     /// <summary>
-    /// ×î´óÒ³Êı
+    /// æœ€å¤§é¡µæ•°
     /// </summary>
     [ObservableProperty]
     private int _maxPage;
     /// <summary>
-    /// ÓÎÏ·°æ±¾
+    /// æ¸¸æˆç‰ˆæœ¬
     /// </summary>
     [ObservableProperty]
     private string? _gameVersion;
     /// <summary>
-    /// ËÑË÷ÎÄ±¾
+    /// æœç´¢æ–‡æœ¬
     /// </summary>
     [ObservableProperty]
     private string? _text;
     /// <summary>
-    /// ÊÇ·ñÑ¡ÖĞÁËÏîÄ¿
+    /// æ˜¯å¦é€‰ä¸­äº†é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private bool _isSelect = false;
     /// <summary>
-    /// ÊÇ·ñÃ»ÓĞÏîÄ¿
+    /// æ˜¯å¦æ²¡æœ‰é¡¹ç›®
     /// </summary>
     [ObservableProperty]
     private bool _emptyDisplay = true;
     /// <summary>
-    /// ÊÇ·ñÏÂÔØÔ´¼ÓÔØÊı¾İ
+    /// æ˜¯å¦ä¸‹è½½æºåŠ è½½æ•°æ®
     /// </summary>
     [ObservableProperty]
     private bool _sourceLoad;
     /// <summary>
-    /// ÊÇ·ñÔÊĞíÏÂÒ»Ò³
+    /// æ˜¯å¦å…è®¸ä¸‹ä¸€é¡µ
     /// </summary>
     [ObservableProperty]
     private bool _enableNextPage;
 
     /// <summary>
-    /// ÊÇ·ñÒÑ¾­ÏÔÊ¾
+    /// æ˜¯å¦å·²ç»æ˜¾ç¤º
     /// </summary>
     public bool Display { get; set; }
 
     /// <summary>
-    /// ÊÇ·ñ¼ÌĞøÌí¼Ó
+    /// æ˜¯å¦ç»§ç»­æ·»åŠ 
     /// </summary>
     private bool _keep = false;
 
@@ -139,7 +136,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ·ÖÀà¸Ä±ä
+    /// åˆ†ç±»æ”¹å˜
     /// </summary>
     /// <param name="value"></param>
     partial void OnCategorieChanged(int value)
@@ -153,7 +150,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÅÅĞò¸Ä±ä
+    /// æ’åºæ”¹å˜
     /// </summary>
     /// <param name="value"></param>
     partial void OnSortTypeChanged(int value)
@@ -167,7 +164,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÓÎÏ·°æ±¾¸Ä±ä
+    /// æ¸¸æˆç‰ˆæœ¬æ”¹å˜
     /// </summary>
     /// <param name="value"></param>
     partial void OnGameVersionChanged(string? value)
@@ -183,7 +180,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ò³Êı¸Ä±ä
+    /// é¡µæ•°æ”¹å˜
     /// </summary>
     /// <param name="value"></param>
     partial void OnPageChanged(int? value)
@@ -195,7 +192,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÏÂÔØÔ´¸Ä±ä
+    /// ä¸‹è½½æºæ”¹å˜
     /// </summary>
     /// <param name="value"></param>
     partial void OnSourceChanged(int value)
@@ -204,7 +201,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ñ¡ÖĞÏîÄ¿
+    /// é€‰ä¸­é¡¹ç›®
     /// </summary>
     [RelayCommand]
     public void Select()
@@ -219,7 +216,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ë¢ĞÂÏîÄ¿ÁĞ±í
+    /// åˆ·æ–°é¡¹ç›®åˆ—è¡¨
     /// </summary>
     [RelayCommand]
     public void Reload()
@@ -234,7 +231,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÏÂÔØËùÑ¡ÏîÄ¿
+    /// ä¸‹è½½æ‰€é€‰é¡¹ç›®
     /// </summary>
     /// <returns></returns>
     [RelayCommand]
@@ -252,7 +249,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ¼ÓÔØËÑË÷Ô´Êı¾İ
+    /// åŠ è½½æœç´¢æºæ•°æ®
     /// </summary>
     public async void LoadSourceData()
     {
@@ -327,7 +324,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ñ¡ÖĞÏîÄ¿
+    /// é€‰ä¸­é¡¹ç›®
     /// </summary>
     /// <param name="last"></param>
     public void SetSelect(FileItemModel last)
@@ -342,16 +339,16 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ¿ªÊ¼°²×°ÏîÄ¿
+    /// å¼€å§‹å®‰è£…é¡¹ç›®
     /// </summary>
-    public void Install()
+    private void Install()
     {
         DisplayVersion = true;
         LoadVersion();
     }
 
     /// <summary>
-    /// °²×°°ü½âÑ¹
+    /// å®‰è£…åŒ…è§£å‹
     /// </summary>
     /// <param name="text"></param>
     /// <param name="size"></param>
@@ -363,9 +360,9 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÇëÇóÏÔÊ¾ÄÚÈİ£¬²¢È·¶¨·µ»ØÖµ
+    /// è¯·æ±‚æ˜¾ç¤ºå†…å®¹ï¼Œå¹¶ç¡®å®šè¿”å›å€¼
     /// </summary>
-    /// <param name="text">ÄÚÈİ</param>
+    /// <param name="text">å†…å®¹</param>
     /// <returns></returns>
     private async Task<bool> GameRequest(string text)
     {
@@ -376,9 +373,9 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÇëÇóÓÎÏ·ÊµÀı¸²¸Ç
+    /// è¯·æ±‚æ¸¸æˆå®ä¾‹è¦†ç›–
     /// </summary>
-    /// <param name="obj">ĞèÒª¸²¸ÇµÄÓÎÏ·ÊµÀı</param>
+    /// <param name="obj">éœ€è¦è¦†ç›–çš„æ¸¸æˆå®ä¾‹</param>
     /// <returns></returns>
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
@@ -390,7 +387,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ìí¼Ó½ø¶È
+    /// æ·»åŠ è¿›åº¦
     /// </summary>
     /// <param name="state"></param>
     private void PackState(CoreRunState state)
@@ -429,7 +426,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ½ø¶ÈÌõ
+    /// è¿›åº¦æ¡
     /// </summary>
     /// <param name="size"></param>
     /// <param name="now"></param>
@@ -439,7 +436,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// Ìí¼ÓÍê³É
+    /// æ·»åŠ å®Œæˆ
     /// </summary>
     private async void Done(string? uuid)
     {
@@ -467,7 +464,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ¼ÓÔØËÑË÷Ô´ĞÅÏ¢Ê§°Ü
+    /// åŠ è½½æœç´¢æºä¿¡æ¯å¤±è´¥
     /// </summary>
     private async void LoadFail()
     {
@@ -489,11 +486,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ¼ÓÔØÏîÄ¿ÁĞ±í
+    /// åŠ è½½é¡¹ç›®åˆ—è¡¨
     /// </summary>
     private async void Load()
     {
-        //MO²»ÔÊĞíÉÙÎÄ×ÖËÑË÷
+        //MOä¸å…è®¸å°‘æ–‡å­—æœç´¢
         if (Source == 1 && Categorie == 4 && Text?.Length < 3)
         {
             Model.Show(App.Lang("AddModPackWindow.Error6"));
@@ -505,7 +502,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
-        //ÖÆ×÷·ÖÒ³
+        //åˆ¶ä½œåˆ†é¡µ
         if (Source == 0)
         {
             MaxPage = res.Count / 20;
@@ -528,7 +525,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         DisplayList.Clear();
 
-        //Ò»Ò³20
+        //ä¸€é¡µ20
         int b = 0;
         for (int a = 0; a < data.Count; a++, b++)
         {
@@ -537,6 +534,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
                 break;
             }
             var item = data[a];
+            item.IsDownload = InstancesPath.Games.Any(item1 => item1.ModPack && item1.PID == item.Pid);
             item.Add = this;
             DisplayList.Add(item);
         }
@@ -552,7 +550,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// °²×°ËùÑ¡ÏîÄ¿
+    /// å®‰è£…æ‰€é€‰é¡¹ç›®
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileItemModel item)
@@ -562,7 +560,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÇåÀíÏîÄ¿ÁĞ±í
+    /// æ¸…ç†é¡¹ç›®åˆ—è¡¨
     /// </summary>
     private void ClearList()
     {
@@ -574,7 +572,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÉÏÒ»Ò³
+    /// ä¸Šä¸€é¡µ
     /// </summary>
     public void Back()
     {
@@ -587,7 +585,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ÏÂÒ»Ò³
+    /// ä¸‹ä¸€é¡µ
     /// </summary>
     public void Next()
     {
@@ -600,7 +598,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// F5ÖØÔØ°æ±¾ÁĞ±í
+    /// F5é‡è½½ç‰ˆæœ¬åˆ—è¡¨
     /// </summary>
     public void ReloadF5()
     {
@@ -634,10 +632,10 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     }
 
     /// <summary>
-    /// ×ªµ½ÏÂÔØÀàĞÍ
+    /// è½¬åˆ°ä¸‹è½½ç±»å‹
     /// </summary>
-    /// <param name="type">ÏÂÔØÔ´</param>
-    /// <param name="pid">ÏîÄ¿ID</param>
+    /// <param name="type">ä¸‹è½½æº</param>
+    /// <param name="pid">é¡¹ç›®ID</param>
     public async void GoFile(SourceType type, string pid)
     {
         Source = (int)type;
@@ -649,12 +647,10 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             }
         });
 
-        _lastId = pid;
-
         _load = true;
         PageDownload = 0;
         DisplayVersion = true;
-        LoadVersion();
+        LoadVersion(type, pid);
         _load = false;
     }
 }
