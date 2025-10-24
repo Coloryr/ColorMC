@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core;
+namespace ColorMC.Core;
 
 public static class Names
 {

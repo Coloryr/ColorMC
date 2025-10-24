@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;

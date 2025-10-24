@@ -5,12 +5,12 @@ using System.Text;
 namespace ColorMC.Core.Net.Motd;
 
 /// <summary>
-/// Motd¿Í»§¶Ë Ä£Äânetty´¦ÀíÊı¾İ
+/// Motdå®¢æˆ·ç«¯ æ¨¡æ‹Ÿnettyå¤„ç†æ•°æ®
 /// </summary>
 public class ProtocolHandler(TcpClient tcp)
 {
     /// <summary>
-    /// ¼ÆÊ±Æ÷£¬ÓÃÓÚ¼ÆËãÑÓ³Ù
+    /// è®¡æ—¶å™¨ï¼Œç”¨äºè®¡ç®—å»¶è¿Ÿ
     /// </summary>
     public Stopwatch PingWatcher = new();
 
@@ -21,7 +21,7 @@ public class ProtocolHandler(TcpClient tcp)
         while (read < offset)
         {
             count++;
-            //ÇëÇó³¬Ê±
+            //è¯·æ±‚è¶…æ—¶
             if (count > 20)
             {
                 throw new Exception("read fail");

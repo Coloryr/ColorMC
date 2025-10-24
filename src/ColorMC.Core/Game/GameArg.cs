@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;

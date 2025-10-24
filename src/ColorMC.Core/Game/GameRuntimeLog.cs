@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

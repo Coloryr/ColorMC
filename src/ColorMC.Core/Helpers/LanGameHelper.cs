@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.Helpers;
+namespace ColorMC.Core.Helpers;
 
 /// <summary>
 /// 局域网游戏处理

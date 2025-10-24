@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ColorMC;
