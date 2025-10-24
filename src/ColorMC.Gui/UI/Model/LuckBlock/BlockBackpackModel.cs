@@ -11,17 +11,17 @@ using CommunityToolkit.Mvvm.Input;
 namespace ColorMC.Gui.UI.Model.LuckBlock;
 
 /// <summary>
-/// ·½¿é±³°ü½çÃæ
+/// æ–¹å—èƒŒåŒ…ç•Œé¢
 /// </summary>
 public partial class BlockBackpackModel : TopModel, IBlockTop
 {
     /// <summary>
-    /// ·½¿éÁĞ±í
+    /// æ–¹å—åˆ—è¡¨
     /// </summary>
     public ObservableCollection<BlockItemModel> Blocks { get; init; } = [];
 
     /// <summary>
-    /// ÊÇ·ñÃ»ÓĞ·½¿éÁĞ±í
+    /// æ˜¯å¦æ²¡æœ‰æ–¹å—åˆ—è¡¨
     /// </summary>
     [ObservableProperty]
     private bool _isEmpty;
@@ -38,7 +38,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     }
 
     /// <summary>
-    /// ¼ÓÔØ·½¿éÁĞ±í
+    /// åŠ è½½æ–¹å—åˆ—è¡¨
     /// </summary>
     public async void Load()
     {
@@ -74,9 +74,9 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     }
 
     /// <summary>
-    /// ÓÒ¼üÊ¹ÓÃ¸Ä·½¿é
+    /// å³é”®ä½¿ç”¨æ”¹æ–¹å—
     /// </summary>
-    /// <param name="model">·½¿é</param>
+    /// <param name="model">æ–¹å—</param>
     public async void Use(BlockItemModel model)
     {
         var list = InstancesPath.Games;

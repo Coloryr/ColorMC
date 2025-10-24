@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Login;
 

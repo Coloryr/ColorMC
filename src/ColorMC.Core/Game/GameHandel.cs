@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Text;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;

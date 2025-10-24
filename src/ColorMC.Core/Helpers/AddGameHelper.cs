@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.Downloader;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;

@@ -85,7 +85,6 @@
                 Background="Transparent"
                 BorderThickness="0"
                 Command="{Binding LaunchAll}"
-                IsVisible="{Binding !IsPhone}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text132}">
                 <svg:SvgControl Path="/Resource/Icon/launch.svg" />
             </Button>
