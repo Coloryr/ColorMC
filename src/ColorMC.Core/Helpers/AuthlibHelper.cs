@@ -113,7 +113,7 @@ public static class AuthlibHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Error8"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error11"), e);
             return new MakeDownloadItemRes
             {
                 State = false
@@ -235,7 +235,7 @@ public static class AuthlibHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Error11"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error13"), e);
             return new MakeDownloadItemRes
             {
                 State = false

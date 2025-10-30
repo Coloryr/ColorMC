@@ -159,7 +159,7 @@ public static class DownloadManager
         var task = new DownloadTask(arg);
         s_tasks.Add(task);
 
-        Logs.Info(LanguageHelper.Get("Core.Http.Info4"));
+        Logs.Info(LanguageHelper.Get("Core.Info9"));
 
         var names = new List<string>();
         //装填下载内容
@@ -192,7 +192,7 @@ public static class DownloadManager
     private static void InitThread()
     {
         Stop();
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info1"), ConfigUtils.Config.Http!.DownloadThread));
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Info8"), ConfigUtils.Config.Http!.DownloadThread));
         for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
         {
             s_threads.Add(new DownloadThread(a));

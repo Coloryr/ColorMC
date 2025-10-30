@@ -51,7 +51,7 @@ internal class DownloadThread
     /// <param name="e">错误内容</param>
     private static void Error(FileItemObj item, Exception e)
     {
-        Logs.Error(string.Format(LanguageHelper.Get("Core.Http.Error1"), item.Name), e);
+        Logs.Error(string.Format(LanguageHelper.Get("Core.Error4"), item.Name), e);
     }
 
     /// <summary>
@@ -263,7 +263,7 @@ internal class DownloadThread
             {
                 item.File.State = DownloadItemState.Error;
                 item.Task.UpdateItem(_index, item.File);
-                Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
                 return true;
             }
             if (!string.IsNullOrWhiteSpace(item.File.Md5))
@@ -273,7 +273,7 @@ internal class DownloadThread
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
                     return true;
                 }
             }
@@ -284,7 +284,7 @@ internal class DownloadThread
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
                     return true;
                 }
             }
@@ -295,7 +295,7 @@ internal class DownloadThread
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Http.Error10")));
+                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
                     return true;
                 }
             }

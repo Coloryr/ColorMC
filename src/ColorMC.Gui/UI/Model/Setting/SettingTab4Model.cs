@@ -27,11 +27,6 @@ public partial class SettingModel
     [ObservableProperty]
     private string? _postCmd;
     /// <summary>
-    /// GC参数
-    /// </summary>
-    [ObservableProperty]
-    private string? _gCArg;
-    /// <summary>
     /// JavaAgent参数
     /// </summary>
     [ObservableProperty]
@@ -117,11 +112,6 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _safeLog4j;
-    /// <summary>
-    /// 是否使用自定义GC
-    /// </summary>
-    [ObservableProperty]
-    private bool _customGc;
     /// <summary>
     /// 是否同时启动游戏
     /// </summary>
@@ -294,13 +284,6 @@ public partial class SettingModel
 
     partial void OnGCChanged(GCType value)
     {
-        CustomGc = value == GCType.User;
-
-        SetGc();
-    }
-
-    partial void OnGCArgChanged(string? value)
-    {
         SetGc();
     }
 
@@ -353,14 +336,13 @@ public partial class SettingModel
         var config = ConfigUtils.Config;
         if (config is { } con)
         {
-            GC = con.DefaultJvmArg.GC ?? GCType.G1GC;
+            GC = con.DefaultJvmArg.GC ?? GCType.Auto;
 
             MinMemory = con.DefaultJvmArg.MinMemory;
             MaxMemory = con.DefaultJvmArg.MaxMemory;
             Width = con.Window.Width;
             Height = con.Window.Height;
 
-            GCArg = con.DefaultJvmArg.GCArgument;
             JavaAgent = con.DefaultJvmArg.JavaAgent;
             JvmArg = con.DefaultJvmArg.JvmArgs;
             GameArg = con.DefaultJvmArg.GameArgs;
@@ -435,7 +417,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetGc(GC, GCArg);
+        ConfigBinding.SetGc(GC);
     }
 
     private void SetArg()

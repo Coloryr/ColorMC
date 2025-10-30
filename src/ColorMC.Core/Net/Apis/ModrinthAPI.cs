@@ -86,7 +86,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error28"), e);
             return null;
         }
     }
@@ -162,7 +162,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error29"), e);
             return null;
         }
     }
@@ -182,7 +182,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error29"), e);
             return null;
         }
     }
@@ -215,7 +215,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error30"), e);
             return null;
         }
     }
@@ -233,7 +233,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error31"), e);
             return null;
         }
     }
@@ -252,7 +252,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error32"), e);
             return null;
         }
     }
@@ -272,7 +272,7 @@ public static class ModrinthAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Modrinth.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error32"), e);
             return null;
         }
     }

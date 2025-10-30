@@ -74,7 +74,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error21"), e);
             return null;
         }
     }
@@ -171,7 +171,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error22"), e);
             return null;
         }
     }
@@ -195,7 +195,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error23"), e);
             return null;
         }
     }
@@ -217,7 +217,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error7"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error27"), e);
             return null;
         }
     }
@@ -238,7 +238,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error24"), e);
             return null;
         }
     }
@@ -259,7 +259,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error25"), e);
             return null;
         }
     }
@@ -288,7 +288,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
             return null;
         }
     }
@@ -316,7 +316,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
             return null;
         }
     }
@@ -343,7 +343,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.CurseForge.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
             return null;
         }
     }

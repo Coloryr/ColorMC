@@ -36,7 +36,7 @@ public static class ConfigUtils
     /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool quit = false)
     {
-        Logs.Info(LanguageHelper.Get("Core.Config.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Info4"));
 
         using var data = PathHelper.OpenRead(local);
         ConfigObj? obj = null;
@@ -60,7 +60,7 @@ public static class ConfigUtils
             }
             catch (Exception e)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Config.Error1"), e, true);
+                ColorMCCore.OnError(LanguageHelper.Get("Core.Error1"), e, true);
             }
         }
 
@@ -71,7 +71,7 @@ public static class ConfigUtils
             {
                 return false;
             }
-            Logs.Warn(LanguageHelper.Get("Core.Config.Warn1"));
+            Logs.Warn(LanguageHelper.Get("Core.Info6"));
 
             Config = MakeDefaultConfig();
         }
@@ -107,7 +107,7 @@ public static class ConfigUtils
     /// </summary>
     public static void Save()
     {
-        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
+        Logs.Info(LanguageHelper.Get("Core.Info5"));
         ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameConfigFile, s_local, Config, JsonType.ConfigObj));
     }
 
@@ -116,7 +116,7 @@ public static class ConfigUtils
     /// </summary>
     public static void SaveNow()
     {
-        Logs.Info(LanguageHelper.Get("Core.Config.Info2"));
+        Logs.Info(LanguageHelper.Get("Core.Info5"));
         File.WriteAllText(s_local, JsonUtils.ToString(Config, JsonType.ConfigObj));
     }
 

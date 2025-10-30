@@ -274,13 +274,11 @@ public static class ConfigBinding
     /// 设置GC
     /// </summary>
     /// <param name="gc"></param>
-    /// <param name="arg"></param>
-    public static void SetGc(GCType gc, string? arg)
+    public static void SetGc(GCType gc)
     {
         ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
         var jvm = ConfigUtils.Config.DefaultJvmArg;
         jvm.GC = gc;
-        jvm.GCArgument = arg;
         ConfigUtils.Save();
     }
 

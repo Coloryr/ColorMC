@@ -40,11 +40,6 @@ public partial class GameEditModel
     [ObservableProperty]
     private string? _jvmName;
     /// <summary>
-    /// Java GC内容
-    /// </summary>
-    [ObservableProperty]
-    private string? _jvmGc;
-    /// <summary>
     /// 启动前执行
     /// </summary>
     [ObservableProperty]
@@ -124,7 +119,7 @@ public partial class GameEditModel
     /// GC类型
     /// </summary>
     [ObservableProperty]
-    private int? _gc;
+    private GCType? _gc;
     /// <summary>
     /// 最小内存
     /// </summary>
@@ -151,11 +146,6 @@ public partial class GameEditModel
     [ObservableProperty]
     private int _titleDelay;
 
-    /// <summary>
-    /// 是否启用自定义GC
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableGc;
     /// <summary>
     /// 是否启用自定义Java
     /// </summary>
@@ -598,7 +588,7 @@ public partial class GameEditModel
         _obj.Save();
     }
 
-    partial void OnJvmGcChanged(string? value)
+    partial void OnGcChanged(GCType? value)
     {
         if (_configLoad)
         {
@@ -606,21 +596,7 @@ public partial class GameEditModel
         }
 
         _obj.JvmArg ??= new();
-        _obj.JvmArg.GCArgument = JvmGc;
-        _obj.Save();
-    }
-
-    partial void OnGcChanged(int? value)
-    {
-        EnableGc = Gc == 5;
-
-        if (_configLoad)
-        {
-            return;
-        }
-
-        _obj.JvmArg ??= new();
-        _obj.JvmArg.GC = Gc == 0 ? null : (GCType?)(Gc - 1);
+        _obj.JvmArg.GC = value;
         _obj.Save();
     }
 
@@ -687,12 +663,11 @@ public partial class GameEditModel
         var config = _obj.JvmArg;
         if (config != null)
         {
-            Gc = config.GC == null ? 0 : (int)(config.GC + 1);
+            Gc = config.GC;
 
             MinMem = config.MinMemory == null ? null : config.MinMemory;
             MaxMem = config.MaxMemory == null ? null : config.MaxMemory;
 
-            JvmGc = config.GCArgument;
             JavaAgent = config.JavaAgent;
             JvmArg = config.JvmArgs;
             GameArg = config.GameArgs;
@@ -712,7 +687,6 @@ public partial class GameEditModel
             Gc = 0;
             MinMem = null;
             MaxMem = null;
-            JvmGc = null;
             JavaAgent = null;
             JvmArg = null;
             GameArg = null;

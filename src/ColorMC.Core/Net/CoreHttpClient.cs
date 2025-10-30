@@ -42,10 +42,10 @@ public static class CoreHttpClient
         var http = ConfigUtils.Config.Http;
         var dns = ConfigUtils.Config.Dns;
 
-        Logs.Info(LanguageHelper.Get("Core.Http.Info5"));
+        Logs.Info(LanguageHelper.Get("Core.Info10"));
         if (http.DownloadProxy || http.GameProxy || http.LoginProxy)
         {
-            Logs.Info(string.Format(LanguageHelper.Get("Core.Http.Info6"),
+            Logs.Info(string.Format(LanguageHelper.Get("Core.Info11"),
                http.ProxyIP, http.ProxyPort));
         }
 

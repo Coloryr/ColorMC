@@ -18,7 +18,7 @@ public static class FabricAPI
         var data = await CoreHttpClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
                 new Exception(url), false);
             return null;
         }
@@ -58,7 +58,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error33"), e);
             return null;
         }
     }
@@ -91,7 +91,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error34"), e);
             return null;
         }
     }
@@ -124,7 +124,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Fabric.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error35"), e);
             return null;
         }
     }

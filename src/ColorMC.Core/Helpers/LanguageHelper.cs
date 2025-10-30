@@ -217,11 +217,10 @@ public static class LanguageHelper
     {
         return state switch
         {
+            GCType.Auto => Get("Type.GCType.Auto"),
             GCType.G1GC => Get("Type.GCType.G1GC"),
-            GCType.SerialGC => Get("Type.GCType.SerialGC"),
-            GCType.ParallelGC => Get("Type.GCType.ParallelGC"),
-            GCType.CMSGC => Get("Type.GCType.CMSGC"),
-            GCType.User => Get("Type.GCType.User"),
+            GCType.ZGC => Get("Type.GCType.ZGC"),
+            GCType.None => Get("Type.GCType.None"),
             _ => Get("Type.GCType.Other")
         };
     }

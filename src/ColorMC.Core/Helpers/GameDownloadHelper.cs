@@ -666,7 +666,7 @@ public static class GameDownloadHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Forge.Error4"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error18"), e, false);
             return null;
         }
 
@@ -707,7 +707,7 @@ public static class GameDownloadHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error15"), e);
                 return null;
             }
 
@@ -729,7 +729,7 @@ public static class GameDownloadHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error16"), e);
                 return null;
             }
 
@@ -796,7 +796,7 @@ public static class GameDownloadHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error17"), e);
             return null;
         }
     }
@@ -1152,7 +1152,7 @@ public static class GameDownloadHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Forge.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error17"), e);
         }
 
         return new MakeDownloadNameItemsRes

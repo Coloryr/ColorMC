@@ -119,4 +119,20 @@ public static class Names
     public const string NameNeoTomlFile = "META-INF/neoforge.mods.toml";
     public const string NameNeoToml1File = "neoforge.mods.toml";
     public const string NameModJarJarDir = "META-INF/jarjar/";
+
+    public static readonly string[] NameGCArgG1GC = 
+    [
+        "-XX:+UseG1GC", 
+        "-XX:MaxGCPauseMillis=200", 
+        "-XX:G1NewSizePercent=30",
+        "-XX:G1MaxNewSizePercent=40",
+        "-XX:InitiatingHeapOccupancyPercent=35",
+        "-XX:ConcGCThreads=4",
+        "-XX:ParallelGCThreads=8"
+    ];
+    public static readonly string[] NameGCZGC = 
+    [
+        "-XX:+UseZGC", 
+        "-XX:+ZGenerational"
+    ];
 }

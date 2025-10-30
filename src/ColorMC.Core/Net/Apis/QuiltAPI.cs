@@ -21,7 +21,7 @@ public static class QuiltAPI
         var data = await CoreHttpClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
                 new Exception(url), false);
             return null;
         }
@@ -43,7 +43,7 @@ public static class QuiltAPI
             using var data = await CoreHttpClient.GetAsync(url);
             if (data.StatusCode != HttpStatusCode.OK)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+                ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
                     new Exception(url), false);
                 return null;
             }
@@ -66,7 +66,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error36"), e);
             return null;
         }
     }
@@ -84,7 +84,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error37"), e);
             return null;
         }
     }
@@ -114,7 +114,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error3"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error38"), e);
             return null;
         }
     }
@@ -133,7 +133,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Quilt.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error39"), e);
             return null;
         }
     }

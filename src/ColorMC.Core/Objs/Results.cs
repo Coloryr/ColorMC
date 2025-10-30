@@ -393,3 +393,18 @@ public record SupportLoaderRes
     /// </summary>
     public List<Loaders> Fail;
 }
+
+/// <summary>
+/// Jvm参数返回
+/// </summary>
+public record JvmArgRes
+{
+    /// <summary>
+    /// Jvm参数
+    /// </summary>
+    public List<string> Args;
+    /// <summary>
+    /// 是否使用asm
+    /// </summary>
+    public bool Asm;
+}

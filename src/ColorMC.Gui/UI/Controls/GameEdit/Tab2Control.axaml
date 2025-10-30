@@ -242,11 +242,6 @@
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding Gc}" />
                     </panel:WrapPanelWithStretch>
-                    <TextBox
-                        Margin="0,0,0,10"
-                        IsEnabled="{Binding EnableGc}"
-                        Text="{Binding JvmGc}"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text3}" />
                     <!--  Jvm附加参数  -->
                     <TextBox
                         Margin="0,0,0,10"

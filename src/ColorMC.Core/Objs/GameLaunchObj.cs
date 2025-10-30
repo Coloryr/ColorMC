@@ -13,7 +13,7 @@ public record GameLaunchObj
     public readonly List<FileItemObj> InstallerLibs = [];
     public readonly List<string> JvmArgs = [];
     public readonly List<string> GameArgs = [];
-    public readonly HashSet<int> JavaVersions = [];
+    public readonly SortedSet<int> JavaVersions = [];
     public string MainClass;
     public string NativeDir;
     public string UUID;
