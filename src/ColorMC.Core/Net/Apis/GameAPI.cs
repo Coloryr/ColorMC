@@ -15,7 +15,7 @@ public static class GameAPI
         var data = await CoreHttpClient.GetAsync(url);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.Error7"),
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
                 new Exception(url), false);
             return null;
         }
@@ -49,7 +49,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error7"), e);
             return null;
         }
     }
@@ -80,7 +80,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Error5"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error8"), e);
             return null;
         }
     }
@@ -111,7 +111,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Error6"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error9"), e);
             return null;
         }
     }

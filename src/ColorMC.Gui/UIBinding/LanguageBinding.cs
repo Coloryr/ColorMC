@@ -63,12 +63,10 @@ public static class LanguageBinding
     {
         return
         [
-            "",
+            GCType.Auto.GetName(),
             GCType.G1GC.GetName(),
-            GCType.SerialGC.GetName(),
-            GCType.ParallelGC.GetName(),
-            GCType.CMSGC.GetName(),
-            GCType.User.GetName()
+            GCType.ZGC.GetName(),
+            GCType.None.GetName()
         ];
     }
 

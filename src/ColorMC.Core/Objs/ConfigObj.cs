@@ -131,25 +131,21 @@ public record WindowSettingObj
 public enum GCType
 {
     /// <summary>
-    /// 默认G1垃圾回收器 兼容JAVA9
+    /// 自动选择
+    /// </summary>
+    Auto,
+    /// <summary>
+    /// G1垃圾回收器
     /// </summary>
     G1GC,
     /// <summary>
-    /// 串行垃圾回收器
+    /// 分代式GC
     /// </summary>
-    SerialGC,
+    ZGC,
     /// <summary>
-    /// 并行垃圾回收器
+    /// 不添加GC参数
     /// </summary>
-    ParallelGC,
-    /// <summary>
-    /// 并发标记扫描垃圾回收器
-    /// </summary>
-    CMSGC,
-    /// <summary>
-    /// 设置为空（手动设置）
-    /// </summary>
-    User
+    None
 }
 
 /// <summary>
@@ -173,10 +169,6 @@ public record RunArgObj
     /// 自定义游戏参数
     /// </summary>
     public string? GameArgs { get; set; }
-    /// <summary>
-    /// 自定义GC参数
-    /// </summary>
-    public string? GCArgument { get; set; }
     /// <summary>
     /// 自定义环境变量
     /// </summary>

@@ -512,7 +512,7 @@ public static class ServerPack
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Http.Error12"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error14"), e);
                 return false;
             }
             if (arg.Select != null && !await arg.Select(obj1.Text))

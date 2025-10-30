@@ -209,12 +209,6 @@
                                 SelectedIndex="{Binding GC}" />
                         </DockPanel>
                     </panel:WrapPanelWithStretch>
-                    <!--  Jvm参数  -->
-                    <TextBox
-                        Margin="0,0,10,10"
-                        IsEnabled="{Binding CustomGc}"
-                        Text="{Binding GCArg}"
-                        Watermark="{setting:Localize SettingWindow.Tab4.Text3}" />
                     <!--  Jvm附加参数  -->
                     <TextBox
                         Margin="0,0,10,10"

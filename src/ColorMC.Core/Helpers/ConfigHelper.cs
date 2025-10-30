@@ -18,7 +18,6 @@ public static class ConfigHelper
         {
             JvmArgs = arg.JvmArgs,
             GameArgs = arg.GameArgs,
-            GCArgument = arg.GCArgument,
             JvmEnv = arg.JvmEnv,
             GC = arg.GC,
             JavaAgent = arg.JavaAgent,

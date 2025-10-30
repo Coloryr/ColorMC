@@ -418,9 +418,10 @@ public static class GameArg
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="login">登录的账户</param>
+    /// <param name="java">JAVA主版本</param>
     /// <param name="mixinport">注入通信端口</param>
     /// <returns>Jvm参数</returns>
-    private static async Task<(List<string>, bool)> MakeJvmArgAsync(this GameSettingObj obj, LoginObj login, int? mixinport = null)
+    private static async Task<JvmArgRes> MakeJvmArgAsync(this GameSettingObj obj, LoginObj login, int java, int? mixinport = null)
     {
         RunArgObj? args;
 
@@ -433,7 +434,6 @@ public static class GameArg
             args = new RunArgObj
             {
                 JvmArgs = obj.JvmArg.JvmArgs ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
-                GCArgument = obj.JvmArg.GCArgument ?? ConfigUtils.Config.DefaultJvmArg.GCArgument,
                 GC = obj.JvmArg.GC ?? ConfigUtils.Config.DefaultJvmArg.GC,
                 JavaAgent = obj.JvmArg.JavaAgent ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
                 MaxMemory = obj.JvmArg.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
@@ -460,24 +460,28 @@ public static class GameArg
             jvm.Add($"-javaagent:{GameHelper.ColorMCASM.Local}");
         }
 
+        var gc = args.GC;
+
+        if (gc == GCType.Auto)
+        {
+            if (java >= 21)
+            {
+                gc = GCType.ZGC;
+            }
+            else
+            {
+                gc = GCType.G1GC;
+            }
+        }
+
         //gc
-        switch (args.GC)
+        switch (gc)
         {
             case GCType.G1GC:
-                jvm.Add("-XX:+UseG1GC");
+                jvm.AddRange(Names.NameGCArgG1GC);
                 break;
-            case GCType.SerialGC:
-                jvm.Add("-XX:+UseSerialGC");
-                break;
-            case GCType.ParallelGC:
-                jvm.Add("-XX:+UseParallelGC");
-                break;
-            case GCType.CMSGC:
-                jvm.Add("-XX:+UseConcMarkSweepGC");
-                break;
-            case GCType.User:
-                if (!string.IsNullOrWhiteSpace(args.GCArgument))
-                    jvm.Add(args.GCArgument.Trim());
+            case GCType.ZGC:
+                jvm.AddRange(Names.NameGCZGC);
                 break;
         }
 
@@ -540,7 +544,11 @@ public static class GameArg
         jvm.Add($"-Dcolormc.game.version={obj.Version}");
         jvm.Add($"-Dcolormc.game.dir={obj.GetGamePath()}");
 
-        return (jvm, useasm);
+        return new JvmArgRes
+        { 
+            Args = jvm,
+            Asm = useasm
+        };
     }
 
     /// <summary>
@@ -712,13 +720,6 @@ public static class GameArg
     {
         var arg = new GameLaunchObj();
 
-        //创建启动器自定义jvmarg
-        var jvmarg = await obj.MakeJvmArgAsync(arg1.Auth, arg1.Mixinport);
-        //创建启动器自定义gamearg
-        var gamearg = obj.MakeGameArg(arg1.World, arg1.Server);
-
-        arg.UseColorMCASM = jvmarg.Item2;
-
         void DoLibItem(FileItemObj item)
         {
             if (!string.IsNullOrWhiteSpace(item.Local))
@@ -861,7 +862,13 @@ public static class GameArg
                 arg.JvmArgs.AddRange(MakeLoaderJvmArg(v2, obj));
             }
 
-            arg.JvmArgs.AddRange(jvmarg.Item1);
+            //创建启动器自定义jvmarg
+            var jvmarg = await obj.MakeJvmArgAsync(arg1.Auth, arg.JavaVersions.First(), arg1.Mixinport);
+            //创建启动器自定义gamearg
+            var gamearg = obj.MakeGameArg(arg1.World, arg1.Server);
+            arg.UseColorMCASM = jvmarg.Asm;
+
+            arg.JvmArgs.AddRange(jvmarg.Args);
 
             if (obj.JvmArg?.RemoveGameArg != true)
             {
@@ -1042,7 +1049,13 @@ public static class GameArg
                 arg.JvmArgs.AddRange(s_v1JvmArg);
             }
 
-            arg.JvmArgs.AddRange(jvmarg.Item1);
+            //创建启动器自定义jvmarg
+            var jvmarg = await obj.MakeJvmArgAsync(arg1.Auth, arg.JavaVersions.First(), arg1.Mixinport);
+            //创建启动器自定义gamearg
+            var gamearg = obj.MakeGameArg(arg1.World, arg1.Server);
+            arg.UseColorMCASM = jvmarg.Asm;
+
+            arg.JvmArgs.AddRange(jvmarg.Args);
             arg.GameArgs.AddRange(gamearg);
 
             //log4j2-xml
