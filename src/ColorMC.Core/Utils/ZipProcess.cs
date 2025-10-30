@@ -142,7 +142,7 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
                         return false;
                     }
                     var res = await gameRequest.Invoke(string.Format(
-                        LanguageHelper.Get("Core.Zip.Info1"), e.Key));
+                        LanguageHelper.Get("Core.Info23"), e.Key));
                     if (!res)
                     {
                         return false;

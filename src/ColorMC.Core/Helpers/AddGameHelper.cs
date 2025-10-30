@@ -150,7 +150,7 @@ public static class AddGameHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
                 return new();
             }
         }
@@ -294,7 +294,7 @@ public static class AddGameHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
                 return new GameRes();
             }
         }
@@ -749,7 +749,7 @@ public static class AddGameHelper
                     Url = arg.Dir,
                     Overwrite = true,
                     Local = file,
-                    Name = LanguageHelper.Get("Core.Game.Info3")
+                    Name = LanguageHelper.Get("Core.Info22")
                 }]);
                 if (!res)
                 {
@@ -782,7 +782,7 @@ public static class AddGameHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Pack.Error2"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error50"), e, false);
         }
         finally
         {

@@ -50,13 +50,13 @@ public static class LittleSkin
         {
             if (select != null)
             {
-                var index = await select(LanguageHelper.Get("Core.Login.Info1"), [.. obj.Logins.Select(item => item.UserName)]);
+                var index = await select(LanguageHelper.Get("Core.Info19"), [.. obj.Logins.Select(item => item.UserName)]);
                 if (index >= obj.Logins.Count || index < 0)
                 {
                     return new()
                     {
                         State = LoginState.Error,
-                        Message = LanguageHelper.Get("Core.Login.Error23")
+                        Message = LanguageHelper.Get("Core.Error83")
                     };
                 }
                 var item = obj.Logins[index];

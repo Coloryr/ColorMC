@@ -156,7 +156,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Http.OptiFine.Error2"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error41"), e, false);
         }
 
         return null;
@@ -174,7 +174,7 @@ public static class OptifineAPI
         var data = await GetOptifineDownloadUrlAsync(item);
         if (data == null)
         {
-            return new() { Data = LanguageHelper.Get("Core.Http.OptiFine.Error3") };
+            return new() { Data = LanguageHelper.Get("Core.Error42") };
         }
 
         item1 = new()
@@ -190,7 +190,7 @@ public static class OptifineAPI
         var res = await DownloadManager.StartAsync([item1]);
         if (!res)
         {
-            return new() { Data = LanguageHelper.Get("Core.Http.OptiFine.Error4") };
+            return new() { Data = LanguageHelper.Get("Core.Error43") };
         }
         return new() { State = true };
     }

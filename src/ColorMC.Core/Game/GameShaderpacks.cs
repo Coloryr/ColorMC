@@ -83,7 +83,7 @@ public static class GameShaderpacks
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
+                    Logs.Error(LanguageHelper.Get("Core.Error87"), e);
                     ok = false;
                 }
             });

@@ -100,7 +100,7 @@ public static class JavaHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error57"), e);
             return null;
         }
     }
@@ -372,7 +372,7 @@ public static class JavaHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Jvm.Error10"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error57"), e);
                 ex = true;
             }
         });

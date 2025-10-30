@@ -41,7 +41,7 @@ public static class McloAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Mclo.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error48"), e);
             return null;
         }
     }

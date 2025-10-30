@@ -60,7 +60,7 @@ public static class Launch
         }
 
         stopwatch.Stop();
-        string temp = string.Format(LanguageHelper.Get("Core.Launch.Info4"),
+        string temp = string.Format(LanguageHelper.Get("Core.Info30"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
@@ -90,7 +90,7 @@ public static class Launch
         }, token);
 
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Launch.Info14"),
+        var temp = string.Format(LanguageHelper.Get("Core.Info39"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
@@ -107,7 +107,7 @@ public static class Launch
                 string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
         }
 
-        var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Launch.Info15"), obj.Name));
+        var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Info40"), obj.Name));
         if (!res2)
         {
             throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Launch.Error8"));
@@ -132,7 +132,7 @@ public static class Launch
         var arg1 = await obj.MakeArgAsync(larg, token);
         var res = await obj.CheckGameFileAsync(arg1, token);
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Launch.Info5"),
+        var temp = string.Format(LanguageHelper.Get("Core.Info31"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
@@ -151,7 +151,7 @@ public static class Launch
         bool download = true;
         if (ConfigUtils.Config.Http.AutoDownload == false && larg.Request != null)
         {
-            download = await larg.Request(LanguageHelper.Get("Core.Launch.Info12"));
+            download = await larg.Request(LanguageHelper.Get("Core.Info38"));
         }
 
         if (download)
@@ -169,7 +169,7 @@ public static class Launch
             }
 
             stopwatch.Stop();
-            temp = string.Format(LanguageHelper.Get("Core.Launch.Info7"),
+            temp = string.Format(LanguageHelper.Get("Core.Info33"),
                 obj.Name, stopwatch.Elapsed.ToString());
             ColorMCCore.OnGameLog(obj, temp);
             Logs.Info(temp);
@@ -432,7 +432,7 @@ public static class Launch
                 }
 
                 //打印Jvm参数
-                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
+                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info27"));
                 bool hidenext = false;
                 foreach (var item in arg)
                 {
@@ -453,7 +453,7 @@ public static class Launch
                     }
                 }
 
-                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
+                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info29"));
                 ColorMCCore.OnGameLog(obj, path);
 
                 if (cancel.IsCancellationRequested)
@@ -492,7 +492,7 @@ public static class Launch
             stopwatch.Start();
             var handel = new GameHandel(item1);
             stopwatch.Stop();
-            var temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
+            var temp = string.Format(LanguageHelper.Get("Core.Info32"),
                 item1.Obj.Name, stopwatch.Elapsed.ToString());
             ColorMCCore.OnGameLog(item1.Obj, temp);
             Logs.Info(temp);
@@ -673,7 +673,7 @@ public static class Launch
 
         var arg = obj.MakeRunArg(larg, arg1, true);
 
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info1"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info27"));
         bool hidenext = false;
         //打印参数
         foreach (var item in arg)
@@ -695,7 +695,7 @@ public static class Launch
             }
         }
 
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info3"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info29"));
         ColorMCCore.OnGameLog(obj, path);
 
         if (token.IsCancellationRequested)
@@ -729,14 +729,14 @@ public static class Launch
                 start = obj.ReplaceArg(path, arg, start);
                 obj.CmdRun(start, env, prerun, larg.Admin);
                 stopwatch.Stop();
-                string temp1 = string.Format(LanguageHelper.Get("Core.Launch.Info8"),
+                string temp1 = string.Format(LanguageHelper.Get("Core.Info34"),
                     obj.Name, stopwatch.Elapsed.ToString());
                 ColorMCCore.OnGameLog(obj, temp1);
                 Logs.Info(temp1);
             }
             else
             {
-                string temp2 = string.Format(LanguageHelper.Get("Core.Launch.Info10"),
+                string temp2 = string.Format(LanguageHelper.Get("Core.Info36"),
                     obj.Name);
                 ColorMCCore.OnGameLog(obj, temp2);
                 Logs.Info(temp2);
@@ -765,7 +765,7 @@ public static class Launch
             Admin = larg.Admin
         });
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Launch.Info6"),
+        var temp = string.Format(LanguageHelper.Get("Core.Info32"),
             obj.Name, stopwatch.Elapsed.ToString());
         ColorMCCore.OnGameLog(obj, temp);
         Logs.Info(temp);
@@ -791,12 +791,12 @@ public static class Launch
             start1 = obj.ReplaceArg(path, arg, start1);
             obj.CmdRun(start1, env, false, larg.Admin);
             stopwatch.Stop();
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info9"),
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Info35"),
                 obj.Name, stopwatch.Elapsed.ToString()));
         }
         else
         {
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Info11"),
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Info37"),
                 obj.Name));
         }
 

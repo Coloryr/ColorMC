@@ -42,7 +42,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.OAuth,
                     LoginState = res2.State,
-                    Message = LanguageHelper.Get("Core.Login.Error1")
+                    Message = LanguageHelper.Get("Core.Error62")
                 };
             }
             //Xbox登录
@@ -55,7 +55,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.XBox,
                     LoginState = res3.State,
-                    Message = LanguageHelper.Get("Core.Login.Error2")
+                    Message = LanguageHelper.Get("Core.Error63")
                 };
             }
             //XSTS登录
@@ -68,7 +68,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.XSTS,
                     LoginState = res4.State,
-                    Message = LanguageHelper.Get("Core.Login.Error3")
+                    Message = LanguageHelper.Get("Core.Error64")
                 };
             }
             //获取mojang token
@@ -81,7 +81,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res5.State,
-                    Message = LanguageHelper.Get("Core.Login.Error4")
+                    Message = LanguageHelper.Get("Core.Error65")
                 };
             }
             //获取minecraft账户
@@ -93,7 +93,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Profile,
                     LoginState = LoginState.DataError,
-                    Message = LanguageHelper.Get("Core.Login.Error5")
+                    Message = LanguageHelper.Get("Core.Error66")
                 };
             }
 
@@ -113,7 +113,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error6");
+            var text = LanguageHelper.Get("Core.Error67");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -159,7 +159,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.OAuth,
                     LoginState = res1.State,
-                    Message = LanguageHelper.Get("Core.Login.Error1")
+                    Message = LanguageHelper.Get("Core.Error62")
                 };
             }
             var res2 = await OAuthApi.GetXBLAsync(res1.Obj!.AccessToken);
@@ -169,7 +169,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.XBox,
                     LoginState = res1.State,
-                    Message = LanguageHelper.Get("Core.Login.Error2")
+                    Message = LanguageHelper.Get("Core.Error63")
                 };
             }
             var res3 = await OAuthApi.GetXSTSAsync(res2.XBLToken!);
@@ -179,7 +179,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.XSTS,
                     LoginState = res3.State,
-                    Message = LanguageHelper.Get("Core.Login.Error3")
+                    Message = LanguageHelper.Get("Core.Error64")
                 };
             }
             var res4 = await MinecraftAPI.GetMinecraftAsync(res3.XSTSUhs!, res3.XSTSToken!);
@@ -189,7 +189,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res4.State,
-                    Message = LanguageHelper.Get("Core.Login.Error4")
+                    Message = LanguageHelper.Get("Core.Error65")
                 };
             }
 
@@ -200,7 +200,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Profile,
                     LoginState = LoginState.Error,
-                    Message = LanguageHelper.Get("Core.Login.Error5")
+                    Message = LanguageHelper.Get("Core.Error66")
                 };
             }
 
@@ -218,7 +218,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error8");
+            var text = LanguageHelper.Get("Core.Error68");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -248,7 +248,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error9"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error69"), res1.Message)
                 };
             }
 
@@ -262,7 +262,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error10");
+            var text = LanguageHelper.Get("Core.Error70");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -290,7 +290,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Profile,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error11"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error71"), res1.Message)
                 };
             }
             return new LoginRes
@@ -302,7 +302,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error12");
+            var text = LanguageHelper.Get("Core.Error72");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -333,7 +333,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error13"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error73"), res1.Message)
                 };
             }
 
@@ -347,7 +347,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error14");
+            var text = LanguageHelper.Get("Core.Error74");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -375,7 +375,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error15"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error75"), res1.Message)
                 };
             }
 
@@ -388,7 +388,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error16");
+            var text = LanguageHelper.Get("Core.Error76");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -419,7 +419,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error17"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error77"), res1.Message)
                 };
             }
 
@@ -433,7 +433,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error18");
+            var text = LanguageHelper.Get("Core.Error78");
             Logs.Error(text, e);
             return new LoginRes
             {
@@ -461,7 +461,7 @@ public static class GameAuth
                 {
                     AuthState = AuthState.Token,
                     LoginState = res1.State,
-                    Message = string.Format(LanguageHelper.Get("Core.Login.Error19"), res1.Message)
+                    Message = string.Format(LanguageHelper.Get("Core.Error79"), res1.Message)
                 };
             }
 
@@ -474,7 +474,7 @@ public static class GameAuth
         }
         catch (Exception e)
         {
-            var text = LanguageHelper.Get("Core.Login.Error20");
+            var text = LanguageHelper.Get("Core.Error80");
             Logs.Error(text, e);
             return new LoginRes
             {
