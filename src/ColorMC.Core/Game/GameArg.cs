@@ -616,7 +616,7 @@ public static class GameArg
     {
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Launch.Info2"));
+        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info28"));
 
         if (arg.UseColorMCASM)
         {

@@ -79,7 +79,7 @@ public static class GameResourcepacks
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error86"), e);
             }
         });
 
@@ -112,7 +112,7 @@ public static class GameResourcepacks
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
+                    Logs.Error(LanguageHelper.Get("Core.Error87"), e);
                     ok = false;
                 }
             }, cancel);

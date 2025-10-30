@@ -73,7 +73,7 @@ public static class JvmPath
             var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
             if (!res.State)
             {
-                return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error5") };
+                return new StringRes { Data = LanguageHelper.Get("Core.Error52") };
             }
             arg.Unzip?.Invoke();
             res = await UnzipJavaAsync(new UnzipArg
@@ -89,7 +89,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.Get("Core.Jvm.Error7");
+            string text = LanguageHelper.Get("Core.Error54");
             Logs.Error(text, e);
             return new StringRes { Data = text };
         }
@@ -151,7 +151,7 @@ public static class JvmPath
         var stream = PathHelper.OpenRead(arg.File);
         if (stream == null)
         {
-            return new StringRes { Data = string.Format(LanguageHelper.Get("Core.Jvm.Error11"), arg.File) };
+            return new StringRes { Data = string.Format(LanguageHelper.Get("Core.Error58"), arg.File) };
         }
 
         var res = await Task.Run(async () =>
@@ -170,7 +170,7 @@ public static class JvmPath
         stream.Close();
         if (!res.Item1)
         {
-            string temp = LanguageHelper.Get("Core.Jvm.Error12");
+            string temp = LanguageHelper.Get("Core.Error59");
             Logs.Error(temp, res.e);
             return new StringRes { Data = temp };
         }
@@ -178,7 +178,7 @@ public static class JvmPath
         var java = Find(path);
         if (java == null)
         {
-            return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error6") };
+            return new StringRes { Data = LanguageHelper.Get("Core.Error53") };
         }
         else
         {
@@ -192,7 +192,7 @@ public static class JvmPath
                     java = tpath;
                 }
             }
-            Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info3"), java));
+            Logs.Info(string.Format(LanguageHelper.Get("Core.Info14"), java));
         }
 
         if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
@@ -216,7 +216,7 @@ public static class JvmPath
             local = local[basedir.Length..];
         }
 
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info5"), local));
+        Logs.Info(string.Format(LanguageHelper.Get("Core.Info15"), local));
 
         //删除旧的
         Remove(name);
@@ -240,10 +240,10 @@ public static class JvmPath
         }
         else
         {
-            Logs.Info(LanguageHelper.Get("Core.Jvm.Error8"));
+            Logs.Info(LanguageHelper.Get("Core.Error55"));
         }
 
-        return new StringRes { Data = LanguageHelper.Get("Core.Jvm.Error1") };
+        return new StringRes { Data = LanguageHelper.Get("Core.Error51") };
     }
 
     /// <summary>
@@ -268,7 +268,7 @@ public static class JvmPath
     {
         var basedir = ColorMCCore.BaseDir;
 
-        Logs.Info(LanguageHelper.Get("Core.Jvm.Info1"));
+        Logs.Info(LanguageHelper.Get("Core.Info12"));
         Task.Run(() =>
         {
             Jvms.Clear();
@@ -286,7 +286,7 @@ public static class JvmPath
                 Jvms.Remove(a.Name);
                 if (info != null)
                 {
-                    Logs.Info(string.Format(LanguageHelper.Get("Core.Jvm.Info2"),
+                    Logs.Info(string.Format(LanguageHelper.Get("Core.Info13"),
                         info.Path, info.Version));
                     info.Name = a.Name;
                     Jvms.Add(a.Name, info);
@@ -297,8 +297,8 @@ public static class JvmPath
                     {
                         Name = a.Name,
                         Path = a.Local,
-                        Type = LanguageHelper.Get("Core.Jvm.Info7"),
-                        Version = LanguageHelper.Get("Core.Jvm.Info6"),
+                        Type = LanguageHelper.Get("Core.Info17"),
+                        Version = LanguageHelper.Get("Core.Info16"),
                         MajorVersion = -1,
                         Arch = ArchEnum.unknow
                     });

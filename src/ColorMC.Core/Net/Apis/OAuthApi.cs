@@ -54,7 +54,7 @@ public static class OAuthApi
             return new OAuthGetCodeRes
             {
                 State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Login.Error22")
+                Message = LanguageHelper.Get("Core.Error82")
             };
         }
         else if (!string.IsNullOrWhiteSpace(obj.Error))
@@ -62,7 +62,7 @@ public static class OAuthApi
             return new OAuthGetCodeRes
             {
                 State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Login.Error21")
+                Message = LanguageHelper.Get("Core.Error81")
             };
         }
         s_code = obj.UserCode;

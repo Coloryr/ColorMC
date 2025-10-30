@@ -68,7 +68,7 @@ public static class PathHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Jvm.Error9"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error56"), e);
         }
     }
 

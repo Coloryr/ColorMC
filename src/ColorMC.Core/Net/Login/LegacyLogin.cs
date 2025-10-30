@@ -54,7 +54,7 @@ public static class LegacyLogin
             return new LegacyLoginRes
             {
                 State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Login.Error22")
+                Message = LanguageHelper.Get("Core.Error82")
             };
         }
         else if (!string.IsNullOrWhiteSpace(obj2.ErrorMessage))
@@ -70,7 +70,7 @@ public static class LegacyLogin
             return new LegacyLoginRes
             {
                 State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Login.Error23")
+                Message = LanguageHelper.Get("Core.Error83")
             };
         }
         else if (obj2.SelectedProfile != null)
@@ -155,7 +155,7 @@ public static class LegacyLogin
         return new LegacyLoginRes
         {
             State = LoginState.DataError,
-            Message = LanguageHelper.Get("Core.Login.Error22")
+            Message = LanguageHelper.Get("Core.Error82")
         };
     }
 
@@ -205,7 +205,7 @@ public static class LegacyLogin
             return new LegacyLoginRes
             {
                 State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Login.Error24")
+                Message = LanguageHelper.Get("Core.Error84")
             };
         }
         else if (obj2.Error != null && !string.IsNullOrEmpty(obj2.ErrorMessage))
@@ -221,7 +221,7 @@ public static class LegacyLogin
             return new LegacyLoginRes
             {
                 State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Login.Error22")
+                Message = LanguageHelper.Get("Core.Error82")
             };
         }
         if (obj2.SelectedProfile != null)

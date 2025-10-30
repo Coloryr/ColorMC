@@ -54,7 +54,7 @@ public static class ServerPack
             Resourcepack = []
         };
 
-        state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info2"));
+        state?.Invoke(LanguageHelper.Get("Core.Info25"));
 
         var task1 = Task.Run(async () =>
         {
@@ -192,7 +192,7 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        state?.Invoke(LanguageHelper.Get("Core.ServerPack.Info3"));
+        state?.Invoke(LanguageHelper.Get("Core.Info26"));
         //开始下载
         var res = await DownloadManager.StartAsync([.. list5]);
         state?.Invoke(null);
@@ -325,7 +325,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
             }
         });
 
@@ -348,7 +348,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
             }
         });
 
@@ -462,7 +462,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.ServerPack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
             }
         });
 
@@ -521,7 +521,7 @@ public static class ServerPack
             }
 
             obj2.Pack?.MoveToOld();
-            arg.State?.Invoke(LanguageHelper.Get("Core.ServerPack.Info1"));
+            arg.State?.Invoke(LanguageHelper.Get("Core.Info24"));
 
             var res2 = await obj1.UpdateAsync(arg.State, token);
             if (res2)

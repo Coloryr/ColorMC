@@ -73,7 +73,7 @@ public class GameHandel
         if (ProcessUtils.Launch(Process, run.Admin))
         {
             IsOutAdmin = true;
-            ColorMCCore.OnGameLog(_game, LanguageHelper.Get("Core.Game.Info2"));
+            ColorMCCore.OnGameLog(_game, LanguageHelper.Get("Core.Info21"));
             return;
         }
 

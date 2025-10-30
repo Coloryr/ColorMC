@@ -82,7 +82,7 @@ public static class ColorMCAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error44"), e);
             return null;
         }
     }
@@ -139,7 +139,7 @@ public static class ColorMCAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.ColorMC.Error2"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error45"), e);
             return null;
         }
     }

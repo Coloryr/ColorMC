@@ -149,7 +149,7 @@ public static class GameMods
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error1"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error85"), e);
         }
         return new ModObj
         {
@@ -274,7 +274,7 @@ public static class GameMods
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Game.Error3"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error87"), e);
                 ok = false;
             }
         }));
@@ -648,7 +648,7 @@ public static class GameMods
             }
             catch (Exception ex)
             {
-                Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
+                Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
             }
         }
 
@@ -679,7 +679,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
                 }
             }
         }
@@ -699,7 +699,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
                 }
             }
         }
@@ -723,7 +723,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
+                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
                 }
             }
         }
@@ -856,7 +856,7 @@ public static class GameMods
         }
         catch (Exception ex)
         {
-            Logs.Crash(string.Format(LanguageHelper.Get("Core.Game.Error21"), path), ex);
+            Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
         }
 
         if (!istest)

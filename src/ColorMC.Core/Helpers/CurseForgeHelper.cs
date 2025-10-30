@@ -471,7 +471,7 @@ public static class CurseForgeHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Pack.Error1"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
                 return false;
             }
         }

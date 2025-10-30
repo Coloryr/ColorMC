@@ -105,7 +105,7 @@ public static class GameSaves
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Pack.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error50"), e);
             }
             return false;
         });
@@ -191,7 +191,7 @@ public static class GameSaves
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Game.Error11"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error92"), e, false);
             return false;
         }
     }
@@ -265,7 +265,7 @@ public static class GameSaves
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error4"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error88"), e);
         }
 
         //无法读取

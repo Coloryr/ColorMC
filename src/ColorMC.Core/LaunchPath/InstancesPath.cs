@@ -213,7 +213,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error19"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error98"), e);
         }
     }
 
@@ -583,7 +583,7 @@ public static class InstancesPath
             {
                 if (arg.Overwirte == null || await arg.Overwirte(game) == false)
                 {
-                    if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Game.Error20")) == false)
+                    if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Error99")) == false)
                     {
                         return null;
                     }
@@ -629,7 +629,7 @@ public static class InstancesPath
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.Game.Error15"), game.Name), e);
+                Logs.Error(string.Format(LanguageHelper.Get("Core.Error95"), game.Name), e);
                 return null;
             }
 
@@ -894,7 +894,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error8"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error90"), e);
             obj.Mods = [];
             return;
         }
@@ -996,7 +996,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Game.Error9"), e);
+            Logs.Error(LanguageHelper.Get("Core.Error91"), e);
             obj.LaunchData = new()
             {
                 LastPlay = new()
@@ -1085,14 +1085,14 @@ public static class InstancesPath
     {
         if (!File.Exists(path))
         {
-            return new() { Data = LanguageHelper.Get("Core.Game.Error16") };
+            return new() { Data = LanguageHelper.Get("Core.Error96") };
         }
 
         var list = await GameDownloadHelper.DecodeLoaderJarAsync(obj, path);
 
         if (list == null)
         {
-            return new() { Data = LanguageHelper.Get("Core.Game.Error17") };
+            return new() { Data = LanguageHelper.Get("Core.Error97") };
         }
 
         var local = obj.GetGameLoaderFile();
