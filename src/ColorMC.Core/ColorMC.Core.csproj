@@ -14,17 +14,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
-
   <ItemGroup>
-    <None Remove="Resources\Language\core_en-us.json" />
-    <None Remove="Resources\Language\core_zh-cn.json" />
-    <None Remove="Resources\Language\en-us" />
-    <None Remove="Resources\Language\zh-cn" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\Language\core_zh-cn.json" />
-    <EmbeddedResource Include="Resources\Language\core_en-us.json" />
+    <Compile Remove="Resources\Language\**" />
+    <EmbeddedResource Remove="Resources\Language\**" />
+    <None Remove="Resources\Language\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Animation;
 using ColorMC.Core.Net;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.MusicPlayer.Decoder;
 using ColorMC.Gui.MusicPlayer.Decoder.Flac;
 using ColorMC.Gui.MusicPlayer.Decoder.Mp3;

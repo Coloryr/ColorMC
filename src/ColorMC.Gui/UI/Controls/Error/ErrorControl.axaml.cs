@@ -2,6 +2,7 @@ using System;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Error;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Error;
 
@@ -37,16 +38,16 @@ public partial class ErrorControl : BaseUserControl
         _close = close;
         _type = true;
 
-        Title = data ?? App.Lang("ErrorWindow.Title");
+        Title = data ?? LanguageUtils.Get("ErrorWindow.Title");
     }
 
-    public ErrorControl(string data, string e, bool close) : this()
+    public ErrorControl(string? data, string e, bool close) : this()
     {
         _data = data;
         _e1 = e;
         _close = close;
 
-        Title = data;
+        Title = data ?? LanguageUtils.Get("ErrorWindow.Title");
     }
 
     public override void Closed()

@@ -333,7 +333,7 @@ public partial class SettingModel
     public void LoadArg()
     {
         _argLoad = true;
-        var config = ConfigUtils.Config;
+        var config = ConfigLoad.Config;
         if (config is { } con)
         {
             GC = con.DefaultJvmArg.GC ?? GCType.Auto;

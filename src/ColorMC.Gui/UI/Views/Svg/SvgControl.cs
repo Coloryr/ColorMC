@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Metadata;
 using Avalonia.Svg.Skia;
-using ColorMC.Core.Utils;
+using ColorMC.Gui.Utils;
 using ShimSkiaSharp;
 using Svg.Skia;
 

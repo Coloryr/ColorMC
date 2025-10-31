@@ -1,16 +1,8 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Config;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Downloader;
-
-internal record DownloadItem
-{
-    public DownloadTask Task;
-    public FileItemObj File;
-}
 
 /// <summary>
 /// 下载器
@@ -20,7 +12,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载状态
     /// </summary>
-    public static bool State => s_download.Count > 0;
+    public static bool State => !s_download.IsEmpty;
     /// <summary>
     /// 缓存路径
     /// </summary>
@@ -121,7 +113,7 @@ public static class DownloadManager
         {
             return false;
         }
-        var arg = ColorMCCore.OnDownload != null ? ColorMCCore.OnDownload() : new();
+        var arg = ColorMCCore.OnDownloadGui().GuiHandel;
 
         return await StartAsync(list, arg);
     }
@@ -130,12 +122,12 @@ public static class DownloadManager
     /// 进行下一个任务
     /// </summary>
     /// <param name="arg">下载参数</param>
-    internal static void TaskDone(DownloadArg arg, DownloadTask task)
+    internal static void TaskDone(IDownloadGuiHandel? arg, DownloadTask task)
     {
         s_tasks.Remove(task);
 
         //若没有下一个任务则全部完成
-        arg.Update?.Invoke(s_threads.Count, s_tasks.Count > 0, s_tasks.Count);
+        arg?.Update(s_threads.Count, s_tasks.Count > 0, s_tasks.Count);
     }
 
     internal static DownloadItem? GetDownloadItem()
@@ -154,12 +146,10 @@ public static class DownloadManager
     /// <param name="list">下载列表</param>
     /// <param name="arg">下载参数</param>
     /// <returns>是否完成</returns>
-    private static Task<bool> StartAsync(ICollection<FileItemObj> list, DownloadArg arg)
+    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGuiHandel? arg)
     {
         var task = new DownloadTask(arg);
         s_tasks.Add(task);
-
-        Logs.Info(LanguageHelper.Get("Core.Info9"));
 
         var names = new List<string>();
         //装填下载内容
@@ -181,7 +171,7 @@ public static class DownloadManager
 
         Start();
 
-        arg.Update?.Invoke(s_threads.Count, true, s_tasks.Count);
+        arg?.Update(s_threads.Count, true, s_tasks.Count);
 
         return task.WaitDone();
     }
@@ -192,8 +182,8 @@ public static class DownloadManager
     private static void InitThread()
     {
         Stop();
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Info8"), ConfigUtils.Config.Http!.DownloadThread));
-        for (int a = 0; a < ConfigUtils.Config.Http.DownloadThread; a++)
+
+        for (int a = 0; a < ConfigLoad.Config.Http.DownloadThread; a++)
         {
             s_threads.Add(new DownloadThread(a));
         }

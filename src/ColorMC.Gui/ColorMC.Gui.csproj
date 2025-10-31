@@ -166,8 +166,6 @@
     <None Remove="Resource\Icon\skin.svg" />
     <None Remove="Resource\Icon\upgrade.svg" />
     <None Remove="Resource\Icon\user.svg" />
-    <None Remove="Resource\Language\gui_en-us.json" />
-    <None Remove="Resource\Language\gui_zh-cn.json" />
     <None Remove="Resource\Pic\1.png" />
     <None Remove="Resource\Pic\2.png" />
     <None Remove="Resource\Pic\3.png" />
@@ -326,8 +324,8 @@
     <EmbeddedResource Include="Resource\Pic\pic1.png" />
     <EmbeddedResource Include="macicon.ico" />
     <EmbeddedResource Include="MusicPlayer\Decoder\Mp3\sfd.temp" />
-    <EmbeddedResource Include="Resource\Language\gui_zh-cn.json" />
-    <EmbeddedResource Include="Resource\Language\gui_en-us.json" />
+    <EmbeddedResource Include="Resource\Language\zh-cn.json" />
+    <EmbeddedResource Include="Resource\Language\en-us.json" />
     <EmbeddedResource Include="Resource\Pic\game.png" />
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />

@@ -45,16 +45,6 @@ internal class DownloadThread
     }
 
     /// <summary>
-    /// 下载错误
-    /// </summary>
-    /// <param name="item">下载项目</param>
-    /// <param name="e">错误内容</param>
-    private static void Error(FileItemObj item, Exception e)
-    {
-        Logs.Error(string.Format(LanguageHelper.Get("Core.Error4"), item.Name), e);
-    }
-
-    /// <summary>
     /// 线程
     /// </summary>
     private readonly Thread _thread;
@@ -257,45 +247,60 @@ internal class DownloadThread
         }
 
         //检查文件
-        if (ConfigUtils.Config.Http.CheckFile)
+        if (ConfigLoad.Config.Http.CheckFile)
         {
             if (stream.Position != item.File.AllSize)
             {
                 item.File.State = DownloadItemState.Error;
                 item.Task.UpdateItem(_index, item.File);
-                Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
+
+                ColorMCCore.OnError(new DownloadSizeErrorEvnetArgs(item.File, stream.Position));
+
                 return true;
             }
             if (!string.IsNullOrWhiteSpace(item.File.Md5))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                if (HashHelper.GenMd5(stream) != item.File.Md5)
+                string md5 = HashHelper.GenMd5(stream);
+                if (md5 != item.File.Md5)
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
+
+                    ColorMCCore.OnError(new DownloadHashErrorEventArgs(
+                        item.File, item.File.Md5, md5));
                     return true;
                 }
             }
             if (!string.IsNullOrWhiteSpace(item.File.Sha1))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                if (HashHelper.GenSha1(stream) != item.File.Sha1)
+                string sha1 = HashHelper.GenSha1(stream);
+                if (sha1 != item.File.Sha1)
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
+                    ColorMCCore.OnError(new CoreErrorEventArgs(
+                        ErrorType.DownloadCheckError,
+                        null, false, false,
+                        item.File.Name,
+                        item.File.Url, item.File.Sha1, sha1));
                     return true;
                 }
             }
             if (!string.IsNullOrWhiteSpace(item.File.Sha256))
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                if (HashHelper.GenSha256(stream) != item.File.Sha256)
+                string sha256 = HashHelper.GenSha256(stream);
+                if (sha256 != item.File.Sha256)
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, new Exception(LanguageHelper.Get("Core.Error12")));
+                    ColorMCCore.OnError(new CoreErrorEventArgs(
+                         ErrorType.DownloadCheckError,
+                         null, false, false,
+                         item.File.Name,
+                         item.File.Url, item.File.Sha256, sha256));
                     return true;
                 }
             }
@@ -339,7 +344,7 @@ internal class DownloadThread
                     {
                         PathHelper.Delete(item.File.Local);
                     }
-                    else if (ConfigUtils.Config.Http.CheckFile && CheckFile(item))
+                    else if (ConfigLoad.Config.Http.CheckFile && CheckFile(item))
                     {
                         //已经有了跳过
                         item.Task.Done();

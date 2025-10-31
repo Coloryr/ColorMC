@@ -1,5 +1,4 @@
 using Avalonia.Media.Imaging;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UIBinding;
@@ -52,8 +51,8 @@ public partial class MainModel
 
         if (user == null)
         {
-            UserId = App.Lang("MainWindow.Info36");
-            UserType = App.Lang("MainWindow.Info35");
+            UserId = App.Lang("App.Text22");
+            UserType = App.Lang("App.Text21");
         }
         else
         {
@@ -82,7 +81,7 @@ public partial class MainModel
                 }
                 if (!find)
                 {
-                    UserType = App.Lang("MainWindow.Error7");
+                    UserType = App.Lang("App.Error6");
                 }
             }
             else

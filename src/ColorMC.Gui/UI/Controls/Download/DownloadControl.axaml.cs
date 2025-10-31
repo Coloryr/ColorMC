@@ -37,7 +37,7 @@ public partial class DownloadControl : BaseUserControl
     /// 开始下载更新
     /// </summary>
     /// <returns></returns>
-    public DownloadArg Start()
+    public IDownloadGuiHandel Start()
     {
         return (DataContext as DownloadModel)!.Start();
     }

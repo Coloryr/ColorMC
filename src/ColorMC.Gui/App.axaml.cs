@@ -1,16 +1,11 @@
 using System;
-using System.Reflection;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Platform;
 using Avalonia.Threading;
 using ColorMC.Core;
-using ColorMC.Core.Config;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
@@ -30,7 +25,7 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
-            string temp = Lang("App.Error1");
+            string temp = LanguageUtils.Get("App.Error1");
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(temp, e.ExceptionObject as Exception);
         };
@@ -56,39 +51,9 @@ public partial class App : Application
     /// </summary>
     public static bool IsHide { get; private set; }
 
-    /// <summary>
-    /// 本地化
-    /// </summary>
-    private static readonly Language s_language = new();
-
     public override void Initialize()
     {
-        if (ConfigUtils.Config == null)
-        {
-            LoadLanguage(LanguageType.zh_cn);
-        }
-        else
-        {
-            LoadLanguage(ConfigUtils.Config.Language);
-        }
-
         AvaloniaXamlLoader.Load(this);
-    }
-
-    /// <summary>
-    /// 获取本地化语言
-    /// </summary>
-    /// <param name="input">语言键</param>
-    /// <returns>语言</returns>
-    public static string Lang(string input)
-    {
-        var data = s_language.GetLanguage(input, out bool have);
-        if (have)
-        {
-            return data;
-        }
-
-        return LanguageHelper.Get(input);
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -100,7 +65,7 @@ public partial class App : Application
         if (PlatformSettings is { } setting)
         {
             //初始化样式
-            setting.ColorValuesChanged += (object? sender, PlatformColorValues e) =>
+            setting.ColorValuesChanged += (sender, e) =>
             {
                 if (GuiConfigUtils.Config.ColorType == ColorType.Auto)
                 {
@@ -141,6 +106,9 @@ public partial class App : Application
             Task.Run(() =>
             {
                 ColorMCCore.Init1();
+
+                Logs.Info(LanguageUtils.Get("Core.Info3"));
+
                 BaseBinding.Init1();
             });
         }
@@ -157,26 +125,6 @@ public partial class App : Application
         ThemeManager.Remove();
         LangMananger.Remove();
         FuntionUtils.RunGC();
-    }
-
-    /// <summary>
-    /// 加载语言文件
-    /// </summary>
-    /// <param name="type">语言类型</param>
-    public static void LoadLanguage(LanguageType type)
-    {
-        var assm = Assembly.GetExecutingAssembly();
-        if (assm == null)
-        {
-            return;
-        }
-        string name = type switch
-        {
-            LanguageType.en_us => "ColorMC.Gui.Resource.Language.gui_en-us.json",
-            _ => "ColorMC.Gui.Resource.Language.gui_zh-cn.json"
-        };
-        using var stream = assm.GetManifestResourceStream(name)!;
-        s_language.Load(stream);
     }
 
     /// <summary>

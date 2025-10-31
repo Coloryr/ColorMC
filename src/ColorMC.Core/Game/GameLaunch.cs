@@ -104,13 +104,13 @@ public static class Launch
         if (larg.Request == null)
         {
             throw new LaunchException(LaunchState.VersionError,
-                string.Format(LanguageHelper.Get("Core.Launch.Info16"), obj.Name));
+                string.Format(LanguageHelper.Get("Core.Info41"), obj.Name));
         }
 
         var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Info40"), obj.Name));
         if (!res2)
         {
-            throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Launch.Error8"));
+            throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Error109"));
         }
     }
 
@@ -149,7 +149,7 @@ public static class Launch
         }
 
         bool download = true;
-        if (ConfigUtils.Config.Http.AutoDownload == false && larg.Request != null)
+        if (ConfigLoad.Config.Http.AutoDownload == false && larg.Request != null)
         {
             download = await larg.Request(LanguageHelper.Get("Core.Info38"));
         }
@@ -165,7 +165,7 @@ public static class Launch
             if (!ok)
             {
                 throw new LaunchException(LaunchState.LostFile,
-                    LanguageHelper.Get("Core.Launch.Error5"));
+                    LanguageHelper.Get("Core.Error106"));
             }
 
             stopwatch.Stop();
@@ -191,7 +191,7 @@ public static class Launch
         {
             envstr = str;
         }
-        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
+        else if (ConfigLoad.Config.DefaultJvmArg.JvmEnv is { } str1)
         {
             envstr = str1;
         }
@@ -274,7 +274,7 @@ public static class Launch
             larg.Update2?.Invoke(obj, LaunchState.JavaError);
             larg.Nojava?.Invoke(jv);
             throw new LaunchException(LaunchState.JavaError,
-                string.Format(LanguageHelper.Get("Core.Launch.Error6"), jv));
+                string.Format(LanguageHelper.Get("Core.Error107"), jv));
         }
 
         return jvm.GetPath();
@@ -307,7 +307,7 @@ public static class Launch
 
         if (!File.Exists(name))
         {
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Launch.Error14"), name));
+            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Error113"), name));
             return;
         }
 
@@ -393,7 +393,7 @@ public static class Launch
                     || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
                     || (obj.Loader == Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
                 {
-                    throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+                    throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error108"));
                 }
 
                 var cancel = cancels[obj.UUID];
@@ -517,7 +517,7 @@ public static class Launch
             || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
             || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
         {
-            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Launch.Error7") };
+            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Error108") };
         }
 
         //登录账户
@@ -531,7 +531,7 @@ public static class Launch
 
         if (!File.Exists(path))
         {
-            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Launch.Error13") };
+            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Error112") };
         }
 
         //准备Jvm参数
@@ -545,7 +545,7 @@ public static class Launch
         {
             envstr = str;
         }
-        else if (ConfigUtils.Config.DefaultJvmArg.JvmEnv is { } str1)
+        else if (ConfigLoad.Config.DefaultJvmArg.JvmEnv is { } str1)
         {
             envstr = str1;
         }
@@ -619,7 +619,7 @@ public static class Launch
                     string.IsNullOrWhiteSpace(obj.LoaderVersion))
                 || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
             {
-                throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error7"));
+                throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error108"));
             }
         }
 
@@ -660,7 +660,7 @@ public static class Launch
         if (!File.Exists(path))
         {
             throw new LaunchException(LaunchState.JavaError,
-                LanguageHelper.Get("Core.Launch.Error13"));
+                LanguageHelper.Get("Core.Error112"));
         }
 
         if (token.IsCancellationRequested)
@@ -714,12 +714,12 @@ public static class Launch
         var stopwatch = new Stopwatch();
 
         //启动前运行
-        if (obj.JvmArg?.LaunchPre == true || ConfigUtils.Config.DefaultJvmArg.LaunchPre)
+        if (obj.JvmArg?.LaunchPre == true || ConfigLoad.Config.DefaultJvmArg.LaunchPre)
         {
             var cmd1 = obj.JvmArg?.LaunchPreData;
-            var cmd2 = ConfigUtils.Config.DefaultJvmArg.LaunchPreData;
+            var cmd2 = ConfigLoad.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
-            var prerun = obj.JvmArg?.PreRunSame ?? ConfigUtils.Config.DefaultJvmArg.PreRunSame;
+            var prerun = obj.JvmArg?.PreRunSame ?? ConfigLoad.Config.DefaultJvmArg.PreRunSame;
             if (!string.IsNullOrWhiteSpace(start) &&
                 (larg.Pre == null || await larg.Pre(true)))
             {
@@ -773,7 +773,7 @@ public static class Launch
         ColorMCCore.AddGameHandel(obj.UUID, handel);
 
         //启动后执行
-        if (obj.JvmArg?.LaunchPost != true && !ConfigUtils.Config.DefaultJvmArg.LaunchPost)
+        if (obj.JvmArg?.LaunchPost != true && !ConfigLoad.Config.DefaultJvmArg.LaunchPost)
         {
             return handel;
         }
@@ -781,7 +781,7 @@ public static class Launch
         var start1 = obj.JvmArg?.LaunchPostData;
         if (string.IsNullOrWhiteSpace(start1))
         {
-            start1 = ConfigUtils.Config.DefaultJvmArg?.LaunchPostData;
+            start1 = ConfigLoad.Config.DefaultJvmArg?.LaunchPostData;
         }
 
         if (!string.IsNullOrWhiteSpace(start1) && (larg.Pre == null || await larg.Pre(false)))

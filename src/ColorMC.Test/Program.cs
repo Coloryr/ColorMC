@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
+using ColorMC.Gui.Utils;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;

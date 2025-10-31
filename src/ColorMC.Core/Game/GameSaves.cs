@@ -191,7 +191,7 @@ public static class GameSaves
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error92"), e, false);
+            ColorMCCore.OnError(LanguageHelper.Get("Core.Error92"), e, false, false);
             return false;
         }
     }

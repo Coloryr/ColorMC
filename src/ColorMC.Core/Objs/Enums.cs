@@ -470,3 +470,45 @@ public enum UpdateType
     /// </summary>
     ItemDone
 }
+
+/// <summary>
+/// 实例修改
+/// </summary>
+public enum InstanceChangeType
+{ 
+    /// <summary>
+    /// 数量修改
+    /// </summary>
+    NumberChange,
+    /// <summary>
+    /// 图标修改
+    /// </summary>
+    IconChange
+}
+
+/// <summary>
+/// 错误类型
+/// </summary>
+public enum ErrorType
+{ 
+    /// <summary>
+    /// 配置文件读取错误
+    /// </summary>
+    ConfigLoadError,
+    /// <summary>
+    /// 配置文件保存错误
+    /// </summary>
+    ConfigSaveError,
+    /// <summary>
+    /// 下载发生报错
+    /// </summary>
+    DownloadError,
+    /// <summary>
+    /// 下载出现错误
+    /// </summary>
+    DownloadSizeError,
+    /// <summary>
+    /// 下载文件校验错误
+    /// </summary>
+    DownloadCheckError,
+}

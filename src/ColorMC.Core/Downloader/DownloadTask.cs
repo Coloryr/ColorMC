@@ -2,14 +2,11 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Downloader;
 
-/// <summary>
-/// 下载任务
-/// </summary>
 /// <remarks>
 /// 下载任务
 /// </remarks>
 /// <param name="arg">GUI下载参数</param>
-internal class DownloadTask(DownloadArg arg)
+internal class DownloadTask(IDownloadGuiHandel? arg)
 {
     /// <summary>
     /// 任务是否已经取消
@@ -46,7 +43,7 @@ internal class DownloadTask(DownloadArg arg)
     public void SetSize(int size)
     {
         _allSize = size;
-        arg.UpdateTask?.Invoke(UpdateType.AddItems, _allSize);
+        arg?.UpdateTask(UpdateType.AddItems, _allSize);
     }
 
     /// <summary>
@@ -85,7 +82,7 @@ internal class DownloadTask(DownloadArg arg)
     public void Done()
     {
         _doneSize++;
-        arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+        arg?.UpdateTask(UpdateType.ItemDone, 1);
 
         ItemDone();
     }
@@ -96,7 +93,7 @@ internal class DownloadTask(DownloadArg arg)
     public void Error()
     {
         _errorSize++;
-        arg.UpdateTask?.Invoke(UpdateType.ItemDone, 1);
+        arg?.UpdateTask(UpdateType.ItemDone, 1);
 
         ItemDone();
     }
@@ -121,6 +118,6 @@ internal class DownloadTask(DownloadArg arg)
     /// <param name="obj">下载文件</param>
     public void UpdateItem(int index, FileItemObj obj)
     {
-        arg.UpdateItem?.Invoke(index, obj);
+        arg?.UpdateItem(index, obj);
     }
 }

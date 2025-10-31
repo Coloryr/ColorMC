@@ -1,7 +1,12 @@
+using System;
 using System.Collections.Concurrent;
+using System.IO;
+using System.Threading;
+using ColorMC.Core;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Gui.Utils;
 
 /// <summary>
 /// 日志
@@ -36,10 +41,8 @@ public static class Logs
     /// <summary>
     /// 初始化
     /// </summary>
-    internal static void Init()
+    public static void Init()
     {
-        ColorMCCore.Stop += Stop;
-
         s_local = ColorMCCore.BaseDir;
         try
         {
@@ -141,7 +144,7 @@ public static class Logs
     /// </summary>
     /// <param name="data"></param>
     /// <param name="e"></param>
-    public static void Error(string data, Exception? e)
+    public static void Error(string? data, Exception? e)
     {
         string text = $"[{DateTime.Now}][Error]{data}{Environment.NewLine}{e}";
         AddText(text);

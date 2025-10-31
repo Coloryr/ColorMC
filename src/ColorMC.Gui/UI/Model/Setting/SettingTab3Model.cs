@@ -379,7 +379,7 @@ public partial class SettingModel
     {
         _httpLoad = true;
 
-        var config = ConfigUtils.Config;
+        var config = ConfigLoad.Config;
         if (config is { } con)
         {
             Source = con.Http.Source;

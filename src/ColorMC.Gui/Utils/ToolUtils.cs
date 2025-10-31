@@ -5,7 +5,6 @@ using System.IO.Compression;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 
@@ -155,14 +154,14 @@ public static class ToolUtils
             var res = await DownloadManager.StartAsync([item]);
             if (!res)
             {
-                return new StringRes { Data = LanguageHelper.Get("Core.Tool.Error1") };
+                return new StringRes { Data = LanguageUtils.Get("Core.Error114") };
             }
         }
 
         var java = JvmPath.FindJava(17);
         if (java == null)
         {
-            return new StringRes { Data = LanguageHelper.Get("Core.Tool.Error2") };
+            return new StringRes { Data = LanguageUtils.Get("Core.Error115") };
         }
 
         var info = new ProcessStartInfo(java.Path)

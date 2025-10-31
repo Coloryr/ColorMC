@@ -4,12 +4,12 @@ using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Helpers;
+namespace ColorMC.Gui.Utils;
 
 /// <summary>
 /// 语言文件
 /// </summary>
-public static class LanguageHelper
+public static class LanguageUtils
 {
     /// <summary>
     /// 语言储存
@@ -28,8 +28,8 @@ public static class LanguageHelper
     {
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Core.Resources.Language.core_en-us.json",
-            _ => "ColorMC.Core.Resources.Language.core_zh-cn.json"
+            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us.json",
+            _ => "ColorMC.Core.Resources.Language.zh-cn.json"
         };
         var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;
@@ -43,11 +43,12 @@ public static class LanguageHelper
     public static void Change(LanguageType type)
     {
         if (s_nowType == type)
+        {
             return;
+        }
 
         s_nowType = type;
         Load(type);
-        ColorMCCore.OnLanguageReload(type);
     }
 
     /// <summary>
@@ -81,6 +82,16 @@ public static class LanguageHelper
             AuthType.LittleSkin => Get("Type.AuthType.LittleSkin"),
             AuthType.SelfLittleSkin => Get("Type.AuthType.SelfLittleSkin"),
             _ => Get("Type.AuthType.Other")
+        };
+    }
+
+    public static string GetName(this DnsType type)
+    {
+        return type switch
+        {
+            DnsType.DnsOver => Get("Type.Dns.DnsOver"),
+            DnsType.DnsOverHttps => Get("Type.Dns.DnsOverHttps"),
+            _ => "Unkown"
         };
     }
 

@@ -36,16 +36,6 @@ public static class UIUtils
         }
     }
 
-    public static string GetName(this DnsType type)
-    {
-        return type switch
-        {
-            DnsType.DnsOver => App.Lang("Type.Dns.DnsOver"),
-            DnsType.DnsOverHttps => App.Lang("Type.Dns.DnsOverHttps"),
-            _ => "Unkown"
-        };
-    }
-
     /// <summary>
     /// 找到控件
     /// </summary>
