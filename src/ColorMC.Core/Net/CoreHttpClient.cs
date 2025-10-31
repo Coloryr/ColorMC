@@ -39,8 +39,8 @@ public static class CoreHttpClient
     /// </summary>
     public static void Init()
     {
-        var http = ConfigUtils.Config.Http;
-        var dns = ConfigUtils.Config.Dns;
+        var http = ConfigLoad.Config.Http;
+        var dns = ConfigLoad.Config.Dns;
 
         Logs.Info(LanguageHelper.Get("Core.Info10"));
         if (http.DownloadProxy || http.GameProxy || http.LoginProxy)

@@ -81,6 +81,7 @@ csharp_space_around_binary_operators = before_and_after
 csharp_indent_labels = one_less_than_current
 csharp_prefer_system_threading_lock = true:suggestion
 csharp_prefer_static_anonymous_function = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
 
 [*.vb]
 #### 命名样式 ####
@@ -148,3 +149,4 @@ dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
 tab_width = 4
 indent_size = 4
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
+dotnet_diagnostic.CA2208.severity = none

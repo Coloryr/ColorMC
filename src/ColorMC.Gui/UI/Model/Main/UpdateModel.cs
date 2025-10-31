@@ -42,11 +42,11 @@ public partial class MainModel
         var data = await ColorMCCloudAPI.GetNewLogAsync();
         if (data == null)
         {
-            Model.Show(App.Lang("MainWindow.Error1"));
+            Model.Show(App.Lang("App.Error5"));
         }
         else
         {
-            Model.Text(App.Lang("MainWindow.Info40"), data);
+            Model.Text(App.Lang("App.Text24"), data);
         }
 
         _isGetNewInfo = false;

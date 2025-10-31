@@ -7,7 +7,6 @@ using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model;

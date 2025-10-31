@@ -4,11 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs.Config;
 
 namespace ColorMC.Gui.Utils;
@@ -125,7 +123,7 @@ public static class GameCountUtils
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("App.Error2"), e);
+            Logs.Error(LanguageUtils.Get("App.Error2"), e);
         }
 
         if (Count == null)

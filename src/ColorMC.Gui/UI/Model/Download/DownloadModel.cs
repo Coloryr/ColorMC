@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -280,7 +279,7 @@ public partial class DownloadModel : TopModel
     /// 开始下载
     /// </summary>
     /// <returns>Gui</returns>
-    public DownloadArg Start()
+    public IDownloadGuiHandel Start()
     {
         _needRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));

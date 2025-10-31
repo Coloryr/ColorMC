@@ -436,7 +436,7 @@ public static class GameBinding
             //检测内存分配是否够
             if (GuiConfigUtils.Config.LaunchCheck.CheckMemory && obj.Loader != Loaders.Normal)
             {
-                var mem = obj.JvmArg?.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory;
+                var mem = obj.JvmArg?.MaxMemory ?? ConfigLoad.Config.DefaultJvmArg.MaxMemory;
                 if ((mem <= 4096 && count > 150)
                     || (mem <= 8192 && count > 300))
                 {
@@ -618,7 +618,7 @@ public static class GameBinding
             Pre = (pre) =>
             {
                 return Dispatcher.UIThread.InvokeAsync(() =>
-                    model.ShowAsync(pre ? App.Lang("MainWindow.Info29") : App.Lang("MainWindow.Info30")));
+                    model.ShowAsync(pre ? App.Lang("App.Text17") : App.Lang("App.Text18")));
             },
             State = (text) =>
             {
@@ -653,7 +653,7 @@ public static class GameBinding
                 return Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     return model.ShowAsync(string.Format(
-                        App.Lang("MainWindow.Info21"), login.UserName));
+                        App.Lang("App.Text16"), login.UserName));
                 });
             },
             Update2 = (obj, state) =>
@@ -668,19 +668,19 @@ public static class GameBinding
                         }
                         model.ProgressUpdate(App.Lang(state switch
                         {
-                            LaunchState.Login => "MainWindow.Info8",
-                            LaunchState.Check => "MainWindow.Info9",
-                            LaunchState.CheckVersion => "MainWindow.Info10",
-                            LaunchState.CheckLib => "MainWindow.Info11",
-                            LaunchState.CheckAssets => "MainWindow.Info12",
-                            LaunchState.CheckLoader => "MainWindow.Info13",
-                            LaunchState.CheckLoginCore => "MainWindow.Info14",
-                            LaunchState.CheckMods => "MainWindow.Info17",
-                            LaunchState.Download => "MainWindow.Info15",
-                            LaunchState.JvmPrepare => "MainWindow.Info16",
-                            LaunchState.LaunchPre => "MainWindow.Info31",
-                            LaunchState.LaunchPost => "MainWindow.Info32",
-                            LaunchState.InstallForge => "MainWindow.Info38",
+                            LaunchState.Login => "App.Text6",
+                            LaunchState.Check => "App.Text7",
+                            LaunchState.CheckVersion => "App.Text8",
+                            LaunchState.CheckLib => "App.Text9",
+                            LaunchState.CheckAssets => "App.Text10",
+                            LaunchState.CheckLoader => "App.Text11",
+                            LaunchState.CheckLoginCore => "App.Text12",
+                            LaunchState.CheckMods => "App.Text15",
+                            LaunchState.Download => "App.Text13",
+                            LaunchState.JvmPrepare => "App.Text14",
+                            LaunchState.LaunchPre => "App.Text19",
+                            LaunchState.LaunchPost => "App.Text20",
+                            LaunchState.InstallForge => "App.Text23",
                             _ => ""
                         }));
                     }
@@ -688,19 +688,19 @@ public static class GameBinding
                     {
                         model.SubTitle = App.Lang(state switch
                         {
-                            LaunchState.Login => "MainWindow.Info8",
-                            LaunchState.Check => "MainWindow.Info9",
-                            LaunchState.CheckVersion => "MainWindow.Info10",
-                            LaunchState.CheckLib => "MainWindow.Info11",
-                            LaunchState.CheckAssets => "MainWindow.Info12",
-                            LaunchState.CheckLoader => "MainWindow.Info13",
-                            LaunchState.CheckLoginCore => "MainWindow.Info14",
-                            LaunchState.CheckMods => "MainWindow.Info17",
-                            LaunchState.Download => "MainWindow.Info15",
-                            LaunchState.JvmPrepare => "MainWindow.Info16",
-                            LaunchState.LaunchPre => "MainWindow.Info31",
-                            LaunchState.LaunchPost => "MainWindow.Info32",
-                            LaunchState.InstallForge => "MainWindow.Info38",
+                            LaunchState.Login => "App.Text6",
+                            LaunchState.Check => "App.Text7",
+                            LaunchState.CheckVersion => "App.Text8",
+                            LaunchState.CheckLib => "App.Text9",
+                            LaunchState.CheckAssets => "App.Text10",
+                            LaunchState.CheckLoader => "App.Text11",
+                            LaunchState.CheckLoginCore => "App.Text12",
+                            LaunchState.CheckMods => "App.Text15",
+                            LaunchState.Download => "App.Text13",
+                            LaunchState.JvmPrepare => "App.Text14",
+                            LaunchState.LaunchPre => "App.Text19",
+                            LaunchState.LaunchPost => "App.Text20",
+                            LaunchState.InstallForge => "App.Text23",
                             _ => ""
                         });
                     }
@@ -2120,7 +2120,7 @@ public static class GameBinding
         var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
         if (top == null)
         {
-            model.Show(App.Lang("MainWindow.Error10"));
+            model.Show(App.Lang("App.Error7"));
             return;
         }
         var res = await UserBinding.GetLaunchUser(model);
@@ -2141,24 +2141,24 @@ public static class GameBinding
                 }
                 model.ProgressUpdate(App.Lang(state switch
                 {
-                    LaunchState.Login => "MainWindow.Info8",
-                    LaunchState.Check => "MainWindow.Info9",
-                    LaunchState.CheckVersion => "MainWindow.Info10",
-                    LaunchState.CheckLib => "MainWindow.Info11",
-                    LaunchState.CheckAssets => "MainWindow.Info12",
-                    LaunchState.CheckLoader => "MainWindow.Info13",
-                    LaunchState.CheckLoginCore => "MainWindow.Info14",
-                    LaunchState.CheckMods => "MainWindow.Info17",
-                    LaunchState.Download => "MainWindow.Info15",
-                    LaunchState.JvmPrepare => "MainWindow.Info16",
-                    LaunchState.LaunchPre => "MainWindow.Info31",
-                    LaunchState.LaunchPost => "MainWindow.Info32",
-                    LaunchState.InstallForge => "MainWindow.Info38",
+                    LaunchState.Login => "App.Text6",
+                    LaunchState.Check => "App.Text7",
+                    LaunchState.CheckVersion => "App.Text8",
+                    LaunchState.CheckLib => "App.Text9",
+                    LaunchState.CheckAssets => "App.Text10",
+                    LaunchState.CheckLoader => "App.Text11",
+                    LaunchState.CheckLoginCore => "App.Text12",
+                    LaunchState.CheckMods => "App.Text15",
+                    LaunchState.Download => "App.Text13",
+                    LaunchState.JvmPrepare => "App.Text14",
+                    LaunchState.LaunchPre => "App.Text19",
+                    LaunchState.LaunchPost => "App.Text20",
+                    LaunchState.InstallForge => "App.Text23",
                     _ => ""
                 }));
             });
         };
-        model.Progress(App.Lang("MainWindow.Info43"));
+        model.Progress(App.Lang("App.Text25"));
         var res1 = await obj.CreateGameCmdAsync(arg);
         if (!res1.Res)
         {
@@ -2210,7 +2210,7 @@ public static class GameBinding
         var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
         if (res2 == false)
         {
-            model.Show(App.Lang("MainWindow.Error10"));
+            model.Show(App.Lang("App.Error7"));
         }
     }
 

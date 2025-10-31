@@ -390,7 +390,7 @@ public static class BaseBinding
         var obj = JsonDocument.Parse(stream);
         var json = obj.RootElement;
         var conf = GuiConfigUtils.Config;
-        var conf1 = ConfigUtils.Config;
+        var conf1 = ConfigLoad.Config;
         var conf2 = conf.ServerCustom;
 
         if (json.TryGetProperty(nameof(BuildPackModel.UiBg), out var value)
@@ -507,7 +507,7 @@ public static class BaseBinding
         }
 
         GuiConfigUtils.SaveNow();
-        ConfigUtils.SaveNow();
+        ConfigLoad.SaveNow();
 
         File.Delete(file);
     }
@@ -526,7 +526,7 @@ public static class BaseBinding
             var stream = PathHelper.OpenWrite(file);
             var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
             var conf = GuiConfigUtils.Config;
-            var conf1 = ConfigUtils.Config;
+            var conf1 = ConfigLoad.Config;
             var conf2 = conf.ServerCustom;
 
             var obj = new JsonObject();
@@ -800,7 +800,7 @@ public static class BaseBinding
         }
 
         using var temp = PathHelper.OpenRead(file)!;
-        model.Progress(App.Lang("MainWindow.Info46"));
+        model.Progress(App.Lang("App.Text26"));
         await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
         model.ProgressClose();
 
@@ -817,7 +817,7 @@ public static class BaseBinding
         var obj = VersionPath.GetVersion(version);
         var ass = obj?.AssetIndex?.GetIndex();
         string lang = "zh_cn.json";
-        if (ConfigUtils.Config.Language == LanguageType.en_us)
+        if (ConfigLoad.Config.Language == LanguageType.en_us)
         {
             lang = "en_us.json";
         }

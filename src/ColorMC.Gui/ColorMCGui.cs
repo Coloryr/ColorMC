@@ -9,6 +9,7 @@ using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Media;
 using ColorMC.Core;
+using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
@@ -101,7 +102,7 @@ public static class ColorMCGui
             {
                 return;
             }
-            Logs.Error(App.Lang("App.Error1"), e.Exception);
+            Logs.Error(LanguageUtils.Get("App.Error1"), e.Exception);
         };
 
         RunType = RunType.Program;
@@ -152,9 +153,19 @@ public static class ColorMCGui
             }
 
             s_arg.Local = BaseDir;
+
+            LanguageUtils.Load(LanguageType.zh_cn);
+            Logs.Init();
+
             ColorMCCore.Init(s_arg);
 
+            Logs.Info(LanguageUtils.Get("Core.Info1"));
+            Logs.Info(SystemInfo.SystemName);
+            Logs.Info(SystemInfo.System);
+
             BaseBinding.ReadBuildConfig();
+
+            LanguageUtils.Load(ConfigLoad.Config.Language);
 
             IsInit = true;
 

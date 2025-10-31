@@ -1,12 +1,11 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
-using ColorMC.Core.Helpers;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 

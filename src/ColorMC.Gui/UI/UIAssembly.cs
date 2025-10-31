@@ -3,9 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
 using ColorMC.Core;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Custom;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI;
 

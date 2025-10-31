@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Joystick;
@@ -22,7 +21,7 @@ public static class ConfigBinding
     /// <returns></returns>
     public static bool LoadConfig(string dir)
     {
-        var res = ConfigUtils.Load(dir, true);
+        var res = ConfigLoad.Load(dir, true);
         if (res)
         {
             CoreHttpClient.Init();
@@ -169,9 +168,9 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        ConfigUtils.Config.Http.Source = value;
-        ConfigUtils.Save();
+        ConfigLoad.Config.Http ??= ConfigLoad.MakeHttpConfig();
+        ConfigLoad.Config.Http.Source = value;
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -187,9 +186,9 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        ConfigUtils.Config.Http.DownloadThread = value;
-        ConfigUtils.Save();
+        ConfigLoad.Config.Http ??= ConfigLoad.MakeHttpConfig();
+        ConfigLoad.Config.Http.DownloadThread = value;
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -206,13 +205,13 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        var con = ConfigUtils.Config.Http;
+        ConfigLoad.Config.Http ??= ConfigLoad.MakeHttpConfig();
+        var con = ConfigLoad.Config.Http;
         con.ProxyIP = ip;
         con.ProxyPort = port;
         con.ProxyUser = user;
         con.ProxyPassword = password;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -230,12 +229,12 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        var con = ConfigUtils.Config.Http;
+        ConfigLoad.Config.Http ??= ConfigLoad.MakeHttpConfig();
+        var con = ConfigLoad.Config.Http;
         con.LoginProxy = v1;
         con.DownloadProxy = v2;
         con.GameProxy = v3;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -253,11 +252,11 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Http ??= ConfigUtils.MakeHttpConfig();
-        var con = ConfigUtils.Config.Http;
+        ConfigLoad.Config.Http ??= ConfigLoad.MakeHttpConfig();
+        var con = ConfigLoad.Config.Http;
         con.CheckFile = v1;
         con.AutoDownload = v2;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -276,10 +275,10 @@ public static class ConfigBinding
     /// <param name="gc"></param>
     public static void SetGc(GCType gc)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        ConfigLoad.Config.DefaultJvmArg ??= ConfigLoad.MakeJvmArgConfig();
+        var jvm = ConfigLoad.Config.DefaultJvmArg;
         jvm.GC = gc;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -291,14 +290,14 @@ public static class ConfigBinding
     /// <param name="v4"></param>
     public static void SetRunCommand(bool v1, bool v2, string? v3, string? v4, bool v5)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        ConfigLoad.Config.DefaultJvmArg ??= ConfigLoad.MakeJvmArgConfig();
+        var jvm = ConfigLoad.Config.DefaultJvmArg;
         jvm.LaunchPre = v1;
         jvm.LaunchPost = v2;
         jvm.LaunchPreData = v3;
         jvm.LaunchPostData = v4;
         jvm.PreRunSame = v5;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -310,14 +309,14 @@ public static class ConfigBinding
     /// <param name="v4"></param>
     public static void SetRunArg(string? v1, string? v2, string? v3, string? v4, bool colorasm)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        ConfigLoad.Config.DefaultJvmArg ??= ConfigLoad.MakeJvmArgConfig();
+        var jvm = ConfigLoad.Config.DefaultJvmArg;
         jvm.JavaAgent = v1;
         jvm.JvmArgs = v2;
         jvm.GameArgs = v3;
         jvm.JvmEnv = v4;
         jvm.ColorASM = colorasm;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -328,12 +327,12 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     public static void SetGameWindow(bool v1, uint? v2, uint? v3)
     {
-        ConfigUtils.Config.Window ??= ConfigUtils.MakeWindowSettingConfig();
-        var con = ConfigUtils.Config.Window;
+        ConfigLoad.Config.Window ??= ConfigLoad.MakeWindowSettingConfig();
+        var con = ConfigLoad.Config.Window;
         con.FullScreen = v1;
         con.Width = v2;
         con.Height = v3;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -343,11 +342,11 @@ public static class ConfigBinding
     /// <param name="maxMemory"></param>
     public static void SetMemory(uint? minMemory, uint? maxMemory)
     {
-        ConfigUtils.Config.DefaultJvmArg ??= ConfigUtils.MakeJvmArgConfig();
-        var jvm = ConfigUtils.Config.DefaultJvmArg;
+        ConfigLoad.Config.DefaultJvmArg ??= ConfigLoad.MakeJvmArgConfig();
+        var jvm = ConfigLoad.Config.DefaultJvmArg;
         jvm.MinMemory = minMemory;
         jvm.MaxMemory = maxMemory;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -356,8 +355,8 @@ public static class ConfigBinding
     /// <param name="obj"></param>
     public static void SetWindowSettingConfig(WindowSettingObj obj)
     {
-        ConfigUtils.Config.Window = obj;
-        ConfigUtils.Save();
+        ConfigLoad.Config.Window = obj;
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -369,8 +368,8 @@ public static class ConfigBinding
     public static void SetGameCheckConfig(bool v1, bool v2, bool v3, bool v4,
         bool v5, bool v6, bool v7, bool v8)
     {
-        ConfigUtils.Config.GameCheck ??= ConfigUtils.MakeGameCheckConfig();
-        var con = ConfigUtils.Config.GameCheck;
+        ConfigLoad.Config.GameCheck ??= ConfigLoad.MakeGameCheckConfig();
+        var con = ConfigLoad.Config.GameCheck;
         con.CheckCore = v1;
         con.CheckAssets = v2;
         con.CheckLib = v3;
@@ -379,7 +378,7 @@ public static class ConfigBinding
         con.CheckAssetsSha1 = v6;
         con.CheckLibSha1 = v7;
         con.CheckModSha1 = v8;
-        ConfigUtils.Save();
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -447,10 +446,10 @@ public static class ConfigBinding
     /// <param name="type"></param>
     public static void SetLanguage(LanguageType type)
     {
-        ConfigUtils.Config.Language = type;
-        ConfigUtils.Save();
+        ConfigLoad.Config.Language = type;
+        ConfigLoad.Save();
 
-        LanguageHelper.Change(type);
+        LanguageUtils.Change(type);
     }
 
     /// <summary>
@@ -615,8 +614,8 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetSafeLog4j(bool value)
     {
-        ConfigUtils.Config.SafeLog4j = value;
-        ConfigUtils.Save();
+        ConfigLoad.Config.SafeLog4j = value;
+        ConfigLoad.Save();
     }
 
     /// <summary>
@@ -860,11 +859,11 @@ public static class ConfigBinding
             return;
         }
 
-        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
-        ConfigUtils.Config.Dns.Enable = dnsEnable;
-        ConfigUtils.Config.Dns.DnsType = dnsType;
-        ConfigUtils.Config.Dns.HttpProxy = v2;
-        ConfigUtils.Save();
+        ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
+        ConfigLoad.Config.Dns.Enable = dnsEnable;
+        ConfigLoad.Config.Dns.DnsType = dnsType;
+        ConfigLoad.Config.Dns.HttpProxy = v2;
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -878,16 +877,16 @@ public static class ConfigBinding
         {
             return;
         }
-        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
+        ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
         if (dnsOver == DnsType.DnsOver)
         {
-            ConfigUtils.Config.Dns.Dns?.Add(url);
+            ConfigLoad.Config.Dns.Dns?.Add(url);
         }
         else
         {
-            ConfigUtils.Config.Dns.Https?.Add(url);
+            ConfigLoad.Config.Dns.Https?.Add(url);
         }
-        ConfigUtils.Save();
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }
@@ -903,16 +902,16 @@ public static class ConfigBinding
         {
             return;
         }
-        ConfigUtils.Config.Dns ??= ConfigUtils.MakeDnsConfig();
+        ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
         if (dns == DnsType.DnsOver)
         {
-            ConfigUtils.Config.Dns.Dns?.Remove(url);
+            ConfigLoad.Config.Dns.Dns?.Remove(url);
         }
         else
         {
-            ConfigUtils.Config.Dns.Https?.Remove(url);
+            ConfigLoad.Config.Dns.Https?.Remove(url);
         }
-        ConfigUtils.Save();
+        ConfigLoad.Save();
 
         CoreHttpClient.Init();
     }

@@ -5,11 +5,11 @@ using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Add;

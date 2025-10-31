@@ -66,7 +66,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
             return null;
         }
     }
@@ -85,7 +85,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
             return null;
         }
     }
@@ -103,7 +103,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
             return null;
         }
     }
@@ -156,7 +156,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error47"), e);
+            Logs.Error(LanguageUtils.Get("Core.Error47"), e);
             return null;
         }
     }
@@ -203,7 +203,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error46"), e);
+            Logs.Error(LanguageUtils.Get("Core.Error46"), e);
         }
         return false;
     }

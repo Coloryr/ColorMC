@@ -473,7 +473,7 @@ public static class WindowManager
     /// 显示下载窗口
     /// </summary>
     /// <returns>Gui调用参数</returns>
-    public static DownloadArg ShowDownload()
+    public static IDownloadGuiHandel ShowDownload()
     {
         return Dispatcher.UIThread.Invoke(() =>
         {
@@ -655,11 +655,11 @@ public static class WindowManager
                 {
                     MainWindow.Window.Show();
                     MainWindow.Window.WindowActivate();
-                    MainWindow.Window.Model.Show(App.Lang("MainWindow.Error11"));
+                    MainWindow.Window.Model.Show(App.Lang("App.Error8"));
                     return;
                 }
 
-                var res = await MainWindow.Window.Model.ShowCombo(App.Lang(App.Lang("MainWindow.Info47")), list.Select(item => item.Name));
+                var res = await MainWindow.Window.Model.ShowCombo(App.Lang(App.Lang("App.Text27")), list.Select(item => item.Name));
                 if (res.Cancel)
                 {
                     return;

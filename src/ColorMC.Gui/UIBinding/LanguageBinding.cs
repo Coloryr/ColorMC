@@ -1,6 +1,7 @@
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UIBinding;
 

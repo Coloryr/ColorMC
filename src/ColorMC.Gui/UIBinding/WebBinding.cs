@@ -19,7 +19,6 @@ using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;

@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -91,22 +90,6 @@ public static class ColorMCCore
     /// <param name="now">目前进度</param>
     public delegate void PackUpdate(int size, int now);
     /// <summary>
-    /// 下载器状态更新
-    /// </summary>
-    /// <param name="state">状态</param>
-    public delegate void DownloadUpdate(int thread, bool state, int count);
-    /// <summary>
-    /// 下载任务状态更新
-    /// </summary>
-    /// <param name="type">更新类型</param>
-    /// <param name="type">更新数据</param>
-    public delegate void DownloadTaskUpdate(UpdateType type, int data);
-    /// <summary>
-    /// 下载项目状态更新
-    /// </summary>
-    /// <param name="obj">项目</param>
-    public delegate void DownloadItemUpdate(int thread, FileItemObj obj);
-    /// <summary>
     /// 压缩包导入状态改变
     /// </summary>
     /// <param name="state">状态</param>
@@ -128,53 +111,45 @@ public static class ColorMCCore
     /// <summary>
     /// 显示下载窗口
     /// </summary>
-    public static Func<DownloadArg>? OnDownload { get; set; }
-
+    public static event Action<DownloadEventArgs>? Download;
     /// <summary>
     /// 错误显示回调
-    /// 标题 错误 关闭程序
     /// </summary>
-    public static event Action<string?, Exception?, bool>? Error;
+    public static event Action<CoreErrorEventArgs>? Error;
     /// <summary>
     /// 游戏日志回调
     /// </summary>
-    public static event Action<GameSettingObj, GameLogItemObj?>? GameLog;
-    /// <summary>
-    /// 语言重载
-    /// </summary>
-    public static event Action<LanguageType>? LanguageReload;
+    public static event Action<GameLogEventArgs>? GameLog;
     /// <summary>
     /// 游戏退出事件
     /// </summary>
-    public static event Action<GameSettingObj, LoginObj, int> GameExit;
+    public static event Action<GameExitEventArgs> GameExit;
     /// <summary>
-    /// 游戏实例数量修改事件
+    /// 游戏实例事件
     /// </summary>
-    public static event Action? InstanceChange;
-    /// <summary>
-    /// 游戏实例图标修改事件
-    /// </summary>
-    public static event Action<GameSettingObj>? InstanceIconChange;
+    public static event Action<InstanceChangeEventArgs>? InstanceChange;
     /// <summary>
     /// 是否为新运行
     /// </summary>
     public static bool NewStart { get; internal set; }
+
     /// <summary>
     /// 停止事件
     /// </summary>
     internal static event Action? Stop;
     /// <summary>
-    /// 游戏窗口句柄
-    /// </summary>
-    internal static readonly ConcurrentDictionary<string, GameHandel> Games = [];
-    /// <summary>
     /// 启动器核心参数
     /// </summary>
     internal static CoreInitArg CoreArg;
+
+    /// <summary>
+    /// 游戏窗口句柄
+    /// </summary>
+    private static readonly ConcurrentDictionary<string, GameHandel> s_games = [];
     /// <summary>
     /// 游戏日志
     /// </summary>
-    internal static readonly ConcurrentDictionary<string, GameRuntimeLog> GameLogs = [];
+    private static readonly ConcurrentDictionary<string, GameRuntimeLog> s_gameLogs = [];
 
     /// <summary>
     /// 初始化阶段1
@@ -184,21 +159,15 @@ public static class ColorMCCore
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
         {
-            throw new Exception("Local is empty");
+            throw new ArgumentNullException(nameof(arg.Local));
         }
         CoreArg = arg;
 
         BaseDir = arg.Local;
         Directory.CreateDirectory(BaseDir);
 
-        LanguageHelper.Load(LanguageType.zh_cn);
-        Logs.Init();
-        ConfigUtils.Init();
+        ConfigLoad.Init();
         CoreHttpClient.Init();
-
-        Logs.Info(LanguageHelper.Get("Core.Info1"));
-        Logs.Info(SystemInfo.SystemName);
-        Logs.Info(SystemInfo.System);
     }
 
     /// <summary>
@@ -212,8 +181,6 @@ public static class ColorMCCore
         AuthDatabase.Init();
         JvmPath.Init();
         MinecraftPath.Init(BaseDir);
-
-        Logs.Info(LanguageHelper.Get("Core.Info3"));
     }
 
     /// <summary>
@@ -230,7 +197,7 @@ public static class ColorMCCore
     /// <param name="uuid"></param>
     public static void KillGame(string uuid)
     {
-        if (Games.TryGetValue(uuid, out var handel))
+        if (s_games.TryGetValue(uuid, out var handel))
         {
             handel.Kill();
         }
@@ -239,13 +206,13 @@ public static class ColorMCCore
     /// <summary>
     /// 启动器产生错误，并打开窗口显示
     /// </summary>
-    /// <param name="text"></param>
+    /// <param name="type"></param>
     /// <param name="e"></param>
     /// <param name="close"></param>
-    internal static void OnError(string text, Exception? e, bool close)
+    /// <param name="show"></param>
+    internal static void OnError(CoreErrorEventArgs args)
     {
-        Error?.Invoke(text, e, close);
-        Logs.Error(text, e);
+        Error?.Invoke(args);
     }
 
     /// <summary>
@@ -255,10 +222,10 @@ public static class ColorMCCore
     /// <param name="text"></param>
     internal static void OnGameLog(GameSettingObj obj, string? text)
     {
-        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        if (s_gameLogs.TryGetValue(obj.UUID, out var log))
         {
             var item = log.AddLog(text);
-            GameLog?.Invoke(obj, item);
+            GameLog?.Invoke(new GameLogEventArgs(obj, item));
         }
     }
 
@@ -268,23 +235,14 @@ public static class ColorMCCore
     /// <param name="obj"></param>
     internal static void GameLogClear(GameSettingObj obj)
     {
-        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        if (s_gameLogs.TryGetValue(obj.UUID, out var log))
         {
             log.Clear();
         }
         else
         {
-            GameLogs.TryAdd(obj.UUID, new());
+            s_gameLogs.TryAdd(obj.UUID, new());
         }
-    }
-
-    /// <summary>
-    /// 语言重载
-    /// </summary>
-    /// <param name="type"></param>
-    internal static void OnLanguageReload(LanguageType type)
-    {
-        LanguageReload?.Invoke(type);
     }
 
     /// <summary>
@@ -295,8 +253,8 @@ public static class ColorMCCore
     /// <param name="code"></param>
     public static void OnGameExit(GameSettingObj obj, LoginObj obj1, int code)
     {
-        Games.TryRemove(obj.UUID, out _);
-        GameExit?.Invoke(obj, obj1, code);
+        s_games.TryRemove(obj.UUID, out _);
+        GameExit?.Invoke(new GameExitEventArgs(obj, obj1, code));
     }
 
     /// <summary>
@@ -306,7 +264,7 @@ public static class ColorMCCore
     /// <returns>实例日志</returns>
     public static GameRuntimeLog? GetGameRuntimeLog(GameSettingObj obj)
     {
-        if (GameLogs.TryGetValue(obj.UUID, out var log))
+        if (s_gameLogs.TryGetValue(obj.UUID, out var log))
         {
             return log;
         }
@@ -321,9 +279,9 @@ public static class ColorMCCore
     /// <param name="handel"></param>
     internal static void AddGameHandel(string uuid, GameHandel handel)
     {
-        if (!Games.TryAdd(uuid, handel))
+        if (!s_games.TryAdd(uuid, handel))
         {
-            Games[uuid] = handel;
+            s_games[uuid] = handel;
         }
     }
 
@@ -332,7 +290,7 @@ public static class ColorMCCore
     /// </summary>
     internal static void OnInstanceChange()
     {
-        InstanceChange?.Invoke();
+        InstanceChange?.Invoke(new InstanceChangeEventArgs(InstanceChangeType.NumberChange));
     }
 
     /// <summary>
@@ -341,6 +299,17 @@ public static class ColorMCCore
     /// <param name="obj"></param>
     internal static void OnInstanceIconChange(GameSettingObj obj)
     {
-        InstanceIconChange?.Invoke(obj);
+        InstanceChange?.Invoke(new InstanceChangeEventArgs(InstanceChangeType.IconChange, obj));
+    }
+
+    /// <summary>
+    /// 获取下载窗口句柄
+    /// </summary>
+    /// <returns></returns>
+    internal static DownloadEventArgs OnDownloadGui()
+    {
+        var arg = new DownloadEventArgs();
+        Download?.Invoke(arg);
+        return arg;
     }
 }

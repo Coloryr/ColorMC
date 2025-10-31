@@ -148,7 +148,7 @@ public partial class MainModel
             return;
         }
 
-        var conf = ConfigUtils.Config;
+        var conf = ConfigLoad.Config;
         MaxMem = Game.Obj.JvmArg?.MaxMemory ?? conf.DefaultJvmArg.MaxMemory;
         MinMem = Game.Obj.JvmArg?.MinMemory ?? conf.DefaultJvmArg.MinMemory;
         MaxWindow = Game.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;

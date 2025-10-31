@@ -93,7 +93,7 @@ public static class WorldDataPack
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
+                Logs.Error(string.Format(LanguageHelper.Get("Core.Error117"), item), e);
             }
         });
 
@@ -133,7 +133,7 @@ public static class WorldDataPack
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.DataPack.Error1"), item), e);
+                Logs.Error(string.Format(LanguageHelper.Get("Core.Error117"), item), e);
             }
         });
 
@@ -269,7 +269,7 @@ public static class WorldDataPack
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.DataPack.Error2"), e);
+                Logs.Error(LanguageHelper.Get("Core.Error118"), e);
             }
         });
 

@@ -96,7 +96,7 @@ public static class ConfigSave
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error2"), e);
+                ColorMCCore.OnError(new ConfigSaveErrorEventArgs(e));
             }
         }
     }

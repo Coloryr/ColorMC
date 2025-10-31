@@ -286,18 +286,18 @@ public static class GameArg
         WindowSettingObj? window;
         if (obj.Window == null)
         {
-            window = ConfigUtils.Config.Window;
+            window = ConfigLoad.Config.Window;
         }
         else
         {
             window = new WindowSettingObj
             {
                 FullScreen = obj.Window.FullScreen
-                    ?? ConfigUtils.Config.Window.FullScreen,
+                    ?? ConfigLoad.Config.Window.FullScreen,
                 Width = obj.Window.Width
-                    ?? ConfigUtils.Config.Window.Width,
+                    ?? ConfigLoad.Config.Window.Width,
                 Height = obj.Window.Height
-                    ?? ConfigUtils.Config.Window.Height,
+                    ?? ConfigLoad.Config.Window.Height,
             };
         }
         if (window.FullScreen == true)
@@ -380,27 +380,27 @@ public static class GameArg
                 gameArg.Add(obj.ProxyHost.Password);
             }
         }
-        else if (ConfigUtils.Config.Http.GameProxy)
+        else if (ConfigLoad.Config.Http.GameProxy)
         {
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyIP))
+            if (!string.IsNullOrWhiteSpace(ConfigLoad.Config.Http.ProxyIP))
             {
                 gameArg.Add("--proxyHost");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyIP);
+                gameArg.Add(ConfigLoad.Config.Http.ProxyIP);
             }
-            if (ConfigUtils.Config.Http.ProxyPort != 0)
+            if (ConfigLoad.Config.Http.ProxyPort != 0)
             {
                 gameArg.Add("--proxyPort");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyPort.ToString());
+                gameArg.Add(ConfigLoad.Config.Http.ProxyPort.ToString());
             }
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyUser))
+            if (!string.IsNullOrWhiteSpace(ConfigLoad.Config.Http.ProxyUser))
             {
                 gameArg.Add("--proxyUser");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyUser);
+                gameArg.Add(ConfigLoad.Config.Http.ProxyUser);
             }
-            if (!string.IsNullOrWhiteSpace(ConfigUtils.Config.Http.ProxyPassword))
+            if (!string.IsNullOrWhiteSpace(ConfigLoad.Config.Http.ProxyPassword))
             {
                 gameArg.Add("--proxyPass");
-                gameArg.Add(ConfigUtils.Config.Http.ProxyPassword);
+                gameArg.Add(ConfigLoad.Config.Http.ProxyPassword);
             }
         }
 
@@ -427,17 +427,17 @@ public static class GameArg
 
         if (obj.JvmArg == null)
         {
-            args = ConfigUtils.Config.DefaultJvmArg;
+            args = ConfigLoad.Config.DefaultJvmArg;
         }
         else
         {
             args = new RunArgObj
             {
-                JvmArgs = obj.JvmArg.JvmArgs ?? ConfigUtils.Config.DefaultJvmArg.JvmArgs,
-                GC = obj.JvmArg.GC ?? ConfigUtils.Config.DefaultJvmArg.GC,
-                JavaAgent = obj.JvmArg.JavaAgent ?? ConfigUtils.Config.DefaultJvmArg.JavaAgent,
-                MaxMemory = obj.JvmArg.MaxMemory ?? ConfigUtils.Config.DefaultJvmArg.MaxMemory,
-                MinMemory = obj.JvmArg.MinMemory ?? ConfigUtils.Config.DefaultJvmArg.MinMemory,
+                JvmArgs = obj.JvmArg.JvmArgs ?? ConfigLoad.Config.DefaultJvmArg.JvmArgs,
+                GC = obj.JvmArg.GC ?? ConfigLoad.Config.DefaultJvmArg.GC,
+                JavaAgent = obj.JvmArg.JavaAgent ?? ConfigLoad.Config.DefaultJvmArg.JavaAgent,
+                MaxMemory = obj.JvmArg.MaxMemory ?? ConfigLoad.Config.DefaultJvmArg.MaxMemory,
+                MinMemory = obj.JvmArg.MinMemory ?? ConfigLoad.Config.DefaultJvmArg.MinMemory,
                 ColorASM = obj.JvmArg.ColorASM
             };
         }
@@ -510,7 +510,7 @@ public static class GameArg
                 var res = await CoreHttpClient.GetStringAsync(login.Text1);
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -520,7 +520,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -530,7 +530,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error12"));
+                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -675,7 +675,7 @@ public static class GameArg
     private static string MakeMainClass(this GameSettingObj obj)
     {
         var version = VersionPath.GetVersion(obj.Version)
-            ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version));
+            ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Error116"), obj.Version));
         var v2 = version.IsGameVersionV2();
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
@@ -778,7 +778,7 @@ public static class GameArg
                             res2 = await obj.BuildForgeAsync();
                             if (res2 == null)
                             {
-                                throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                                throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                             }
                         }
                         loader = res2.Loaders;
@@ -796,7 +796,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildFabricAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                         break;
                     case Loaders.Quilt:
                         loader = obj.GetQuiltLibs();
@@ -805,7 +805,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildQuiltAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                         break;
                     case Loaders.OptiFine:
                         loader = obj.GetOptifineLibs();
@@ -814,14 +814,14 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildOptifineAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                         GameHelper.ReadyOptifineWrapper();
                         loader.Add(GameHelper.OptifineWrapper);
                         break;
                     case Loaders.Custom:
                         if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
                         {
-                            throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                            throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                         }
 
                         if (cancel.IsCancellationRequested)
@@ -829,7 +829,7 @@ public static class GameArg
                             return;
                         }
                         var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Launch.Error3"));
+                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
                         loader = res1.List?.ToList();
                         break;
                 }
@@ -896,7 +896,7 @@ public static class GameArg
                     //不存在json文件
                     var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url)
                               ?? throw new LaunchException(LaunchState.AssetsError,
-                                  LanguageHelper.Get("Core.Launch.Error2"));
+                                  LanguageHelper.Get("Core.Error103"));
                     // assets = res.Assets;
                     game.AddIndex(res.Text);
                 }
@@ -950,7 +950,7 @@ public static class GameArg
                     if (assets == null)
                     {
                         var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url)
-                            ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Launch.Error2"));
+                            ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Error103"));
                         // assets = res.Assets;
                         item.AddIndex(res.Text);
                     }
@@ -1059,7 +1059,7 @@ public static class GameArg
             arg.GameArgs.AddRange(gamearg);
 
             //log4j2-xml
-            if (logging != null && ConfigUtils.Config.SafeLog4j)
+            if (logging != null && ConfigLoad.Config.SafeLog4j)
             {
                 var obj1 = GameDownloadHelper.BuildLog4jItem(logging);
                 arg.Log4JXml = obj1;

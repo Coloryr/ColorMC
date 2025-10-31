@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Game;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.GameEdit;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -46,7 +46,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 生存模式
     /// </summary>
-    public string Mode => LanguageHelper.GetNameWithGameType(World.GameType);
+    public string Mode => LanguageUtils.GetNameWithGameType(World.GameType);
     /// <summary>
     /// 上次游玩时间
     /// </summary>
@@ -58,7 +58,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 难度
     /// </summary>
-    public string Difficulty => LanguageHelper.GetNameWithDifficulty(World.Difficulty);
+    public string Difficulty => LanguageUtils.GetNameWithDifficulty(World.Difficulty);
     /// <summary>
     /// 是否为极限模式
     /// </summary>

@@ -137,7 +137,7 @@ public static partial class CheckHelpers
     {
         var version = VersionPath.GetVersion(obj.Version);
         return version == null
-            ? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Check.Error1"), obj.Version))
+            ? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Error116"), obj.Version))
             : version.IsGameVersionV2();
     }
 
@@ -166,7 +166,7 @@ public static partial class CheckHelpers
         catch
         {
             var obj1 = VersionPath.GetVersion(version)
-                ?? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Check.Error1"), version));
+                ?? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Error116"), version));
             return obj1.JavaVersion?.MajorVersion > 8;
         }
     }
@@ -256,7 +256,7 @@ public static partial class CheckHelpers
                 return;
 
             var obj1 = GameDownloadHelper.BuildAssetsItem(item.Key, item.Value.Hash);
-            if (ConfigUtils.Config.GameCheck?.CheckAssetsSha1 is not { } check || !obj1.CheckToAdd(check))
+            if (ConfigLoad.Config.GameCheck?.CheckAssetsSha1 is not { } check || !obj1.CheckToAdd(check))
             {
                 return;
             }
@@ -284,11 +284,11 @@ public static partial class CheckHelpers
 
         var var = await VersionPath.GetVersionsAsync();
         var version = var?.Versions.FirstOrDefault(a => a.Id == obj.Version)
-                      ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+                      ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
         _ = await VersionPath.AddGameAsync(version)
-            ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+            ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
         game = VersionPath.GetVersion(obj.Version)
-               ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Launch.Error1"));
+               ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
 
         return game;
     }
@@ -306,11 +306,11 @@ public static partial class CheckHelpers
         var list1 = new List<Task>();
 
         //检查游戏核心文件
-        if (ConfigUtils.Config.GameCheck?.CheckCore == true)
+        if (ConfigLoad.Config.GameCheck?.CheckCore == true)
         {
             list1.Add(Task.Run(() =>
             {
-                if (arg.GameJar.CheckToAdd(ConfigUtils.Config.GameCheck.CheckCoreSha1))
+                if (arg.GameJar.CheckToAdd(ConfigLoad.Config.GameCheck.CheckCoreSha1))
                 {
                     list.Add(arg.GameJar);
                 }
@@ -328,7 +328,7 @@ public static partial class CheckHelpers
         }
 
         //检查游戏资源文件
-        if (ConfigUtils.Config.GameCheck?.CheckAssets == true)
+        if (ConfigLoad.Config.GameCheck?.CheckAssets == true)
         {
             list1.Add(Task.Run(() =>
             {
@@ -350,28 +350,28 @@ public static partial class CheckHelpers
         }
 
         //检查运行库
-        if (ConfigUtils.Config.GameCheck?.CheckLib == true)
+        if (ConfigLoad.Config.GameCheck?.CheckLib == true)
         {
             //检查游戏启动json
             list1.Add(Task.Run(() =>
             {
                 Parallel.ForEach(arg.GameLibs, item =>
                 {
-                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
+                    if (CheckToAdd(item, ConfigLoad.Config.GameCheck.CheckLibSha1))
                     {
                         list.Add(item);
                     }
                 });
                 Parallel.ForEach(arg.LoaderLibs, item =>
                 {
-                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
+                    if (CheckToAdd(item, ConfigLoad.Config.GameCheck.CheckLibSha1))
                     {
                         list.Add(item);
                     }
                 });
                 Parallel.ForEach(arg.InstallerLibs, item =>
                 {
-                    if (CheckToAdd(item, ConfigUtils.Config.GameCheck.CheckLibSha1))
+                    if (CheckToAdd(item, ConfigLoad.Config.GameCheck.CheckLibSha1))
                     {
                         list.Add(item);
                     }
@@ -380,7 +380,7 @@ public static partial class CheckHelpers
         }
 
         //检查整合包mod
-        if (obj.ModPack && ConfigUtils.Config.GameCheck?.CheckMod == true)
+        if (obj.ModPack && ConfigLoad.Config.GameCheck?.CheckMod == true)
         {
             list1.Add(Task.Run(() =>
             {
@@ -413,7 +413,7 @@ public static partial class CheckHelpers
                             continue;
                         }
 
-                        if (ConfigUtils.Config.GameCheck.CheckModSha1)
+                        if (ConfigLoad.Config.GameCheck.CheckModSha1)
                         {
                             if (shas.TryGetValue(item1.FullName, out var sha1))
                             {
@@ -495,7 +495,7 @@ public static partial class CheckHelpers
         };
         if (!item1.State)
         {
-            throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Launch.Error11"));
+            throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error110"));
         }
         else if (item1.Item != null)
         {

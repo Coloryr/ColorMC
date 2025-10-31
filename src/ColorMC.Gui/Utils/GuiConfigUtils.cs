@@ -37,7 +37,7 @@ public static class GuiConfigUtils
     /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool quit = false)
     {
-        LanguageHelper.Load(LanguageType.zh_cn);
+        LanguageUtils.Load(LanguageType.zh_cn);
         if (File.Exists(local))
         {
             GuiConfigObj? conf = null;
@@ -48,7 +48,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("Config.Error2"), e);
+                Logs.Error(LanguageUtils.Get("Config.Error2"), e);
             }
 
             if (conf == null)
@@ -125,7 +125,7 @@ public static class GuiConfigUtils
 
             if (save)
             {
-                Logs.Info(LanguageHelper.Get("Core.Info5"));
+                Logs.Info(LanguageUtils.Get("Core.Info5"));
                 SaveNow();
             }
         }
@@ -144,7 +144,7 @@ public static class GuiConfigUtils
     /// </summary>
     public static void SaveNow()
     {
-        Logs.Info(LanguageHelper.Get("Core.Info5"));
+        Logs.Info(LanguageUtils.Get("Core.Info5"));
         PathHelper.WriteText(s_local, JsonUtils.ToString(Config, JsonGuiType.GuiConfigObj));
     }
 
