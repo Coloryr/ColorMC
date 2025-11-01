@@ -134,7 +134,7 @@ public partial class GameGroupModel : TopModel
     [RelayCommand]
     public async Task LaunchAll()
     {
-        var res = await Model.ShowAsync(App.Lang("MainWindow.Info41"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("MainWindow.Info41"));
         if (!res)
         {
             return;

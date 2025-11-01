@@ -17,11 +17,11 @@ public static class GameEditFlyout3
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(obj.Local);
             }),
-            new FlyoutMenuModel(App.Lang("GameEditWindow.Flyouts.Text12"), true, model.DeleteResource)
+            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text12"), true, model.DeleteResource)
         ]).Show(con);
     }
 }

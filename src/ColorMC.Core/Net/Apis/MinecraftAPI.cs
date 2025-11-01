@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json.Nodes;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Utils;
@@ -45,11 +46,11 @@ public static class MinecraftAPI
     /// </summary>
     /// <param name="accessToken">token</param>
     /// <returns>账户信息</returns>
-    public static async Task<MinecraftProfileObj?> GetMinecraftProfileAsync(string accessToken)
+    public static async Task<MinecraftProfileObj?> GetMinecraftProfileAsync(string accessToken, CancellationToken token)
     {
-        HttpRequestMessage message = new(HttpMethod.Get, Profile);
+        var message = new HttpRequestMessage(HttpMethod.Get, Profile);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
-        using var data = await CoreHttpClient.SendLoginAsync(message);
+        using var data = await CoreHttpClient.SendLoginAsync(message, token);
         using var stream = await data.Content.ReadAsStreamAsync();
         return JsonUtils.ToObj(stream, JsonType.MinecraftProfileObj);
     }
@@ -71,37 +72,25 @@ public static class MinecraftAPI
     /// <summary>
     /// 获取账户信息
     /// </summary>
-    public static async Task<MinecraftLoginRes> GetMinecraftAsync(string xstsUhs, string xstsToken)
+    public static async Task<MinecraftLoginRes> GetMinecraftAsync(string xstsUhs, string xstsToken, CancellationToken token)
     {
         var obj = new JsonObject()
         {
             { "identityToken", $"XBL3.0 x={xstsUhs};{xstsToken}" }
         };
-        var obj1 = await CoreHttpClient.LoginPostJsonAsync(LoginXbox, obj.ToJsonString());
-        if (obj1 == null)
-        {
-            return new MinecraftLoginRes
-            {
-                State = LoginState.DataError
-            };
-        }
-
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(LoginXbox, obj.ToJsonString(), token) 
+            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Token);
         var json = obj1.RootElement;
         var accessToken = json.GetProperty("access_token").GetString();
         var expireTime = json.GetProperty("expires_in").GetInt64();
 
-        if (string.IsNullOrWhiteSpace(accessToken) ||
-            expireTime <= 0)
+        if (string.IsNullOrWhiteSpace(accessToken) || expireTime <= 0)
         {
-            return new MinecraftLoginRes
-            {
-                State = LoginState.DataError
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, data: json.ToString());
         }
 
         return new MinecraftLoginRes
         {
-            State = LoginState.Done,
             AccessToken = accessToken
         };
     }

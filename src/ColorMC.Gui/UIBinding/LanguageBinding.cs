@@ -14,10 +14,10 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.DisplayType.Item1"),
-            App.Lang("Type.DisplayType.Item2"),
-            App.Lang("Type.DisplayType.Item3"),
-            App.Lang("Type.DisplayType.Item4"),
+            LanguageUtils.Get("Type.DisplayType.Item1"),
+            LanguageUtils.Get("Type.DisplayType.Item2"),
+            LanguageUtils.Get("Type.DisplayType.Item3"),
+            LanguageUtils.Get("Type.DisplayType.Item4"),
         ];
     }
 
@@ -75,8 +75,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.AxisType.Item1"),
-            App.Lang("Type.AxisType.Item2")
+            LanguageUtils.Get("Type.AxisType.Item1"),
+            LanguageUtils.Get("Type.AxisType.Item2")
         ];
     }
 
@@ -88,13 +88,13 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Text.Name"),
-            App.Lang("Text.FileName"),
-            App.Lang("Text.Author"),
+            LanguageUtils.Get("Text.Name"),
+            LanguageUtils.Get("Text.FileName"),
+            LanguageUtils.Get("Text.Author"),
             "modid",
-            App.Lang("GameEditWindow.Tab4.Text16"),
-            App.Lang("GameEditWindow.Tab4.Text17"),
-            App.Lang("GameEditWindow.Tab4.Text18"),
+            LanguageUtils.Get("GameEditWindow.Tab4.Text16"),
+            LanguageUtils.Get("GameEditWindow.Tab4.Text17"),
+            LanguageUtils.Get("GameEditWindow.Tab4.Text18"),
         ];
     }
 
@@ -102,9 +102,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.ExportPack.Item1"),
-            App.Lang("Type.ExportPack.Item2"),
-            App.Lang("Type.ExportPack.Item3"),
+            LanguageUtils.Get("Type.ExportPack.Item1"),
+            LanguageUtils.Get("Type.ExportPack.Item2"),
+            LanguageUtils.Get("Type.ExportPack.Item3"),
             //App.GetLanguage("Type.ExportPack.Item4"),
             //App.GetLanguage("Type.ExportPack.Item5")
         ];
@@ -114,9 +114,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.SkinType.Old"),
-            App.Lang("Type.SkinType.New"),
-            App.Lang("Type.SkinType.New_Slim")
+            LanguageUtils.Get("Type.SkinType.Old"),
+            LanguageUtils.Get("Type.SkinType.New"),
+            LanguageUtils.Get("Type.SkinType.New_Slim")
         ];
     }
     /// <summary>
@@ -127,9 +127,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.SkinRotate.Item1"),
-            App.Lang("Type.SkinRotate.Item2"),
-            App.Lang("Type.SkinRotate.Item3")
+            LanguageUtils.Get("Type.SkinRotate.Item1"),
+            LanguageUtils.Get("Type.SkinRotate.Item2"),
+            LanguageUtils.Get("Type.SkinRotate.Item3")
         ];
     }
 
@@ -150,9 +150,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.Dns.Item1"),
-            App.Lang("Type.Dns.Item2"),
-            App.Lang("Type.Dns.Item3")
+            LanguageUtils.Get("Type.Dns.Item1"),
+            LanguageUtils.Get("Type.Dns.Item2"),
+            LanguageUtils.Get("Type.Dns.Item3")
         ];
     }
 
@@ -164,11 +164,11 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.TranTypes.Item1"),
-            App.Lang("Type.TranTypes.Item2"),
-            App.Lang("Type.TranTypes.Item3"),
-            App.Lang("Type.TranTypes.Item4"),
-            App.Lang("Type.TranTypes.Item5")
+            LanguageUtils.Get("Type.TranTypes.Item1"),
+            LanguageUtils.Get("Type.TranTypes.Item2"),
+            LanguageUtils.Get("Type.TranTypes.Item3"),
+            LanguageUtils.Get("Type.TranTypes.Item4"),
+            LanguageUtils.Get("Type.TranTypes.Item5")
         ];
     }
     /// <summary>
@@ -212,8 +212,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.SortOrder.Item1"),
-            App.Lang("Type.SortOrder.Item2")
+            LanguageUtils.Get("Type.SortOrder.Item1"),
+            LanguageUtils.Get("Type.SortOrder.Item2")
         ];
     }
 
@@ -288,8 +288,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("ServerPackWindow.Tab4.Text5"),
-            App.Lang("ServerPackWindow.Tab4.Text6")
+            LanguageUtils.Get("ServerPackWindow.Tab4.Text5"),
+            LanguageUtils.Get("ServerPackWindow.Tab4.Text6")
         ];
     }
 
@@ -297,9 +297,9 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.VersionType.Item1"),
-            App.Lang("Type.VersionType.Item2"),
-            App.Lang("Type.VersionType.Item3")
+            LanguageUtils.Get("Type.VersionType.Item1"),
+            LanguageUtils.Get("Type.VersionType.Item2"),
+            LanguageUtils.Get("Type.VersionType.Item3")
         ];
     }
 
@@ -307,15 +307,15 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.Postion.Item1"),
-            App.Lang("Type.Postion.Item2"),
-            App.Lang("Type.Postion.Item3"),
-            App.Lang("Type.Postion.Item4"),
-            App.Lang("Type.Postion.Item5"),
-            App.Lang("Type.Postion.Item6"),
-            App.Lang("Type.Postion.Item7"),
-            App.Lang("Type.Postion.Item8"),
-            App.Lang("Type.Postion.Item9"),
+            LanguageUtils.Get("Type.Postion.Item1"),
+            LanguageUtils.Get("Type.Postion.Item2"),
+            LanguageUtils.Get("Type.Postion.Item3"),
+            LanguageUtils.Get("Type.Postion.Item4"),
+            LanguageUtils.Get("Type.Postion.Item5"),
+            LanguageUtils.Get("Type.Postion.Item6"),
+            LanguageUtils.Get("Type.Postion.Item7"),
+            LanguageUtils.Get("Type.Postion.Item8"),
+            LanguageUtils.Get("Type.Postion.Item9"),
         ];
     }
 
@@ -323,8 +323,8 @@ public static class LanguageBinding
     {
         return
         [
-            App.Lang("Type.Guide.Item1"),
-            App.Lang("Type.Guide.Item2"),
+            LanguageUtils.Get("Type.Guide.Item1"),
+            LanguageUtils.Get("Type.Guide.Item2"),
         ];
     }
 

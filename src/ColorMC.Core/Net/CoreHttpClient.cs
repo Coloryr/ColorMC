@@ -270,10 +270,10 @@ public static class CoreHttpClient
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    public static async Task<Stream> LoginPostStreamAsync(string url, Dictionary<string, string> arg)
+    public static async Task<Stream> LoginPostStreamAsync(string url, Dictionary<string, string> arg, CancellationToken token)
     {
         var content = new FormUrlEncodedContent(arg);
-        var message = await _loginClient.PostAsync(url, content);
+        var message = await _loginClient.PostAsync(url, content, token);
         return await message.Content.ReadAsStreamAsync();
     }
     /// <summary>
@@ -282,10 +282,10 @@ public static class CoreHttpClient
     /// <param name="url">网址</param>
     /// <param name="arg">参数</param>
     /// <returns>数据</returns>
-    public static async Task<JsonDocument?> LoginPostJsonAsync(string url, string arg)
+    public static async Task<JsonDocument?> LoginPostJsonAsync(string url, string arg, CancellationToken token)
     {
         var content = new StringContent(arg, MediaTypeHeaderValue.Parse("application/json"));
-        using var message = await _loginClient.PostAsync(url, content);
+        using var message = await _loginClient.PostAsync(url, content, token);
         using var data = await message.Content.ReadAsStreamAsync();
         return await JsonDocument.ParseAsync(data);
     }
@@ -305,7 +305,7 @@ public static class CoreHttpClient
     /// </summary>
     /// <param name="httpRequest"></param>
     /// <returns></returns>
-    public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage httpRequest)
+    public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage httpRequest, CancellationToken token)
     {
         return _loginClient.SendAsync(httpRequest);
     }

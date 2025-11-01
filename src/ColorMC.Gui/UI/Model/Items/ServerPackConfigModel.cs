@@ -32,7 +32,7 @@ public record ServerPackConfigModel
     /// <returns></returns>
     private static string GetType(ConfigPackObj obj)
     {
-        return App.Lang(obj.IsZip ? "ServerPackWindow.Tab4.Text5"
+        return LanguageUtils.Get(obj.IsZip ? "ServerPackWindow.Tab4.Text5"
             : "ServerPackWindow.Tab4.Text6");
     }
 }

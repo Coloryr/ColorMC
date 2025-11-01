@@ -15,11 +15,11 @@ public static class GameEditFlyout7
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(model.SchematicItem!.Local);
             }),
-            new FlyoutMenuModel(App.Lang("Button.Delete"), true, model.DeleteSchematic)
+            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, model.DeleteSchematic)
         ]).Show(con);
     }
 }

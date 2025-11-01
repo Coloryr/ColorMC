@@ -95,7 +95,7 @@ public partial class AddJavaControlModel : TopModel
     {
         _useName = ToString() ?? "AddJavaControlModel";
         _needJava = version;
-        Model.SetChoiseContent(_useName, App.Lang("Button.Refash"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
         Model.SetChoiseCall(_useName, Load);
     }
 
@@ -173,7 +173,7 @@ public partial class AddJavaControlModel : TopModel
     {
         _load = true;
 
-        Model.Progress(App.Lang("AddJavaWindow.Info4"));
+        Model.Progress(LanguageUtils.Get("AddJavaWindow.Info4"));
         Model.ChoiseEnable = false;
 
         _javaList.Clear();
@@ -287,13 +287,13 @@ public partial class AddJavaControlModel : TopModel
 
             Model.ChoiseEnable = true;
             Model.ProgressClose();
-            Model.Notify(App.Lang("AddJavaWindow.Info6"));
+            Model.Notify(LanguageUtils.Get("AddJavaWindow.Info6"));
         }
         else
         {
             Model.ChoiseEnable = true;
             Model.ProgressClose();
-            Model.Show(App.Lang("AddJavaWindow.Error1"));
+            Model.Show(LanguageUtils.Get("AddJavaWindow.Error1"));
         }
 
         _load = false;
@@ -306,7 +306,7 @@ public partial class AddJavaControlModel : TopModel
     public async void Install(JavaDownloadModel obj)
     {
         var res = await Model.ShowAsync(string.Format(
-            App.Lang("AddJavaWindow.Info1"), obj.Name));
+            LanguageUtils.Get("AddJavaWindow.Info1"), obj.Name));
         if (!res)
         {
             return;
@@ -314,16 +314,16 @@ public partial class AddJavaControlModel : TopModel
 
         if (GuiConfigUtils.Config.WindowMode != true)
         {
-            Model.Progress(App.Lang("AddJavaWindow.Info2"));
+            Model.Progress(LanguageUtils.Get("AddJavaWindow.Info2"));
         }
-        string temp = App.Lang("AddGameWindow.Tab1.Info21");
+        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
         //开始下载Java
         var res1 = await JavaBinding.DownloadJavaAsync(obj, (a, b, c) =>
         {
             Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
         }, () =>
         {
-            Dispatcher.UIThread.Post(() => Model.ProgressUpdate(App.Lang("AddJavaWindow.Info5")));
+            Dispatcher.UIThread.Post(() => Model.ProgressUpdate(LanguageUtils.Get("AddJavaWindow.Info5")));
         });
         Model.ProgressClose();
         if (!res1.State)
@@ -332,7 +332,7 @@ public partial class AddJavaControlModel : TopModel
             return;
         }
 
-        Model.Notify(App.Lang("AddJavaWindow.Info3"));
+        Model.Notify(LanguageUtils.Get("AddJavaWindow.Info3"));
         (WindowManager.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 

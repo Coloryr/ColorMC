@@ -51,8 +51,8 @@ public partial class MainModel
 
         if (user == null)
         {
-            UserId = App.Lang("App.Text22");
-            UserType = App.Lang("App.Text21");
+            UserId = LanguageUtils.Get("App.Text22");
+            UserType = LanguageUtils.Get("App.Text21");
         }
         else
         {
@@ -81,7 +81,7 @@ public partial class MainModel
                 }
                 if (!find)
                 {
-                    UserType = App.Lang("App.Error6");
+                    UserType = LanguageUtils.Get("App.Error6");
                 }
             }
             else

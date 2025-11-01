@@ -32,7 +32,7 @@ public partial class MainStartControl : UserControl
         }
         else
         {
-            Text1.Text = App.Lang("MainWindow.Text12");
+            Text1.Text = LanguageUtils.Get("MainWindow.Text12");
         }
 
         if (image != null)

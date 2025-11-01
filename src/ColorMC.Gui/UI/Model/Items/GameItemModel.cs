@@ -379,7 +379,7 @@ public partial class GameItemModel : GameModel
         var time2 = Obj.LaunchData.LastTime;
         var time3 = Obj.LaunchData.LastPlay;
         var time4 = Obj.LaunchData.GameTime;
-        Tips = string.Format(App.Lang("ToolTip.Text125"),
+        Tips = string.Format(LanguageUtils.Get("ToolTip.Text125"),
             time1.Ticks == 0 ? "" : time1.ToString(),
             time2.Ticks == 0 ? "" : time2.ToString(),
             time3.Ticks == 0 ? "" :
@@ -442,14 +442,14 @@ public partial class GameItemModel : GameModel
     /// </summary>
     public async void Rename()
     {
-        var res = await Model.Input(App.Lang("MainWindow.Info23"), Obj.Name);
+        var res = await Model.Input(LanguageUtils.Get("MainWindow.Info23"), Obj.Name);
         if (res.Cancel)
         {
             return;
         }
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            Model.Show(App.Lang("MainWindow.Error3"));
+            Model.Show(LanguageUtils.Get("MainWindow.Error3"));
             return;
         }
 
@@ -469,7 +469,7 @@ public partial class GameItemModel : GameModel
             if (res is true)
             {
                 value.ChangeConfig(model);
-                Model.Notify(App.Lang("MainWindow.Info39"));
+                Model.Notify(LanguageUtils.Get("MainWindow.Info39"));
             }
         }
     }
@@ -479,27 +479,27 @@ public partial class GameItemModel : GameModel
     /// </summary>
     public async void Copy()
     {
-        var res = await Model.Input(App.Lang("MainWindow.Info23"),
-            Obj.Name + App.Lang("MainWindow.Info24"));
+        var res = await Model.Input(LanguageUtils.Get("MainWindow.Info23"),
+            Obj.Name + LanguageUtils.Get("MainWindow.Info24"));
         if (res.Cancel)
         {
             return;
         }
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            Model.Show(App.Lang("MainWindow.Error3"));
+            Model.Show(LanguageUtils.Get("MainWindow.Error3"));
             return;
         }
 
         var res1 = await GameBinding.CopyGameAsync(Obj, res.Text1, Model.ShowAsync, GameOverwirte);
         if (!res1)
         {
-            Model.Show(App.Lang("MainWindow.Error5"));
+            Model.Show(LanguageUtils.Get("MainWindow.Error5"));
             return;
         }
         else
         {
-            Model.Notify(App.Lang("MainWindow.Info25"));
+            Model.Notify(LanguageUtils.Get("MainWindow.Info25"));
         }
     }
 
@@ -510,23 +510,23 @@ public partial class GameItemModel : GameModel
     {
         if (GameManager.IsAdd(Obj))
         {
-            Model.Show(App.Lang("GameEditWindow.Tab1.Error5"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Error5"));
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info19"), Obj.Name));
+        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Info19"), Obj.Name));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Info11"));
         res = await GameBinding.DeleteGameAsync(Obj);
         Model.ProgressClose();
         Model.InputClose();
         if (!res)
         {
-            Model.Show(App.Lang("MainWindow.Info37"));
+            Model.Show(LanguageUtils.Get("MainWindow.Info37"));
         }
     }
 
@@ -546,7 +546,7 @@ public partial class GameItemModel : GameModel
     private async Task<bool> GameOverwirte(GameSettingObj obj)
     {
         return await Model.ShowAsync(
-            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
+            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
     }
 
     /// <summary>

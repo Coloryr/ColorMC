@@ -25,7 +25,7 @@ public partial class AddGameControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("AddGameWindow.Title");
+        Title = LanguageUtils.Get("AddGameWindow.Title");
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -111,14 +111,14 @@ public partial class AddGameControl : BaseUserControl
                 //判断路径还是文件显示文字
                 case IStorageFolder forder when Directory.Exists(forder.GetPath()):
                     Grid2.IsVisible = true;
-                    Label1.Text = App.Lang("AddGameWindow.Text2");
+                    Label1.Text = LanguageUtils.Get("AddGameWindow.Text2");
                     break;
                 default:
                     {
                         if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                         {
                             Grid2.IsVisible = true;
-                            Label1.Text = App.Lang("MainWindow.Text25");
+                            Label1.Text = LanguageUtils.Get("MainWindow.Text25");
                         }
 
                         break;

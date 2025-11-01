@@ -14,11 +14,11 @@ public static class UrlFlyout
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("NetFrpWindow.Tab1.Text14"), url != null, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("NetFrpWindow.Tab1.Text14"), url != null, ()=>
             {
                 BaseBinding.OpenUrl(url);
             }),
-            new FlyoutMenuModel(App.Lang("AddWindow.Text13"), url1 != null, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("AddWindow.Text13"), url1 != null, ()=>
             {
                 BaseBinding.OpenUrl(url1);
             })

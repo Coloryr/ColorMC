@@ -62,7 +62,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Data);
             if (info == null)
             {
-                return new StringRes { Data = App.Lang("JavaBinding.Error1") };
+                return new StringRes { Data = LanguageUtils.Get("JavaBinding.Error1") };
             }
             return new StringRes { State = true };
         }

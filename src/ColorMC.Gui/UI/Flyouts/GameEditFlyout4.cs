@@ -15,11 +15,11 @@ public static class GameEditFlyout4
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(model.Screenshot);
             }),
-            new FlyoutMenuModel(App.Lang("GameEditWindow.Tab9.Text1"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Tab9.Text1"), true, ()=>
             {
                 model.TopModel.DeleteScreenshot(model);
             })

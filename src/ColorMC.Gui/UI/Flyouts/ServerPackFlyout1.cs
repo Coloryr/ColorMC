@@ -15,7 +15,7 @@ public static class ServerPackFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.Delete"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, ()=>
             {
                 model.DeleteFile(obj);
             }),

@@ -16,36 +16,30 @@ public static class Nide8
     /// <param name="clientToken">客户端代码</param>
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass)
+    public static async Task<LoginObj> AuthenticateAsync(string server, string clientToken, string user, string pass, CancellationToken token)
     {
         string url = UrlHelper.Nide8 + server;
 
-        var obj = await LegacyLogin.AuthenticateAsync(url, clientToken, user, pass, false);
-        if (obj.State != LoginState.Done)
-            return obj;
-
+        var obj = await LegacyLogin.AuthenticateAsync(url, clientToken, user, pass, false, token);
         obj.Auth!.AuthType = AuthType.Nide8;
         obj.Auth.Text1 = server;
 
-        return obj;
+        return obj.Auth;
     }
 
     /// <summary>
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
+    public static async Task<LoginObj> RefreshAsync(LoginObj obj, CancellationToken token)
     {
         string server = UrlHelper.Nide8 + obj.Text1;
-        if (await LegacyLogin.ValidateAsync(server, obj))
+        if (await LegacyLogin.ValidateAsync(server, obj, token))
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Done,
-                Auth = obj
-            };
+            return obj;
         }
 
-        return await LegacyLogin.RefreshAsync(server, obj, false);
+        var res = await LegacyLogin.RefreshAsync(server, obj, false, token);
+        return res.Auth!;
     }
 }

@@ -26,7 +26,7 @@ public partial class GameCloudControl : MenuControl
     {
         _obj = obj;
 
-        Title = string.Format(App.Lang("GameCloudWindow.Title"), obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameCloudWindow.Title"), obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -50,7 +50,7 @@ public partial class GameCloudControl : MenuControl
             return;
         }
 
-        Title = string.Format(App.Lang("GameCloudWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameCloudWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)

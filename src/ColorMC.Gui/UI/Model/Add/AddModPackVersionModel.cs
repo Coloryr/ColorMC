@@ -79,7 +79,7 @@ public partial class AddModPackControlModel
         else
         {
             Model.PopBack();
-            Model.Title = App.Lang("AddModPackWindow.Title");
+            Model.Title = LanguageUtils.Get("AddModPackWindow.Title");
         }
     }
 
@@ -135,7 +135,7 @@ public partial class AddModPackControlModel
         string? group = WindowManager.AddGameWindow?.GetGroup();
         if (data.SourceType == SourceType.CurseForge)
         {
-            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
 
             var res = await GameBinding.InstallCurseForgeAsync((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
                 select?.Logo, group,
@@ -144,7 +144,7 @@ public partial class AddModPackControlModel
 
             if (!res.State)
             {
-                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
+                Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error8"));
             }
             else
             {
@@ -153,7 +153,7 @@ public partial class AddModPackControlModel
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
-            Model.Progress(App.Lang("AddGameWindow.Tab1.Info8"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
             var res = await GameBinding.InstallModrinthAsync((data.Data as ModrinthVersionObj)!,
                 select?.Logo, group,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
@@ -161,7 +161,7 @@ public partial class AddModPackControlModel
 
             if (!res.State)
             {
-                Model.Show(App.Lang("AddGameWindow.Tab1.Error8"));
+                Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error8"));
             }
             else
             {
@@ -193,7 +193,7 @@ public partial class AddModPackControlModel
         }
 
         FileList.Clear();
-        Model.Progress(App.Lang("AddModPackWindow.Info3"));
+        Model.Progress(LanguageUtils.Get("AddModPackWindow.Info3"));
         List<FileVersionItemModel>? list = null;
         var page = 0;
         PageDownload ??= 0;
@@ -220,7 +220,7 @@ public partial class AddModPackControlModel
 
         if (list == null)
         {
-            Model.Show(App.Lang("AddModPackWindow.Error3"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Error3"));
             Model.ProgressClose();
             return;
         }
@@ -247,8 +247,8 @@ public partial class AddModPackControlModel
         EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
-        Model.Notify(App.Lang("AddWindow.Info16"));
-        Model.Title = App.Lang("AddModPackWindow.Title") + ": " + title;
+        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
+        Model.Title = LanguageUtils.Get("AddModPackWindow.Title") + ": " + title;
     }
 
     /// <summary>

@@ -20,22 +20,22 @@ public partial class BuildPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("BuildPackWindow.Tabs.Text1")
+                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("BuildPackWindow.Tabs.Text2")
+                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text2")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("BuildPackWindow.Tabs.Text3")
+                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text3")
             }
         ]);
 
         Model.SetChoiseCall(_useName, Build);
-        Model.SetChoiseContent(_useName, App.Lang("BuildPackWindow.Text1"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("BuildPackWindow.Text1"));
     }
 
     public override void Close()
@@ -66,22 +66,22 @@ public partial class BuildPackModel : MenuModel
         }
 
         string ext = PackLaunch ? Names.NameZipExt : GuiNames.NameColorMCExt;
-        var local = await PathBinding.SaveFileAsync(top, App.Lang("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
+        var local = await PathBinding.SaveFileAsync(top, LanguageUtils.Get("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
         if (local == null)
         {
             return;
         }
 
-        Model.Progress(App.Lang("BuildPackWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("BuildPackWindow.Info1"));
         var res = await BaseBinding.BuildPackAsync(this, local.GetPath()!);
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(App.Lang("BuildPackWindow.Error1"));
+            Model.Show(LanguageUtils.Get("BuildPackWindow.Error1"));
         }
         else
         {
-            Model.Notify(App.Lang("BuildPackWindow.Info7"));
+            Model.Notify(LanguageUtils.Get("BuildPackWindow.Info7"));
         }
     }
 }

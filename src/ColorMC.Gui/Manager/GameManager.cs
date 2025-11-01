@@ -232,11 +232,20 @@ public static class GameManager
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="data"></param>
-    public static void AddGameLog(GameSettingObj obj, GameLogItemObj? data)
+    public static void AddGameLog(GameLogEventArgs args)
     {
-        if (data != null && WindowManager.GameLogWindows.TryGetValue(obj.UUID, out var win))
+        if (args.Log != null)
         {
-            win.Log(data);
+            //给系统日志填充内容
+            if (args.Log.LogType != GameSystemLog.None)
+            {
+                args.Log.Log = LanguageUtils.Get("Core.Info28");
+            }
+
+            if (WindowManager.GameLogWindows.TryGetValue(args.Game.UUID, out var win))
+            {
+                win.Log(args.Log);
+            }
         }
     }
 

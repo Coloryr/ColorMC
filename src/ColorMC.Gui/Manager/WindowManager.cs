@@ -8,6 +8,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core.Config;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -239,7 +240,7 @@ public static class WindowManager
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("App.Error3"), e);
+                Logs.Error(LanguageUtils.Get("App.Error3"), e);
             }
         }
     }
@@ -410,7 +411,7 @@ public static class WindowManager
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
-                    CustomWindow?.Icon.Window?.Model.Show(App.Lang("WindowManager.Info1"));
+                    CustomWindow?.Icon.Window?.Model.Show(LanguageUtils.Get("WindowManager.Info1"));
                 }
                 return true;
             }
@@ -421,7 +422,7 @@ public static class WindowManager
         }
         catch (Exception e)
         {
-            var data = App.Lang("WindowManager.Error1");
+            var data = LanguageUtils.Get("WindowManager.Error1");
             Logs.Error(data, e);
             ShowError(data, e, !test);
         }
@@ -655,11 +656,11 @@ public static class WindowManager
                 {
                     MainWindow.Window.Show();
                     MainWindow.Window.WindowActivate();
-                    MainWindow.Window.Model.Show(App.Lang("App.Error8"));
+                    MainWindow.Window.Model.Show(LanguageUtils.Get("App.Error8"));
                     return;
                 }
 
-                var res = await MainWindow.Window.Model.ShowCombo(App.Lang(App.Lang("App.Text27")), list.Select(item => item.Name));
+                var res = await MainWindow.Window.Model.ShowCombo(LanguageUtils.Get(LanguageUtils.Get("App.Text27")), list.Select(item => item.Name));
                 if (res.Cancel)
                 {
                     return;
@@ -987,28 +988,44 @@ public static class WindowManager
     /// <summary>
     /// 显示错误
     /// </summary>
-    /// <param name="data"></param>
+    /// <param name="title"></param>
     /// <param name="e"></param>
     /// <param name="close"></param>
-    public static void ShowError(string? data, Exception? e, bool close = false)
+    public static void ShowError(string title, Exception? e, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var con = new ErrorControl(data, e, close);
+            var con = new ErrorControl(title, e, close);
+            AWindow(con);
+        });
+    }
+
+    /// <summary>
+    /// 显示错误
+    /// </summary>
+    /// <param name="title"></param>
+    /// <param name="log"></param>
+    /// <param name="e"></param>
+    /// <param name="close"></param>
+    public static void ShowError(string title, string log, Exception? e, bool close = false)
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            var con = new ErrorControl(title, log, e, close);
             AWindow(con);
         });
     }
     /// <summary>
     /// 显示错误
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="e"></param>
+    /// <param name="title"></param>
+    /// <param name="log"></param>
     /// <param name="close"></param>
-    public static void ShowError(string data, string e, bool close = false)
+    public static void ShowError(string title, string log, bool close = false)
     {
         Dispatcher.UIThread.Post(() =>
         {
-            var con = new ErrorControl(data, e, close);
+            var con = new ErrorControl(title, log, close);
             AWindow(con);
         });
     }

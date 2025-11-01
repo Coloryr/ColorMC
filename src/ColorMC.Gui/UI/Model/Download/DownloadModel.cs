@@ -90,8 +90,8 @@ public partial class DownloadModel : TopModel
         };
         _timer.Elapsed += Timer_Elapsed;
 
-        Model.SetChoiseContent(_useName, App.Lang("DownloadWindow.Text2"),
-            App.Lang("DownloadWindow.Text1"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("DownloadWindow.Text2"),
+            LanguageUtils.Get("DownloadWindow.Text1"));
         Model.SetChoiseCall(_useName, () => _ = Stop(), Pause);
         Model.HeadBackEnable = false;
     }
@@ -106,15 +106,15 @@ public partial class DownloadModel : TopModel
         {
             DownloadManager.Resume();
             Model.SetChoiseContent(_useName,
-                App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text1"));
-            Model.Notify(App.Lang("DownloadWindow.Info3"));
+                LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text1"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Info3"));
         }
         else
         {
             DownloadManager.Pause();
             Model.SetChoiseContent(_useName,
-                App.Lang("DownloadWindow.Text2"), App.Lang("DownloadWindow.Text4"));
-            Model.Notify(App.Lang("DownloadWindow.Info2"));
+                LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text4"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Info2"));
         }
     }
 
@@ -140,13 +140,13 @@ public partial class DownloadModel : TopModel
         Model.HeadChoise1Display = false;
         Model.HeadChoiseDisplay = false;
 
-        var res = await Model.ShowAsync(App.Lang("DownloadWindow.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("DownloadWindow.Info1"));
         if (res)
         {
             DisplayList.Clear();
             _downloadList.Clear();
             DownloadManager.Stop();
-            Model.Notify(App.Lang("DownloadWindow.Info5"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Info5"));
             return true;
         }
         else

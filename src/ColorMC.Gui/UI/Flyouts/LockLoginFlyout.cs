@@ -14,7 +14,7 @@ public static class LockLoginFlyout
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.Delete"), true, model.Delete)
+            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, model.Delete)
         ]).Show(con);
     }
 }

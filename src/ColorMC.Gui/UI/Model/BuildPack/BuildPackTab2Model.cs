@@ -28,7 +28,7 @@ public partial class BuildPackModel
     /// </summary>
     private async void LoadGames()
     {
-        Model.Progress(App.Lang("UserWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("UserWindow.Info1"));
         await Task.Run(() =>
         {
             _gamesPage = new();

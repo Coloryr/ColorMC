@@ -112,7 +112,7 @@ public partial class AddUserModel : ObservableObject
                 CanRegister = true;
                 break;
             case AuthType.Nide8:
-                WatermarkName = App.Lang("UserWindow.Info9");
+                WatermarkName = LanguageUtils.Get("UserWindow.Info9");
                 if (LockLogin)
                 {
                     EnableName = false;
@@ -130,7 +130,7 @@ public partial class AddUserModel : ObservableObject
                 CanRegister = true;
                 break;
             case AuthType.AuthlibInjector:
-                WatermarkName = App.Lang("UserWindow.Info10");
+                WatermarkName = LanguageUtils.Get("UserWindow.Info10");
                 if (LockLogin)
                 {
                     EnableName = false;
@@ -167,7 +167,7 @@ public partial class AddUserModel : ObservableObject
                 CanRegister = true;
                 break;
             case AuthType.SelfLittleSkin:
-                WatermarkName = App.Lang("UserWindow.Info11");
+                WatermarkName = LanguageUtils.Get("UserWindow.Info11");
                 if (LockLogin)
                 {
                     EnableName = false;

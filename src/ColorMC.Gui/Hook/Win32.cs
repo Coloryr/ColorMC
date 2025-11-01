@@ -469,7 +469,7 @@ internal class Win32
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("BaseBinding.Error5"), e);
+            Logs.Error(LanguageUtils.Get("BaseBinding.Error5"), e);
         }
     }
 

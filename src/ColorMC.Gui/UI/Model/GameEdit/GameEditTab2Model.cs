@@ -624,7 +624,7 @@ public partial class GameEditModel
     /// </summary>
     private async void DeleteConfig()
     {
-        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab2.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab2.Info1"));
         if (res)
         {
             GameBinding.DeleteConfig(_obj);

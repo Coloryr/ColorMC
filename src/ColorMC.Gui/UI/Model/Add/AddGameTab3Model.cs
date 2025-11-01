@@ -50,18 +50,18 @@ public partial class AddGameModel
     {
         if (Directory.Exists(SelectPath))
         {
-            var res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info3"), SelectPath));
+            var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Info3"), SelectPath));
             if (!res)
             {
                 return;
             }
-            Model.Progress(App.Lang("AddGameWindow.Tab3.Info2"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info2"));
 
             //测试是否是其他启动器的游戏版本
             var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
             {
-                res = await Model.ShowAsync(string.Format(App.Lang("AddGameWindow.Tab3.Info4"), list.Count));
+                res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Info4"), list.Count));
                 if (res)
                 {
                     await ImportAsync(list);
@@ -79,14 +79,14 @@ public partial class AddGameModel
 
             CanInput = true;
 
-            Model.Notify(App.Lang("AddGameWindow.Tab3.Info5"));
+            Model.Notify(LanguageUtils.Get("AddGameWindow.Tab3.Info5"));
         }
         else
         {
             CanInput = false;
             Files = null!;
             _fileModel = null!;
-            Model.Show(string.Format(App.Lang("AddGameWindow.Tab1.Error2"), SelectPath));
+            Model.Show(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Error2"), SelectPath));
         }
     }
 
@@ -99,36 +99,36 @@ public partial class AddGameModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error2"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error2"));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(Name))
         {
-            Model.Show(App.Lang("AddGameWindow.Tab1.Error13"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error13"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(SelectPath))
         {
-            Model.Show(App.Lang("AddGameWindow.Tab3.Error3"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab3.Error3"));
             return;
         }
 
         if (_fileModel == null)
         {
-            Model.Show(App.Lang("AddGameWindow.Tab3.Error4"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab3.Error4"));
             return;
         }
 
-        Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
         var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(),
             Group, GameRequest, GameOverwirte, Update, true);
         Model.ProgressClose();
 
         if (!res.State)
         {
-            Model.Show(App.Lang("AddGameWindow.Tab3.Error1"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab3.Error1"));
             return;
         }
 
@@ -161,7 +161,7 @@ public partial class AddGameModel
         }
         else
         {
-            Model.Show(string.Format(App.Lang("AddGameWindow.Tab3.Error2"), res));
+            Model.Show(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Error2"), res));
         }
     }
 
@@ -186,14 +186,14 @@ public partial class AddGameModel
         bool ok = false;
         foreach (var item in list)
         {
-            Model.Progress(App.Lang("AddGameWindow.Tab3.Info1"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
             var res = await GameBinding.AddGameAsync(null, item, null, Group,
                 GameRequest, GameOverwirte, Update, false);
             Model.ProgressClose();
 
             if (!res.State)
             {
-                var res1 = await Model.ShowAsync(App.Lang("AddGameWindow.Tab3.Error5"));
+                var res1 = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab3.Error5"));
                 if (!res1)
                 {
                     return;
@@ -210,7 +210,7 @@ public partial class AddGameModel
         }
         else
         {
-            Model.Show(App.Lang("AddGameWindow.Tab3.Error6"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab3.Error6"));
         }
     }
 

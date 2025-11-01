@@ -71,13 +71,6 @@ public static class ColorMCCore
     /// <returns>是否继续运行</returns>
     public delegate Task<bool> LoginFailRun(LoginObj obj);
     /// <summary>
-    /// OAuth登录
-    /// </summary>
-    /// <param name="url">网址</param>
-    /// <param name="iscode">是否为登陆码模式</param>
-    /// <param name="code">登陆码</param>
-    public delegate void LoginOAuthCode(string url, bool iscode, string code);
-    /// <summary>
     /// 游戏复写
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -206,10 +199,7 @@ public static class ColorMCCore
     /// <summary>
     /// 启动器产生错误，并打开窗口显示
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="e"></param>
-    /// <param name="close"></param>
-    /// <param name="show"></param>
+    /// <param name="args">报错信息</param>
     internal static void OnError(CoreErrorEventArgs args)
     {
         Error?.Invoke(args);
@@ -218,13 +208,27 @@ public static class ColorMCCore
     /// <summary>
     /// 运行游戏日志
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="text"></param>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="text">控制台输出</param>
     internal static void OnGameLog(GameSettingObj obj, string? text)
     {
         if (s_gameLogs.TryGetValue(obj.UUID, out var log))
         {
             var item = log.AddLog(text);
+            GameLog?.Invoke(new GameLogEventArgs(obj, item));
+        }
+    }
+
+    /// <summary>
+    /// 添加系统日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">系统日志类型</param>
+    internal static void OnGameLog(GameSettingObj obj, GameSystemLog type)
+    {
+        if (s_gameLogs.TryGetValue(obj.UUID, out var log))
+        {
+            var item = log.AddLog(type);
             GameLog?.Invoke(new GameLogEventArgs(obj, item));
         }
     }

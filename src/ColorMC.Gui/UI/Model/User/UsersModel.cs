@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
@@ -24,7 +25,7 @@ namespace ColorMC.Gui.UI.Model.User;
 /// <summary>
 /// 账户页面
 /// </summary>
-public partial class UsersModel : TopModel
+public partial class UsersModel : TopModel, ILoginOAuth, ILoginGui
 {
     /// <summary>
     /// 当前账户类型列表
@@ -56,6 +57,8 @@ public partial class UsersModel : TopModel
         }
     }
 
+    public CancellationToken Token => _tokenSource.Token;
+
     /// <summary>
     /// 选中的账户
     /// </summary>
@@ -86,6 +89,8 @@ public partial class UsersModel : TopModel
     /// 是否为OAuth
     /// </summary>
     private bool _isOAuth;
+
+    private CancellationTokenSource _tokenSource;
 
     public UsersModel(BaseModel model) : base(model)
     {
@@ -121,6 +126,8 @@ public partial class UsersModel : TopModel
         {
             type = (AuthType)model.Type;
         }
+        _tokenSource = new();
+
         switch (type)
         {
             case AuthType.Offline:
@@ -128,22 +135,22 @@ public partial class UsersModel : TopModel
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                var res = await UserBinding.AddUserAsync(AuthType.Offline, LoginOAuthCode, LoginSelect, name);
+                var res = await UserBinding.AddUserAsync(AuthType.Offline, this, this, name);
                 if (!res.State)
                 {
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 break;
             case AuthType.OAuth:
                 _cancel = false;
                 _isOAuth = true;
-                Model.Progress(App.Lang("UserWindow.Info1"));
-                res = await UserBinding.AddUserAsync(AuthType.OAuth, LoginOAuthCode, LoginSelect);
+                Model.Progress(LanguageUtils.Get("UserWindow.Info1"));
+                res = await UserBinding.AddUserAsync(AuthType.OAuth, this, this);
                 Model.ProgressClose();
                 if (_cancel)
                 {
@@ -154,7 +161,7 @@ public partial class UsersModel : TopModel
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 _isOAuth = false;
                 break;
             case AuthType.Nide8:
@@ -162,17 +169,17 @@ public partial class UsersModel : TopModel
                 _isOAuth = false;
                 if (server?.Length != 32)
                 {
-                    Model.Show(App.Lang("UserWindow.Error3"));
+                    Model.Show(LanguageUtils.Get("UserWindow.Error3"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                     string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUserAsync(AuthType.Nide8, LoginOAuthCode, LoginSelect,
+                Model.Progress(LanguageUtils.Get("UserWindow.Info2"));
+                res = await UserBinding.AddUserAsync(AuthType.Nide8, this, this,
                     server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
@@ -180,79 +187,79 @@ public partial class UsersModel : TopModel
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 break;
             case AuthType.AuthlibInjector:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(App.Lang("UserWindow.Error4"));
+                    Model.Show(LanguageUtils.Get("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, LoginOAuthCode,
-                    LoginSelect, server, model.User, model.Password);
+                Model.Progress(LanguageUtils.Get("UserWindow.Info2"));
+                res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, this,
+                    this, server, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 break;
             case AuthType.LittleSkin:
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUserAsync(AuthType.LittleSkin, LoginOAuthCode,
-                    LoginSelect, model.User, model.Password);
+                Model.Progress(LanguageUtils.Get("UserWindow.Info2"));
+                res = await UserBinding.AddUserAsync(AuthType.LittleSkin, this,
+                    this, model.User, model.Password);
                 Model.ProgressClose();
                 if (!res.State)
                 {
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 break;
             case AuthType.SelfLittleSkin:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(App.Lang("UserWindow.Error4"));
+                    Model.Show(LanguageUtils.Get("UserWindow.Error4"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab5.Error2"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Error2"));
                     break;
                 }
-                Model.Progress(App.Lang("UserWindow.Info2"));
-                res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, LoginOAuthCode,
-                    LoginSelect, model.User, model.Password, server);
+                Model.Progress(LanguageUtils.Get("UserWindow.Info2"));
+                res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, this,
+                    this, model.User, model.Password, server);
                 Model.ProgressClose();
                 if (!res.State)
                 {
                     Model.Show(res.Data!);
                     break;
                 }
-                Model.Notify(App.Lang("UserWindow.Info12"));
+                Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
                 break;
             default:
-                Model.Show(App.Lang("UserWindow.Error5"));
+                Model.Show(LanguageUtils.Get("UserWindow.Error5"));
                 break;
         }
         Load();
@@ -261,12 +268,11 @@ public partial class UsersModel : TopModel
     /// <summary>
     /// 登录账户选择
     /// </summary>
-    /// <param name="title"></param>
     /// <param name="items"></param>
     /// <returns></returns>
-    private async Task<int> LoginSelect(string title, List<string> items)
+    public async Task<int> SelectAuth(List<string> items)
     {
-        var res = await Model.ShowCombo(title, items);
+        var res = await Model.ShowCombo(LanguageUtils.Get("Core.Info19"), items);
         if (res.Cancel)
         {
             return -1;
@@ -292,7 +298,7 @@ public partial class UsersModel : TopModel
     {
         UserBinding.SetSelectUser(item.UUID, item.AuthType);
 
-        Model.Notify(App.Lang("UserWindow.Info5"));
+        Model.Notify(LanguageUtils.Get("UserWindow.Info5"));
         foreach (var item1 in UserList)
         {
             if (item1.AuthType == item.AuthType && item1.UUID == item.UUID)
@@ -348,19 +354,19 @@ public partial class UsersModel : TopModel
     /// <param name="obj"></param>
     public async void Refresh(UserDisplayModel obj)
     {
-        Model.Progress(App.Lang("UserWindow.Info3"));
-        var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType);
+        Model.Progress(LanguageUtils.Get("UserWindow.Info3"));
+        var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType, Token);
         Model.ProgressClose();
-        if (!res)
+        if (!res.State)
         {
-            Model.Show(App.Lang("UserWindow.Error6"));
+            Model.Show(string.Format(LanguageUtils.Get("UserWindow.Error6"), res.Data));
             AuthType type;
             if (LockLogin)
             {
                 var index = FindLockLogin(obj.AuthType, obj.Text1);
                 if (index == -1)
                 {
-                    Model.Show(App.Lang("UserWindow.Error9"));
+                    Model.Show(LanguageUtils.Get("UserWindow.Error9"));
                     return;
                 }
                 var login = _locks[index];
@@ -394,7 +400,7 @@ public partial class UsersModel : TopModel
         }
         else
         {
-            Model.Notify(App.Lang("UserWindow.Info4"));
+            Model.Notify(LanguageUtils.Get("UserWindow.Info4"));
         }
     }
 
@@ -436,7 +442,7 @@ public partial class UsersModel : TopModel
             var index = FindLockLogin(obj.AuthType, obj.Text1);
             if (index == -1)
             {
-                Model.Show(App.Lang("UserWindow.Error9"));
+                Model.Show(LanguageUtils.Get("UserWindow.Error9"));
                 return;
             }
             type = index;
@@ -562,29 +568,22 @@ public partial class UsersModel : TopModel
     /// </summary>
     /// <param name="url"></param>
     /// <param name="code"></param>
-    private void LoginOAuthCode(string url, bool iscode, string code)
+    public void LoginOAuthCode(string? url, string code)
     {
-        if (iscode)
-        {
-            Model.ProgressClose();
-            Model.InputWithReadInfo(string.Format(App.Lang("UserWindow.Info6"), url),
-                string.Format(App.Lang("UserWindow.Info7"), code), true, false, true, () =>
-                {
-                    _cancel = true;
-                    GameAuth.CancelWithOAuth();
-                });
-            BaseBinding.OpenUrl($"{url}?otc={code}");
-            var top = Model.GetTopLevel();
-            if (top == null)
+        Model.ProgressClose();
+        Model.InputWithReadInfo(string.Format(LanguageUtils.Get("UserWindow.Info6"), url),
+            string.Format(LanguageUtils.Get("UserWindow.Info7"), code), true, false, true, () =>
             {
-                return;
-            }
-            BaseBinding.CopyTextClipboardAsync(top, code);
-        }
-        else
+                _cancel = true;
+                _tokenSource.Cancel();
+            });
+        BaseBinding.OpenUrl($"{url}?otc={code}");
+        var top = Model.GetTopLevel();
+        if (top == null)
         {
-            Model.Progress(string.Format(App.Lang("UserWindow.Info14"), code));
+            return;
         }
+        BaseBinding.CopyTextClipboardAsync(top, code);
     }
 
     public override void Close()
@@ -596,7 +595,7 @@ public partial class UsersModel : TopModel
         UserList.Clear();
         if (_isOAuth)
         {
-            GameAuth.CancelWithOAuth();
+            _tokenSource.Cancel();
         }
     }
 
@@ -631,19 +630,19 @@ public partial class UsersModel : TopModel
         }
 
         var res = await Model.InputWithEdit(obj.Name, obj.UUID,
-            App.Lang("UserWindow.Text10"), App.Lang("UserWindow.Info13"));
+            LanguageUtils.Get("UserWindow.Text10"), LanguageUtils.Get("UserWindow.Info13"));
         if (res.Cancel)
         {
             return;
         }
         else if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
         {
-            Model.Show(App.Lang("UserWindow.Error7"));
+            Model.Show(LanguageUtils.Get("UserWindow.Error7"));
             return;
         }
         else if (res.Text2.Length != 32 || !CheckHelpers.CheckIs(res.Text2))
         {
-            Model.Show(App.Lang("UserWindow.Error8"));
+            Model.Show(LanguageUtils.Get("UserWindow.Error8"));
             return;
         }
 
@@ -695,5 +694,10 @@ public partial class UsersModel : TopModel
         {
             item.ReloadHead();
         }
+    }
+
+    public void LoginOAuthState(AuthState state)
+    {
+        Model.Progress(string.Format(LanguageUtils.Get("UserWindow.Info14"), state.GetName()));
     }
 }

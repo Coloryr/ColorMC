@@ -140,22 +140,22 @@ public partial class GameExportModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text1")
+                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text2")
+                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text2")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text3")
+                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text3")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("GameExportWindow.Tabs.Text4")
+                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text4")
             },
         ]);
     }
@@ -166,7 +166,7 @@ public partial class GameExportModel : MenuModel
     /// <param name="value"></param>
     async partial void OnTypeChanged(PackType value)
     {
-        Model.Progress(App.Lang("GameExportWindow.Info6"));
+        Model.Progress(LanguageUtils.Get("GameExportWindow.Info6"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -263,7 +263,7 @@ public partial class GameExportModel : MenuModel
             }
         });
 
-        Model.Notify(App.Lang("GameExportWindow.Info8"));
+        Model.Notify(LanguageUtils.Get("GameExportWindow.Info8"));
 
         LoadMods();
     }
@@ -279,12 +279,12 @@ public partial class GameExportModel : MenuModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Model.Show(App.Lang("GameExportWindow.Error2"));
+                Model.Show(LanguageUtils.Get("GameExportWindow.Error2"));
                 return;
             }
         }
 
-        Model.Progress(App.Lang("GameExportWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("GameExportWindow.Info1"));
         var top = Model.GetTopLevel();
         if (top == null)
         {
@@ -299,11 +299,11 @@ public partial class GameExportModel : MenuModel
 
         if (file == false)
         {
-            Model.Show(App.Lang("GameExportWindow.Error1"));
+            Model.Show(LanguageUtils.Get("GameExportWindow.Error1"));
         }
         else
         {
-            Model.Notify(App.Lang("GameExportWindow.Info2"));
+            Model.Notify(LanguageUtils.Get("GameExportWindow.Info2"));
         }
     }
 
@@ -432,7 +432,7 @@ public partial class GameExportModel : MenuModel
     public void SetTab3Choise()
     {
         Model.SetChoiseCall(_useName, SelectAllFile, UnSelectAllFile);
-        Model.SetChoiseContent(_useName, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>
@@ -441,7 +441,7 @@ public partial class GameExportModel : MenuModel
     public void SetTab2Choise()
     {
         Model.SetChoiseCall(_useName, SelectAllMod, UnSelectAllMod);
-        Model.SetChoiseContent(_useName, App.Lang("Button.SelectAll"), App.Lang("Button.UnSelectAll"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>

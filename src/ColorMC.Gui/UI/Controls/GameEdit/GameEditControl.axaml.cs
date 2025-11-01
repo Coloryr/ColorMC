@@ -35,7 +35,7 @@ public partial class GameEditControl : MenuControl
     {
         _obj = obj;
 
-        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameEditWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -59,7 +59,7 @@ public partial class GameEditControl : MenuControl
             return;
         }
 
-        Title = string.Format(App.Lang("GameEditWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameEditWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)

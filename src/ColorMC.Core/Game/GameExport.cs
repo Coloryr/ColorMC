@@ -11,6 +11,9 @@ using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Game;
 
+/// <summary>
+/// 游戏实例导出
+/// </summary>
 public static class GameExport
 {
     /// <summary>
@@ -258,29 +261,21 @@ public static class GameExport
     {
         using var stream = PathHelper.OpenWrite(arg.File);
 
-        try
+        switch (arg.Type)
         {
-            switch (arg.Type)
-            {
-                case PackType.ColorMC:
-                    await ColorMCAsync(arg, stream);
-                    break;
-                case PackType.CurseForge:
-                    await CurseForgeAsync(arg, stream);
-                    break;
-                case PackType.Modrinth:
-                    await ModrinthAsync(arg, stream);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(arg.Type.ToString());
-            }
+            case PackType.ColorMC:
+                await ColorMCAsync(arg, stream);
+                break;
+            case PackType.CurseForge:
+                await CurseForgeAsync(arg, stream);
+                break;
+            case PackType.Modrinth:
+                await ModrinthAsync(arg, stream);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(arg.Type.ToString());
+        }
 
-            return true;
-        }
-        catch (Exception e)
-        {
-            Logs.Error("zip pack error", e);
-            return false;
-        }
+        return true;
     }
 }

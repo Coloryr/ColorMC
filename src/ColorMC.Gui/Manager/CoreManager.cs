@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -20,24 +19,24 @@ public static class CoreManager
     public static void Init()
     {
         ColorMCCore.Error += ColorMCCore_Error;
-        ColorMCCore.LanguageReload += LanguageReload;
         ColorMCCore.GameLog += GameManager.AddGameLog;
-        ColorMCCore.OnDownload = WindowManager.ShowDownload;
-        ColorMCCore.GameExit += GameExit;
-        ColorMCCore.InstanceChange += InstanceChange;
-        ColorMCCore.InstanceIconChange += InstanceIconChange;
+        ColorMCCore.GameExit += ColorMCCore_GameExit;
+        ColorMCCore.InstanceChange += ColorMCCore_InstanceChange;
     }
 
     private static void ColorMCCore_Error(CoreErrorEventArgs arg)
     {
         string log = "";
+        string title = "";
         if (arg is ConfigLoadErrorEventArgs arg1)
         {
             log = LanguageUtils.Get("Core.Error1");
+            title = LanguageUtils.Get("Core.Error120");
         }
         else if (arg is ConfigSaveErrorEventArgs arg2)
         {
             log = LanguageUtils.Get("Core.Error2");
+            title = LanguageUtils.Get("Core.Error120");
         }
         else if (arg is DownloadSizeErrorEvnetArgs arg3)
         {
@@ -47,83 +46,63 @@ public static class CoreManager
         {
             log = string.Format(LanguageUtils.Get("Core.Error12"), arg4.File.Name, arg4.File.Url, arg4.Hash, arg4.Now);
         }
-
-
-            switch (arg.Type)
-            {
-                case ErrorType.ConfigLoadError:
-
-                    break;
-                case ErrorType.ConfigSaveError:
-
-                    break;
-                case ErrorType.DownloadError:
-                    log = string.Format(LanguageUtils.Get("Core.Error119"))
-                    break;
-                case ErrorType.DownloadSizeError:
-
-                    break;
-                case ErrorType.DownloadCheckError:
-                    
-                    break;
-            }
-        Logs.Error(log, arg.Exception);
-        if (arg.Show)
+        else if (arg is DownloadExceptionErrorEventArgs arg5)
         {
-            WindowManager.ShowError(log, arg.Exception, arg.Close);
+            log = string.Format(LanguageUtils.Get("Core.Error119"), arg5.File.Name, arg5.File.Url);
         }
-    }
 
-    /// <summary>
-    /// 实例图标修改后
-    /// </summary>
-    /// <param name="obj"></param>
-    private static void InstanceIconChange(GameSettingObj obj)
-    {
-        ImageManager.ReloadImage(obj);
+        if (arg is ExceptionErrorEventArgs error)
+        {
+            Logs.Error(log, error.Exception);
+            if (arg.Show)
+            {
+                WindowManager.ShowError(title, log, error.Exception, arg.Close);
+            }
+        }
+        else
+        {
+            Logs.Error(log);
+            if (arg.Show)
+            {
+                WindowManager.ShowError(title, log, arg.Close);
+            }
+        }
     }
 
     /// <summary>
     /// 实例修改后
     /// </summary>
-    private static void InstanceChange()
+    private static void ColorMCCore_InstanceChange(InstanceChangeEventArgs args)
     {
-        WindowManager.MainWindow?.LoadGameItem();
-    }
-
-    /// <summary>
-    /// 语言重载
-    /// </summary>
-    /// <param name="type"></param>
-    private static void LanguageReload(LanguageType type)
-    {
-        App.LoadLanguage(type);
-        LangMananger.Reload();
-
-        ColorMCGui.Reboot();
+        if (args.Type == InstanceChangeType.NumberChange)
+        {
+            WindowManager.MainWindow?.LoadGameItem();
+        }
+        else if (args.Type == InstanceChangeType.IconChange && args.Game != null)
+        {
+            ImageManager.ReloadImage(args.Game);
+        }
     }
 
     /// <summary>
     /// 游戏退出时
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="obj1"></param>
-    /// <param name="code"></param>
-    private static void GameExit(GameSettingObj obj, LoginObj obj1, int code)
+    /// <param name="args"></param>
+    private static void ColorMCCore_GameExit(GameExitEventArgs args)
     {
-        GameManager.GameExit(obj);
-        GameCountUtils.GameClose(obj);
-        UserManager.UnlockUser(obj1);
+        GameManager.GameExit(args.Game);
+        GameCountUtils.GameClose(args.Game);
+        UserManager.UnlockUser(args.Login);
         Dispatcher.UIThread.Post(() =>
         {
-            WindowManager.MainWindow?.GameClose(obj.UUID);
+            WindowManager.MainWindow?.GameClose(args.Game.UUID);
         });
         //如果不是状态0退出
-        if (code != 0 && !ColorMCGui.IsClose)
+        if (args.Code != 0 && !ColorMCGui.IsClose)
         {
             Dispatcher.UIThread.Post(() =>
             {
-                WindowManager.ShowGameLog(obj, code);
+                WindowManager.ShowGameLog(args.Game, args.Code);
             });
         }
         else
@@ -133,7 +112,7 @@ public static class CoreManager
             {
                 Task.Run(() =>
                 {
-                    GameBinding.CheckCloudAndOpen(obj);
+                    GameBinding.CheckCloudAndOpen(args.Game);
                 });
             }
             else
@@ -142,6 +121,6 @@ public static class CoreManager
             }
         }
 
-        GameBinding.GameStateUpdate(obj);
+        GameBinding.GameStateUpdate(args.Game);
     }
 }

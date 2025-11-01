@@ -22,40 +22,40 @@ public partial class NetFrpModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item4.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text4")
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text4")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item1.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text1")
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item5.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text5")
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text5")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item6.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text6")
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text6")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item2.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text2"),
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text2"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
                         Func = CleanLocal,
-                        Name = App.Lang("NetFrpWindow.Tab2.Text2")
+                        Name = LanguageUtils.Get("NetFrpWindow.Tab2.Text2")
                     }
                 ]
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item3.svg",
-                Text = App.Lang("NetFrpWindow.Tabs.Text3")
+                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text3")
             }
         ]);
     }

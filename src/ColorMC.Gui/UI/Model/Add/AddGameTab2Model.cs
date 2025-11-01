@@ -41,17 +41,17 @@ public partial class AddGameModel
         if (value != null && Type == null)
         {
             //测试获取压缩包类型
-            Model.Progress(App.Lang("AddGameWindow.Tab2.Info8"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info8"));
             var res = await GameBinding.CheckTypeAsync(value);
             Model.ProgressClose();
             if (res == null)
             {
-                Model.Show(App.Lang("AddGameWindow.Tab2.Error4"));
+                Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error4"));
             }
             else
             {
                 Type = res;
-                Model.Notify(string.Format(App.Lang("AddGameWindow.Tab2.Info7"), res.ToString()));
+                Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab2.Info7"), res.ToString()));
             }
         }
     }
@@ -64,7 +64,7 @@ public partial class AddGameModel
     {
         if (Type == null)
         {
-            Model.Show(App.Lang("AddGameWindow.Tab2.Error3"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error3"));
             return;
         }
 
@@ -96,14 +96,14 @@ public partial class AddGameModel
     /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
-        string temp = App.Lang("AddGameWindow.Tab1.Info21");
+        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
 
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
-            Model.Show(App.Lang("AddGameWindow.Tab2.Error2"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error2"));
             return;
         }
-        Model.Progress(App.Lang("AddGameWindow.Tab2.Info6"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info6"));
         //开始导入压缩包
         var res = await GameBinding.AddPackAsync(ZipLocal, type, Name, Group,
         (a, b, c) =>
@@ -116,12 +116,12 @@ public partial class AddGameModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(App.Lang("AddGameWindow.Tab2.Error1"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error1"));
             return;
         }
 
         var model = (WindowManager.MainWindow?.DataContext as MainModel)!;
-        model.Model.Notify(App.Lang("AddGameWindow.Tab2.Info5"));
+        model.Model.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Info5"));
 
         if (Type == PackType.ZipPack)
         {

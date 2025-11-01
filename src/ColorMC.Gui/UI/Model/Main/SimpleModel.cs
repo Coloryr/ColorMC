@@ -138,7 +138,7 @@ public partial class MainModel
     /// </summary>
     private void LoadSimple()
     {
-        GameName = Game?.Name ?? App.Lang("MainWindow.Info44");
+        GameName = Game?.Name ?? LanguageUtils.Get("MainWindow.Info44");
         GameIcon = Game?.Pic ?? ImageManager.GameIcon;
 
         if (Game == null)

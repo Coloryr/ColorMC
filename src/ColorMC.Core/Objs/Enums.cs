@@ -201,33 +201,6 @@ public enum AuthState
 }
 
 /// <summary>
-/// 登录结果
-/// </summary>
-public enum LoginState
-{
-    /// <summary>
-    /// 完成
-    /// </summary>
-    Done,
-    /// <summary>
-    /// 请求超时
-    /// </summary>
-    TimeOut,
-    /// <summary>
-    /// 数据错误
-    /// </summary>
-    DataError,
-    /// <summary>
-    /// 错误
-    /// </summary>
-    Error,
-    /// <summary>
-    /// 发送崩溃
-    /// </summary>
-    Crash
-}
-
-/// <summary>
 /// 启动状态
 /// </summary>
 public enum LaunchState
@@ -348,6 +321,10 @@ public enum LaunchState
     /// 启动错误
     /// </summary>
     Error,
+    /// <summary>
+    /// 版本号信息为空
+    /// </summary>
+    VersionEmpty
 }
 
 /// <summary>
@@ -511,4 +488,46 @@ public enum ErrorType
     /// 下载文件校验错误
     /// </summary>
     DownloadCheckError,
+}
+
+/// <summary>
+/// 游戏日志启动器消息
+/// </summary>
+public enum GameSystemLog
+{ 
+    /// <summary>
+    /// 不是系统日志
+    /// </summary>
+    None,
+    /// <summary>
+    /// 运行库
+    /// </summary>
+    RuntimeLib
+}
+
+/// <summary>
+/// 登录错误状态
+/// </summary>
+public enum LoginFailState
+{ 
+    /// <summary>
+    /// 获取数据错误
+    /// </summary>
+    GetOAuthCodeDataError,
+    /// <summary>
+    /// 获取数据为空
+    /// </summary>
+    GetOAuthCodeDataFail,
+    /// <summary>
+    /// 获取Token超时
+    /// </summary>
+    OAuthGetTokenTimeout,
+    /// <summary>
+    /// 没有选中的账户
+    /// </summary>
+    LoginAuthListEmpty,
+    /// <summary>
+    /// 密钥过期
+    /// </summary>
+    LoginTokenTimeout,
 }

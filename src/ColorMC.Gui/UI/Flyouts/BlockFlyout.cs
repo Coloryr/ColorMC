@@ -13,7 +13,7 @@ public static class BlockFlyout
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("BlockBackpackFlyout.Text1"), true, model.Use)
+            new FlyoutMenuModel(LanguageUtils.Get("BlockBackpackFlyout.Text1"), true, model.Use)
         ]).Show(con);
     }
 }

@@ -31,7 +31,7 @@ public partial class SettingControl : MenuControl
 
     public SettingControl() : base(WindowManager.GetUseName<SettingControl>())
     {
-        Title = App.Lang("SettingWindow.Title");
+        Title = LanguageUtils.Get("SettingWindow.Title");
     }
 
     public SettingControl(int mainversion) : this()

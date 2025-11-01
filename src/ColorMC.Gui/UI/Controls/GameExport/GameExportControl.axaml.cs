@@ -27,7 +27,7 @@ public partial class GameExportControl : MenuControl
     {
         _obj = obj;
 
-        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameExportWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -51,7 +51,7 @@ public partial class GameExportControl : MenuControl
             return;
         }
 
-        Title = string.Format(App.Lang("GameExportWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameExportWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)
@@ -67,7 +67,7 @@ public partial class GameExportControl : MenuControl
     public override async void Opened()
     {
         var model = (DataContext as GameExportModel)!;
-        model.Model.Progress(App.Lang("GameExportWindow.Info7"));
+        model.Model.Progress(LanguageUtils.Get("GameExportWindow.Info7"));
 
         await model.LoadMod();
         model.LoadFile();

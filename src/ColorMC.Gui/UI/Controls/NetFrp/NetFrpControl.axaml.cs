@@ -21,7 +21,7 @@ public partial class NetFrpControl : MenuControl
 
     public NetFrpControl() : base(WindowManager.GetUseName<NetFrpControl>())
     {
-        Title = App.Lang("NetFrpWindow.Title");
+        Title = LanguageUtils.Get("NetFrpWindow.Title");
     }
 
     public override void Closed()

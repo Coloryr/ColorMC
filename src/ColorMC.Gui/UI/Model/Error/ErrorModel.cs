@@ -1,8 +1,10 @@
 using System;
+using System.Text;
 using AvaloniaEdit.Document;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Error;
@@ -25,27 +27,35 @@ public partial class ErrorModel : TopModel
 
     private readonly string _useName;
 
-    public ErrorModel(BaseModel model, string? data, Exception? e, bool close) : base(model)
+    private ErrorModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "ErrorModel";
-        _text = new TextDocument($"{data ?? ""}{Environment.NewLine}" +
-            $"{(e == null ? "" : e.ToString())}");
-
-        NeedClose = close;
-
-        Model.SetChoiseContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("ErrorWindow.Text2"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"), 
+            LanguageUtils.Get("ErrorWindow.Text2"));
         Model.SetChoiseCall(_useName, Save, Push);
     }
 
-    public ErrorModel(BaseModel model, string data, string e, bool close) : base(model)
+    public ErrorModel(BaseModel model, string? log, Exception? e, bool close) : this(model)
     {
-        _useName = ToString() ?? "ErrorModel";
-        _text = new TextDocument($"{data}{Environment.NewLine}{e}");
+        var builder = new StringBuilder();
+        if (!string.IsNullOrWhiteSpace(log))
+        {
+            builder.AppendLine(log);
+        }
+        if (e != null)
+        {
+            builder.Append(e.ToString());
+        }
+        _text = new TextDocument(builder.ToString());
 
         NeedClose = close;
+    }
 
-        Model.SetChoiseContent(_useName, App.Lang("ErrorWindow.Text1"), App.Lang("ErrorWindow.Text2"));
-        Model.SetChoiseCall(_useName, Save, Push);
+    public ErrorModel(BaseModel model, string log, bool close) : this(model)
+    {
+        _text = new TextDocument(log);
+
+        NeedClose = close;
     }
 
     /// <summary>
@@ -61,7 +71,7 @@ public partial class ErrorModel : TopModel
         var res = await PathBinding.SaveFileAsync(top, FileType.Text, [Text.Text]);
         if (res == true)
         {
-            Model.Notify(App.Lang("ErrorWindow.Info1"));
+            Model.Notify(LanguageUtils.Get("ErrorWindow.Info1"));
         }
     }
 
@@ -72,21 +82,21 @@ public partial class ErrorModel : TopModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(App.Lang("GameLogWindow.Error2"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Error2"));
             return;
         }
-        var res = await Model.ShowAsync(App.Lang("GameLogWindow.Info4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Info4"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(App.Lang("GameLogWindow.Info6"));
+        Model.Progress(LanguageUtils.Get("GameLogWindow.Info6"));
         var url = await McloAPI.PushAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
-            Model.Show(App.Lang("GameLogWindow.Error1"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Error1"));
             return;
         }
         else
@@ -96,13 +106,14 @@ public partial class ErrorModel : TopModel
             {
                 return;
             }
-            Model.InputWithChoise(string.Format(App.Lang("GameLogWindow.Info5"), url), App.Lang("GameLogWindow.Info8"), async () =>
+            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info5"), url),
+                LanguageUtils.Get("GameLogWindow.Info8"), () =>
             {
                 BaseBinding.CopyTextClipboardAsync(top, url);
-                Model.Notify(App.Lang("GameLogWindow.Info7"));
+                Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
             });
             BaseBinding.CopyTextClipboardAsync(top, url);
-            Model.Notify(App.Lang("GameLogWindow.Info7"));
+            Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
         }
     }
 

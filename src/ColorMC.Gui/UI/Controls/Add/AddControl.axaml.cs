@@ -32,7 +32,7 @@ public partial class AddControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(App.Lang("AddWindow.Title"), obj.Name);
+        Title = string.Format(LanguageUtils.Get("AddWindow.Title"), obj.Name);
 
         VersionDisplay.PointerPressed += VersionDisplay_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
@@ -60,7 +60,7 @@ public partial class AddControl : BaseUserControl
             return;
         }
 
-        Title = string.Format(App.Lang("AddWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("AddWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)

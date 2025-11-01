@@ -92,6 +92,19 @@ public class DownloadHashErrorEventArgs(FileItemObj file, string hash, string no
 }
 
 /// <summary>
+/// 下载报错
+/// </summary>
+/// <param name="file">下载的文件</param>
+/// <param name="exception">错误</param>
+public class DownloadExceptionErrorEventArgs(FileItemObj file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 下载项目
+    /// </summary>
+    public FileItemObj File => file;
+}
+
+/// <summary>
 /// 游戏日志
 /// </summary>
 /// <param name="game">游戏实例</param>

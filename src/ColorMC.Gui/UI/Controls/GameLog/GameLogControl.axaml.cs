@@ -33,7 +33,7 @@ public partial class GameLogControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(App.Lang("GameLogWindow.Title"), obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameLogWindow.Title"), obj.Name);
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
@@ -70,7 +70,7 @@ public partial class GameLogControl : BaseUserControl
             return;
         }
 
-        Title = string.Format(App.Lang("GameLogWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("GameLogWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)

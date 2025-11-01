@@ -510,7 +510,7 @@ public static class GameArg
                 var res = await CoreHttpClient.GetStringAsync(login.Text1);
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
+                    throw new LaunchException(LaunchState.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -520,7 +520,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
+                    throw new LaunchException(LaunchState.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -530,7 +530,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error111"));
+                    throw new LaunchException(LaunchState.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -616,7 +616,7 @@ public static class GameArg
     {
         var classpath = new StringBuilder();
         var sep = SystemInfo.Os == OsType.Windows ? ';' : ':';
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info28"));
+        ColorMCCore.OnGameLog(obj, GameSystemLog.RuntimeLib);
 
         if (arg.UseColorMCASM)
         {
@@ -675,7 +675,7 @@ public static class GameArg
     private static string MakeMainClass(this GameSettingObj obj)
     {
         var version = VersionPath.GetVersion(obj.Version)
-            ?? throw new Exception(string.Format(LanguageHelper.Get("Core.Error116"), obj.Version));
+            ?? throw new LaunchException(LaunchState.LostVersion);
         var v2 = version.IsGameVersionV2();
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
@@ -775,11 +775,8 @@ public static class GameArg
                         }
                         if (res2 == null)
                         {
-                            res2 = await obj.BuildForgeAsync();
-                            if (res2 == null)
-                            {
-                                throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
-                            }
+                            res2 = await obj.BuildForgeAsync() 
+                                ?? throw new LaunchException(LaunchState.LostLoader);
                         }
                         loader = res2.Loaders;
                         install = res2.Installs;
@@ -796,7 +793,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildFabricAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
+                            ?? throw new LaunchException(LaunchState.LostLoader);
                         break;
                     case Loaders.Quilt:
                         loader = obj.GetQuiltLibs();
@@ -805,7 +802,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildQuiltAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
+                            ?? throw new LaunchException(LaunchState.LostLoader);
                         break;
                     case Loaders.OptiFine:
                         loader = obj.GetOptifineLibs();
@@ -814,22 +811,22 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildOptifineAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
+                            ?? throw new LaunchException(LaunchState.LostLoader);
                         GameHelper.ReadyOptifineWrapper();
                         loader.Add(GameHelper.OptifineWrapper);
                         break;
                     case Loaders.Custom:
                         if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
                         {
-                            throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
+                            throw new LaunchException(LaunchState.LostLoader);
                         }
 
                         if (cancel.IsCancellationRequested)
                         {
                             return;
                         }
-                        var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
-                        ?? throw new LaunchException(LaunchState.LostLoader, LanguageHelper.Get("Core.Error104"));
+                        var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel) 
+                            ?? throw new LaunchException(LaunchState.LostLoader);
                         loader = res1.List?.ToList();
                         break;
                 }
@@ -895,9 +892,8 @@ public static class GameArg
                 {
                     //不存在json文件
                     var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url)
-                              ?? throw new LaunchException(LaunchState.AssetsError,
-                                  LanguageHelper.Get("Core.Error103"));
-                    // assets = res.Assets;
+                        ?? throw new LaunchException(LaunchState.AssetsError);
+                    assets = res.Assets;
                     game.AddIndex(res.Text);
                 }
                 arg.Assets = game.AssetIndex;
@@ -950,8 +946,8 @@ public static class GameArg
                     if (assets == null)
                     {
                         var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url)
-                            ?? throw new LaunchException(LaunchState.AssetsError, LanguageHelper.Get("Core.Error103"));
-                        // assets = res.Assets;
+                            ?? throw new LaunchException(LaunchState.AssetsError);
+                        assets = res.Assets;
                         item.AddIndex(res.Text);
                     }
                     arg.Assets = item.AssetIndex;

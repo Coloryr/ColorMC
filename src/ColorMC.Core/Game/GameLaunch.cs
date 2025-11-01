@@ -20,43 +20,46 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">启动参数</param>
     /// <exception cref="LaunchException"></exception>
-    private static async Task AuthLoginAsync(GameSettingObj obj, GameLaunchArg larg)
+    private static async Task AuthLoginAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
         larg.Update2?.Invoke(obj, LaunchState.Login);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
         //刷新账户token
-        var res1 = await larg.Auth.RefreshTokenAsync();
-        if (res1.LoginState != LoginState.Done)
+        try
         {
-            if (larg.Auth.AuthType == AuthType.OAuth
-                && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
-                && larg.Loginfail != null
-                && await larg.Loginfail(larg.Auth))
+            var res1 = await larg.Auth.RefreshTokenAsync(token);
+            if (res1.LoginState != LoginState.Done)
             {
-                larg.Auth = new LoginObj
+                if (larg.Auth.AuthType == AuthType.OAuth
+                    && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
+                    && larg.Loginfail != null
+                    && await larg.Loginfail(larg.Auth))
                 {
-                    UserName = larg.Auth.UserName,
-                    UUID = larg.Auth.UUID,
-                    AuthType = AuthType.Offline
-                };
+                    larg.Auth = new LoginObj
+                    {
+                        UserName = larg.Auth.UserName,
+                        UUID = larg.Auth.UUID,
+                        AuthType = AuthType.Offline
+                    };
+                }
+                else
+                {
+                    larg.Update2?.Invoke(obj, LaunchState.LoginFail);
+                    if (res1.Ex != null)
+                    {
+                        throw new LaunchException(LaunchState.LoginFail, res1.FailState!, res1.Ex);
+                    }
+
+                    throw new LaunchException(LaunchState.LoginFail, res1.FailState!);
+                }
             }
             else
             {
-                larg.Update2?.Invoke(obj, LaunchState.LoginFail);
-                if (res1.Ex != null)
-                {
-                    throw new LaunchException(LaunchState.LoginFail, res1.Message!, res1.Ex);
-                }
-
-                throw new LaunchException(LaunchState.LoginFail, res1.Message!);
+                larg.Auth = res1.Auth!;
+                larg.Auth.Save();
             }
-        }
-        else
-        {
-            larg.Auth = res1.Auth!;
-            larg.Auth.Save();
         }
 
         stopwatch.Stop();
@@ -370,7 +373,8 @@ public static class Launch
         var temp1 = objs.First();
         try
         {
-            await AuthLoginAsync(temp1, larg);
+            var token = CancellationTokenSource.CreateLinkedTokenSource([.. cancels.Values]);
+            await AuthLoginAsync(temp1, larg, token.Token);
         }
         catch (Exception e)
         {
@@ -510,18 +514,18 @@ public static class Launch
     /// <param name="obj">游戏实例</param>
     /// <param name="larg">请求参数</param>
     /// <returns>启动参数</returns>
-    public static async Task<CreateCmdRes> CreateGameCmdAsync(this GameSettingObj obj, GameLaunchArg larg)
+    public static async Task<CreateCmdRes> CreateGameCmdAsync(this GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
         //版本号检测
         if (string.IsNullOrWhiteSpace(obj.Version)
             || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
             || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
         {
-            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Error108") };
+            throw new LaunchException(LaunchState.VersionError);
         }
 
         //登录账户
-        await AuthLoginAsync(obj, larg);
+        await AuthLoginAsync(obj, larg, token);
 
         //检查游戏文件
         var arg1 = await obj.MakeArgAsync(larg, CancellationToken.None);
@@ -619,7 +623,7 @@ public static class Launch
                     string.IsNullOrWhiteSpace(obj.LoaderVersion))
                 || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
             {
-                throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error108"));
+                throw new LaunchException(LaunchState.VersionEmpty);
             }
         }
 

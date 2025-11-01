@@ -14,7 +14,7 @@ public partial class CollectControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("CollectWindow.Title");
+        Title = LanguageUtils.Get("CollectWindow.Title");
     }
 
     public override void Closed()

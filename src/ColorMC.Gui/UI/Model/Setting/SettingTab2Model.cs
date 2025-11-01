@@ -381,7 +381,7 @@ public partial class SettingModel
 
         if (value)
         {
-            Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
+            Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info2"));
             await ConfigBinding.SetBackLimit(value, PicResize);
             Model.ProgressClose();
         }
@@ -392,7 +392,7 @@ public partial class SettingModel
         if (_load)
             return;
 
-        Model.Progress(App.Lang("SettingWindow.Tab2.Info1"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(value);
         Model.ProgressClose();
     }
@@ -435,7 +435,7 @@ public partial class SettingModel
         ConfigBinding.ResetColor();
         MainColor = Color.Parse(ThemeManager.MainColorStr);
         _load = false;
-        Model.Notify(App.Lang("SettingWindow.Tab2.Info4"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Info4"));
     }
     /// <summary>
     /// 设置背景图片大小
@@ -444,10 +444,10 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SetPicSize()
     {
-        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         Model.ProgressClose();
-        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Info12"));
     }
     /// <summary>
     /// 设置背景图片透明
@@ -456,7 +456,7 @@ public partial class SettingModel
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Info12"));
     }
     /// <summary>
     /// 删除背景图
@@ -505,11 +505,11 @@ public partial class SettingModel
             return;
         }
 
-        Model.Progress(App.Lang("SettingWindow.Tab2.Info2"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info2"));
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Model.ProgressClose();
 
-        Model.Notify(App.Lang("SettingWindow.Tab2.Info12"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Info12"));
     }
     /// <summary>
     /// 加载UI设置
@@ -619,7 +619,7 @@ public partial class SettingModel
         if (_load)
             return;
 
-        Model.Progress(App.Lang("SettingWindow.Tab2.Info5"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info5"));
         ConfigBinding.SetWindowTran(EnableWindowTran, WindowTranType);
         Model.ProgressClose();
     }

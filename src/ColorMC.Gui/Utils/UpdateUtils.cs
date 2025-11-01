@@ -88,7 +88,7 @@ public static class UpdateUtils
         catch (Exception e)
         {
             UpdateCheckFail();
-            Logs.Error(App.Lang("SettingWindow.Tab3.Error2"), e);
+            Logs.Error(LanguageUtils.Get("SettingWindow.Tab3.Error2"), e);
         }
 
         return (false, false, null);
@@ -120,11 +120,11 @@ public static class UpdateUtils
     //    if (ColorMCGui.BaseSha1 == null)
     //        return;
 
-    //    model.Progress(App.Lang("UpdateChecker.Info2"));
+    //    model.Progress(LanguageUtils.Get("UpdateChecker.Info2"));
     //    var obj = await ColorMCCloudAPI.GetUpdateIndex();
     //    if (obj == null)
     //    {
-    //        model.Show(App.Lang("UpdateChecker.Error3"));
+    //        model.Show(LanguageUtils.Get("UpdateChecker.Error3"));
     //        return;
     //    }
     //    var json = obj.RootElement;
@@ -133,7 +133,7 @@ public static class UpdateUtils
     //        || list.ValueKind is not JsonValueKind.Array
     //        || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
     //    {
-    //        model.Show(App.Lang("UpdateChecker.Error3"));
+    //        model.Show(LanguageUtils.Get("UpdateChecker.Error3"));
     //        return;
     //    }
     //    bool find = false;
@@ -161,7 +161,7 @@ public static class UpdateUtils
     //        if (info.Item1 == null)
     //        {
     //            model.ProgressClose();
-    //            model.Show(App.Lang("UpdateChecker.Error1"));
+    //            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
     //            return;
     //        }
     //        if (info.Item2 != null)
@@ -171,7 +171,7 @@ public static class UpdateUtils
     //        var res = await DownloadManager.StartAsync(down);
     //        if (res)
     //        {
-    //            model.ProgressUpdate(App.Lang("UpdateChecker.Info3"));
+    //            model.ProgressUpdate(LanguageUtils.Get("UpdateChecker.Info3"));
     //            res = await StartPatch(info.Item1, diffs);
     //            model.ProgressClose();
     //            if (res)
@@ -180,13 +180,13 @@ public static class UpdateUtils
     //            }
     //            else
     //            {
-    //                model.Show(App.Lang("UpdateChecker.Error2"));
+    //                model.Show(LanguageUtils.Get("UpdateChecker.Error2"));
     //            }
     //        }
     //        else
     //        {
     //            model.ProgressClose();
-    //            model.Show(App.Lang("UpdateChecker.Error1"));
+    //            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
     //        }
     //    }
     //    else
@@ -203,7 +203,7 @@ public static class UpdateUtils
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        model.Progress(App.Lang("UpdateChecker.Info2"));
+        model.Progress(LanguageUtils.Get("UpdateChecker.Info2"));
         var list = new List<FileItemObj>()
         {
             new()
@@ -232,7 +232,7 @@ public static class UpdateUtils
         }
         else
         {
-            model.Show(App.Lang("UpdateChecker.Error1"));
+            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
         }
     }
 
@@ -252,7 +252,7 @@ public static class UpdateUtils
             var obj = await ColorMCCloudAPI.GetUpdateIndexAsync();
             if (obj == null)
             {
-                WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), "Json Error");
+                WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Error2"), "Json Error");
                 return (false, null);
             }
             var json = obj.RootElement;
@@ -273,7 +273,7 @@ public static class UpdateUtils
                 if (WebSha1s[a] != LocalSha1s[a])
                 {
                     index.TryGetProperty("info", out var data1);
-                    return (true, data1.GetString() ?? App.Lang("UpdateChecker.Info1"));
+                    return (true, data1.GetString() ?? LanguageUtils.Get("UpdateChecker.Info1"));
                 }
             }
 
@@ -281,7 +281,7 @@ public static class UpdateUtils
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("SettingWindow.Tab3.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Error2"), e);
         }
 
         return (null, null);
@@ -297,7 +297,7 @@ public static class UpdateUtils
         {
             return;
         }
-        window.Model.Notify(App.Lang("SettingWindow.Tab3.Error2"));
+        window.Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error2"));
     }
 
     //private static async Task<bool> StartPatch(string file, List<string> files)
@@ -331,7 +331,7 @@ public static class UpdateUtils
     //        }
     //        catch (Exception e)
     //        {
-    //            Logs.Error(App.Lang("UpdateChecker.Error1"), e);
+    //            Logs.Error(LanguageUtils.Get("UpdateChecker.Error1"), e);
     //            return false;
     //        }
     //    });

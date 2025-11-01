@@ -18,7 +18,7 @@ public partial class LuckBlockControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("LuckBlockWindow.Title");
+        Title = LanguageUtils.Get("LuckBlockWindow.Title");
 
         SetupAnimationTimer();
 

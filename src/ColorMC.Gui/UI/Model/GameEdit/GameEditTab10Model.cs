@@ -47,8 +47,8 @@ public partial class GameEditModel
     private async void AddServer()
     {
         var res = await Model.InputAsync(
-            App.Lang("GameEditWindow.Tab10.Info1"),
-            App.Lang("GameEditWindow.Tab10.Info2"));
+            LanguageUtils.Get("GameEditWindow.Tab10.Info1"),
+            LanguageUtils.Get("GameEditWindow.Tab10.Info2"));
         if (res.Cancel)
         {
             return;
@@ -56,14 +56,14 @@ public partial class GameEditModel
 
         if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
         {
-            Model.Show(App.Lang("GameEditWindow.Tab10.Error1"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error1"));
             return;
         }
 
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
         await _obj.AddServerAsync(res.Text1, res.Text2);
         Model.ProgressClose();
-        Model.Notify(App.Lang("UserWindow.Info12"));
+        Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
         LoadServer();
     }
 
@@ -72,12 +72,12 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadServer()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info4"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info4"));
         ServerList.Clear();
         ServerList.AddRange(await _obj.GetServerInfosAsync());
         Model.ProgressClose();
         ServerEmptyDisplay = ServerList.Count == 0;
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info7"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info7"));
     }
 
     /// <summary>
@@ -91,10 +91,10 @@ public partial class GameEditModel
         {
             return;
         }
-        Model.Progress(App.Lang("GameEditWindow.Tab10.Info6"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
         await obj.DeleteAsync();
         Model.ProgressClose();
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
         LoadServer();
     }
 }
