@@ -15,7 +15,7 @@ public partial class DownloadControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("DownloadWindow.Title");
+        Title = LanguageUtils.Get("DownloadWindow.Title");
     }
 
     public override void Closed()

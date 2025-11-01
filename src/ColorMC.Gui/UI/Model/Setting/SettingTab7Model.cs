@@ -34,13 +34,13 @@ public partial class SettingModel
     {
         if (ColorMCGui.IsAot)
         {
-            return App.Lang("SettingWindow.Tab7.Info1");
+            return LanguageUtils.Get("SettingWindow.Tab7.Info1");
         }
         else if (ColorMCGui.IsMin)
         {
-            return App.Lang("SettingWindow.Tab7.Info4");
+            return LanguageUtils.Get("SettingWindow.Tab7.Info4");
         }
-        return App.Lang("SettingWindow.Tab7.Info2");
+        return LanguageUtils.Get("SettingWindow.Tab7.Info2");
     }
 
     //打开网页
@@ -71,7 +71,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task OpenUrl5()
     {
-        var res = await Model.ShowAsync(App.Lang("SettingWindow.Tab7.Info3"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab7.Info3"));
         WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
     }
 

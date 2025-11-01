@@ -21,7 +21,7 @@ public partial class AddJavaControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("AddJavaWindow.Title");
+        Title = LanguageUtils.Get("AddJavaWindow.Title");
 
         JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }

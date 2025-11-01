@@ -256,17 +256,17 @@ public partial class MainModel
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Info42"), list.Count));
+        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Info42"), list.Count));
         if (!res)
         {
             return;
         }
-        Model.Progress(App.Lang("GameEditWindow.Tab1.Info11"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Info11"));
         foreach (var item in list)
         {
             if (GameManager.IsAdd(item.Obj))
             {
-                Model.Show(App.Lang("GameEditWindow.Tab1.Error5"));
+                Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Error5"));
                 continue;
             }
             await GameBinding.DeleteGameAsync(item.Obj);
@@ -396,7 +396,7 @@ public partial class MainModel
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Model, this, " ", App.Lang("MainWindow.Info20"), item.Value);
+                        DefaultGroup = new(Model, this, " ", LanguageUtils.Get("MainWindow.Info20"), item.Value);
                         if (list.Count > 0)
                         {
                             DefaultGroup.Expander = false;
@@ -462,7 +462,7 @@ public partial class MainModel
                 {
                     HaveLast = true;
                 }
-                LastGameName = string.Format(App.Lang("MainWindow.Text26"), last.Name);
+                LastGameName = string.Format(LanguageUtils.Get("MainWindow.Text26"), last.Name);
                 var file = last.Obj.GetIconFile();
                 if (File.Exists(file))
                 {
@@ -550,13 +550,13 @@ public partial class MainModel
         IsLaunch = true;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            Model.Progress(App.Lang("MainWindow.Info3"));
+            Model.Progress(LanguageUtils.Get("MainWindow.Info3"));
         }
         var item = Game!;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Model.Notify(App.Lang(string.Format(App.Lang("MainWindow.Info28"), game.Name)));
+        Model.Notify(LanguageUtils.Get(string.Format(LanguageUtils.Get("MainWindow.Info28"), game.Name)));
         var res = await GameBinding.LaunchAsync(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         item.IsLoad = false;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
@@ -567,7 +567,7 @@ public partial class MainModel
         {
             if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
             {
-                var res1 = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Error8"), res.Message!));
+                var res1 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Error8"), res.Message!));
                 if (res1)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -580,14 +580,14 @@ public partial class MainModel
         }
         else
         {
-            Model.Notify(App.Lang("MainWindow.Info2"));
+            Model.Notify(LanguageUtils.Get("MainWindow.Info2"));
 
             item.IsLaunch = true;
             Launchs.Add(game.UUID, item);
 
             if (GuiConfigUtils.Config.CloseBeforeLaunch)
             {
-                Model.Progress(App.Lang("MainWindow.Info26"));
+                Model.Progress(LanguageUtils.Get("MainWindow.Info26"));
             }
         }
         IsLaunch = false;
@@ -619,7 +619,7 @@ public partial class MainModel
             item.IsLoad = true;
         }
 
-        Model.Progress(App.Lang("MainWindow.Info3"));
+        Model.Progress(LanguageUtils.Get("MainWindow.Info3"));
         var res1 = await GameBinding.LaunchAsync(Model, list1);
         Model.ProgressClose();
         if (res1.Message != null)
@@ -641,7 +641,7 @@ public partial class MainModel
         if (res1.Fail?.ContainsValue(LaunchState.LoginFail) == true
             && res1.User!.AuthType != AuthType.OAuth)
         {
-            var res2 = await Model.ShowAsync(string.Format(App.Lang("MainWindow.Error8"), res1.Message!));
+            var res2 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Error8"), res1.Message!));
             if (res2)
             {
                 WindowManager.ShowUser(relogin: true);

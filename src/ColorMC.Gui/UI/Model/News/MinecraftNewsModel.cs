@@ -38,12 +38,12 @@ public partial class MinecraftNewsModel : TopModel
     {
         News.Clear();
         _newsPage = 0;
-        Model.Progress(App.Lang("UserWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("UserWindow.Info1"));
         var data = await WebBinding.LoadNewsAsync(_newsPage);
         Model.ProgressClose();
         if (data == null)
         {
-            Model.Notify(App.Lang("MainWindow.Error9"));
+            Model.Notify(LanguageUtils.Get("MainWindow.Error9"));
             return;
         }
 
@@ -61,12 +61,12 @@ public partial class MinecraftNewsModel : TopModel
     [RelayCommand]
     public async Task NewsNextPage()
     {
-        Model.Progress(App.Lang("UserWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("UserWindow.Info1"));
         var data = await WebBinding.LoadNewsAsync(++_newsPage);
         Model.ProgressClose();
         if (data == null)
         {
-            Model.Notify(App.Lang("MainWindow.Error9"));
+            Model.Notify(LanguageUtils.Get("MainWindow.Error9"));
             return;
         }
 
@@ -81,7 +81,7 @@ public partial class MinecraftNewsModel : TopModel
     /// </summary>
     public async void LoadNews()
     {
-        Model.SetChoiseContent(_use, App.Lang("Button.Refash"));
+        Model.SetChoiseContent(_use, LanguageUtils.Get("Button.Refash"));
         Model.SetChoiseCall(_use, Reload);
         await ReloadNews();
     }

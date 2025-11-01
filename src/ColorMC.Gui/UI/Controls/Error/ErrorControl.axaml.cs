@@ -12,42 +12,43 @@ namespace ColorMC.Gui.UI.Controls.Error;
 public partial class ErrorControl : BaseUserControl
 {
     /// <summary>
-    /// 错误信息
-    /// </summary>
-    private readonly string? _data;
-    /// <summary>
     /// 异常
     /// </summary>
     private readonly Exception? _e;
-    private readonly string _e1;
+    private readonly string? _log;
     /// <summary>
     /// 是否同时关闭启动器
     /// </summary>
     private readonly bool _close;
-    private readonly bool _type = false;
 
     public ErrorControl() : base(WindowManager.GetUseName<ErrorControl>())
     {
         InitializeComponent();
     }
 
-    public ErrorControl(string? data, Exception? e, bool close) : this()
+    public ErrorControl(string title, Exception? e, bool close) : this()
     {
-        _data = data;
         _e = e;
         _close = close;
-        _type = true;
 
-        Title = data ?? LanguageUtils.Get("ErrorWindow.Title");
+        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
     }
 
-    public ErrorControl(string? data, string e, bool close) : this()
+    public ErrorControl(string title, string log, Exception? e, bool close) : this()
     {
-        _data = data;
-        _e1 = e;
+        _log = log;
+        _e = e;
         _close = close;
 
-        Title = data ?? LanguageUtils.Get("ErrorWindow.Title");
+        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
+    }
+
+    public ErrorControl(string title, string log, bool close) : this()
+    {
+        _log = log;
+        _close = close;
+
+        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
     }
 
     public override void Closed()
@@ -61,15 +62,6 @@ public partial class ErrorControl : BaseUserControl
 
     protected override TopModel GenModel(BaseModel model)
     {
-        ErrorModel amodel;
-        if (_type)
-        {
-            amodel = new ErrorModel(model, _data, _e, _close);
-        }
-        else
-        {
-            amodel = new ErrorModel(model, _data ?? "", _e1, _close);
-        }
-        return amodel;
+        return new ErrorModel(model, _log, _e, _close);
     }
 }

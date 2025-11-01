@@ -11,7 +11,7 @@ public partial class BlockBackpackControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("BlockBackpackWindow.Title");
+        Title = LanguageUtils.Get("BlockBackpackWindow.Title");
     }
 
     public override void Opened()

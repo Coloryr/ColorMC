@@ -208,7 +208,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         if (_last == null)
         {
-            Model.Show(App.Lang("AddModPackWindow.Error1"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Error1"));
             return;
         }
 
@@ -241,7 +241,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
 
         var res = await Model.ShowAsync(
-            string.Format(App.Lang("AddModPackWindow.Info1"), Item.Name));
+            string.Format(LanguageUtils.Get("AddModPackWindow.Info1"), Item.Name));
         if (res)
         {
             Install(Item);
@@ -279,7 +279,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
                     LanguageBinding.GetCurseForgeSortTypes() :
                     LanguageBinding.GetModrinthSortTypes());
 
-                Model.Progress(App.Lang("AddModPackWindow.Info4"));
+                Model.Progress(LanguageUtils.Get("AddModPackWindow.Info4"));
                 var list = Source == 0 ?
                     await CurseForgeHelper.GetGameVersionsAsync() :
                     await ModrinthHelper.GetGameVersionAsync();
@@ -355,7 +355,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// <param name="all"></param>
     private void ZipUpdate(string text, int size, int all)
     {
-        string temp = App.Lang("AddGameWindow.Tab1.Info21");
+        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
         Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
     }
 
@@ -381,7 +381,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         Model.ProgressClose();
         var test = await Model.ShowAsync(
-            string.Format(App.Lang("AddGameWindow.Info2"), obj.Name));
+            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
         Model.Progress();
         return test;
     }
@@ -394,22 +394,22 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         if (state == CoreRunState.Read)
         {
-            Model.Progress(App.Lang("AddGameWindow.Tab2.Info1"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info1"));
         }
         else if (state == CoreRunState.Init)
         {
-            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info2"));
+            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info2"));
         }
         else if (state == CoreRunState.GetInfo)
         {
-            Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info3"));
+            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
         }
         else if (state == CoreRunState.Download)
         {
             Model.ProgressUpdate(-1);
             if (!ConfigBinding.WindowMode())
             {
-                Model.ProgressUpdate(App.Lang("AddGameWindow.Tab2.Info4"));
+                Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
             }
             else
             {
@@ -420,7 +420,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         {
             if (ConfigBinding.WindowMode())
             {
-                Model.Progress(App.Lang("AddGameWindow.Tab2.Info4"));
+                Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
             }
         }
     }
@@ -440,7 +440,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// </summary>
     private async void Done(string? uuid)
     {
-        Model.Notify(App.Lang("AddGameWindow.Tab1.Info7"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info7"));
 
         DisplayVersion = false;
 
@@ -452,7 +452,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Model.ShowAsync(App.Lang("AddGameWindow.Tab1.Info25"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info25"));
         if (res != true)
         {
             Dispatcher.UIThread.Post(WindowClose);
@@ -468,7 +468,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowAsync(App.Lang("AddModPackWindow.Error4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Error4"));
         if (res)
         {
             LoadSourceData();
@@ -477,7 +477,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         if (Source < SourceList.Length)
         {
-            res = await Model.ShowAsync(App.Lang("AddModPackWindow.Info5"));
+            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Info5"));
             if (res)
             {
                 Source++;
@@ -493,11 +493,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         //MO不允许少文字搜索
         if (Source == 1 && Categorie == 4 && Text?.Length < 3)
         {
-            Model.Show(App.Lang("AddModPackWindow.Error6"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Error6"));
             return;
         }
 
-        Model.Progress(App.Lang("AddModPackWindow.Info2"));
+        Model.Progress(LanguageUtils.Get("AddModPackWindow.Info2"));
         var res = await WebBinding.GetModPackListAsync((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
@@ -518,7 +518,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         if (data == null)
         {
-            Model.Show(App.Lang("AddModPackWindow.Error2"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Error2"));
             Model.ProgressClose();
             return;
         }
@@ -546,7 +546,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         EmptyDisplay = DisplayList.Count == 0;
 
         Model.ProgressClose();
-        Model.Notify(App.Lang("AddWindow.Info16"));
+        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
     }
 
     /// <summary>

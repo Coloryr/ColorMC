@@ -36,8 +36,8 @@ public partial class GameRuntimeLog
     /// <summary>
     /// 添加日志
     /// </summary>
-    /// <param name="log"></param>
-    /// <returns></returns>
+    /// <param name="log">控制台输出</param>
+    /// <returns>日志</returns>
     public GameLogItemObj? AddLog(string? log)
     {
         if (log == null)
@@ -93,6 +93,24 @@ public partial class GameRuntimeLog
             Level = LogLevel.None
         };
 
+        _logs.Add(item1);
+
+        return item1;
+    }
+
+    /// <summary>
+    /// 添加系统日志
+    /// </summary>
+    /// <param name="log">系统日志类型</param>
+    /// <returns>日志</returns>
+    public GameLogItemObj? AddLog(GameSystemLog log)
+    {
+        var item1 = new GameLogItemObj()
+        {
+            TimeSpan = DateTime.Now,
+            LogType = log,
+            Level = LogLevel.None
+        };
         _logs.Add(item1);
 
         return item1;

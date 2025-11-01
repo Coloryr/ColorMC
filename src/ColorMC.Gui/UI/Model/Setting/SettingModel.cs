@@ -57,52 +57,52 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item1.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text2")
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text2")
             },
             new()
             {
                 Icon = "/Resource/Icon/Setting/item2.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text3")
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text3")
             },
             new()
             {
                 Icon = "/Resource/Icon/Setting/item3.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text4")
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text4")
             },
             new()
             {
                 Icon = "/Resource/Icon/Setting/item4.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text5"),
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text5"),
                 SubMenu =
                 [
                      new SubMenuItemModel()
                     {
-                        Name = App.Lang("Button.RefashList"),
+                        Name = LanguageUtils.Get("Button.RefashList"),
                         Func = LoadJava
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text4"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text4"),
                         Func = ShowAddJava
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text7"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text7"),
                         Func = FindJava
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text12"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text12"),
                         Func = FindJavaDir
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text5"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text5"),
                         Func = DeleteJava
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text8"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text8"),
                         Func = AddJavaZip
                     }
                 ]
@@ -110,12 +110,12 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item5.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text6"),
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text6"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab6.Text43"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab6.Text43"),
                         Func = ShowBuildPack
                     }
                 ]
@@ -123,47 +123,47 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item6.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text1"),
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text1"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab1.Text1"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab1.Text1"),
                         Func = Reset
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab1.Text18"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab1.Text18"),
                         Func = DumpUser
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab1.Text2"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab1.Text2"),
                         Func = ClearUser
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab1.Text19"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab1.Text19"),
                         Func = ClearWindow
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab1.Text3"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab1.Text3"),
                         Func = Open
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab5.Text6"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab5.Text6"),
                         Func = OpenJavaPath
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab3.Text13"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab3.Text13"),
                         Func = OpenDownloadPath
                     },
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab3.Text18"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab3.Text18"),
                         Func = OpenPicPath
                     }
                 ]
@@ -171,12 +171,12 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item8.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text8"),
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text8"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = App.Lang("SettingWindow.Tab8.Info8"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab8.Info8"),
                         Func = ReloadInput
                     }
                 ]
@@ -184,12 +184,12 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item8.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text9")
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text9")
             },
             new()
             {
                 Icon = "/Resource/Icon/Setting/item7.svg",
-                Text = App.Lang("SettingWindow.Tabs.Text7")
+                Text = LanguageUtils.Get("SettingWindow.Tabs.Text7")
             }
         ]);
     }
@@ -212,7 +212,7 @@ public partial class SettingModel : MenuModel
     {
         Dispatcher.UIThread.Post(() =>
         {
-            Memory = string.Format(App.Lang("SettingWindow.Tab4.Text29"), HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
+            Memory = string.Format(LanguageUtils.Get("SettingWindow.Tab4.Text29"), HookUtils.GetMemorySize(), HookUtils.GetFreeSize());
         });
     }
 

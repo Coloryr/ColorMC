@@ -21,7 +21,7 @@ public partial class DownloadItemModel(int index) : ObservableObject
     /// 当前状态
     /// </summary>
     [ObservableProperty]
-    private string _state = App.Lang("DownloadWindow.Info4");
+    private string _state = LanguageUtils.Get("DownloadWindow.Info4");
     /// <summary>
     /// 错误次数
     /// </summary
@@ -93,7 +93,7 @@ public partial class DownloadItemModel(int index) : ObservableObject
     {
         Name = "";
         ErrorTime = 0;
-        State = App.Lang("DownloadWindow.Info4");
+        State = LanguageUtils.Get("DownloadWindow.Info4");
         NowProgress = 0;
         AllSize = 0;
         NowSize = 0;

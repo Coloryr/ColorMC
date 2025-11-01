@@ -34,7 +34,7 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
     [RelayCommand]
     public async Task AddGroup()
     {
-        var res = await model.InputWithEditAsync(App.Lang("Text.Group"), false);
+        var res = await model.InputWithEditAsync(LanguageUtils.Get("Text.Group"), false);
         if (res.Cancel)
         {
             return;
@@ -42,13 +42,13 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
 
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            model.Show(App.Lang("MainWindow.Error3"));
+            model.Show(LanguageUtils.Get("MainWindow.Error3"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res.Text1))
         {
-            model.Show(App.Lang("MainWindow.Error4"));
+            model.Show(LanguageUtils.Get("MainWindow.Error4"));
             return;
         }
 

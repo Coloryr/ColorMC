@@ -1,3 +1,4 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -16,7 +17,7 @@ public static class LittleSkin
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string? server, ColorMCCore.Select? select)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string? server, ILoginGui select, CancellationToken token)
     {
         var type = AuthType.LittleSkin;
         string server1;
@@ -42,22 +43,16 @@ public static class LittleSkin
             server1 = server;
         }
 
-        var obj = await LegacyLogin.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass, true);
-        if (obj.State != LoginState.Done)
-            return obj;
+        var obj = await LegacyLogin.AuthenticateAsync(server1 + "api/yggdrasil", clientToken, user, pass, true, token);
 
         if (obj.Logins != null)
         {
             if (select != null)
             {
-                var index = await select(LanguageHelper.Get("Core.Info19"), [.. obj.Logins.Select(item => item.UserName)]);
+                var index = await select.SelectAuth([.. obj.Logins.Select(item => item.UserName)]);
                 if (index >= obj.Logins.Count || index < 0)
                 {
-                    return new()
-                    {
-                        State = LoginState.Error,
-                        Message = LanguageHelper.Get("Core.Error83")
-                    };
+                    throw new LoginException(LoginFailState.LoginAuthListEmpty, AuthState.Profile);
                 }
                 var item = obj.Logins[index];
                 obj.Auth!.UUID = item.UUID;
@@ -77,14 +72,14 @@ public static class LittleSkin
             obj.Auth.Text1 = server!;
         }
 
-        return await LegacyLogin.RefreshAsync(server1 + "api/yggdrasil", obj.Auth, true);
+        return await LegacyLogin.RefreshAsync(server1 + "api/yggdrasil", obj.Auth, true, token);
     }
 
     /// <summary>
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj, CancellationToken token)
     {
         string server;
         if (obj.AuthType == AuthType.LittleSkin)
@@ -103,11 +98,11 @@ public static class LittleSkin
 
         server += "api/yggdrasil";
 
-        if (await LegacyLogin.ValidateAsync(server, obj))
+        if (await LegacyLogin.ValidateAsync(server, obj, token))
         {
-            return await LegacyLogin.RefreshAsync(server, obj, false);
+            return await LegacyLogin.RefreshAsync(server, obj, false, token);
         }
 
-        return new() { State = LoginState.Error };
+        throw new LoginException(LoginFailState.LoginTokenTimeout, AuthState.Token);
     }
 }

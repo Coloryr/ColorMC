@@ -170,7 +170,7 @@ public partial class CollectModel : TopModel, ICollectControl
 
         if (InstancesPath.GetGame(_choise.UUID) == null)
         {
-            Model.Show(App.Lang("CollectWindow.Error2"));
+            Model.Show(LanguageUtils.Get("CollectWindow.Error2"));
             Model.BackClick();
             return;
         }
@@ -195,16 +195,16 @@ public partial class CollectModel : TopModel, ICollectControl
         });
 
         //开始下载
-        Model.Progress(App.Lang("CollectWindow.Info10"));
+        Model.Progress(LanguageUtils.Get("CollectWindow.Info10"));
         var res = await DownloadManager.StartAsync([.. list]);
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(App.Lang("CollectWindow.Error3"));
+            Model.Show(LanguageUtils.Get("CollectWindow.Error3"));
         }
         else
         {
-            Model.Notify(App.Lang("CollectWindow.Info11"));
+            Model.Notify(LanguageUtils.Get("CollectWindow.Info11"));
         }
     }
 
@@ -215,14 +215,14 @@ public partial class CollectModel : TopModel, ICollectControl
     [RelayCommand]
     public async Task AddGroup()
     {
-        var res = await Model.InputWithEditAsync(App.Lang("CollectWindow.Info1"), false);
+        var res = await Model.InputWithEditAsync(LanguageUtils.Get("CollectWindow.Info1"), false);
         if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
         {
             return;
         }
         if (CollectUtils.Collect.Groups.ContainsKey(res.Text1))
         {
-            Model.Show(App.Lang("CollectWindow.Error1"));
+            Model.Show(LanguageUtils.Get("CollectWindow.Error1"));
             return;
         }
         CollectUtils.AddGroup(res.Text1);
@@ -237,7 +237,7 @@ public partial class CollectModel : TopModel, ICollectControl
     [RelayCommand]
     public async Task DeleteGroup()
     {
-        var res = await Model.ShowAsync(App.Lang("CollectWindow.Info4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Info4"));
         if (!res)
         {
             return;
@@ -255,7 +255,7 @@ public partial class CollectModel : TopModel, ICollectControl
     {
         if (string.IsNullOrWhiteSpace(Group))
         {
-            var res = await Model.ShowAsync(App.Lang("CollectWindow.Info2"));
+            var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Info2"));
             if (res == true)
             {
                 CollectUtils.Clear();
@@ -266,7 +266,7 @@ public partial class CollectModel : TopModel, ICollectControl
         }
         else
         {
-            var res = await Model.ShowAsync(App.Lang("CollectWindow.Info3"));
+            var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Info3"));
             if (res == true)
             {
                 CollectUtils.Clear(Group);
@@ -302,7 +302,7 @@ public partial class CollectModel : TopModel, ICollectControl
         }
 
         //选择一个游戏实例
-        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info6"), items);
+        var res = await Model.ShowCombo(LanguageUtils.Get("CollectWindow.Info6"), items);
         if (res.Cancel)
         {
             return;
@@ -310,7 +310,7 @@ public partial class CollectModel : TopModel, ICollectControl
 
         _choise = items1[res.Index];
 
-        Model.Progress(App.Lang("CollectWindow.Info9"));
+        Model.Progress(LanguageUtils.Get("CollectWindow.Info9"));
 
         var list = new ConcurrentBag<FileModVersionModel>();
 
@@ -544,7 +544,7 @@ public partial class CollectModel : TopModel, ICollectControl
             return;
         }
 
-        var res = await Model.ShowAsync(App.Lang("CollectWindow.Info12"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Info12"));
         if (!res)
         {
             return;
@@ -576,7 +576,7 @@ public partial class CollectModel : TopModel, ICollectControl
         var list = new List<string>(CollectUtils.Collect.Groups.Keys);
         list.Remove(Group);
 
-        var res = await Model.ShowCombo(App.Lang("CollectWindow.Info13"), list);
+        var res = await Model.ShowCombo(LanguageUtils.Get("CollectWindow.Info13"), list);
         if (res.Cancel)
         {
             return;

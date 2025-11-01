@@ -26,7 +26,7 @@ public partial class SkinControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("SkinWindow.Title");
+        Title = LanguageUtils.Get("SkinWindow.Title");
 
         SidePanel3.PointerPressed += SidePanel3_PointerPressed;
 
@@ -48,7 +48,7 @@ public partial class SkinControl : BaseUserControl
                 Decorator1.Child = null;
                 Decorator2.Child = _side;
                 model.Model.SetChoiseCall(WindowId, DisplaySide);
-                model.Model.SetChoiseContent(WindowId, App.Lang("SkinWindow.Text10"));
+                model.Model.SetChoiseContent(WindowId, LanguageUtils.Get("SkinWindow.Text10"));
             }
             else
             {

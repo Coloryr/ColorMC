@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
@@ -20,7 +21,7 @@ public static class LegacyLogin
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="useminecraft">使用minecraft头</param>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass, bool useminecraft)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string server, string clientToken, string user, string pass, bool useminecraft, CancellationToken token)
     {
         var obj = new AuthenticateObj
         {
@@ -45,39 +46,28 @@ public static class LegacyLogin
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        using var res = await CoreHttpClient.SendLoginAsync(message);
-        using var data = await res.Content.ReadAsStreamAsync();
+        using var res = await CoreHttpClient.SendLoginAsync(message, token);
+        using var data = await res.Content.ReadAsStreamAsync(token);
         var obj2 = JsonUtils.ToObj(data, JsonType.AuthenticateResObj);
 
         if (obj2 == null)
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Error82")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Token);
         }
         else if (!string.IsNullOrWhiteSpace(obj2.ErrorMessage))
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Error,
-                Message = obj2.ErrorMessage
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, 
+                data: obj2.ErrorMessage);
         }
         else if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Error83")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, 
+                data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
         else if (obj2.SelectedProfile != null)
         {
             return new LegacyLoginRes
             {
-                State = LoginState.Done,
                 Auth = new()
                 {
                     UserName = obj2.SelectedProfile.Name,
@@ -95,7 +85,6 @@ public static class LegacyLogin
 
                 return new LegacyLoginRes
                 {
-                    State = LoginState.Done,
                     Auth = new()
                     {
                         UserName = obj2.SelectedProfile.Name,
@@ -119,7 +108,6 @@ public static class LegacyLogin
                 {
                     return new LegacyLoginRes
                     {
-                        State = LoginState.Done,
                         Auth = new()
                         {
                             UserName = obj2.SelectedProfile.Name,
@@ -141,7 +129,6 @@ public static class LegacyLogin
                 }
                 return new LegacyLoginRes
                 {
-                    State = LoginState.Done,
                     Logins = list,
                     Auth = new()
                     {
@@ -151,12 +138,11 @@ public static class LegacyLogin
                 };
             }
         }
-
-        return new LegacyLoginRes
+        else
         {
-            State = LoginState.DataError,
-            Message = LanguageHelper.Get("Core.Error82")
-        };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+               data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
+        }
     }
 
     /// <summary>
@@ -164,7 +150,7 @@ public static class LegacyLogin
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj, bool select)
+    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj, bool select, CancellationToken token)
     {
         var message = new HttpRequestMessage()
         {
@@ -197,32 +183,21 @@ public static class LegacyLogin
             message.Content = new StringContent(JsonUtils.ToString(obj1, JsonType.RefreshObj),
             MediaTypeHeaderValue.Parse("application/json"));
         }
-        using var res = await CoreHttpClient.SendLoginAsync(message);
-        using var data = await res.Content.ReadAsStreamAsync();
+        using var res = await CoreHttpClient.SendLoginAsync(message, token);
+        using var data = await res.Content.ReadAsStreamAsync(token);
         var obj2 = JsonUtils.ToObj(data, JsonType.AuthenticateResObj);
         if (obj2 == null)
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Error84")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Token);
         }
         else if (obj2.Error != null && !string.IsNullOrEmpty(obj2.ErrorMessage))
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.Error,
-                Message = obj2.ErrorMessage
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, data: obj2.ErrorMessage);
         }
         if (obj2.SelectedProfile == null && !select)
         {
-            return new LegacyLoginRes
-            {
-                State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Error82")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+                data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
         if (obj2.SelectedProfile != null)
         {
@@ -234,7 +209,6 @@ public static class LegacyLogin
 
         return new LegacyLoginRes
         {
-            State = LoginState.Done,
             Auth = obj
         };
     }
@@ -245,7 +219,7 @@ public static class LegacyLogin
     /// <param name="server">检测地址</param>
     /// <param name="obj">保存的账户</param>
     /// <returns>可用性</returns>
-    public static async Task<bool> ValidateAsync(string server, LoginObj obj)
+    public static async Task<bool> ValidateAsync(string server, LoginObj obj, CancellationToken token)
     {
         var obj1 = new RefreshObj
         {
@@ -260,7 +234,7 @@ public static class LegacyLogin
             MediaTypeHeaderValue.Parse("application/json"))
         };
 
-        var res = await CoreHttpClient.SendLoginAsync(message);
+        var res = await CoreHttpClient.SendLoginAsync(message, token);
         if (res.StatusCode == HttpStatusCode.NoContent)
         {
             return true;

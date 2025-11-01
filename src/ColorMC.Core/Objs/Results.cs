@@ -10,72 +10,26 @@ using ColorMC.Core.Objs.ServerPack;
 namespace ColorMC.Core.Objs;
 
 /// <summary>
-/// 登录结果
-/// </summary>
-public record LoginRes
-{
-    /// <summary>
-    /// 登录状态
-    /// </summary>
-    public AuthState AuthState;
-    /// <summary>
-    /// 登录结果
-    /// </summary>
-    public LoginState LoginState;
-    /// <summary>
-    /// 账户
-    /// </summary>
-    public LoginObj? Auth;
-    /// <summary>
-    /// 消息
-    /// </summary>
-    public string? Message;
-    /// <summary>
-    /// 异常错误
-    /// </summary>
-    public Exception? Ex;
-}
-
-/// <summary>
 /// OAuth获取登陆码结果
 /// </summary>
 public record OAuthGetCodeRes
 {
     /// <summary>
-    /// 登录结果
-    /// </summary>
-    public LoginState State;
-    /// <summary>
     /// 登录码
     /// </summary>
-    public string? Code;
+    public string Code;
     /// <summary>
-    /// 消息
+    /// 登录网址
     /// </summary>
-    public string? Message;
-}
-
-/// <summary>
-/// OAuth获取登录返回结果
-/// </summary>
-public record OAuthGetTokenRes
-{
+    public string Url;
     /// <summary>
-    /// 登录结果
+    /// 设备码
     /// </summary>
-    public LoginState State;
+    public string DeviceCode;
     /// <summary>
-    /// 信息
+    /// 请求间隔
     /// </summary>
-    public OAuthGetCodeObj? Obj;
-}
-
-/// <summary>
-/// OAuth刷新密钥结果
-/// </summary>
-public record OAuthRefreshTokenRes : OAuthGetTokenRes
-{
-
+    public int ExpiresIn;
 }
 
 /// <summary>
@@ -83,12 +37,8 @@ public record OAuthRefreshTokenRes : OAuthGetTokenRes
 /// </summary>
 public record OAuthXboxLiveRes
 {
-    /// <summary>
-    /// 登录结果
-    /// </summary>
-    public LoginState State;
-    public string? XBLToken;
-    public string? XBLUhs;
+    public string XBLToken;
+    public string XBLUhs;
 }
 
 /// <summary>
@@ -96,12 +46,8 @@ public record OAuthXboxLiveRes
 /// </summary>
 public record OAuthXSTSRes
 {
-    /// <summary>
-    /// 登录结果
-    /// </summary>
-    public LoginState State;
-    public string? XSTSToken;
-    public string? XSTSUhs;
+    public string XSTSToken;
+    public string XSTSUhs;
 }
 
 /// <summary>
@@ -109,11 +55,7 @@ public record OAuthXSTSRes
 /// </summary>
 public record MinecraftLoginRes
 {
-    /// <summary>
-    /// 登录结果
-    /// </summary>
-    public LoginState State;
-    public string? AccessToken;
+    public string AccessToken;
 }
 
 /// <summary>
@@ -122,11 +64,12 @@ public record MinecraftLoginRes
 public record LegacyLoginRes
 {
     /// <summary>
-    /// 登录结果
+    /// 选中的账户
     /// </summary>
-    public LoginState State;
     public LoginObj? Auth;
-    public string? Message;
+    /// <summary>
+    /// 可选的账户列表
+    /// </summary>
     public List<LoginObj>? Logins;
 }
 

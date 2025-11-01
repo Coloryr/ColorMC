@@ -91,13 +91,13 @@ public partial class AddControlModel : IAddOptifineControl
         GameVersionList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
-        Model.Progress(App.Lang("AddWindow.Info13"));
+        Model.Progress(LanguageUtils.Get("AddWindow.Info13"));
         var list = await OptifineAPI.GetOptifineVersionAsync();
         Model.ProgressClose();
         _load = false;
         if (list == null)
         {
-            Model.Show(App.Lang("AddWindow.Error10"));
+            Model.Show(LanguageUtils.Get("AddWindow.Error10"));
             return;
         }
 
@@ -115,7 +115,7 @@ public partial class AddControlModel : IAddOptifineControl
                                  select newgroup.Key);
 
         LoadOptifineVersion();
-        Model.Notify(App.Lang("AddWindow.Info16"));
+        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
     }
 
     /// <summary>
@@ -174,12 +174,12 @@ public partial class AddControlModel : IAddOptifineControl
     public async void Install(OptifineVersionItemModel item)
     {
         var res = await Model.ShowAsync(string.Format(
-            App.Lang("AddWindow.Info10"), item.Version));
+            LanguageUtils.Get("AddWindow.Info10"), item.Version));
         if (!res)
         {
             return;
         }
-        Model.Progress(App.Lang("AddWindow.Info11"));
+        Model.Progress(LanguageUtils.Get("AddWindow.Info11"));
         var res1 = await OptifineAPI.DownloadOptifineAsync(Obj, item.Obj);
         Model.ProgressClose();
         if (res1.State == false)
@@ -188,7 +188,7 @@ public partial class AddControlModel : IAddOptifineControl
         }
         else
         {
-            Model.Notify(App.Lang("Text.Downloaded"));
+            Model.Notify(LanguageUtils.Get("Text.Downloaded"));
             OptifineDisplay = false;
         }
     }

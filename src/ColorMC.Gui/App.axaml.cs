@@ -6,6 +6,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using ColorMC.Core;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
@@ -27,7 +28,7 @@ public partial class App : Application
         {
             string temp = LanguageUtils.Get("App.Error1");
             Logs.Error(temp, e.ExceptionObject as Exception);
-            WindowManager.ShowError(temp, e.ExceptionObject as Exception);
+            WindowManager.ShowError(LanguageUtils.Get("App.Error9") ,temp, e.ExceptionObject as Exception);
         };
         ColorMCGui.StartLock();
     }

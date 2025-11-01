@@ -15,11 +15,11 @@ public static class GameEditFlyout6
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.OpFile"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(obj.ShaderpackItem!.Local);
             }),
-            new FlyoutMenuModel(App.Lang("Button.Delete"), true, obj.DeleteShaderpack)
+            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, obj.DeleteShaderpack)
         ]).Show(con);
     }
 }

@@ -145,7 +145,7 @@ public partial class MainModel : TopModel, IMutTop
     public async Task OpenGuide()
     {
         var list = LanguageBinding.GetGuide();
-        var res = await Model.ShowCombo(App.Lang("SettingWindow.Tab7.Info3"), list);
+        var res = await Model.ShowCombo(LanguageUtils.Get("SettingWindow.Tab7.Info3"), list);
         if (res.Cancel)
         {
             return;
@@ -164,7 +164,7 @@ public partial class MainModel : TopModel, IMutTop
         }
         else
         {
-            Model.Show(App.Lang("MainWindow.Error6"));
+            Model.Show(LanguageUtils.Get("MainWindow.Error6"));
         }
     }
     /// <summary>

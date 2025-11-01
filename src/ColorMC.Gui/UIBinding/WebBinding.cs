@@ -811,7 +811,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("WebBinding.Error1"), e);
+                Logs.Error(LanguageUtils.Get("WebBinding.Error1"), e);
             }
         });
 
@@ -1100,7 +1100,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
             return new();
         }
     }
@@ -1235,7 +1235,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
             return new GetJavaAdoptiumListRes();
         }
     }
@@ -1461,7 +1461,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
             return null;
         }
     }
@@ -1528,7 +1528,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
             return new GetJavaListRes();
         }
     }
@@ -1566,7 +1566,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("WebBinding.Error3"), e);
+            Logs.Error(LanguageUtils.Get("WebBinding.Error3"), e);
             return null;
         }
     }
@@ -1583,7 +1583,7 @@ public static class WebBinding
         Core.Objs.ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
         {
-            var res1 = await model1.ShowAsync(App.Lang("AddWindow.Info15"));
+            var res1 = await model1.ShowAsync(LanguageUtils.Get("AddWindow.Info15"));
             if (!res1)
             {
                 return null;
@@ -1647,7 +1647,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(App.Lang("AddWindow.Error8"), e);
+                Logs.Error(LanguageUtils.Get("AddWindow.Error8"), e);
             }
         }
         else if (model.FileType == FileType.Shaderpack)

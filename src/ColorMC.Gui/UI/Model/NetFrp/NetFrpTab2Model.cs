@@ -57,7 +57,7 @@ public partial class NetFrpModel
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {
-            Model.Show(App.Lang("NetFrpWindow.Tab2.Error2"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Error2"));
             return;
         }
         var list = new List<string>();
@@ -65,22 +65,22 @@ public partial class NetFrpModel
         foreach (var item in RemotesSakura)
         {
             list1.Add(item);
-            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
+            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
         }
 
         foreach (var item in RemotesOpenFrp)
         {
             list1.Add(item);
-            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
+            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
         }
 
         foreach (var item in RemoteSelfFrp)
         {
             list1.Add(item);
-            list.Add($"{App.Lang("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
+            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
         }
 
-        var res = await Model.ShowCombo(App.Lang("NetFrpWindow.Tab2.Info1"), list);
+        var res = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab2.Info1"), list);
         if (res.Cancel)
         {
             return;
@@ -91,13 +91,13 @@ public partial class NetFrpModel
         var res1 = await BaseBinding.StartFrpAsync(item1, local);
         if (!res1.Res)
         {
-            Model.Show(App.Lang("NetFrpWindow.Tab2.Error1"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Error1"));
         }
         else
         {
             local.IsStart = true;
             SetProcess(res1.Process!, local, res1.IP!);
-            Model.Notify(App.Lang("NetFrpWindow.Tab2.Info2"));
+            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Info2"));
             NowView = 5;
         }
     }

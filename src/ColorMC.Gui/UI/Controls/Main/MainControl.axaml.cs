@@ -85,7 +85,7 @@ public partial class MainControl : BaseUserControl
         if (e.DataTransfer.Contains(DataFormat.Text))
         {
             Grid2.IsVisible = true;
-            Label1.Text = App.Lang("UserWindow.Text8");
+            Label1.Text = LanguageUtils.Get("UserWindow.Text8");
         }
         else if (e.DataTransfer.Contains(DataFormat.File))
         {
@@ -100,19 +100,19 @@ public partial class MainControl : BaseUserControl
                     return;
                 case IStorageFolder forder when Directory.Exists(forder.GetPath()):
                     Grid2.IsVisible = true;
-                    Label1.Text = App.Lang("AddGameWindow.Text2");
+                    Label1.Text = LanguageUtils.Get("AddGameWindow.Text2");
                     break;
                 default:
                     {
                         if (item.Name.EndsWith(Names.NameZipExt) || item.Name.EndsWith(Names.NameMrpackExt))
                         {
                             Grid2.IsVisible = true;
-                            Label1.Text = App.Lang("MainWindow.Text25");
+                            Label1.Text = LanguageUtils.Get("MainWindow.Text25");
                         }
                         else if (item.Name.EndsWith(GuiNames.NameColorMCExt))
                         {
                             Grid2.IsVisible = true;
-                            Label1.Text = App.Lang("MainWindow.Text38");
+                            Label1.Text = LanguageUtils.Get("MainWindow.Text38");
                         }
 
                         break;
@@ -177,7 +177,7 @@ public partial class MainControl : BaseUserControl
                             }
                             if (!InstancesPath.IsNotGame)
                             {
-                                var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info45"));
+                                var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Info45"));
                                 if (res is not true)
                                 {
                                     return;
@@ -252,7 +252,7 @@ public partial class MainControl : BaseUserControl
         if (ColorMCGui.IsCrash)
         {
             var model = (DataContext as MainModel)!;
-            model.Model.Show(App.Lang("MainWindow.Error2"));
+            model.Model.Show(LanguageUtils.Get("MainWindow.Error2"));
         }
     }
 
@@ -261,7 +261,7 @@ public partial class MainControl : BaseUserControl
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowAsync(App.Lang("MainWindow.Info34"));
+            var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Info34"));
             if (res)
             {
                 return false;

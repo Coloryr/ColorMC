@@ -1,4 +1,4 @@
-using ColorMC.Core.Helpers;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
@@ -17,11 +17,9 @@ public static class AuthlibInjector
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
     /// <returns></returns>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server, ColorMCCore.Select? select)
+    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server, ILoginGui select, CancellationToken token)
     {
-        var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass, true);
-        if (obj.State != LoginState.Done)
-            return obj;
+        var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass, true, token);
 
         obj.Auth!.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
@@ -31,14 +29,10 @@ public static class AuthlibInjector
         {
             if (select != null)
             {
-                var index = await select(LanguageHelper.Get("Core.Info19"), [.. obj.Logins.Select(item => item.UserName)]);
+                var index = await select.SelectAuth([.. obj.Logins.Select(item => item.UserName)]);
                 if (index >= obj.Logins.Count || index < 0)
                 {
-                    return new()
-                    {
-                        State = LoginState.Error,
-                        Message = LanguageHelper.Get("Core.Error83")
-                    };
+                    throw new LoginException(LoginFailState.LoginAuthListEmpty, AuthState.Profile);
                 }
                 var item = obj.Logins[index];
                 obj.Auth!.UUID = item.UUID;
@@ -53,20 +47,20 @@ public static class AuthlibInjector
             needselect = true;
         }
 
-        return await LegacyLogin.RefreshAsync(server, obj.Auth, needselect);
+        return await LegacyLogin.RefreshAsync(server, obj.Auth, needselect, token);
     }
 
     /// <summary>
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj)
+    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj, CancellationToken token)
     {
-        if (await LegacyLogin.ValidateAsync(obj.Text1, obj))
+        if (await LegacyLogin.ValidateAsync(obj.Text1, obj, token))
         {
-            return await LegacyLogin.RefreshAsync(obj.Text1, obj, false);
+            return await LegacyLogin.RefreshAsync(obj.Text1, obj, false, token);
         }
 
-        return new() { State = LoginState.Error };
+        throw new LoginException(LoginFailState.LoginTokenTimeout, AuthState.Token);
     }
 }

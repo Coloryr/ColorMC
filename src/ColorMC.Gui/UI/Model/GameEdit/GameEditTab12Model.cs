@@ -45,7 +45,7 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadSchematic()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab12.Info3"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab12.Info3"));
         SchematicList.Clear();
         foreach (var item in await _obj.GetSchematicsAsync())
         {
@@ -53,7 +53,7 @@ public partial class GameEditModel
             {
                 SchematicList.Add(new SchematicObj()
                 {
-                    Name = App.Lang("GameBinding.Info17"),
+                    Name = LanguageUtils.Get("GameBinding.Info17"),
                     Local = item.Local,
                 });
             }
@@ -64,7 +64,7 @@ public partial class GameEditModel
         }
         Model.ProgressClose();
         SchematicEmptyDisplay = SchematicList.Count == 0;
-        Model.Notify(App.Lang("GameEditWindow.Tab12.Info1"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab12.Info1"));
     }
 
     /// <summary>
@@ -84,10 +84,10 @@ public partial class GameEditModel
             case null:
                 return;
             case false:
-                Model.Show(App.Lang("GameEditWindow.Tab11.Error1"));
+                Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Error1"));
                 return;
             default:
-                Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
+                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Info1"));
                 LoadSchematic();
                 break;
         }
@@ -112,13 +112,13 @@ public partial class GameEditModel
     /// <param name="obj">结构文件</param>
     public async void DeleteSchematic(SchematicObj obj)
     {
-        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab12.Info2"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab12.Info2"));
         if (!res)
         {
             return;
         }
         await obj.DeleteAsync();
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
         LoadSchematic();
     }
 

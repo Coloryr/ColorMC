@@ -1,4 +1,5 @@
 using System.Reflection;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
@@ -99,12 +100,12 @@ public static class LanguageUtils
     {
         return state switch
         {
-            AuthState.OAuth => Get("Type.AuthType.Other"),
-            AuthState.XBox => Get("Type.AuthType.XBox"),
-            AuthState.XSTS => Get("Type.AuthType.XSTS"),
-            AuthState.Token => Get("Type.AuthType.Token"),
-            AuthState.Profile => Get("Type.AuthType.Profile"),
-            _ => Get("Type.AuthType.Other")
+            AuthState.OAuth => Get("Type.AuthState.OAuth"),
+            AuthState.XBox => Get("Type.AuthState.XBox"),
+            AuthState.XSTS => Get("Type.AuthState.XSTS"),
+            AuthState.Token => Get("Type.AuthState.Token"),
+            AuthState.Profile => Get("Type.AuthState.Profile"),
+            _ => Get("Type.AuthState.Other")
         };
     }
 
@@ -119,16 +120,20 @@ public static class LanguageUtils
         };
     }
 
-    public static string GetName(this LoginState state)
+    /// <summary>
+    /// 获取错误信息
+    /// </summary>
+    /// <param name="exception">启动错误</param>
+    /// <returns>信息</returns>
+    public static string GetName(this LaunchException exception, GameSettingObj obj)
     {
-        return state switch
+        return exception.State switch
         {
-            LoginState.Done => Get("Type.LoginState.Done"),
-            LoginState.TimeOut => Get("Type.LoginState.TimeOut"),
-            LoginState.DataError => Get("Type.LoginState.DataError"),
-            LoginState.Error => Get("Type.LoginState.Error"),
-            LoginState.Crash => Get("Type.LoginState.Crash"),
-            _ => Get("Type.LoginState.Other")
+            LaunchState.LoginCoreError => LanguageUtils.Get("Core.Error111"),
+            LaunchState.LostVersion => string.Format(LanguageUtils.Get("Core.Error116"), obj.Version),
+            LaunchState.LostLoader => LanguageUtils.Get("Core.Error104"),
+            LaunchState.AssetsError => LanguageUtils.Get("Core.Error103"),
+            _ => "",
         };
     }
 
@@ -156,6 +161,7 @@ public static class LanguageUtils
             LaunchState.JavaError => Get("Type.LaunchState.JvmError"),
             LaunchState.LaunchPre => Get("Type.LaunchState.LaunchPre"),
             LaunchState.LaunchPost => Get("Type.LaunchState.LaunchPost"),
+            LaunchState.VersionEmpty => Get("Type.LaunchState.VersionLost"),
             _ => Get("Type.LaunchState.Other")
         };
     }
@@ -266,6 +272,37 @@ public static class LanguageUtils
             LanguageType.en_us => "English(AI)",
             LanguageType.zh_cn => "简体中文",
             _ => ""
+        };
+    }
+
+    public static string GetNameFail(this AuthState state)
+    {
+        return state switch
+        {
+            AuthState.OAuth => Get("Core.Error62"),
+            AuthState.XBox => Get("Core.Error63"),
+            AuthState.XSTS => Get("Core.Error64"),
+            AuthState.Token => Get("Core.Error65"),
+            AuthState.Profile => Get("Core.Error66"),
+            _ => ""
+        };
+    }
+
+    /// <summary>
+    /// 获取登录错误信息
+    /// </summary>
+    /// <param name="state">登录错误</param>
+    /// <returns>信息</returns>
+    public static string GetName(this LoginFailState state)
+    {
+        return state switch
+        {
+            LoginFailState.GetOAuthCodeDataFail => Get("Core.Error121"),
+            LoginFailState.GetOAuthCodeDataError => Get("Core.Error81"),
+            LoginFailState.OAuthGetTokenTimeout => Get("Core.Error122"),
+            LoginFailState.LoginAuthListEmpty => Get("Core.Error123"),
+            LoginFailState.LoginTokenTimeout => Get("Core.Error124"),
+            _ => "",
         };
     }
 

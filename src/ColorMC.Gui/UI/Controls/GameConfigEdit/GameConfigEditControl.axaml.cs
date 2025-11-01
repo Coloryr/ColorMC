@@ -42,7 +42,7 @@ public partial class GameConfigEditControl : BaseUserControl
         _world = world;
         _obj = world.Game;
 
-        Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
+        Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title1"),
                 world.Game.Name, world.LevelName);
 
         Hook();
@@ -54,7 +54,7 @@ public partial class GameConfigEditControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(App.Lang("ConfigEditWindow.Title"), obj.Name);
+        Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title"), obj.Name);
 
         Hook();
     }
@@ -94,12 +94,12 @@ public partial class GameConfigEditControl : BaseUserControl
 
         if (_world == null)
         {
-            Title = string.Format(App.Lang("ConfigEditWindow.Title"),
+            Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title"),
                     _obj.Name);
         }
         else
         {
-            Title = string.Format(App.Lang("ConfigEditWindow.Title1"),
+            Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title1"),
                     _world.Game.Name, _world.LevelName);
         }
     }

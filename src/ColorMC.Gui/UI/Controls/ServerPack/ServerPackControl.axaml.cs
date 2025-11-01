@@ -32,7 +32,7 @@ public partial class ServerPackControl : MenuControl
     public ServerPackControl(GameSettingObj obj) : base(WindowManager.GetUseName<ServerPackControl>(obj))
     {
         _obj = obj;
-        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("ServerPackWindow.Title"), _obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -56,7 +56,7 @@ public partial class ServerPackControl : MenuControl
             return;
         }
 
-        Title = string.Format(App.Lang("ServerPackWindow.Title"), _obj.Name);
+        Title = string.Format(LanguageUtils.Get("ServerPackWindow.Title"), _obj.Name);
     }
 
     private void EventManager_GameIconChange(object? sender, string uuid)

@@ -280,11 +280,8 @@ internal class DownloadThread
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    ColorMCCore.OnError(new CoreErrorEventArgs(
-                        ErrorType.DownloadCheckError,
-                        null, false, false,
-                        item.File.Name,
-                        item.File.Url, item.File.Sha1, sha1));
+                    ColorMCCore.OnError(new DownloadHashErrorEventArgs(
+                        item.File, item.File.Sha1, sha1));
                     return true;
                 }
             }
@@ -296,11 +293,8 @@ internal class DownloadThread
                 {
                     item.File.State = DownloadItemState.Error;
                     item.Task.UpdateItem(_index, item.File);
-                    ColorMCCore.OnError(new CoreErrorEventArgs(
-                         ErrorType.DownloadCheckError,
-                         null, false, false,
-                         item.File.Name,
-                         item.File.Url, item.File.Sha256, sha256));
+                    ColorMCCore.OnError(new DownloadHashErrorEventArgs(
+                         item.File, item.File.Sha256, sha256));
                     return true;
                 }
             }
@@ -357,7 +351,7 @@ internal class DownloadThread
                     item.File.State = DownloadItemState.Error;
                     item.File.ErrorTime++;
                     item.Task.UpdateItem(_index, item.File);
-                    Error(item.File, e);
+                    ColorMCCore.OnError(new DownloadExceptionErrorEventArgs(item.File, e));
                 }
             }
 
@@ -454,7 +448,7 @@ internal class DownloadThread
                     item.File.ErrorTime++;
                     item.Task.UpdateItem(_index, item.File);
                     time++;
-                    Error(item.File, e);
+                    ColorMCCore.OnError(new DownloadExceptionErrorEventArgs(item.File, e));
 
                     if (time >= 5)
                     {

@@ -13,7 +13,7 @@ public partial class CountControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("CountWindow.Title");
+        Title = LanguageUtils.Get("CountWindow.Title");
     }
 
     public override void Closed()

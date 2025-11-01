@@ -1,5 +1,5 @@
 using System.Text.Json;
-using ColorMC.Core.Helpers;
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -36,85 +36,55 @@ public static class OAuthApi
         { "refresh_token", "" }
     };
 
-    private static string s_code;
-    private static string s_url;
-    private static string s_deviceCode;
-    private static int s_expiresIn;
-    private static CancellationTokenSource s_cancel;
-
     /// <summary>
     /// 获取登录码
     /// </summary>
-    public static async Task<OAuthGetCodeRes> GetCodeAsync()
+    public static async Task<OAuthGetCodeRes> GetCodeAsync(CancellationToken token)
     {
-        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthCode, Arg1);
+        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthCode, Arg1, token);
         var obj = JsonUtils.ToObj(stream, JsonType.OAuthObj);
         if (obj == null)
         {
-            return new OAuthGetCodeRes
-            {
-                State = LoginState.DataError,
-                Message = LanguageHelper.Get("Core.Error82")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
         }
         else if (!string.IsNullOrWhiteSpace(obj.Error))
         {
-            return new OAuthGetCodeRes
-            {
-                State = LoginState.Error,
-                Message = LanguageHelper.Get("Core.Error81")
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
         }
-        s_code = obj.UserCode;
-        s_url = obj.VerificationUri;
-        s_deviceCode = obj.DeviceCode;
-        s_expiresIn = obj.ExpiresIn;
 
         return new OAuthGetCodeRes
         {
-            State = LoginState.Done,
-            Code = s_code,
-            Message = s_url
+            Code = obj.UserCode,
+            Url = obj.VerificationUri,
+            DeviceCode = obj.DeviceCode,
+            ExpiresIn = obj.ExpiresIn
         };
     }
 
     /// <summary>
     /// 获取token
     /// </summary>
-    public static async Task<OAuthGetTokenRes> RunGetCodeAsync()
+    public static async Task<OAuthGetCodeObj?> RunGetCodeAsync(OAuthGetCodeRes res, CancellationToken token)
     {
-        Arg2["code"] = s_deviceCode;
+        Arg2["code"] = res.Code;
         long startTime = DateTime.Now.Ticks;
         int delay = 2;
-        s_cancel = new();
         do
         {
             await Task.Delay(delay * 1000);
-            if (s_cancel.IsCancellationRequested)
+            if (token.IsCancellationRequested)
             {
-                return new OAuthGetTokenRes
-                {
-                    State = LoginState.Error
-                };
+                return null;
             }
             long estimatedTime = DateTime.Now.Ticks - startTime;
             long sec = estimatedTime / 10000000;
-            if (sec > s_expiresIn)
+            if (sec > res.ExpiresIn)
             {
-                return new OAuthGetTokenRes
-                {
-                    State = LoginState.TimeOut
-                };
+                throw new LoginException(LoginFailState.OAuthGetTokenTimeout, AuthState.OAuth);
             }
-            using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, Arg2);
-            var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj);
-            if (obj == null)
-            {
-                return new OAuthGetTokenRes
-                {
-                    State = LoginState.DataError
-                };
-            }
+            using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, Arg2, token);
+            var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj)
+                ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
             if (!string.IsNullOrWhiteSpace(obj.Error))
             {
                 if (obj.Error == "authorization_pending")
@@ -127,19 +97,12 @@ public static class OAuthApi
                 }
                 else if (obj.Error == "expired_token")
                 {
-                    return new OAuthGetTokenRes
-                    {
-                        State = LoginState.Error
-                    };
+                    throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
                 }
             }
             else
             {
-                return new OAuthGetTokenRes
-                {
-                    State = LoginState.Done,
-                    Obj = obj
-                };
+                return obj;
             }
         } while (true);
     }
@@ -147,49 +110,30 @@ public static class OAuthApi
     /// <summary>
     /// 刷新密匙
     /// </summary>
-    public static async Task<OAuthRefreshTokenRes> RefreshTokenAsync(string token)
+    public static async Task<OAuthGetCodeObj> RefreshOAuthTokenAsync(string token, CancellationToken cancel)
     {
         var dir = new Dictionary<string, string>(Arg3)
         {
             ["refresh_token"] = token
         };
 
-        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, dir);
-        if (stream == null)
-        {
-            return new OAuthRefreshTokenRes
-            {
-                State = LoginState.DataError
-            };
-        }
-        var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj);
-        if (obj == null)
-        {
-            return new OAuthRefreshTokenRes
-            {
-                State = LoginState.DataError
-            };
-        }
+        using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, dir, cancel)
+            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
+        var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj)
+            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
         if (!string.IsNullOrWhiteSpace(obj.Error))
         {
-            return new OAuthRefreshTokenRes
-            {
-                State = LoginState.Error
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
         }
 
-        return new OAuthRefreshTokenRes
-        {
-            State = LoginState.Done,
-            Obj = obj
-        };
+        return obj;
     }
 
     /// <summary>
     /// Get Xbox live token & userhash
     /// </summary>
     /// <returns></returns>
-    public static async Task<OAuthXboxLiveRes> GetXBLAsync(string token)
+    public static async Task<OAuthXboxLiveRes> GetXBoxAsync(string token, CancellationToken cancel)
     {
         var obj = new OAuthLoginObj()
         {
@@ -202,39 +146,25 @@ public static class OAuthApi
             RelyingParty = "http://auth.xboxlive.com",
             TokenType = "JWT"
         };
-        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj));
-        if (obj1 == null)
-        {
-            return new OAuthXboxLiveRes
-            {
-                State = LoginState.DataError
-            };
-        }
-
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj), cancel)
+            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.XBox);
         var json = obj1.RootElement;
         var xblToken = json.GetProperty("Token").GetString();
         var list = json.GetProperty("DisplayClaims").GetProperty("xui");
         if (list.ValueKind != JsonValueKind.Array)
         {
-            return new OAuthXboxLiveRes
-            {
-                State = LoginState.DataError
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XBox, data: json.ToString());
         }
         var xblUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
         {
-            return new OAuthXboxLiveRes
-            {
-                State = LoginState.DataError
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XBox, data: json.ToString());
         }
 
         return new OAuthXboxLiveRes
         {
-            State = LoginState.Done,
             XBLToken = xblToken,
             XBLUhs = xblUhs
         };
@@ -244,8 +174,7 @@ public static class OAuthApi
     /// Get Xbox security token service token & userhash
     /// </summary>
     /// <returns></returns>
-    /// <exception cref="FailedAuthenticationException"></exception>
-    public static async Task<OAuthXSTSRes> GetXSTSAsync(string token)
+    public static async Task<OAuthXSTSRes> GetXSTSAsync(string token, CancellationToken cancel)
     {
         var obj = new OAuthLogin1Obj()
         {
@@ -257,49 +186,27 @@ public static class OAuthApi
             RelyingParty = "rp://api.minecraftservices.com/",
             TokenType = "JWT"
         };
-        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj));
-        if (obj1 == null)
-        {
-            return new OAuthXSTSRes
-            {
-                State = LoginState.DataError
-            };
-        }
-
+        var obj1 = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj), cancel)
+            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.XSTS);
         var json = obj1.RootElement;
         var xstsToken = json.GetProperty("Token").GetString();
         var list = json.GetProperty("DisplayClaims").GetProperty("xui");
         if (list.ValueKind != JsonValueKind.Array)
         {
-            return new OAuthXSTSRes
-            {
-                State = LoginState.DataError
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XSTS, data: json.ToString());
         }
         var xstsUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))
         {
-            return new OAuthXSTSRes
-            {
-                State = LoginState.DataError
-            };
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XSTS, data: json.ToString());
         }
 
         return new OAuthXSTSRes
         {
-            State = LoginState.Done,
             XSTSToken = xstsToken,
             XSTSUhs = xstsUhs
         };
-    }
-
-    /// <summary>
-    /// 取消请求
-    /// </summary>
-    public static void Cancel()
-    {
-        s_cancel?.Cancel();
     }
 }

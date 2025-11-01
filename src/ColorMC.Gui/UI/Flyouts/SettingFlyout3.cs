@@ -15,7 +15,7 @@ public static class SettingFlyout3
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(App.Lang("Button.Delete"), true, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, ()=>
             {
                  model.DeleteDns(data);
             }),

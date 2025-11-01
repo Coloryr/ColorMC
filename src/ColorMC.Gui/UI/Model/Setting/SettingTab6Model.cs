@@ -374,7 +374,7 @@ public partial class SettingModel
         var res = BaseBinding.TestCustomWindow();
         if (!res)
         {
-            Model.Show(App.Lang("BaseBinding.Error8"));
+            Model.Show(LanguageUtils.Get("BaseBinding.Error8"));
         }
     }
     /// <summary>
@@ -459,7 +459,7 @@ public partial class SettingModel
                 {
                     if (item.AuthType == AuthType.OAuth)
                     {
-                        Model.Show(App.Lang("SettingWindow.Tab6.Error4"));
+                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error4"));
                         return;
                     }
                 }
@@ -469,14 +469,14 @@ public partial class SettingModel
                 if (string.IsNullOrWhiteSpace(model.InputText)
                     || string.IsNullOrWhiteSpace(model.InputText1))
                 {
-                    Model.Show(App.Lang("SettingWindow.Tab6.Error5"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error5"));
                     return;
                 }
                 foreach (var item in Locks)
                 {
                     if (item.Name == model.InputText)
                     {
-                        Model.Show(App.Lang("SettingWindow.Tab6.Error6"));
+                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error6"));
                         return;
                     }
                 }

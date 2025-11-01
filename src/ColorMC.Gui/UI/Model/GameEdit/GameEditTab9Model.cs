@@ -33,7 +33,7 @@ public partial class GameEditModel
     /// </summary>
     public void LoadScreenshot()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab9.Info3"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab9.Info3"));
         ScreenshotList.Clear();
 
         var res = _obj.GetScreenshots();
@@ -44,7 +44,7 @@ public partial class GameEditModel
         }
         ScreenshotEmptyDisplay = ScreenshotList.Count == 0;
 
-        Model.Notify(App.Lang("GameEditWindow.Tab9.Info4"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab9.Info4"));
     }
 
     /// <summary>
@@ -61,14 +61,14 @@ public partial class GameEditModel
     private async void ClearScreenshot()
     {
         var res = await Model.ShowAsync(
-            string.Format(App.Lang("GameEditWindow.Tab9.Info2"), _obj.Name));
+            string.Format(LanguageUtils.Get("GameEditWindow.Tab9.Info2"), _obj.Name));
         if (!res)
         {
             return;
         }
 
         _obj.ClearScreenshots();
-        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }
 
@@ -79,14 +79,14 @@ public partial class GameEditModel
     public async void DeleteScreenshot(ScreenshotModel obj)
     {
         var res = await Model.ShowAsync(
-            string.Format(App.Lang("GameEditWindow.Tab9.Info1"), obj.Screenshot));
+            string.Format(LanguageUtils.Get("GameEditWindow.Tab9.Info1"), obj.Screenshot));
         if (!res)
         {
             return;
         }
 
         await obj.Obj.DeleteAsync();
-        Model.Notify(App.Lang("GameEditWindow.Tab4.Info3"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info3"));
         LoadScreenshot();
     }
 

@@ -75,7 +75,7 @@ public partial class AddControlModel
     /// 模组扩展选项文字
     /// </summary>
     [ObservableProperty]
-    private string? _modDownloadText = App.Lang("AddWindow.Text7");
+    private string? _modDownloadText = LanguageUtils.Get("AddWindow.Text7");
 
     /// <summary>
     /// 项目
@@ -113,7 +113,7 @@ public partial class AddControlModel
         else
         {
             Model.PopBack();
-            Model.Title = App.Lang("AddGameWindow.Title");
+            Model.Title = LanguageUtils.Get("AddGameWindow.Title");
         }
     }
 
@@ -179,7 +179,7 @@ public partial class AddControlModel
             var obj1 = item.McMod!;
             if (obj1.CurseforgeId != null && obj1.ModrinthId != null)
             {
-                var mcmod = await Model.ShowCombo(App.Lang("AddWindow.Info14"), _sourceTypeNameList);
+                var mcmod = await Model.ShowCombo(LanguageUtils.Get("AddWindow.Info14"), _sourceTypeNameList);
                 if (mcmod.Cancel)
                 {
                     return;
@@ -212,7 +212,7 @@ public partial class AddControlModel
 
         if (loadtype == SourceType.McMod || loadid == null)
         {
-            Model.Show(App.Lang("AddWindow.Error11"));
+            Model.Show(LanguageUtils.Get("AddWindow.Error11"));
             return;
         }
 
@@ -238,7 +238,7 @@ public partial class AddControlModel
         }
 
         VersionDisplay = true;
-        Model.Progress(App.Lang("AddWindow.Info3"));
+        Model.Progress(LanguageUtils.Get("AddWindow.Info3"));
 
         var res = await WebBinding.GetFileListAsync(type, pid, page,
                 GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
@@ -256,7 +256,7 @@ public partial class AddControlModel
 
         if (list == null)
         {
-            Model.Show(App.Lang("AddWindow.Error3"));
+            Model.Show(LanguageUtils.Get("AddWindow.Error3"));
             Model.ProgressClose();
             return;
         }
@@ -298,8 +298,8 @@ public partial class AddControlModel
         EmptyVersionDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
-        Model.Notify(App.Lang("AddWindow.Info16"));
-        Model.Title = App.Lang("AddGameWindow.Title") + ": " + title;
+        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
+        Model.Title = LanguageUtils.Get("AddGameWindow.Title") + ": " + title;
     }
 
     /// <summary>
@@ -316,7 +316,7 @@ public partial class AddControlModel
         ModInfoObj? mod = null;
         if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
         {
-            var res1 = await Model.ShowAsync(App.Lang("AddWindow.Info15"));
+            var res1 = await Model.ShowAsync(LanguageUtils.Get("AddWindow.Info15"));
             if (!res1)
             {
                 return;
@@ -336,13 +336,13 @@ public partial class AddControlModel
                 var list = await Obj.GetSavesAsync();
                 if (list.Count == 0)
                 {
-                    Model.Show(App.Lang("AddWindow.Error6"));
+                    Model.Show(LanguageUtils.Get("AddWindow.Error6"));
                     return;
                 }
 
                 var world = new List<string>();
                 list.ForEach(item => world.Add(item.LevelName));
-                var res1 = await Model.ShowCombo(App.Lang("AddWindow.Info7"), world);
+                var res1 = await Model.ShowCombo(LanguageUtils.Get("AddWindow.Info7"), world);
                 if (res1.Cancel)
                 {
                     return;
@@ -383,7 +383,7 @@ public partial class AddControlModel
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.Lang("AddWindow.Error7"), e);
+                    Logs.Error(LanguageUtils.Get("AddWindow.Error7"), e);
                     res = false;
                 }
             }
@@ -402,7 +402,7 @@ public partial class AddControlModel
                     };
                     if (list == null)
                     {
-                        Model.Show(App.Lang("AddWindow.Error9"));
+                        Model.Show(LanguageUtils.Get("AddWindow.Error9"));
                         return;
                     }
 
@@ -435,7 +435,7 @@ public partial class AddControlModel
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.Lang("AddWindow.Error8"), e);
+                    Logs.Error(LanguageUtils.Get("AddWindow.Error8"), e);
                     res = false;
                 }
             }
@@ -454,7 +454,7 @@ public partial class AddControlModel
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(App.Lang("AddWindow.Error8"), e);
+                    Logs.Error(LanguageUtils.Get("AddWindow.Error8"), e);
                     res = false;
                 }
             }
@@ -462,11 +462,11 @@ public partial class AddControlModel
             //下载结束
             if (res)
             {
-                Model.Notify(App.Lang("Text.Downloaded"));
+                Model.Notify(LanguageUtils.Get("Text.Downloaded"));
             }
             else
             {
-                Model.Show(App.Lang("AddWindow.Error5"));
+                Model.Show(LanguageUtils.Get("AddWindow.Error5"));
             }
         }
         finally

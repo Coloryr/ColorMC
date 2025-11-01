@@ -45,13 +45,13 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadShaderpack()
     {
-        Model.Progress(App.Lang("GameEditWindow.Tab11.Info4"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab11.Info4"));
         ShaderpackList.Clear();
         ShaderpackList.AddRange(await _obj.GetShaderpacksAsync());
         Model.ProgressClose();
 
         ShaderpackEmptyDisplay = ShaderpackList.Count == 0;
-        Model.Notify(App.Lang("GameEditWindow.Tab11.Info3"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Info3"));
     }
 
     /// <summary>
@@ -70,11 +70,11 @@ public partial class GameEditModel
 
         if (res == false)
         {
-            Model.Notify(App.Lang("GameEditWindow.Tab11.Error1"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Error1"));
             return;
         }
 
-        Model.Notify(App.Lang("GameEditWindow.Tab11.Info1"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Info1"));
         LoadShaderpack();
     }
 
@@ -105,13 +105,13 @@ public partial class GameEditModel
     /// <param name="obj">光影包</param>
     public async void DeleteShaderpack(ShaderpackObj obj)
     {
-        var res = await Model.ShowAsync(App.Lang("GameEditWindow.Tab11.Info2"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab11.Info2"));
         if (!res)
         {
             return;
         }
         await obj.DeleteAsync();
-        Model.Notify(App.Lang("GameEditWindow.Tab10.Info5"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
         LoadShaderpack();
     }
 

@@ -101,7 +101,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
             IsDirectory = true;
             if (path == null)
             {
-                Name = App.Lang("BuildPackWindow.Tab2.Text1");
+                Name = LanguageUtils.Get("BuildPackWindow.Tab2.Text1");
                 _isExpanded = true;
                 foreach (var item in InstancesPath.Games)
                 {

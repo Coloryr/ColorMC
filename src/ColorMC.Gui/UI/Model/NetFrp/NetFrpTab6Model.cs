@@ -60,7 +60,7 @@ public partial class NetFrpModel
 
         if (FrpConfigUtils.Config.SelfFrp.Any(item => item.Name == model.Name))
         {
-            Model.Show(App.Lang("NetFrpWindow.Tab6.Error1"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab6.Error1"));
             return;
         }
 
@@ -101,7 +101,7 @@ public partial class NetFrpModel
     /// <param name="model">自定义映射</param>
     public async void Delete(NetFrpSelfItemModel model)
     {
-        var res = await Model.ShowAsync(App.Lang("NetFrpWindow.Tab6.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab6.Info1"));
         if (!res)
         {
             return;

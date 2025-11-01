@@ -13,7 +13,7 @@ public partial class MinecraftNewsControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("NewsWindow.Title");
+        Title = LanguageUtils.Get("NewsWindow.Title");
     }
 
     public override void Opened()

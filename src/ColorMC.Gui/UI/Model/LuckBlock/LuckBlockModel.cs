@@ -107,7 +107,7 @@ public partial class LuckBlockModel(BaseModel model) : TopModel(model)
 
     public async void LoadBlocks()
     {
-        Model.Progress(App.Lang("LuckBlockWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("LuckBlockWindow.Info1"));
         var res = await BaseBinding.StartLoadBlock();
         Model.ProgressClose();
         if (!res.State)
@@ -119,7 +119,7 @@ public partial class LuckBlockModel(BaseModel model) : TopModel(model)
         var list = await BaseBinding.BuildLotteryItems();
         if (list == null)
         {
-            Model.ShowWithOk(App.Lang("LuckBlockWindow.Error4"), Close);
+            Model.ShowWithOk(LanguageUtils.Get("LuckBlockWindow.Error4"), Close);
 
         }
 

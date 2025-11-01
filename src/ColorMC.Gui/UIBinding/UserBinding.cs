@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -30,7 +30,7 @@ public static class UserBinding
     /// <param name="input3">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<StringRes> AddUserAsync(AuthType type, ColorMCCore.LoginOAuthCode loginOAuth, ColorMCCore.Select? select,
+    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuth loginOAuth, ILoginGui select,
         string? input1 = null, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)
@@ -46,36 +46,65 @@ public static class UserBinding
             SetSelectUser(user.UUID, user.AuthType);
             return new() { State = true };
         }
-        var res1 = type switch
+        try
         {
-            AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
-            AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!),
-            AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!, select),
-            AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select),
-            AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, input3!),
-            _ => throw new Exception(App.Lang("UserBinding.Error2"))
-        };
-
-        if (res1.LoginState != LoginState.Done)
-        {
-            if (res1.Ex != null)
+            var res1 = type switch
             {
-                WindowManager.ShowError(res1.Message!, res1.Ex);
-                return new StringRes { Data = App.Lang("UserBinding.Error1") };
+                AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
+                AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!, loginOAuth.Token),
+                AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!, select, loginOAuth.Token),
+                AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token),
+                AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token, input3!),
+                _ => throw new Exception(LanguageUtils.Get("UserBinding.Error2"))
+            };
+            if (loginOAuth.Token.IsCancellationRequested || res1 == null)
+            {
+                return new StringRes();
+            }
+            if (string.IsNullOrWhiteSpace(res1.UUID))
+            {
+                WebBinding.OpenWeb(WebType.Minecraft);
+                return new StringRes { Data = LanguageUtils.Get("UserBinding.Error3") };
+            }
+            res1.Save();
+            SetSelectUser(res1.UUID, res1.AuthType);
+            return new StringRes { State = true };
+        }
+        catch (Exception e)
+        {
+            string title;
+            if (e is LoginException e1)
+            {
+                title = e1.State.GetNameFail();
+                string data = e1.Fail.GetName();
+                string text = "";
+                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                {
+                    text = title + Environment.NewLine + data;
+                }
+                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                {
+                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                }
+                if (e1.Inner != null)
+                {
+                    Logs.Error(text, e1.Inner);
+                    WindowManager.ShowError(title, data, e1.Inner);
+                }
+                else
+                {
+                    Logs.Error(text);
+                }
             }
             else
             {
-                return new StringRes { Data = res1.Message };
+                title = LanguageUtils.Get("App.Error10");
+                Logs.Error(title, e);
+                WindowManager.ShowError(title, e);
             }
+
+            return new StringRes { Data = title };
         }
-        if (string.IsNullOrWhiteSpace(res1.Auth?.UUID))
-        {
-            WebBinding.OpenWeb(WebType.Minecraft);
-            return new StringRes { Data = App.Lang("UserBinding.Error3") };
-        }
-        res1.Auth!.Save();
-        SetSelectUser(res1.Auth.UUID, res1.Auth.AuthType);
-        return new StringRes { State = true };
     }
 
     /// <summary>
@@ -115,15 +144,55 @@ public static class UserBinding
     /// <param name="uuid">UUID</param>
     /// <param name="type">账户类型</param>
     /// <returns></returns>
-    public static async Task<bool> ReLoginAsync(string uuid, AuthType type)
+    public static async Task<StringRes> ReLoginAsync(string uuid, AuthType type, CancellationToken token)
     {
         var obj = AuthDatabase.Get(uuid, type);
         if (obj == null)
         {
-            return false;
+            return new StringRes() { Data = LanguageUtils.Get("App.Error11") };
         }
 
-        return (await obj.RefreshTokenAsync()).LoginState == LoginState.Done;
+        try
+        {
+            await obj.RefreshTokenAsync(token);
+        }
+        catch (Exception e)
+        {
+            string title;
+            if (e is LoginException e1)
+            {
+                title = e1.State.GetNameFail();
+                string data = e1.Fail.GetName();
+                string text = "";
+                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                {
+                    text = title + Environment.NewLine + data;
+                }
+                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                {
+                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                }
+                if (e1.Inner != null)
+                {
+                    Logs.Error(text, e1.Inner);
+                    WindowManager.ShowError(title, data, e1.Inner);
+                }
+                else
+                {
+                    Logs.Error(text);
+                }
+            }
+            else
+            {
+                title = LanguageUtils.Get("App.Error12");
+                Logs.Error(title, e);
+                WindowManager.ShowError(title, e);
+            }
+
+            return new StringRes() { Data = title };
+        }
+
+        return new StringRes() { State = true };
     }
 
     /// <summary>
@@ -262,9 +331,49 @@ public static class UserBinding
     /// </summary>
     /// <param name="user">账户</param>
     /// <returns></returns>
-    public static async Task<bool> TestLogin(LoginObj user)
+    public static async Task<StringRes> TestLogin(LoginObj user, CancellationToken token)
     {
-        return (await user.RefreshTokenAsync()).LoginState == LoginState.Done;
+        try
+        {
+            await user.RefreshTokenAsync(token);
+
+            return new StringRes();
+        }
+        catch (Exception e)
+        {
+            string title;
+            if (e is LoginException e1)
+            {
+                title = e1.State.GetNameFail();
+                string data = e1.Fail.GetName();
+                string text = "";
+                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                {
+                    text = title + Environment.NewLine + data;
+                }
+                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                {
+                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                }
+                if (e1.Inner != null)
+                {
+                    Logs.Error(text, e1.Inner);
+                    WindowManager.ShowError(title, data, e1.Inner);
+                }
+                else
+                {
+                    Logs.Error(text);
+                }
+            }
+            else
+            {
+                title = LanguageUtils.Get("App.Error10");
+                Logs.Error(title, e);
+                WindowManager.ShowError(title, e);
+            }
+
+            return new StringRes() { Data = title };
+        }
     }
 
     /// <summary>
@@ -285,7 +394,7 @@ public static class UserBinding
         var login = GetLastUser();
         if (login == null)
         {
-            return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error3") };
+            return new GameLaunchUserRes { Message = LanguageUtils.Get("GameBinding.Error3") };
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -293,19 +402,19 @@ public static class UserBinding
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error4") };
+                return new GameLaunchUserRes { Message = LanguageUtils.Get("GameBinding.Error4") };
             }
         }
 
         if (UserManager.IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
-            var res = await model.ShowAsync(App.Lang("GameBinding.Error1"));
+            var res = await model.ShowAsync(LanguageUtils.Get("GameBinding.Error1"));
             if (!res)
             {
-                return new GameLaunchUserRes { Message = App.Lang("GameBinding.Error5") };
+                return new GameLaunchUserRes { Message = LanguageUtils.Get("GameBinding.Error5") };
             }
 
-            res = await model.ShowAsync(App.Lang("GameBinding.Info18"));
+            res = await model.ShowAsync(LanguageUtils.Get("GameBinding.Info18"));
             if (res)
             {
                 GuiConfigUtils.Config.LaunchCheck.CheckUser = false;

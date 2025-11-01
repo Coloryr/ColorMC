@@ -37,7 +37,7 @@ public partial class ResourcePackModel : SelectItemModel
     /// <summary>
     /// 是否为损坏的资源包
     /// </summary>
-    public string Broken => Obj.Broken ? App.Lang("GameEditWindow.Tab8.Info4") : "";
+    public string Broken => Obj.Broken ? LanguageUtils.Get("GameEditWindow.Tab8.Info4") : "";
 
     /// <summary>
     /// 资源包图标

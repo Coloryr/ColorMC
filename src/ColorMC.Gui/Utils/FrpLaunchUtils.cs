@@ -152,7 +152,7 @@ public static class FrpLaunchUtils
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("BaseBinding.Error6"), e);
+            Logs.Error(LanguageUtils.Get("BaseBinding.Error6"), e);
         }
 
         return new();
@@ -300,7 +300,7 @@ public static class FrpLaunchUtils
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("BaseBinding.Error6"), e);
+            Logs.Error(LanguageUtils.Get("BaseBinding.Error6"), e);
         }
 
         return new();

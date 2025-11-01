@@ -56,7 +56,7 @@ public partial class MainModel
         if (data == null)
         {
             IsHaveNews = false;
-            Model.Notify(App.Lang("MainWindow.Error9"));
+            Model.Notify(LanguageUtils.Get("MainWindow.Error9"));
             return;
         }
 
@@ -101,7 +101,7 @@ public partial class MainModel
         }
         catch (Exception e)
         {
-            Logs.Error(App.Lang("AddModPackWindow.Error5"), e);
+            Logs.Error(LanguageUtils.Get("AddModPackWindow.Error5"), e);
         }
 
         return null;

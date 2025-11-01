@@ -206,7 +206,7 @@ public static class BaseBinding
         }
         catch (Exception ex)
         {
-            var data = App.Lang("BaseBinding.Error8");
+            var data = LanguageUtils.Get("BaseBinding.Error8");
             Logs.Error(data, ex);
             WindowManager.ShowError(data, ex);
 
@@ -531,7 +531,7 @@ public static class BaseBinding
 
             var obj = new JsonObject();
 
-            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info3"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info3"));
 
             //打包配置
             if (model.UiBg && File.Exists(conf.BackImage))
@@ -685,7 +685,7 @@ public static class BaseBinding
             //打包java
             if (model.Java)
             {
-                model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info4"));
+                model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info4"));
 
                 var list = new List<JvmConfigObj>();
                 foreach (var item in model.Javas)
@@ -722,7 +722,7 @@ public static class BaseBinding
                 }
             }
 
-            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info5"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info5"));
 
             //打包游戏实例
             foreach (var item in model.GetSelectItems())
@@ -733,7 +733,7 @@ public static class BaseBinding
                 await PutFileAsync(zip, tempfile, item);
             }
 
-            model.Model.ProgressUpdate(App.Lang("BuildPackWindow.Info6"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info6"));
 
             foreach (var item in model.Files)
             {
@@ -751,7 +751,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(App.Lang("BuildPackWindow.Error1"), e);
+            WindowManager.ShowError(LanguageUtils.Get("BuildPackWindow.Error1"), e);
         }
 
         return false;
@@ -800,7 +800,7 @@ public static class BaseBinding
         }
 
         using var temp = PathHelper.OpenRead(file)!;
-        model.Progress(App.Lang("App.Text26"));
+        model.Progress(LanguageUtils.Get("App.Text26"));
         await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
         model.ProgressClose();
 

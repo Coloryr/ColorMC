@@ -28,60 +28,60 @@ public partial class ServerPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text1")
+                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text2"),
+                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text2"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
                         Func = SelectAllMod,
-                        Name = App.Lang("Button.SelectAll")
+                        Name = LanguageUtils.Get("Button.SelectAll")
                     },
                     new SubMenuItemModel()
                     {
                         Func = UnSelectAllMod,
-                        Name = App.Lang("ServerPackWindow.Tab2.Text3")
+                        Name = LanguageUtils.Get("ServerPackWindow.Tab2.Text3")
                     }
                 ]
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text3"),
+                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text3"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
                         Func = SelectAllResource,
-                        Name = App.Lang("Button.SelectAll")
+                        Name = LanguageUtils.Get("Button.SelectAll")
                     },
                     new SubMenuItemModel()
                     {
                         Func = UnSelectAllResource,
-                        Name = App.Lang("ServerPackWindow.Tab2.Text3")
+                        Name = LanguageUtils.Get("ServerPackWindow.Tab2.Text3")
                     }
                 ]
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = App.Lang("ServerPackWindow.Tabs.Text4"),
+                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text4"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
                         Func = Gen,
-                        Name = App.Lang("ServerPackWindow.Tab1.Text10")
+                        Name = LanguageUtils.Get("ServerPackWindow.Tab1.Text10")
                     }
                 ]
             },
         ]);
 
-        Model.SetChoiseContent(_useName, App.Lang("ServerPackWindow.Tab1.Text10"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
         Model.SetChoiseCall(_useName, Gen);
     }
 
@@ -103,16 +103,16 @@ public partial class ServerPackModel : MenuModel
 
         Obj.Text = Text;
 
-        Model.Progress(App.Lang("ServerPackWindow.Tab1.Info1"));
+        Model.Progress(LanguageUtils.Get("ServerPackWindow.Tab1.Info1"));
         var res = await GameBinding.GenServerPackAsync(Obj, local, Model.ShowAsync);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(App.Lang("ServerPackWindow.Tab1.Info2"));
+            Model.Notify(LanguageUtils.Get("ServerPackWindow.Tab1.Info2"));
         }
         else
         {
-            Model.Show(App.Lang("ServerPackWindow.Tab1.Error3"));
+            Model.Show(LanguageUtils.Get("ServerPackWindow.Tab1.Error3"));
         }
     }
 

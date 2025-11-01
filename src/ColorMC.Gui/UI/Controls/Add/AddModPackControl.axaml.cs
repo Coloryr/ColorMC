@@ -17,7 +17,7 @@ public partial class AddModPackControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = App.Lang("AddModPackWindow.Title");
+        Title = LanguageUtils.Get("AddModPackWindow.Title");
 
         ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
     }

@@ -41,7 +41,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 云同步信息
     /// </summary>
-    public static string Info { get; private set; } = App.Lang("GameCloudUtils.Error2");
+    public static string Info { get; private set; } = LanguageUtils.Get("GameCloudUtils.Error2");
     /// <summary>
     /// 是否已连接云同步服务器
     /// </summary>
@@ -230,12 +230,12 @@ public static class ColorMCCloudAPI
                 var value = res1.GetInt32();
                 if (value == 300)
                 {
-                    Info = App.Lang("GameCloudUtils.Error4");
+                    Info = LanguageUtils.Get("GameCloudUtils.Error4");
                     return;
                 }
                 else if (value != 100)
                 {
-                    Info = App.Lang("GameCloudUtils.Error5");
+                    Info = LanguageUtils.Get("GameCloudUtils.Error5");
                     return;
                 }
             }
@@ -281,13 +281,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = App.Lang("GameCloudWindow.Error3")
+            Data = LanguageUtils.Get("GameCloudWindow.Error3")
         };
     }
 
@@ -321,7 +321,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
@@ -358,7 +358,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
@@ -407,7 +407,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
@@ -451,7 +451,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
@@ -488,13 +488,13 @@ public static class ColorMCCloudAPI
                     var value = res1.GetInt32();
                     if (value == 100)
                     {
-                        Info = string.Format(App.Lang("GameCloudUtils.Info1"),
+                        Info = string.Format(LanguageUtils.Get("GameCloudUtils.Info1"),
                             json.GetProperty("use").GetInt64(),
                             json.GetProperty("size").GetInt64());
                     }
                     else
                     {
-                        Info = App.Lang("GameCloudUtils.Error5");
+                        Info = LanguageUtils.Get("GameCloudUtils.Error5");
                     }
                 }
 
@@ -502,7 +502,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
     }
@@ -544,7 +544,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
         return null;
@@ -588,13 +588,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = App.Lang("GameCloudWindow.Error3")
+            Data = LanguageUtils.Get("GameCloudWindow.Error3")
         };
     }
 
@@ -633,7 +633,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
         return -1;
@@ -679,7 +679,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
         return null;
@@ -734,7 +734,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
             return -1;
         }
@@ -772,7 +772,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = App.Lang("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
             Logs.Error(temp, e);
         }
 
