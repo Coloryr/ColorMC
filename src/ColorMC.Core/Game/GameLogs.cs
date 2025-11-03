@@ -132,7 +132,7 @@ public static class GameLogs
         }
         catch (Exception e)
         {
-            Logs.Error(string.Format(LanguageHelper.Get("Core.Error94"), file), e);
+            ColorMCCore.OnError(new GameLogFileErrorEventArgs(obj, file, e));
         }
 
         return null;

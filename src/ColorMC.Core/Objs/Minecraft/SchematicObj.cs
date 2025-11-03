@@ -5,6 +5,7 @@
 /// </summary>
 public record SchematicObj
 {
+    public SchematicType Type { get; set; }
     /// <summary>
     /// 名字
     /// </summary>

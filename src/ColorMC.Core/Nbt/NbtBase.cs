@@ -265,7 +265,7 @@ public abstract class NbtBase
     /// <typeparam name="T">类型</typeparam>
     /// <param name="file">文件名</param>
     /// <returns>NBT标签</returns>
-    public static async Task<T?> Read<T>(string file) where T : NbtBase
+    public static async Task<T?> ReadAsync<T>(string file) where T : NbtBase
     {
         using var stream = PathHelper.OpenRead(file)!;
         return await ReadAsync(stream) as T;

@@ -34,7 +34,7 @@ public static class ServerPack
     /// <param name="state">更新参数</param>
     /// <param name="token"></param>
     /// <returns>是否更新完成</returns>
-    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ColorMCCore.UpdateState? state, CancellationToken token)
+    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ILauncherGui? gui, CancellationToken token)
     {
         PathHelper.Delete(obj.Game.GetServerPackFile());
         var old = obj.Game.GetOldServerPack();
@@ -54,7 +54,7 @@ public static class ServerPack
             Resourcepack = []
         };
 
-        state?.Invoke(LanguageHelper.Get("Core.Info25"));
+        gui?.LaunchState(obj.Game, LaunchState.CheckServerPack);
 
         var task1 = Task.Run(async () =>
         {
@@ -192,10 +192,10 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        state?.Invoke(LanguageHelper.Get("Core.Info26"));
+        gui?.LaunchState(obj.Game, LaunchState.DownloadServerPack);
         //开始下载
         var res = await DownloadManager.StartAsync([.. list5]);
-        state?.Invoke(null);
+        gui?.LaunchState(obj.Game, LaunchState.DownloadServerPackDone);
         return res;
     }
 
@@ -325,7 +325,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
+                ColorMCCore.OnError(new GameServerPackErrorEventArgs(obj.Game, e));
             }
         });
 
@@ -348,7 +348,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
+                ColorMCCore.OnError(new GameServerPackErrorEventArgs(obj.Game, e));
             }
         });
 
@@ -462,7 +462,7 @@ public static class ServerPack
             catch (Exception e)
             {
                 fail = true;
-                Logs.Error(LanguageHelper.Get("Core.Error101"), e);
+                ColorMCCore.OnError(new GameServerPackErrorEventArgs(obj.Game, e));
             }
         });
 
@@ -482,56 +482,50 @@ public static class ServerPack
     /// 检查服务器实例
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="arg">参数</param>
+    /// <param name="gui">界面回调</param>
     /// <param name="token"></param>
     /// <returns>是否检查成功</returns>
-    public static async Task<bool> ServerPackCheckAsync(this GameSettingObj obj, ServerPackCheckArg arg, CancellationToken token)
+    public static async Task ServerPackCheckAsync(this GameSettingObj obj, ILauncherGui? gui, CancellationToken token)
     {
         var obj2 = obj.GetServerPack();
         var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token);
         if (!res.State)
         {
-            return false;
+            throw new LaunchException(LaunchError.CheckServerPackFail);
         }
         if (obj2.Sha1 == null || obj2.Sha1 != res.Data)
         {
-            var res1 = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameServerFile}", token);
-            if (!res1.State)
-            {
-                return false;
-            }
-
-            ServerPackObj? obj1;
+            var res1 = await CoreHttpClient.GetStreamAsync($"{obj.ServerUrl}{Names.NameServerFile}", token) 
+                ?? throw new LaunchException(LaunchError.CheckServerPackFail);
             try
             {
-                obj1 = JsonUtils.ToObj(res1.Data!, JsonType.ServerPackObj);
-                if (obj1 == null)
+                using var stream1 = new MemoryStream();
+                await res1.CopyToAsync(stream1, token);
+                var obj1 = JsonUtils.ToObj(stream1, JsonType.ServerPackObj)
+                     ?? throw new LaunchException(LaunchError.CheckServerPackFail);
+                if (gui != null && !await gui.ServerPackUpgrade(obj1.Text))
                 {
-                    return false;
+                    return;
+                }
+
+                obj2.Pack?.MoveToOld();
+                gui?.LaunchState(obj, LaunchState.LoadServerPack);
+
+                var res2 = await obj1.UpdateAsync(gui, token);
+                if (res2)
+                {
+                    stream1.Seek(0, SeekOrigin.Begin);
+                    await PathHelper.WriteBytesAsync(obj.GetServerPackFile(), stream1);
+                }
+                else
+                {
+                    throw new LaunchException(LaunchError.DownloadFileError);
                 }
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error14"), e);
-                return false;
+                throw new LaunchException(LaunchError.CheckServerPackError, e);
             }
-            if (arg.Select != null && !await arg.Select(obj1.Text))
-            {
-                return true;
-            }
-
-            obj2.Pack?.MoveToOld();
-            arg.State?.Invoke(LanguageHelper.Get("Core.Info24"));
-
-            var res2 = await obj1.UpdateAsync(arg.State, token);
-            if (res2)
-            {
-                await PathHelper.WriteTextAsync(obj.GetServerPackFile(), res1.Data!);
-            }
-
-            return res2;
         }
-
-        return true;
     }
 }

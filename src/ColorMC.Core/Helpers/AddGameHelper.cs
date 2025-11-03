@@ -135,7 +135,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ModrinthAsync(InstallZipArg arg, Stream st)
+    private static async Task<GameRes> ModrinthReadZipAsync(InstallZipArg arg, Stream st)
     {
         arg.Update2?.Invoke(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
@@ -143,16 +143,8 @@ public static class AddGameHelper
         ModrinthPackObj? info = null;
         if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameModrinthFile) is { } ent)
         {
-            try
-            {
-                using var stream = ent.OpenEntryStream();
-                info = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
-                return new();
-            }
+            using var stream = ent.OpenEntryStream();
+            info = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
         }
         else
         {
@@ -287,16 +279,8 @@ public static class AddGameHelper
         CurseForgePackObj? info = null;
         if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } ent)
         {
-            try
-            {
-                using var stream = ent.OpenEntryStream();
-                info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
-                return new GameRes();
-            }
+            using var stream = ent.OpenEntryStream();
+            info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
         }
         else
         {
@@ -695,7 +679,7 @@ public static class AddGameHelper
         var files = Directory.GetFiles(game!.GetGamePath());
         foreach (var item in files)
         {
-            if (!item.EndsWith(".json"))
+            if (!item.EndsWith(Names.NameJsonExt))
             {
                 continue;
             }
@@ -749,7 +733,7 @@ public static class AddGameHelper
                     Url = arg.Dir,
                     Overwrite = true,
                     Local = file,
-                    Name = LanguageHelper.Get("Core.Info22")
+                    Name = Path.GetFileName(file)
                 }]);
                 if (!res)
                 {
@@ -769,7 +753,7 @@ public static class AddGameHelper
             {
                 PackType.ColorMC => await ColorMCAsync(arg, st),
                 PackType.CurseForge => await CurseForgeAsync(arg, st),
-                PackType.Modrinth => await ModrinthAsync(arg, st),
+                PackType.Modrinth => await ModrinthReadZipAsync(arg, st),
                 PackType.MMC => await MMCAsync(arg, st),
                 PackType.HMCL => await HMCLAsync(arg, st),
                 PackType.ZipPack => await UnzipAsync(arg, st),
@@ -782,7 +766,7 @@ public static class AddGameHelper
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error50"), e, false);
+            ColorMCCore.OnError(new InstallModPackErrorEventArgs(arg.Dir, e));
         }
         finally
         {

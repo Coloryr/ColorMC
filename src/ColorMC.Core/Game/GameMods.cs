@@ -90,7 +90,7 @@ public static class GameMods
         await Parallel.ForEachAsync(files, async (item, cancel) =>
 #endif
         {
-            var mod = await ReadModAsync(item, sha256);
+            var mod = await ReadModAsync(obj, item, sha256);
             if (mod != null)
             {
                 mod.Game = obj;
@@ -111,7 +111,7 @@ public static class GameMods
     /// <param name="item">文件</param>
     /// <param name="sha256">是否获取sha256</param>
     /// <returns>模组信息</returns>
-    private static async Task<ModObj?> ReadModAsync(FileInfo item, bool sha256)
+    private static async Task<ModObj?> ReadModAsync(GameSettingObj game, FileInfo item, bool sha256)
     {
         if (item.Extension is not (Names.NameJarExt or Names.NameDisableExt or Names.NameDisabledExt))
         {
@@ -128,7 +128,7 @@ public static class GameMods
             sha1 = await HashHelper.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
             using var zFile = ZipArchive.Open(stream);
-            var mod = await ReadModAsync(item.FullName, zFile);
+            var mod = await ReadModAsync(game, item.FullName, zFile);
             if (mod != null)
             {
                 mod.Local = item.FullName;
@@ -149,8 +149,9 @@ public static class GameMods
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error85"), e);
+            ColorMCCore.OnError(new GameModErrorEventArgs(game, item.FullName, e));
         }
+
         return new ModObj
         {
             ModId = "",
@@ -181,7 +182,7 @@ public static class GameMods
         }
 
         var info = new FileInfo(file);
-        var mod1 = await ReadModAsync(info, false);
+        var mod1 = await ReadModAsync(obj, info, false);
         if (mod1 != null)
         {
             mod1.Game = obj;
@@ -274,7 +275,7 @@ public static class GameMods
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error87"), e);
+                ColorMCCore.OnError(new GameModAddErrorEventArgs(obj, item, e));
                 ok = false;
             }
         }));
@@ -321,7 +322,7 @@ public static class GameMods
     /// </summary>
     /// <param name="obj">游戏Mod</param>
     /// <param name="zFile">Mod压缩包</param>
-    private static async Task CheckJarInJarAsync(ModObj obj, ZipArchive zFile)
+    private static async Task CheckJarInJarAsync(GameSettingObj game, ModObj obj, ZipArchive zFile)
     {
         obj.InJar ??= [];
         foreach (var item3 in zFile.Entries)
@@ -335,7 +336,7 @@ public static class GameMods
             using var stream1 = new MemoryStream();
             await stream.CopyToAsync(stream1);
             using var zFile1 = ZipArchive.Open(stream1);
-            var inmod = await ReadModAsync(obj.Local, zFile1);
+            var inmod = await ReadModAsync(game, obj.Local, zFile1);
             if (inmod != null)
             {
                 obj.InJar.Add(inmod);
@@ -349,7 +350,7 @@ public static class GameMods
     /// <param name="path">Mod路径</param>
     /// <param name="zFile">Mod压缩包</param>
     /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadModAsync(string path, ZipArchive zFile)
+    private static async Task<ModObj?> ReadModAsync(GameSettingObj game, string path, ZipArchive zFile)
     {
         bool istest = false;
         var mod = new ModObj
@@ -511,7 +512,7 @@ public static class GameMods
                 }
             }
 
-            await CheckJarInJarAsync(mod, zFile);
+            await CheckJarInJarAsync(game, mod, zFile);
             istest = true;
         }
 
@@ -568,7 +569,7 @@ public static class GameMods
                 }
             }
 
-            await CheckJarInJarAsync(mod, zFile);
+            await CheckJarInJarAsync(game, mod, zFile);
 
             istest = true;
         }
@@ -617,7 +618,7 @@ public static class GameMods
                 }
             }
 
-            await CheckJarInJarAsync(mod, zFile);
+            await CheckJarInJarAsync(game, mod, zFile);
             istest = true;
         }
 
@@ -648,7 +649,7 @@ public static class GameMods
             }
             catch (Exception ex)
             {
-                Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
+                ColorMCCore.OnError(new GameModReadErrorEventArgs(game, path, ex));
             }
         }
 
@@ -679,7 +680,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
+                    ColorMCCore.OnError(new GameModReadErrorEventArgs(game, path, ex));
                 }
             }
         }
@@ -699,7 +700,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
+                    ColorMCCore.OnError(new GameModReadErrorEventArgs(game, path, ex));
                 }
             }
         }
@@ -723,7 +724,7 @@ public static class GameMods
                 }
                 catch (Exception ex)
                 {
-                    Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
+                    ColorMCCore.OnError(new GameModReadErrorEventArgs(game, path, ex));
                 }
             }
         }
@@ -763,7 +764,7 @@ public static class GameMods
                         mod.Name = name;
                         mod.ModId = name.ToLower();
 
-                        await CheckJarInJarAsync(mod, zFile);
+                        await CheckJarInJarAsync(game, mod, zFile);
 
                         istest = true;
                     }
@@ -785,7 +786,7 @@ public static class GameMods
                         mod.Name = name;
                         mod.ModId = name.ToLower();
 
-                        await CheckJarInJarAsync(mod, zFile);
+                        await CheckJarInJarAsync(game, mod, zFile);
 
                         istest = true;
                     }
@@ -856,7 +857,7 @@ public static class GameMods
         }
         catch (Exception ex)
         {
-            Logs.Crash(string.Format(LanguageHelper.Get("Core.Error100"), path), ex);
+            ColorMCCore.OnError(new GameModReadErrorEventArgs(game, path, ex));
         }
 
         if (!istest)
@@ -871,7 +872,7 @@ public static class GameMods
 
                 using var stream = item3.OpenEntryStream();
                 using var zFile1 = ZipArchive.Open(stream);
-                var inmod = await ReadModAsync(path, zFile1);
+                var inmod = await ReadModAsync(game, path, zFile1);
                 if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
                                   && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)
                 {
@@ -952,28 +953,28 @@ public static class GameMods
         return list;
     }
 
-    /// <summary>
-    /// 作者分割
-    /// </summary>
-    /// <param name="array">数据</param>
-    /// <returns>整理好的作者名</returns>
-    private static List<string> ToStringList(this JsonArray array)
-    {
-        var list = new List<string>();
-        foreach (var item in array)
-        {
-            if (item is JsonObject obj && obj.GetString("name") is { } str)
-            {
-                list.Add(str);
-            }
-            else
-            {
-                list.Add(item!.ToString());
-            }
-        }
+    ///// <summary>
+    ///// 作者分割
+    ///// </summary>
+    ///// <param name="array">数据</param>
+    ///// <returns>整理好的作者名</returns>
+    //private static List<string> ToStringList(this JsonArray array)
+    //{
+    //    var list = new List<string>();
+    //    foreach (var item in array)
+    //    {
+    //        if (item is JsonObject obj && obj.GetString("name") is { } str)
+    //        {
+    //            list.Add(str);
+    //        }
+    //        else
+    //        {
+    //            list.Add(item!.ToString());
+    //        }
+    //    }
 
-        return list;
-    }
+    //    return list;
+    //}
 
     ///// <summary>
     ///// 作者分割

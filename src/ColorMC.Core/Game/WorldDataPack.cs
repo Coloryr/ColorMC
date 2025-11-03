@@ -1,6 +1,8 @@
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives.Zip;
@@ -15,21 +17,21 @@ public static class WorldDataPack
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    /// <param name="world">世界存储</param>
+    /// <param name="save">存档</param>
     /// <returns>数据包列表</returns>
-    public static Task<List<DataPackObj>> GetDataPacksAsync(this SaveObj world)
+    public static Task<List<DataPackObj>> GetDataPacksAsync(this SaveObj save)
     {
-        return Task.Run(world.GetDataPacks);
+        return Task.Run(save.GetDataPacks);
     }
 
     /// <summary>
     /// 获取数据包列表
     /// </summary>
-    /// <param name="world">世界存储</param>
+    /// <param name="save">存档</param>
     /// <returns>数据包列表</returns>
-    private static List<DataPackObj> GetDataPacks(this SaveObj world)
+    private static List<DataPackObj> GetDataPacks(this SaveObj save)
     {
-        var path = world.GetSaveDataPacksPath();
+        var path = save.GetSaveDataPacksPath();
         if (!Directory.Exists(path))
         {
             return [];
@@ -38,7 +40,7 @@ public static class WorldDataPack
         var list = new List<DataPackObj>();
 
         //查找数据包的NBT
-        var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
+        var nbt = save.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
         if (nbt == null)
         {
             return list;
@@ -57,7 +59,7 @@ public static class WorldDataPack
         Parallel.ForEach(files, (item) =>
 #endif
         {
-            if (!item.EndsWith(".zip"))
+            if (!item.EndsWith(Names.NameZipExt))
             {
                 return;
             }
@@ -88,12 +90,12 @@ public static class WorldDataPack
                     return;
                 }
 
-                pack.World = world;
+                pack.World = save;
                 list.Add(pack);
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.Error117"), item), e);
+                ColorMCCore.OnError(new GameDataPackReadErrorEventArgs(save, item, e));
             }
         });
 
@@ -128,12 +130,12 @@ public static class WorldDataPack
                     return;
                 }
 
-                pack.World = world;
+                pack.World = save;
                 list.Add(pack);
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.Error117"), item), e);
+                ColorMCCore.OnError(new GameDataPackReadErrorEventArgs(save, item, e));
             }
         });
 
@@ -148,7 +150,7 @@ public static class WorldDataPack
     /// <param name="world">世界储存</param>
     /// <param name="list">数据包列表</param>
     /// <returns>是否成功设置</returns>
-    public static bool DisableOrEnableDataPack(this SaveObj world, IEnumerable<DataPackObj> list)
+    public static async Task<bool> DisableOrEnableDataPack(this SaveObj world, IEnumerable<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
@@ -217,7 +219,7 @@ public static class WorldDataPack
             }
         }
 
-        world.Nbt.SaveAsync(Path.Combine(world.Local, Names.NameLevelFile));
+        await world.Nbt.SaveAsync(Path.Combine(world.Local, Names.NameLevelFile));
 
         return true;
     }
@@ -225,12 +227,12 @@ public static class WorldDataPack
     /// <summary>
     /// 删除世界数据包
     /// </summary>
-    /// <param name="world">世界存储</param>
+    /// <param name="save">存档</param>
     /// <param name="list">删除列表</param>
     /// <returns>是否删除成功</returns>
-    public static async Task<bool> DeleteDataPackAsync(this SaveObj world, ICollection<DataPackObj> list)
+    public static async Task<bool> DeleteDataPackAsync(this SaveObj save, ICollection<DataPackObj> list)
     {
-        var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
+        var nbt = save.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 
         if (nbt?.TryGet<NbtList>("Enabled") is not { } ens
             || nbt.TryGet<NbtList>("Disabled") is not { } dis)
@@ -265,11 +267,11 @@ public static class WorldDataPack
                     }
                 }
 
-                world.Nbt.SaveAsync(Path.Combine(world.Local, Names.NameLevelFile));
+                await save.Nbt.SaveAsync(Path.Combine(save.Local, Names.NameLevelFile));
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error118"), e);
+                ColorMCCore.OnError(new GameDataPackDeleteErrorEventArgs(save, e));
             }
         });
 

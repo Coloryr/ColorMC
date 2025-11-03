@@ -238,61 +238,13 @@ public enum LaunchState
     /// </summary>
     CheckMods,
     /// <summary>
-    /// 缺失版本文件
-    /// </summary>
-    LostVersion,
-    /// <summary>
-    /// 缺失运行库
-    /// </summary>
-    LostLib,
-    /// <summary>
-    /// 缺失加载器
-    /// </summary>
-    LostLoader,
-    /// <summary>
-    /// 缺失登陆核心
-    /// </summary>
-    LostLoginCore,
-    /// <summary>
-    /// 缺失游戏
-    /// </summary>
-    LostGame,
-    /// <summary>
-    /// 缺失文件
-    /// </summary>
-    LostFile,
-    /// <summary>
     /// 下载文件
     /// </summary>
     Download,
     /// <summary>
-    /// 下载失败
-    /// </summary>
-    DownloadFail,
-    /// <summary>
     /// 准备Jvm参数
     /// </summary>
     JvmPrepare,
-    /// <summary>
-    /// 版本错误
-    /// </summary>
-    VersionError,
-    /// <summary>
-    /// 资源文件错误
-    /// </summary>
-    AssetsError,
-    /// <summary>
-    /// 加载器错误
-    /// </summary>
-    LoaderError,
-    /// <summary>
-    /// Java错误
-    /// </summary>
-    JavaError,
-    /// <summary>
-    /// 登录失败
-    /// </summary>
-    LoginFail,
     /// <summary>
     /// 运行前执行程序
     /// </summary>
@@ -314,17 +266,131 @@ public enum LaunchState
     /// </summary>
     InstallForge,
     /// <summary>
+    /// 下载服务器包
+    /// </summary>
+    LoadServerPack,
+    /// <summary>
+    /// 对比服务器包
+    /// </summary>
+    CheckServerPack,
+    /// <summary>
+    /// 下载服务器包所需文件
+    /// </summary>
+    DownloadServerPack,
+    /// <summary>
+    /// 服务器包文件下载完成
+    /// </summary>
+    DownloadServerPackDone
+}
+
+/// <summary>
+/// 启动错误类型
+/// </summary>
+public enum LaunchError
+{
+    /// <summary>
+    /// 检查服务器包错误
+    /// </summary>
+    CheckServerPackError,
+    /// <summary>
+    /// 检查服务器包失败
+    /// </summary>
+    CheckServerPackFail,
+    /// <summary>
     /// 外置登录器错误
     /// </summary>
     LoginCoreError,
     /// <summary>
-    /// 启动错误
+    /// 缺失版本文件
     /// </summary>
-    Error,
+    LostVersionFile,
     /// <summary>
-    /// 版本号信息为空
+    /// 缺失加载器信息
     /// </summary>
-    VersionEmpty
+    LostLoaderFile,
+    /// <summary>
+    /// 确实资源文件信息
+    /// </summary>
+    LostAssetsFile,
+    /// <summary>
+    /// 账户登录失败
+    /// </summary>
+    AuthLoginFail,
+    /// <summary>
+    /// 文件下载错误
+    /// </summary>
+    DownloadFileError,
+    /// <summary>
+    /// Java没有找到
+    /// </summary>
+    JavaNotFound,
+    /// <summary>
+    /// 启动外部程序找不到
+    /// </summary>
+    CmdFileNotFound,
+    /// <summary>
+    /// 版本号错误
+    /// </summary>
+    VersionError,
+    /// <summary>
+    /// 选中的Java没有找到
+    /// </summary>
+    SelectJavaNotFound,
+}
+
+/// <summary>
+/// 游戏日志启动器消息
+/// </summary>
+public enum GameSystemLog
+{
+    /// <summary>
+    /// 不是系统日志
+    /// </summary>
+    None,
+    /// <summary>
+    /// 运行库
+    /// </summary>
+    RuntimeLib,
+    /// <summary>
+    /// 日志重定向
+    /// </summary>
+    JavaRedirect,
+    /// <summary>
+    /// 登录用时
+    /// </summary>
+    LoginTime,
+    /// <summary>
+    /// 服务器包检查用时
+    /// </summary>
+    ServerPackCheckTime,
+    /// <summary>
+    /// 检查游戏文件用时
+    /// </summary>
+    CheckGameFileTime,
+    /// <summary>
+    /// 文件下载用时
+    /// </summary>
+    DownloadFileTime,
+    /// <summary>
+    /// 启动参数
+    /// </summary>
+    LaunchArgs,
+    /// <summary>
+    /// Java路径
+    /// </summary>
+    JavaPath,
+    /// <summary>
+    /// 启动用时
+    /// </summary>
+    LaunchTime,
+    /// <summary>
+    /// 启动前执行用时
+    /// </summary>
+    CmdPreTime,
+    /// <summary>
+    /// 启动后执行用时
+    /// </summary>
+    CmdPostTime,
 }
 
 /// <summary>
@@ -464,48 +530,6 @@ public enum InstanceChangeType
 }
 
 /// <summary>
-/// 错误类型
-/// </summary>
-public enum ErrorType
-{ 
-    /// <summary>
-    /// 配置文件读取错误
-    /// </summary>
-    ConfigLoadError,
-    /// <summary>
-    /// 配置文件保存错误
-    /// </summary>
-    ConfigSaveError,
-    /// <summary>
-    /// 下载发生报错
-    /// </summary>
-    DownloadError,
-    /// <summary>
-    /// 下载出现错误
-    /// </summary>
-    DownloadSizeError,
-    /// <summary>
-    /// 下载文件校验错误
-    /// </summary>
-    DownloadCheckError,
-}
-
-/// <summary>
-/// 游戏日志启动器消息
-/// </summary>
-public enum GameSystemLog
-{ 
-    /// <summary>
-    /// 不是系统日志
-    /// </summary>
-    None,
-    /// <summary>
-    /// 运行库
-    /// </summary>
-    RuntimeLib
-}
-
-/// <summary>
 /// 登录错误状态
 /// </summary>
 public enum LoginFailState
@@ -530,4 +554,27 @@ public enum LoginFailState
     /// 密钥过期
     /// </summary>
     LoginTokenTimeout,
+}
+
+/// <summary>
+/// 结构文件类型
+/// </summary>
+public enum SchematicType
+{
+    /// <summary>
+    /// 原版
+    /// </summary>
+    Minecraft, 
+    /// <summary>
+    /// 投影模组
+    /// </summary>
+    Litematic,
+    /// <summary>
+    /// 创世神模组
+    /// </summary>
+    WorldEdit, 
+    /// <summary>
+    /// 机械动力蓝图
+    /// </summary>
+    Create
 }

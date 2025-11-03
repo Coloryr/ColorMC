@@ -282,7 +282,6 @@ public static class GameBinding
             cancels[item.UUID] = GameManager.StartGame(item);
         }
 
-        var state1 = LaunchState.End;
         var arg = MakeArg(user, model, port);
         arg.Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch;
 
@@ -323,7 +322,7 @@ public static class GameBinding
             Media.PlayState = PlayState.Pause;
         }
 
-        var list1 = new Dictionary<string, LaunchState>();
+        var list1 = new Dictionary<string, bool>();
         var list2 = new List<string>();
         //逐一启动
         foreach (var item in res1)
@@ -342,25 +341,14 @@ public static class GameBinding
             }
             else
             {
-                var title = LanguageUtils.Get("BaseBinding.Error4");
-                if (item.Value.Ex is LaunchException e1)
+                if (item.Value.Exception != null)
                 {
-                    state1 = e1.State;
-                    var log = e1.GetName(item.Key);
-                    if (e1.Inner != null)
-                    {
-                        Logs.Error(log, e1.Inner);
-                        WindowManager.ShowError(title, log, e1.Inner);
-                    }
-
-                    list1.Add(item.Key.UUID, state1);
+                    DisplayLaunchCrash(item.Value.Exception, item.Key, user);
+                    list1.Add(item.Key.UUID, true);
                 }
                 else
                 {
-                    Logs.Error(title, item.Value.Ex);
-                    WindowManager.ShowError(title, item.Value.Ex);
-
-                    list1.Add(item.Key.UUID, LaunchState.End);
+                    list1.Add(item.Key.UUID, false);
                 }
 
                 GameManager.GameExit(item.Key);
@@ -380,6 +368,56 @@ public static class GameBinding
             Fail = list1,
             User = user
         };
+    }
+
+    /// <summary>
+    /// 显示错误信息
+    /// </summary>
+    /// <param name="exception"></param>
+    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login)
+    {
+        var title = LanguageUtils.Get("BaseBinding.Error4");
+        if (exception is LaunchException e1)
+        {
+            var log = e1.GetName(obj, login);
+            if (e1.Inner != null)
+            {
+                Logs.Error(log, e1.Inner);
+                WindowManager.ShowError(title, log, e1.Inner);
+            }
+            else
+            {
+                Logs.Error(log);
+            }
+        }
+        else
+        {
+            Logs.Error(title, exception);
+            WindowManager.ShowError(title, exception);
+        }
+    }
+
+    private static void DisplayCreateCmdCrash(Exception exception, GameSettingObj obj, LoginObj login)
+    {
+        string title = LanguageUtils.Get("App.Error13");
+        if (exception is LaunchException e1)
+        {
+            var log = e1.GetName(obj, login);
+            if (e1.Inner != null)
+            {
+                Logs.Error(log, e1.Inner);
+                WindowManager.ShowError(title, e1.Inner);
+            }
+            else
+            {
+                Logs.Error(log);
+            }
+        }
+        else
+        {
+            Logs.Error(title, exception);
+            WindowManager.ShowError(title, exception);
+        }
     }
 
     /// <summary>
@@ -510,27 +548,12 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                temp = LanguageUtils.Get("BaseBinding.Error4");
-                if (e is LaunchException e1)
-                {
-                    state1 = e1.State;
-                    temp = state1.GetName();
-                    if (e1.Inner != null)
-                    {
-                        Logs.Error(temp, e1.Inner);
-                        WindowManager.ShowError(temp, e1.Inner);
-                    }
-                }
-                else
-                {
-                    Logs.Error(temp, e);
-                    WindowManager.ShowError(temp, e);
-                }
+                DisplayLaunchCrash(e, obj, user);
             }
             return null;
         });
 
-        arg.Update2?.Invoke(obj, LaunchState.End);
+        arg.Gui?.LaunchState(obj, LaunchState.End);
 
         model.ProgressClose();
         model.SubTitle = "";
@@ -2211,22 +2234,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("App.Error13");
-            if (e is LaunchException e1)
-            {
-                var state1 = e1.State;
-                temp = state1.GetName();
-                if (e1.Inner != null)
-                {
-                    Logs.Error(temp, e1.Inner);
-                    WindowManager.ShowError(temp, e1.Inner);
-                }
-            }
-            else
-            {
-                Logs.Error(temp, e);
-                WindowManager.ShowError(temp, e);
-            }
+            DisplayCreateCmdCrash(e, obj, user);
         }
     }
 

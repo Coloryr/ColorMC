@@ -31,7 +31,7 @@ public static class GameShaderpacks
         {
             Parallel.ForEach(info.GetFiles(), (item) =>
             {
-                if (item.Extension is not ".zip")
+                if (item.Extension is not Names.NameZipExt)
                 {
                     return;
                 }
@@ -83,7 +83,7 @@ public static class GameShaderpacks
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageHelper.Get("Core.Error87"), e);
+                    ColorMCCore.OnError(new GameShaderpackAddErrorEventArgs(obj, item, e));
                     ok = false;
                 }
             });

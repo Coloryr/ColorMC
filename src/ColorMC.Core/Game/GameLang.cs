@@ -94,7 +94,7 @@ public static class GameLang
                 }
                 catch (Exception e)
                 {
-                    Logs.Error($"error with read lang file: {item.Key}", e);
+                    ColorMCCore.OnError(new GameLangLoadErrorEventArgs(item.Key, e));
                 }
             });
         }
@@ -144,7 +144,7 @@ public static class GameLang
                 }
                 catch (Exception e)
                 {
-                    Logs.Error($"error with read lang key: {key}", e);
+                    ColorMCCore.OnError(new GameLangLoadErrorEventArgs(key, e));
                 }
             }
         }

@@ -1,3 +1,4 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -25,10 +26,10 @@ public static class AuthlibHelper
     /// </summary>
     private static readonly AuthlibInjectorObj LocalAuthLib = new()
     {
-        BuildNumber = 53,
-        Checksums = new() { Sha256 = "3bc9ebdc583b36abd2a65b626c4b9f35f21177fbf42a851606eaaea3fd42ee0f" },
-        DownloadUrl = "https://authlib-injector.yushi.moe/artifact/53/authlib-injector-1.2.5.jar",
-        Version = "1.2.5"
+        BuildNumber = 54,
+        Checksums = new() { Sha256 = "6dff7951c41d61eba78f9b034be610ade0e80d3309300742057d1866375d0427" },
+        DownloadUrl = "https://authlib-injector.yushi.moe/artifact/54/authlib-injector-1.2.6.jar",
+        Version = "1.2.6"
     };
 
     /// <summary>
@@ -65,60 +66,36 @@ public static class AuthlibHelper
     /// 初始化Nide8Injector，存在不下载
     /// </summary>
     /// <returns>Nide8Injector下载实例</returns>
-    public static async Task<MakeDownloadItemRes> ReadyNide8Async(CancellationToken token)
+    public static async Task<FileItemObj?> ReadyNide8Async(CancellationToken token)
     {
         var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token);
         if (data.State == false)
         {
-            return new MakeDownloadItemRes
-            {
-                State = false
-            };
+            throw new LaunchException(LaunchError.LoginCoreError);
         }
-        try
+
+        var obj = JsonUtils.ReadObj(data.Data!)!;
+        var sha1 = obj.GetString("jarHash")!;
+        var item = BuildNide8Item(obj.GetString("jarVersion")!);
+        NowNide8Injector = item.Local;
+
+        item.Sha1 = sha1;
+        if (!File.Exists(NowNide8Injector))
         {
-            var obj = JsonUtils.ReadObj(data.Data!)!;
-            var sha1 = obj.GetString("jarHash")!;
-            var item = BuildNide8Item(obj.GetString("jarVersion")!);
-            NowNide8Injector = item.Local;
-
-            item.Sha1 = sha1;
-            if (!File.Exists(NowNide8Injector))
-            {
-                return new MakeDownloadItemRes
-                {
-                    State = true,
-                    Item = item
-                };
-            }
-
-            if (!string.IsNullOrWhiteSpace(sha1))
-            {
-                using var stream = PathHelper.OpenRead(NowNide8Injector)!;
-                var sha11 = HashHelper.GenSha1(stream);
-                if (sha11 != sha1)
-                {
-                    return new MakeDownloadItemRes
-                    {
-                        State = true,
-                        Item = item
-                    };
-                }
-            }
-
-            return new MakeDownloadItemRes
-            {
-                State = true
-            };
+            return item;
         }
-        catch (Exception e)
+
+        if (!string.IsNullOrWhiteSpace(sha1))
         {
-            Logs.Error(LanguageHelper.Get("Core.Error11"), e);
-            return new MakeDownloadItemRes
+            using var stream = PathHelper.OpenRead(NowNide8Injector)!;
+            var sha11 = HashHelper.GenSha1(stream);
+            if (sha11 != sha1)
             {
-                State = false
-            };
+                return item;
+            }
         }
+
+        return null;
     }
 
     /// <summary>

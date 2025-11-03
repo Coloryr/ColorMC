@@ -19,21 +19,35 @@ public static class CoreManager
     public static void Init()
     {
         ColorMCCore.Error += ColorMCCore_Error;
-        ColorMCCore.GameLog += GameManager.AddGameLog;
+        ColorMCCore.GameLog += ColorMCCore_GameLog;
         ColorMCCore.GameExit += ColorMCCore_GameExit;
         ColorMCCore.InstanceChange += ColorMCCore_InstanceChange;
+    }
+
+    private static void ColorMCCore_GameLog(GameLogEventArgs obj)
+    {
+        if (obj.LogItem != null)
+        {
+            //给系统日志填充内容
+            if (obj.LogItem.LogType != GameSystemLog.None)
+            {
+                obj.LogItem.Log = obj.LogItem.LogType.GetName(obj.Game, obj.LogItem);
+            }
+
+            GameManager.AddGameLog(obj);
+        }
     }
 
     private static void ColorMCCore_Error(CoreErrorEventArgs arg)
     {
         string log = "";
         string title = "";
-        if (arg is ConfigLoadErrorEventArgs arg1)
+        if (arg is ConfigLoadErrorEventArgs)
         {
             log = LanguageUtils.Get("Core.Error1");
             title = LanguageUtils.Get("Core.Error120");
         }
-        else if (arg is ConfigSaveErrorEventArgs arg2)
+        else if (arg is ConfigSaveErrorEventArgs)
         {
             log = LanguageUtils.Get("Core.Error2");
             title = LanguageUtils.Get("Core.Error120");
@@ -49,6 +63,82 @@ public static class CoreManager
         else if (arg is DownloadExceptionErrorEventArgs arg5)
         {
             log = string.Format(LanguageUtils.Get("Core.Error119"), arg5.File.Name, arg5.File.Url);
+        }
+        else if (arg is GameLangLoadErrorEventArgs arg6)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error125"), arg6.Key);
+        }
+        else if (arg is GameServerPackErrorEventArgs arg7)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error101"), arg7.Game.Name);
+        }
+        else if (arg is GameLogFileErrorEventArgs arg8)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error94"), arg8.Game.Name, arg8.File);
+        }
+        else if (arg is GameModErrorEventArgs arg9)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error85"), arg9.Game.Name, arg9.File);
+        }
+        else if (arg is GameModAddErrorEventArgs arg10)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error87"), arg10.Game.Name, arg10.File);
+        }
+        else if (arg is GameModReadErrorEventArgs arg11)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error100"), arg11.Game.Name, arg11.File);
+        }
+        else if (arg is GameResourcepackReadErrorEventArgs arg12)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error127"), arg12.Game.Name, arg12.File);
+        }
+        else if (arg is GameSaveAddErrorEventArgs arg13)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error128"), arg13.Game.Name, arg13.File);
+        }
+        else if (arg is GameSaveRestoreErrorEventArgs arg14)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error92"), arg14.Game.Name, arg14.File);
+        }
+        else if (arg is GameSaveReadErrorEventArgs arg15)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error88"), arg15.Game.Name, arg15.File);
+        }
+        else if (arg is GameSchematicAddErrorEventArgs arg16)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error129"), arg16.Game.Name, arg16.File);
+        }
+        else if (arg is GameSchematicReadErrorEventArgs arg17)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error130"), arg17.Game.Name, arg17.File);
+        }
+        else if (arg is GameServerReadErrorEventArgs arg18)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error89"), arg18.Game.Name);
+        }
+        else if (arg is GameServerAddErrorEventArgs arg19)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error131"), arg19.Game.Name, arg19.Name, arg19.IP);
+        }
+        else if (arg is GameServerDeleteErrorEventArgs arg20)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error132"), arg20.Server.Game.Name, arg20.Server.Name, arg20.Server.IP);
+        }
+        else if (arg is GameShaderpackAddErrorEventArgs arg21)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error133"), arg21.Game.Name, arg21.File);
+        }
+        else if (arg is GameDataPackReadErrorEventArgs arg22)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error117"), arg22.Save.Game.Name, arg22.Save.LevelName, arg22.File);
+        }
+        else if (arg is GameDataPackDeleteErrorEventArgs arg23)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error118"), arg23.Save.Game.Name, arg23.Save.LevelName);
+        }
+        else if (arg is InstallModPackErrorEventArgs arg24)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error50"), arg24.File);
         }
 
         if (arg is ExceptionErrorEventArgs error)

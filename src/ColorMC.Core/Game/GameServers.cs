@@ -29,7 +29,7 @@ public static class GameServers
 
         try
         {
-            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
+            if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag)
             {
                 return [];
             }
@@ -47,7 +47,7 @@ public static class GameServers
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error89"), e);
+            ColorMCCore.OnError(new GameServerReadErrorEventArgs(game, e));
         }
         return list;
     }
@@ -58,15 +58,24 @@ public static class GameServers
     /// <param name="game">游戏实例</param>
     /// <param name="name">名字</param>
     /// <param name="ip">地址</param>
-    public static async Task AddServerAsync(this GameSettingObj game, string name, string ip)
+    public static async Task<bool> AddServerAsync(this GameSettingObj game, string name, string ip)
     {
-        var list = await game.GetServerInfosAsync();
-        list.Add(new ServerInfoObj()
+        try
         {
-            Name = name,
-            IP = ip
-        });
-        await game.SaveServerAsync(list);
+            var list = await game.GetServerInfosAsync();
+            list.Add(new ServerInfoObj()
+            {
+                Name = name,
+                IP = ip
+            });
+            await game.SaveServerAsync(list);
+            return true;
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new GameServerAddErrorEventArgs(game, name, ip, e));
+            return false;
+        }
     }
 
     /// <summary>
@@ -74,9 +83,18 @@ public static class GameServers
     /// </summary>
     /// <param name="obj">服务器</param>
     /// <returns></returns>
-    public static Task DeleteAsync(this ServerInfoObj obj)
+    public static async Task<bool> DeleteAsync(this ServerInfoObj obj)
     {
-        return RemoveServerAsync(obj.Game, obj.Name, obj.IP);
+        try
+        {
+            await RemoveServerAsync(obj.Game, obj.Name, obj.IP);
+            return true;
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new GameServerDeleteErrorEventArgs(obj, e));
+            return false;
+        }
     }
 
     /// <summary>

@@ -65,7 +65,7 @@ public record GameLaunchListRes
     /// <summary>
     /// 错误列表
     /// </summary>
-    public Dictionary<string, LaunchState> Fail;
+    public Dictionary<string, bool> Fail;
     /// <summary>
     /// 使用的账户
     /// </summary>

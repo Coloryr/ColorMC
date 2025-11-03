@@ -185,7 +185,7 @@ public record IntRes
 public record GameLaunchRes
 {
     public GameHandel? Handel;
-    public Exception? Ex;
+    public Exception? Exception;
 }
 
 /// <summary>

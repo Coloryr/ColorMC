@@ -2,6 +2,7 @@ using System.Reflection;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 
@@ -125,15 +126,42 @@ public static class LanguageUtils
     /// </summary>
     /// <param name="exception">启动错误</param>
     /// <returns>信息</returns>
-    public static string GetName(this LaunchException exception, GameSettingObj obj)
+    public static string GetName(this LaunchException exception, GameSettingObj obj, LoginObj login)
     {
         return exception.State switch
         {
-            LaunchState.LoginCoreError => LanguageUtils.Get("Core.Error111"),
-            LaunchState.LostVersion => string.Format(LanguageUtils.Get("Core.Error116"), obj.Version),
-            LaunchState.LostLoader => LanguageUtils.Get("Core.Error104"),
-            LaunchState.AssetsError => LanguageUtils.Get("Core.Error103"),
+            LaunchError.LoginCoreError => string.Format(Get("Core.Error111"), login.AuthType.GetName(), login.UUID),
+            LaunchError.LostVersionFile => string.Format(Get("Core.Error116"), obj.Version),
+            LaunchError.LostLoaderFile => string.Format(Get("Core.Error104"), obj.Version, obj.Loader.GetName(), obj.LoaderVersion),
+            LaunchError.LostAssetsFile => string.Format(Get("Core.Error103"), obj.Version, exception.InnerData),
+            LaunchError.CheckServerPackError => Get("Core.Error14"),
+            LaunchError.AuthLoginFail => string.Format(Get("Core.Error126"), login.AuthType.GetName(), login.UUID),
+            LaunchError.DownloadFileError => Get("Core.Error106"),
+            LaunchError.JavaNotFound => string.Format(Get("Core.Error107"), exception.InnerData),
+            LaunchError.CmdFileNotFound => string.Format(Get("Core.Error113"), exception.InnerData),
+            LaunchError.VersionError => Get("Core.Error108"),
+            LaunchError.SelectJavaNotFound => Get("Core.Error112"),
+
             _ => "",
+        };
+    }
+
+    public static string GetName(this GameSystemLog type, GameSettingObj game, GameLogItemObj obj)
+    {
+        return type switch
+        {
+            GameSystemLog.RuntimeLib => string.Format(Get("Core.Info28"), game.Name),
+            GameSystemLog.JavaRedirect => string.Format(Get("Core.Info21"), game.Name),
+            GameSystemLog.LoginTime => string.Format(Get("Core.Info30"), game.Name, obj.Category),
+            GameSystemLog.ServerPackCheckTime => string.Format(Get("Core.Info39"), game.Name, obj.Category),
+            GameSystemLog.CheckGameFileTime => string.Format(Get("Core.Info31"), game.Name, obj.Category),
+            GameSystemLog.DownloadFileTime => string.Format(Get("Core.Info33"), game.Name, obj.Category),
+            GameSystemLog.LaunchArgs => string.Format(Get("Core.Info27"), game.Name),
+            GameSystemLog.JavaPath => string.Format(Get("Core.Info29"), game.Name, obj.Category),
+            GameSystemLog.LaunchTime => string.Format(Get("Core.Info32"), game.Name, obj.Category),
+            GameSystemLog.CmdPreTime => string.Format(Get("Core.Info34"), game.Name, obj.Category),
+            GameSystemLog.CmdPostTime => string.Format(Get("Core.Info35"), game.Name, obj.Category),
+            _ => ""
         };
     }
 
@@ -147,21 +175,14 @@ public static class LanguageUtils
             LaunchState.CheckAssets => Get("Type.LaunchState.CheckAssets"),
             LaunchState.CheckLoader => Get("Type.LaunchState.CheckLoader"),
             LaunchState.CheckLoginCore => Get("Type.LaunchState.CheckLoginCore"),
-            LaunchState.LostVersion => Get("Type.LaunchState.LostVersion"),
-            LaunchState.LostLib => Get("Type.LaunchState.LostLib"),
-            LaunchState.LostLoader => Get("Type.LaunchState.LostLoader"),
-            LaunchState.LostLoginCore => Get("Type.LaunchState.LostLoginCore"),
             LaunchState.Download => Get("Type.LaunchState.Download"),
             LaunchState.JvmPrepare => Get("Type.LaunchState.JvmPrepare"),
-            LaunchState.VersionError => Get("Type.LaunchState.VersionError"),
-            LaunchState.AssetsError => Get("Type.LaunchState.AssetsError"),
-            LaunchState.LoaderError => Get("Type.LaunchState.LoaderError"),
-            LaunchState.LostFile => Get("Type.LaunchState.LostFile"),
-            LaunchState.DownloadFail => Get("Type.LaunchState.DownloadFail"),
-            LaunchState.JavaError => Get("Type.LaunchState.JvmError"),
             LaunchState.LaunchPre => Get("Type.LaunchState.LaunchPre"),
             LaunchState.LaunchPost => Get("Type.LaunchState.LaunchPost"),
-            LaunchState.VersionEmpty => Get("Type.LaunchState.VersionLost"),
+            LaunchState.LoadServerPack => Get("Core.Info24"),
+            LaunchState.CheckServerPack => Get("Core.Info25"),
+            LaunchState.DownloadServerPack => Get("Core.Info26"),
+            LaunchState.DownloadServerPackDone => Get("Core.Info42"),
             _ => Get("Type.LaunchState.Other")
         };
     }

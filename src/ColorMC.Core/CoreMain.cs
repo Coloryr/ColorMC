@@ -234,6 +234,20 @@ public static class ColorMCCore
     }
 
     /// <summary>
+    /// 添加系统日志
+    /// </summary>
+    /// <param name="obj">游戏实例</param>
+    /// <param name="type">系统日志类型</param>
+    internal static void OnGameLog(GameSettingObj obj, GameSystemLog type, string text1, string text2)
+    {
+        if (s_gameLogs.TryGetValue(obj.UUID, out var log))
+        {
+            var item = log.AddLog(type, text1, text2);
+            GameLog?.Invoke(new GameLogEventArgs(obj, item));
+        }
+    }
+
+    /// <summary>
     /// 清理游戏实例日志
     /// </summary>
     /// <param name="obj"></param>

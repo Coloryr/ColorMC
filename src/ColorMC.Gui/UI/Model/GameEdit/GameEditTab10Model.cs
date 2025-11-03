@@ -61,7 +61,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
-        await _obj.AddServerAsync(res.Text1, res.Text2);
+        res = await _obj.AddServerAsync(res.Text1, res.Text2);
         Model.ProgressClose();
         Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
         LoadServer();
@@ -92,7 +92,7 @@ public partial class GameEditModel
             return;
         }
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
-        await obj.DeleteAsync();
+        res = await obj.DeleteAsync();
         Model.ProgressClose();
         Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
         LoadServer();
