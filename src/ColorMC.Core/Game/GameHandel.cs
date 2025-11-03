@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Text;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -73,7 +72,7 @@ public class GameHandel
         if (ProcessUtils.Launch(Process, run.Admin))
         {
             IsOutAdmin = true;
-            ColorMCCore.OnGameLog(_game, LanguageHelper.Get("Core.Info21"));
+            ColorMCCore.OnGameLog(_game, GameSystemLog.JavaRedirect);
             return;
         }
 

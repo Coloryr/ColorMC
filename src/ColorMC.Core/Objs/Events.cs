@@ -1,5 +1,6 @@
 ﻿using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs.Login;
+using ColorMC.Core.Objs.Minecraft;
 
 namespace ColorMC.Core.Objs;
 
@@ -105,6 +106,341 @@ public class DownloadExceptionErrorEventArgs(FileItemObj file, Exception excepti
 }
 
 /// <summary>
+/// 游戏语言读取错误
+/// </summary>
+/// <param name="key">语言键</param>
+/// <param name="exception">错误</param>
+public class GameLangLoadErrorEventArgs(string key, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 语言键
+    /// </summary>
+    public string Key => key;
+}
+
+/// <summary>
+/// 游戏实例服务器包生成失败
+/// </summary>
+/// <param name="game">游戏实例</param>
+/// <param name="exception">错误</param>
+public class GameServerPackErrorEventArgs(GameSettingObj game, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+}
+
+/// <summary>
+/// 日志文件读取错误
+/// </summary>
+/// <param name="game">游戏实例</param>
+/// <param name="file">日志文件</param>
+/// <param name="exception">错误</param>
+public class GameLogFileErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 日志文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 模组读取错误
+/// </summary>
+/// <param name="game">游戏实例</param>
+/// <param name="file">模组文件</param>
+/// <param name="exception">错误</param>
+public class GameModErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 添加模组出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameModAddErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 读取模组出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameModReadErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 读取材质包出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameResourcepackReadErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 添加材质包出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameResourcepackAddErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 导入存档出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameSaveAddErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 还原存档出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameSaveRestoreErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 读取存档出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameSaveReadErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 导入结构文件出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameSchematicAddErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 导入结构读取出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameSchematicReadErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 导入结构读取出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="exception"></param>
+public class GameServerReadErrorEventArgs(GameSettingObj game,  Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+}
+
+/// <summary>
+/// 添加服务器时错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="name"></param>
+/// <param name="ip"></param>
+/// <param name="exception"></param>
+public class GameServerAddErrorEventArgs(GameSettingObj game, string name, string ip, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 服务器名字
+    /// </summary>
+    public string Name => name;
+    /// <summary>
+    /// 地址
+    /// </summary>
+    public string IP => ip;
+}
+
+/// <summary>
+/// 删除服务器时错误
+/// </summary>
+/// <param name="server"></param>
+/// <param name="exception"></param>
+public class GameServerDeleteErrorEventArgs(ServerInfoObj server, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 服务器信息
+    /// </summary>
+    public ServerInfoObj Server => server;
+}
+
+/// <summary>
+/// 光影包添加出现错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameShaderpackAddErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 数据包读取出现错误
+/// </summary>
+/// <param name="save"></param>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class GameDataPackReadErrorEventArgs(SaveObj save, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 存档
+    /// </summary>
+    public SaveObj Save => save;
+    /// <summary>
+    /// 模组文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// 删除数据包出现错误
+/// </summary>
+/// <param name="save"></param>
+/// <param name="exception"></param>
+public class GameDataPackDeleteErrorEventArgs(SaveObj save, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 存档
+    /// </summary>
+    public SaveObj Save => save;
+}
+
+/// <summary>
+/// 安装整合包出现错误
+/// </summary>
+/// <param name="file"></param>
+/// <param name="exception"></param>
+public class InstallModPackErrorEventArgs(string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
 /// 游戏日志
 /// </summary>
 /// <param name="game">游戏实例</param>
@@ -118,7 +454,7 @@ public class GameLogEventArgs(GameSettingObj game, GameLogItemObj? log) : EventA
     /// <summary>
     /// 日志内容
     /// </summary>
-    public GameLogItemObj? Log => log;
+    public GameLogItemObj? LogItem => log;
 }
 
 /// <summary>

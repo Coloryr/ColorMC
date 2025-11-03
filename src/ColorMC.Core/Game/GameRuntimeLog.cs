@@ -109,7 +109,27 @@ public partial class GameRuntimeLog
         {
             TimeSpan = DateTime.Now,
             LogType = log,
-            Level = LogLevel.None
+            Level = LogLevel.None,
+        };
+        _logs.Add(item1);
+
+        return item1;
+    }
+
+    /// <summary>
+    /// 添加系统日志
+    /// </summary>
+    /// <param name="log">系统日志类型</param>
+    /// <returns>日志</returns>
+    public GameLogItemObj? AddLog(GameSystemLog log, string text1, string text2)
+    {
+        var item1 = new GameLogItemObj()
+        {
+            TimeSpan = DateTime.Now,
+            LogType = log,
+            Level = LogLevel.None,
+            Category = text1,
+            Thread = text2
         };
         _logs.Add(item1);
 

@@ -52,7 +52,7 @@ public static class GameManager
     /// <param name="connect">是否链接</param>
     public static void SetConnect(string uuid, bool connect)
     {
-        s_gameConnect[uuid] = false;
+        s_gameConnect[uuid] = connect;
     }
 
     /// <summary>
@@ -234,18 +234,9 @@ public static class GameManager
     /// <param name="data"></param>
     public static void AddGameLog(GameLogEventArgs args)
     {
-        if (args.Log != null)
+        if (WindowManager.GameLogWindows.TryGetValue(args.Game.UUID, out var win))
         {
-            //给系统日志填充内容
-            if (args.Log.LogType != GameSystemLog.None)
-            {
-                args.Log.Log = LanguageUtils.Get("Core.Info28");
-            }
-
-            if (WindowManager.GameLogWindows.TryGetValue(args.Game.UUID, out var win))
-            {
-                win.Log(args.Log);
-            }
+            win.Log(args.LogItem);
         }
     }
 

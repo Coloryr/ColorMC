@@ -510,7 +510,7 @@ public static class GameArg
                 var res = await CoreHttpClient.GetStringAsync(login.Text1);
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError);
+                    throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -520,7 +520,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError);
+                    throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -530,7 +530,7 @@ public static class GameArg
                 res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
                 if (!res.State)
                 {
-                    throw new LaunchException(LaunchState.LoginCoreError);
+                    throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
@@ -675,7 +675,7 @@ public static class GameArg
     private static string MakeMainClass(this GameSettingObj obj)
     {
         var version = VersionPath.GetVersion(obj.Version)
-            ?? throw new LaunchException(LaunchState.LostVersion);
+            ?? throw new LaunchException(LaunchError.LostVersionFile);
         var v2 = version.IsGameVersionV2();
         if (!string.IsNullOrWhiteSpace(obj.AdvanceJvm?.MainClass))
         {
@@ -776,7 +776,7 @@ public static class GameArg
                         if (res2 == null)
                         {
                             res2 = await obj.BuildForgeAsync() 
-                                ?? throw new LaunchException(LaunchState.LostLoader);
+                                ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         }
                         loader = res2.Loaders;
                         install = res2.Installs;
@@ -793,7 +793,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildFabricAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader);
+                            ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         break;
                     case Loaders.Quilt:
                         loader = obj.GetQuiltLibs();
@@ -802,7 +802,7 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildQuiltAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader);
+                            ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         break;
                     case Loaders.OptiFine:
                         loader = obj.GetOptifineLibs();
@@ -811,14 +811,14 @@ public static class GameArg
                             return;
                         }
                         loader ??= await obj.BuildOptifineAsync()
-                            ?? throw new LaunchException(LaunchState.LostLoader);
+                            ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         GameHelper.ReadyOptifineWrapper();
                         loader.Add(GameHelper.OptifineWrapper);
                         break;
                     case Loaders.Custom:
                         if (obj.CustomLoader == null || !File.Exists(obj.GetGameLoaderFile()))
                         {
-                            throw new LaunchException(LaunchState.LostLoader);
+                            throw new LaunchException(LaunchError.LostLoaderFile);
                         }
 
                         if (cancel.IsCancellationRequested)
@@ -826,7 +826,7 @@ public static class GameArg
                             return;
                         }
                         var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel) 
-                            ?? throw new LaunchException(LaunchState.LostLoader);
+                            ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         loader = res1.List?.ToList();
                         break;
                 }
@@ -892,7 +892,7 @@ public static class GameArg
                 {
                     //不存在json文件
                     var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url)
-                        ?? throw new LaunchException(LaunchState.AssetsError);
+                        ?? throw new LaunchException(LaunchError.LostAssetsFile, data: game.AssetIndex.Id);
                     assets = res.Assets;
                     game.AddIndex(res.Text);
                 }
@@ -946,7 +946,7 @@ public static class GameArg
                     if (assets == null)
                     {
                         var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url)
-                            ?? throw new LaunchException(LaunchState.AssetsError);
+                            ?? throw new LaunchException(LaunchError.LostAssetsFile, data: item.AssetIndex.Id);
                         assets = res.Assets;
                         item.AddIndex(res.Text);
                     }

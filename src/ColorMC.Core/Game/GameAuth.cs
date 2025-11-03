@@ -181,7 +181,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="obj">登录信息</param>
     /// <returns>登录结果</returns>
-    public static async Task<LoginObj?> RefreshTokenAsync(this LoginObj obj, CancellationToken token)
+    public static async Task<LoginObj> RefreshTokenAsync(this LoginObj obj, CancellationToken token)
     {
         return obj.AuthType switch
         {

@@ -494,11 +494,7 @@ public static partial class CheckHelpers
             AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
             _ => new MakeDownloadItemRes { State = true }
         };
-        if (!item1.State)
-        {
-            throw new LaunchException(LaunchState.LoginCoreError, LanguageHelper.Get("Core.Error110"));
-        }
-        else if (item1.Item != null)
+        if (item1.Item != null)
         {
             return item1.Item;
         }

@@ -38,18 +38,38 @@ public static class GameSchematic
         await Parallel.ForEachAsync(items, async (item, cancel) =>
 #endif
         {
-            var info = new FileInfo(item);
-            if (info.Extension.Equals(Names.NameLitematicExt, StringComparison.OrdinalIgnoreCase))
+            try
             {
-                list.Add(await ReadLitematicAsync(item));
+                var info = new FileInfo(item);
+                if (info.Extension.Equals(Names.NameLitematicExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    list.Add(await ReadLitematicAsync(item));
+                }
+                else if (info.Extension.Equals(Names.NameSchematicExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    var item1 = await ReadSchematicAsync(item);
+                    item1.Type = SchematicType.Minecraft;
+                    list.Add(item1);
+                }
+                else if (info.Extension.Equals(Names.NameSchemExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    var item1 = await ReadSchematicAsync(item);
+                    item1.Type = SchematicType.WorldEdit;
+                    list.Add(item1);
+                }
+                else if (info.Extension.Equals(Names.NameNbtExt, StringComparison.OrdinalIgnoreCase))
+                {
+                    list.Add(await ReadNBTAsync(item));
+                }
             }
-            else if (info.Extension.Equals(Names.NameSchematicExt, StringComparison.OrdinalIgnoreCase))
+            catch (Exception e)
             {
-                list.Add(await ReadSchematicAsync(item));
-            }
-            else if (info.Extension.Equals(Names.NameSchemExt, StringComparison.OrdinalIgnoreCase))
-            {
-                list.Add(await ReadSchemAsync(item));
+                ColorMCCore.OnError(new GameSchematicReadErrorEventArgs(obj, item, e));
+                list.Add(new SchematicObj
+                { 
+                    Local = item,
+                    Broken = true
+                });
             }
         });
 
@@ -97,7 +117,7 @@ public static class GameSchematic
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error87"), e);
+                ColorMCCore.OnError(new GameSchematicAddErrorEventArgs(obj, item, e));
                 ok = false;
             }
         });
@@ -111,44 +131,35 @@ public static class GameSchematic
     }
 
     /// <summary>
-    /// 原版结构文件
+    /// 机械动力蓝图
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    private static async Task<SchematicObj> ReadSchemAsync(string file)
+    private static async Task<SchematicObj> ReadNBTAsync(string file)
     {
-        try
+        if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag 
+            || tag.TryGet<NbtList>("size") is not { } size
+            || size.Count != 3)
         {
-            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
-            {
-                return new()
-                {
-                    Local = file,
-                    Broken = true
-                };
-            }
-
-            var item = new SchematicObj
-            {
-                Name = Path.GetFileName(file),
-                Broken = false,
-                Local = file,
-                Height = tag.TryGet<NbtShort>("Height")!.Value,
-                Length = tag.TryGet<NbtShort>("Length")!.Value,
-                Width = tag.TryGet<NbtShort>("Width")!.Value
-            };
-
-            return item;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error93"), e);
             return new()
             {
                 Local = file,
                 Broken = true
             };
         }
+
+        var item = new SchematicObj
+        {
+            Name = Path.GetFileName(file),
+            Broken = false,
+            Local = file,
+            Width = (size[0] as NbtInt)!.Value,
+            Height = (size[1] as NbtInt)!.Value,
+            Length = (size[2] as NbtInt)!.Value,
+            Type = SchematicType.Create
+        };
+
+        return item;
     }
 
     /// <summary>
@@ -158,36 +169,24 @@ public static class GameSchematic
     /// <returns>数据</returns>
     private static async Task<SchematicObj> ReadSchematicAsync(string file)
     {
-        try
+        if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag)
         {
-            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
-            {
-                return new()
-                {
-                    Local = file,
-                    Broken = true
-                };
-            }
-
-            return new()
-            {
-                Name = Path.GetFileName(file),
-                Height = tag.TryGet<NbtShort>("Height")!.Value,
-                Length = tag.TryGet<NbtShort>("Length")!.Value,
-                Width = tag.TryGet<NbtShort>("Width")!.Value,
-                Broken = false,
-                Local = file
-            };
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error93"), e);
             return new()
             {
                 Local = file,
                 Broken = true
             };
         }
+
+        return new()
+        {
+            Name = Path.GetFileName(file),
+            Height = tag.TryGet<NbtShort>("Height")!.Value,
+            Length = tag.TryGet<NbtShort>("Length")!.Value,
+            Width = tag.TryGet<NbtShort>("Width")!.Value,
+            Broken = false,
+            Local = file
+        };
     }
 
     /// <summary>
@@ -197,46 +196,35 @@ public static class GameSchematic
     /// <returns>数据</returns>
     private static async Task<SchematicObj> ReadLitematicAsync(string file)
     {
-        try
+        if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag)
         {
-            if (await NbtBase.Read<NbtCompound>(file) is not { } tag)
-            {
-                return new()
-                {
-                    Local = file,
-                    Broken = true
-                };
-            }
-
-            var com1 = tag.TryGet<NbtCompound>("Metadata")!;
-
-            var item = new SchematicObj()
-            {
-                Name = com1.TryGet<NbtString>("Name")!.Value,
-                Author = com1.TryGet<NbtString>("Author")!.Value,
-                Description = com1.TryGet<NbtString>("Description")!.Value,
-                Broken = false,
-                Local = file
-            };
-
-            var pos = com1.TryGet<NbtCompound>("EnclosingSize")!;
-            if (pos != null)
-            {
-                item.Height = pos.TryGet<NbtInt>("y")!.Value;
-                item.Length = pos.TryGet<NbtInt>("x")!.Value;
-                item.Width = pos.TryGet<NbtInt>("z")!.Value;
-            }
-
-            return item;
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error93"), e);
             return new()
             {
                 Local = file,
                 Broken = true
             };
         }
+
+        var com1 = tag.TryGet<NbtCompound>("Metadata")!;
+
+        var item = new SchematicObj()
+        {
+            Name = com1.TryGet<NbtString>("Name")!.Value,
+            Author = com1.TryGet<NbtString>("Author")!.Value,
+            Description = com1.TryGet<NbtString>("Description")!.Value,
+            Broken = false,
+            Local = file,
+            Type = SchematicType.Litematic
+        };
+
+        var pos = com1.TryGet<NbtCompound>("EnclosingSize")!;
+        if (pos != null)
+        {
+            item.Height = pos.TryGet<NbtInt>("y")!.Value;
+            item.Length = pos.TryGet<NbtInt>("x")!.Value;
+            item.Width = pos.TryGet<NbtInt>("z")!.Value;
+        }
+
+        return item;
     }
 }

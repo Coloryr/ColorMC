@@ -31,7 +31,7 @@ public static class GameSaves
         var list = new ConcurrentBag<SaveObj>();
         await Parallel.ForEachAsync(info.GetDirectories(), async (item, cacenl) =>
         {
-            var world = await ReadSaveAsync(item);
+            var world = await ReadSaveAsync(game, item);
             if (world != null)
             {
                 world.Game = game;
@@ -105,7 +105,7 @@ public static class GameSaves
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error50"), e);
+                ColorMCCore.OnError(new GameSaveAddErrorEventArgs(obj, name, e));
             }
             return false;
         });
@@ -191,7 +191,7 @@ public static class GameSaves
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error92"), e, false, false);
+            ColorMCCore.OnError(new GameSaveRestoreErrorEventArgs(obj, arg.File, e));
             return false;
         }
     }
@@ -201,7 +201,7 @@ public static class GameSaves
     /// </summary>
     /// <param name="dir">存档文件夹</param>
     /// <returns>存档</returns>
-    private static async Task<SaveObj?> ReadSaveAsync(DirectoryInfo dir)
+    private static async Task<SaveObj?> ReadSaveAsync(GameSettingObj game, DirectoryInfo dir)
     {
         var file = Path.Combine(dir.FullName, Names.NameLevelFile);
         if (!File.Exists(file))
@@ -265,7 +265,7 @@ public static class GameSaves
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error88"), e);
+            ColorMCCore.OnError(new GameSaveReadErrorEventArgs(game, dir.FullName, e));
         }
 
         //无法读取

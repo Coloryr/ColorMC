@@ -103,6 +103,7 @@ public static class Names
     public const string NameRioExt = ".rio";
     public const string NameMcaExt = ".mca";
     public const string NamePngExt = ".png";
+    public const string NameNbtExt = ".nbt";
 
     public const string NameDefaultGroup = " ";
 

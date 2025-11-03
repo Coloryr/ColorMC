@@ -209,15 +209,25 @@ public static class CoreHttpClient
     /// </summary>
     /// <param name="url"></param>
     /// <returns></returns>
-    public static async Task<Stream?> GetStreamAsync(string url)
+    public static Task<Stream?> GetStreamAsync(string url)
     {
-        var res = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        return GetStreamAsync(url, CancellationToken.None);
+    }
+
+    /// <summary>
+    /// 进行一次Get请求
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public static async Task<Stream?> GetStreamAsync(string url, CancellationToken token)
+    {
+        var res = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
         if (res.StatusCode != HttpStatusCode.OK)
         {
             res.Dispose();
             return null;
         }
-        return await res.Content.ReadAsStreamAsync();
+        return await res.Content.ReadAsStreamAsync(token);
     }
 
     /// <summary>

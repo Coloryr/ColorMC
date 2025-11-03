@@ -70,7 +70,7 @@ public static class GameCountUtils
         }
         try
         {
-            if (await NbtBase.Read<NbtCompound>(s_local) is { } nbt)
+            if (await NbtBase.ReadAsync<NbtCompound>(s_local) is { } nbt)
             {
                 Count = new()
                 {

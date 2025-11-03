@@ -1,3 +1,4 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
@@ -60,14 +61,20 @@ public record GameLaunchArg
     /// 是否以管理员方式启动
     /// </summary>
     public bool Admin;
-
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.LaunchP? Pre;
-    public ColorMCCore.UpdateState? State;
-    public ColorMCCore.ChoiseCall? Select;
-    public ColorMCCore.NoJava? Nojava;
-    public ColorMCCore.LoginFailRun? Loginfail;
-    public ColorMCCore.GameLaunch? Update2;
+    /// <summary>
+    /// 解密对接
+    /// </summary>
+    public ILauncherGui? Gui;
+    //public ColorMCCore.Request? Request;
+    //public ColorMCCore.LaunchP? Pre;
+    //public ColorMCCore.UpdateState? State;
+    //public ColorMCCore.ChoiseCall? Select;
+    //public ColorMCCore.NoJava? Nojava;
+    //public ColorMCCore.LoginFailRun? Loginfail;
+    //public ColorMCCore.GameLaunch? Update2;
+    /// <summary>
+    /// ColorMC ASM端口
+    /// </summary>
     public int? Mixinport;
 }
 
@@ -108,15 +115,6 @@ public record ServerPackGenArg
     public required string Local;
 
     public ColorMCCore.Request? Request;
-}
-
-/// <summary>
-/// 服务器包检查参数
-/// </summary>
-public record ServerPackCheckArg
-{
-    public ColorMCCore.UpdateState? State;
-    public ColorMCCore.ChoiseCall? Select;
 }
 
 /// <summary>

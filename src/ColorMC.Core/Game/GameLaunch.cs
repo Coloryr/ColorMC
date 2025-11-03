@@ -22,7 +22,7 @@ public static class Launch
     /// <exception cref="LaunchException"></exception>
     private static async Task AuthLoginAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
-        larg.Update2?.Invoke(obj, LaunchState.Login);
+        larg.Gui?.LaunchState(obj, LaunchState.Login);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -30,43 +30,33 @@ public static class Launch
         try
         {
             var res1 = await larg.Auth.RefreshTokenAsync(token);
-            if (res1.LoginState != LoginState.Done)
-            {
-                if (larg.Auth.AuthType == AuthType.OAuth
+            larg.Auth = res1;
+            larg.Auth.Save();
+        }
+        catch (Exception e)
+        {
+            if (larg.Auth.AuthType != AuthType.Offline
                     && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
-                    && larg.Loginfail != null
-                    && await larg.Loginfail(larg.Auth))
+                    && larg.Gui != null
+                    && await larg.Gui.LoginFailRun(larg.Auth))
+            {
+                larg.Auth = new LoginObj
                 {
-                    larg.Auth = new LoginObj
-                    {
-                        UserName = larg.Auth.UserName,
-                        UUID = larg.Auth.UUID,
-                        AuthType = AuthType.Offline
-                    };
-                }
-                else
-                {
-                    larg.Update2?.Invoke(obj, LaunchState.LoginFail);
-                    if (res1.Ex != null)
-                    {
-                        throw new LaunchException(LaunchState.LoginFail, res1.FailState!, res1.Ex);
-                    }
-
-                    throw new LaunchException(LaunchState.LoginFail, res1.FailState!);
-                }
+                    UserName = larg.Auth.UserName,
+                    UUID = larg.Auth.UUID,
+                    AuthType = AuthType.Offline
+                };
             }
             else
             {
-                larg.Auth = res1.Auth!;
-                larg.Auth.Save();
+                larg.Gui?.LaunchFail(obj, LaunchError.AuthLoginFail);
+
+                throw new LaunchException(LaunchError.AuthLoginFail, e);
             }
         }
 
         stopwatch.Stop();
-        string temp = string.Format(LanguageHelper.Get("Core.Info30"),
-            obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.OnGameLog(obj, temp);
-        Logs.Info(temp);
+        ColorMCCore.OnGameLog(obj, GameSystemLog.LoginTime, stopwatch.Elapsed.ToString(), "");
     }
 
     /// <summary>
@@ -86,35 +76,10 @@ public static class Launch
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
-        var pack = await obj.ServerPackCheckAsync(new ServerPackCheckArg
-        {
-            State = larg.State,
-            Select = larg.Select
-        }, token);
+        await obj.ServerPackCheckAsync(larg.Gui, token);
 
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Info39"),
-            obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.OnGameLog(obj, temp);
-        Logs.Info(temp);
-
-        if (token.IsCancellationRequested || pack)
-        {
-            return;
-        }
-
-        //检查失败询问是否取消启动
-        if (larg.Request == null)
-        {
-            throw new LaunchException(LaunchState.VersionError,
-                string.Format(LanguageHelper.Get("Core.Info41"), obj.Name));
-        }
-
-        var res2 = await larg.Request(string.Format(LanguageHelper.Get("Core.Info40"), obj.Name));
-        if (!res2)
-        {
-            throw new LaunchException(LaunchState.Cancel, LanguageHelper.Get("Core.Error109"));
-        }
+        ColorMCCore.OnGameLog(obj, GameSystemLog.ServerPackCheckTime, stopwatch.Elapsed.ToString(), "");
     }
 
     /// <summary>
@@ -135,10 +100,7 @@ public static class Launch
         var arg1 = await obj.MakeArgAsync(larg, token);
         var res = await obj.CheckGameFileAsync(arg1, token);
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Info31"),
-            obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.OnGameLog(obj, temp);
-        Logs.Info(temp);
+        ColorMCCore.OnGameLog(obj, GameSystemLog.CheckGameFileTime, stopwatch.Elapsed.ToString(), "");
 
         if (res3 != null)
         {
@@ -152,14 +114,14 @@ public static class Launch
         }
 
         bool download = true;
-        if (ConfigLoad.Config.Http.AutoDownload == false && larg.Request != null)
+        if (ConfigLoad.Config.Http.AutoDownload == false && larg.Gui != null)
         {
-            download = await larg.Request(LanguageHelper.Get("Core.Info38"));
+            download = await larg.Gui.RequestDownload();
         }
 
         if (download)
         {
-            larg.Update2?.Invoke(obj, LaunchState.Download);
+            larg.Gui?.LaunchState(obj, LaunchState.Download);
 
             stopwatch.Reset();
             stopwatch.Start();
@@ -167,15 +129,11 @@ public static class Launch
             var ok = await DownloadManager.StartAsync([.. res]);
             if (!ok)
             {
-                throw new LaunchException(LaunchState.LostFile,
-                    LanguageHelper.Get("Core.Error106"));
+                throw new LaunchException(LaunchError.DownloadFileError);
             }
 
             stopwatch.Stop();
-            temp = string.Format(LanguageHelper.Get("Core.Info33"),
-                obj.Name, stopwatch.Elapsed.ToString());
-            ColorMCCore.OnGameLog(obj, temp);
-            Logs.Info(temp);
+            ColorMCCore.OnGameLog(obj, GameSystemLog.DownloadFileTime, stopwatch.Elapsed.ToString(), "");
         }
 
         return arg1;
@@ -274,10 +232,9 @@ public static class Launch
         if (jvm == null)
         {
             var jv = arg1.JavaVersions.First();
-            larg.Update2?.Invoke(obj, LaunchState.JavaError);
-            larg.Nojava?.Invoke(jv);
-            throw new LaunchException(LaunchState.JavaError,
-                string.Format(LanguageHelper.Get("Core.Error107"), jv));
+            larg.Gui?.LaunchFail(obj, LaunchError.JavaNotFound);
+            larg.Gui?.NoJava(jv);
+            throw new LaunchException(LaunchError.JavaNotFound, data: jv.ToString());
         }
 
         return jvm.GetPath();
@@ -310,8 +267,7 @@ public static class Launch
 
         if (!File.Exists(name))
         {
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Error113"), name));
-            return;
+            throw new LaunchException(LaunchError.CmdFileNotFound, data: name);
         }
 
         //准备启动
@@ -378,7 +334,7 @@ public static class Launch
         }
         catch (Exception e)
         {
-            list.Add(temp1, new GameLaunchRes { Ex = e });
+            list.Add(temp1, new GameLaunchRes { Exception = e });
             return list;
         }
 
@@ -397,7 +353,7 @@ public static class Launch
                     || (obj.Loader != Loaders.Normal && string.IsNullOrWhiteSpace(obj.LoaderVersion))
                     || (obj.Loader == Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
                 {
-                    throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error108"));
+                    throw new LaunchException(LaunchError.VersionError);
                 }
 
                 var cancel = cancels[obj.UUID];
@@ -409,7 +365,7 @@ public static class Launch
                     return list;
                 }
 
-                larg.Update2?.Invoke(obj, LaunchState.Check);
+                larg.Gui?.LaunchState(obj, LaunchState.Check);
 
                 //检查游戏文件
                 var arg1 = await CheckGameFileAsync(obj, larg, cancel);
@@ -427,7 +383,7 @@ public static class Launch
                 }
 
                 //准备Jvm参数
-                larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
+                larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
                 var arg = obj.MakeRunArg(larg, arg1, true);
 
                 if (cancel.IsCancellationRequested)
@@ -435,8 +391,11 @@ public static class Launch
                     return list;
                 }
 
+                //显示使用的Java
+                ColorMCCore.OnGameLog(obj, GameSystemLog.JavaPath, path, "");
+
                 //打印Jvm参数
-                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info27"));
+                ColorMCCore.OnGameLog(obj, GameSystemLog.LaunchArgs);
                 bool hidenext = false;
                 foreach (var item in arg)
                 {
@@ -456,9 +415,6 @@ public static class Launch
                         hidenext = true;
                     }
                 }
-
-                ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info29"));
-                ColorMCCore.OnGameLog(obj, path);
 
                 if (cancel.IsCancellationRequested)
                 {
@@ -485,7 +441,7 @@ public static class Launch
             }
             catch (Exception e)
             {
-                list.Add(obj, new GameLaunchRes { Ex = e });
+                list.Add(obj, new GameLaunchRes { Exception = e });
             }
         }
 
@@ -496,10 +452,7 @@ public static class Launch
             stopwatch.Start();
             var handel = new GameHandel(item1);
             stopwatch.Stop();
-            var temp = string.Format(LanguageHelper.Get("Core.Info32"),
-                item1.Obj.Name, stopwatch.Elapsed.ToString());
-            ColorMCCore.OnGameLog(item1.Obj, temp);
-            Logs.Info(temp);
+            ColorMCCore.OnGameLog(item1.Obj, GameSystemLog.LaunchTime, stopwatch.Elapsed.ToString(), "");
 
             ColorMCCore.AddGameHandel(item1.Obj.UUID, handel);
             list.Add(item1.Obj, new GameLaunchRes { Handel = handel });
@@ -521,7 +474,7 @@ public static class Launch
             || (obj.Loader is not (Loaders.Normal or Loaders.Custom) && string.IsNullOrWhiteSpace(obj.LoaderVersion))
             || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
         {
-            throw new LaunchException(LaunchState.VersionError);
+            throw new LaunchException(LaunchError.VersionError);
         }
 
         //登录账户
@@ -535,11 +488,11 @@ public static class Launch
 
         if (!File.Exists(path))
         {
-            return new CreateCmdRes { Message = LanguageHelper.Get("Core.Error112") };
+            throw new LaunchException(LaunchError.SelectJavaNotFound);
         }
 
         //准备Jvm参数
-        larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
+        larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
         var arg = obj.MakeRunArg(larg, arg1, false);
 
         //自定义启动参数
@@ -590,7 +543,7 @@ public static class Launch
             }
         }
 
-        larg.Update2?.Invoke(obj, LaunchState.End);
+        larg.Gui?.LaunchState(obj, LaunchState.End);
 
         return new CreateCmdRes
         {
@@ -623,12 +576,12 @@ public static class Launch
                     string.IsNullOrWhiteSpace(obj.LoaderVersion))
                 || (obj.Loader is Loaders.Custom && !File.Exists(obj.GetGameLoaderFile())))
             {
-                throw new LaunchException(LaunchState.VersionEmpty);
+                throw new LaunchException(LaunchError.VersionError);
             }
         }
 
         //登录账户
-        await AuthLoginAsync(obj, larg);
+        await AuthLoginAsync(obj, larg, token);
 
         if (token.IsCancellationRequested)
         {
@@ -643,7 +596,7 @@ public static class Launch
             return null;
         }
 
-        larg.Update2?.Invoke(obj, LaunchState.Check);
+        larg.Gui?.LaunchState(obj, LaunchState.Check);
 
         //检查游戏文件
         var arg1 = await CheckGameFileAsync(obj, larg, token);
@@ -663,8 +616,7 @@ public static class Launch
 
         if (!File.Exists(path))
         {
-            throw new LaunchException(LaunchState.JavaError,
-                LanguageHelper.Get("Core.Error112"));
+            throw new LaunchException(LaunchError.JavaNotFound);
         }
 
         if (token.IsCancellationRequested)
@@ -673,11 +625,13 @@ public static class Launch
         }
 
         //准备Jvm参数
-        larg.Update2?.Invoke(obj, LaunchState.JvmPrepare);
+        larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
 
         var arg = obj.MakeRunArg(larg, arg1, true);
 
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info27"));
+        ColorMCCore.OnGameLog(obj, GameSystemLog.JavaPath, path, "");
+
+        ColorMCCore.OnGameLog(obj, GameSystemLog.LaunchArgs);
         bool hidenext = false;
         //打印参数
         foreach (var item in arg)
@@ -698,9 +652,6 @@ public static class Launch
                 hidenext = true;
             }
         }
-
-        ColorMCCore.OnGameLog(obj, LanguageHelper.Get("Core.Info29"));
-        ColorMCCore.OnGameLog(obj, path);
 
         if (token.IsCancellationRequested)
         {
@@ -724,33 +675,21 @@ public static class Launch
             var cmd2 = ConfigLoad.Config.DefaultJvmArg.LaunchPreData;
             var start = string.IsNullOrWhiteSpace(cmd1) ? cmd2 : cmd1;
             var prerun = obj.JvmArg?.PreRunSame ?? ConfigLoad.Config.DefaultJvmArg.PreRunSame;
-            if (!string.IsNullOrWhiteSpace(start) &&
-                (larg.Pre == null || await larg.Pre(true)))
+            if (!string.IsNullOrWhiteSpace(start))
             {
-                stopwatch.Reset();
-                stopwatch.Start();
-                larg.Update2?.Invoke(obj, LaunchState.LaunchPre);
-                start = obj.ReplaceArg(path, arg, start);
-                obj.CmdRun(start, env, prerun, larg.Admin);
-                stopwatch.Stop();
-                string temp1 = string.Format(LanguageHelper.Get("Core.Info34"),
-                    obj.Name, stopwatch.Elapsed.ToString());
-                ColorMCCore.OnGameLog(obj, temp1);
-                Logs.Info(temp1);
-            }
-            else
-            {
-                string temp2 = string.Format(LanguageHelper.Get("Core.Info36"),
-                    obj.Name);
-                ColorMCCore.OnGameLog(obj, temp2);
-                Logs.Info(temp2);
+                if (larg.Gui == null || await larg.Gui.LaunchProcess(true))
+                {
+                    stopwatch.Reset();
+                    stopwatch.Start();
+                    larg.Gui?.LaunchState(obj, LaunchState.LaunchPre);
+                    start = obj.ReplaceArg(path, arg, start);
+                    obj.CmdRun(start, env, prerun, larg.Admin);
+                    stopwatch.Stop();
+                    ColorMCCore.OnGameLog(obj, GameSystemLog.CmdPreTime, stopwatch.Elapsed.ToString(), "");
+                }
             }
         }
 
-        if (token.IsCancellationRequested)
-        {
-            return null;
-        }
         if (token.IsCancellationRequested)
         {
             return null;
@@ -769,10 +708,7 @@ public static class Launch
             Admin = larg.Admin
         });
         stopwatch.Stop();
-        var temp = string.Format(LanguageHelper.Get("Core.Info32"),
-            obj.Name, stopwatch.Elapsed.ToString());
-        ColorMCCore.OnGameLog(obj, temp);
-        Logs.Info(temp);
+        ColorMCCore.OnGameLog(obj, GameSystemLog.LaunchTime, stopwatch.Elapsed.ToString(), "");
 
         ColorMCCore.AddGameHandel(obj.UUID, handel);
 
@@ -788,20 +724,18 @@ public static class Launch
             start1 = ConfigLoad.Config.DefaultJvmArg?.LaunchPostData;
         }
 
-        if (!string.IsNullOrWhiteSpace(start1) && (larg.Pre == null || await larg.Pre(false)))
+        if (!string.IsNullOrWhiteSpace(start1))
         {
-            stopwatch.Start();
-            larg.Update2?.Invoke(obj, LaunchState.LaunchPost);
-            start1 = obj.ReplaceArg(path, arg, start1);
-            obj.CmdRun(start1, env, false, larg.Admin);
-            stopwatch.Stop();
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Info35"),
-                obj.Name, stopwatch.Elapsed.ToString()));
-        }
-        else
-        {
-            ColorMCCore.OnGameLog(obj, string.Format(LanguageHelper.Get("Core.Info37"),
-                obj.Name));
+            if (larg.Gui == null || await larg.Gui.LaunchProcess(false))
+            {
+                stopwatch.Start();
+                larg.Gui?.LaunchState(obj, LaunchState.LaunchPost);
+                start1 = obj.ReplaceArg(path, arg, start1);
+                obj.CmdRun(start1, env, false, larg.Admin);
+                stopwatch.Stop();
+                ColorMCCore.OnGameLog(obj, GameSystemLog.CmdPostTime,
+                     stopwatch.Elapsed.ToString(), "");
+            }
         }
 
         return handel;
