@@ -54,9 +54,9 @@ public static class ColorMCAPI
     /// <returns></returns>
     private static async Task<Dictionary<string, McModSearchItemObj>?> GetListAsync(int type, List<string> ids, int mcmod_type)
     {
+        string temp = $"{BaseUrl}findmod";
         try
         {
-            string temp = $"{BaseUrl}findmod";
             var obj = new McModSearchObj()
             {
                 Type = type,
@@ -82,7 +82,7 @@ public static class ColorMCAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error44"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -124,9 +124,10 @@ public static class ColorMCAPI
     /// <returns></returns>
     public static async Task<McModTypsObj?> GetMcModGroupAsync()
     {
+        string url = BaseUrl + "getmcmodgroup";
         try
         {
-            var req = new HttpRequestMessage(HttpMethod.Post, BaseUrl + "getmcmodgroup");
+            var req = new HttpRequestMessage(HttpMethod.Post, url);
             using var data = await _client.SendAsync(req);
             using var data1 = await data.Content.ReadAsStreamAsync();
             var obj = JsonUtils.ToObj(data1, JsonType.McModTypsResObj);
@@ -139,7 +140,7 @@ public static class ColorMCAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error45"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }

@@ -13,7 +13,13 @@ public class NbtByte : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new byte Value { get; set; }
+    public byte ValueByte { get; set; }
+
+    public override string Value 
+    { 
+        get => ValueByte.ToString(); 
+        set => ValueByte = byte.Parse(value); 
+    }
 
     public NbtByte()
     {
@@ -22,12 +28,12 @@ public class NbtByte : NbtBase
 
     internal override NbtBase Read(DataInputStream stream)
     {
-        Value = stream.ReadByte();
+        ValueByte = stream.ReadByte();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueByte);
     }
 }

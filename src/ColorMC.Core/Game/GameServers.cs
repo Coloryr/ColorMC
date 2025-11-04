@@ -143,7 +143,7 @@ public static class GameServers
                 tag1.Add("icon", new NbtString() { Value = item.Icon });
             }
             tag1.Add("acceptTextures", new NbtByte()
-            { Value = item.AcceptTextures ? (byte)1 : (byte)0 });
+            { ValueByte = item.AcceptTextures ? (byte)1 : (byte)0 });
             list1.Add(tag1);
         }
 
@@ -163,7 +163,7 @@ public static class GameServers
             Name = tag.TryGet<NbtString>("name")!.Value,
             IP = tag.TryGet<NbtString>("ip")!.Value,
             Icon = (tag.TryGet("icon") as NbtString)?.Value,
-            AcceptTextures = tag.TryGet("acceptTextures") is NbtByte { Value: 1 }
+            AcceptTextures = tag.TryGet("acceptTextures") is NbtByte { ValueByte: 1 }
         };
 
         return info;

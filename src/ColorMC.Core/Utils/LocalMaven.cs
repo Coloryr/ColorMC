@@ -147,7 +147,7 @@ public static class LocalMaven
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error3"), e);
+                ColorMCCore.OnError(new LocalMavenErrorEventArgs(e));
             }
         }
 

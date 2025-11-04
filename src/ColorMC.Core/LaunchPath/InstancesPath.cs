@@ -1,4 +1,5 @@
 using ColorMC.Core.Config;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -206,14 +207,14 @@ public static class InstancesPath
                     game.Save();
                 }
                 game.ReadModInfo();
-                game.ReadLaunchData();
+                game.ReadLaunchCountData();
                 game.ReadCustomJson();
                 game.AddToGroup();
             }
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error98"), e);
+            ColorMCCore.OnError(new InstanceLoadErrorEventArgs(dir, e));
         }
     }
 
@@ -571,19 +572,18 @@ public static class InstancesPath
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateGameAsync(CreateGameArg arg)
+    public static async Task<GameSettingObj?> CreateGameAsync(GameSettingObj game, ICreateInstanceGui? gui)
     {
         try
         {
             DisableWatcher = true;
 
-            var game = arg.Game;
             //如果已经存在了相同名字的实例
             if (HaveGameWithName(game.Name))
             {
-                if (arg.Overwirte == null || await arg.Overwirte(game) == false)
+                if (gui == null || await gui.GameOverwirte(game) == false)
                 {
-                    if (arg.Request != null && await arg.Request(LanguageHelper.Get("Core.Error99")) == false)
+                    if (gui != null && await gui.InstanceNameReplace() == false)
                     {
                         return null;
                     }
@@ -622,16 +622,8 @@ public static class InstancesPath
                 await PathHelper.MoveToTrashAsync(dir);
             }
 
-            try
-            {
-                Directory.CreateDirectory(dir);
-                Directory.CreateDirectory(game.GetGamePath());
-            }
-            catch (Exception e)
-            {
-                Logs.Error(string.Format(LanguageHelper.Get("Core.Error95"), game.Name), e);
-                return null;
-            }
+            Directory.CreateDirectory(dir);
+            Directory.CreateDirectory(game.GetGamePath());
 
             game.Mods ??= [];
             game.CustomJson ??= [];
@@ -646,6 +638,11 @@ public static class InstancesPath
             game.AddToGroup();
 
             return game;
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new InstanceCreateErrorEventArgs(game.Name, e));
+            return null;
         }
         finally
         {
@@ -669,7 +666,7 @@ public static class InstancesPath
             obj.UUID = game.UUID;
             obj.DirName = game.DirName;
             obj.ReadModInfo(false);
-            obj.ReadLaunchData();
+            obj.ReadLaunchCountData();
             obj.ReadCustomJson();
             obj.AddToGroup();
             obj.Save();
@@ -801,16 +798,11 @@ public static class InstancesPath
     /// <param name="obj">原始实例</param>
     /// <param name="arg">复制参数</param>
     /// <returns>复制的实例</returns>
-    public static async Task<GameSettingObj?> CopyAsync(this GameSettingObj obj, CopyGameArg arg)
+    public static async Task<GameSettingObj?> CopyAsync(this GameSettingObj obj, string game, ICreateInstanceGui? gui)
     {
         var obj1 = obj.CopyObj();
-        obj1.Name = arg.Game;
-        obj1 = await CreateGameAsync(new CreateGameArg
-        {
-            Game = obj1,
-            Request = arg.Request,
-            Overwirte = arg.Overwirte
-        });
+        obj1.Name = game;
+        obj1 = await CreateGameAsync(obj1, gui);
         if (obj1 != null)
         {
             await PathHelper.CopyDirAsync(GetGamePath(obj), GetGamePath(obj1));
@@ -894,7 +886,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error90"), e);
+            ColorMCCore.OnError(new InstanceReadModErrorEventArgs(obj, e));
             obj.Mods = [];
             return;
         }
@@ -976,7 +968,7 @@ public static class InstancesPath
     /// 读取游戏运行时间
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    public static void ReadLaunchData(this GameSettingObj obj)
+    public static void ReadLaunchCountData(this GameSettingObj obj)
     {
         string file = obj.GetLaunchFile();
         if (!File.Exists(file))
@@ -996,7 +988,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error91"), e);
+            ColorMCCore.OnError(new InstanceReadCountErrorEventArgs(obj, e));
             obj.LaunchData = new()
             {
                 LastPlay = new()
@@ -1040,7 +1032,7 @@ public static class InstancesPath
                 var path = item.FullName[basel..];
                 var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                 info.Directory?.Create();
-                arg.State?.Invoke(info.FullName, index, list.Count);
+                arg.Gui?.StateUpdate(info.FullName, index, list.Count);
                 PathHelper.CopyFile(item.FullName, info.FullName);
                 index++;
             }
@@ -1081,18 +1073,18 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="path">自定义加载器路径</param>
     /// <returns>数据</returns>
-    public static async Task<StringRes> SetGameLoaderAsync(this GameSettingObj obj, string path)
+    public static async Task<BaseRes> SetGameLoaderAsync(this GameSettingObj obj, string path)
     {
         if (!File.Exists(path))
         {
-            return new() { Data = LanguageHelper.Get("Core.Error96") };
+            return new BaseRes { Error = ErrorType.FileNotExist };
         }
 
         var list = await GameDownloadHelper.DecodeLoaderJarAsync(obj, path);
 
         if (list == null)
         {
-            return new() { Data = LanguageHelper.Get("Core.Error97") };
+            return new BaseRes { Error = ErrorType.FileReadError };
         }
 
         var local = obj.GetGameLoaderFile();
@@ -1100,7 +1092,7 @@ public static class InstancesPath
 
         PathHelper.CopyFile(path, local);
 
-        return new() { State = true };
+        return new BaseRes { State = true };
     }
 
     /// <summary>
@@ -1123,7 +1115,7 @@ public static class InstancesPath
         }
         catch (Exception e)
         {
-            Logs.Error("error set icon", e);
+            ColorMCCore.OnError(new InstanceSetIconErrorEventArgs(obj, url, e));
         }
 
         return false;

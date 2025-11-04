@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
 using ColorMC.Core.Game;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
@@ -56,12 +55,12 @@ public static class LegacyLogin
         }
         else if (!string.IsNullOrWhiteSpace(obj2.ErrorMessage))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, 
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
                 data: obj2.ErrorMessage);
         }
         else if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, 
+            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
                 data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
         else if (obj2.SelectedProfile != null)

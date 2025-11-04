@@ -656,17 +656,9 @@ public static class GameDownloadHelper
         var down = neo ?
             BuildNeoForgeInstaller(mc, version) :
             BuildForgeInstaller(mc, version);
-        try
+        var res = await DownloadManager.StartAsync([down]);
+        if (!res)
         {
-            var res = await DownloadManager.StartAsync([down]);
-            if (!res)
-            {
-                return null;
-            }
-        }
-        catch (Exception e)
-        {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error18"), e, false);
             return null;
         }
 
@@ -691,47 +683,35 @@ public static class GameDownloadHelper
         //1.12.2以上
         if (versionfile != null && installfile != null)
         {
-            ForgeLaunchObj? info;
-            try
+            var stream = versionfile.OpenEntryStream();
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var info = JsonUtils.ToObj(mem, JsonType.ForgeLaunchObj);
+            if (info == null)
             {
-                var stream = versionfile.OpenEntryStream();
-                info = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
-                if (info == null)
-                {
-                    return null;
-                }
-                stream.Dispose();
-                stream = versionfile.OpenEntryStream();
-                VersionPath.AddGame(info, stream, mc, version, neo);
-                stream.Dispose();
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Error15"), e);
                 return null;
             }
+            mem.Seek(0, SeekOrigin.Begin);
+            VersionPath.AddGame(info, mem, mc, version, neo);
+            stream.Dispose();
+            mem.Dispose();
 
             var list1 = BuildForgeLibs(info, mc, version, neo, v2, false);
 
-            ForgeInstallObj? info1;
-            try
+            stream = installfile.OpenEntryStream();
+            mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var info1 = JsonUtils.ToObj(mem, JsonType.ForgeInstallObj);
+            if (info1 == null)
             {
-                var stream = installfile.OpenEntryStream();
-                info1 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
-                if (info1 == null)
-                {
-                    return null;
-                }
-                stream.Dispose();
-                stream = installfile.OpenEntryStream();
-                VersionPath.AddGame(info1, stream, mc, version, neo);
-                stream.Dispose();
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Error16"), e);
                 return null;
             }
+            mem.Seek(0, SeekOrigin.Begin);
+            VersionPath.AddGame(info1, mem, mc, version, neo);
+            stream.Dispose();
+            mem.Dispose();
 
             var list2 = BuildForgeLibs(info1, mc, version, neo, v2);
             return new()
@@ -740,13 +720,13 @@ public static class GameDownloadHelper
                 Installs = [.. list2]
             };
         }
-        //旧forge
-        if (installfile == null)
+        else
         {
-            return null;
-        }
-        try
-        {
+            //旧forge
+            if (installfile == null)
+            {
+                return null;
+            }
             using var stream = installfile.OpenEntryStream();
             var obj = JsonUtils.ToObj(stream, JsonType.ForgeInstallOldObj);
             if (obj == null)
@@ -794,11 +774,6 @@ public static class GameDownloadHelper
                 Loaders = [.. BuildForgeLibs(info, mc, version, neo, v2, true)]
             };
         }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error17"), e);
-            return null;
-        }
     }
 
     /// <summary>
@@ -843,24 +818,15 @@ public static class GameDownloadHelper
 
         version = fabric.Version;
 
-        using var stream = await FabricAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
-        if (stream == null)
-        {
-            return null;
-        }
-        using var mem = new MemoryStream();
-        await stream.CopyToAsync(mem);
-        mem.Seek(0, SeekOrigin.Begin);
-        var meta1 = JsonUtils.ToObj(mem, JsonType.FabricLoaderObj);
-        if (meta1 == null)
+        using var data = await FabricAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
+        if (data == null || data.Meta == null)
         {
             return null;
         }
 
-        mem.Seek(0, SeekOrigin.Begin);
-        VersionPath.AddGame(meta1, mem, mc, version);
+        VersionPath.AddGame(data.Meta, data.Text, mc, version);
 
-        foreach (var item in meta1.Libraries)
+        foreach (var item in data.Meta.Libraries)
         {
             var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
@@ -916,24 +882,15 @@ public static class GameDownloadHelper
 
         version = quilt.Version;
 
-        using var stream = await QuiltAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
-        if (stream == null)
+        using var res = await QuiltAPI.GetLoaderAsync(mc, version, CoreHttpClient.Source);
+        if (res == null || res.Meta == null)
         {
             return null;
         }
-        using var mem = new MemoryStream();
-        await stream.CopyToAsync(mem);
-        mem.Seek(0, SeekOrigin.Begin);
-        var meta1 = JsonUtils.ToObj(mem, JsonType.QuiltLoaderObj);
-        if (meta1 == null)
-        {
-            return null;
-        }
+        
+        VersionPath.AddGame(res.Meta, res.Text, mc, version);
 
-        mem.Seek(0, SeekOrigin.Begin);
-        VersionPath.AddGame(meta1, mem, mc, version);
-
-        foreach (var item in meta1.Libraries)
+        foreach (var item in res.Meta.Libraries)
         {
             var name = FuntionUtils.VersionNameToPath(item.Name);
             list.Add(new()
@@ -1108,52 +1065,45 @@ public static class GameDownloadHelper
 
         string name = "";
 
-        try
+        foreach (var item2 in obj1.Libraries)
         {
-            foreach (var item2 in obj1.Libraries)
-            {
-                if (cancel.IsCancellationRequested)
-                {
-                    return null;
-                }
-
-                await GetDownloadAsync(item2);
-            }
             if (cancel.IsCancellationRequested)
             {
                 return null;
             }
-            foreach (var item3 in obj2.Libraries)
-            {
-                if (cancel.IsCancellationRequested)
-                {
-                    return null;
-                }
 
-                await GetDownloadAsync(item3);
-            }
+            await GetDownloadAsync(item2);
+        }
+        if (cancel.IsCancellationRequested)
+        {
+            return null;
+        }
+        foreach (var item3 in obj2.Libraries)
+        {
             if (cancel.IsCancellationRequested)
             {
                 return null;
             }
-            name = obj2.Version;
-            if (!obj2.Version.StartsWith(obj2.Profile))
-            {
-                name = $"{obj2.Profile}-{obj2.Version}";
-            }
 
-            obj.CustomLoader ??= new();
-
-            VersionPath.AddGame(new CustomLoaderObj()
-            {
-                Type = CustomLoaderType.ForgeLaunch,
-                Loader = obj2
-            }, obj.UUID);
+            await GetDownloadAsync(item3);
         }
-        catch (Exception e)
+        if (cancel.IsCancellationRequested)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error17"), e);
+            return null;
         }
+        name = obj2.Version;
+        if (!obj2.Version.StartsWith(obj2.Profile))
+        {
+            name = $"{obj2.Profile}-{obj2.Version}";
+        }
+
+        obj.CustomLoader ??= new();
+
+        VersionPath.AddGame(new CustomLoaderObj()
+        {
+            Type = CustomLoaderType.ForgeLaunch,
+            Loader = obj2
+        }, obj.UUID);
 
         return new MakeDownloadNameItemsRes
         {

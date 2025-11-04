@@ -187,16 +187,16 @@ public static class ChunkMca
             //获取区块位置
             if (nbt!.TryGet("xPos") is NbtInt value)
             {
-                nbt.X = value.Value;
+                nbt.X = value.ValueInt;
             }
             if (nbt.TryGet("zPos") is NbtInt value1)
             {
-                nbt.Z = value1.Value;
+                nbt.Z = value1.ValueInt;
             }
             if (nbt.TryGet("Position") is NbtIntArray value2)
             {
-                nbt.X = value2.Value[0];
-                nbt.Z = value2.Value[1];
+                nbt.X = value2.ValueIntArray[0];
+                nbt.Z = value2.ValueIntArray[1];
             }
 
             list1[a] = nbt;

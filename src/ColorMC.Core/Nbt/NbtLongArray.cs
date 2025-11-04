@@ -13,12 +13,17 @@ public class NbtLongArray : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new List<long> Value { get; set; }
+    public List<long> ValueLongArray { get; set; }
+    public override string Value 
+    { 
+        get => $"[{ValueLongArray.Count}]"; 
+        set => throw new NotSupportedException(); 
+    }
 
     public NbtLongArray()
     {
         NbtType = NbtType.NbtLongArray;
-        Value ??= new();
+        ValueLongArray ??= [];
     }
 
     internal override NbtLongArray Read(DataInputStream stream)
@@ -26,16 +31,16 @@ public class NbtLongArray : NbtBase
         var length = stream.ReadInt();
         for (var a = 0; a < length; a++)
         {
-            Value.Add(stream.ReadLong());
+            ValueLongArray.Add(stream.ReadLong());
         }
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value.Count);
+        stream.Write(ValueLongArray.Count);
 
-        foreach (var item in Value)
+        foreach (var item in ValueLongArray)
         {
             stream.Write(item);
         }

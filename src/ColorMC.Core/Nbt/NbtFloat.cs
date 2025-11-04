@@ -13,7 +13,13 @@ public class NbtFloat : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new float Value { get; set; }
+    public float ValueFloat { get; set; }
+
+    public override string Value 
+    { 
+        get => ValueFloat.ToString(); 
+        set => ValueFloat = float.Parse(value); 
+    }
 
     public NbtFloat()
     {
@@ -22,12 +28,12 @@ public class NbtFloat : NbtBase
 
     internal override NbtFloat Read(DataInputStream stream)
     {
-        Value = stream.ReadFloat();
+        ValueFloat = stream.ReadFloat();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueFloat);
     }
 }

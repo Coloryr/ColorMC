@@ -1,44 +1,10 @@
-using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 
 namespace ColorMC.Core.Objs;
-
-/// <summary>
-/// 核心初始化参数
-/// </summary>
-public record CoreInitArg
-{
-    /// <summary>
-    /// 运行的路径
-    /// </summary>
-    public required string Local;
-    /// <summary>
-    /// OAuth客户端密钥
-    /// </summary>
-    public string? OAuthKey;
-    /// <summary>
-    /// CurseForge客户端密钥
-    /// </summary>
-    public string? CurseForgeKey;
-}
-
-/// <summary>
-/// 删除文件夹参数
-/// </summary>
-public record DeleteFilesArg
-{
-    /// <summary>
-    /// 路径
-    /// </summary>
-    public required string Local;
-    /// <summary>
-    /// 请求回调
-    /// </summary>
-    public ColorMCCore.Request? Request;
-}
 
 /// <summary>
 /// 游戏启动所使用的参数
@@ -65,69 +31,10 @@ public record GameLaunchArg
     /// 解密对接
     /// </summary>
     public ILauncherGui? Gui;
-    //public ColorMCCore.Request? Request;
-    //public ColorMCCore.LaunchP? Pre;
-    //public ColorMCCore.UpdateState? State;
-    //public ColorMCCore.ChoiseCall? Select;
-    //public ColorMCCore.NoJava? Nojava;
-    //public ColorMCCore.LoginFailRun? Loginfail;
-    //public ColorMCCore.GameLaunch? Update2;
     /// <summary>
     /// ColorMC ASM端口
     /// </summary>
     public int? Mixinport;
-}
-
-///// <summary>
-///// 创建启动参数
-///// </summary>
-//public record GameMakeArg
-//{
-//    /// <summary>
-//    /// 账户
-//    /// </summary>
-//    public required LoginObj Login;
-//    /// <summary>
-//    /// 使用的Java
-//    /// </summary>
-//    public required JavaInfo Jvm;
-//    /// <summary>
-//    /// 自动进入的世界
-//    /// </summary>
-//    public WorldObj? World;
-//    /// <summary>
-//    /// 自动加入的服务器
-//    /// </summary>
-//    public ServerObj? Server;
-
-//    public int? Mixinport;
-//    public bool CheckLocal;
-//}
-
-/// <summary>
-/// 生成服务器包参数
-/// </summary>
-public record ServerPackGenArg
-{
-    /// <summary>
-    /// 保存路径
-    /// </summary>
-    public required string Local;
-
-    public ColorMCCore.Request? Request;
-}
-
-/// <summary>
-/// 解压世界参数
-/// </summary>
-public record UnzipBackupWorldArg
-{
-    /// <summary>
-    /// 文件位置
-    /// </summary>
-    public required string File;
-
-    public ColorMCCore.Request Request;
 }
 
 /// <summary>
@@ -152,37 +59,7 @@ public record AddGameFolderArg
     /// </summary>
     public string? Group;
 
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.GameOverwirte? Overwirte;
-    public ColorMCCore.ZipUpdate? State;
-}
-
-/// <summary>
-/// 创建游戏版本参数
-/// </summary>
-public record CreateGameArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.GameOverwirte? Overwirte;
-}
-
-/// <summary>
-/// 游戏实例复制参数
-/// </summary>
-public record CopyGameArg
-{
-    /// <summary>
-    /// 需要复制的游戏实例名
-    /// </summary>
-    public required string Game;
-
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.GameOverwirte? Overwirte;
+    public ICreateInstanceGui? Gui;
 }
 
 /// <summary>
@@ -203,7 +80,7 @@ public record CopyGameFileArg
     /// </summary>
     public bool IsDir;
 
-    public ColorMCCore.ZipUpdate? State;
+    public ICreateInstanceGui? Gui;
 }
 
 /// <summary>
@@ -220,11 +97,8 @@ public abstract record UnpackGameZipArg
     /// </summary>
     public string? Group;
 
-    public ColorMCCore.ZipUpdate? Zip;
-    public ColorMCCore.Request? Request;
-    public ColorMCCore.GameOverwirte? Overwirte;
-    public ColorMCCore.PackUpdate? Update;
-    public ColorMCCore.PackState? Update2;
+    public ICreateInstanceGui? Gui;
+    public IZipGui? ZipGui;
 }
 
 /// <summary>
@@ -260,118 +134,6 @@ public record DownloadCurseForgeArg : UnpackGameZipArg
     public required string? IconUrl;
 }
 
-///// <summary>
-///// 安装压缩包参数
-///// </summary>
-//public record InstallModPackZipArg
-//{
-//    /// <summary>
-//    /// 压缩包位置
-//    /// </summary>
-//    public required Stream Zip;
-//    /// <summary>
-//    /// 覆盖的游戏实例名
-//    /// </summary>
-//    public string? Name;
-//    /// <summary>
-//    /// 加入的分组
-//    /// </summary>
-//    public string? Group;
-
-//    public ColorMCCore.Request? Request;
-//    public ColorMCCore.GameOverwirte? Overwirte;
-//    public ColorMCCore.PackUpdate? Update;
-//    public ColorMCCore.PackState? Update2;
-//}
-
-/// <summary>
-/// 获取CurseForge整合包Mod信息参数
-/// </summary>
-public record GetCurseForgeModInfoArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-    /// <summary>
-    /// 整合包信息
-    /// </summary>
-    public required CurseForgePackObj Info;
-
-    public ColorMCCore.PackUpdate? Update;
-}
-
-/// <summary>
-/// 获取Modrinth整合包Mod信息参数
-/// </summary>
-public record GetModrinthModInfoArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-    /// <summary>
-    /// 整合包信息
-    /// </summary>
-    public required ModrinthPackObj Info;
-
-    public ColorMCCore.PackUpdate? Update;
-}
-
-/// <summary>
-/// 升级整合包参数
-/// </summary>
-public record UpdateModPackArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-    /// <summary>
-    /// 新版整合包位置
-    /// </summary>
-    public required string Zip;
-
-    public ColorMCCore.PackUpdate? Update;
-    public ColorMCCore.PackState? Update2;
-}
-
-/// <summary>
-/// 更新CurseForge整合包
-/// </summary>
-public record UpdateCurseForgeModPackArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-    /// <summary>
-    /// 整合包信息
-    /// </summary>
-    public required CurseForgeModObj.CurseForgeDataObj Data;
-
-    public ColorMCCore.PackUpdate Update;
-    public ColorMCCore.PackState Update2;
-}
-
-/// <summary>
-/// 更新Modrinth整合包
-/// </summary>
-public record UpdateModrinthModPackArg
-{
-    /// <summary>
-    /// 游戏实例
-    /// </summary>
-    public required GameSettingObj Game;
-    /// <summary>
-    /// 整合包信息
-    /// </summary>
-    public required ModrinthVersionObj Data;
-
-    public ColorMCCore.PackUpdate Update;
-    public ColorMCCore.PackState Update2;
-}
-
 /// <summary>
 /// 安装Java参数
 /// </summary>
@@ -394,25 +156,7 @@ public record InstallJvmArg
     /// </summary>
     public required string Url;
 
-    public ColorMCCore.ZipUpdate? Zip;
-    public ColorMCCore.JavaUnzip? Unzip;
-}
-
-/// <summary>
-/// 解压参数
-/// </summary>
-public record UnzipArg
-{
-    /// <summary>
-    /// 名字
-    /// </summary>
-    public required string Name;
-    /// <summary>
-    /// 文件
-    /// </summary>
-    public required string File;
-
-    public ColorMCCore.ZipUpdate? Zip;
+    public IZipGui? Gui;
 }
 
 /// <summary>

@@ -44,49 +44,49 @@ public static class ModrinthAPI
     private static async Task<ModrinthSearchObj?> SearchAsync(string version, string query, int sortOrder,
         int offset, int limit, string categoryId, string type2, string? type3)
     {
+        var list = new List<MFacetsObj>
+        {
+            ModrinthHelper.BuildProjectType([type2])
+        };
+
+        if (!string.IsNullOrWhiteSpace(version))
+        {
+            list.Add(ModrinthHelper.BuildVersions([version]));
+        }
+
+        var list1 = new List<string>();
+        if (!string.IsNullOrWhiteSpace(categoryId))
+        {
+            list1.Add(categoryId);
+        }
+        if (!string.IsNullOrWhiteSpace(type3))
+        {
+            list1.Add(type3);
+        }
+        if (list1.Count != 0)
+        {
+            list.Add(ModrinthHelper.BuildCategories(list1));
+        }
+
+        var type = sortOrder switch
+        {
+            1 => ModrinthHelper.Downloads,
+            2 => ModrinthHelper.Follows,
+            3 => ModrinthHelper.Newest,
+            4 => ModrinthHelper.Updated,
+            _ => ModrinthHelper.Relevance
+        };
+
+        var url = $"{UrlHelper.Modrinth}search?query={query}&index={type.Data}&offset={offset}" +
+            $"&limit={limit}&facets={ModrinthHelper.BuildFacets(list)}";
         try
         {
-            var list = new List<MFacetsObj>
-            {
-                ModrinthHelper.BuildProjectType([type2])
-            };
-
-            if (!string.IsNullOrWhiteSpace(version))
-            {
-                list.Add(ModrinthHelper.BuildVersions([version]));
-            }
-
-            var list1 = new List<string>();
-            if (!string.IsNullOrWhiteSpace(categoryId))
-            {
-                list1.Add(categoryId);
-            }
-            if (!string.IsNullOrWhiteSpace(type3))
-            {
-                list1.Add(type3);
-            }
-            if (list1.Count != 0)
-            {
-                list.Add(ModrinthHelper.BuildCategories(list1));
-            }
-
-            var type = sortOrder switch
-            {
-                1 => ModrinthHelper.Downloads,
-                2 => ModrinthHelper.Follows,
-                3 => ModrinthHelper.Newest,
-                4 => ModrinthHelper.Updated,
-                _ => ModrinthHelper.Relevance
-            };
-
-            var url = $"{UrlHelper.Modrinth}search?query={query}&index={type.Data}&offset={offset}" +
-                $"&limit={limit}&facets={ModrinthHelper.BuildFacets(list)}";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ModrinthSearchObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error28"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -111,7 +111,7 @@ public static class ModrinthAPI
     {
         return SearchAsync(version, filter, sortOrder, page * pagesize,
             pagesize, categoryId, ClassMod, loader is Loaders.Normal or Loaders.Custom ? "" :
-            loader.GetName().ToLower());
+            loader.ToString().ToLower());
     }
 
     /// <summary>
@@ -154,15 +154,15 @@ public static class ModrinthAPI
     /// <param name="version">版本ID</param>
     public static async Task<ModrinthVersionObj?> GetVersionAsync(string id, string version)
     {
+        string url = $"{UrlHelper.Modrinth}project/{id}/version/{version}";
         try
         {
-            string url = $"{UrlHelper.Modrinth}project/{id}/version/{version}";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ModrinthVersionObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error29"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -174,15 +174,15 @@ public static class ModrinthAPI
     /// <param name="version">版本ID</param>
     public static async Task<ModrinthProjectObj?> GetProjectAsync(string id)
     {
+        string url = $"{UrlHelper.Modrinth}project/{id}";
         try
         {
-            string url = $"{UrlHelper.Modrinth}project/{id}";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ModrinthProjectObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error29"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -196,26 +196,26 @@ public static class ModrinthAPI
     /// <returns></returns>
     public static async Task<List<ModrinthVersionObj>?> GetFileVersionsAsync(string id, string? mc, Loaders loader)
     {
+        string url;
+        if (string.IsNullOrWhiteSpace(mc))
+        {
+            url = $"{UrlHelper.Modrinth}project/{id}/version?" +
+            (loader != Loaders.Normal ? $"&loaders=[\"{loader.ToString().ToLower()}\"]" : "");
+        }
+        else
+        {
+            url = $"{UrlHelper.Modrinth}project/{id}/version?game_versions=[" +
+            $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]"
+            + (loader != Loaders.Normal ? $"&loaders=[\"{loader.ToString().ToLower()}\"]" : "");
+        }
         try
         {
-            string url;
-            if (string.IsNullOrWhiteSpace(mc))
-            {
-                url = $"{UrlHelper.Modrinth}project/{id}/version?" +
-                (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
-            }
-            else
-            {
-                url = $"{UrlHelper.Modrinth}project/{id}/version?game_versions=[" +
-                $"{(string.IsNullOrWhiteSpace(mc) ? "" : ('"' + mc + '"'))}]"
-                + (loader != Loaders.Normal ? $"&loaders=[\"{loader.GetName().ToLower()}\"]" : "");
-            }
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ListModrinthVersionObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error30"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -225,15 +225,15 @@ public static class ModrinthAPI
     /// </summary>
     public static async Task<List<ModrinthGameVersionObj>?> GetGameVersionsAsync()
     {
+        string url = $"{UrlHelper.Modrinth}tag/game_version";
         try
         {
-            string url = $"{UrlHelper.Modrinth}tag/game_version";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ListModrinthGameVersionObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error31"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -244,15 +244,15 @@ public static class ModrinthAPI
     /// <returns></returns>
     public static async Task<List<ModrinthCategoriesObj>?> GetCategoriesAsync()
     {
+        string url = $"{UrlHelper.Modrinth}tag/category";
         try
         {
-            string url = $"{UrlHelper.Modrinth}tag/category";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ListModrinthCategoriesObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error32"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -264,15 +264,15 @@ public static class ModrinthAPI
     /// <returns></returns>
     public static async Task<ModrinthVersionObj?> GetVersionFromSha1Async(string sha1)
     {
+        string url = $"{UrlHelper.Modrinth}version_file/{sha1}";
         try
         {
-            string url = $"{UrlHelper.Modrinth}version_file/{sha1}";
             using var stream = await SendAsync(url);
             return JsonUtils.ToObj(stream, JsonType.ModrinthVersionObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error32"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }

@@ -140,6 +140,62 @@ public static class CoreManager
         {
             log = string.Format(LanguageUtils.Get("Core.Error50"), arg24.File);
         }
+        else if (arg is CheckJavaErrorEventArgs arg25)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error57"), arg25.Java);
+        }
+        else if (arg is ScanJavaErrorEventArgs)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error134"));
+        }
+        else if (arg is InstanceLoadErrorEventArgs arg26)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error98"), arg26.Path);
+        }
+        else if (arg is InstanceCreateErrorEventArgs arg27)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error95"), arg27.Name);
+        }
+        else if (arg is InstanceReadModErrorEventArgs arg28)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error90"), arg28.Game.Name);
+        }
+        else if (arg is InstanceReadModErrorEventArgs arg29)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error90"), arg29.Game.Name);
+        }
+        else if (arg is InstanceReadCountErrorEventArgs arg30)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error91"), arg30.Game.Name);
+        }
+        else if (arg is JavaInstallErrorEventArgs arg31)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error54"), arg31.Name, arg31.Url);
+        }
+        else if (arg is ApiRequestErrorEventArgs arg32)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error44"), arg32.Url);
+        }
+        else if (arg is MojangGetVersionErrorEventArgs)
+        {
+            log = LanguageUtils.Get("Core.Error61");
+        }
+        else if (arg is PlayerSkinGetErrorEventArgs arg33)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error5"), arg33.Login.AuthType.GetName(), arg33.Login.UUID);
+        }
+        else if (arg is PlayerCapeGetErrorEventArgs arg34)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error135"), arg34.Login.AuthType.GetName(), arg34.Login.UUID);
+        }
+        else if (arg is PlayerTexturesGetErrorEventArgs arg35)
+        {
+            log = string.Format(LanguageUtils.Get("Core.Error6"), arg35.Login.AuthType.GetName(), arg35.Login.UUID);
+        }
+        else if (arg is LocalMavenErrorEventArgs)
+        {
+            log = LanguageUtils.Get("Core.Error3");
+        }
 
         if (arg is ExceptionErrorEventArgs error)
         {

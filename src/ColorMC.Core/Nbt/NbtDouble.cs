@@ -13,7 +13,13 @@ public class NbtDouble : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new double Value { get; set; }
+    public double ValueDouble { get; set; }
+
+    public override string Value 
+    { 
+        get => ValueDouble.ToString(); 
+        set => ValueDouble = double.Parse(value); 
+    }
 
     public NbtDouble()
     {
@@ -22,12 +28,12 @@ public class NbtDouble : NbtBase
 
     internal override NbtDouble Read(DataInputStream stream)
     {
-        Value = stream.ReadDouble();
+        ValueDouble = stream.ReadDouble();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueDouble);
     }
 }

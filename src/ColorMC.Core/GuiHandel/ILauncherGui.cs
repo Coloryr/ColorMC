@@ -1,7 +1,7 @@
 ﻿using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
-namespace ColorMC.Core.Game;
+namespace ColorMC.Core.GuiHandel;
 
 public interface ILauncherGui
 {

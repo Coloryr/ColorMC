@@ -16,38 +16,24 @@ public static class QuiltAPI
     /// </summary>
     private static List<string>? s_supportVersion;
 
-    private static async Task<Stream?> SendAsync(string url)
-    {
-        var data = await CoreHttpClient.GetAsync(url);
-        if (data.StatusCode != HttpStatusCode.OK)
-        {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                new Exception(url), false);
-            return null;
-        }
-
-        return await data.Content.ReadAsStreamAsync();
-    }
-
     /// <summary>
     /// 获取支持的版本
     /// </summary>
     public static async Task<List<string>?> GetSupportVersionAsync(SourceLocal? local = null)
     {
+        if (s_supportVersion != null)
+        {
+            return s_supportVersion;
+        }
+
+        string url = $"{UrlHelper.GetQuiltMeta(local)}/game";
         try
         {
-            if (s_supportVersion != null)
-                return s_supportVersion;
-
-            string url = $"{UrlHelper.GetQuiltMeta(local)}/game";
-            using var data = await CoreHttpClient.GetAsync(url);
-            if (data.StatusCode != HttpStatusCode.OK)
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
+            if (stream == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                    new Exception(url), false);
                 return null;
             }
-            using var stream = await data.Content.ReadAsStreamAsync();
             var list = JsonUtils.ToObj(stream, JsonType.ListQuiltGameObj);
             if (list == null)
             {
@@ -66,7 +52,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error36"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -76,15 +62,16 @@ public static class QuiltAPI
     /// </summary>
     public static async Task<QuiltMetaObj?> GetMetaAsync(SourceLocal? local = null)
     {
+        string url = UrlHelper.GetQuiltMeta(local);
+
         try
         {
-            string url = UrlHelper.GetQuiltMeta(local);
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             return JsonUtils.ToObj(stream, JsonType.QuiltMetaObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error37"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -95,10 +82,11 @@ public static class QuiltAPI
     /// <param name="mc">游戏版本</param>
     public static async Task<List<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
     {
+        string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}";
+
         try
         {
-            string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}";
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             var list = JsonUtils.ToObj(stream, JsonType.ListFabricLoaderVersionObj);
             if (list == null)
             {
@@ -114,7 +102,7 @@ public static class QuiltAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error38"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -124,16 +112,32 @@ public static class QuiltAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<Stream?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
+    public static async Task<GetQuiltLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
     {
+        string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
         try
         {
-            string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
-            return await SendAsync(url);
+            var stream = await CoreHttpClient.GetStreamAsync(url);
+            if (stream == null)
+            {
+                return null;
+            }
+
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var meta = JsonUtils.ToObj(mem, JsonType.QuiltLoaderObj);
+            mem.Seek(0, SeekOrigin.Begin);
+
+            return new GetQuiltLoaderRes
+            {
+                Meta = meta,
+                Text = mem
+            };
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error39"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }

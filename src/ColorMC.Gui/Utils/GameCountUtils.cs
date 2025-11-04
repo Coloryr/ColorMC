@@ -74,10 +74,10 @@ public static class GameCountUtils
             {
                 Count = new()
                 {
-                    LaunchCount = nbt.TryGet<NbtLong>("LaunchCount")!.Value,
-                    LaunchDoneCount = nbt.TryGet<NbtLong>("LaunchDoneCount")!.Value,
-                    LaunchErrorCount = nbt.TryGet<NbtLong>("LaunchErrorCount")!.Value,
-                    AllTime = TimeSpan.FromTicks(nbt.TryGet<NbtLong>("AllTime")!.Value),
+                    LaunchCount = nbt.TryGet<NbtLong>("LaunchCount")!.ValueLong,
+                    LaunchDoneCount = nbt.TryGet<NbtLong>("LaunchDoneCount")!.ValueLong,
+                    LaunchErrorCount = nbt.TryGet<NbtLong>("LaunchErrorCount")!.ValueLong,
+                    AllTime = TimeSpan.FromTicks(nbt.TryGet<NbtLong>("AllTime")!.ValueLong),
                     GameRuns = [],
                     LaunchLogs = []
                 };
@@ -90,8 +90,8 @@ public static class GameCountUtils
                     var list2 = new List<CountObj.GameTime>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var start = item1.TryGet<NbtLong>("StartTime")!.Value;
-                        var stop = item1.TryGet<NbtLong>("StopTime")!.Value;
+                        var start = item1.TryGet<NbtLong>("StartTime")!.ValueLong;
+                        var stop = item1.TryGet<NbtLong>("StopTime")!.ValueLong;
                         list2.Add(new()
                         {
                             StartTime = new DateTime(start),
@@ -109,8 +109,8 @@ public static class GameCountUtils
                     var list2 = new List<CountObj.LaunchLog>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
                     {
-                        var time = item1.TryGet<NbtLong>("Time")!.Value;
-                        var error = item1.TryGet<NbtByte>("Error")!.Value;
+                        var time = item1.TryGet<NbtLong>("Time")!.ValueLong;
+                        var error = item1.TryGet<NbtByte>("Error")!.ValueByte;
                         list2.Add(new()
                         {
                             Time = new DateTime(time),
@@ -205,10 +205,10 @@ public static class GameCountUtils
         }
         var nbt = new NbtCompound()
         {
-            { "LaunchCount", new NbtLong() { Value = Count.LaunchCount } },
-            { "LaunchDoneCount", new NbtLong() { Value = Count.LaunchDoneCount } },
-            { "LaunchErrorCount", new NbtLong() { Value = Count.LaunchErrorCount } },
-            { "AllTime", new NbtLong(){ Value = Count.AllTime.Ticks } }
+            { "LaunchCount", new NbtLong() { ValueLong = Count.LaunchCount } },
+            { "LaunchDoneCount", new NbtLong() { ValueLong = Count.LaunchDoneCount } },
+            { "LaunchErrorCount", new NbtLong() { ValueLong = Count.LaunchErrorCount } },
+            { "AllTime", new NbtLong(){ ValueLong = Count.AllTime.Ticks } }
         };
 
         var list = new NbtList() { InNbtType = NbtType.NbtCompound };
@@ -223,8 +223,8 @@ public static class GameCountUtils
             {
                 list1.Add(new NbtCompound()
                 {
-                    { "StartTime", new NbtLong() { Value = item1.StartTime.Ticks } },
-                    { "StopTime", new NbtLong() { Value = item1.StopTime.Ticks } }
+                    { "StartTime", new NbtLong() { ValueLong = item1.StartTime.Ticks } },
+                    { "StopTime", new NbtLong() { ValueLong = item1.StopTime.Ticks } }
                 });
             }
             com.Add("List", list1);
@@ -244,8 +244,8 @@ public static class GameCountUtils
             {
                 list1.Add(new NbtCompound()
                 {
-                    { "Time", new NbtLong() { Value = item1.Time.Ticks } },
-                    { "Error", new NbtByte() { Value = item1.Error ? (byte)1 : (byte)0 } }
+                    { "Time", new NbtLong() { ValueLong = item1.Time.Ticks } },
+                    { "Error", new NbtByte() { ValueByte = item1.Error ? (byte)1 : (byte)0 } }
                 });
             }
             com.Add("List", list1);

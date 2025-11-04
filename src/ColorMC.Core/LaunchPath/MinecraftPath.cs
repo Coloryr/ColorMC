@@ -21,8 +21,6 @@ public static class MinecraftPath
     {
         BaseDir = Path.Combine(dir, Names.NameMinecraftKey);
 
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Info18"), BaseDir));
-
         Directory.CreateDirectory(BaseDir);
 
         AssetsPath.Init(BaseDir);

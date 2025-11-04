@@ -28,14 +28,11 @@ public static class OptifineAPI
         try
         {
             var list = new List<OptifineObj>();
-            var data = await CoreHttpClient.GetAsync(url);
-            if (data.StatusCode != HttpStatusCode.OK)
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
+            if (stream == null)
             {
-                ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                    new Exception(url), false);
                 return null;
             }
-            using var stream = await data.Content.ReadAsStreamAsync();
             if (CoreHttpClient.Source == SourceLocal.Offical)
             {
                 var html = new HtmlDocument();
@@ -120,7 +117,7 @@ public static class OptifineAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error40"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -134,29 +131,31 @@ public static class OptifineAPI
     {
         try
         {
-            if (obj.Local == SourceLocal.Offical)
-            {
-                _ = CoreHttpClient.GetStringAsync(obj.Url1);
-                var data = await CoreHttpClient.GetStringAsync(obj.Url2);
-                if (data.State == false)
-                {
-                    ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                        new Exception(obj.Url2), false);
-                    return null;
-                }
-                HtmlDocument html = new();
-                html.LoadHtml(data.Data!);
-                var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
-                if (list1 == null)
-                    return null;
-                obj.Url1 = UrlHelper.OptiFine + list1[0].Attributes["href"].Value;
-                obj.Url2 = "";
-                obj.Local = SourceLocal.BMCLAPI;
-            }
+            await CoreHttpClient.GetStringAsync(obj.Url1);
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error41"), e, false);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(obj.Url1, e));
+        }
+        try
+        {
+            var data = await CoreHttpClient.GetStringAsync(obj.Url2);
+            if (data == null)
+            {
+                return null;
+            }
+            HtmlDocument html = new();
+            html.LoadHtml(data);
+            var list1 = html.DocumentNode.SelectNodes("//table/tr/td/table/tbody/tr/td/table/tbody/tr/td/span/a");
+            if (list1 == null)
+                return null;
+            obj.Url1 = UrlHelper.OptiFine + list1[0].Attributes["href"].Value;
+            obj.Url2 = "";
+            obj.Local = SourceLocal.BMCLAPI;
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(obj.Url2, e));
         }
 
         return null;
@@ -168,13 +167,13 @@ public static class OptifineAPI
     /// <param name="obj">游戏实例</param>
     /// <param name="item">高清修复信息</param>
     /// <returns>结果</returns>
-    public static async Task<StringRes> DownloadOptifineAsync(GameSettingObj obj, OptifineObj item)
+    public static async Task<bool> DownloadOptifineAsync(GameSettingObj obj, OptifineObj item)
     {
         FileItemObj item1;
         var data = await GetOptifineDownloadUrlAsync(item);
         if (data == null)
         {
-            return new() { Data = LanguageHelper.Get("Core.Error42") };
+            return false;
         }
 
         item1 = new()
@@ -187,12 +186,7 @@ public static class OptifineAPI
 
         VersionPath.AddOptifine(item);
 
-        var res = await DownloadManager.StartAsync([item1]);
-        if (!res)
-        {
-            return new() { Data = LanguageHelper.Get("Core.Error43") };
-        }
-        return new() { State = true };
+        return await DownloadManager.StartAsync([item1]);
     }
 
     /// <summary>

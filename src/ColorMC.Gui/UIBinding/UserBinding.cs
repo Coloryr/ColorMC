@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -30,7 +31,7 @@ public static class UserBinding
     /// <param name="input3">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuth loginOAuth, ILoginGui select,
+    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuthGui loginOAuth, ILoginGui select,
         string? input1 = null, string? input2 = null, string? input3 = null)
     {
         if (type == AuthType.Offline)

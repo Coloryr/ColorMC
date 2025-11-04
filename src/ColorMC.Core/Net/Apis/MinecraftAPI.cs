@@ -51,7 +51,7 @@ public static class MinecraftAPI
         var message = new HttpRequestMessage(HttpMethod.Get, Profile);
         message.Headers.Add("Authorization", $"Bearer {accessToken}");
         using var data = await CoreHttpClient.SendLoginAsync(message, token);
-        using var stream = await data.Content.ReadAsStreamAsync();
+        using var stream = await data.Content.ReadAsStreamAsync(token);
         return JsonUtils.ToObj(stream, JsonType.MinecraftProfileObj);
     }
 

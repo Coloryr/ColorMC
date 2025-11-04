@@ -13,7 +13,13 @@ public class NbtShort : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new short Value { get; set; }
+    public short ValueShort { get; set; }
+
+    public override string Value 
+    {
+        get => ValueShort.ToString(); 
+        set => ValueShort = short.Parse(value); 
+    }
 
     public NbtShort()
     {
@@ -22,12 +28,12 @@ public class NbtShort : NbtBase
 
     internal override NbtShort Read(DataInputStream stream)
     {
-        Value = stream.ReadShort();
+        ValueShort = stream.ReadShort();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueShort);
     }
 }

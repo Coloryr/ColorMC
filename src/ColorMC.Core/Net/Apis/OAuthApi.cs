@@ -71,7 +71,7 @@ public static class OAuthApi
         int delay = 2;
         do
         {
-            await Task.Delay(delay * 1000);
+            await Task.Delay(delay * 1000, token);
             if (token.IsCancellationRequested)
             {
                 return null;
