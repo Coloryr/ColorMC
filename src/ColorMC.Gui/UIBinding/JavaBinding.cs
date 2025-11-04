@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using ColorMC.Core;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
@@ -19,19 +22,21 @@ public static class JavaBinding
     /// <param name="name">名字</param>
     /// <param name="zip">UI相关</param>
     /// <returns></returns>
-    public static async Task<StringRes> AddJavaZipAsync(string file, string name, ColorMCCore.ZipUpdate zip)
+    public static async Task<StringRes> AddJavaZipAsync(string file, string name, IZipGui zip)
     {
         try
         {
-            await JvmPath.UnzipJavaAsync(new UnzipArg
-            {
-                File = file,
-                Name = name,
-                Gui = zip
-            });
+            var res = await JvmPath.UnzipJavaAsync(file, name, zip);
         }
-        catch
+        catch(Exception e)
+        {
+            var log = string.Format(LanguageUtils.Get("Core.Error52"), file, name);
+            string title = LanguageUtils.Get("AddJavaWindow.Error2");
+            Logs.Error(log, e);
+            WindowManager.ShowError(title, log, e);
 
+            return new StringRes() { Data = title };
+        }
     }
 
     /// <summary>
