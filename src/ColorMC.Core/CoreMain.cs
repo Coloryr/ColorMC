@@ -27,69 +27,6 @@ public static class ColorMCCore
     public static string BaseDir { get; private set; }
 
     /// <summary>
-    /// 请求回调
-    /// </summary>
-    /// <param name="text">显示内容</param>
-    /// <returns>是否同意</returns>
-    public delegate Task<bool> Request(string text);
-    /// <summary>
-    /// 请求是否运行程序
-    /// </summary>
-    /// <param name="pre">是否为运行前启动</param>
-    /// <returns>是否同意</returns>
-    public delegate Task<bool> LaunchP(bool pre);
-    /// <summary>
-    /// 状态发生改变
-    /// </summary>
-    /// <param name="text">消息</param>
-    public delegate void UpdateState(string? text);
-    /// <summary>
-    /// 启动选择框
-    /// </summary>
-    /// <param name="text">消息</param>
-    /// <returns>是否确定</returns>
-    public delegate Task<bool> ChoiseCall(string? text);
-    /// <summary>
-    /// 没有Java
-    /// </summary>
-    /// <summary>
-    /// 登录失败是否继续运行
-    /// </summary>
-    /// <param name="obj">账户</param>
-    /// <returns>是否继续运行</returns>
-    public delegate Task<bool> LoginFailRun(LoginObj obj);
-    /// <summary>
-    /// 游戏复写
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <returns>是否复写</returns>
-    public delegate Task<bool> GameOverwirte(GameSettingObj obj);
-    /// <summary>
-    /// 整合包进度更新
-    /// </summary>
-    /// <param name="size">总进度</param>
-    /// <param name="now">目前进度</param>
-    public delegate void PackUpdate(int size, int now);
-    /// <summary>
-    /// 压缩包导入状态改变
-    /// </summary>
-    /// <param name="state">状态</param>
-    public delegate void PackState(CoreRunState state);
-    /// <summary>
-    /// 游戏启动信息更新
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="state">当前状态</param>
-    public delegate void GameLaunch(GameSettingObj obj, LaunchState state);
-    /// <summary>
-    /// 选择项目
-    /// </summary>
-    /// <param name="title">标题</param>
-    /// <param name="items">项目列表</param>
-    /// <returns>选择的项目</returns>
-    public delegate Task<int> Select(string title, List<string> items);
-
-    /// <summary>
     /// 显示下载窗口
     /// </summary>
     public static event Action<DownloadEventArgs>? Download;

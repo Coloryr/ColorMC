@@ -241,7 +241,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }

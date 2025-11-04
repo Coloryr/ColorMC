@@ -508,32 +508,32 @@ public static class GameArg
                 break;
             case AuthType.AuthlibInjector:
                 var res = await CoreHttpClient.GetStringAsync(login.Text1);
-                if (!res.State)
+                if (res == null)
                 {
                     throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
             case AuthType.LittleSkin:
                 res = await CoreHttpClient.GetStringAsync($"{UrlHelper.LittleSkin}api/yggdrasil");
-                if (!res.State)
+                if (res == null)
                 {
                     throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={UrlHelper.LittleSkin}api/yggdrasil");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
             case AuthType.SelfLittleSkin:
                 res = await CoreHttpClient.GetStringAsync($"{login.Text1}api/yggdrasil");
-                if (!res.State)
+                if (res == null)
                 {
                     throw new LaunchException(LaunchError.LoginCoreError);
                 }
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}/api/yggdrasil");
-                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res.Data!)}");
+                jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res)}");
                 jvm.Add("-Dauthlibinjector.side=client");
                 break;
         }

@@ -68,13 +68,10 @@ public static class AuthlibHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static async Task<FileItemObj?> ReadyNide8Async(CancellationToken token)
     {
-        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token);
-        if (data.State == false)
-        {
-            throw new LaunchException(LaunchError.LoginCoreError);
-        }
-
-        var obj = JsonUtils.ReadObj(data.Data!)!;
+        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token) 
+            ?? throw new LaunchException(LaunchError.LoginCoreError);
+        var obj = JsonUtils.ReadObj(data) 
+            ?? throw new LaunchException(LaunchError.LoginCoreError);
         var sha1 = obj.GetString("jarHash")!;
         var item = BuildNide8Item(obj.GetString("jarVersion")!);
         NowNide8Injector = item.Local;
@@ -108,11 +105,11 @@ public static class AuthlibHelper
         {
             string url = UrlHelper.AuthlibInjectorMeta(CoreHttpClient.Source);
             var meta = await CoreHttpClient.GetStringAsync(url, token);
-            if (meta.State == false)
+            if (meta == null)
             {
                 return LocalAuthLib;
             }
-            var obj = JsonUtils.ToObj(meta.Data!, JsonType.AuthlibInjectorMetaObj);
+            var obj = JsonUtils.ToObj(meta, JsonType.AuthlibInjectorMetaObj);
             if (obj == null)
             {
                 return LocalAuthLib;
@@ -120,11 +117,11 @@ public static class AuthlibHelper
             var item = obj.Artifacts.Where(a => a.BuildNumber == obj.LatestBuildNumber).ToList()[0];
 
             var info = await CoreHttpClient.GetStringAsync(UrlHelper.AuthlibInjector(item, CoreHttpClient.Source), token);
-            if (info.State == false)
+            if (info == null)
             {
                 return LocalAuthLib;
             }
-            return JsonUtils.ToObj(info.Data!, JsonType.AuthlibInjectorObj) ?? LocalAuthLib;
+            return JsonUtils.ToObj(info, JsonType.AuthlibInjectorObj) ?? LocalAuthLib;
         }
         catch
         {
