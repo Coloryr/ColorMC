@@ -136,87 +136,58 @@ public static class AuthlibHelper
     /// 初始化AuthlibInjector，存在不下载
     /// </summary>
     /// <returns>AuthlibInjector下载实例</returns>
-    public static async Task<MakeDownloadItemRes> ReadyAuthlibInjectorAsync(CancellationToken token)
+    public static async Task<FileItemObj?> ReadyAuthlibInjectorAsync(CancellationToken token)
     {
-        try
+        if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
         {
-            if (string.IsNullOrWhiteSpace(NowAuthlibInjector))
+            var obj1 = await GetAuthlibInjectorObjAsync(token);
+            var item1 = BuildAuthlibInjectorItem(obj1);
+
+            LocalMaven.AddItem(new()
             {
-                var obj1 = await GetAuthlibInjectorObjAsync(token);
-                var item1 = BuildAuthlibInjectorItem(obj1);
+                Name = "moe.yushi:authlibinjector",
+                Url = item1.Url,
+                Have = true,
+                Local = $"/moe/yushi/authlibinjector/{obj1.Version}/authlib-injector-{obj1.Version}.jar",
+                SHA256 = obj1.Checksums.Sha256
+            });
 
-                LocalMaven.AddItem(new()
-                {
-                    Name = "moe.yushi:authlibinjector",
-                    Url = item1.Url,
-                    Have = true,
-                    Local = $"/moe/yushi/authlibinjector/{obj1.Version}/authlib-injector-{obj1.Version}.jar",
-                    SHA256 = obj1.Checksums.Sha256
-                });
-
-                NowAuthlibInjector = item1.Local;
-                if (File.Exists(NowAuthlibInjector))
-                {
-                    var sha256 = obj1.Checksums?.Sha256;
-                    if (!string.IsNullOrWhiteSpace(sha256))
-                    {
-                        using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
-                        var sha2561 = await HashHelper.GenSha256Async(stream);
-                        if (sha256 != sha2561)
-                        {
-                            return new MakeDownloadItemRes
-                            {
-                                State = true,
-                                Item = item1
-                            };
-                        }
-                    }
-                }
-                else
-                {
-                    return new MakeDownloadItemRes
-                    {
-                        State = true,
-                        Item = item1
-                    };
-                }
-
-                return new MakeDownloadItemRes
-                {
-                    State = true
-                };
-            }
-            else if (File.Exists(NowAuthlibInjector))
+            NowAuthlibInjector = item1.Local;
+            if (File.Exists(NowAuthlibInjector))
             {
-                var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
-                if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
+                var sha256 = obj1.Checksums?.Sha256;
+                if (!string.IsNullOrWhiteSpace(sha256))
                 {
                     using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
-                    var sha256 = await HashHelper.GenSha256Async(stream);
-                    if (item.SHA256 != sha256)
+                    var sha2561 = await HashHelper.GenSha256Async(stream);
+                    if (sha256 != sha2561)
                     {
-                        var obj1 = await GetAuthlibInjectorObjAsync(token);
-                        return new MakeDownloadItemRes
-                        {
-                            State = true,
-                            Item = BuildAuthlibInjectorItem(obj1)
-                        };
+                        return item1;
                     }
                 }
             }
+            else
+            {
+                return item1;
+            }
 
-            return new MakeDownloadItemRes
-            {
-                State = true
-            };
+            return null;
         }
-        catch (Exception e)
+        else if (File.Exists(NowAuthlibInjector))
         {
-            Logs.Error(LanguageHelper.Get("Core.Error13"), e);
-            return new MakeDownloadItemRes
+            var item = LocalMaven.GetItem("moe.yushi:authlibinjector");
+            if (item != null && !string.IsNullOrWhiteSpace(item.SHA256))
             {
-                State = false
-            };
+                using var stream = PathHelper.OpenRead(NowAuthlibInjector)!;
+                var sha256 = await HashHelper.GenSha256Async(stream);
+                if (item.SHA256 != sha256)
+                {
+                    var obj1 = await GetAuthlibInjectorObjAsync(token);
+                    return BuildAuthlibInjectorItem(obj1);
+                }
+            }
         }
+
+        return null;
     }
 }

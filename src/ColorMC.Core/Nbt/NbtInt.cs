@@ -13,7 +13,13 @@ public class NbtInt : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new int Value { get; set; }
+    public int ValueInt { get; set; }
+
+    public override string Value 
+    {
+        get => ValueInt.ToString();
+        set => ValueInt = int.Parse(value); 
+    }
 
     public NbtInt()
     {
@@ -22,12 +28,12 @@ public class NbtInt : NbtBase
 
     internal override NbtInt Read(DataInputStream stream)
     {
-        Value = stream.ReadInt();
+        ValueInt = stream.ReadInt();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueInt);
     }
 }

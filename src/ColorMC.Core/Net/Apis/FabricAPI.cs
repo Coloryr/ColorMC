@@ -11,35 +11,25 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class FabricAPI
 {
+    /// <summary>
+    /// 支持的游戏版本
+    /// </summary>
     private static List<string>? s_supportVersion;
-
-    private static async Task<Stream?> SendAsync(string url)
-    {
-        var data = await CoreHttpClient.GetAsync(url);
-        if (data.StatusCode != HttpStatusCode.OK)
-        {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                new Exception(url), false);
-            return null;
-        }
-
-        return await data.Content.ReadAsStreamAsync();
-    }
 
     /// <summary>
     /// 获取元数据
     /// </summary>
     public static async Task<FabricMetaObj?> GetMetaAsync(SourceLocal? local = null)
     {
+        string url = UrlHelper.GetFabricMeta(local);
         try
         {
-            string url = UrlHelper.GetFabricMeta(local);
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             return JsonUtils.ToObj(stream, JsonType.FabricMetaObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Http.Download.Fabric.Error1"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -49,16 +39,30 @@ public static class FabricAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<Stream?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
+    public static async Task<GetFabricLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
     {
+        string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
         try
         {
-            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
-            return await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
+            if (stream == null)
+            {
+                return null;
+            }
+            var mem = new MemoryStream();
+            await stream.CopyToAsync(mem);
+            mem.Seek(0, SeekOrigin.Begin);
+            var meta = JsonUtils.ToObj(stream, JsonType.FabricLoaderObj);
+            mem.Seek(0, SeekOrigin.Begin);
+            return new GetFabricLoaderRes
+            {
+                Meta = meta,
+                Text = mem
+            };
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error33"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -69,10 +73,10 @@ public static class FabricAPI
     /// <param name="mc">游戏版本</param>
     public static async Task<List<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
     {
+        string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
         try
         {
-            string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             var list = JsonUtils.ToObj(stream, JsonType.ListFabricLoaderVersionObj);
             if (list == null)
             {
@@ -91,7 +95,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error34"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -101,13 +105,16 @@ public static class FabricAPI
     /// </summary>
     public static async Task<List<string>?> GetSupportVersionAsync(SourceLocal? local = null)
     {
+        if (s_supportVersion != null)
+        {
+            return s_supportVersion;
+        }
+
+        string url = $"{UrlHelper.GetFabricMeta(local)}/game";
+
         try
         {
-            if (s_supportVersion != null)
-                return s_supportVersion;
-
-            string url = $"{UrlHelper.GetFabricMeta(local)}/game";
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             var list = JsonUtils.ToObj(stream, JsonType.ListGameObj);
             if (list == null)
                 return null;
@@ -124,7 +131,7 @@ public static class FabricAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error35"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }

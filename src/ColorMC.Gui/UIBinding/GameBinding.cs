@@ -17,6 +17,7 @@ using ColorMC.Core.Chunk;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
@@ -95,7 +96,7 @@ public static class GameBinding
             Group = group,
             Request = request,
             Overwirte = overwirte,
-            State = state
+            Gui = state
         });
 
         if (!res.State)
@@ -1187,9 +1188,13 @@ public static class GameBinding
     /// <param name="item1">文件</param>
     /// <param name="request">UI相关</param>
     /// <returns></returns>
-    public static Task<bool> BackupWorldAsync(GameSettingObj obj, FileInfo item1, ColorMCCore.Request request)
+    public static Task<bool> BackupWorldAsync(GameSettingObj obj, FileInfo item1, IZipGui gui)
     {
-        return obj.UnzipBackupWorldAsync(new UnzipBackupWorldArg { File = item1.FullName, Request = request });
+        return obj.UnzipBackupWorldAsync(new UnzipBackupWorldArg 
+        { 
+            File = item1.FullName, 
+            Gui = gui 
+        });
     }
 
     /// <summary>
@@ -1247,7 +1252,7 @@ public static class GameBinding
         return obj.GenServerPackAsync(new ServerPackGenArg
         {
             Local = local,
-            Request = request
+            Gui = request
         });
     }
 

@@ -33,13 +33,6 @@ public static class ColorMCCore
     /// <returns>是否同意</returns>
     public delegate Task<bool> Request(string text);
     /// <summary>
-    /// 压缩包更新
-    /// </summary>
-    /// <param name="text">名字</param>
-    /// <param name="size">目前进度</param>
-    /// <param name="all">总进度</param>
-    public delegate void ZipUpdate(string text, int size, int all);
-    /// <summary>
     /// 请求是否运行程序
     /// </summary>
     /// <param name="pre">是否为运行前启动</param>
@@ -59,11 +52,6 @@ public static class ColorMCCore
     /// <summary>
     /// 没有Java
     /// </summary>
-    public delegate void NoJava(int version);
-    /// <summary>
-    /// Java解压
-    /// </summary>
-    public delegate void JavaUnzip();
     /// <summary>
     /// 登录失败是否继续运行
     /// </summary>
@@ -133,7 +121,7 @@ public static class ColorMCCore
     /// <summary>
     /// 启动器核心参数
     /// </summary>
-    internal static CoreInitArg CoreArg;
+    internal static CoreInitObj CoreArg;
 
     /// <summary>
     /// 游戏窗口句柄
@@ -148,7 +136,7 @@ public static class ColorMCCore
     /// 初始化阶段1
     /// </summary>
     /// <param name="dir">运行的路径</param>
-    public static void Init(CoreInitArg arg)
+    public static void Init(CoreInitObj arg)
     {
         if (string.IsNullOrWhiteSpace(arg.Local))
         {

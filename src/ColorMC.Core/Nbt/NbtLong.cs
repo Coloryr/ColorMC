@@ -14,7 +14,13 @@ public class NbtLong : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new long Value { get; set; }
+    public long ValueLong { get; set; }
+
+    public override string Value
+    { 
+        get => ValueLong.ToString();
+        set => ValueLong = long.Parse(value); 
+    }
 
     public NbtLong()
     {
@@ -23,12 +29,12 @@ public class NbtLong : NbtBase
 
     internal override NbtLong Read(DataInputStream stream)
     {
-        Value = stream.ReadLong();
+        ValueLong = stream.ReadLong();
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value);
+        stream.Write(ValueLong);
     }
 }

@@ -42,13 +42,6 @@ public static class CoreHttpClient
         var http = ConfigLoad.Config.Http;
         var dns = ConfigLoad.Config.Dns;
 
-        Logs.Info(LanguageHelper.Get("Core.Info10"));
-        if (http.DownloadProxy || http.GameProxy || http.LoginProxy)
-        {
-            Logs.Info(string.Format(LanguageHelper.Get("Core.Info11"),
-               http.ProxyIP, http.ProxyPort));
-        }
-
         Source = http.Source;
 
         _downloadClient?.CancelPendingRequests();
@@ -245,16 +238,15 @@ public static class CoreHttpClient
     /// </summary>
     /// <param name="url">地址</param>
     /// <returns></returns>
-    public static async Task<StringRes> GetStringAsync(string url, CancellationToken token = default)
+    public static async Task<string?> GetStringAsync(string url, CancellationToken token = default)
     {
         using var data = await _downloadClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, token);
         if (data.StatusCode != HttpStatusCode.OK)
         {
-            return new();
+            return null;
         }
 
-        var data1 = await data.Content.ReadAsStringAsync();
-        return new() { State = true, Data = data1 };
+        return await data.Content.ReadAsStringAsync(token);
     }
 
     /// <summary>
@@ -284,7 +276,7 @@ public static class CoreHttpClient
     {
         var content = new FormUrlEncodedContent(arg);
         var message = await _loginClient.PostAsync(url, content, token);
-        return await message.Content.ReadAsStreamAsync();
+        return await message.Content.ReadAsStreamAsync(token);
     }
     /// <summary>
     /// 请求数据
@@ -296,8 +288,8 @@ public static class CoreHttpClient
     {
         var content = new StringContent(arg, MediaTypeHeaderValue.Parse("application/json"));
         using var message = await _loginClient.PostAsync(url, content, token);
-        using var data = await message.Content.ReadAsStreamAsync();
-        return await JsonDocument.ParseAsync(data);
+        using var data = await message.Content.ReadAsStreamAsync(token);
+        return await JsonDocument.ParseAsync(data, cancellationToken: token);
     }
 
     /// <summary>
@@ -317,6 +309,6 @@ public static class CoreHttpClient
     /// <returns></returns>
     public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage httpRequest, CancellationToken token)
     {
-        return _loginClient.SendAsync(httpRequest);
+        return _loginClient.SendAsync(httpRequest, token);
     }
 }

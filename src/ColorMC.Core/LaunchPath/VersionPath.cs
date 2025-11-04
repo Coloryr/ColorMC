@@ -48,19 +48,11 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task<VersionObj?> GetVersionsAsync()
     {
-        try
+        if (_version == null)
         {
-            if (_version == null)
-            {
-                await ReadVersionsAsync();
-            }
-            return _version;
+            await ReadVersionsAsync();
         }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error60"), e);
-            return null;
-        }
+        return _version;
     }
 
     /// <summary>
@@ -128,23 +120,22 @@ public static class VersionPath
     /// <returns></returns>
     public static async Task GetFromWebAsync()
     {
-        var res = await GameAPI.GetVersionsAsync();
-        if (res != null)
+        using var res = await GameAPI.GetVersionsAsync();
+        if (res != null && res.Version != null)
         {
             _version = res.Version;
             SaveVersions(res.Text);
             return;
         }
-        res = await GameAPI.GetVersionsAsync(SourceLocal.Offical);
-        if (res == null)
+        using var res1 = await GameAPI.GetVersionsAsync(SourceLocal.Offical);
+        if (res1 != null && res1.Version != null)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error61"));
+            _version = res1.Version;
+            SaveVersions(res1.Text);
+            return;
         }
-        else
-        {
-            _version = res.Version;
-            SaveVersions(res.Text);
-        }
+
+        ColorMCCore.OnError(new MojangGetVersionErrorEventArgs());
     }
 
     /// <summary>
@@ -190,13 +181,12 @@ public static class VersionPath
     public static async Task<GameArgObj?> AddGameAsync(VersionObj.VersionsObj obj)
     {
         var url = UrlHelper.DownloadSourceChange(obj.Url, CoreHttpClient.Source);
-        var res = await GameAPI.GetGameAsync(url);
-        if (res == null)
+        using var res = await GameAPI.GetGameAsync(url);
+        if (res == null || res.Arg == null)
         {
             return null;
         }
         PathHelper.WriteBytes(Path.Combine(BaseDir, $"{obj.Id}.json"), res.Text);
-        res.Text.Dispose();
         return res.Arg;
     }
 

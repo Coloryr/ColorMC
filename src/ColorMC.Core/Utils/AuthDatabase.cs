@@ -40,8 +40,6 @@ public static class AuthDatabase
 
         s_local = Path.Combine(path, Names.NameAuthFile);
 
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Info7"), s_local));
-
         if (File.Exists(s_local))
         {
             Load();

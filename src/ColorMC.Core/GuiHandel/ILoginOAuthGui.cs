@@ -1,8 +1,8 @@
 ﻿using ColorMC.Core.Objs;
 
-namespace ColorMC.Core.Game;
+namespace ColorMC.Core.GuiHandel;
 
-public interface ILoginOAuth
+public interface ILoginOAuthGui
 {
     public CancellationToken Token { get; }
     /// <summary>

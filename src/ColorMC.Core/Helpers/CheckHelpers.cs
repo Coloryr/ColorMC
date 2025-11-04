@@ -138,7 +138,7 @@ public static partial class CheckHelpers
     {
         var version = VersionPath.GetVersion(obj.Version);
         return version == null
-            ? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Error116"), obj.Version))
+            ? throw new LaunchException(LaunchError.LostVersionFile)
             : version.IsGameVersionV2();
     }
 
@@ -167,7 +167,7 @@ public static partial class CheckHelpers
         catch
         {
             var obj1 = VersionPath.GetVersion(version)
-                ?? throw new FileNotFoundException(string.Format(LanguageHelper.Get("Core.Error116"), version));
+                ?? throw new LaunchException(LaunchError.LostVersionFile);
             return obj1.JavaVersion?.MajorVersion > 8;
         }
     }
@@ -285,13 +285,9 @@ public static partial class CheckHelpers
 
         var var = await VersionPath.GetVersionsAsync();
         var version = var?.Versions.FirstOrDefault(a => a.Id == obj.Version)
-                      ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
-        _ = await VersionPath.AddGameAsync(version)
-            ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
-        game = VersionPath.GetVersion(obj.Version)
-               ?? throw new LaunchException(LaunchState.VersionError, LanguageHelper.Get("Core.Error102"));
-
-        return game;
+                      ?? throw new LaunchException(LaunchError.LostVersionFile);
+        return await VersionPath.AddGameAsync(version)
+            ?? throw new LaunchException(LaunchError.LostVersionFile);
     }
 
     /// <summary>
@@ -486,20 +482,14 @@ public static partial class CheckHelpers
     /// <exception cref="LaunchException">启动失败</exception>
     public static async Task<FileItemObj?> CheckLoginCoreAsync(this LoginObj login, CancellationToken token)
     {
-        var item1 = login.AuthType switch
+        return login.AuthType switch
         {
             AuthType.Nide8 => await AuthlibHelper.ReadyNide8Async(token),
             AuthType.AuthlibInjector => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
             AuthType.LittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
             AuthType.SelfLittleSkin => await AuthlibHelper.ReadyAuthlibInjectorAsync(token),
-            _ => new MakeDownloadItemRes { State = true }
+            _ => null
         };
-        if (item1.Item != null)
-        {
-            return item1.Item;
-        }
-
-        return null;
     }
 }
 

@@ -30,7 +30,7 @@ public static class ColorMCGui
     /// <summary>
     /// Core 启动参数
     /// </summary>
-    private static readonly CoreInitArg s_arg = new()
+    private static readonly CoreInitObj s_arg = new()
     {
         Local = "",
         CurseForgeKey = "$2a$10$6L8AkVsaGMcZR36i8XvCr.O4INa2zvDwMhooYdLZU0bb/E78AsT0m",

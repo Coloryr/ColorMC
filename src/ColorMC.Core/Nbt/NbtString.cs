@@ -13,7 +13,7 @@ public class NbtString : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new string Value { get; set; }
+    public override string Value { get; set; }
 
     public NbtString()
     {

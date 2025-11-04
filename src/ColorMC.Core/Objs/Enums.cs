@@ -578,3 +578,34 @@ public enum SchematicType
     /// </summary>
     Create
 }
+
+/// <summary>
+/// 操作错误类型
+/// </summary>
+public enum ErrorType
+{ 
+    /// <summary>
+    /// 文件不存在
+    /// </summary>
+    FileNotExist,
+    /// <summary>
+    /// 文件读取失败
+    /// </summary>
+    FileReadError,
+    /// <summary>
+    /// 文件下载失败
+    /// </summary>
+    DonwloadFail,
+    /// <summary>
+    /// 安装失败
+    /// </summary>
+    InstallFail,
+    /// <summary>
+    /// 解压失败
+    /// </summary>
+    UnzipFail,
+    /// <summary>
+    /// 查找文件失败
+    /// </summary>
+    SearchFail,
+}

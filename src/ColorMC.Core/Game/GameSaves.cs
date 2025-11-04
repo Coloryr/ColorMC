@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
@@ -172,26 +173,22 @@ public static class GameSaves
     /// <param name="obj">游戏实例</param>
     /// <param name="arg">参数</param>
     /// <returns>是否成功还原</returns>
-    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, UnzipBackupWorldArg arg)
+    public static async Task<bool> UnzipBackupWorldAsync(this GameSettingObj obj, string file, IZipGui? gui)
     {
-        var local = Path.Combine(obj.GetSavesPath(), Path.GetFileName(arg.File));
+        var local = Path.Combine(obj.GetSavesPath(), Path.GetFileName(file));
         if (Directory.Exists(local))
         {
-            await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-            {
-                Local = local,
-                Request = arg.Request
-            });
+            await PathHelper.MoveToTrashAsync(local);
         }
         try
         {
-            await new ZipProcess().UnzipAsync(local, arg.File,
-                PathHelper.OpenRead(arg.File)!);
+            await new ZipProcess(gui).UnzipAsync(local, file,
+                PathHelper.OpenRead(file)!);
             return true;
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(new GameSaveRestoreErrorEventArgs(obj, arg.File, e));
+            ColorMCCore.OnError(new GameSaveRestoreErrorEventArgs(obj, file, e));
             return false;
         }
     }
@@ -226,16 +223,16 @@ public static class GameSaves
 
             //读数据
             var tag1 = tag.TryGet<NbtCompound>("Data")!;
-            obj.LastPlayed = tag1.TryGet<NbtLong>("LastPlayed")!.Value;
+            obj.LastPlayed = tag1.TryGet<NbtLong>("LastPlayed")!.ValueLong;
             if (tag1.TryGet<NbtLong>("RandomSeed") is { } seed)
             {
-                obj.RandomSeed = seed.Value;
+                obj.RandomSeed = seed.ValueLong;
             }
             if (tag1.TryGet<NbtCompound>("WorldGenSettings") is { } setting)
             {
                 if (setting.TryGet<NbtLong>("seed") is { } seed1)
                 {
-                    obj.RandomSeed = seed1.Value;
+                    obj.RandomSeed = seed1.ValueLong;
                 }
                 if (setting.TryGet<NbtCompound>("dimensions")?
                     .TryGet<NbtCompound>("minecraft:overworld")?
@@ -250,9 +247,9 @@ public static class GameSaves
                 obj.GeneratorName = "minecraft:" + name1.Value;
             }
 
-            obj.GameType = tag1.TryGet<NbtInt>("GameType")!.Value;
-            obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.Value;
-            obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.Value;
+            obj.GameType = tag1.TryGet<NbtInt>("GameType")!.ValueInt;
+            obj.Hardcore = tag1.TryGet<NbtByte>("hardcore")!.ValueByte;
+            obj.Difficulty = tag1.TryGet<NbtByte>("Difficulty")!.ValueByte;
             obj.LevelName = tag1.TryGet<NbtString>("LevelName")!.Value;
 
             var icon = dir.GetFiles().Where(a => a.Name == Names.NameIconFile).FirstOrDefault();

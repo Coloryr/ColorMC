@@ -21,12 +21,17 @@ public static class JavaBinding
     /// <returns></returns>
     public static async Task<StringRes> AddJavaZipAsync(string file, string name, ColorMCCore.ZipUpdate zip)
     {
-        return await JvmPath.UnzipJavaAsync(new UnzipArg
+        try
         {
-            File = file,
-            Name = name,
-            Zip = zip
-        });
+            await JvmPath.UnzipJavaAsync(new UnzipArg
+            {
+                File = file,
+                Name = name,
+                Gui = zip
+            });
+        }
+        catch
+
     }
 
     /// <summary>

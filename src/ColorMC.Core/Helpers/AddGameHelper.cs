@@ -102,24 +102,19 @@ public static class AddGameHelper
         }
 
         //创建游戏实例
-        game = await InstancesPath.CreateGameAsync(new CreateGameArg
-        {
-            Game = game,
-            Request = arg.Request,
-            Overwirte = arg.Overwirte
-        });
+        game = await InstancesPath.CreateGameAsync(game, arg.Gui);
         if (game == null)
         {
-            return new();
+            return new GameRes();
         }
 
         //复制游戏文件
-        await game.CopyFileAsync(new()
+        await game.CopyFileAsync(new CopyGameFileArg
         {
             Local = arg.Local,
             Unselect = arg.Unselect,
             IsDir = ismmc,
-            State = arg.State
+            Gui = arg.Gui
         });
 
         return new()
@@ -137,7 +132,7 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     private static async Task<GameRes> ModrinthReadZipAsync(InstallZipArg arg, Stream st)
     {
-        arg.Update2?.Invoke(CoreRunState.Read);
+        arg.Gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
         //获取主信息
         ModrinthPackObj? info = null;
@@ -156,7 +151,7 @@ public static class AddGameHelper
             return new();
         }
 
-        arg.Update2?.Invoke(CoreRunState.Init);
+        arg.Gui?.ModPackState(CoreRunState.Init);
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -197,21 +192,16 @@ public static class AddGameHelper
         }
 
         //创建游戏实例
-        var game = await InstancesPath.CreateGameAsync(new CreateGameArg
+        var game = await InstancesPath.CreateGameAsync(new GameSettingObj()
         {
-            Game = new GameSettingObj()
-            {
-                GroupName = arg.Group,
-                Name = arg.Name,
-                Version = gameversion,
-                ModPack = true,
-                ModPackType = SourceType.Modrinth,
-                Loader = loaders,
-                LoaderVersion = loaderversion
-            },
-            Request = arg.Request,
-            Overwirte = arg.Overwirte
-        });
+            GroupName = arg.Group,
+            Name = arg.Name,
+            Version = gameversion,
+            ModPack = true,
+            ModPackType = SourceType.Modrinth,
+            Loader = loaders,
+            LoaderVersion = loaderversion
+        }, arg.Gui);
 
         if (game == null)
         {
@@ -244,20 +234,15 @@ public static class AddGameHelper
             }
         }
 
-        arg.Update2?.Invoke(CoreRunState.GetInfo);
+        arg.Gui?.ModPackState(CoreRunState.GetInfo);
 
         //获取Mod信息
 
-        var list = ModrinthHelper.GetModrinthModInfo(new GetModrinthModInfoArg
-        {
-            Game = game,
-            Info = info,
-            Update = arg.Update
-        });
+        var list = ModrinthHelper.GetModrinthModInfo(game, info, arg.Gui);
 
         game.SaveModInfo();
 
-        arg.Update2?.Invoke(CoreRunState.Download);
+        arg.Gui?.ModPackState(CoreRunState.Download);
 
         await DownloadManager.StartAsync([.. list]);
 
@@ -272,7 +257,7 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     private static async Task<GameRes> CurseForgeAsync(InstallZipArg arg, Stream st)
     {
-        arg.Update2?.Invoke(CoreRunState.Read);
+        arg.Gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
 
         //获取主信息
@@ -292,7 +277,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        arg.Update2?.Invoke(CoreRunState.Init);
+        arg.Gui?.ModPackState(CoreRunState.Init);
 
         //获取版本数据
         Loaders loaders = Loaders.Normal;
@@ -354,12 +339,7 @@ public static class AddGameHelper
             LoaderVersion = loaderversion
         };
 
-        game = await InstancesPath.CreateGameAsync(new CreateGameArg
-        {
-            Game = game,
-            Request = arg.Request,
-            Overwirte = arg.Overwirte
-        });
+        game = await InstancesPath.CreateGameAsync(game, arg.Gui);
 
         if (game == null)
         {
@@ -390,15 +370,10 @@ public static class AddGameHelper
             }
         }
 
-        arg.Update2?.Invoke(CoreRunState.GetInfo);
+        arg.Gui?.ModPackState(CoreRunState.GetInfo);
 
         //获取Mod信息
-        var list = await CurseForgeHelper.GetModPackInfoAsync(new GetCurseForgeModInfoArg
-        {
-            Game = game,
-            Info = info,
-            Update = arg.Update
-        });
+        var list = await CurseForgeHelper.GetModPackInfoAsync(game, info, arg.Gui);
         if (!list.State)
         {
             return new GameRes { Game = game };
@@ -406,11 +381,11 @@ public static class AddGameHelper
 
         game.SaveModInfo();
 
-        arg.Update2?.Invoke(CoreRunState.Download);
+        arg.Gui?.ModPackState(CoreRunState.Download);
 
         await DownloadManager.StartAsync([.. list.List!]);
 
-        arg.Update2?.Invoke(CoreRunState.DownloadDone);
+        arg.Gui?.ModPackState(CoreRunState.DownloadDone);
 
         return new GameRes { State = true, Game = game };
     }
@@ -673,7 +648,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        await new ZipProcess(zipUpdate: arg.Zip).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
+        await new ZipProcess(arg.Gui).UnzipAsync(game.GetGamePath(), arg.Dir, st!);
 
         //尝试解析版本号
         var files = Directory.GetFiles(game!.GetGamePath());
@@ -788,8 +763,7 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallModrinth(DownloadModrinthArg arg)
     {
-        var file = arg.Data.Files.FirstOrDefault(a => a.Primary) ?? arg.Data.Files[0];
-        var item = arg.Data.MakeDownloadObj(Path.Combine(DownloadManager.DownloadDir, file.Filename));
+        var item = arg.Data.MakeDownloadObj(DownloadManager.DownloadDir);
 
         var res1 = await DownloadManager.StartAsync([item]);
         if (!res1)

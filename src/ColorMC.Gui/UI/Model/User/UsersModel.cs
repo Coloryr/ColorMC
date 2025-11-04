@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -25,7 +25,7 @@ namespace ColorMC.Gui.UI.Model.User;
 /// <summary>
 /// 账户页面
 /// </summary>
-public partial class UsersModel : TopModel, ILoginOAuth, ILoginGui
+public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
 {
     /// <summary>
     /// 当前账户类型列表

@@ -2,12 +2,28 @@ using System.Collections.Concurrent;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Java;
+using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.ServerPack;
 
 namespace ColorMC.Core.Objs;
+
+/// <summary>
+/// 基础返回
+/// </summary>
+public record BaseRes
+{
+    /// <summary>
+    /// 错误类型
+    /// </summary>
+    public ErrorType Error;
+    /// <summary>
+    /// 是否成功
+    /// </summary>
+    public bool State;
+}
 
 /// <summary>
 /// OAuth获取登陆码结果
@@ -98,20 +114,10 @@ public record LangRes
 }
 
 /// <summary>
-/// 创建一个下载项目结果
-/// </summary>
-public record MakeDownloadItemRes
-{
-    public bool State;
-    public FileItemObj? Item;
-}
-
-/// <summary>
 /// 创建一些下载项目
 /// </summary>
-public record MakeDownloadItemsRes
+public record MakeDownloadItemsRes : BaseRes
 {
-    public bool State;
     public ConcurrentBag<FileItemObj>? List;
 }
 
@@ -137,45 +143,40 @@ public record MakeDownloadNameItemsRes
 /// <summary>
 /// 游戏实例处理结果
 /// </summary>
-public record GameRes
+public record GameRes : BaseRes
 {
-    public bool State;
     public GameSettingObj? Game;
 }
 
 /// <summary>
 /// 消息结果
 /// </summary>
-public record StringRes
+public record StringRes : BaseRes
 {
-    public bool State;
     public string? Data;
 }
 
 /// <summary>
 /// 二进制结果
 /// </summary>
-public record BytesRes
+public record BytesRes : BaseRes
 {
-    public bool State;
     public byte[]? Data;
 }
 
 /// <summary>
 /// 流结果
 /// </summary>
-public record StreamRes
+public record StreamRes : BaseRes
 {
-    public bool State;
     public Stream? Stream;
 }
 
 /// <summary>
 /// 数字结果
 /// </summary>
-public record IntRes
+public record IntRes : BaseRes
 {
-    public bool State;
     public int? Data;
 }
 
@@ -199,31 +200,54 @@ public record GetOpenJ9ListRes
     public List<OpenJ9FileObj.Download>? Download;
 }
 
+public abstract record GetBaseRes : IDisposable
+{
+    public required MemoryStream Text;
+
+    public void Dispose()
+    {
+        Text.Dispose();
+    }
+}
+
+/// <summary>
+/// 获取Fabric加载器
+/// </summary>
+public record GetFabricLoaderRes : GetBaseRes
+{
+    public FabricLoaderObj? Meta;
+}
+
+/// <summary>
+/// 获取Quilt加载器
+/// </summary>
+public record GetQuiltLoaderRes : GetBaseRes
+{
+    public QuiltLoaderObj? Meta;
+}
+
 /// <summary>
 /// 获取资源文件
 /// </summary>
-public record GetAssetsRes
+public record GetAssetsRes : GetBaseRes
 {
     public AssetsObj? Assets;
-    public MemoryStream Text;
 }
 
 /// <summary>
 /// 获取游戏启动信息
 /// </summary>
-public record GetGameArgRes
+public record GetGameArgRes : GetBaseRes
 {
     public GameArgObj? Arg;
-    public MemoryStream Text;
 }
 
 /// <summary>
 /// 获取版本文件
 /// </summary>
-public record GetVersionsRes
+public record GetVersionsRes : GetBaseRes
 {
     public VersionObj? Version;
-    public MemoryStream Text;
 }
 
 /// <summary>

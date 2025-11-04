@@ -591,14 +591,14 @@ public partial class GameConfigEditModel : GameModel
                 DataType = GuiNames.NameTypeByte
             };
             var list = (nbt.Nbt as NbtByteArray)!;
-            for (int a = 0; a < list.Value.Count; a++)
+            for (int a = 0; a < list.ValueByteArray.Count; a++)
             {
-                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
+                model1.DataList.Add(new(a + 1, list.ValueByteArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, (byte)0, model1.HexEdit));
             await DialogHost.Show(model1, UseName);
 
-            list.Value.Clear();
+            list.ValueByteArray.Clear();
             foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
@@ -606,7 +606,7 @@ public partial class GameConfigEditModel : GameModel
                     continue;
                 }
 
-                list.Value.Add((byte)item.GetValue());
+                list.ValueByteArray.Add((byte)item.GetValue());
             }
         }
         else if (nbt.NbtType == NbtType.NbtIntArray)
@@ -616,14 +616,14 @@ public partial class GameConfigEditModel : GameModel
                 DataType = GuiNames.NameTypeInt
             };
             var list = (nbt.Nbt as NbtIntArray)!;
-            for (int a = 0; a < list.Value.Count; a++)
+            for (int a = 0; a < list.ValueIntArray.Count; a++)
             {
-                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
+                model1.DataList.Add(new(a + 1, list.ValueIntArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, 0, model1.HexEdit));
             await DialogHost.Show(model1, UseName);
 
-            list.Value.Clear();
+            list.ValueIntArray.Clear();
             foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
@@ -631,7 +631,7 @@ public partial class GameConfigEditModel : GameModel
                     continue;
                 }
 
-                list.Value.Add((int)item.GetValue());
+                list.ValueIntArray.Add((int)item.GetValue());
             }
         }
         else if (nbt.NbtType == NbtType.NbtLongArray)
@@ -641,14 +641,14 @@ public partial class GameConfigEditModel : GameModel
                 DataType = GuiNames.NameTypeLong
             };
             var list = (nbt.Nbt as NbtLongArray)!;
-            for (int a = 0; a < list.Value.Count; a++)
+            for (int a = 0; a < list.ValueLongArray.Count; a++)
             {
-                model1.DataList.Add(new(a + 1, list.Value[a], model1.HexEdit));
+                model1.DataList.Add(new(a + 1, list.ValueLongArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, (long)0, model1.HexEdit));
             await DialogHost.Show(model1, UseName);
 
-            list.Value.Clear();
+            list.ValueLongArray.Clear();
             foreach (var item in model1.DataList)
             {
                 if (item.Key == 0)
@@ -656,7 +656,7 @@ public partial class GameConfigEditModel : GameModel
                     continue;
                 }
 
-                list.Value.Add((long)item.GetValue());
+                list.ValueLongArray.Add((long)item.GetValue());
             }
         }
         else

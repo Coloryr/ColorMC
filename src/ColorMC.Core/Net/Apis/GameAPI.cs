@@ -10,19 +10,6 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class GameAPI
 {
-    private static async Task<Stream?> SendAsync(string url)
-    {
-        var data = await CoreHttpClient.GetAsync(url);
-        if (data.StatusCode != HttpStatusCode.OK)
-        {
-            ColorMCCore.OnError(LanguageHelper.Get("Core.Error10"),
-                new Exception(url), false);
-            return null;
-        }
-
-        return await data.Content.ReadAsStreamAsync();
-    }
-
     /// <summary>
     /// 下载资源文件
     /// </summary>
@@ -31,7 +18,7 @@ public static class GameAPI
     {
         try
         {
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             if (stream == null)
             {
                 return null;
@@ -49,7 +36,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error7"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -62,7 +49,7 @@ public static class GameAPI
     {
         try
         {
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             if (stream == null)
             {
                 return null;
@@ -72,7 +59,7 @@ public static class GameAPI
             mem.Seek(0, SeekOrigin.Begin);
             var obj = JsonUtils.ToObj(mem, JsonType.GameArgObj);
             mem.Seek(0, SeekOrigin.Begin);
-            return new()
+            return new GetGameArgRes
             {
                 Arg = obj,
                 Text = mem
@@ -80,7 +67,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error8"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }
@@ -90,10 +77,10 @@ public static class GameAPI
     /// </summary>
     public static async Task<GetVersionsRes?> GetVersionsAsync(SourceLocal? local = null)
     {
+        string url = UrlHelper.GameVersion(local);
         try
         {
-            string url = UrlHelper.GameVersion(local);
-            using var stream = await SendAsync(url);
+            using var stream = await CoreHttpClient.GetStreamAsync(url);
             if (stream == null)
             {
                 return null;
@@ -103,7 +90,7 @@ public static class GameAPI
             mem.Seek(0, SeekOrigin.Begin);
             var obj = JsonUtils.ToObj(mem, JsonType.VersionObj);
             mem.Seek(0, SeekOrigin.Begin);
-            return new()
+            return new GetVersionsRes
             {
                 Version = obj,
                 Text = mem
@@ -111,7 +98,7 @@ public static class GameAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error9"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
             return null;
         }
     }

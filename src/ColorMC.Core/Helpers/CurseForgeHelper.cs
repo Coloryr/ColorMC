@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
@@ -234,20 +235,20 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">获取信息</param>
     /// <returns>项目信息</returns>
-    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GetCurseForgeModInfoArg arg)
+    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GameSettingObj game, CurseForgePackObj data, ICreateInstanceGui? gui)
     {
-        var size = arg.Info.Files.Count;
+        var size = data.Files.Count;
         var now = 0;
         var list = new ConcurrentBag<FileItemObj>();
 
         //获取模组下载信息
-        var mods = new ConcurrentDictionary<string, ModInfoObj>(arg.Game.Mods);
+        var mods = new ConcurrentDictionary<string, ModInfoObj>(game.Mods);
 
         //下载信息处理
         async Task BuildItem(CurseForgeModObj.CurseForgeDataObj item)
         {
-            var path = await GetItemPathAsync(arg.Game, item);
-            var item1 = item.MakeDownloadObj(arg.Game, path);
+            var path = await GetItemPathAsync(game, item);
+            var item1 = item.MakeDownloadObj(game, path);
             list.Add(item1);
             var modid = item.ModId.ToString();
             mods.TryRemove(modid, out _);
@@ -256,7 +257,7 @@ public static class CurseForgeHelper
             {
                 item1.Later = (test) =>
                 {
-                    arg.Game.AddWorldZipAsync(item1.Local, test).Wait();
+                    game.AddWorldZipAsync(item1.Local, test).Wait();
                 };
             }
             else
@@ -265,11 +266,11 @@ public static class CurseForgeHelper
             }
 
             now++;
-            arg.Update?.Invoke(size, now);
+            gui?.StateUpdate(size, now);
         }
 
         //一次性获取
-        var res = await CurseForgeAPI.GetFilesAsync(arg.Info.Files);
+        var res = await CurseForgeAPI.GetFilesAsync(data.Files);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
@@ -289,7 +290,7 @@ public static class CurseForgeHelper
         {
             //逐一获取
             bool done = true;
-            await Parallel.ForEachAsync(arg.Info.Files, async (item, token) =>
+            await Parallel.ForEachAsync(data.Files, async (item, token) =>
             {
                 var res = await CurseForgeAPI.GetModAsync(item);
                 if (res == null || res.Data == null)
@@ -306,10 +307,10 @@ public static class CurseForgeHelper
             }
         }
 
-        arg.Game.Mods.Clear();
+        game.Mods.Clear();
         foreach (var item in mods)
         {
-            arg.Game.Mods.Add(item.Key, item.Value);
+            game.Mods.Add(item.Key, item.Value);
         }
 
         return new MakeDownloadItemsRes { List = list, State = true };
@@ -452,9 +453,9 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    private static async Task<bool> UpgradeCurseForgeModPackAsync(UpdateModPackArg arg)
+    private static async Task<bool> UpgradeCurseForgeModPackAsync(GameSettingObj game, string zip, ICreateInstanceGui? gui)
     {
-        using var stream3 = PathHelper.OpenRead(arg.Zip);
+        using var stream3 = PathHelper.OpenRead(zip);
         if (stream3 == null)
         {
             return false;
@@ -464,16 +465,8 @@ public static class CurseForgeHelper
         //获取主信息
         if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameManifestFile) is { } ent)
         {
-            try
-            {
-                using var stream = ent.OpenEntryStream();
-                info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
-            }
-            catch (Exception e)
-            {
-                Logs.Error(LanguageHelper.Get("Core.Error49"), e);
-                return false;
-            }
+            using var stream = ent.OpenEntryStream();
+            info = JsonUtils.ToObj(stream, JsonType.CurseForgePackObj);
         }
         else
         {
@@ -484,30 +477,30 @@ public static class CurseForgeHelper
             return false;
         }
 
-        arg.Update2?.Invoke(CoreRunState.Init);
+        gui?.ModPackState(CoreRunState.Init);
 
         //获取版本数据
         foreach (var item in info.Minecraft.ModLoaders)
         {
             if (item.Id.StartsWith(Names.NameForgeKey))
             {
-                arg.Game.Loader = Loaders.Forge;
-                arg.Game.LoaderVersion = item.Id.Replace(Names.NameForgeKey + "-", "");
+                game.Loader = Loaders.Forge;
+                game.LoaderVersion = item.Id.Replace(Names.NameForgeKey + "-", "");
             }
             else if (item.Id.StartsWith(Names.NameNeoForgeKey))
             {
-                arg.Game.Loader = Loaders.NeoForge;
-                arg.Game.LoaderVersion = item.Id.Replace(Names.NameNeoForgeKey + "-", "");
+                game.Loader = Loaders.NeoForge;
+                game.LoaderVersion = item.Id.Replace(Names.NameNeoForgeKey + "-", "");
             }
             else if (item.Id.StartsWith(Names.NameFabricKey))
             {
-                arg.Game.Loader = Loaders.Fabric;
-                arg.Game.LoaderVersion = item.Id.Replace(Names.NameFabricKey + "-", "");
+                game.Loader = Loaders.Fabric;
+                game.LoaderVersion = item.Id.Replace(Names.NameFabricKey + "-", "");
             }
             else if (item.Id.StartsWith(Names.NameQuiltKey))
             {
-                arg.Game.Loader = Loaders.Quilt;
-                arg.Game.LoaderVersion = item.Id.Replace(Names.NameQuiltKey + "-", "");
+                game.Loader = Loaders.Quilt;
+                game.LoaderVersion = item.Id.Replace(Names.NameQuiltKey + "-", "");
             }
         }
 
@@ -521,7 +514,7 @@ public static class CurseForgeHelper
             if (e.Key!.StartsWith(info.Overrides + "/"))
             {
                 using var stream = e.OpenEntryStream();
-                string file = Path.GetFullPath(arg.Game.GetGamePath() + e.Key[info.Overrides.Length..]);
+                string file = Path.GetFullPath(game.GetGamePath() + e.Key[info.Overrides.Length..]);
                 file = PathHelper.ReplacePathName(file);
                 using var stream1 = PathHelper.OpenWrite(file);
                 await stream.CopyToAsync(stream1);
@@ -529,7 +522,7 @@ public static class CurseForgeHelper
             else
             {
                 using var stream = e.OpenEntryStream();
-                string file = Path.GetFullPath(arg.Game.GetBasePath() + "/" + e.Key);
+                string file = Path.GetFullPath(game.GetBasePath() + "/" + e.Key);
                 file = PathHelper.ReplacePathName(file);
                 using var stream1 = PathHelper.OpenWrite(file);
                 await stream.CopyToAsync(stream1);
@@ -537,7 +530,7 @@ public static class CurseForgeHelper
         }
 
         CurseForgePackObj? info3 = null;
-        var json = Path.Combine(arg.Game.GetBasePath(), Names.NameManifestFile);
+        var json = Path.Combine(game.GetBasePath(), Names.NameManifestFile);
         if (File.Exists(json))
         {
             try
@@ -551,7 +544,7 @@ public static class CurseForgeHelper
             }
         }
 
-        var path = arg.Game.GetGamePath();
+        var path = game.GetGamePath();
 
         var list1 = new List<FileItemObj>();
 
@@ -606,7 +599,7 @@ public static class CurseForgeHelper
 
             foreach (var item in removelist)
             {
-                if (arg.Game.Mods.Remove(item.ProjectID.ToString(), out var mod))
+                if (game.Mods.Remove(item.ProjectID.ToString(), out var mod))
                 {
                     PathHelper.Delete(Path.Combine(path, mod.Path, mod.File));
                 }
@@ -614,7 +607,7 @@ public static class CurseForgeHelper
 
             if (addlist.Count > 0)
             {
-                arg.Update?.Invoke(addlist.Count, 0);
+                gui?.StateUpdate(addlist.Count, 0);
             }
 
             foreach (var item in addlist)
@@ -625,15 +618,15 @@ public static class CurseForgeHelper
                     return false;
                 }
 
-                var path1 = await CurseForgeHelper.GetItemPathAsync(arg.Game, res.Data);
+                var path1 = await CurseForgeHelper.GetItemPathAsync(game, res.Data);
                 var modid = res.Data.ModId.ToString();
-                var item1 = res.Data.MakeDownloadObj(arg.Game, path1);
+                var item1 = res.Data.MakeDownloadObj(game, path1);
                 list1.Add(item1);
 
-                arg.Game.Mods.Remove(modid, out _);
-                arg.Game.Mods.TryAdd(modid, res.Data.MakeModInfo(path1.Path));
+                game.Mods.Remove(modid, out _);
+                game.Mods.TryAdd(modid, res.Data.MakeModInfo(path1.Path));
 
-                arg.Update?.Invoke(addlist.Count, ++b);
+                gui?.StateUpdate(addlist.Count, ++b);
             }
         }
         else
@@ -642,21 +635,16 @@ public static class CurseForgeHelper
             var addlist = new List<ModInfoObj>();
             var removelist = new List<ModInfoObj>();
 
-            var obj1 = arg.Game.CopyObj();
+            var obj1 = game.CopyObj();
             obj1.Mods.Clear();
 
-            var list = await CurseForgeHelper.GetModPackInfoAsync(new GetCurseForgeModInfoArg
-            {
-                Game = obj1,
-                Info = info,
-                Update = arg.Update
-            });
+            var list = await CurseForgeHelper.GetModPackInfoAsync(obj1, info, gui);
             if (!list.State)
             {
                 return false;
             }
 
-            ModInfoObj[] temp1 = [.. arg.Game.Mods.Values];
+            ModInfoObj[] temp1 = [.. game.Mods.Values];
             ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
 
             foreach (var item in temp1)
@@ -695,13 +683,13 @@ public static class CurseForgeHelper
                 {
                     PathHelper.Delete(local);
                 }
-                arg.Game.Mods.Remove(item.ModId);
+                game.Mods.Remove(item.ModId);
             }
 
             foreach (var item in addlist)
             {
                 list1.Add(list.List!.First(a => a.Sha1 == item.Sha1));
-                arg.Game.Mods.Add(item.ModId, item);
+                game.Mods.Add(item.ModId, item);
             }
         }
 
@@ -715,34 +703,28 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    public static async Task<bool> UpgradeModPackAsync(UpdateCurseForgeModPackArg arg)
+    public static async Task<bool> UpgradeModPackAsync(GameSettingObj game, CurseForgeModObj.CurseForgeDataObj data, ICreateInstanceGui? gui)
     {
-        arg.Data.FixDownloadUrl();
+        data.FixDownloadUrl();
 
         var item = new FileItemObj()
         {
-            Url = arg.Data.DownloadUrl,
-            Name = arg.Data.FileName,
-            Local = Path.Combine(DownloadManager.DownloadDir, arg.Data.FileName),
+            Url = data.DownloadUrl,
+            Name = data.FileName,
+            Local = Path.Combine(DownloadManager.DownloadDir, data.FileName),
         };
 
         var res = await DownloadManager.StartAsync([item]);
         if (!res)
             return false;
 
-        res = await UpgradeCurseForgeModPackAsync(new UpdateModPackArg
-        {
-            Game = arg.Game,
-            Zip = item.Local,
-            Update = arg.Update,
-            Update2 = arg.Update2
-        });
+        res = await UpgradeCurseForgeModPackAsync(game, item.Local, gui);
         if (res)
         {
-            arg.Game.PID = arg.Data.ModId.ToString();
-            arg.Game.FID = arg.Data.Id.ToString();
-            arg.Game.Save();
-            arg.Game.SaveModInfo();
+            game.PID = data.ModId.ToString();
+            game.FID = data.Id.ToString();
+            game.Save();
+            game.SaveModInfo();
         }
 
         return res;

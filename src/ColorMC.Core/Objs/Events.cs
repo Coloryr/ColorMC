@@ -441,6 +441,183 @@ public class InstallModPackErrorEventArgs(string file, Exception exception) : Ex
 }
 
 /// <summary>
+/// Java检查时错误
+/// </summary>
+/// <param name="java"></param>
+/// <param name="exception"></param>
+public class CheckJavaErrorEventArgs(string java, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// Java文件路径
+    /// </summary>
+    public string Java => java;
+}
+
+/// <summary>
+/// Java检查时错误
+/// </summary>
+/// <param name="exception"></param>
+public class ScanJavaErrorEventArgs(Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+
+}
+
+/// <summary>
+/// 读取实例时错误
+/// </summary>
+/// <param name="path"></param>
+/// <param name="exception"></param>
+public class InstanceLoadErrorEventArgs(string path, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 实例路径
+    /// </summary>
+    public string Path => path;
+}
+
+/// <summary>
+/// 创建实例时错误
+/// </summary>
+/// <param name="name"></param>
+/// <param name="exception"></param>
+public class InstanceCreateErrorEventArgs(string name, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 实例名字
+    /// </summary>
+    public string Name => name;
+}
+
+/// <summary>
+/// 游戏实例读取模组信息时错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="exception"></param>
+public class InstanceReadModErrorEventArgs(GameSettingObj game, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+}
+
+/// <summary>
+/// 读取游戏实例统计数据错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="exception"></param>
+public class InstanceReadCountErrorEventArgs(GameSettingObj game, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+}
+
+/// <summary>
+/// 游戏实例设置图标错误
+/// </summary>
+/// <param name="game"></param>
+/// <param name="exception"></param>
+public class InstanceSetIconErrorEventArgs(GameSettingObj game, string file, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 游戏实例
+    /// </summary>
+    public GameSettingObj Game => game;
+    /// <summary>
+    /// 图标文件
+    /// </summary>
+    public string File => file;
+}
+
+/// <summary>
+/// Java安装失败
+/// </summary>
+/// <param name="name"></param>
+/// <param name="url"></param>
+/// <param name="exception"></param>
+public class JavaInstallErrorEventArgs(string name, string url, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 名字
+    /// </summary>
+    public string Name => name;
+    /// <summary>
+    /// 地址
+    /// </summary>
+    public string Url => url;
+}
+
+/// <summary>
+/// 请求网络API时错误
+/// </summary>
+/// <param name="url">网址</param>
+/// <param name="exception"></param>
+public class ApiRequestErrorEventArgs(string url, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 请求地址
+    /// </summary>
+    public string Url => url;
+}
+
+/// <summary>
+/// 获取游戏版本信息错误
+/// </summary>
+public class MojangGetVersionErrorEventArgs() : CoreErrorEventArgs(false, false)
+{
+}
+
+/// <summary>
+/// 玩家皮肤获取错误
+/// </summary>
+/// <param name="login"></param>
+/// <param name="exception"></param>
+public class PlayerSkinGetErrorEventArgs(LoginObj login, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 登录的账户
+    /// </summary>
+    public LoginObj Login => login;
+}
+
+/// <summary>
+/// 玩家披风获取错误
+/// </summary>
+/// <param name="login"></param>
+/// <param name="exception"></param>
+public class PlayerCapeGetErrorEventArgs(LoginObj login, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 登录的账户
+    /// </summary>
+    public LoginObj Login => login;
+}
+
+/// <summary>
+/// 玩家材质获取错误
+/// </summary>
+/// <param name="login"></param>
+/// <param name="exception"></param>
+public class PlayerTexturesGetErrorEventArgs(LoginObj login, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{
+    /// <summary>
+    /// 登录的账户
+    /// </summary>
+    public LoginObj Login => login;
+}
+
+/// <summary>
+/// 运行库仓库错误
+/// </summary>
+/// <param name="exception"></param>
+public class LocalMavenErrorEventArgs(Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+{ 
+
+}
+
+/// <summary>
 /// 游戏日志
 /// </summary>
 /// <param name="game">游戏实例</param>

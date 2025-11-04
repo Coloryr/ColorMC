@@ -33,12 +33,13 @@ public static partial class Win32
     public static bool MoveToTrash(string path)
     {
         // 设置SHFILEOPSTRUCT结构体
-        SHFILEOPSTRUCT fs = new SHFILEOPSTRUCT
+        var fs = new SHFILEOPSTRUCT
         {
             wFunc = FO_DELETE,
             // 确保字符串以双空字符结尾
             pFrom = path + '\0' + '\0',
-            fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_SILENT,
+            //fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_SILENT,
+            fFlags = FOF_ALLOWUNDO | FOF_NOCONFIRMATION,
             fAnyOperationsAborted = false,
             hNameMappings = IntPtr.Zero,
             lpszProgressTitle = string.Empty

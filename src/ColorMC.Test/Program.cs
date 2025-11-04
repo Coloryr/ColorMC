@@ -29,7 +29,7 @@ internal class Program
 
         Console.WriteLine("Hello, World!");
 
-        ColorMCCore.Init(new CoreInitArg
+        ColorMCCore.Init(new CoreInitObj
         {
             Local = AppContext.BaseDirectory
         });

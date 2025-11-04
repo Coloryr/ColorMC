@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;

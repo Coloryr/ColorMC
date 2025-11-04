@@ -55,16 +55,16 @@ public static class CurseForgeAPI
         int sortField, string filter, int pagesize, int sortOrder, string categoryId,
         int modLoaderType)
     {
-        try
-        {
-            string temp = $"{UrlHelper.CurseForge}mods/search?gameId={GameID}&classId={classid}&"
+        string temp = $"{UrlHelper.CurseForge}mods/search?gameId={GameID}&classId={classid}&"
                 + $"gameVersion={version}&index={page * pagesize}&sortField={sortField}&"
                 + $"searchFilter={filter}&pageSize={pagesize}&sortOrder={sortOrder}&"
                 + $"categoryId={categoryId}";
-            if (modLoaderType != 0)
-            {
-                temp += $"&modLoaderType={modLoaderType}";
-            }
+        if (modLoaderType != 0)
+        {
+            temp += $"&modLoaderType={modLoaderType}";
+        }
+        try
+        {
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
@@ -74,7 +74,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error21"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -159,9 +159,9 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeModObj?> GetModAsync(CurseForgePackObj.FilesObj obj)
     {
+        string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
         try
         {
-            string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
@@ -171,7 +171,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error22"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -181,6 +181,7 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> GetFilesAsync(List<CurseForgePackObj.FilesObj> obj)
     {
+        string temp = $"{UrlHelper.CurseForge}mods/files";
         try
         {
             var arg1 = new CurseForgeGetFilesObj { FileIds = [] };
@@ -188,14 +189,14 @@ public static class CurseForgeAPI
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}mods/files"),
+                RequestUri = new Uri(temp),
                 Content = new StringContent(JsonUtils.ToString(arg1, JsonType.CurseForgeGetFilesObj), MediaTypeHeaderValue.Parse("application/json"))
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeGetFilesResObj)?.Data;
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error23"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -206,18 +207,19 @@ public static class CurseForgeAPI
     /// <returns>信息</returns>
     public static async Task<CurseForgeCategoriesObj?> GetCategoriesAsync()
     {
+        string temp = $"{UrlHelper.CurseForge}categories?gameId={GameID}";
         try
         {
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}categories?gameId={GameID}")
+                RequestUri = new Uri(temp)
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeCategoriesObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error27"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -227,18 +229,19 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeVersionObj?> GetCurseForgeVersionAsync()
     {
+        string temp = $"{UrlHelper.CurseForge}games/{GameID}/versions";
         try
         {
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/versions")
+                RequestUri = new Uri(temp)
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeVersionObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error24"), e);
+            
             return null;
         }
     }
@@ -248,18 +251,19 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeVersionTypeObj?> GetCurseForgeVersionType()
     {
+        string temp = $"{UrlHelper.CurseForge}games/{GameID}/version-types";
         try
         {
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}games/{GameID}/version-types")
+                RequestUri = new Uri(temp)
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeVersionTypeObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error25"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -277,18 +281,19 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeObj?> GetModInfoAsync(string id)
     {
+        string temp = $"{UrlHelper.CurseForge}mods/{id}";
         try
         {
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}mods/{id}")
+                RequestUri = new Uri(temp)
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -298,6 +303,7 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeListObj?> GetModsInfoAsync(List<CurseForgePackObj.FilesObj> obj)
     {
+        string temp = $"{UrlHelper.CurseForge}mods";
         try
         {
             var arg1 = new CurseForgeModsInfoObj()
@@ -309,14 +315,14 @@ public static class CurseForgeAPI
             using var data = await SendAsync(new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{UrlHelper.CurseForge}mods"),
+                RequestUri = new Uri(temp),
                 Content = new StringContent(JsonUtils.ToString(arg1, JsonType.CurseForgeModsInfoObj), MediaTypeHeaderValue.Parse("application/json"))
             });
             return JsonUtils.ToObj(data, JsonType.CurseForgeListObj);
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }
@@ -326,10 +332,11 @@ public static class CurseForgeAPI
     /// </summary>
     public static async Task<CurseForgeFileObj?> GetCurseForgeFilesAsync(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
     {
+        mc ??= "";
+        string temp = $"{UrlHelper.CurseForge}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
+
         try
         {
-            mc ??= "";
-            string temp = $"{UrlHelper.CurseForge}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";
             if (loader is not (Loaders.Normal or Loaders.Custom))
             {
                 temp += $"&modLoaderType={Loader(loader)}";
@@ -343,7 +350,7 @@ public static class CurseForgeAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error26"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(temp, e));
             return null;
         }
     }

@@ -21,53 +21,7 @@ public abstract class NbtBase
     /// <summary>
     /// 取值
     /// </summary>
-    public string Value
-    {
-        get
-        {
-            return NbtType switch
-            {
-                NbtType.NbtByte => (this as NbtByte)!.Value.ToString(),
-                NbtType.NbtShort => (this as NbtShort)!.Value.ToString(),
-                NbtType.NbtInt => (this as NbtInt)!.Value.ToString(),
-                NbtType.NbtLong => (this as NbtLong)!.Value.ToString(),
-                NbtType.NbtFloat => (this as NbtFloat)!.Value.ToString(),
-                NbtType.NbtDouble => (this as NbtDouble)!.Value.ToString(),
-                NbtType.NbtString => (this as NbtString)!.Value.ToString(),
-                _ => ""
-            };
-        }
-        set
-        {
-            if (value == null)
-                return;
-
-            switch (NbtType)
-            {
-                case NbtType.NbtByte:
-                    (this as NbtByte)!.Value = byte.Parse(value);
-                    break;
-                case NbtType.NbtShort:
-                    (this as NbtShort)!.Value = short.Parse(value);
-                    break;
-                case NbtType.NbtInt:
-                    (this as NbtInt)!.Value = int.Parse(value);
-                    break;
-                case NbtType.NbtLong:
-                    (this as NbtLong)!.Value = long.Parse(value);
-                    break;
-                case NbtType.NbtFloat:
-                    (this as NbtFloat)!.Value = float.Parse(value);
-                    break;
-                case NbtType.NbtDouble:
-                    (this as NbtDouble)!.Value = double.Parse(value);
-                    break;
-                case NbtType.NbtString:
-                    (this as NbtString)!.Value = value;
-                    break;
-            }
-        }
-    }
+    public abstract string Value { get; set; }
 
     /// <summary>
     /// 读标签
@@ -88,27 +42,7 @@ public abstract class NbtBase
     /// <returns></returns>
     public override string? ToString()
     {
-        return NbtType switch
-        {
-            NbtType.NbtByte => (this as NbtByte)?.Value.ToString(),
-            NbtType.NbtShort => (this as NbtShort)?.Value.ToString(),
-            NbtType.NbtInt => (this as NbtInt)?.Value.ToString(),
-            NbtType.NbtLong => (this as NbtLong)?.Value.ToString(),
-            NbtType.NbtFloat => (this as NbtFloat)?.Value.ToString(),
-            NbtType.NbtDouble => (this as NbtDouble)?.Value.ToString(),
-            NbtType.NbtString => (this as NbtString)?.Value.ToString(),
-            NbtType.NbtByteArray => string.Format(LanguageHelper.Get("Core.Info20"),
-             (this as NbtByteArray)?.Value.Count),
-            NbtType.NbtList => string.Format(LanguageHelper.Get("Core.Info20"),
-             (this as NbtList)?.Count),
-            NbtType.NbtIntArray => string.Format(LanguageHelper.Get("Core.Info20"),
-             (this as NbtIntArray)?.Value.Count),
-            NbtType.NbtLongArray => string.Format(LanguageHelper.Get("Core.Info20"),
-             (this as NbtLongArray)?.Value.Count),
-            NbtType.NbtCompound => string.Format(LanguageHelper.Get("Core.Info20"),
-             (this as NbtCompound)?.Count),
-            _ => ""
-        };
+        return Value;
     }
 
     /// <summary>

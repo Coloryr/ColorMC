@@ -12,10 +12,18 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
     /// </summary>
     public const NbtType Type = NbtType.NbtCompound;
 
+    private readonly Dictionary<string, NbtBase> Entries = [];
+
     /// <summary>
     /// NBT数量
     /// </summary>
     public int Count => Entries.Count;
+
+    public override string Value 
+    { 
+        get => '{' + $"{Count}" + '}'; 
+        set => throw new NotSupportedException(); 
+    }
 
     /// <summary>
     /// 数据操作
@@ -30,8 +38,6 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
             }
         }
     }
-
-    private readonly Dictionary<string, NbtBase> Entries = [];
 
     public NbtCompound()
     {

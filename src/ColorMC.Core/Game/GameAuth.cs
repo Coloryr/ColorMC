@@ -1,3 +1,4 @@
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Login;
 using ColorMC.Core.Objs;
@@ -16,7 +17,7 @@ public static class GameAuth
     /// </summary>
     /// <param name="loginOAuth">登录参数</param>
     /// <returns>登录状态</returns>
-    public static async Task<LoginObj?> LoginOAuthAsync(ILoginOAuth loginOAuth)
+    public static async Task<LoginObj?> LoginOAuthAsync(ILoginOAuthGui loginOAuth)
     {
         //获取登录码
         var res1 = await OAuthApi.GetCodeAsync(loginOAuth.Token);

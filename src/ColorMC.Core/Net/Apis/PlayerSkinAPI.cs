@@ -54,7 +54,7 @@ public static class PlayerSkinAPI
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error5"), e);
+                ColorMCCore.OnError(new PlayerSkinGetErrorEventArgs(obj, e));
             }
         }
 
@@ -72,7 +72,7 @@ public static class PlayerSkinAPI
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error5"), e);
+                ColorMCCore.OnError(new PlayerCapeGetErrorEventArgs(obj, e));
             }
         }
 
@@ -85,11 +85,11 @@ public static class PlayerSkinAPI
     /// <param name="uuid">玩家UUID</param>
     /// <param name="url">网址</param>
     /// <returns>皮肤内容</returns>
-    private static async Task<MinecraftTexturesObj?> BaseLoadAsync(string uuid, string? url = null)
+    private static async Task<MinecraftTexturesObj?> BaseLoadAsync(LoginObj obj, string? url = null)
     {
         try
         {
-            var res = await MinecraftAPI.GetUserProfileAsync(uuid, url);
+            var res = await MinecraftAPI.GetUserProfileAsync(obj.UUID, url);
             if (res == null)
                 return null;
             if (res.Properties.Count == 0)
@@ -100,7 +100,7 @@ public static class PlayerSkinAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error6"), e);
+            ColorMCCore.OnError(new PlayerTexturesGetErrorEventArgs(obj, e));
             return null;
         }
     }
@@ -112,7 +112,7 @@ public static class PlayerSkinAPI
     /// <returns></returns>
     private static Task<MinecraftTexturesObj?> LoadFromMinecraftAsync(LoginObj obj)
     {
-        return BaseLoadAsync(obj.UUID);
+        return BaseLoadAsync(obj);
     }
     /// <summary>
     /// 从Nide8加载皮肤
@@ -121,7 +121,7 @@ public static class PlayerSkinAPI
     /// <returns></returns>
     private static Task<MinecraftTexturesObj?> LoadFromNide8Async(LoginObj obj)
     {
-        return BaseLoadAsync(obj.UUID, $"{UrlHelper.Nide8}{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj, $"{UrlHelper.Nide8}{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从外置登录加载皮肤
@@ -130,7 +130,7 @@ public static class PlayerSkinAPI
     /// <returns></returns>
     private static Task<MinecraftTexturesObj?> LoadFromAuthlibInjectorAsync(LoginObj obj)
     {
-        return BaseLoadAsync(obj.UUID, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj, $"{obj.Text1}/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从皮肤站加载皮肤
@@ -139,7 +139,7 @@ public static class PlayerSkinAPI
     /// <returns></returns>
     private static Task<MinecraftTexturesObj?> LoadFromLittleskinAsync(LoginObj obj)
     {
-        return BaseLoadAsync(obj.UUID, $"{UrlHelper.LittleSkin}api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj, $"{UrlHelper.LittleSkin}api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
     /// <summary>
     /// 从自建皮肤站加载皮肤
@@ -148,6 +148,6 @@ public static class PlayerSkinAPI
     /// <returns></returns>
     private static Task<MinecraftTexturesObj?> LoadFromSelfLittleskinAsync(LoginObj obj)
     {
-        return BaseLoadAsync(obj.UUID, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
+        return BaseLoadAsync(obj, $"{obj.Text1}/api/yggdrasil/sessionserver/session/minecraft/profile/{obj.UUID}");
     }
 }

@@ -100,7 +100,7 @@ public static class JavaHelper
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error57"), e);
+            ColorMCCore.OnError(new CheckJavaErrorEventArgs(path, e));
             return null;
         }
     }
@@ -217,27 +217,19 @@ public static class JavaHelper
     /// <returns>Java版本</returns>
     public static List<JavaInfo>? FindJava(string local)
     {
-        try
+        var list = new List<JavaInfo>();
+        var list1 = PathHelper.GetAllFiles(local)
+            .Where(item => item.Name == "javaw.exe" || item.Name == "java.exe");
+        foreach (var item in list1)
         {
-            var list = new List<JavaInfo>();
-            var list1 = PathHelper.GetAllFiles(local)
-                .Where(item => item.Name == "javaw.exe" || item.Name == "java.exe");
-            foreach (var item in list1)
+            var info = GetJavaInfo(item.FullName);
+            if (info != null)
             {
-                var info = GetJavaInfo(item.FullName);
-                if (info != null)
-                {
-                    list.Add(info);
-                }
+                list.Add(info);
             }
+        }
 
-            return list;
-        }
-        catch (Exception e)
-        {
-            Logs.Error("error on find java", e);
-            return null;
-        }
+        return list;
     }
 
     /// <summary>
@@ -372,7 +364,7 @@ public static class JavaHelper
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageHelper.Get("Core.Error57"), e);
+                ColorMCCore.OnError(new ScanJavaErrorEventArgs(e));
                 ex = true;
             }
         });

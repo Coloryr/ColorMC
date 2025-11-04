@@ -15,22 +15,28 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
     /// <summary>
     /// 数据
     /// </summary>
-    public new List<byte> Value { get; set; }
+    public List<byte> ValueByteArray { get; set; }
+
+    public override string Value
+    {
+        get => $"[{ValueByteArray.Count}]";
+        set => throw new NotSupportedException();
+    }
 
     public NbtByteArray()
     {
         NbtType = NbtType.NbtByteArray;
-        Value ??= [];
+        ValueByteArray ??= [];
     }
 
     public IEnumerator<byte> GetEnumerator()
     {
-        return Value.GetEnumerator();
+        return ValueByteArray.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return Value.GetEnumerator();
+        return ValueByteArray.GetEnumerator();
     }
 
     internal override NbtByteArray Read(DataInputStream stream)
@@ -38,13 +44,13 @@ public class NbtByteArray : NbtBase, IEnumerable<byte>
         var length = stream.ReadInt();
         var list = new byte[length];
         stream.Read(list);
-        Value.AddRange(list);
+        ValueByteArray.AddRange(list);
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value.Count);
-        stream.Write([.. Value]);
+        stream.Write(ValueByteArray.Count);
+        stream.Write([.. ValueByteArray]);
     }
 }

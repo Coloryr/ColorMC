@@ -15,6 +15,12 @@ public class NbtEnd : NbtBase
         NbtType = NbtType.NbtEnd;
     }
 
+    public override string Value 
+    { 
+        get => "";
+        set { }
+    }
+
     internal override NbtEnd Read(DataInputStream stream)
     {
         return this;

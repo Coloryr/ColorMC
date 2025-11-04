@@ -153,9 +153,9 @@ public static class GameSchematic
             Name = Path.GetFileName(file),
             Broken = false,
             Local = file,
-            Width = (size[0] as NbtInt)!.Value,
-            Height = (size[1] as NbtInt)!.Value,
-            Length = (size[2] as NbtInt)!.Value,
+            Width = (size[0] as NbtInt)!.ValueInt,
+            Height = (size[1] as NbtInt)!.ValueInt,
+            Length = (size[2] as NbtInt)!.ValueInt,
             Type = SchematicType.Create
         };
 
@@ -181,9 +181,9 @@ public static class GameSchematic
         return new()
         {
             Name = Path.GetFileName(file),
-            Height = tag.TryGet<NbtShort>("Height")!.Value,
-            Length = tag.TryGet<NbtShort>("Length")!.Value,
-            Width = tag.TryGet<NbtShort>("Width")!.Value,
+            Height = tag.TryGet<NbtShort>("Height")!.ValueShort,
+            Length = tag.TryGet<NbtShort>("Length")!.ValueShort,
+            Width = tag.TryGet<NbtShort>("Width")!.ValueShort,
             Broken = false,
             Local = file
         };
@@ -220,9 +220,9 @@ public static class GameSchematic
         var pos = com1.TryGet<NbtCompound>("EnclosingSize")!;
         if (pos != null)
         {
-            item.Height = pos.TryGet<NbtInt>("y")!.Value;
-            item.Length = pos.TryGet<NbtInt>("x")!.Value;
-            item.Width = pos.TryGet<NbtInt>("z")!.Value;
+            item.Height = pos.TryGet<NbtInt>("y")!.ValueInt;
+            item.Length = pos.TryGet<NbtInt>("x")!.ValueInt;
+            item.Width = pos.TryGet<NbtInt>("z")!.ValueInt;
         }
 
         return item;

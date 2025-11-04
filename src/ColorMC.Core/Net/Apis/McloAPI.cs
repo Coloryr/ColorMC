@@ -1,4 +1,4 @@
-using ColorMC.Core.Helpers;
+using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net.Apis;
@@ -41,7 +41,7 @@ public static class McloAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageHelper.Get("Core.Error48"), e);
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(Url, e));
             return null;
         }
     }

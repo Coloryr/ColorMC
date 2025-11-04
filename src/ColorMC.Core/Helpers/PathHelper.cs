@@ -17,26 +17,19 @@ public static class PathHelper
     /// <param name="path">文件</param>
     public static void Chmod(string path)
     {
-        try
-        {
-            using var p = new Process();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
+        using var p = new Process();
+        p.StartInfo.FileName = "sh";
+        p.StartInfo.RedirectStandardInput = true;
+        p.StartInfo.RedirectStandardOutput = true;
+        p.StartInfo.RedirectStandardError = true;
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.CreateNoWindow = true;
+        p.Start();
 
-            p.StandardInput.WriteLine("chmod a+x " + path);
+        p.StandardInput.WriteLine("chmod a+x " + path);
 
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
-        }
-        catch (Exception e)
-        {
-            Logs.Error("chmod error", e);
-        }
+        p.StandardInput.WriteLine("exit");
+        p.WaitForExit();
     }
 
     /// <summary>
@@ -45,33 +38,30 @@ public static class PathHelper
     /// <param name="path">文件</param>
     public static void PerJavaChmod(string path)
     {
-        try
-        {
-            using var p = new Process();
-            p.StartInfo.FileName = "sh";
-            p.StartInfo.RedirectStandardInput = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.UseShellExecute = false;
-            p.StartInfo.CreateNoWindow = true;
-            p.Start();
+        using var p = new Process();
+        p.StartInfo.FileName = "sh";
+        p.StartInfo.RedirectStandardInput = true;
+        p.StartInfo.RedirectStandardOutput = true;
+        p.StartInfo.RedirectStandardError = true;
+        p.StartInfo.UseShellExecute = false;
+        p.StartInfo.CreateNoWindow = true;
+        p.Start();
 
-            var info = new FileInfo(path);
-            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/*");
-            p.StandardInput.WriteLine("chmod a+x " + info.Directory!.Parent!.FullName + "/lib/*");
-            p.StandardInput.WriteLine("exit");
-            p.WaitForExit();
+        var info = new FileInfo(path);
+        p.StandardInput.WriteLine("chmod a+x " + info.Directory!.FullName + "/*");
+        p.StandardInput.WriteLine("chmod a+x " + info.Directory!.Parent!.FullName + "/lib/*");
+        p.StandardInput.WriteLine("exit");
+        p.WaitForExit();
 
-            string temp = p.StandardOutput.ReadToEnd();
+        string temp = p.StandardOutput.ReadToEnd();
 
-            p.Dispose();
-        }
-        catch (Exception e)
-        {
-            Logs.Error(LanguageHelper.Get("Core.Error56"), e);
-        }
+        p.Dispose();
     }
 
+    /// <summary>
+    /// 获取回收站路径
+    /// </summary>
+    /// <returns></returns>
     private static string GetTrashFilesPath()
     {
         string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ??
@@ -81,6 +71,10 @@ public static class PathHelper
         return trashPath;
     }
 
+    /// <summary>
+    /// 获取回收站路径
+    /// </summary>
+    /// <returns></returns>
     private static string GetTrashInfoPath()
     {
         string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME") ??
@@ -90,6 +84,10 @@ public static class PathHelper
         return trashInfoPath;
     }
 
+    /// <summary>
+    /// 生成回收站内容
+    /// </summary>
+    /// <returns></returns>
     private static string GenerateTrashInfoContent(string originalPath, DateTime deletionDate)
     {
         return $"[Trash Info]\n" +
@@ -361,30 +359,6 @@ public static class PathHelper
     }
 
     /// <summary>
-    /// 删除文件夹
-    /// </summary>
-    /// <param name="arg">参数</param>
-    /// <returns>是否成功删除</returns>
-    public static async Task<bool> DeleteFilesAsync(DeleteFilesArg arg)
-    {
-        if (!Directory.Exists(arg.Local))
-        {
-            return true;
-        }
-
-        if (arg.Request != null)
-        {
-            var res = await arg.Request(string.Format(LanguageHelper.Get("Core.Info2"), arg.Local));
-            if (!res)
-            {
-                return false;
-            }
-        }
-
-        return await MoveToTrashAsync(arg.Local);
-    }
-
-    /// <summary>
     /// 查找文件
     /// </summary>
     /// <param name="local">路径</param>
@@ -497,12 +471,6 @@ public static class PathHelper
     /// <param name="local">路径</param>
     public static void Delete(string local)
     {
-#if Phone
-        if (SystemInfo.Os == OsType.Android && local.StartsWith("content://"))
-        {
-            return;
-        }
-#endif
         if (!File.Exists(local))
         {
             return;

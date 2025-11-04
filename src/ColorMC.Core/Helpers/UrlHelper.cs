@@ -415,21 +415,6 @@ public static class UrlHelper
     /// <summary>
     /// NeoForge版本地址
     /// </summary>
-    /// <param name="version">版本</param>
-    /// <param name="source">下载源</param>
-    /// <returns>下载地址</returns>
-    public static string NeoForgeVersion(string version, SourceLocal? source)
-    {
-        return source switch
-        {
-            SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{version}",
-            _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
-        };
-    }
-
-    /// <summary>
-    /// NeoForge版本地址
-    /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="v222">是否为新版本</param>
     /// <param name="source">下载源</param>

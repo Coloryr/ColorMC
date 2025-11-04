@@ -545,7 +545,7 @@ public static class GameArg
         jvm.Add($"-Dcolormc.game.dir={obj.GetGamePath()}");
 
         return new JvmArgRes
-        { 
+        {
             Args = jvm,
             Asm = useasm
         };
@@ -775,7 +775,7 @@ public static class GameArg
                         }
                         if (res2 == null)
                         {
-                            res2 = await obj.BuildForgeAsync() 
+                            res2 = await obj.BuildForgeAsync()
                                 ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         }
                         loader = res2.Loaders;
@@ -825,7 +825,7 @@ public static class GameArg
                         {
                             return;
                         }
-                        var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel) 
+                        var res1 = await GameDownloadHelper.DecodeLoaderJarAsync(obj, obj.GetGameLoaderFile(), cancel)
                             ?? throw new LaunchException(LaunchError.LostLoaderFile);
                         loader = res1.List?.ToList();
                         break;
@@ -891,8 +891,11 @@ public static class GameArg
                 if (assets == null)
                 {
                     //不存在json文件
-                    var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url)
-                        ?? throw new LaunchException(LaunchError.LostAssetsFile, data: game.AssetIndex.Id);
+                    using var res = await GameAPI.GetAssetsAsync(game.AssetIndex.Url);
+                    if (res == null || res.Assets == null)
+                    {
+                        throw new LaunchException(LaunchError.LostAssetsFile, data: game.AssetIndex.Id);
+                    }
                     assets = res.Assets;
                     game.AddIndex(res.Text);
                 }
@@ -945,8 +948,11 @@ public static class GameArg
                     var assets = item.AssetIndex.GetIndex();
                     if (assets == null)
                     {
-                        var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url)
-                            ?? throw new LaunchException(LaunchError.LostAssetsFile, data: item.AssetIndex.Id);
+                        using var res = await GameAPI.GetAssetsAsync(item.AssetIndex.Url);
+                        if (res == null || res.Assets == null)
+                        {
+                            throw new LaunchException(LaunchError.LostAssetsFile, data: item.AssetIndex.Id);
+                        }
                         assets = res.Assets;
                         item.AddIndex(res.Text);
                     }

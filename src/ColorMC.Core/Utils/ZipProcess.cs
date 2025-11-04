@@ -1,4 +1,5 @@
 using System.Formats.Tar;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Common;
@@ -11,7 +12,7 @@ namespace ColorMC.Core.Utils;
 /// <summary>
 /// 压缩包处理
 /// </summary>
-public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Request? gameRequest = null)
+public class ZipProcess(IZipGui? gui = null)
 {
     private int _size = 0;
     private int _now = 0;
@@ -58,7 +59,7 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
             else
             {
                 _now++;
-                zipUpdate?.Invoke(Path.GetFileName(file), _now, _size);
+                gui?.ZipUpdate(Path.GetFileName(file), _now, _size);
                 var buffer = PathHelper.OpenRead(file)!;
                 string tempfile = file[(rootPath.LastIndexOf(Path.DirectorySeparatorChar) + 1)..];
                 using var stream = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
@@ -85,7 +86,7 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
         {
             string tempfile = item[(rootPath.Length + 1)..];
             _now++;
-            zipUpdate?.Invoke(item, _now, _size);
+            gui?.ZipUpdate(item, _now, _size);
             using var buffer = PathHelper.OpenRead(item)!;
             using var stream1 = zip.WriteToStream(tempfile, new ZipWriterEntryOptions());
             await buffer.CopyToAsync(stream1);
@@ -114,7 +115,7 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
                 info.Directory?.Create();
                 if (entry.EntryType is not TarEntryType.GlobalExtendedAttributes)
                 {
-                    zipUpdate?.Invoke(entry.Name, 0, 0);
+                    gui?.ZipUpdate(entry.Name, 0, 0);
                     await entry.ExtractToFileAsync(item, true);
                 }
             }
@@ -126,7 +127,7 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
             foreach (var e in s.Entries)
             {
                 _now++;
-                zipUpdate?.Invoke(e.Key ?? "", _now, _size);
+                gui?.ZipUpdate(e.Key ?? "", _now, _size);
 
                 if (!FuntionUtils.IsFile(e))
                 {
@@ -137,12 +138,11 @@ public class ZipProcess(ColorMCCore.ZipUpdate? zipUpdate = null, ColorMCCore.Req
                 var info = new FileInfo(item);
                 if (PathHelper.FileHasInvalidChars(info.Name))
                 {
-                    if (gameRequest == null)
+                    if (gui == null)
                     {
                         return false;
                     }
-                    var res = await gameRequest.Invoke(string.Format(
-                        LanguageHelper.Get("Core.Info23"), e.Key));
+                    var res = await gui.ZipRequest(e.Key);
                     if (!res)
                     {
                         return false;

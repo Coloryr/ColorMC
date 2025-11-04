@@ -12,7 +12,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// </summary>
     public const NbtType Type = NbtType.NbtList;
 
-    private new readonly List<NbtBase> Value = new();
+    private readonly List<NbtBase> _values = [];
 
     /// <summary>
     /// 储存的NBT类型
@@ -24,14 +24,20 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// </summary>
     public NbtBase this[int index]
     {
-        get => Value[index];
-        set => Value[index] = value;
+        get => _values[index];
+        set => _values[index] = value;
     }
 
     /// <summary>
     /// NBT数量
     /// </summary>
-    public int Count => Value.Count;
+    public int Count => _values.Count;
+
+    public override string Value 
+    { 
+        get => $"[{_values.Count}]"; 
+        set => throw new NotSupportedException(); 
+    }
 
     public NbtList()
     {
@@ -50,7 +56,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
             return;
         }
 
-        Value.Add(nbt);
+        _values.Add(nbt);
     }
 
     /// <summary>
@@ -59,7 +65,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// <param name="index">下标</param>
     public void RemoveAt(int index)
     {
-        Value.RemoveAt(index);
+        _values.RemoveAt(index);
     }
 
     /// <summary>
@@ -68,7 +74,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// <param name="item">NBT标签</param>
     public void Remove(NbtBase item)
     {
-        Value.Remove(item);
+        _values.Remove(item);
     }
 
     /// <summary>
@@ -77,7 +83,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// <returns>NBT列表</returns>
     public List<NbtBase> CopyList()
     {
-        return new List<NbtBase>(Value);
+        return new List<NbtBase>(_values);
     }
 
     internal override NbtList Read(DataInputStream stream)
@@ -94,7 +100,7 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
         {
             var nbt = ById((NbtType)type);
             nbt.Read(stream);
-            Value.Add(nbt);
+            _values.Add(nbt);
         }
 
         return this;
@@ -102,19 +108,19 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
 
     internal override void Write(DataOutputStream stream)
     {
-        if (Value.Count == 0)
+        if (_values.Count == 0)
         {
             InNbtType = NbtType.NbtEnd;
         }
         else
         {
-            InNbtType = Value[0].NbtType;
+            InNbtType = _values[0].NbtType;
         }
 
         stream.Write((byte)InNbtType);
-        stream.Write(Value.Count);
+        stream.Write(_values.Count);
 
-        foreach (var item in Value)
+        foreach (var item in _values)
         {
             item.Write(stream);
         }
@@ -122,11 +128,11 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
 
     public IEnumerator<NbtBase> GetEnumerator()
     {
-        return Value.GetEnumerator();
+        return _values.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
     {
-        return Value.GetEnumerator();
+        return _values.GetEnumerator();
     }
 }

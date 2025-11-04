@@ -13,12 +13,18 @@ public class NbtIntArray : NbtBase
     /// <summary>
     /// 数据
     /// </summary>
-    public new List<int> Value { get; set; }
+    public List<int> ValueIntArray { get; set; }
+
+    public override string Value 
+    { 
+        get => $"[{ValueIntArray.Count}]"; 
+        set => throw new NotSupportedException(); 
+    }
 
     public NbtIntArray()
     {
         NbtType = NbtType.NbtIntArray;
-        Value ??= new();
+        ValueIntArray ??= new();
     }
 
     internal override NbtIntArray Read(DataInputStream stream)
@@ -26,16 +32,16 @@ public class NbtIntArray : NbtBase
         var length = stream.ReadInt();
         for (var a = 0; a < length; a++)
         {
-            Value.Add(stream.ReadInt());
+            ValueIntArray.Add(stream.ReadInt());
         }
         return this;
     }
 
     internal override void Write(DataOutputStream stream)
     {
-        stream.Write(Value.Count);
+        stream.Write(ValueIntArray.Count);
 
-        foreach (var item in Value)
+        foreach (var item in ValueIntArray)
         {
             stream.Write(item);
         }

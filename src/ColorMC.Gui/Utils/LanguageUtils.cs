@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Text.Json;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -13,10 +16,8 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class LanguageUtils
 {
-    /// <summary>
-    /// 语言储存
-    /// </summary>
-    private static readonly Language s_language = new();
+    private static readonly Dictionary<string, string> s_languageList = [];
+
     /// <summary>
     /// 语言类型
     /// </summary>
@@ -30,12 +31,17 @@ public static class LanguageUtils
     {
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Core.Resources.Language.en-us.json",
-            _ => "ColorMC.Core.Resources.Language.zh-cn.json"
+            LanguageType.en_us => "ColorMC.Gui.Resources.Language.en-us.json",
+            _ => "ColorMC.Gui.Resources.Language.zh-cn.json"
         };
         var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;
-        s_language.Load(istr);
+        s_languageList.Clear();
+        var json = JsonDocument.Parse(istr);
+        foreach (var item in json.RootElement.EnumerateObject())
+        {
+            s_languageList.Add(item.Name, item.Value.GetString()!);
+        }
     }
 
     /// <summary>
@@ -60,12 +66,12 @@ public static class LanguageUtils
     /// <returns>语言</returns>
     public static string Get(string input)
     {
-        return s_language.GetLanguage(input);
-    }
+        if (s_languageList.TryGetValue(input, out var res1))
+        {
+            return res1;
+        }
 
-    public static string GetName(this MFacetsObj type)
-    {
-        return Get($"Type.Modrinth.Facets.{type.Data}");
+        return input;
     }
 
     public static string GetName(this MSortingObj type)
@@ -141,7 +147,6 @@ public static class LanguageUtils
             LaunchError.CmdFileNotFound => string.Format(Get("Core.Error113"), exception.InnerData),
             LaunchError.VersionError => Get("Core.Error108"),
             LaunchError.SelectJavaNotFound => Get("Core.Error112"),
-
             _ => "",
         };
     }

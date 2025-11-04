@@ -1,5 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -65,7 +66,7 @@ public static class JvmPath
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<StringRes> InstallAsync(InstallJvmArg arg)
+    public static async Task<BaseRes> InstallAsync(InstallJvmArg arg)
     {
         try
         {
@@ -73,28 +74,22 @@ public static class JvmPath
             var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
             if (!res.State)
             {
-                return new StringRes { Data = LanguageHelper.Get("Core.Error52") };
+                return new BaseRes { Error = ErrorType.DonwloadFail };
             }
-            arg.Unzip?.Invoke();
-            res = await UnzipJavaAsync(new UnzipArg
+            arg.Gui?.Unzip();
+            var res1 = await UnzipJavaAsync(arg.Name, res.Data!, arg.Gui);
+            if (!res1.State)
             {
-                Name = arg.Name,
-                File = res.Data!,
-                Zip = arg.Zip
-            });
-            if (!res.State)
-            {
-                return new StringRes { Data = res.Data };
+                return new BaseRes { Error = res1.Error };
             }
         }
         catch (Exception e)
         {
-            string text = LanguageHelper.Get("Core.Error54");
-            Logs.Error(text, e);
-            return new StringRes { Data = text };
+            ColorMCCore.OnError(new JavaInstallErrorEventArgs(arg.Name, arg.Url, e));
+            return new BaseRes { Error = ErrorType.InstallFail };
         }
 
-        return new StringRes { State = true };
+        return new BaseRes { State = true };
     }
 
     /// <summary>
@@ -144,41 +139,24 @@ public static class JvmPath
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<StringRes> UnzipJavaAsync(UnzipArg arg)
+    public static async Task<BaseRes> UnzipJavaAsync(string name, string file, IZipGui? gui)
     {
-        string path = Path.Combine(JavaDir, arg.Name);
+        string path = Path.Combine(JavaDir, name);
         Directory.CreateDirectory(path);
-        var stream = PathHelper.OpenRead(arg.File);
-        if (stream == null)
-        {
-            return new StringRes { Data = string.Format(LanguageHelper.Get("Core.Error58"), arg.File) };
-        }
+        var stream = PathHelper.OpenRead(file)!;
 
-        var res = await Task.Run(async () =>
-        {
-            try
-            {
-                await new ZipProcess(zipUpdate: arg.Zip).UnzipAsync(path, arg.File, stream);
-                return (true, null!);
-            }
-            catch (Exception e)
-            {
-                return (false, e);
-            }
-        });
+        var res = await new ZipProcess(gui).UnzipAsync(path, file, stream);
 
         stream.Close();
-        if (!res.Item1)
+        if (!res)
         {
-            string temp = LanguageHelper.Get("Core.Error59");
-            Logs.Error(temp, res.e);
-            return new StringRes { Data = temp };
+            return new BaseRes { Error = ErrorType.UnzipFail };
         }
 
         var java = Find(path);
         if (java == null)
         {
-            return new StringRes { Data = LanguageHelper.Get("Core.Error53") };
+            return new BaseRes { Error = ErrorType.SearchFail };
         }
         else
         {
@@ -192,14 +170,13 @@ public static class JvmPath
                     java = tpath;
                 }
             }
-            Logs.Info(string.Format(LanguageHelper.Get("Core.Info14"), java));
         }
 
         if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
         {
             PathHelper.PerJavaChmod(java);
         }
-        return AddItem(arg.Name, java);
+        return AddItem(name, java);
     }
 
     /// <summary>
@@ -215,8 +192,6 @@ public static class JvmPath
         {
             local = local[basedir.Length..];
         }
-
-        Logs.Info(string.Format(LanguageHelper.Get("Core.Info15"), local));
 
         //删除旧的
         Remove(name);
@@ -238,12 +213,8 @@ public static class JvmPath
             ConfigLoad.Save();
             return new StringRes { State = true, Data = name };
         }
-        else
-        {
-            Logs.Info(LanguageHelper.Get("Core.Error55"));
-        }
 
-        return new StringRes { Data = LanguageHelper.Get("Core.Error51") };
+        return new StringRes { };
     }
 
     /// <summary>
@@ -268,7 +239,6 @@ public static class JvmPath
     {
         var basedir = ColorMCCore.BaseDir;
 
-        Logs.Info(LanguageHelper.Get("Core.Info12"));
         Task.Run(() =>
         {
             Jvms.Clear();
@@ -286,8 +256,6 @@ public static class JvmPath
                 Jvms.Remove(a.Name);
                 if (info != null)
                 {
-                    Logs.Info(string.Format(LanguageHelper.Get("Core.Info13"),
-                        info.Path, info.Version));
                     info.Name = a.Name;
                     Jvms.Add(a.Name, info);
                 }
@@ -297,8 +265,8 @@ public static class JvmPath
                     {
                         Name = a.Name,
                         Path = a.Local,
-                        Type = LanguageHelper.Get("Core.Info17"),
-                        Version = LanguageHelper.Get("Core.Info16"),
+                        Type = "",
+                        Version = "",
                         MajorVersion = -1,
                         Arch = ArchEnum.unknow
                     });

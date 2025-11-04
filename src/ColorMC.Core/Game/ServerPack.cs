@@ -1,14 +1,15 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
+using ColorMC.Core.Utils;
 
-namespace ColorMC.Core.Utils;
+namespace ColorMC.Core.Game;
 
 /// <summary>
 /// 服务器实例相关操作
@@ -272,7 +273,7 @@ public static class ServerPack
     /// <param name="obj">服务器实例</param>
     /// <param name="arg">参数</param>
     /// <returns>创建结果</returns>
-    public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, ServerPackGenArg arg)
+    public static async Task<bool> GenServerPackAsync(this ServerPackObj obj, string local)
     {
         var obj1 = new ServerPackObj()
         {
@@ -283,22 +284,17 @@ public static class ServerPack
             Text = obj.Text
         };
 
-        if (!arg.Local.EndsWith('/') && !arg.Local.EndsWith('\\'))
+        var path = local;
+
+        if (!path.EndsWith('/') && !path.EndsWith('\\'))
         {
-            arg.Local += "/";
+            path += "/";
         }
 
-        var path = arg.Local;
+        path += "files/";
 
-        arg.Local += "files/";
-
-        await PathHelper.DeleteFilesAsync(new DeleteFilesArg
-        {
-            Local = arg.Local,
-            Request = arg.Request
-        });
-
-        Directory.CreateDirectory(arg.Local);
+        await PathHelper.MoveToTrashAsync(path);
+        Directory.CreateDirectory(path);
 
         bool fail = false;
 
@@ -313,7 +309,7 @@ public static class ServerPack
                 {
                     if (item.Source == null)
                     {
-                        var name = Path.Combine(arg.Local, item.Sha256);
+                        var name = Path.Combine(path, item.Sha256);
                         var name1 = Path.Combine(local2, item.File);
                         PathHelper.CopyFile(name1, name);
                         item.Url = $"files/{item.Sha256}";
@@ -338,7 +334,7 @@ public static class ServerPack
 
                 foreach (var item in obj.Resourcepack)
                 {
-                    var name = Path.Combine(arg.Local, item.Sha256);
+                    var name = Path.Combine(path, item.Sha256);
                     var name1 = Path.Combine(local2, item.File);
                     PathHelper.CopyFile(name1, name);
                     item.Url = $"files/{item.Sha256}";
@@ -364,13 +360,13 @@ public static class ServerPack
                     string path1 = Path.GetFullPath(local2 + "/" + item.Group);
                     if (item.IsDir)
                     {
-                        string path2 = Path.GetFullPath(arg.Local + "/" + item.Group);
+                        string path2 = Path.GetFullPath(path + "/" + item.Group);
                         if (item.IsZip)
                         {
                             //打包进压缩包
                             var file = new FileInfo(path2[..^1] + ".zip");
                             var stream1 = PathHelper.OpenWrite(file.FullName);
-                            var zip = await new ZipProcess(gameRequest: arg.Request).ZipFileAsync(path1, stream1);
+                            var zip = await new ZipProcess().ZipFileAsync(path1, stream1);
                             zip.Dispose();
                             stream1.Dispose();
 
@@ -387,7 +383,7 @@ public static class ServerPack
 
                             stream.Dispose();
 
-                            PathHelper.MoveFile(file.FullName, Path.Combine(arg.Local, item1.Sha256));
+                            PathHelper.MoveFile(file.FullName, Path.Combine(path, item1.Sha256));
 
                             obj1.Config.Add(item1);
                         }
@@ -412,7 +408,7 @@ public static class ServerPack
 
                                 item2.Url = $"files/{item2.Sha256}";
 
-                                PathHelper.CopyFile(item1.FullName, Path.Combine(arg.Local, item2.Sha256));
+                                PathHelper.CopyFile(item1.FullName, Path.Combine(path, item2.Sha256));
 
                                 obj1.Config.Add(item2);
                             }
@@ -433,7 +429,7 @@ public static class ServerPack
 
                         item2.Url = $"files/{item2.Sha256}";
 
-                        PathHelper.CopyFile(path1, Path.Combine(arg.Local, item2.Sha256));
+                        PathHelper.CopyFile(path1, Path.Combine(path, item2.Sha256));
 
                         obj1.Config.Add(item2);
                     }
@@ -454,7 +450,7 @@ public static class ServerPack
 
                     item2.Url = $"files/{item2.Sha256}";
 
-                    PathHelper.CopyFile(icon, Path.Combine(arg.Local, item2.Sha256));
+                    PathHelper.CopyFile(icon, Path.Combine(path, item2.Sha256));
 
                     obj1.Config.Add(item2);
                 }
@@ -468,10 +464,10 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        string local = Path.Combine(path, Names.NameServerFile);
-        await PathHelper.WriteTextAsync(local, JsonUtils.ToString(obj1, JsonType.ServerPackObj));
+        string local1 = Path.Combine(path, Names.NameServerFile);
+        await PathHelper.WriteTextAsync(local1, JsonUtils.ToString(obj1, JsonType.ServerPackObj));
 
-        using var stream = PathHelper.OpenRead(local)!;
+        using var stream = PathHelper.OpenRead(local1)!;
 
         await PathHelper.WriteTextAsync(Path.Combine(path, Names.NameShaFile), await HashHelper.GenSha1Async(stream));
 
@@ -488,12 +484,9 @@ public static class ServerPack
     public static async Task ServerPackCheckAsync(this GameSettingObj obj, ILauncherGui? gui, CancellationToken token)
     {
         var obj2 = obj.GetServerPack();
-        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token);
-        if (!res.State)
-        {
-            throw new LaunchException(LaunchError.CheckServerPackFail);
-        }
-        if (obj2.Sha1 == null || obj2.Sha1 != res.Data)
+        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token) 
+            ?? throw new LaunchException(LaunchError.CheckServerPackFail);
+        if (obj2.Sha1 == null || obj2.Sha1 != res)
         {
             var res1 = await CoreHttpClient.GetStreamAsync($"{obj.ServerUrl}{Names.NameServerFile}", token) 
                 ?? throw new LaunchException(LaunchError.CheckServerPackFail);
