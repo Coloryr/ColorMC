@@ -7,6 +7,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -122,8 +123,7 @@ public partial class AddGameModel
         }
 
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(),
-            Group, GameRequest, GameOverwirte, Update, true);
+        var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(), Group, new CreateGameGui(Model), true);
         Model.ProgressClose();
 
         if (!res.State)
@@ -187,8 +187,7 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGameAsync(null, item, null, Group,
-                GameRequest, GameOverwirte, Update, false);
+            var res = await GameBinding.AddGameAsync(null, item, null, Group, new CreateGameGui(Model), false);
             Model.ProgressClose();
 
             if (!res.State)
@@ -212,24 +211,5 @@ public partial class AddGameModel
         {
             Model.Show(LanguageUtils.Get("AddGameWindow.Tab3.Error6"));
         }
-    }
-
-    /// <summary>
-    /// 更新状态栏
-    /// </summary>
-    /// <param name="text">显示的文本</param>
-    /// <param name="size">当前进度</param>
-    /// <param name="all">总体数量</param>
-    private void Update(string text, int size, int all)
-    {
-        if (text.Length > 40)
-        {
-            text = "..." + text[^40..];
-        }
-        Dispatcher.UIThread.Post(() =>
-        {
-            Model.ProgressUpdate(text);
-            Model.ProgressUpdate((double)size / all * 100);
-        });
     }
 }

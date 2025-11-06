@@ -572,7 +572,7 @@ public static class InstancesPath
     /// </summary>
     /// <param name="game">游戏实例</param>
     /// <returns>结果</returns>
-    public static async Task<GameSettingObj?> CreateGameAsync(GameSettingObj game, ICreateInstanceGui? gui)
+    public static async Task<GameSettingObj?> CreateGameAsync(GameSettingObj game, IOverGameGui? gui)
     {
         try
         {
@@ -798,7 +798,7 @@ public static class InstancesPath
     /// <param name="obj">原始实例</param>
     /// <param name="arg">复制参数</param>
     /// <returns>复制的实例</returns>
-    public static async Task<GameSettingObj?> CopyAsync(this GameSettingObj obj, string game, ICreateInstanceGui? gui)
+    public static async Task<GameSettingObj?> CopyAsync(this GameSettingObj obj, string game, IOverGameGui? gui)
     {
         var obj1 = obj.CopyObj();
         obj1.Name = game;
@@ -1032,7 +1032,7 @@ public static class InstancesPath
                 var path = item.FullName[basel..];
                 var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                 info.Directory?.Create();
-                arg.Gui?.StateUpdate(info.FullName, index, list.Count);
+                arg.ZipGui?.ZipUpdate(info.FullName, index, list.Count);
                 PathHelper.CopyFile(item.FullName, info.FullName);
                 index++;
             }

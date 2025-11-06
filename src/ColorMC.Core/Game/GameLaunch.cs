@@ -23,7 +23,7 @@ public static class Launch
     /// <exception cref="LaunchException"></exception>
     private static async Task AuthLoginAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
-        larg.Gui?.LaunchState(obj, LaunchState.Login);
+        larg.Gui?.StateUpdate(obj, LaunchState.Loging);
 
         var stopwatch = new Stopwatch();
         stopwatch.Start();
@@ -39,7 +39,7 @@ public static class Launch
             if (larg.Auth.AuthType != AuthType.Offline
                     && !string.IsNullOrWhiteSpace(larg.Auth.UUID)
                     && larg.Gui != null
-                    && await larg.Gui.LoginFailRun(larg.Auth))
+                    && await larg.Gui.LoginFail(larg.Auth))
             {
                 larg.Auth = new LoginObj
                 {
@@ -50,8 +50,6 @@ public static class Launch
             }
             else
             {
-                larg.Gui?.LaunchFail(obj, LaunchError.AuthLoginFail);
-
                 throw new LaunchException(LaunchError.AuthLoginFail, e);
             }
         }
@@ -122,7 +120,7 @@ public static class Launch
 
         if (download)
         {
-            larg.Gui?.LaunchState(obj, LaunchState.Download);
+            larg.Gui?.StateUpdate(obj, LaunchState.Downloading);
 
             stopwatch.Reset();
             stopwatch.Start();
@@ -233,7 +231,6 @@ public static class Launch
         if (jvm == null)
         {
             var jv = arg1.JavaVersions.First();
-            larg.Gui?.LaunchFail(obj, LaunchError.JavaNotFound);
             larg.Gui?.NoJava(jv);
             throw new LaunchException(LaunchError.JavaNotFound, data: jv.ToString());
         }
@@ -366,7 +363,7 @@ public static class Launch
                     return list;
                 }
 
-                larg.Gui?.LaunchState(obj, LaunchState.Check);
+                larg.Gui?.StateUpdate(obj, LaunchState.Checking);
 
                 //检查游戏文件
                 var arg1 = await CheckGameFileAsync(obj, larg, cancel);
@@ -384,7 +381,7 @@ public static class Launch
                 }
 
                 //准备Jvm参数
-                larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
+                larg.Gui?.StateUpdate(obj, LaunchState.JvmPrepare);
                 var arg = obj.MakeRunArg(larg, arg1, true);
 
                 if (cancel.IsCancellationRequested)
@@ -493,7 +490,7 @@ public static class Launch
         }
 
         //准备Jvm参数
-        larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
+        larg.Gui?.StateUpdate(obj, LaunchState.JvmPrepare);
         var arg = obj.MakeRunArg(larg, arg1, false);
 
         //自定义启动参数
@@ -544,7 +541,7 @@ public static class Launch
             }
         }
 
-        larg.Gui?.LaunchState(obj, LaunchState.End);
+        larg.Gui?.StateUpdate(obj, LaunchState.End);
 
         return new CreateCmdRes
         {
@@ -597,7 +594,7 @@ public static class Launch
             return null;
         }
 
-        larg.Gui?.LaunchState(obj, LaunchState.Check);
+        larg.Gui?.StateUpdate(obj, LaunchState.Checking);
 
         //检查游戏文件
         var arg1 = await CheckGameFileAsync(obj, larg, token);
@@ -626,7 +623,7 @@ public static class Launch
         }
 
         //准备Jvm参数
-        larg.Gui?.LaunchState(obj, LaunchState.JvmPrepare);
+        larg.Gui?.StateUpdate(obj, LaunchState.JvmPrepare);
 
         var arg = obj.MakeRunArg(larg, arg1, true);
 
@@ -682,7 +679,7 @@ public static class Launch
                 {
                     stopwatch.Reset();
                     stopwatch.Start();
-                    larg.Gui?.LaunchState(obj, LaunchState.LaunchPre);
+                    larg.Gui?.StateUpdate(obj, LaunchState.LaunchPre);
                     start = obj.ReplaceArg(path, arg, start);
                     obj.CmdRun(start, env, prerun, larg.Admin);
                     stopwatch.Stop();
@@ -730,7 +727,7 @@ public static class Launch
             if (larg.Gui == null || await larg.Gui.LaunchProcess(false))
             {
                 stopwatch.Start();
-                larg.Gui?.LaunchState(obj, LaunchState.LaunchPost);
+                larg.Gui?.StateUpdate(obj, LaunchState.LaunchPost);
                 start1 = obj.ReplaceArg(path, arg, start1);
                 obj.CmdRun(start1, env, false, larg.Admin);
                 stopwatch.Stop();

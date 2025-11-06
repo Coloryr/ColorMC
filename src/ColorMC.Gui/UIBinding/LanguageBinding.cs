@@ -105,8 +105,6 @@ public static class LanguageBinding
             LanguageUtils.Get("Type.ExportPack.Item1"),
             LanguageUtils.Get("Type.ExportPack.Item2"),
             LanguageUtils.Get("Type.ExportPack.Item3"),
-            //App.GetLanguage("Type.ExportPack.Item4"),
-            //App.GetLanguage("Type.ExportPack.Item5")
         ];
     }
 
@@ -279,8 +277,7 @@ public static class LanguageBinding
             "Adoptium",
             "Zulu",
             "Dragonwell",
-            "OpenJ9", 
-            //"Graalvm"
+            "OpenJ9",
         ];
     }
 

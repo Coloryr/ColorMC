@@ -316,15 +316,9 @@ public partial class AddJavaControlModel : TopModel
         {
             Model.Progress(LanguageUtils.Get("AddJavaWindow.Info2"));
         }
-        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
+
         //开始下载Java
-        var res1 = await JavaBinding.DownloadJavaAsync(obj, (a, b, c) =>
-        {
-            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        }, () =>
-        {
-            Dispatcher.UIThread.Post(() => Model.ProgressUpdate(LanguageUtils.Get("AddJavaWindow.Info5")));
-        });
+        var res1 = await JavaBinding.DownloadJavaAsync(obj, new ZipGui(Model));
         Model.ProgressClose();
         if (!res1.State)
         {

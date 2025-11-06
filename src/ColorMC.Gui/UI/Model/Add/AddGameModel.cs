@@ -7,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -202,84 +203,14 @@ public partial class AddGameModel : TopModel
     }
 
     /// <summary>
-    /// 请求
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
-        Model.Progress();
-        return test;
-    }
-
-    /// <summary>
-    /// 请求
-    /// </summary>
-    /// <param name="text"></param>
-    /// <returns></returns>
-    private async Task<bool> GameRequest(string text)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowAsync(text);
-        Model.Progress();
-        return test;
-    }
-
-    /// <summary>
-    /// 添加进度
-    /// </summary>
-    /// <param name="state"></param>
-    private void PackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info1"));
-        }
-        else if (state == CoreRunState.Init)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info2"));
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
-        }
-        else if (state == CoreRunState.Download)
-        {
-            Model.ProgressUpdate(-1);
-            if (!ConfigBinding.WindowMode())
-            {
-                Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
-            }
-            else
-            {
-                Model.ProgressClose();
-            }
-        }
-        else if (state == CoreRunState.DownloadDone)
-        {
-            if (ConfigBinding.WindowMode())
-            {
-                Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
-            }
-        }
-        else if (state == CoreRunState.End)
-        {
-            Name = "";
-            Group = "";
-        }
-    }
-
-    /// <summary>
     /// 添加完成
     /// </summary>
     private async void Done(string? uuid)
     {
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info7"));
-
         Name = "";
+        Group = "";
+
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info7"));
 
         if (_keep)
         {
@@ -332,7 +263,7 @@ public partial class AddGameModel : TopModel
         while (true)
         {
             //替换冲突的名字
-            if (GameBinding.GetGameByName(obj.Name) != null)
+            if (InstancesPath.GetGameByName(obj.Name) != null)
             {
                 var res1 = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info12"));
                 if (!res1)
@@ -354,8 +285,8 @@ public partial class AddGameModel : TopModel
             }
         }
         //下载游戏实例
-        var res3 = await GameBinding.DownloadCloudAsync(obj, Group, Model.ShowAsync,
-            GameOverwirteAsync);
+        var res3 = await GameBinding.DownloadCloudAsync(obj, Group,
+            new CreateGameGui(Model));
         Model.ProgressClose();
         if (!res3.State)
         {
@@ -391,7 +322,7 @@ public partial class AddGameModel : TopModel
         //下载服务器包
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info14"));
         var res1 = await GameBinding.DownloadServerPackAsync(Model, Name, Group, res.Text1,
-            GameOverwirteAsync);
+            new CreateGameGui(Model));
         Model.ProgressClose();
         if (!res1.State)
         {

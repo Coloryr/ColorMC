@@ -7,5 +7,7 @@ public partial class TestWindow : Window
     public TestWindow()
     {
         InitializeComponent();
+
+        CanResize = false;
     }
 }

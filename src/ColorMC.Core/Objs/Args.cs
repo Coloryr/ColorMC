@@ -30,7 +30,7 @@ public record GameLaunchArg
     /// <summary>
     /// 解密对接
     /// </summary>
-    public ILauncherGui? Gui;
+    public ILaunchGui? Gui;
     /// <summary>
     /// ColorMC ASM端口
     /// </summary>
@@ -81,6 +81,7 @@ public record CopyGameFileArg
     public bool IsDir;
 
     public ICreateInstanceGui? Gui;
+    public IZipGui? ZipGui;
 }
 
 /// <summary>
@@ -99,64 +100,6 @@ public abstract record UnpackGameZipArg
 
     public ICreateInstanceGui? Gui;
     public IZipGui? ZipGui;
-}
-
-/// <summary>
-/// 导入整合包参数
-/// </summary>
-public record InstallZipArg : UnpackGameZipArg
-{
-    /// <summary>
-    /// 压缩包位置
-    /// </summary>
-    public required string Dir;
-    /// <summary>
-    /// 整合包类型
-    /// </summary>
-    public required PackType Type;
-}
-
-/// <summary>
-/// 安装Modrinth整合包参数
-/// </summary>
-public record DownloadModrinthArg : UnpackGameZipArg
-{
-    public required ModrinthVersionObj Data;
-    public required string? IconUrl;
-}
-
-/// <summary>
-/// 安装curseforge整合包参数
-/// </summary>
-public record DownloadCurseForgeArg : UnpackGameZipArg
-{
-    public required CurseForgeModObj.CurseForgeDataObj Data;
-    public required string? IconUrl;
-}
-
-/// <summary>
-/// 安装Java参数
-/// </summary>
-public record InstallJvmArg
-{
-    /// <summary>
-    /// 文件名
-    /// </summary>
-    public required string File;
-    /// <summary>
-    /// 名字
-    /// </summary>
-    public required string Name;
-    /// <summary>
-    /// Sha256
-    /// </summary>
-    public required string Sha256;
-    /// <summary>
-    /// 下载地址
-    /// </summary>
-    public required string Url;
-
-    public IZipGui? Gui;
 }
 
 /// <summary>

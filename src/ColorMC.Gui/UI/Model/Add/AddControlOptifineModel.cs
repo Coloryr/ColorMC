@@ -6,6 +6,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -182,9 +183,9 @@ public partial class AddControlModel : IAddOptifineControl
         Model.Progress(LanguageUtils.Get("AddWindow.Info11"));
         var res1 = await OptifineAPI.DownloadOptifineAsync(Obj, item.Obj);
         Model.ProgressClose();
-        if (res1.State == false)
+        if (res1 == false)
         {
-            Model.Show(res1.Data!);
+            Model.Show(LanguageUtils.Get("Core.Error43"));
         }
         else
         {

@@ -4,7 +4,6 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core.Net.Motd;
-using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Utils;
 
@@ -13,6 +12,11 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UIUtils
 {
+    /// <summary>
+    /// 测量左边距
+    /// </summary>
+    /// <param name="control"></param>
+    /// <returns></returns>
     public static double SumLeft(this Control control)
     {
         if (!control.IsMeasureValid)

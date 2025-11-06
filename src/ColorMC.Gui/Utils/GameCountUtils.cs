@@ -65,7 +65,7 @@ public static class GameCountUtils
                 GameRuns = [],
                 LaunchLogs = []
             };
-            Save();
+            await SaveAsync();
             return;
         }
         try
@@ -189,7 +189,7 @@ public static class GameCountUtils
     /// <summary>
     /// 保存统计数据
     /// </summary>
-    public static void Save()
+    public static async Task SaveAsync()
     {
         if (Count == null)
         {
@@ -255,7 +255,7 @@ public static class GameCountUtils
 
         nbt.ZipType = ZipType.GZip;
 
-        nbt.SaveAsync(s_local);
+        await nbt.SaveAsync(s_local);
 
         s_isSave = false;
     }
@@ -322,7 +322,7 @@ public static class GameCountUtils
                 Count.LaunchLogs.Add(uuid, [log]);
             }
 
-            Task.Run(Save);
+            Task.Run(SaveAsync);
         }
     }
 
@@ -354,7 +354,7 @@ public static class GameCountUtils
                 Count.LaunchLogs.Add(uuid, [log]);
             }
 
-            Task.Run(Save);
+            Task.Run(SaveAsync);
         }
     }
 
@@ -396,7 +396,7 @@ public static class GameCountUtils
                 }
             }
 
-            Task.Run(Save);
+            Task.Run(SaveAsync);
         }
     }
 }

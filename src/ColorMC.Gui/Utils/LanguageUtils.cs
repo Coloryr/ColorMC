@@ -170,39 +170,6 @@ public static class LanguageUtils
         };
     }
 
-    public static string GetName(this LaunchState state)
-    {
-        return state switch
-        {
-            LaunchState.Check => Get("Type.LaunchState.Check"),
-            LaunchState.CheckVersion => Get("Type.LaunchState.CheckVersion"),
-            LaunchState.CheckLib => Get("Type.LaunchState.CheckLib"),
-            LaunchState.CheckAssets => Get("Type.LaunchState.CheckAssets"),
-            LaunchState.CheckLoader => Get("Type.LaunchState.CheckLoader"),
-            LaunchState.CheckLoginCore => Get("Type.LaunchState.CheckLoginCore"),
-            LaunchState.Download => Get("Type.LaunchState.Download"),
-            LaunchState.JvmPrepare => Get("Type.LaunchState.JvmPrepare"),
-            LaunchState.LaunchPre => Get("Type.LaunchState.LaunchPre"),
-            LaunchState.LaunchPost => Get("Type.LaunchState.LaunchPost"),
-            LaunchState.LoadServerPack => Get("Core.Info24"),
-            LaunchState.CheckServerPack => Get("Core.Info25"),
-            LaunchState.DownloadServerPack => Get("Core.Info26"),
-            LaunchState.DownloadServerPackDone => Get("Core.Info42"),
-            _ => Get("Type.LaunchState.Other")
-        };
-    }
-
-    public static string GetName(this GetDownloadState state)
-    {
-        return state switch
-        {
-            GetDownloadState.Init => Get("Type.DownloadState.Init"),
-            GetDownloadState.GetInfo => Get("Type.DownloadState.GetInfo"),
-            GetDownloadState.End => Get("Type.DownloadState.End"),
-            _ => Get("Type.DownloadState.Other")
-        };
-    }
-
     public static string GetName(this DownloadItemState state)
     {
         return state switch
@@ -408,6 +375,20 @@ public static class LanguageUtils
             FileType.DataPacks => Get("Type.FileType.DataPacks"),
             FileType.Optifine => Get("Type.FileType.Optifne"),
             _ => Get("Type.FileType.Other")
+        };
+    }
+
+    public static string GetName(this ErrorType type)
+    {
+        return type switch
+        {
+            ErrorType.FileNotExist => Get("Core.Error137"),
+            ErrorType.FileReadError => Get("Core.Error138"),
+            ErrorType.DonwloadFail => Get("Core.Error139"),
+            ErrorType.InstallFail => Get("Core.Error140"),
+            ErrorType.UnzipFail => Get("Core.Error141"),
+            ErrorType.SearchFail => Get("Core.Error142"),
+            _ => Get("Core.Error136")
         };
     }
 }

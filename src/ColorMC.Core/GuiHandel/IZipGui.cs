@@ -14,7 +14,7 @@ public interface IZipGui
     /// </summary>
     /// <param name="text">显示内容</param>
     /// <returns>是否同意</returns>
-    public Task<bool> ZipRequest(string? text);
+    public Task<bool> FileRename(string? text);
     /// <summary>
     /// 解压
     /// </summary>
