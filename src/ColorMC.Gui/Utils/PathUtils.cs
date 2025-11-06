@@ -38,18 +38,4 @@ public static class PathUtils
     {
         return file.Path.LocalPath;
     }
-
-    /// <summary>
-    /// 从资源文件获取文件二进制
-    /// </summary>
-    /// <param name="name">文件名</param>
-    /// <returns>数据</returns>
-    public static byte[] GetFile(string name)
-    {
-        var assm = Assembly.GetExecutingAssembly();
-        var item = assm.GetManifestResourceStream(name);
-        using MemoryStream stream = new();
-        item!.CopyTo(stream);
-        return stream.ToArray();
-    }
 }

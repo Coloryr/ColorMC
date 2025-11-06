@@ -13,6 +13,7 @@ using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -345,94 +346,6 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         DisplayVersion = true;
         LoadVersion();
-    }
-
-    /// <summary>
-    /// 安装包解压
-    /// </summary>
-    /// <param name="text"></param>
-    /// <param name="size"></param>
-    /// <param name="all"></param>
-    private void ZipUpdate(string text, int size, int all)
-    {
-        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
-        Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {text} {size}/{all}"));
-    }
-
-    /// <summary>
-    /// 请求显示内容，并确定返回值
-    /// </summary>
-    /// <param name="text">内容</param>
-    /// <returns></returns>
-    private async Task<bool> GameRequest(string text)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowAsync(text);
-        Model.Progress();
-        return test;
-    }
-
-    /// <summary>
-    /// 请求游戏实例覆盖
-    /// </summary>
-    /// <param name="obj">需要覆盖的游戏实例</param>
-    /// <returns></returns>
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
-        Model.Progress();
-        return test;
-    }
-
-    /// <summary>
-    /// 添加进度
-    /// </summary>
-    /// <param name="state"></param>
-    private void PackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info1"));
-        }
-        else if (state == CoreRunState.Init)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info2"));
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
-        }
-        else if (state == CoreRunState.Download)
-        {
-            Model.ProgressUpdate(-1);
-            if (!ConfigBinding.WindowMode())
-            {
-                Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
-            }
-            else
-            {
-                Model.ProgressClose();
-            }
-        }
-        else if (state == CoreRunState.DownloadDone)
-        {
-            if (ConfigBinding.WindowMode())
-            {
-                Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
-            }
-        }
-    }
-
-    /// <summary>
-    /// 进度条
-    /// </summary>
-    /// <param name="size"></param>
-    /// <param name="now"></param>
-    private void UpdateProcess(int size, int now)
-    {
-        Model.ProgressUpdate((double)now / size);
     }
 
     /// <summary>

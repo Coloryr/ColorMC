@@ -249,10 +249,10 @@ public static class ColorMCCore
     /// 获取下载窗口句柄
     /// </summary>
     /// <returns></returns>
-    internal static DownloadEventArgs OnDownloadGui()
+    internal static IDownloadGuiHandel? OnDownloadGui()
     {
         var arg = new DownloadEventArgs();
         Download?.Invoke(arg);
-        return arg;
+        return arg.GuiHandel;
     }
 }

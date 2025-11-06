@@ -40,10 +40,6 @@ public record GameLaunchOneRes
     /// </summary>
     public string? Message;
     /// <summary>
-    /// 是否登录失败
-    /// </summary>
-    public bool LoginFail;
-    /// <summary>
     /// 登录账户
     /// </summary>
     public LoginObj? User;

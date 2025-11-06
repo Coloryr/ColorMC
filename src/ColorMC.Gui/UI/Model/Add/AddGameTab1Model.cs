@@ -277,7 +277,7 @@ public partial class AddGameModel
             }
         };
 
-        var res = await GameBinding.AddGameAsync(game, GameRequestAsync, GameOverwirteAsync);
+        var res = await GameBinding.AddGameAsync(game, new OverGameGui(Model));
         if (!res)
         {
             Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error5"));
@@ -402,19 +402,6 @@ public partial class AddGameModel
                 GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(GameType.Other));
                 break;
         }
-    }
-
-    /// <summary>
-    /// 请求
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private async Task<bool> GameOverwirteAsync(GameSettingObj obj)
-    {
-        Model.ProgressClose();
-        var test = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
-        return test;
     }
 
     /// <summary>

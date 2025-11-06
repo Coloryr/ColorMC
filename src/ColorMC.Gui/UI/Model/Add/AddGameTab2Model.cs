@@ -1,9 +1,11 @@
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -96,8 +98,6 @@ public partial class AddGameModel
     /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
-        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
-
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
             Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error2"));
@@ -105,14 +105,7 @@ public partial class AddGameModel
         }
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info6"));
         //开始导入压缩包
-        var res = await GameBinding.AddPackAsync(ZipLocal, type, Name, Group,
-        (a, b, c) =>
-        {
-            Dispatcher.UIThread.Post(() => Model.ProgressUpdate($"{temp} {a} {b}/{c}"));
-        }, GameRequest, GameOverwirte, (size, now) =>
-        {
-            Model.ProgressUpdate((double)now / size * 100);
-        }, PackState);
+        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), new ZipGui(Model));
         Model.ProgressClose();
         if (!res.State)
         {

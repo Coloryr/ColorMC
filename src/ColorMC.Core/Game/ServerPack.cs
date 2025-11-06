@@ -35,7 +35,7 @@ public static class ServerPack
     /// <param name="state">更新参数</param>
     /// <param name="token"></param>
     /// <returns>是否更新完成</returns>
-    public static async Task<bool> UpdateAsync(this ServerPackObj obj, ILauncherGui? gui, CancellationToken token)
+    public static async Task<bool> UpdateAsync(this ServerPackObj obj, IUpdateGui? gui, CancellationToken token)
     {
         PathHelper.Delete(obj.Game.GetServerPackFile());
         var old = obj.Game.GetOldServerPack();
@@ -55,7 +55,7 @@ public static class ServerPack
             Resourcepack = []
         };
 
-        gui?.LaunchState(obj.Game, LaunchState.CheckServerPack);
+        gui?.StateUpdate(obj.Game, LaunchState.CheckServerPack);
 
         var task1 = Task.Run(async () =>
         {
@@ -193,10 +193,10 @@ public static class ServerPack
 
         await Task.WhenAll(task1, task2, task3);
 
-        gui?.LaunchState(obj.Game, LaunchState.DownloadServerPack);
+        gui?.StateUpdate(obj.Game, LaunchState.DownloadServerPack);
         //开始下载
         var res = await DownloadManager.StartAsync([.. list5]);
-        gui?.LaunchState(obj.Game, LaunchState.DownloadServerPackDone);
+        gui?.StateUpdate(obj.Game, LaunchState.DownloadServerPackDone);
         return res;
     }
 
@@ -481,7 +481,7 @@ public static class ServerPack
     /// <param name="gui">界面回调</param>
     /// <param name="token"></param>
     /// <returns>是否检查成功</returns>
-    public static async Task ServerPackCheckAsync(this GameSettingObj obj, ILauncherGui? gui, CancellationToken token)
+    public static async Task ServerPackCheckAsync(this GameSettingObj obj, ILaunchGui? gui, CancellationToken token)
     {
         var obj2 = obj.GetServerPack();
         var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token) 
@@ -502,7 +502,7 @@ public static class ServerPack
                 }
 
                 obj2.Pack?.MoveToOld();
-                gui?.LaunchState(obj, LaunchState.LoadServerPack);
+                gui?.StateUpdate(obj, LaunchState.LoadServerPack);
 
                 var res2 = await obj1.UpdateAsync(gui, token);
                 if (res2)

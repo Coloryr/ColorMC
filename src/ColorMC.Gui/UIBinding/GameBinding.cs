@@ -37,6 +37,7 @@ using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.ColorMC;
+using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
@@ -57,15 +58,9 @@ public static class GameBinding
     /// <param name="request">UI相关</param>
     /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
-    public static async Task<bool> AddGameAsync(GameSettingObj game, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte)
+    public static async Task<bool> AddGameAsync(GameSettingObj game, IOverGameGui gui)
     {
-        var game1 = await InstancesPath.CreateGameAsync(new CreateGameArg
-        {
-            Game = game,
-            Request = request,
-            Overwirte = overwirte
-        });
+        var game1 = await InstancesPath.CreateGameAsync(game, gui);
         if (game1 != null)
         {
             ConfigBinding.SetLastLaunch(game1.UUID);
@@ -81,12 +76,9 @@ public static class GameBinding
     /// <param name="local">文件夹路径</param>
     /// <param name="unselect">不导入的文件列表</param>
     /// <param name="group">游戏分组</param>
-    /// <param name="request">UI相关</param>
-    /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<GameRes> AddGameAsync(string? name, string local, List<string>? unselect,
-        string? group, ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.ZipUpdate state, bool open)
+        string? group, ICreateInstanceGui gui, bool open)
     {
         var res = await AddGameHelper.AddGameFolder(new()
         {
@@ -94,9 +86,7 @@ public static class GameBinding
             Name = name,
             Unselect = unselect,
             Group = group,
-            Request = request,
-            Overwirte = overwirte,
-            Gui = state
+            Gui = gui
         });
 
         if (!res.State)
@@ -110,97 +100,6 @@ public static class GameBinding
         }
 
         return res;
-    }
-
-    /// <summary>
-    /// 导入压缩包
-    /// </summary>
-    /// <param name="dir">压缩包路径</param>
-    /// <param name="type">压缩包类型</param>
-    /// <param name="name">实例名字</param>
-    /// <param name="group">游戏分组</param>
-    /// <param name="zip">UI相关</param>
-    /// <param name="request">UI相关</param>
-    /// <param name="overwirte">UI相关</param>
-    /// <param name="update">UI相关</param>
-    /// <param name="update2">UI相关</param>
-    /// <returns></returns>
-    public static Task<GameRes> AddPackAsync(string dir, PackType type, string? name,
-        string? group, ColorMCCore.ZipUpdate zip, ColorMCCore.Request request,
-        ColorMCCore.GameOverwirte overwirte, ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
-    {
-        return AddGameHelper.InstallZip(new InstallZipArg
-        {
-            Dir = dir,
-            Type = type,
-            Name = name,
-            Group = group,
-            Zip = zip,
-            Request = request,
-            Overwirte = overwirte,
-            Update = update,
-            Update2 = update2
-        });
-    }
-
-    /// <summary>
-    /// 安装CF整合包
-    /// </summary>
-    /// <param name="data">整合包信息</param>
-    /// <param name="icon">整合包图标</param>
-    /// <param name="group">游戏分组</param>
-    /// <param name="zip">UI相关</param>
-    /// <param name="request">UI相关</param>
-    /// <param name="overwirte">UI相关</param>
-    /// <param name="update">UI相关</param>
-    /// <param name="update2">UI相关</param>
-    /// <returns></returns>
-    public static async Task<GameRes> InstallCurseForgeAsync(CurseForgeModObj.CurseForgeDataObj data,
-        string? icon, string? group, ColorMCCore.ZipUpdate zip,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
-    {
-        return await AddGameHelper.InstallCurseForge(new DownloadCurseForgeArg
-        {
-            Data = data,
-            IconUrl = icon,
-            Group = group,
-            Zip = zip,
-            Request = request,
-            Overwirte = overwirte,
-            Update = update,
-            Update2 = update2
-        });
-    }
-
-    /// <summary>
-    /// 安装MO整合包
-    /// </summary>
-    /// <param name="data">整合包信息</param>
-    /// <param name="icon">整合包图标</param>
-    /// <param name="group">游戏分组</param>
-    /// <param name="zip">UI相关</param>
-    /// <param name="request">UI相关</param>
-    /// <param name="overwirte">UI相关</param>
-    /// <param name="update">UI相关</param>
-    /// <param name="update2">UI相关</param>
-    /// <returns></returns>
-    public static async Task<GameRes> InstallModrinthAsync(ModrinthVersionObj data,
-        string? icon, string? group, ColorMCCore.ZipUpdate zip,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte,
-        ColorMCCore.PackUpdate update, ColorMCCore.PackState update2)
-    {
-        return await AddGameHelper.InstallModrinth(new DownloadModrinthArg
-        {
-            Data = data,
-            IconUrl = icon,
-            Group = group,
-            Zip = zip,
-            Request = request,
-            Overwirte = overwirte,
-            Update = update,
-            Update2 = update2
-        });
     }
 
     /// <summary>
@@ -375,7 +274,7 @@ public static class GameBinding
     /// 显示错误信息
     /// </summary>
     /// <param name="exception"></param>
-    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login)
+    private static string DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login)
     {
         var title = LanguageUtils.Get("BaseBinding.Error4");
         if (exception is LaunchException e1)
@@ -396,6 +295,8 @@ public static class GameBinding
             Logs.Error(title, exception);
             WindowManager.ShowError(title, exception);
         }
+
+        return title;
     }
 
     private static void DisplayCreateCmdCrash(Exception exception, GameSettingObj obj, LoginObj login)
@@ -523,7 +424,6 @@ public static class GameBinding
         //锁定账户
         UserManager.LockUser(user);
 
-        var state1 = LaunchState.End;
         string? temp = null;
         var arg = MakeArg(user, model, port);
         arg.World = world;
@@ -549,12 +449,12 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                DisplayLaunchCrash(e, obj, user);
+                temp = DisplayLaunchCrash(e, obj, user);
             }
             return null;
         });
 
-        arg.Gui?.LaunchState(obj, LaunchState.End);
+        arg.Gui?.StateUpdate(obj, LaunchState.End);
 
         model.ProgressClose();
         model.SubTitle = "";
@@ -605,11 +505,10 @@ public static class GameBinding
             UserManager.UnlockUser(user);
         }
 
-        return new()
+        return new GameLaunchOneRes()
         {
             Res = res1 != null,
             Message = temp,
-            LoginFail = state1 == LaunchState.LoginFail,
             User = user
         };
     }
@@ -626,104 +525,7 @@ public static class GameBinding
         return new GameLaunchArg
         {
             Auth = user,
-            Request = (a) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.ShowAsync(a);
-                });
-            },
-            Pre = (pre) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                    model.ShowAsync(pre ? LanguageUtils.Get("App.Text17") : LanguageUtils.Get("App.Text18")));
-            },
-            State = (text) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (text == null)
-                    {
-                        model.ProgressClose();
-                    }
-                    else
-                    {
-                        model.Progress(text);
-                    }
-                });
-            },
-            Select = (text) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.TextAsync(LanguageUtils.Get("BaseBinding.Info2"), text ?? "");
-                });
-            },
-            Nojava = (version) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    WindowManager.ShowSetting(SettingType.SetJava, version);
-                });
-            },
-            Loginfail = (login) =>
-            {
-                return Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    return model.ShowAsync(string.Format(
-                        LanguageUtils.Get("App.Text16"), login.UserName));
-                });
-            },
-            Update2 = (obj, state) =>
-            {
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (GuiConfigUtils.Config.CloseBeforeLaunch)
-                    {
-                        if (state == LaunchState.End)
-                        {
-                            model.ProgressClose();
-                        }
-                        model.ProgressUpdate(LanguageUtils.Get(state switch
-                        {
-                            LaunchState.Login => "App.Text6",
-                            LaunchState.Check => "App.Text7",
-                            LaunchState.CheckVersion => "App.Text8",
-                            LaunchState.CheckLib => "App.Text9",
-                            LaunchState.CheckAssets => "App.Text10",
-                            LaunchState.CheckLoader => "App.Text11",
-                            LaunchState.CheckLoginCore => "App.Text12",
-                            LaunchState.CheckMods => "App.Text15",
-                            LaunchState.Download => "App.Text13",
-                            LaunchState.JvmPrepare => "App.Text14",
-                            LaunchState.LaunchPre => "App.Text19",
-                            LaunchState.LaunchPost => "App.Text20",
-                            LaunchState.InstallForge => "App.Text23",
-                            _ => ""
-                        }));
-                    }
-                    else
-                    {
-                        model.SubTitle = LanguageUtils.Get(state switch
-                        {
-                            LaunchState.Login => "App.Text6",
-                            LaunchState.Check => "App.Text7",
-                            LaunchState.CheckVersion => "App.Text8",
-                            LaunchState.CheckLib => "App.Text9",
-                            LaunchState.CheckAssets => "App.Text10",
-                            LaunchState.CheckLoader => "App.Text11",
-                            LaunchState.CheckLoginCore => "App.Text12",
-                            LaunchState.CheckMods => "App.Text15",
-                            LaunchState.Download => "App.Text13",
-                            LaunchState.JvmPrepare => "App.Text14",
-                            LaunchState.LaunchPre => "App.Text19",
-                            LaunchState.LaunchPost => "App.Text20",
-                            LaunchState.InstallForge => "App.Text23",
-                            _ => ""
-                        });
-                    }
-                });
-            },
+            Gui = new LauncherGui(model),
             Mixinport = port
         };
     }
@@ -1182,22 +984,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 还原世界
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="item1">文件</param>
-    /// <param name="request">UI相关</param>
-    /// <returns></returns>
-    public static Task<bool> BackupWorldAsync(GameSettingObj obj, FileInfo item1, IZipGui gui)
-    {
-        return obj.UnzipBackupWorldAsync(new UnzipBackupWorldArg 
-        { 
-            File = item1.FullName, 
-            Gui = gui 
-        });
-    }
-
-    /// <summary>
     /// 设置游戏名字
     /// </summary>
     /// <param name="obj">游戏实例</param>
@@ -1219,41 +1005,19 @@ public static class GameBinding
     /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<bool> CopyGameAsync(GameSettingObj obj, string data,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+        ICreateInstanceGui gui)
     {
         if (GameManager.IsGameRun(obj))
         {
             return false;
         }
 
-        if (await obj.CopyAsync(new()
-        {
-            Game = data,
-            Request = request,
-            Overwirte = overwirte
-        }) == null)
+        if (await obj.CopyAsync(data, gui) == null)
         {
             return false;
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// 生成服务器包
-    /// </summary>
-    /// <param name="obj">服务器包</param>
-    /// <param name="local">生成路径</param>
-    /// <param name="request">UI相关</param>
-    /// <returns></returns>
-    public static Task<bool> GenServerPackAsync(ServerPackObj obj, string local,
-        ColorMCCore.Request request)
-    {
-        return obj.GenServerPackAsync(new ServerPackGenArg
-        {
-            Local = local,
-            Gui = request
-        });
     }
 
     /// <summary>
@@ -1409,48 +1173,6 @@ public static class GameBinding
         }
 
         return await Task.Run(() => obj.ReadLog(name));
-    }
-
-    /// <summary>
-    /// 升级整合包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="fid">整合包信息</param>
-    /// <param name="update">UI相关</param>
-    /// <param name="update2">UI相关</param>
-    /// <returns></returns>
-    public static Task<bool> ModPackUpgradeAsync(GameSettingObj obj, CurseForgeModObj.CurseForgeDataObj fid,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
-    {
-        return CurseForgeHelper.UpgradeModPackAsync(new UpdateCurseForgeModPackArg
-        {
-            Data = fid,
-            Game = obj,
-            Update = update,
-            Update2 = update2
-        });
-    }
-
-    /// <summary>
-    /// 升级整合包
-    /// </summary>
-    /// <param name="obj">游戏实例</param>
-    /// <param name="fid">整合包信息</param>
-    /// <param name="update">UI相关</param>
-    /// <param name="update2">UI相关</param>
-    /// <returns></returns>
-    public static Task<bool> ModPackUpgradeAsync(GameSettingObj obj, ModrinthVersionObj fid,
-        ColorMCCore.PackUpdate update,
-        ColorMCCore.PackState update2)
-    {
-        return ModrinthHelper.UpgradeModPackAsync(new UpdateModrinthModPackArg
-        {
-            Game = obj,
-            Data = fid,
-            Update = update,
-            Update2 = update2
-        });
     }
 
     /// <summary>
@@ -1720,23 +1442,17 @@ public static class GameBinding
     /// <param name="request"></param>
     /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadCloudAsync(CloundListObj obj, string? group,
-        ColorMCCore.Request request, ColorMCCore.GameOverwirte overwirte)
+    public static async Task<StringRes> DownloadCloudAsync(CloundListObj obj, string? group, ICreateInstanceGui gui)
     {
-        var game = await InstancesPath.CreateGameAsync(new CreateGameArg
+        var game = await InstancesPath.CreateGameAsync(new GameSettingObj()
         {
-            Game = new()
-            {
-                Name = obj.Name,
-                UUID = obj.UUID,
-                GroupName = group
-            },
-            Request = request,
-            Overwirte = overwirte
-        });
+            Name = obj.Name,
+            UUID = obj.UUID,
+            GroupName = group
+        }, gui);
         if (game == null)
         {
-            return new() { Data = LanguageUtils.Get("GameBinding.Error9") };
+            return new StringRes { Data = LanguageUtils.Get("GameBinding.Error9") };
         }
 
         var cloud = new CloudDataObj()
@@ -1793,16 +1509,6 @@ public static class GameBinding
     }
 
     /// <summary>
-    /// 根据名字获取游戏实例
-    /// </summary>
-    /// <param name="name"></param>
-    /// <returns></returns>
-    public static GameSettingObj? GetGameByName(string name)
-    {
-        return InstancesPath.GetGameByName(name);
-    }
-
-    /// <summary>
     /// 检测是否有云同步并打开窗口
     /// </summary>
     /// <param name="obj"></param>
@@ -1844,19 +1550,19 @@ public static class GameBinding
     /// <param name="overwirte"></param>
     /// <returns></returns>
     public static async Task<StringRes> DownloadServerPackAsync(BaseModel model,
-        string? name, string? group, string text, ColorMCCore.GameOverwirte overwirte)
+        string? name, string? group, string text, ICreateInstanceGui gui)
     {
         try
         {
             var data = await CoreHttpClient.GetStringAsync(text + "server.json");
-            if (!data.State)
+            if (data == null)
             {
-                return new() { Data = LanguageUtils.Get("GameBinding.Error11") };
+                return new StringRes { Data = LanguageUtils.Get("GameBinding.Error11") };
             }
-            var obj = JsonUtils.ToObj(data.Data!, JsonType.ServerPackObj);
+            var obj = JsonUtils.ToObj(data, JsonType.ServerPackObj);
             if (obj == null)
             {
-                return new() { Data = LanguageUtils.Get("GameBinding.Error12") };
+                return new StringRes { Data = LanguageUtils.Get("GameBinding.Error12") };
             }
 
             var game = obj.Game;
@@ -1872,12 +1578,7 @@ public static class GameBinding
             game.LaunchData = null!;
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
-            game = await InstancesPath.CreateGameAsync(new CreateGameArg
-            {
-                Game = game,
-                Request = model.ShowAsync,
-                Overwirte = overwirte
-            });
+            game = await InstancesPath.CreateGameAsync(game, gui);
 
             if (game == null)
             {
@@ -1886,17 +1587,7 @@ public static class GameBinding
 
             model.Progress(LanguageUtils.Get("GameBinding.Info16"));
 
-            var res1 = await obj.UpdateAsync((text) =>
-            {
-                if (text == null)
-                {
-                    model.ProgressClose();
-                }
-                else
-                {
-                    model.Progress(text);
-                }
-            }, CancellationToken.None);
+            var res1 = await obj.UpdateAsync(new UpdateLaunchGui(model), CancellationToken.None);
             if (!res1)
             {
                 model.ProgressClose();
@@ -1908,7 +1599,7 @@ public static class GameBinding
                 return new();
             }
 
-            PathHelper.WriteText(game.GetServerPackFile(), data.Data!);
+            PathHelper.WriteText(game.GetServerPackFile(), data);
 
             return new() { State = true, Data = game.UUID };
         }
@@ -1925,13 +1616,13 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool DataPackDisableOrEnable(DataPackObj obj)
+    public static async Task<bool> DataPackDisableOrEnableAsync(DataPackObj obj)
     {
         if (GameManager.IsGameRun(obj.World.Game))
         {
             return false;
         }
-        return obj.World.DisableOrEnableDataPack([obj]);
+        return await obj.World.DisableOrEnableDataPackAsync([obj]);
     }
 
     /// <summary>
@@ -1939,7 +1630,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="pack">数据包列表</param>
     /// <returns></returns>
-    public static bool DataPackDisableOrEnable(IEnumerable<DataPackModel> pack)
+    public static async Task<bool> DataPackDisableOrEnableAsync(IEnumerable<DataPackModel> pack)
     {
         var list = new List<DataPackObj>();
         foreach (var item in pack)
@@ -1950,7 +1641,7 @@ public static class GameBinding
         {
             return false;
         }
-        return list[0].World.DisableOrEnableDataPack(list);
+        return await list[0].World.DisableOrEnableDataPackAsync(list);
     }
 
     /// <summary>
@@ -2153,33 +1844,6 @@ public static class GameBinding
         }
         var arg = MakeArg(user, model, -1);
 
-        arg.Update2 = (obj, state) =>
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                if (state == LaunchState.End)
-                {
-                    model.ProgressClose();
-                }
-                model.ProgressUpdate(LanguageUtils.Get(state switch
-                {
-                    LaunchState.Login => "App.Text6",
-                    LaunchState.Check => "App.Text7",
-                    LaunchState.CheckVersion => "App.Text8",
-                    LaunchState.CheckLib => "App.Text9",
-                    LaunchState.CheckAssets => "App.Text10",
-                    LaunchState.CheckLoader => "App.Text11",
-                    LaunchState.CheckLoginCore => "App.Text12",
-                    LaunchState.CheckMods => "App.Text15",
-                    LaunchState.Download => "App.Text13",
-                    LaunchState.JvmPrepare => "App.Text14",
-                    LaunchState.LaunchPre => "App.Text19",
-                    LaunchState.LaunchPost => "App.Text20",
-                    LaunchState.InstallForge => "App.Text23",
-                    _ => ""
-                }));
-            });
-        };
         model.Progress(LanguageUtils.Get("App.Text25"));
         try
         {

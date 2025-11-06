@@ -33,14 +33,13 @@ public record JavaDownloadModel
     /// <summary>
     /// 网址
     /// </summary>
-    public string Url;
+    public string Url { get; set; }
     /// <summary>
     /// 校验
     /// </summary>
-    public string Sha256;
-    public string Sha1;
+    public string Sha256 { get; set; }
     /// <summary>
     /// 文件名
     /// </summary>
-    public string File;
+    public string File { get; set; }
 }

@@ -66,18 +66,18 @@ public static class JvmPath
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>结果</returns>
-    public static async Task<BaseRes> InstallAsync(InstallJvmArg arg)
+    public static async Task<BaseRes> InstallAsync(string name, string file, string sha256, string url, IZipGui? gui)
     {
         try
         {
-            Remove(arg.Name);
-            var res = await DownloadAsync(arg.File, arg.Sha256, arg.Url);
+            Remove(name);
+            var res = await DownloadAsync(file, sha256, url);
             if (!res.State)
             {
                 return new BaseRes { Error = ErrorType.DonwloadFail };
             }
-            arg.Gui?.Unzip();
-            var res1 = await UnzipJavaAsync(arg.Name, res.Data!, arg.Gui);
+            gui?.Unzip();
+            var res1 = await UnzipJavaAsync(name, res.Data!, gui);
             if (!res1.State)
             {
                 return new BaseRes { Error = res1.Error };
@@ -85,7 +85,7 @@ public static class JvmPath
         }
         catch (Exception e)
         {
-            ColorMCCore.OnError(new JavaInstallErrorEventArgs(arg.Name, arg.Url, e));
+            ColorMCCore.OnError(new JavaInstallErrorEventArgs(name, url, e));
             return new BaseRes { Error = ErrorType.InstallFail };
         }
 

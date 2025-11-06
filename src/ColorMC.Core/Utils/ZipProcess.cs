@@ -142,7 +142,7 @@ public class ZipProcess(IZipGui? gui = null)
                     {
                         return false;
                     }
-                    var res = await gui.ZipRequest(e.Key);
+                    var res = await gui.FileRename(e.Key);
                     if (!res)
                     {
                         return false;

@@ -113,7 +113,7 @@ public static class DownloadManager
         {
             return false;
         }
-        var arg = ColorMCCore.OnDownloadGui().GuiHandel;
+        var arg = ColorMCCore.OnDownloadGui();
 
         return await StartAsync(list, arg);
     }

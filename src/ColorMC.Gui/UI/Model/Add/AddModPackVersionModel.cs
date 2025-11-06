@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -8,6 +9,7 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -137,8 +139,8 @@ public partial class AddModPackControlModel
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
 
-            var res = await GameBinding.InstallCurseForgeAsync((data.Data as CurseForgeModObj.CurseForgeDataObj)!,
-                select?.Logo, group,
+            var res = await AddGameHelper.InstallCurseForge(null, group, (data.Data as CurseForgeModObj.CurseForgeDataObj)!,
+                select?.Logo,
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 
@@ -154,8 +156,8 @@ public partial class AddModPackControlModel
         else if (data.SourceType == SourceType.Modrinth)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
-            var res = await GameBinding.InstallModrinthAsync((data.Data as ModrinthVersionObj)!,
-                select?.Logo, group,
+            var res = await AddGameHelper.InstallModrinth(null, group, (data.Data as ModrinthVersionObj)!,
+                select?.Logo, 
                 ZipUpdate, GameRequest, GameOverwirte, UpdateProcess, PackState);
             Model.ProgressClose();
 

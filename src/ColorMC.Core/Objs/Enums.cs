@@ -208,39 +208,15 @@ public enum LaunchState
     /// <summary>
     /// 登陆中
     /// </summary>
-    Login,
+    Loging,
     /// <summary>
     /// 检查中
     /// </summary>
-    Check,
-    /// <summary>
-    /// 检查版本文件中
-    /// </summary>
-    CheckVersion,
-    /// <summary>
-    /// 检查运行库中
-    /// </summary>
-    CheckLib,
-    /// <summary>
-    /// 检查资源文件中
-    /// </summary>
-    CheckAssets,
-    /// <summary>
-    /// 检查Mod加载器
-    /// </summary>
-    CheckLoader,
-    /// <summary>
-    /// 检查登录核心
-    /// </summary>
-    CheckLoginCore,
-    /// <summary>
-    /// 检查Mod
-    /// </summary>
-    CheckMods,
+    Checking,
     /// <summary>
     /// 下载文件
     /// </summary>
-    Download,
+    Downloading,
     /// <summary>
     /// 准备Jvm参数
     /// </summary>
@@ -257,14 +233,6 @@ public enum LaunchState
     /// 结束
     /// </summary>
     End,
-    /// <summary>
-    /// 取消
-    /// </summary>
-    Cancel,
-    /// <summary>
-    /// 安装Forge
-    /// </summary>
-    InstallForge,
     /// <summary>
     /// 下载服务器包
     /// </summary>

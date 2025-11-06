@@ -150,7 +150,7 @@ public static class WorldDataPack
     /// <param name="world">世界储存</param>
     /// <param name="list">数据包列表</param>
     /// <returns>是否成功设置</returns>
-    public static async Task<bool> DisableOrEnableDataPack(this SaveObj world, IEnumerable<DataPackObj> list)
+    public static async Task<bool> DisableOrEnableDataPackAsync(this SaveObj world, IEnumerable<DataPackObj> list)
     {
         var nbt = world.Nbt.TryGet<NbtCompound>("Data")?.TryGet<NbtCompound>("DataPacks");
 

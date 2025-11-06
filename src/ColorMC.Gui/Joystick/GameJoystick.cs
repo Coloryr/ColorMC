@@ -7,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
@@ -114,7 +115,7 @@ public class GameJoystick
             return;
         }
 
-        ColorMCCore.GameExit += GameExit;
+        ColorMCCore.GameExit += ColorMCCore_GameExit;
         JoystickInput.OnEvent += Event;
 
         _obj = obj;
@@ -142,15 +143,9 @@ public class GameJoystick
         }.Start();
     }
 
-    /// <summary>
-    /// 游戏退出处理
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="arg2"></param>
-    /// <param name="arg3"></param>
-    private void GameExit(GameSettingObj obj, LoginObj arg2, int arg3)
+    private void ColorMCCore_GameExit(GameExitEventArgs obj)
     {
-        if (obj.UUID == _obj.UUID)
+        if (obj.Game.UUID == _obj.UUID)
         {
             Stop();
         }
@@ -161,7 +156,7 @@ public class GameJoystick
     /// </summary>
     private void Stop()
     {
-        ColorMCCore.GameExit -= GameExit;
+        ColorMCCore.GameExit -= ColorMCCore_GameExit;
         _isExit = true;
 
         _implementation?.Stop();

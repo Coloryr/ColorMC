@@ -27,6 +27,12 @@ public static class JavaBinding
         try
         {
             var res = await JvmPath.UnzipJavaAsync(file, name, zip);
+            if (!res.State)
+            {
+                var text = res.Error.GetName();
+                return new StringRes { Data = text };
+            }
+            return new StringRes { State = true };
         }
         catch(Exception e)
         {
@@ -109,22 +115,14 @@ public static class JavaBinding
     /// <param name="unzip">UI相关</param>
     /// <returns></returns>
     public static async Task<StringRes> DownloadJavaAsync(JavaDownloadModel obj,
-        ColorMCCore.ZipUpdate zip, ColorMCCore.JavaUnzip unzip)
+        IZipGui gui)
     {
-        var res = await JvmPath.InstallAsync(new InstallJvmArg
-        {
-            File = obj.File,
-            Name = obj.Name,
-            Sha256 = obj.Sha256,
-            Url = obj.Url,
-            Zip = zip,
-            Unzip = unzip
-        });
+        var res = await JvmPath.InstallAsync(obj.Name, obj.File, obj.Sha256, obj.Url, gui);
         if (!res.State)
         {
-            return new StringRes { Data = res.Data };
+            var text = res.Error.GetName();
+            return new StringRes { Data = text };
         }
-
         return new StringRes { State = true };
     }
 

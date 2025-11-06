@@ -2,6 +2,9 @@ using System;
 
 namespace ColorMC.Gui.Net.Apis;
 
+/// <summary>
+/// 查询存档区块信息
+/// </summary>
 public static class ChunkbaseApi
 {
     public const string Url = "https://www.chunkbase.com/apps/seed-map#";

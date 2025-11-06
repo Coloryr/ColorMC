@@ -2,6 +2,8 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Core.Game;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;
 
@@ -104,7 +106,7 @@ public partial class ServerPackModel : MenuModel
         Obj.Text = Text;
 
         Model.Progress(LanguageUtils.Get("ServerPackWindow.Tab1.Info1"));
-        var res = await GameBinding.GenServerPackAsync(Obj, local, Model.ShowAsync);
+        var res = await Obj.GenServerPackAsync(local);
         Model.ProgressClose();
         if (res)
         {
