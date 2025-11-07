@@ -87,6 +87,8 @@ public static class ColorMCCore
 
         ConfigLoad.Init();
         CoreHttpClient.Init();
+        InnerPath.Init();
+        ConfigSave.Init();
     }
 
     /// <summary>
@@ -94,7 +96,6 @@ public static class ColorMCCore
     /// </summary>
     public static void Init1()
     {
-        ConfigSave.Init();
         LocalMaven.Init();
         DownloadManager.Init();
         AuthDatabase.Init();

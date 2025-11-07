@@ -31,8 +31,8 @@ public static class LanguageUtils
     {
         string name = type switch
         {
-            LanguageType.en_us => "ColorMC.Gui.Resources.Language.en-us.json",
-            _ => "ColorMC.Gui.Resources.Language.zh-cn.json"
+            LanguageType.en_us => "ColorMC.Gui.Resource.Language.en-us.json",
+            _ => "ColorMC.Gui.Resource.Language.zh-cn.json"
         };
         var assm = Assembly.GetExecutingAssembly();
         using var istr = assm.GetManifestResourceStream(name)!;

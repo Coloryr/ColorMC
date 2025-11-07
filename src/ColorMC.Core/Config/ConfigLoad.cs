@@ -155,7 +155,7 @@ public static class ConfigLoad
             Source = SourceLocal.Offical,
             DownloadThread = 5,
             ProxyIP = "127.0.0.1",
-            ProxyPort = 1080,
+            ProxyPort = 7890,
             CheckFile = true,
             AutoDownload = true,
         };
@@ -169,7 +169,7 @@ public static class ConfigLoad
     {
         return new RunArgObj
         {
-            GC = GCType.G1GC,
+            GC = GCType.Auto,
             MaxMemory = 4096,
             MinMemory = 512,
         };

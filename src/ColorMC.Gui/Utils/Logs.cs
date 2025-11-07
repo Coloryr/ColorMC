@@ -43,10 +43,13 @@ public static class Logs
     /// </summary>
     public static void Init()
     {
-        s_local = ColorMCCore.BaseDir;
+        App.OnClose += Stop;
+
+        s_local = ColorMCGui.BaseDir;
         try
         {
-            var stream = File.Open(Path.Combine(s_local, Names.NameLogFile), FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
+            var stream = File.Open(Path.Combine(s_local, GuiNames.NameLogFile), 
+                FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
             s_writer = new(stream)
             {

@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 
@@ -31,14 +32,7 @@ public static class AuthDatabase
     /// </summary>
     public static void Init()
     {
-        //存在用户文件夹
-        var path = SystemInfo.Os == OsType.MacOS ?
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ColorMC") :
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC");
-
-        Directory.CreateDirectory(path);
-
-        s_local = Path.Combine(path, Names.NameAuthFile);
+        s_local = Path.Combine(InnerPath.Inner, Names.NameAuthFile);
 
         if (File.Exists(s_local))
         {

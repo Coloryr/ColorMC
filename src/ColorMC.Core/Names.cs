@@ -55,7 +55,6 @@ public static class Names
     public const string NameVersionFile = "version.json";
     public const string NameAuthFile = "auth.json";
     public const string NameMavenFile = "maven.json";
-    public const string NameLogFile = "logs.log";
     public const string NameJavaFile = "java";
     public const string NameJavawFile = "javaw.exe";
     public const string NameOptifineFile = "optifine.json";

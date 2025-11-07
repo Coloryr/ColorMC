@@ -54,13 +54,13 @@ public static class TestItem
 
     public static void Item3()
     {
-        var list = AddGameHelper.InstallZip(new InstallZipArg
-        {
-            Dir = "H:\\ColonyVenture-1.13.zip",
-            Type = PackType.CurseForge,
-            Request = Program.Download,
-            Overwirte = (_) => Task.FromResult(true)
-        }).Result;
+        //var list = AddGameHelper.InstallZip(new InstallZipArg
+        //{
+        //    Dir = "H:\\ColonyVenture-1.13.zip",
+        //    Type = PackType.CurseForge,
+        //    Request = Program.Download,
+        //    Overwirte = (_) => Task.FromResult(true)
+        //}).Result;
     }
 
     public static void Item4()
@@ -133,24 +133,24 @@ public static class TestItem
 
     public static void Item8()
     {
-        var login = GameAuth.LoginOAuthAsync((_, _, _) => { }).Result;
-        if (login.LoginState != LoginState.Done)
-        {
-            Console.WriteLine("登录错误");
-        }
-        else
-        {
-            var game = new GameSettingObj()
-            {
-                DirName = "test1",
-                Name = "test1",
-                Version = "1.12.2",
-                Loader = Loaders.Forge,
-                LoaderVersion = "14.23.5.2860"
-            };
-            var process = Start(game, login.Auth!);
-            process?.Process.WaitForExit();
-        }
+        //var login = GameAuth.LoginOAuthAsync((_, _, _) => { }).Result;
+        //if (login.LoginState != LoginState.Done)
+        //{
+        //    Console.WriteLine("登录错误");
+        //}
+        //else
+        //{
+        //    var game = new GameSettingObj()
+        //    {
+        //        DirName = "test1",
+        //        Name = "test1",
+        //        Version = "1.12.2",
+        //        Loader = Loaders.Forge,
+        //        LoaderVersion = "14.23.5.2860"
+        //    };
+        //    var process = Start(game, login.Auth!);
+        //    process?.Process.WaitForExit();
+        //}
     }
 
     public static void Item9()
@@ -327,24 +327,24 @@ public static class TestItem
 
     public static void Item11()
     {
-        var login = GameAuth.LoginNide8Async("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
-        if (login.Auth == null)
-        {
-            Console.WriteLine("登录错误");
-        }
-        else
-        {
-            var game = new GameSettingObj()
-            {
-                DirName = "test1",
-                Name = "test1",
-                Version = "1.18.2",
-                Loader = Loaders.Forge,
-                LoaderVersion = "40.1.85"
-            };
-            var process = Start(game, login.Auth);
-            process?.Process.WaitForExit();
-        }
+        //var login = GameAuth.LoginNide8Async("f0930d6ac12f11ea908800163e095b49", "402067010@qq.com", "123456").Result;
+        //if (login.Auth == null)
+        //{
+        //    Console.WriteLine("登录错误");
+        //}
+        //else
+        //{
+        //    var game = new GameSettingObj()
+        //    {
+        //        DirName = "test1",
+        //        Name = "test1",
+        //        Version = "1.18.2",
+        //        Loader = Loaders.Forge,
+        //        LoaderVersion = "40.1.85"
+        //    };
+        //    var process = Start(game, login.Auth);
+        //    process?.Process.WaitForExit();
+        //}
     }
 
     public static void Item12()
@@ -467,13 +467,13 @@ public static class TestItem
         var list1 = ModrinthAPI.GetFileVersionsAsync(item.ProjectId, "", Loaders.Fabric).Result;
         var item1 = list1!.First();
 
-        AddGameHelper.InstallModrinth(new DownloadModrinthArg
-        {
-            Data = item1,
-            IconUrl = item.IconUrl,
-            Request = Program.Download,
-            Overwirte = (_) => Task.FromResult(true),
-        }).Wait();
+        //AddGameHelper.InstallModrinth(new DownloadModrinthArg
+        //{
+        //    Data = item1,
+        //    IconUrl = item.IconUrl,
+        //    Request = Program.Download,
+        //    Overwirte = (_) => Task.FromResult(true),
+        //}).Wait();
     }
 
     public static void Item22()
