@@ -4,6 +4,7 @@ using Avalonia.Controls;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.NetFrp;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.NetFrp;
 

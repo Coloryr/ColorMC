@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Download;
 

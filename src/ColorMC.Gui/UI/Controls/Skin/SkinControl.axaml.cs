@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Skin;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Skin;
 

@@ -27,7 +27,7 @@ public static class GameEditFlyout5
                 {
                     return;
                 }
-                BaseBinding.CopyTextClipboardAsync(top, model.ServerItem!.IP);
+                BaseBinding.CopyTextClipboard(top, model.ServerItem!.IP);
             })
         ]).Show(con);
     }

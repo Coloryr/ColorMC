@@ -158,7 +158,7 @@ public static class GameBinding
 
         if (list.Count == 0)
         {
-            return new()
+            return new GameLaunchListRes
             {
                 Message = LanguageUtils.Get("GameBinding.Error6")
             };
@@ -167,7 +167,7 @@ public static class GameBinding
         var res = await UserBinding.GetLaunchUser(model);
         if (res.User is not { } user)
         {
-            return new() { Message = res.Message };
+            return new GameLaunchListRes { Message = res.Message };
         }
 
         var port = LaunchSocketUtils.Port;
@@ -222,8 +222,7 @@ public static class GameBinding
             Media.PlayState = PlayState.Pause;
         }
 
-        var list1 = new Dictionary<string, bool>();
-        var list2 = new List<string>();
+        var list1 = new Dictionary<string, GameLaunchOneRes>();
         //逐一启动
         foreach (var item in res1)
         {
@@ -237,19 +236,26 @@ public static class GameBinding
 
                 GameManager.StartGameHandel(item.Key, handel);
 
-                list2.Add(item.Key.UUID);
+                list1.Add(item.Key.UUID, new GameLaunchOneRes
+                {
+                    Res = true
+                });
             }
             else
             {
+                string title = LanguageUtils.Get("BaseBinding.Error4");
+                bool login = false;
                 if (item.Value.Exception != null)
                 {
-                    DisplayLaunchCrash(item.Value.Exception, item.Key, user);
-                    list1.Add(item.Key.UUID, true);
+                    DisplayLaunchCrash(item.Value.Exception, item.Key, user, out title, out login);
                 }
-                else
+
+                list1.Add(item.Key.UUID, new GameLaunchOneRes
                 {
-                    list1.Add(item.Key.UUID, false);
-                }
+                    Message = title,
+                    LoginFail = login,
+                    User = user
+                });
 
                 GameManager.GameExit(item.Key);
                 GameCountUtils.LaunchError(item.Key.UUID);
@@ -257,15 +263,14 @@ public static class GameBinding
         }
 
         //游戏实例只要有一个启动成功了就不解锁账户
-        if (list2.Count == 0)
+        if (!list1.Any(item => item.Value.Res))
         {
             UserManager.UnlockUser(user);
         }
 
-        return new()
+        return new GameLaunchListRes
         {
-            Done = list2,
-            Fail = list1,
+            States = list1,
             User = user
         };
     }
@@ -274,9 +279,10 @@ public static class GameBinding
     /// 显示错误信息
     /// </summary>
     /// <param name="exception"></param>
-    private static string DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login)
+    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login, out string title, out bool loginfail)
     {
-        var title = LanguageUtils.Get("BaseBinding.Error4");
+        title = LanguageUtils.Get("BaseBinding.Error4");
+        loginfail = false;
         if (exception is LaunchException e1)
         {
             var log = e1.GetName(obj, login);
@@ -289,14 +295,16 @@ public static class GameBinding
             {
                 Logs.Error(log);
             }
+            if (e1.State == LaunchError.AuthLoginFail)
+            {
+                loginfail = true;
+            }
         }
         else
         {
             Logs.Error(title, exception);
             WindowManager.ShowError(title, exception);
         }
-
-        return title;
     }
 
     private static void DisplayCreateCmdCrash(Exception exception, GameSettingObj obj, LoginObj login)
@@ -441,6 +449,7 @@ public static class GameBinding
                 Port = server.ServerPort
             };
         }
+        bool login = false;
         var res1 = await Task.Run(async () =>
         {
             try
@@ -449,7 +458,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                temp = DisplayLaunchCrash(e, obj, user);
+                DisplayLaunchCrash(e, obj, user, out temp, out login);
             }
             return null;
         });
@@ -509,7 +518,8 @@ public static class GameBinding
         {
             Res = res1 != null,
             Message = temp,
-            User = user
+            User = user,
+            LoginFail = login
         };
     }
 

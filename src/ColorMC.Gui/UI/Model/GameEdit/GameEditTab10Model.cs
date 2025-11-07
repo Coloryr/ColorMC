@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
@@ -61,10 +62,17 @@ public partial class GameEditModel
         }
 
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
-        res = await _obj.AddServerAsync(res.Text1, res.Text2);
+        var res1 = await _obj.AddServerAsync(res.Text1, res.Text2);
         Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
-        LoadServer();
+        if (res1)
+        {
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info10"));
+            LoadServer();
+        }
+        else
+        {
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error2"));
+        }
     }
 
     /// <summary>
@@ -94,7 +102,14 @@ public partial class GameEditModel
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
         res = await obj.DeleteAsync();
         Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
-        LoadServer();
+        if (res)
+        {
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
+            LoadServer();
+        }
+        else
+        {
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error3"));
+        }
     }
 }

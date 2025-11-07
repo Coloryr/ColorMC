@@ -109,10 +109,10 @@ public partial class ErrorModel : TopModel
             Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info5"), url),
                 LanguageUtils.Get("GameLogWindow.Info8"), () =>
             {
-                BaseBinding.CopyTextClipboardAsync(top, url);
+                BaseBinding.CopyTextClipboard(top, url);
                 Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
             });
-            BaseBinding.CopyTextClipboardAsync(top, url);
+            BaseBinding.CopyTextClipboard(top, url);
             Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
         }
     }

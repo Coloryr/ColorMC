@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Hook;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.GameEdit;
 
@@ -314,35 +315,6 @@ public partial class GameEditModel : MenuModel
     public void Load()
     {
         _timer.Start();
-    }
-
-    /// <summary>
-    /// 状态
-    /// </summary>
-    /// <param name="state">状态</param>
-    private void PackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info1"));
-        }
-        else if (state == CoreRunState.Init)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info2"));
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
-        }
-        else if (state == CoreRunState.Download)
-        {
-            Model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
-            Model.ProgressUpdate(-1);
-        }
-        else if (state == CoreRunState.End)
-        {
-            Group = "";
-        }
     }
 
     /// <summary>

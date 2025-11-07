@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;

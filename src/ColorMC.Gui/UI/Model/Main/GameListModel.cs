@@ -625,26 +625,32 @@ public partial class MainModel
         if (res1.Message != null)
         {
             Model.Show(res1.Message);
+            return;
         }
 
         //游戏实例列表
         foreach (var item in list)
         {
             item.IsLoad = false;
-            if (res1.Done?.Contains(item.UUID) == true)
+            if (res1.States.TryGetValue(item.UUID, out var res2))
             {
-                item.IsLaunch = true;
-                Launchs.Add(item.UUID, item);
+                if (res2.Res)
+                {
+                    item.IsLaunch = true;
+                    Launchs.Add(item.UUID, item);
+                }
             }
         }
 
-        if (res1.Fail?.ContainsValue(LaunchState.LoginFail) == true
-            && res1.User!.AuthType != AuthType.OAuth)
+        foreach (var item in res1.States)
         {
-            var res2 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Error8"), res1.Message!));
-            if (res2)
+            if (item.Value.LoginFail && res1.User!.AuthType != AuthType.OAuth)
             {
-                WindowManager.ShowUser(relogin: true);
+                var res2 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Error8"), item.Value.Message!));
+                if (res2)
+                {
+                    WindowManager.ShowUser(relogin: true);
+                }
             }
         }
 
@@ -730,6 +736,6 @@ public partial class MainModel
     /// <param name="obj"></param>
     public void ExportCmd(GameSettingObj obj)
     {
-        GameBinding.ExportCmd(obj, Model);
+        GameBinding.ExportCmd(obj, Model, CancellationToken.None);
     }
 }

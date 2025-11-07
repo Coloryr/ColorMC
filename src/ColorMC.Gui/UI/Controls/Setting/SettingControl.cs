@@ -6,6 +6,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Setting;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Setting;
 

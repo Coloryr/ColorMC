@@ -524,7 +524,7 @@ public partial class GameEditModel
 
                 Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Info8"));
                 var item = list[0];
-                res = await ModrinthHelper.UpgradeModPackAsync(_obj, item, this);
+                res = await ModrinthHelper.UpgradeModPackAsync(_obj, item, new CreateGameGui(Model));
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -563,7 +563,7 @@ public partial class GameEditModel
 
                 Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Info8"));
                 var item = list.Data[0];
-                res = await CurseForgeHelper.UpgradeModPackAsync(_obj, item, this);
+                res = await CurseForgeHelper.UpgradeModPackAsync(_obj, item, new CreateGameGui(Model));
                 Model.ProgressClose();
                 if (!res)
                 {
@@ -785,7 +785,7 @@ public partial class GameEditModel
         }
         else
         {
-            Model.Show(res.Data!);
+            Model.Show(res.Error.GetName());
         }
     }
 
