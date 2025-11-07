@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 
-namespace ColorMC.Core.Downloader;
+namespace ColorMC.Core.GuiHandel;
 
 /// <summary>
 /// 下载界面调用所需参数

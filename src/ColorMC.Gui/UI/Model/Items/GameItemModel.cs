@@ -492,7 +492,7 @@ public partial class GameItemModel : GameModel
             return;
         }
 
-        var res1 = await GameBinding.CopyGameAsync(Obj, res.Text1, Model.ShowAsync, GameOverwirte);
+        var res1 = await GameBinding.CopyGameAsync(Obj, res.Text1, new CreateGameGui(Model));
         if (!res1)
         {
             Model.Show(LanguageUtils.Get("MainWindow.Error5"));
@@ -537,17 +537,6 @@ public partial class GameItemModel : GameModel
     public void EditGroup()
     {
         _top?.EditGroup(this);
-    }
-
-    /// <summary>
-    /// 请求覆盖
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <returns></returns>
-    private async Task<bool> GameOverwirte(GameSettingObj obj)
-    {
-        return await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
     }
 
     /// <summary>

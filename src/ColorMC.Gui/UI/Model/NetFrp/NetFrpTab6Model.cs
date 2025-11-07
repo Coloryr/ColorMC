@@ -75,7 +75,7 @@ public partial class NetFrpModel
     /// 编辑自定义映射
     /// </summary>
     /// <param name="model">自定义映射</param>
-    public async void Edit(NetFrpSelfItemModel model)
+    public async static void Edit(NetFrpSelfItemModel model)
     {
         var model1 = new NetFrpAddModel(model);
         var res = await DialogHost.Show(model1, NameCon1);

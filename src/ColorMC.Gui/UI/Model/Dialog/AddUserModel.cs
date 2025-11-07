@@ -4,6 +4,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using AvaloniaEdit.Document;
@@ -12,6 +13,7 @@ using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DialogHostAvalonia;
 
@@ -237,11 +239,11 @@ public partial class NetFrpModel
             return;
         }
         Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Info2"));
-        res = await UserBinding.TestLogin(user);
+        var res2 = await UserBinding.TestLogin(user, CancellationToken.None);
         Model.ProgressClose();
         if (!res)
         {
-            Model.ShowWithOk(LanguageUtils.Get("NetFrpWindow.Tab4.Error2"), WindowClose);
+            Model.ShowWithOk(res2.Data!, WindowClose);
             return;
         }
 

@@ -9,6 +9,7 @@ using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 

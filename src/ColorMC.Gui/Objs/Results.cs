@@ -43,6 +43,10 @@ public record GameLaunchOneRes
     /// 登录账户
     /// </summary>
     public LoginObj? User;
+    /// <summary>
+    /// 是否登录失败
+    /// </summary>
+    public bool LoginFail;
 }
 
 /// <summary>
@@ -50,18 +54,11 @@ public record GameLaunchOneRes
 /// </summary>
 public record GameLaunchListRes
 {
-    /// <summary>
-    /// 启动成功列表
-    /// </summary>
-    public List<string>? Done;
-    /// <summary>
-    /// 错误信息
-    /// </summary>
     public string? Message;
     /// <summary>
     /// 错误列表
     /// </summary>
-    public Dictionary<string, bool> Fail;
+    public Dictionary<string, GameLaunchOneRes> States;
     /// <summary>
     /// 使用的账户
     /// </summary>

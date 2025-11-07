@@ -85,7 +85,7 @@ public static class BaseBinding
     /// 复制到剪贴板
     /// </summary>
     /// <param name="text">文本</param>
-    public static async void CopyTextClipboardAsync(TopLevel top, string text)
+    public static async void CopyTextClipboard(TopLevel top, string text)
     {
         if (top.Clipboard is { } clipboard)
         {

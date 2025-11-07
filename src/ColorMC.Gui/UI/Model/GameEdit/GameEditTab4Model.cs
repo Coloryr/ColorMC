@@ -521,8 +521,7 @@ public partial class GameEditModel
 
         if (list1.Count != 0)
         {
-            var res1 = await Model.ShowAsync(string.Format(App
-                     .Lang("GameEditWindow.Tab4.Info14"), count));
+            var res1 = await Model.ShowAsync(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info14"), count));
             if (res1)
             {
                 DisplayMod(list1);

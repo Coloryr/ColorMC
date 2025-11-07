@@ -70,6 +70,7 @@ public class CreateGameGui(BaseModel model) : ICreateInstanceGui
         model.ProgressClose();
         var test = await model.ShowAsync(
             string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
+        model.Progress();
         return test;
     }
 

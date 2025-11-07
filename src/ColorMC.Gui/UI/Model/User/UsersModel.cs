@@ -583,7 +583,7 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
         {
             return;
         }
-        BaseBinding.CopyTextClipboardAsync(top, code);
+        BaseBinding.CopyTextClipboard(top, code);
     }
 
     public override void Close()

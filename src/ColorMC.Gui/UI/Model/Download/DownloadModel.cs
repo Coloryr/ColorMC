@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Downloader;
+using ColorMC.Core.GuiHandel;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -17,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Download;
 /// <summary>
 /// 下载窗口
 /// </summary>
-public partial class DownloadModel : TopModel
+public partial class DownloadModel : TopModel, IDownloadGuiHandel
 {
     /// <summary>
     /// 显示项目
@@ -175,7 +176,7 @@ public partial class DownloadModel : TopModel
     /// </summary>
     /// <param name="thread">下载线程</param>
     /// <param name="item">项目</param>
-    public void DownloadItemUpdate(int thread, FileItemObj item)
+    public void UpdateItem(int thread, FileItemObj item)
     {
         if (!_downloadList.TryGetValue(thread, out DownloadItemModel? value))
         {
@@ -228,7 +229,7 @@ public partial class DownloadModel : TopModel
     /// <param name="thread">线程</param>
     /// <param name="state">状态</param>
     /// <param name="count">累计下载量</param>
-    private void DownloadUpdate(int thread, bool state, int count)
+    public void Update(int thread, bool state, int count)
     {
         if (state == true)
         {
@@ -258,7 +259,7 @@ public partial class DownloadModel : TopModel
     /// </summary>
     /// <param name="all">总计任务</param>
     /// <param name="now">当前任务</param>
-    private void DownloadTaskUpdate(UpdateType type, int num)
+    public void UpdateTask(UpdateType type, int num)
     {
         Dispatcher.UIThread.Post(() =>
         {
@@ -284,12 +285,7 @@ public partial class DownloadModel : TopModel
         _needRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
 
-        return new()
-        {
-            Update = DownloadUpdate,
-            UpdateTask = DownloadTaskUpdate,
-            UpdateItem = DownloadItemUpdate
-        };
+        return this;
     }
 
     /// <summary>

@@ -159,9 +159,9 @@ public static class LaunchSocketUtils
         }
     }
 
-    private static void ColorMCCore_GameExit(GameSettingObj arg1, LoginObj arg2, int arg3)
+    private static void ColorMCCore_GameExit(GameExitEventArgs args)
     {
-        _gameChannels.Remove(arg1.UUID);
+        _gameChannels.Remove(args.Game.UUID);
     }
 
     /// <summary>

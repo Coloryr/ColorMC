@@ -4,6 +4,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Download;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Controls.BuildPack;
 
