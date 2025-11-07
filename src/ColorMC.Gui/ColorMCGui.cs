@@ -107,9 +107,14 @@ public static class ColorMCGui
 
         RunType = RunType.Program;
 
+        Logs.Init();
         SystemInfo.Init();
 
-        Console.WriteLine($@"RunDir: {BaseDir}");
+        Console.WriteLine($"RunDir: {BaseDir}");
+        if (!Directory.Exists(BaseDir))
+        {
+            Directory.CreateDirectory(BaseDir);
+        }
 
         try
         {
@@ -155,13 +160,8 @@ public static class ColorMCGui
             s_arg.Local = BaseDir;
 
             LanguageUtils.Load(LanguageType.zh_cn);
-            Logs.Init();
 
             ColorMCCore.Init(s_arg);
-
-            Logs.Info(LanguageUtils.Get("Core.Info1"));
-            Logs.Info(SystemInfo.SystemName);
-            Logs.Info(SystemInfo.System);
 
             BaseBinding.ReadBuildConfig();
 
@@ -196,7 +196,7 @@ public static class ColorMCGui
             return false;
         }
 
-        if (args[0] is GuiNames.NameCommandGame or GuiNames.NameCommandOldGame && args.Length >= 2)
+        if (args[0] is GuiNames.NameCommandGame && args.Length >= 2)
         {
             if (IsInit)
             {

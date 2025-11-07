@@ -15,6 +15,7 @@ public static class GuiNames
     public const string NameSakuraFrpDir = "sakurafrp";
     public const string NameHdiffDir = "hdiff";
 
+    public const string NameLogFile = "logs.log";
     public const string NameBlockFile = "block.json";
     public const string NameWindowFile = "window.json";
     public const string NameCloudConfigFile = "config.zip";
@@ -67,8 +68,6 @@ public static class GuiNames
     public const string NameTypeLong = "Long";
 
     public const string NameCommandInstall = "--install";
-    [Obsolete("Use NameCommandGame")]
-    public const string NameCommandOldGame = "-game";
     public const string NameCommandGame = "--game";
     public const string NameCommandImport = "--import";
     public const string NameCommandRegister = "--register";

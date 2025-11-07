@@ -125,16 +125,14 @@ public static class BlockTexUtils
     public static void Init()
     {
         s_local = Path.Combine(ColorMCGui.BaseDir, GuiNames.NameBlockDir);
+        if (!Directory.Exists(s_local))
+        {
+            Directory.CreateDirectory(s_local);
+        }
 
         s_file = Path.Combine(s_local, GuiNames.NameBlockFile);
 
-        var path = SystemInfo.Os == OsType.MacOS ?
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ColorMC") :
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC");
-
-        Directory.CreateDirectory(path);
-
-        s_unlockFile = Path.Combine(path, GuiNames.NameBlockFile);
+        s_unlockFile = Path.Combine(InnerPath.Inner, GuiNames.NameBlockFile);
 
         LoadState();
         LoadUnlock();

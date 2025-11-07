@@ -108,8 +108,6 @@ public partial class App : Application
             {
                 ColorMCCore.Init1();
 
-                Logs.Info(LanguageUtils.Get("Core.Info3"));
-
                 BaseBinding.Init1();
             });
         }
