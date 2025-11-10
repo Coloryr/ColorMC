@@ -13,11 +13,18 @@ namespace ColorMC.Gui.UI.Controls.Download;
 /// </summary>
 public partial class DownloadControl : BaseUserControl
 {
+    private int _thread;
+
     public DownloadControl() : base(WindowManager.GetUseName<DownloadControl>())
     {
         InitializeComponent();
 
         Title = LanguageUtils.Get("DownloadWindow.Title");
+    }
+
+    public DownloadControl(int thread) : this()
+    {
+        _thread = thread;
     }
 
     public override void Closed()
@@ -32,7 +39,7 @@ public partial class DownloadControl : BaseUserControl
 
     protected override TopModel GenModel(BaseModel model)
     {
-        return new DownloadModel(model);
+        return new DownloadModel(_thread, model);
     }
 
     /// <summary>

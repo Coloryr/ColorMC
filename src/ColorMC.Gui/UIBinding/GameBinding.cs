@@ -26,11 +26,8 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
-using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -78,16 +75,9 @@ public static class GameBinding
     /// <param name="group">游戏分组</param>
     /// <returns></returns>
     public static async Task<GameRes> AddGameAsync(string? name, string local, List<string>? unselect,
-        string? group, ICreateInstanceGui gui, bool open)
+        string? group, bool open, ICreateInstanceGui gui, IZipGui zipgui)
     {
-        var res = await AddGameHelper.AddGameFolder(new()
-        {
-            Local = local,
-            Name = name,
-            Unselect = unselect,
-            Group = group,
-            Gui = gui
-        });
+        var res = await AddGameHelper.AddGameFolder(local, name, group, unselect, gui, zipgui);
 
         if (!res.State)
         {

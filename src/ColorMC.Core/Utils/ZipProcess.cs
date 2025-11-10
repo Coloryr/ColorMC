@@ -154,6 +154,8 @@ public class ZipProcess(IZipGui? gui = null)
             }
         }
 
+        gui?.Done();
+
         return true;
     }
 }

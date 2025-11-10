@@ -39,9 +39,9 @@ public static class CurseForgeHelper
     /// 创建CurseForge下载项目
     /// </summary>
     /// <param name="data"></param>
-    /// <param name="file"></param>
+    /// <param name="path"></param>
     /// <returns></returns>
-    public static FileItemObj MakeDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, string file)
+    public static FileItemObj MakeDownloadObj(this CurseForgeModObj.CurseForgeDataObj data, string path)
     {
         data.FixDownloadUrl();
 
@@ -49,7 +49,7 @@ public static class CurseForgeHelper
         {
             Url = data.DownloadUrl,
             Name = data.DisplayName,
-            Local = file,
+            Local = Path.Combine(path, data.FileName),
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault()
         };

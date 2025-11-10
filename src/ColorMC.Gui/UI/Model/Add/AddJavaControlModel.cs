@@ -318,7 +318,9 @@ public partial class AddJavaControlModel : TopModel
         }
 
         //开始下载Java
-        var res1 = await JavaBinding.DownloadJavaAsync(obj, new ZipGui(Model));
+        var zip = new ZipGui(Model);
+        var res1 = await JavaBinding.DownloadJavaAsync(obj, zip);
+        zip.Stop();
         Model.ProgressClose();
         if (!res1.State)
         {

@@ -22,6 +22,12 @@ public static class CoreManager
         ColorMCCore.GameLog += ColorMCCore_GameLog;
         ColorMCCore.GameExit += ColorMCCore_GameExit;
         ColorMCCore.InstanceChange += ColorMCCore_InstanceChange;
+        ColorMCCore.Download += ColorMCCore_Download;
+    }
+
+    private static void ColorMCCore_Download(DownloadEventArgs obj)
+    {
+        obj.GuiHandel = WindowManager.ShowDownload(obj.Thread);
     }
 
     private static void ColorMCCore_GameLog(GameLogEventArgs obj)

@@ -105,7 +105,9 @@ public partial class AddGameModel
         }
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info6"));
         //开始导入压缩包
-        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), new ZipGui(Model));
+        var zip = new ZipGui(Model);
+        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), zip);
+        zip.Stop();
         Model.ProgressClose();
         if (!res.State)
         {
@@ -113,8 +115,7 @@ public partial class AddGameModel
             return;
         }
 
-        var model = (WindowManager.MainWindow?.DataContext as MainModel)!;
-        model.Model.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Info5"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Info5"));
 
         if (Type == PackType.ZipPack)
         {

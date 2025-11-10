@@ -474,7 +474,7 @@ public static class WindowManager
     /// 显示下载窗口
     /// </summary>
     /// <returns>Gui调用参数</returns>
-    public static IDownloadGuiHandel ShowDownload()
+    public static IDownloadGuiHandel ShowDownload(int thread)
     {
         return Dispatcher.UIThread.Invoke(() =>
         {
@@ -484,7 +484,7 @@ public static class WindowManager
             }
             else
             {
-                DownloadWindow = new();
+                DownloadWindow = new(thread);
                 AWindow(DownloadWindow);
             }
 

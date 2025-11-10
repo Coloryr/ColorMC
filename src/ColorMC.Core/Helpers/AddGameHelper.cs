@@ -21,11 +21,11 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> AddGameFolder(AddGameFolderArg arg)
+    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, List<string>? unselect, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
-        if (string.IsNullOrWhiteSpace(arg.Local))
+        if (string.IsNullOrWhiteSpace(local))
         {
-            throw new ArgumentNullException(nameof(arg.Local));
+            throw new ArgumentNullException(nameof(local));
         }
 
         GameSettingObj? game = null;
@@ -34,15 +34,15 @@ public static class AddGameHelper
         bool ismmc = false;
 
         //是否为MMC实例
-        if (GameHelper.IsMMCVersion(arg.Local))
+        if (GameHelper.IsMMCVersion(local))
         {
             try
             {
-                using var stream = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCJsonFile));
+                using var stream = PathHelper.OpenRead(Path.Combine(local, Names.NameMMCJsonFile));
                 var mmc = JsonUtils.ToObj(stream, JsonType.MMCObj);
                 if (mmc != null)
                 {
-                    using var stream1 = PathHelper.OpenRead(Path.Combine(arg.Local, Names.NameMMCCfgFile));
+                    using var stream1 = PathHelper.OpenRead(Path.Combine(local, Names.NameMMCCfgFile));
                     var mmc1 = GameOptions.ReadOptions(stream1, "=");
                     var res = mmc.ToColorMC(mmc1);
                     game = res.Game;
@@ -60,7 +60,7 @@ public static class AddGameHelper
         if (!isfind)
         {
             //是否为官启版本
-            var files = Directory.GetFiles(arg.Local);
+            var files = Directory.GetFiles(local);
             foreach (var item in files)
             {
                 if (!item.EndsWith(Names.NameJsonExt))
@@ -89,36 +89,30 @@ public static class AddGameHelper
         {
             Version = (await GameHelper.GetGameVersionsAsync(GameType.Release))[0],
             Loader = Loaders.Normal,
-            GroupName = arg.Group
+            GroupName = group
         };
 
         //没有名字使用输入名字，已有名字同时有输入名字则覆盖
         if (string.IsNullOrWhiteSpace(game.Name))
         {
-            game.Name = arg.Name ?? throw new ArgumentNullException(nameof(arg.Name));
+            game.Name = name ?? throw new ArgumentNullException(nameof(name));
         }
-        else if (!string.IsNullOrWhiteSpace(arg.Name))
+        else if (!string.IsNullOrWhiteSpace(name))
         {
-            game.Name = arg.Name;
+            game.Name = name;
         }
 
         //创建游戏实例
-        game = await InstancesPath.CreateGameAsync(game, arg.Gui);
+        game = await InstancesPath.CreateGameAsync(game, gui);
         if (game == null)
         {
             return new GameRes();
         }
 
         //复制游戏文件
-        await game.CopyFileAsync(new CopyGameFileArg
-        {
-            Local = arg.Local,
-            Unselect = arg.Unselect,
-            IsDir = ismmc,
-            Gui = arg.Gui
-        });
+        await game.CopyFileAsync(local, unselect, ismmc, zipgui);
 
-        return new()
+        return new GameRes
         {
             State = true,
             Game = game
@@ -131,7 +125,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ModrinthReadZipAsync(string? name, string? group, Stream st, ICreateInstanceGui? gui)
+    private static async Task<GameRes> ModrinthReadZipAsync(string? name, string? group, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
         gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
@@ -212,13 +206,19 @@ public static class AddGameHelper
         int length = Names.NameOverrideDir.Length;
         string dir = Names.NameOverrideDir;
 
+        var size = zFile.Entries.Count;
+        var index = 0;
+
         //解压文件
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
             {
+                index++;
                 continue;
             }
+            zipgui?.ZipUpdate(e.Key!, index, size);
+            index++;
             if (e.Key!.StartsWith(dir))
             {
                 using var stream = e.OpenEntryStream();
@@ -234,6 +234,8 @@ public static class AddGameHelper
                 await PathHelper.WriteBytesAsync(file, stream);
             }
         }
+
+        zipgui?.Done();
 
         gui?.ModPackState(CoreRunState.GetInfo);
 
@@ -256,7 +258,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> CurseForgeAsync(string? name, string? group, Stream st, ICreateInstanceGui? gui)
+    private static async Task<GameRes> CurseForgeAsync(string? name, string? group, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
         gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
@@ -345,14 +347,20 @@ public static class AddGameHelper
             return new GameRes();
         }
 
+        var size = zFile.Entries.Count;
+        var index = 0;
+
         //解压文件
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
             {
+                index++;
                 continue;
             }
 
+            zipgui?.ZipUpdate(e.Key!, index, size);
+            index++;
             if (e.Key!.StartsWith(info.Overrides + "/"))
             {
                 using var stream = e.OpenEntryStream();
@@ -368,6 +376,8 @@ public static class AddGameHelper
                 await PathHelper.WriteBytesAsync(file, stream);
             }
         }
+
+        zipgui?.Done();
 
         gui?.ModPackState(CoreRunState.GetInfo);
 
@@ -395,7 +405,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ColorMCAsync(Stream st, ICreateInstanceGui? gui)
+    private static async Task<GameRes> ColorMCAsync(Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
         gui?.ModPackState(CoreRunState.Read);
         //直接解压
@@ -421,16 +431,24 @@ public static class AddGameHelper
         }
 
         //复制文件
+        var size = zFile.Entries.Count;
+        var index = 0;
+       
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
             {
+                index++;
                 continue;
             }
+            zipgui?.ZipUpdate(e.Key!, index, size);
+            index++;
             using var stream = e.OpenEntryStream();
             string file = Path.GetFullPath(game.GetBasePath() + "/" + e.Key);
             await PathHelper.WriteBytesAsync(file, stream);
         }
+
+        zipgui?.Done();
 
         return new GameRes { State = true, Game = game };
     }
@@ -441,7 +459,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui)
+    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
         gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
@@ -506,19 +524,26 @@ public static class AddGameHelper
             return new GameRes();
         }
 
+        var size = zFile.Entries.Count;
+        var index = 0;
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
             {
+                index++;
                 continue;
             }
             if (e.Key!.StartsWith(path))
             {
+                zipgui?.ZipUpdate(e.Key, index, size);
+                index++;
                 using var stream = e.OpenEntryStream();
                 string file1 = Path.GetFullPath($"{game.GetBasePath()}/{e.Key[path.Length..]}");
                 await PathHelper.WriteBytesAsync(file1, stream);
             }
         }
+
+        zipgui?.Done();
 
         game.ReadCustomJson();
         if (game.CustomJson.Count > 0)
@@ -536,7 +561,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui)
+    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
     {
         gui?.ModPackState(CoreRunState.Read);
         using var zFile = ZipArchive.Open(st);
@@ -588,14 +613,19 @@ public static class AddGameHelper
             overrides = obj1.Overrides;
         }
 
+        var size = zFile.Entries.Count;
+        var index = 0;
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
             {
+                index++;
                 continue;
             }
             if (e.Key!.StartsWith(overrides))
             {
+                zipgui?.ZipUpdate(e.Key, index, size);
+                index++;
                 string file1 = Path.GetFullPath(game.GetGamePath() + e.Key[overrides.Length..]);
                 if (e.Key.EndsWith(Names.NameIconFile))
                 {
@@ -612,7 +642,6 @@ public static class AddGameHelper
     /// <summary>
     /// 直接解压压缩包
     /// </summary>
-    /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
     private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
@@ -716,11 +745,11 @@ public static class AddGameHelper
             }
             res1 = type switch
             {
-                PackType.ColorMC => await ColorMCAsync(st, gui),
-                PackType.CurseForge => await CurseForgeAsync(name, group, st, gui),
-                PackType.Modrinth => await ModrinthReadZipAsync(name, group, st, gui),
-                PackType.MMC => await MMCAsync(name, group, file, st, gui),
-                PackType.HMCL => await HMCLAsync(name, group, file, st, gui),
+                PackType.ColorMC => await ColorMCAsync(st, gui, zipgui),
+                PackType.CurseForge => await CurseForgeAsync(name, group, st, gui, zipgui),
+                PackType.Modrinth => await ModrinthReadZipAsync(name, group, st, gui, zipgui),
+                PackType.MMC => await MMCAsync(name, group, file, st, gui, zipgui),
+                PackType.HMCL => await HMCLAsync(name, group, file, st, gui, zipgui),
                 PackType.ZipPack => await UnzipAsync(name, group, file, st, gui, zipgui),
                 _ => null
             };

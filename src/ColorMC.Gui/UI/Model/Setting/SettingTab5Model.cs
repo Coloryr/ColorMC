@@ -133,12 +133,13 @@ public partial class SettingModel
         }
 
         Model.Progress(LanguageUtils.Get("SettingWindow.Tab5.Info7"));
-        string temp = LanguageUtils.Get("AddGameWindow.Tab1.Info21");
+        var zip = new ZipGui(Model);
         var res = await JavaBinding.AddJavaZipAsync(file.Path, file.FileName, new ZipGui(Model));
+        zip.Stop();
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(res.Data);
+            Model.Show(res.Data!);
         }
         else
         {

@@ -81,7 +81,7 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
     /// </summary>
     private bool _needRun;
 
-    public DownloadModel(BaseModel model) : base(model)
+    public DownloadModel(int thread, BaseModel model) : base(model)
     {
         _useName = ToString() ?? "DownloadModel";
 
@@ -90,6 +90,13 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
             AutoReset = true
         };
         _timer.Elapsed += Timer_Elapsed;
+
+        for (int a = 0; a < thread; a++)
+        {
+            var item11 = new DownloadItemModel(a + 1);
+            Dispatcher.UIThread.Post(() => DisplayList.Add(item11));
+            _downloadList.Add(a, item11);
+        }
 
         Model.SetChoiseContent(_useName, LanguageUtils.Get("DownloadWindow.Text2"),
             LanguageUtils.Get("DownloadWindow.Text1"));
@@ -233,15 +240,6 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
     {
         if (state == true)
         {
-            if (_downloadList.Count == 0 || _downloadList.Count != thread)
-            {
-                for (int a = 0; a < thread; a++)
-                {
-                    var item11 = new DownloadItemModel(a + 1);
-                    Dispatcher.UIThread.Post(() => DisplayList.Add(item11));
-                    _downloadList.Add(a, item11);
-                }
-            }
             if (!_timer.Enabled)
             {
                 _timer.Start();
@@ -271,8 +269,6 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
             {
                 _doneNum++;
             }
-            Value = (double)_doneNum / _taskNum * 100;
-            Now = $"{_doneNum}/{_taskNum}";
         });
     }
 
@@ -294,6 +290,9 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
     /// <returns>是否需要继续更新</returns>
     private bool Run()
     {
+        Value = (double)_doneNum / _taskNum * 100;
+        Now = $"{_doneNum}/{_taskNum}";
+
         foreach (var item in DisplayList)
         {
             item.Update();

@@ -669,8 +669,7 @@ public static class WebBinding
             return false;
         }
 
-        var item = CurseForgeHelper.MakeDownloadObj(data,
-            Path.Combine(save.GetSaveDataPacksPath(), data.FileName));
+        var item = CurseForgeHelper.MakeDownloadObj(data, save.GetSaveDataPacksPath());
         item.Overwrite = true;
 
         return await DownloadManager.StartAsync([item]);

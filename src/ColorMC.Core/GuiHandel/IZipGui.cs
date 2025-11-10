@@ -19,4 +19,8 @@ public interface IZipGui
     /// 解压
     /// </summary>
     public void Unzip();
+    /// <summary>
+    /// 解压完毕
+    /// </summary>
+    public void Done();
 }

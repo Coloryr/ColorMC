@@ -121,7 +121,9 @@ public partial class GameEditModel
 
         //开始备份
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info11"));
-        res1 = await _obj.UnzipBackupWorldAsync(item1.FullName, new ZipGui(Model));
+        var zip = new ZipGui(Model);
+        res1 = await _obj.UnzipBackupWorldAsync(item1.FullName, zip);
+        zip.Stop();
         Model.ProgressClose();
         if (!res1)
         {
