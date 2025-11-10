@@ -253,7 +253,10 @@ public static class ColorMCCore
     /// <returns></returns>
     internal static IDownloadGuiHandel? OnDownloadGui()
     {
-        var arg = new DownloadEventArgs();
+        var arg = new DownloadEventArgs
+        {
+            Thread = ConfigLoad.Config.Http.DownloadThread
+        };
         Download?.Invoke(arg);
         return arg.GuiHandel;
     }

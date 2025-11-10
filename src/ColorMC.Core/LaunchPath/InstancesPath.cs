@@ -1014,16 +1014,16 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     /// <param name="arg">复制参数</param>
     public static async Task CopyFileAsync(this GameSettingObj obj,
-        CopyGameFileArg arg)
+        string local, List<string>? unselect, bool isdir, IZipGui? zipgui)
     {
-        arg.Local = Path.GetFullPath(arg.Local);
-        var list = PathHelper.GetAllFiles(arg.Local);
-        if (arg.Unselect != null)
+        local = Path.GetFullPath(local);
+        var list = PathHelper.GetAllFiles(local);
+        if (unselect != null)
         {
-            list.RemoveAll(item => arg.Unselect.Contains(item.FullName));
+            list.RemoveAll(item => unselect.Contains(item.FullName));
         }
-        int basel = arg.Local.Length;
-        var local1 = arg.IsDir ? obj.GetBasePath() : obj.GetGamePath();
+        int basel = local.Length;
+        var local1 = isdir ? obj.GetBasePath() : obj.GetGamePath();
         await Task.Run(() =>
         {
             int index = 0;
@@ -1032,7 +1032,7 @@ public static class InstancesPath
                 var path = item.FullName[basel..];
                 var info = new FileInfo(Path.GetFullPath(local1 + "/" + path));
                 info.Directory?.Create();
-                arg.ZipGui?.ZipUpdate(info.FullName, index, list.Count);
+                zipgui?.ZipUpdate(info.FullName, index, list.Count);
                 PathHelper.CopyFile(item.FullName, info.FullName);
                 index++;
             }

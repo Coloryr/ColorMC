@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -123,7 +122,9 @@ public partial class AddGameModel
         }
 
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
-        var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(), Group, new CreateGameGui(Model), true);
+        var zip = new ZipGui(Model);
+        var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(), Group, true, new CreateGameGui(Model), zip);
+        zip.Stop();
         Model.ProgressClose();
 
         if (!res.State)
@@ -187,7 +188,9 @@ public partial class AddGameModel
         foreach (var item in list)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab3.Info1"));
-            var res = await GameBinding.AddGameAsync(null, item, null, Group, new CreateGameGui(Model), false);
+            var zip = new ZipGui(Model);
+            var res = await GameBinding.AddGameAsync(null, item, null, Group, false, new CreateGameGui(Model), zip);
+            zip.Stop();
             Model.ProgressClose();
 
             if (!res.State)

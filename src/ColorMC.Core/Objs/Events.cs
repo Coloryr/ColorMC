@@ -678,6 +678,10 @@ public class InstanceChangeEventArgs(InstanceChangeType type, GameSettingObj? ga
 public class DownloadEventArgs : EventArgs
 {
     /// <summary>
+    /// 下载线程数量
+    /// </summary>
+    public required int Thread { get; init; }
+    /// <summary>
     /// 界面操作回调
     /// </summary>
     public IDownloadGuiHandel? GuiHandel { get; set; }

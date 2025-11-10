@@ -12,23 +12,38 @@ using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI;
 
-public class ZipGui(BaseModel model) : IZipGui
+public class ZipGui : IZipGui
 {
     private readonly string _text = LanguageUtils.Get("AddJavaWindow.Info5");
+
+    private readonly BaseModel _model;
+
+    private bool _isRun;
+    private bool _haveUpdate;
+
+    private string _name;
+    private int _size, _all;
+
+    public ZipGui(BaseModel model)
+    { 
+        _model = model;
+        _isRun = true;
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+    }
 
     public void Unzip()
     {
         Dispatcher.UIThread.Post(() =>
         {
-            model.ProgressUpdate(_text);
+            _model.ProgressUpdate(_text);
         });
     }
 
     public async Task<bool> FileRename(string? text)
     {
-        model.ProgressClose();
-        var test = await model.ShowAsync(string.Format(LanguageUtils.Get("App.Text33"), text));
-        model.Progress();
+        _model.ProgressClose();
+        var test = await _model.ShowAsync(string.Format(LanguageUtils.Get("App.Text33"), text));
+        _model.Progress();
         return test;
     }
 
@@ -38,11 +53,32 @@ public class ZipGui(BaseModel model) : IZipGui
         {
             text = "..." + text[^40..];
         }
-        Dispatcher.UIThread.Post(() =>
+        _name = text;
+        _all = all;
+        _size = size;
+
+        _haveUpdate = true;
+    }
+
+    private bool Run()
+    {
+        if (_haveUpdate)
         {
-            model.ProgressUpdate($"{_text} {text} {size}/{all}");
-            model.ProgressUpdate((double)size / all * 100);
-        });
+            _model.ProgressUpdate($"{_text} {_name} {_size}/{_all}");
+            _model.ProgressUpdate((double)_size / _all * 100);
+        }
+        _haveUpdate = false;
+        return _isRun;
+    }
+
+    public void Stop()
+    {
+        _isRun = false;
+    }
+
+    public void Done()
+    {
+        _haveUpdate = false;
     }
 }
 
@@ -91,6 +127,7 @@ public class CreateGameGui(BaseModel model) : ICreateInstanceGui
         }
         else if (state == CoreRunState.GetInfo)
         {
+            model.ProgressUpdate(-1);
             model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
         }
         else if (state == CoreRunState.Download)

@@ -138,10 +138,11 @@ public partial class AddModPackControlModel
         if (data.SourceType == SourceType.CurseForge)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
-
+            var zip = new ZipGui(Model);
             var res = await AddGameHelper.InstallCurseForge(null, group, (data.Data as CurseForgeModObj.CurseForgeDataObj)!,
                 select?.Logo,
-                new CreateGameGui(Model), new ZipGui(Model));
+                new CreateGameGui(Model), zip);
+            zip.Stop();
             Model.ProgressClose();
 
             if (!res.State)
@@ -156,8 +157,10 @@ public partial class AddModPackControlModel
         else if (data.SourceType == SourceType.Modrinth)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info8"));
+            var zip = new ZipGui(Model);
             var res = await AddGameHelper.InstallModrinth(null, group, (data.Data as ModrinthVersionObj)!,
-                select?.Logo, new CreateGameGui(Model), new ZipGui(Model));
+                select?.Logo, new CreateGameGui(Model), zip);
+            zip.Stop();
             Model.ProgressClose();
 
             if (!res.State)
