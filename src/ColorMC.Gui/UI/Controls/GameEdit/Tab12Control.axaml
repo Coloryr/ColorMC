@@ -33,7 +33,7 @@
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Description}"
-                        Header="{setting:Localize GameEditWindow.Tab12.Text3}"
+                        Header="{setting:Localize Text.Description}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Width}"

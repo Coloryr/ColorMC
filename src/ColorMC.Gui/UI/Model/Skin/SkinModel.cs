@@ -390,7 +390,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         var res = await PathBinding.SaveFileAsync(top, FileType.Skin, null);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("ConfigEditWindow.Info9"));
+            Model.Notify(LanguageUtils.Get("ConfigEditWindow.Text23"));
         }
     }
     /// <summary>

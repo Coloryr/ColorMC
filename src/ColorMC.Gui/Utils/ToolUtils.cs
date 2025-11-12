@@ -154,14 +154,14 @@ public static class ToolUtils
             var res = await DownloadManager.StartAsync([item]);
             if (!res)
             {
-                return new StringRes { Data = LanguageUtils.Get("Core.Error114") };
+                return new StringRes { Data = LanguageUtils.Get("App.Error.Text1") };
             }
         }
 
         var java = JvmPath.FindJava(17);
         if (java == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("Core.Error115") };
+            return new StringRes { Data = LanguageUtils.Get("App.Error.Text2") };
         }
 
         var info = new ProcessStartInfo(java.Path)

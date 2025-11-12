@@ -88,7 +88,7 @@ public static class UpdateUtils
         catch (Exception e)
         {
             UpdateCheckFail();
-            Logs.Error(LanguageUtils.Get("SettingWindow.Tab3.Error2"), e);
+            Logs.Error(LanguageUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
         return (false, false, null);
@@ -252,7 +252,7 @@ public static class UpdateUtils
             var obj = await ColorMCCloudAPI.GetUpdateIndexAsync();
             if (obj == null)
             {
-                WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Error2"), "Json Error");
+                WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Text38"), "Json Error");
                 return (false, null);
             }
             var json = obj.RootElement;
@@ -281,7 +281,7 @@ public static class UpdateUtils
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
         return (null, null);
@@ -297,7 +297,7 @@ public static class UpdateUtils
         {
             return;
         }
-        window.Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error2"));
+        window.Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text38"));
     }
 
     //private static async Task<bool> StartPatch(string file, List<string> files)

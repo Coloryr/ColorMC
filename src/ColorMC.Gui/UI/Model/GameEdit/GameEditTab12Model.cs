@@ -46,7 +46,7 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadSchematic()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab12.Info3"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab12.Text9"));
         SchematicList.Clear();
         foreach (var item in await _obj.GetSchematicsAsync())
         {
@@ -65,7 +65,7 @@ public partial class GameEditModel
         }
         Model.ProgressClose();
         SchematicEmptyDisplay = SchematicList.Count == 0;
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab12.Info1"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab12.Text7"));
     }
 
     /// <summary>
@@ -85,10 +85,10 @@ public partial class GameEditModel
             case null:
                 return;
             case false:
-                Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Error1"));
+                Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Text7"));
                 return;
             default:
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Info1"));
+                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Text3"));
                 LoadSchematic();
                 break;
         }
@@ -113,13 +113,13 @@ public partial class GameEditModel
     /// <param name="obj">结构文件</param>
     public async void DeleteSchematic(SchematicObj obj)
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab12.Info2"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab12.Text8"));
         if (!res)
         {
             return;
         }
         await obj.DeleteAsync();
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
         LoadSchematic();
     }
 

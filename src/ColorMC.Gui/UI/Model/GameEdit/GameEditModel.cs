@@ -82,7 +82,7 @@ public partial class GameEditModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("MainWindow.Flyouts.Text10"),
+                        Name = LanguageUtils.Get("Text.Rename"),
                         Func = Rename
                     },
                     new SubMenuItemModel()
@@ -95,7 +95,7 @@ public partial class GameEditModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameEdit/item2.svg",
-                Text = LanguageUtils.Get("GameEditWindow.Tabs.Text2"),
+                Text = LanguageUtils.Get("MainWindow.Text64"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
@@ -108,17 +108,17 @@ public partial class GameEditModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameEdit/item3.svg",
-                Text = LanguageUtils.Get("GameEditWindow.Tabs.Text4"),
+                Text = LanguageUtils.Get("Type.FileType.Mod"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadMods
                     },
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("GameEditWindow.Tab4.Text8"),
+                        Name = LanguageUtils.Get("GameEditWindow.Tab4.Text6"),
                         Func = ImportMod
                     },
                     new SubMenuItemModel()
@@ -128,7 +128,7 @@ public partial class GameEditModel : MenuModel
                     },
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("GameEditWindow.Tab4.Text3"),
+                        Name = LanguageUtils.Get("Text.CheckUpdate"),
                         Func = CheckMod
                     },
                     new SubMenuItemModel()
@@ -194,7 +194,7 @@ public partial class GameEditModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameEdit/item5.svg",
-                Text = LanguageUtils.Get("GameEditWindow.Tabs.Text6"),
+                Text = LanguageUtils.Get("Type.FileType.Resourcepack"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
@@ -222,7 +222,7 @@ public partial class GameEditModel : MenuModel
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadScreenshot
                     },
                     new SubMenuItemModel()
@@ -245,7 +245,7 @@ public partial class GameEditModel : MenuModel
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadServer
                     },
                     new SubMenuItemModel()
@@ -258,12 +258,12 @@ public partial class GameEditModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameEdit/item8.svg",
-                Text = LanguageUtils.Get("GameEditWindow.Tabs.Text11"),
+                Text = LanguageUtils.Get("Type.FileType.Shaderpack"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadShaderpack
                     },
                     new SubMenuItemModel()
@@ -286,12 +286,12 @@ public partial class GameEditModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameEdit/item9.svg",
-                Text = LanguageUtils.Get("GameEditWindow.Tabs.Text12"),
+                Text = LanguageUtils.Get("Text.Schematic"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadSchematic
                     },
                     new SubMenuItemModel()

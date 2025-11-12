@@ -59,7 +59,7 @@ public class GamesPage
                         CompareDescending = GameFileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<GameFileTreeNodeModel, string?>(
-                    LanguageUtils.Get("GameExportWindow.Info5"),
+                    LanguageUtils.Get("GameExportWindow.Text3"),
                     x => x.Modified,
                     options: new TextColumnOptions<GameFileTreeNodeModel>
                     {

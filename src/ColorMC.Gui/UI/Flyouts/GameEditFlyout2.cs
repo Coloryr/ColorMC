@@ -22,7 +22,7 @@ public static class GameEditFlyout2
             {
                 PathBinding.OpenPath(model.World);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text11"), CheckHelpers.IsGameVersion120(model.World.Game.Version), ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("SettingWindow.Tab9.Text1"), CheckHelpers.IsGameVersion120(model.World.Game.Version), ()=>
             {
                 model.TopModel.LaunchWorld(model);
             }),

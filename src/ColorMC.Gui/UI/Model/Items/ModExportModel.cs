@@ -116,7 +116,7 @@ public partial class ModExportModel : ObservableObject
         {
             if (Obj1 == null)
             {
-                _model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error5"));
+                _model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text42"));
                 Export = false;
             }
         }

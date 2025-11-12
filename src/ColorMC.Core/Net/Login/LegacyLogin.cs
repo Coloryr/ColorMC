@@ -51,16 +51,16 @@ public static class LegacyLogin
 
         if (obj2 == null)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Token);
+            throw new LoginException(LoginFailState.GetDataFail, AuthState.Token);
         }
         else if (!string.IsNullOrWhiteSpace(obj2.ErrorMessage))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+            throw new LoginException(LoginFailState.GetDataError, AuthState.Token,
                 data: obj2.ErrorMessage);
         }
         else if (obj2.SelectedProfile == null && obj2.AvailableProfiles == null)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+            throw new LoginException(LoginFailState.GetDataError, AuthState.Token,
                 data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
         else if (obj2.SelectedProfile != null)
@@ -139,7 +139,7 @@ public static class LegacyLogin
         }
         else
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+            throw new LoginException(LoginFailState.GetDataError, AuthState.Token,
                data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
     }
@@ -187,15 +187,15 @@ public static class LegacyLogin
         var obj2 = JsonUtils.ToObj(data, JsonType.AuthenticateResObj);
         if (obj2 == null)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Token);
+            throw new LoginException(LoginFailState.GetDataFail, AuthState.Token);
         }
         else if (obj2.Error != null && !string.IsNullOrEmpty(obj2.ErrorMessage))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token, data: obj2.ErrorMessage);
+            throw new LoginException(LoginFailState.GetDataError, AuthState.Token, data: obj2.ErrorMessage);
         }
         if (obj2.SelectedProfile == null && !select)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.Token,
+            throw new LoginException(LoginFailState.GetDataError, AuthState.Token,
                 data: JsonUtils.ToString(obj2, JsonType.AuthenticateResObj));
         }
         if (obj2.SelectedProfile != null)

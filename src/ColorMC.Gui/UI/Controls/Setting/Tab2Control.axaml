@@ -250,7 +250,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPic}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text60}" />
+                            Content="{setting:Localize Text.Set}" />
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch
                         Margin="0,0,0,0"
@@ -284,7 +284,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicTran}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text60}" />
+                            Content="{setting:Localize Text.Set}" />
                     </panel:WrapPanelWithStretch>
                     <panel:WrapPanelWithStretch IsEnabled="{Binding EnableBG}" RightMax="{Binding MinMode}">
                         <ToggleSwitch
@@ -320,7 +320,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicSize}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text60}"
+                            Content="{setting:Localize Text.Set}"
                             IsEnabled="{Binding EnablePicResize}" />
                     </panel:WrapPanelWithStretch>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />

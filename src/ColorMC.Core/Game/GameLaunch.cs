@@ -206,6 +206,11 @@ public static class Launch
     {
         if (!string.IsNullOrWhiteSpace(obj.JvmLocal))
         {
+            if (!File.Exists(obj.JvmLocal))
+            {
+                throw new LaunchException(LaunchError.SelectJavaNotFound, data: obj.JvmLocal);
+            }
+
             return obj.JvmLocal;
         }
 
@@ -215,16 +220,22 @@ public static class Launch
             list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         }
 
-        var jvm = JvmPath.GetInfo(obj.JvmName);
-        if (jvm == null)
+        JavaInfo? jvm = null;
+        if (!string.IsNullOrWhiteSpace(obj.JvmName))
         {
-            foreach (var item in arg1.JavaVersions.OrderDescending())
+            jvm = JvmPath.GetInfo(obj.JvmName);
+            if (jvm == null)
             {
-                jvm = JvmPath.FindJava(item);
-                if (jvm != null)
-                {
-                    break;
-                }
+                throw new LaunchException(LaunchError.SelectJavaNotFound, data: obj.JvmName);
+            }
+        }
+
+        foreach (var item in arg1.JavaVersions.OrderDescending())
+        {
+            jvm = JvmPath.FindJava(item);
+            if (jvm != null)
+            {
+                break;
             }
         }
 
@@ -235,7 +246,14 @@ public static class Launch
             throw new LaunchException(LaunchError.JavaNotFound, data: jv.ToString());
         }
 
-        return jvm.GetPath();
+        var path = jvm.GetPath();
+
+        if (!File.Exists(path))
+        {
+            throw new LaunchException(LaunchError.SelectJavaNotFound, data: path);
+        }
+
+        return path;
     }
 
     /// <summary>
@@ -483,11 +501,6 @@ public static class Launch
 
         //查找Java
         var path = await FindJavaAsync(obj, larg, arg1);
-
-        if (!File.Exists(path))
-        {
-            throw new LaunchException(LaunchError.SelectJavaNotFound);
-        }
 
         //准备Jvm参数
         larg.Gui?.StateUpdate(obj, LaunchState.JvmPrepare);

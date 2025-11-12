@@ -71,7 +71,7 @@ public partial class ErrorModel : TopModel
         var res = await PathBinding.SaveFileAsync(top, FileType.Text, [Text.Text]);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("ErrorWindow.Info1"));
+            Model.Notify(LanguageUtils.Get("ErrorWindow.Text3"));
         }
     }
 
@@ -82,21 +82,21 @@ public partial class ErrorModel : TopModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Error2"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Text26"));
             return;
         }
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Info4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Text19"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameLogWindow.Info6"));
+        Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
         var url = await McloAPI.PushAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Error1"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
             return;
         }
         else
@@ -106,14 +106,14 @@ public partial class ErrorModel : TopModel
             {
                 return;
             }
-            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info5"), url),
-                LanguageUtils.Get("GameLogWindow.Info8"), () =>
+            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
+                LanguageUtils.Get("GameLogWindow.Text23"), () =>
             {
                 BaseBinding.CopyTextClipboard(top, url);
-                Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+                Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
             });
             BaseBinding.CopyTextClipboard(top, url);
-            Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+            Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
         }
     }
 

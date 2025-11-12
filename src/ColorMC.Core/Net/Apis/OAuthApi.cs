@@ -45,11 +45,11 @@ public static class OAuthApi
         var obj = JsonUtils.ToObj(stream, JsonType.OAuthObj);
         if (obj == null)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
+            throw new LoginException(LoginFailState.GetDataFail, AuthState.OAuth);
         }
         else if (!string.IsNullOrWhiteSpace(obj.Error))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
+            throw new LoginException(LoginFailState.GetDataError, AuthState.OAuth, data: obj.Error);
         }
 
         return new OAuthGetCodeRes
@@ -84,7 +84,7 @@ public static class OAuthApi
             }
             using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, Arg2, token);
             var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj)
-                ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
+                ?? throw new LoginException(LoginFailState.GetDataFail, AuthState.OAuth);
             if (!string.IsNullOrWhiteSpace(obj.Error))
             {
                 if (obj.Error == "authorization_pending")
@@ -97,7 +97,7 @@ public static class OAuthApi
                 }
                 else if (obj.Error == "expired_token")
                 {
-                    throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
+                    throw new LoginException(LoginFailState.GetDataError, AuthState.OAuth, data: obj.Error);
                 }
             }
             else
@@ -118,12 +118,12 @@ public static class OAuthApi
         };
 
         using var stream = await CoreHttpClient.LoginPostStreamAsync(OAuthToken, dir, cancel)
-            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
+            ?? throw new LoginException(LoginFailState.GetDataFail, AuthState.OAuth);
         var obj = JsonUtils.ToObj(stream, JsonType.OAuthGetCodeObj)
-            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.OAuth);
+            ?? throw new LoginException(LoginFailState.GetDataFail, AuthState.OAuth);
         if (!string.IsNullOrWhiteSpace(obj.Error))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.OAuth, data: obj.Error);
+            throw new LoginException(LoginFailState.GetDataError, AuthState.OAuth, data: obj.Error);
         }
 
         return obj;
@@ -147,20 +147,20 @@ public static class OAuthApi
             TokenType = "JWT"
         };
         var obj1 = await CoreHttpClient.LoginPostJsonAsync(XboxLive, JsonUtils.ToString(obj, JsonType.OAuthLoginObj), cancel)
-            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.XBox);
+            ?? throw new LoginException(LoginFailState.GetDataFail, AuthState.XBox);
         var json = obj1.RootElement;
         var xblToken = json.GetProperty("Token").GetString();
         var list = json.GetProperty("DisplayClaims").GetProperty("xui");
         if (list.ValueKind != JsonValueKind.Array)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XBox, data: json.ToString());
+            throw new LoginException(LoginFailState.GetDataError, AuthState.XBox, data: json.ToString());
         }
         var xblUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xblToken) ||
             string.IsNullOrWhiteSpace(xblUhs))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XBox, data: json.ToString());
+            throw new LoginException(LoginFailState.GetDataError, AuthState.XBox, data: json.ToString());
         }
 
         return new OAuthXboxLiveRes
@@ -187,20 +187,20 @@ public static class OAuthApi
             TokenType = "JWT"
         };
         var obj1 = await CoreHttpClient.LoginPostJsonAsync(XSTS, JsonUtils.ToString(obj, JsonType.OAuthLogin1Obj), cancel)
-            ?? throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.XSTS);
+            ?? throw new LoginException(LoginFailState.GetDataFail, AuthState.XSTS);
         var json = obj1.RootElement;
         var xstsToken = json.GetProperty("Token").GetString();
         var list = json.GetProperty("DisplayClaims").GetProperty("xui");
         if (list.ValueKind != JsonValueKind.Array)
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XSTS, data: json.ToString());
+            throw new LoginException(LoginFailState.GetDataError, AuthState.XSTS, data: json.ToString());
         }
         var xstsUhs = list.EnumerateArray().FirstOrDefault().GetProperty("uhs").GetString();
 
         if (string.IsNullOrWhiteSpace(xstsToken) ||
             string.IsNullOrWhiteSpace(xstsUhs))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataError, AuthState.XSTS, data: json.ToString());
+            throw new LoginException(LoginFailState.GetDataError, AuthState.XSTS, data: json.ToString());
         }
 
         return new OAuthXSTSRes

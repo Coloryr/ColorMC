@@ -197,23 +197,23 @@ public partial class AddGameModel
         switch (loader)
         {
             case Loaders.Forge:
-                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info1");
+                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text24");
                 list = await WebBinding.GetForgeVersionAsync(Version);
                 break;
             case Loaders.NeoForge:
-                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info19");
+                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text38");
                 list = await WebBinding.GetNeoForgeVersionAsync(Version);
                 break;
             case Loaders.Fabric:
-                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info2");
+                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text25");
                 list = await WebBinding.GetFabricVersionAsync(Version);
                 break;
             case Loaders.Quilt:
-                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info3");
+                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text26");
                 list = await WebBinding.GetQuiltVersionAsync(Version);
                 break;
             case Loaders.OptiFine:
-                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info16");
+                Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text37");
                 list = await WebBinding.GetOptifineVersionAsync(Version);
                 break;
         }
@@ -222,7 +222,7 @@ public partial class AddGameModel
         Model.SubTitle = "";
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error1"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text44"));
             return;
         }
 
@@ -231,7 +231,7 @@ public partial class AddGameModel
         LoaderVersionList.Clear();
         LoaderVersionList.AddRange(list);
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info22"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text40"));
     }
 
     /// <summary>
@@ -245,20 +245,20 @@ public partial class AddGameModel
         var name = Name;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error6"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text48"));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(name))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error13"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text52"));
             return;
         }
 
         string? version = Version;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error7"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text49"));
             return;
         }
 
@@ -280,7 +280,7 @@ public partial class AddGameModel
         var res = await GameBinding.AddGameAsync(game, new OverGameGui(Model));
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error5"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text47"));
         }
         else
         {
@@ -290,7 +290,7 @@ public partial class AddGameModel
                 var res1 = await game.SetGameLoaderAsync(LoaderLocal);
                 if (!res1.State)
                 {
-                    Model.ShowWithOk(LanguageUtils.Get("AddGameWindow.Tab1.Error18"), () =>
+                    Model.ShowWithOk(LanguageUtils.Get("AddGameWindow.Tab1.Text54"), () =>
                     {
                         Done(game.UUID);
                     });
@@ -331,7 +331,7 @@ public partial class AddGameModel
         }
 
         IsLoad = true;
-        Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Info4");
+        Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text27");
 
         var res = await GameHelper.GetSupportLoaderAsync(Version);
         foreach (var item in res.Done)
@@ -341,7 +341,7 @@ public partial class AddGameModel
         }
         foreach (var item in res.Fail)
         {
-            Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Error19"), item.GetName()));
+            Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Text55"), item.GetName()));
         }
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
@@ -353,7 +353,7 @@ public partial class AddGameModel
         _load = false;
         EnableLoader = true;
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info24"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text42"));
     }
 
     /// <summary>
@@ -369,19 +369,19 @@ public partial class AddGameModel
         EnableLoaderVersion = false;
         LoaderVersion = null;
         IsLoad = true;
-        Model.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Info12");
+        Model.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text36");
         var res = await GameBinding.ReloadVersionAsync();
         IsLoad = false;
         Model.SubTitle = "";
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Error4"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text45"));
             return;
         }
 
         GameVersionUpdate();
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info23"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text41"));
     }
 
     /// <summary>

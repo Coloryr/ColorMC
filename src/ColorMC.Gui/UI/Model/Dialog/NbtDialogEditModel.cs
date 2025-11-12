@@ -106,7 +106,7 @@ public partial class NbtDialogEditModel(BaseModel model, string usename) : Obser
         }
         catch
         {
-            model.Show(LanguageUtils.Get("ConfigEditWindow.Error3"));
+            model.Show(LanguageUtils.Get("ConfigEditWindow.Text29"));
             DataItem.Value = 0;
             return;
         }

@@ -35,7 +35,7 @@ public partial class BuildPackModel : MenuModel
         ]);
 
         Model.SetChoiseCall(_useName, Build);
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("BuildPackWindow.Text1"));
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
     }
 
     public override void Close()
@@ -66,22 +66,22 @@ public partial class BuildPackModel : MenuModel
         }
 
         string ext = PackLaunch ? Names.NameZipExt : GuiNames.NameColorMCExt;
-        var local = await PathBinding.SaveFileAsync(top, LanguageUtils.Get("BuildPackWindow.Info2"), ext, GuiNames.NameClientFile + ext);
+        var local = await PathBinding.SaveFileAsync(top, LanguageUtils.Get("BuildPackWindow.Text2"), ext, GuiNames.NameClientFile + ext);
         if (local == null)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("BuildPackWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("BuildPackWindow.Text1"));
         var res = await BaseBinding.BuildPackAsync(this, local.GetPath()!);
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("BuildPackWindow.Error1"));
+            Model.Show(LanguageUtils.Get("BuildPackWindow.Text8"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("BuildPackWindow.Info7"));
+            Model.Notify(LanguageUtils.Get("BuildPackWindow.Text7"));
         }
     }
 }

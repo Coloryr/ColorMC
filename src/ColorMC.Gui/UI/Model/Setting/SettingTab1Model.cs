@@ -55,7 +55,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeBackRunDir()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Info16"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text32"));
         if (!res)
         {
             return;
@@ -74,7 +74,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeRunDir()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Info13"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text30"));
         if (!res)
         {
             return;
@@ -183,25 +183,25 @@ public partial class SettingModel
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error1"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Info5"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error2"));
+                Model.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info6"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error3"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Error3"), e1);
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -218,24 +218,24 @@ public partial class SettingModel
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error1"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Info8"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text28"));
 
         try
         {
             var res = AuthDatabase.LoadData(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error4"));
+                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text40"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info9"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text29"));
         }
         catch (Exception)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error5"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text41"));
         }
         finally
         {
@@ -252,25 +252,25 @@ public partial class SettingModel
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error1"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Info5"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error2"));
+                Model.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info6"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error3"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Error3"), e1);
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -287,25 +287,25 @@ public partial class SettingModel
         var local = Local4;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error1"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Info5"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = FrpConfigUtils.Load(local, true);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error2"));
+                Model.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info6"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Error3"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Error3"), e1);
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -335,7 +335,7 @@ public partial class SettingModel
     {
         var temp = DownloadManager.DownloadDir;
 
-        TempSize = string.Format(LanguageUtils.Get("SettingWindow.Tab1.Info20"), PathBinding.GetFolderSize(temp));
+        TempSize = string.Format(LanguageUtils.Get("SettingWindow.Tab1.Text36"), PathBinding.GetFolderSize(temp));
     }
 
     /// <summary>
@@ -343,12 +343,12 @@ public partial class SettingModel
     /// </summary>
     private async void Reset()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text22"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info2"));
+        Model.Notify(LanguageUtils.Get("Text.Reset"));
     }
 
     /// <summary>
@@ -356,12 +356,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearUser()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Info3"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text24"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info4"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text25"));
     }
 
     /// <summary>
@@ -369,12 +369,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearWindow()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Info18"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text34"));
         if (!res)
             return;
 
         WindowManager.Reset();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info19"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text35"));
     }
 
     /// <summary>
@@ -390,7 +390,7 @@ public partial class SettingModel
         var res = await PathBinding.SaveFileAsync(top, FileType.User, null);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Info17"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text33"));
         }
     }
 

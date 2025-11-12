@@ -64,15 +64,15 @@
                         <WrapPanel Margin="0,0,0,-5">
                             <CheckBox
                                 Margin="0,0,10,0"
-                                Content="{setting:Localize GameEditWindow.Tabs.Text4}"
+                                Content="{setting:Localize Type.FileType.Mod}"
                                 IsChecked="{Binding Mod}" />
                             <CheckBox
                                 Margin="0,0,10,0"
-                                Content="{setting:Localize GameEditWindow.Tabs.Text6}"
+                                Content="{setting:Localize Type.FileType.Resourcepack}"
                                 IsChecked="{Binding Resourcepack}" />
                             <CheckBox
                                 Margin="0,0,10,0"
-                                Content="{setting:Localize GameEditWindow.Tabs.Text11}"
+                                Content="{setting:Localize Type.FileType.Shaderpack}"
                                 IsChecked="{Binding Shaderpack}" />
                         </WrapPanel>
                     </StackPanel>
@@ -98,7 +98,7 @@
                         <TextBlock
                             Margin="20,0,20,0"
                             FontSize="20"
-                            Text="{setting:Localize CollectWindow.Info5}"
+                            Text="{setting:Localize CollectWindow.Text11}"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
                     </Border>
@@ -113,7 +113,7 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <WrapPanel Margin="15,15,5,15" DockPanel.Dock="Top">
-                        <TextBlock Margin="0,0,20,0" Text="{setting:Localize CollectWindow.Info8}" />
+                        <TextBlock Margin="0,0,20,0" Text="{setting:Localize CollectWindow.Text13}" />
                         <Button
                             Width="100"
                             Height="35"

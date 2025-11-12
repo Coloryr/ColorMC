@@ -83,7 +83,7 @@
                     <DataGrid.Columns>
                         <DataGridCheckBoxColumn
                             Binding="{Binding Enable}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text9}"
+                            Header="{setting:Localize Text.Enable}"
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Text}"

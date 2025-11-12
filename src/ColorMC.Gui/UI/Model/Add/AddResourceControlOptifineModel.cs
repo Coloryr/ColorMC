@@ -16,7 +16,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// 添加游戏资源
 /// 高清修复文件列表
 /// </summary>
-public partial class AddControlModel : IAddOptifineControl
+public partial class AddResourceControlModel : IAddOptifineControl
 {
     /// <summary>
     /// 高清修复列表
@@ -92,13 +92,13 @@ public partial class AddControlModel : IAddOptifineControl
         GameVersionList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
-        Model.Progress(LanguageUtils.Get("AddWindow.Info13"));
+        Model.Progress(LanguageUtils.Get("AddResourceWindow.Text21"));
         var list = await OptifineAPI.GetOptifineVersionAsync();
         Model.ProgressClose();
         _load = false;
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("AddWindow.Error10"));
+            Model.Show(LanguageUtils.Get("AddResourceWindow.Text33"));
             return;
         }
 
@@ -116,7 +116,7 @@ public partial class AddControlModel : IAddOptifineControl
                                  select newgroup.Key);
 
         LoadOptifineVersion();
-        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
+        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -175,17 +175,17 @@ public partial class AddControlModel : IAddOptifineControl
     public async void Install(OptifineVersionItemModel item)
     {
         var res = await Model.ShowAsync(string.Format(
-            LanguageUtils.Get("AddWindow.Info10"), item.Version));
+            LanguageUtils.Get("AddResourceWindow.Text20"), item.Version));
         if (!res)
         {
             return;
         }
-        Model.Progress(LanguageUtils.Get("AddWindow.Info11"));
+        Model.Progress(LanguageUtils.Get("Text.Downloading"));
         var res1 = await OptifineAPI.DownloadOptifineAsync(Obj, item.Obj);
         Model.ProgressClose();
         if (res1 == false)
         {
-            Model.Show(LanguageUtils.Get("Core.Error43"));
+            Model.Show(LanguageUtils.Get("AddResourceWindow.Text35"));
         }
         else
         {

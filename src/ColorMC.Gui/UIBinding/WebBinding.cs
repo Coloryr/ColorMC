@@ -1582,7 +1582,7 @@ public static class WebBinding
         Core.Objs.ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
         {
-            var res1 = await model1.ShowAsync(LanguageUtils.Get("AddWindow.Info15"));
+            var res1 = await model1.ShowAsync(LanguageUtils.Get("AddResourceWindow.Text23"));
             if (!res1)
             {
                 return null;
@@ -1646,7 +1646,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("AddWindow.Error8"), e);
+                Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
             }
         }
         else if (model.FileType == FileType.Shaderpack)

@@ -30,7 +30,7 @@
                         IsVisible="{Binding !CustomJson}"
                         RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 IsEnabled="{Binding !IsLoad}"
@@ -52,7 +52,7 @@
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding GameVersionReload}"
-                            Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                            Content="{setting:Localize Text.ReloadVersion}"
                             IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
                     </panel:WrapPanelWithStretch>
@@ -92,7 +92,7 @@
                     <Decorator IsEnabled="{Binding !CustomJson}" IsVisible="{Binding !CustomJson}">
                         <panel:WrapPanelWithStretch IsEnabled="{Binding !GameVersionEmpty}" RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                                 <ComboBox
                                     HorizontalAlignment="Stretch"
                                     IsEnabled="{Binding !IsLoad}"
@@ -128,7 +128,7 @@
                                     Margin="-2,-3,-3,-2"
                                     Classes="top"
                                     Command="{Binding LoaderVersionLoad}"
-                                    Content="{setting:Localize AddGameWindow.Tab1.Text12}"
+                                    Content="{setting:Localize Text.ReloadVersion}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                             </StackPanel>
                         </panel:WrapPanelWithStretch>
@@ -290,7 +290,7 @@
                             Padding="5,0,5,0"
                             Classes="top"
                             Command="{Binding CheckModPackUpdate}"
-                            Content="{setting:Localize GameEditWindow.Tab1.Text10}"
+                            Content="{setting:Localize Text.CheckUpdate}"
                             IsEnabled="{Binding ModPack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}" />
                     </WrapPanel>

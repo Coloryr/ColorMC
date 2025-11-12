@@ -36,8 +36,8 @@ public static class JavaBinding
         }
         catch(Exception e)
         {
-            var log = string.Format(LanguageUtils.Get("Core.Error52"), file, name);
-            string title = LanguageUtils.Get("AddJavaWindow.Error2");
+            var log = string.Format(LanguageUtils.Get("Core.Error.Log9"), file, name);
+            string title = LanguageUtils.Get("AddJavaWindow.Text14");
             Logs.Error(log, e);
             WindowManager.ShowError(title, log, e);
 

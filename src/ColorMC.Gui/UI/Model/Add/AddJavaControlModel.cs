@@ -173,7 +173,7 @@ public partial class AddJavaControlModel : TopModel
     {
         _load = true;
 
-        Model.Progress(LanguageUtils.Get("AddJavaWindow.Info4"));
+        Model.Progress(LanguageUtils.Get("AddJavaWindow.Text10"));
         Model.ChoiseEnable = false;
 
         _javaList.Clear();
@@ -287,13 +287,13 @@ public partial class AddJavaControlModel : TopModel
 
             Model.ChoiseEnable = true;
             Model.ProgressClose();
-            Model.Notify(LanguageUtils.Get("AddJavaWindow.Info6"));
+            Model.Notify(LanguageUtils.Get("AddJavaWindow.Text12"));
         }
         else
         {
             Model.ChoiseEnable = true;
             Model.ProgressClose();
-            Model.Show(LanguageUtils.Get("AddJavaWindow.Error1"));
+            Model.Show(LanguageUtils.Get("AddJavaWindow.Text13"));
         }
 
         _load = false;
@@ -306,7 +306,7 @@ public partial class AddJavaControlModel : TopModel
     public async void Install(JavaDownloadModel obj)
     {
         var res = await Model.ShowAsync(string.Format(
-            LanguageUtils.Get("AddJavaWindow.Info1"), obj.Name));
+            LanguageUtils.Get("AddJavaWindow.Text7"), obj.Name));
         if (!res)
         {
             return;
@@ -314,7 +314,7 @@ public partial class AddJavaControlModel : TopModel
 
         if (GuiConfigUtils.Config.WindowMode != true)
         {
-            Model.Progress(LanguageUtils.Get("AddJavaWindow.Info2"));
+            Model.Progress(LanguageUtils.Get("AddJavaWindow.Text8"));
         }
 
         //开始下载Java
@@ -328,7 +328,7 @@ public partial class AddJavaControlModel : TopModel
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("AddJavaWindow.Info3"));
+        Model.Notify(LanguageUtils.Get("AddJavaWindow.Text9"));
         (WindowManager.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 

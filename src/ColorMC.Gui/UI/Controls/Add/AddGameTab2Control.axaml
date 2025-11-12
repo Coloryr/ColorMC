@@ -64,7 +64,7 @@
                     </StackPanel>
                     <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding PackTypeList}"

@@ -58,7 +58,7 @@ public partial class NetFrpModel
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Error2"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text9"));
             return;
         }
         var list = new List<string>();
@@ -81,7 +81,7 @@ public partial class NetFrpModel
             list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
         }
 
-        var res = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab2.Info1"), list);
+        var res = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab2.Text6"), list);
         if (res.Cancel)
         {
             return;
@@ -92,13 +92,13 @@ public partial class NetFrpModel
         var res1 = await BaseBinding.StartFrpAsync(item1, local);
         if (!res1.Res)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Error1"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text8"));
         }
         else
         {
             local.IsStart = true;
             SetProcess(res1.Process!, local, res1.IP!);
-            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Info2"));
+            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Text7"));
             NowView = 5;
         }
     }

@@ -459,7 +459,7 @@ public partial class SettingModel
                 {
                     if (item.AuthType == AuthType.OAuth)
                     {
-                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error4"));
+                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Text51"));
                         return;
                     }
                 }
@@ -469,14 +469,14 @@ public partial class SettingModel
                 if (string.IsNullOrWhiteSpace(model.InputText)
                     || string.IsNullOrWhiteSpace(model.InputText1))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error5"));
+                    Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Text52"));
                     return;
                 }
                 foreach (var item in Locks)
                 {
                     if (item.Name == model.InputText)
                     {
-                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Error6"));
+                        Model.Show(LanguageUtils.Get("SettingWindow.Tab6.Text53"));
                         return;
                     }
                 }

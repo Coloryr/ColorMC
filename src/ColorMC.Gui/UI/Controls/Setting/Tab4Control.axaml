@@ -91,7 +91,7 @@
                         <StackPanel Margin="5,0,0,0">
                             <CheckBox
                                 Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text17}"
+                                Content="{setting:Localize PathBinding.Text17}"
                                 IsChecked="{Binding CheckMod}" />
                             <Panel Margin="0,-5,0,0">
                                 <svg:SvgControl

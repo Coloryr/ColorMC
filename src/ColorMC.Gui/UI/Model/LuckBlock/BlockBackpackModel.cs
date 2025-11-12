@@ -44,7 +44,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     public async void Load()
     {
         Blocks.Clear();
-        Model.Progress(LanguageUtils.Get("LuckBlockWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
         Model.ProgressClose();
         if (!res.State)
@@ -56,7 +56,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
         var list = await BaseBinding.BuildUnlockItems();
         if (list == null)
         {
-            Model.ShowWithOk(LanguageUtils.Get("LuckBlockWindow.Error4"), Close);
+            Model.ShowWithOk(LanguageUtils.Get("LuckBlockWindow.Text9"), Close);
             return;
         }
 
@@ -82,7 +82,7 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     {
         var list = InstancesPath.Games;
         var names = list.Select(item => item.Name);
-        var res = await Model.ShowCombo(LanguageUtils.Get("BlockBackpackWindow.Info1"), names);
+        var res = await Model.ShowCombo(LanguageUtils.Get("BlockBackpackWindow.Text1"), names);
         if (res.Cancel || res.Index == -1)
         {
             return;

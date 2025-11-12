@@ -82,7 +82,7 @@
                                     Margin="-2,-2,3,3"
                                     Classes="top"
                                     Command="{Binding RenameInputConfig}"
-                                    Content="{setting:Localize SettingWindow.Tab8.Text32}"
+                                    Content="{setting:Localize Text.Rename}"
                                     IsEnabled="{Binding InputExist}" />
                                 <Button
                                     Width="100"

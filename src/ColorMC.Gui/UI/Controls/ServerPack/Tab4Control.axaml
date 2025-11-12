@@ -60,7 +60,7 @@
                             IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Type}"
-                            Header="{setting:Localize ServerPackWindow.Tab4.Text4}"
+                            Header="{setting:Localize ServerPackWindow.Tab4.Text2}"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>

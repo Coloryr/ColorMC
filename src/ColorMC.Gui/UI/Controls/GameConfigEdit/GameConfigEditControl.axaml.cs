@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
@@ -147,7 +148,7 @@ public partial class GameConfigEditControl : BaseUserControl
     {
         if (e.Key == Key.S && e.KeyModifiers == KeyModifiers.Control)
         {
-            (DataContext as GameConfigEditModel)!.Save();
+            (DataContext as GameConfigEditModel)?.Save();
         }
     }
 

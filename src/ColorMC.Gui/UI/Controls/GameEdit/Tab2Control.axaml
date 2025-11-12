@@ -37,11 +37,11 @@
                             Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg15.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text9}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
                     <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -51,7 +51,7 @@
                                 Value="{Binding Width}" />
                         </DockPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -124,7 +124,7 @@
                     <!--  Jvm内存  -->
                     <panel:WrapPanelWithStretch Margin="0,0,0,0" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -133,7 +133,7 @@
                                 Value="{Binding MinMem}" />
                         </DockPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
                             <NumericUpDown
                                 Height="30"
                                 HorizontalAlignment="Stretch"
@@ -200,7 +200,7 @@
                         AcceptsReturn="True"
                         IsEnabled="{Binding PerRun}"
                         Text="{Binding PerRunCmd}"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
 
                     <ToggleSwitch
                         Margin="0,0,0,5"
@@ -213,7 +213,7 @@
                         AcceptsReturn="True"
                         IsEnabled="{Binding PostRun}"
                         Text="{Binding PostRunCmd}"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text30}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text43}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
@@ -228,14 +228,14 @@
                             Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg14.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text1}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
                     <!--  Jvm GC  -->
                     <panel:WrapPanelWithStretch Margin="0,0,0,10">
                         <TextBlock
                             Margin="0,0,5,0"
                             HorizontalAlignment="Center"
-                            Text="{setting:Localize GameEditWindow.Tab2.Text2}" />
+                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
                             MinWidth="200"
                             HorizontalAlignment="Stretch"
@@ -246,7 +246,7 @@
                     <TextBox
                         Margin="0,0,0,10"
                         Text="{Binding JavaAgent}"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text6}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text6}" />
                     <WrapPanel>
                         <ToggleSwitch
                             Margin="0,0,10,10"
@@ -267,14 +267,14 @@
                         AcceptsReturn="True"
                         Text="{Binding JvmArg}"
                         TextWrapping="Wrap"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text7}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,5"
                         AcceptsReturn="True"
                         Text="{Binding GameArg}"
                         TextWrapping="Wrap"
-                        Watermark="{setting:Localize GameEditWindow.Tab2.Text8}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
                     <TextBlock
                         Margin="0,0,0,10"
                         Text="{setting:Localize GameEditWindow.Tab2.Text25}"
@@ -318,19 +318,19 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Path="/Resource/Icon/GameEdit/svg6.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text14}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text4}" />
                     </StackPanel>
                     <Grid ColumnDefinitions="*,0.5*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding IP}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text15}" />
+                            Watermark="{setting:Localize Text.ServerAddress}" />
                         <TextBox
                             Grid.Column="1"
                             MaxLength="5"
                             Text="{Binding Port, Converter={StaticResource NumberConverter}}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text16}" />
+                            Watermark="{setting:Localize Text.ServerPort}" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -345,31 +345,31 @@
                             Fill="{setting:Theme FontColor}"
                             Path="/Resource/Icon/Setting/svg8.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text17}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>
                     <Grid Margin="0,0,0,10" ColumnDefinitions="*,0.5*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding ProxyIP}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text18}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                         <TextBox
                             Grid.Column="1"
                             MaxLength="5"
                             Text="{Binding ProxyPort, Converter={StaticResource NumberConverter}}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text19}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     </Grid>
                     <Grid ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding ProxyUser}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text20}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                         <TextBox
                             Grid.Column="1"
                             PasswordChar="*"
                             Text="{Binding ProxyPassword}"
-                            Watermark="{setting:Localize GameEditWindow.Tab2.Text21}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                     </Grid>
                 </StackPanel>
             </Border>

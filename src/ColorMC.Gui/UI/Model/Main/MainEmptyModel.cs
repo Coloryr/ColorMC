@@ -78,9 +78,7 @@ public partial class MainModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Info1"));
         ConfigBinding.SetLanguage(value);
-        Model.ProgressClose();
     }
 
     /// <summary>

@@ -60,7 +60,7 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task LoadWorld()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info5"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text10"));
         _worldItems.Clear();
 
         var res = await _obj.GetSavesAsync();
@@ -73,7 +73,7 @@ public partial class GameEditModel
         LoadWorldDisplay();
 
         Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Info17"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text21"));
     }
 
     /// <summary>
@@ -104,34 +104,34 @@ public partial class GameEditModel
         }
         if (names.Count == 0)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Error5"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Text25"));
             return;
         }
-        var res = await Model.ShowCombo(LanguageUtils.Get("GameEditWindow.Tab5.Info9"), names);
+        var res = await Model.ShowCombo(LanguageUtils.Get("GameEditWindow.Tab5.Text13"), names);
         if (res.Cancel)
         {
             return;
         }
         var item1 = list[res.Index];
-        var res1 = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab5.Info10"));
+        var res1 = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab5.Text14"));
         if (!res1)
         {
             return;
         }
 
         //开始备份
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info11"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text15"));
         var zip = new ZipGui(Model);
         res1 = await _obj.UnzipBackupWorldAsync(item1.FullName, zip);
         zip.Stop();
         Model.ProgressClose();
         if (!res1)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Error4"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Text24"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Info12"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text16"));
             await LoadWorld();
         }
     }
@@ -141,7 +141,7 @@ public partial class GameEditModel
     /// </summary>
     private async void EditWorld()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info13"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text17"));
         var res = await ToolUtils.OpenMapEditAsync();
         Model.ProgressClose();
         if (!res.State)
@@ -185,11 +185,11 @@ public partial class GameEditModel
 
         if (file == false)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Error2"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text23"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info2"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text20"));
         await LoadWorld();
     }
 
@@ -245,14 +245,14 @@ public partial class GameEditModel
     public async void DeleteWorld(WorldModel obj)
     {
         var res = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Info1"), obj.Name));
+            string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Text7"), obj.Name));
         if (!res)
         {
             return;
         }
 
         await obj.World.DeleteAsync();
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info3"));
+        Model.Notify(LanguageUtils.Get("Text.DeleteDone"));
         await LoadWorld();
     }
 
@@ -268,7 +268,7 @@ public partial class GameEditModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info4"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text9"));
         var file = await PathBinding.SaveFileAsync(top, FileType.World, [obj]);
         Model.ProgressClose();
         if (file == null)
@@ -278,11 +278,11 @@ public partial class GameEditModel
 
         if (file == false)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Error1"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Text22"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Info3"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text8"));
         }
     }
 
@@ -292,16 +292,16 @@ public partial class GameEditModel
     /// <param name="obj"></param>
     public async void BackupWorld(WorldModel obj)
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Info7"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text11"));
         var res = await GameBinding.BackupWorldAsync(obj.World);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Info8"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text12"));
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Error3"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab5.Text26"));
         }
     }
 

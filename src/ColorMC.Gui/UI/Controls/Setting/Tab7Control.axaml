@@ -67,7 +67,7 @@
                                     Margin="0,0,5,0"
                                     Command="{Binding OpenUrl2}"
                                     Content="{setting:Localize SettingWindow.Tab7.Text4}" />
-                                <HyperlinkButton Command="{Binding OpenUrl6}" Content="{setting:Localize SettingWindow.Tab7.Text9}" />
+                                <HyperlinkButton Command="{Binding OpenUrl6}" Content="{setting:Localize Type.SourceType.McMod}" />
                             </WrapPanel>
                             <WrapPanel>
                                 <HyperlinkButton

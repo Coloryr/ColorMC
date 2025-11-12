@@ -28,7 +28,7 @@
                         TextTrimming="CharacterEllipsis" />
                 </DockPanel>
                 <WrapPanel Margin="0,5,0,0">
-                    <TextBlock Text="{setting:Localize FileItemControl.Text1}" />
+                    <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
                     <TextBlock Margin="0,0,10,0" Text="{Binding Download, FallbackValue=123}" />
                     <TextBlock Text="{setting:Localize AddModPackWindow.Text16}" />
                     <TextBlock Text="{Binding Time, FallbackValue=123}" />

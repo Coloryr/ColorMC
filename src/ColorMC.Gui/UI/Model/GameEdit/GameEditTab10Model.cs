@@ -48,8 +48,8 @@ public partial class GameEditModel
     private async void AddServer()
     {
         var res = await Model.InputAsync(
-            LanguageUtils.Get("GameEditWindow.Tab10.Info1"),
-            LanguageUtils.Get("GameEditWindow.Tab10.Info2"));
+            LanguageUtils.Get("GameEditWindow.Tab10.Text4"),
+            LanguageUtils.Get("Text.ServerAddress"));
         if (res.Cancel)
         {
             return;
@@ -57,21 +57,21 @@ public partial class GameEditModel
 
         if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error1"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text11"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
         var res1 = await _obj.AddServerAsync(res.Text1, res.Text2);
         Model.ProgressClose();
         if (res1)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info10"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text10"));
             LoadServer();
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error2"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text12"));
         }
     }
 
@@ -80,12 +80,12 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadServer()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info4"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text5"));
         ServerList.Clear();
         ServerList.AddRange(await _obj.GetServerInfosAsync());
         Model.ProgressClose();
         ServerEmptyDisplay = ServerList.Count == 0;
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info7"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text8"));
     }
 
     /// <summary>
@@ -94,22 +94,22 @@ public partial class GameEditModel
     /// <param name="obj"></param>
     public async void DeleteServer(ServerInfoObj obj)
     {
-        var res = await Model.ShowAsync("GameEditWindow.Tab10.Info9");
+        var res = await Model.ShowAsync("GameEditWindow.Tab10.Text9");
         if (!res)
         {
             return;
         }
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Info6"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
         res = await obj.DeleteAsync();
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Info5"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
             LoadServer();
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Error3"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text13"));
         }
     }
 }

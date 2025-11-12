@@ -125,7 +125,6 @@ public static class GuiConfigUtils
 
             if (save)
             {
-                Logs.Info(LanguageUtils.Get("Core.Info5"));
                 SaveNow();
             }
         }
@@ -144,7 +143,6 @@ public static class GuiConfigUtils
     /// </summary>
     public static void SaveNow()
     {
-        Logs.Info(LanguageUtils.Get("Core.Info5"));
         PathHelper.WriteText(s_local, JsonUtils.ToString(Config, JsonGuiType.GuiConfigObj));
     }
 

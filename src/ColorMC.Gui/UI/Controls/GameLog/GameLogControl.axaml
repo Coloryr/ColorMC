@@ -48,7 +48,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Launch}"
-                        Content="{setting:Localize GameLogWindow.Text4}"
+                        Content="{setting:Localize Text.TestLaunch}"
                         IsEnabled="{Binding !IsGameRun}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
                     <Button
@@ -68,7 +68,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding LoadFileList}"
-                        Content="{setting:Localize GameLogWindow.Text6}" />
+                        Content="{setting:Localize Text.RefashList}" />
                     <Button
                         Width="100"
                         Height="35"
@@ -76,7 +76,7 @@
                         VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Search}"
-                        Content="{setting:Localize GameLogWindow.Text7}" />
+                        Content="{setting:Localize Text.Search}" />
                     <Button
                         Width="100"
                         Height="35"

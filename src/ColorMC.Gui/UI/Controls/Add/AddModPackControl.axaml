@@ -22,7 +22,7 @@
                     <StackPanel Margin="15,15,5,15">
                         <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddResourceWindow.Text2}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -44,7 +44,7 @@
                                 MinWidth="190"
                                 Margin="0,0,10,10"
                                 IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text4}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Sort}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -55,7 +55,7 @@
                                 MinWidth="190"
                                 Margin="0,0,10,10"
                                 IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text1}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Classification}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -96,7 +96,7 @@
                                     Margin="-2,-3,-3,-2"
                                     Classes="top"
                                     Command="{Binding Reload}"
-                                    Content="{setting:Localize AddModPackWindow.Text8}"
+                                    Content="{setting:Localize Text.Search}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
                             </StackPanel>
                         </panel:WrapPanelWithStretch>

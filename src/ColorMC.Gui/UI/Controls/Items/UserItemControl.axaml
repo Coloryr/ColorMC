@@ -15,7 +15,7 @@
             <TextBlock
                 Margin="5"
                 IsVisible="{Binding !HaveSkin}"
-                Text="{setting:Localize UserWindow.Error10}" />
+                Text="{setting:Localize UserWindow.Text30}" />
             <StackPanel Orientation="Horizontal">
                 <Image
                     Width="100"

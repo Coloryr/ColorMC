@@ -66,13 +66,13 @@ public partial class NetFrpModel
     /// </summary>
     public async void LoadCloud()
     {
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Info1"));
+        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Text5"));
         CloudServers.Clear();
         var list = await WebBinding.GetFrpServerAsync(Version);
         Model.ProgressClose();
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab4.Error3"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab4.Text9"));
             return;
         }
         foreach (var item in list)
@@ -110,7 +110,7 @@ public partial class NetFrpModel
             }
         }
         //选择一个游戏实例
-        var select = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab4.Info3"), list1);
+        var select = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab4.Text7"), list1);
         if (select.Cancel)
         {
             return;
@@ -136,7 +136,7 @@ public partial class NetFrpModel
         }
         catch (Exception e)
         {
-            var temp1 = LanguageUtils.Get("NetFrpWindow.Tab4.Error4");
+            var temp1 = LanguageUtils.Get("NetFrpWindow.Tab4.Text10");
             Logs.Error(temp1, e);
             Model.Show(temp1);
         }

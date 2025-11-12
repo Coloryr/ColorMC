@@ -116,7 +116,7 @@
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding SetProxy}"
-                            Content="{setting:Localize SettingWindow.Tab2.Text60}" />
+                            Content="{setting:Localize Text.Set}" />
                         <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,20,0"
@@ -227,7 +227,7 @@
                                     Margin="-2,-3,3,-2"
                                     Classes="top"
                                     Command="{Binding StartCheck}"
-                                    Content="{setting:Localize SettingWindow.Tab3.Text16}" />
+                                    Content="{setting:Localize Text.CheckUpdate}" />
                                 <Button
                                     Width="100"
                                     Height="35"
