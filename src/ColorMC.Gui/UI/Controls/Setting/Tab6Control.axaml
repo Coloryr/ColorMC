@@ -58,13 +58,13 @@
                                 Margin="0,0,10,0"
                                 IsEnabled="{Binding EnableIP}"
                                 Text="{Binding ServerIP}"
-                                Watermark="{setting:Localize SettingWindow.Tab6.Text2}" />
+                                Watermark="{setting:Localize Text.ServerAddress}" />
                             <TextBox
                                 Grid.Column="1"
                                 IsEnabled="{Binding EnableIP}"
                                 MaxLength="5"
                                 Text="{Binding ServerPort, Converter={StaticResource NumberConverter}}"
-                                Watermark="{setting:Localize SettingWindow.Tab6.Text3}" />
+                                Watermark="{setting:Localize Text.ServerPort}" />
                         </Grid>
                         <WrapPanel Margin="0,0,0,-10">
                             <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
@@ -172,7 +172,7 @@
                                 Margin="-2,-2,-3,-2"
                                 Classes="top"
                                 Command="{Binding Test}"
-                                Content="{setting:Localize SettingWindow.Tab6.Text11}" />
+                                Content="{setting:Localize Text.TestLaunch}" />
                         </WrapPanel>
                         <StackPanel Orientation="Horizontal">
                             <ToggleSwitch

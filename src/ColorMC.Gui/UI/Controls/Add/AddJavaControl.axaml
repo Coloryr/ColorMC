@@ -22,7 +22,7 @@
                     RightMax="{Binding MinMode}"
                     DockPanel.Dock="Top">
                     <DockPanel MinWidth="150" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text7}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding JavaTypeList}"
@@ -37,7 +37,7 @@
                             SelectedItem="{Binding System}" />
                     </DockPanel>
                     <DockPanel MinWidth="80" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text8}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab5.Text9}" />
                         <ComboBox
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding VersionList}"
@@ -80,7 +80,7 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding MainVersion}"
-                                Header="{setting:Localize AddJavaWindow.Text8}"
+                                Header="{setting:Localize SettingWindow.Tab5.Text9}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Version}"

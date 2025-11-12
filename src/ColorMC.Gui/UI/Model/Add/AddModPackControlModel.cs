@@ -209,7 +209,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         if (_last == null)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Error1"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Text22"));
             return;
         }
 
@@ -242,7 +242,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
 
         var res = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddModPackWindow.Info1"), Item.Name));
+            string.Format(LanguageUtils.Get("AddModPackWindow.Text17"), Item.Name));
         if (res)
         {
             Install(Item);
@@ -280,7 +280,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
                     LanguageBinding.GetCurseForgeSortTypes() :
                     LanguageBinding.GetModrinthSortTypes());
 
-                Model.Progress(LanguageUtils.Get("AddModPackWindow.Info4"));
+                Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
                 var list = Source == 0 ?
                     await CurseForgeHelper.GetGameVersionsAsync() :
                     await ModrinthHelper.GetGameVersionAsync();
@@ -353,7 +353,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// </summary>
     private async void Done(string? uuid)
     {
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info7"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
         DisplayVersion = false;
 
@@ -365,7 +365,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info25"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
         if (res != true)
         {
             Dispatcher.UIThread.Post(WindowClose);
@@ -381,7 +381,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Error4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -390,7 +390,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         if (Source < SourceList.Length)
         {
-            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Info5"));
+            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 Source++;
@@ -406,11 +406,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         //MO不允许少文字搜索
         if (Source == 1 && Categorie == 4 && Text?.Length < 3)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Error6"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Text27"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("AddModPackWindow.Info2"));
+        Model.Progress(LanguageUtils.Get("AddModPackWindow.Text18"));
         var res = await WebBinding.GetModPackListAsync((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
@@ -431,7 +431,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         if (data == null)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Error2"));
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
             Model.ProgressClose();
             return;
         }
@@ -459,7 +459,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         EmptyDisplay = DisplayList.Count == 0;
 
         Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
+        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>

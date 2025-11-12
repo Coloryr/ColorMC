@@ -26,8 +26,8 @@
                         Binding="{Binding FileName}"
                         Header="{setting:Localize Text.FileName}"
                         IsReadOnly="True" />
-                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize ServerPackWindow.Tab2.Text5}" />
-                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize ServerPackWindow.Tab2.Text6}" />
+                    <DataGridTextColumn Binding="{Binding PID}" Header="{setting:Localize GameEditWindow.Tab4.Text12}" />
+                    <DataGridTextColumn Binding="{Binding FID}" Header="{setting:Localize GameEditWindow.Tab4.Text13}" />
                     <DataGridTextColumn
                         Binding="{Binding Source}"
                         Header="{setting:Localize Text.DownloadSource}"

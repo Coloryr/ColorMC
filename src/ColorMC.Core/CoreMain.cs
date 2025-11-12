@@ -87,7 +87,6 @@ public static class ColorMCCore
 
         ConfigLoad.Init();
         CoreHttpClient.Init();
-        InnerPath.Init();
         ConfigSave.Init();
     }
 

@@ -227,7 +227,7 @@ public static class PathBinding
             case PathType.RunDir:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = LanguageUtils.Get("SettingWindow.Tab1.Info14")
+                    Title = LanguageUtils.Get("SettingWindow.Tab1.Text31")
                 });
                 if (res?.Any() == true)
                 {
@@ -237,7 +237,7 @@ public static class PathBinding
             case PathType.JavaPath:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = LanguageUtils.Get("SettingWindow.Tab5.Info9")
+                    Title = LanguageUtils.Get("SettingWindow.Tab5.Text19")
                 });
                 if (res?.Any() == true)
                 {
@@ -311,7 +311,7 @@ public static class PathBinding
                 }
                 catch (Exception e)
                 {
-                    Logs.Error(LanguageUtils.Get("GameEditWindow.Tab5.Error1"), e);
+                    Logs.Error(LanguageUtils.Get("GameEditWindow.Tab5.Text22"), e);
                     return false;
                 }
             case FileType.Skin:
@@ -378,7 +378,7 @@ public static class PathBinding
                 }
             case FileType.Cmd:
                 file = await SaveFileAsync(top,
-                    LanguageUtils.Get("MainWindow.Flyouts.Text23"), (string)arg![0], (string)arg![1]);
+                    LanguageUtils.Get("MainWindow.Text63"), (string)arg![0], (string)arg![1]);
                 if (file == null)
                     break;
 
@@ -482,9 +482,9 @@ public static class PathBinding
                 break;
             case FileType.Config:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text30"),
+                    LanguageUtils.Get("BuildPackWindow.Tab1.Text1"),
                     JSON,
-                    LanguageUtils.Get("PathBinding.Text31"));
+                    LanguageUtils.Get("Text.Config"));
                 break;
             case FileType.AuthConfig:
                 res = await SelectFileAsync(top,
@@ -494,7 +494,7 @@ public static class PathBinding
                 break;
             case FileType.ModPack:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text4"),
+                    LanguageUtils.Get("AddGameWindow.Tab2.Text3"),
                     MODPACK,
                     LanguageUtils.Get("PathBinding.Text5"));
                 break;
@@ -575,7 +575,7 @@ public static class PathBinding
                 var res = await SelectFileAsync(top,
                       LanguageUtils.Get("GameEditWindow.Tab12.Text1"),
                       [$"*{Names.NameLitematicExt}", $"*{Names.NameSchematicExt}"],
-                      LanguageUtils.Get("PathBinding.Text23"), true);
+                      LanguageUtils.Get("Text.Schematic"), true);
                 if (res?.Any() == true)
                 {
                     return GameBinding.AddSchematic(obj, res);
@@ -615,7 +615,7 @@ public static class PathBinding
                 res = await SelectFileAsync(top,
                     LanguageUtils.Get("PathBinding.Text20"),
                     ZIPFILE,
-                    LanguageUtils.Get("PathBinding.Text21"), true);
+                    LanguageUtils.Get("Type.FileType.Resourcepack"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddResourcepackAsync(obj, res);

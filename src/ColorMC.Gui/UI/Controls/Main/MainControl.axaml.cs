@@ -177,7 +177,7 @@ public partial class MainControl : BaseUserControl
                             }
                             if (!InstancesPath.IsNotGame)
                             {
-                                var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Info45"));
+                                var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Text80"));
                                 if (res is not true)
                                 {
                                     return;
@@ -252,7 +252,7 @@ public partial class MainControl : BaseUserControl
         if (ColorMCGui.IsCrash)
         {
             var model = (DataContext as MainModel)!;
-            model.Model.Show(LanguageUtils.Get("MainWindow.Error2"));
+            model.Model.Show(LanguageUtils.Get("MainWindow.Text81"));
         }
     }
 
@@ -261,7 +261,7 @@ public partial class MainControl : BaseUserControl
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Info34"));
+            var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Text74"));
             if (res)
             {
                 return false;

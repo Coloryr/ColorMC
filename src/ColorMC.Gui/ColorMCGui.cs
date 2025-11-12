@@ -300,7 +300,6 @@ public static class ColorMCGui
     /// </summary>
     public static void Reboot()
     {
-#if !Phone
         IsClose = true;
         s_lock.Close();
         s_lock.Dispose();
@@ -308,25 +307,7 @@ public static class ColorMCGui
         Process.Start($"{(SystemInfo.Os == OsType.Windows ?
                 "ColorMC.Launcher.exe" : "ColorMC.Launcher")}");
         App.Exit();
-#endif
     }
-
-#if Phone
-    public static void StartPhone(string local)
-    {
-        SystemInfo.Init();
-
-        RunType = RunType.Phone;
-
-        BaseDir = local;
-
-        Console.WriteLine($"RunDir:{BaseDir}");
-
-        s_arg.Local = BaseDir;
-        ColorMCCore.Init(s_arg);
-        GuiConfigUtils.Init();
-    }
-#endif
 
     public static void SetRuntimeState(bool aot, bool min)
     {
@@ -409,10 +390,17 @@ public static class ColorMCGui
                         opt.RenderingMode =
                         [
                             Win32RenderingMode.Wgl,
-                        Win32RenderingMode.Software
+                            Win32RenderingMode.Software
                         ];
                     }
 
+#if DEBUG
+                    opt.RenderingMode =
+                    [
+                        Win32RenderingMode.Vulkan,
+                        Win32RenderingMode.Software
+                    ];
+#endif
                     builder.With(opt);
                     break;
                 }

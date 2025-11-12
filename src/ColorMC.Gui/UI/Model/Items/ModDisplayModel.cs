@@ -40,7 +40,7 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 版本号
     /// </summary>
-    public string Version => Obj.Version + (IsNew ? " " + LanguageUtils.Get("GameEditWindow.Tab4.Info21") : "");
+    public string Version => Obj.Version + (IsNew ? " " + LanguageUtils.Get("GameEditWindow.Tab4.Text18") : "");
     /// <summary>
     /// 文件位置
     /// </summary>

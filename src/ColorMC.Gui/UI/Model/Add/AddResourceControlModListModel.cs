@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddControlModel
+public partial class AddResourceControlModel
 {
     /// <summary>
     /// 多个模组下载任务

@@ -47,6 +47,15 @@ public static class UserBinding
             SetSelectUser(user.UUID, user.AuthType);
             return new() { State = true };
         }
+        string uuid = type switch
+        {
+            AuthType.Nide8 => input2!,
+            AuthType.AuthlibInjector => input2!,
+            AuthType.LittleSkin => input1!,
+            AuthType.SelfLittleSkin => input1!,
+            _ => ""
+        };
+
         try
         {
             var res1 = type switch
@@ -77,13 +86,13 @@ public static class UserBinding
             if (e is LoginException e1)
             {
                 title = e1.State.GetNameFail();
-                string data = e1.Fail.GetName();
+                string data = e1.Fail.GetName(type, uuid);
                 string text = "";
-                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                if (e1.Fail == LoginFailState.GetDataFail)
                 {
                     text = title + Environment.NewLine + data;
                 }
-                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                else if (e1.Fail == LoginFailState.GetDataError)
                 {
                     text = title + Environment.NewLine + string.Format(data, e1.Json);
                 }
@@ -163,13 +172,13 @@ public static class UserBinding
             if (e is LoginException e1)
             {
                 title = e1.State.GetNameFail();
-                string data = e1.Fail.GetName();
+                string data = e1.Fail.GetName(type, uuid);
                 string text = "";
-                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                if (e1.Fail == LoginFailState.GetDataFail)
                 {
                     text = title + Environment.NewLine + data;
                 }
-                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                else if (e1.Fail == LoginFailState.GetDataError)
                 {
                     text = title + Environment.NewLine + string.Format(data, e1.Json);
                 }
@@ -346,13 +355,13 @@ public static class UserBinding
             if (e is LoginException e1)
             {
                 title = e1.State.GetNameFail();
-                string data = e1.Fail.GetName();
+                string data = e1.Fail.GetName(user.AuthType, user.UUID);
                 string text = "";
-                if (e1.Fail == LoginFailState.GetOAuthCodeDataFail)
+                if (e1.Fail == LoginFailState.GetDataFail)
                 {
                     text = title + Environment.NewLine + data;
                 }
-                else if (e1.Fail == LoginFailState.GetOAuthCodeDataError)
+                else if (e1.Fail == LoginFailState.GetDataError)
                 {
                     text = title + Environment.NewLine + string.Format(data, e1.Json);
                 }

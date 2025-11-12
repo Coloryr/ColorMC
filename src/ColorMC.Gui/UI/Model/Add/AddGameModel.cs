@@ -89,17 +89,17 @@ public partial class AddGameModel : TopModel
 
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error2"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res.Text1))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error3"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info6"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
 
         GroupList.Clear();
         GroupList.AddRange(InstancesPath.GroupKeys);
@@ -129,7 +129,7 @@ public partial class AddGameModel : TopModel
         OnPropertyChanged(NameTab1);
         if (!ConfigBinding.WindowMode())
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Info20"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text39"));
         }
 
         WindowManager.ShowAddModPack();
@@ -210,7 +210,7 @@ public partial class AddGameModel : TopModel
         Name = "";
         Group = "";
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Info7"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
         if (_keep)
         {
@@ -219,7 +219,7 @@ public partial class AddGameModel : TopModel
 
         GameBinding.SelectAndReloadGame(uuid);
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info25"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
         if (res != true)
         {
             WindowClose();
@@ -236,12 +236,12 @@ public partial class AddGameModel : TopModel
     /// <returns></returns>
     public async void GameCloudDownload()
     {
-        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info9"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text31"));
         var list = await ColorMCCloudAPI.GetListAsync();
         Model.ProgressClose();
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error9"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text51"));
             return;
         }
         var list1 = new List<string>();
@@ -252,20 +252,20 @@ public partial class AddGameModel : TopModel
                 list1.Add(item.Name);
             }
         });
-        var res = await Model.ShowCombo(LanguageUtils.Get("AddGameWindow.Tab1.Info10"), list1);
+        var res = await Model.ShowCombo(LanguageUtils.Get("AddGameWindow.Tab1.Text32"), list1);
         if (res.Cancel)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info11"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text33"));
         var obj = list[res.Index];
         while (true)
         {
             //替换冲突的名字
             if (InstancesPath.GetGameByName(obj.Name) != null)
             {
-                var res1 = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info12"));
+                var res1 = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Text34"));
                 if (!res1)
                 {
                     Model.ProgressClose();
@@ -303,7 +303,7 @@ public partial class AddGameModel : TopModel
     /// </summary>
     public async void ServerPackDownload()
     {
-        var res = await Model.InputWithEditAsync(LanguageUtils.Get("AddGameWindow.Tab1.Info13"), false);
+        var res = await Model.InputWithEditAsync(LanguageUtils.Get("AddGameWindow.Tab1.Text35"), false);
         if (res.Cancel)
         {
             return;
@@ -311,7 +311,7 @@ public partial class AddGameModel : TopModel
 
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Error14"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text53"));
             return;
         }
 
@@ -320,7 +320,7 @@ public partial class AddGameModel : TopModel
             res.Text1 += '/';
         }
         //下载服务器包
-        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Info14"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text36"));
         var res1 = await GameBinding.DownloadServerPackAsync(Model, Name, Group, res.Text1,
             new CreateGameGui(Model));
         Model.ProgressClose();

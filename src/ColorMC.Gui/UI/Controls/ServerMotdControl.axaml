@@ -30,7 +30,7 @@
                             TextTrimming="CharacterEllipsis" />
                         <WrapPanel>
                             <StackPanel Margin="5,0,5,0" Orientation="Horizontal">
-                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text1}" />
+                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize MainWindow.Text90}" />
                                 <TextBlock
                                     Name="Label2"
                                     Foreground="{setting:Colors Motd}"
@@ -42,7 +42,7 @@
                                     Text="0" />
                             </StackPanel>
                             <StackPanel Margin="5,0,0,0" Orientation="Horizontal">
-                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize ServerMotdControl.Text2}" />
+                                <TextBlock Foreground="{setting:Colors Motd}" Text="{setting:Localize MainWindow.Text91}" />
                                 <TextBlock
                                     Name="Label4"
                                     Foreground="{setting:Colors Motd}"
@@ -55,7 +55,7 @@
                                 <TextBlock
                                     Margin="10,0,0,0"
                                     Foreground="{setting:Colors Motd}"
-                                    Text="{setting:Localize ServerMotdControl.Text3}" />
+                                    Text="{setting:Localize MainWindow.Text92}" />
                                 <TextBlock
                                     Name="Label5"
                                     Foreground="{setting:Colors Motd}"
@@ -72,7 +72,7 @@
             CornerRadius="5"
             IsVisible="False">
             <StackPanel VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text4}" />
+                <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text93}" />
                 <ProgressBar
                     Height="10"
                     Margin="10,0,10,0"
@@ -85,7 +85,7 @@
             Background="{setting:Theme TopBGColor}"
             CornerRadius="5"
             IsVisible="False">
-            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize ServerMotdControl.Text5}" />
+            <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text94}" />
         </Border>
         <Button
             Name="Button2"

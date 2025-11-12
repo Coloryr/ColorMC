@@ -23,15 +23,15 @@ public partial class WorldCloudModel : SelectItemModel
     /// 本地时间
     /// </summary>
     public string Time => HaveLocal ? FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
-        : LanguageUtils.Get("GameCloudWindow.Tab3.Info3");
+        : LanguageUtils.Get("GameCloudWindow.Tab2.Text5");
     /// <summary>
     /// 云存档时间
     /// </summary>
-    public string Time1 => HaveCloud ? Cloud.Time : LanguageUtils.Get("GameCloudWindow.Tab3.Info1");
+    public string Time1 => HaveCloud ? Cloud.Time : LanguageUtils.Get("GameCloudWindow.Tab2.Text3");
     /// <summary>
     /// 本地位置
     /// </summary>
-    public string Local => HaveLocal ? World.Local : LanguageUtils.Get("GameCloudWindow.Tab3.Info2");
+    public string Local => HaveLocal ? World.Local : LanguageUtils.Get("GameCloudWindow.Tab2.Text4");
 
     /// <summary>
     /// 本地游戏存档

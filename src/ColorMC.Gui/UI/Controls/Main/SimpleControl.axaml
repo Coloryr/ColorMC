@@ -31,7 +31,7 @@
                 TextWrapping="Wrap" />
             <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
                 <DockPanel MinWidth="180" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text10}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                     <NumericUpDown
                         Height="30"
                         HorizontalAlignment="Stretch"
@@ -41,7 +41,7 @@
                         Value="{Binding GameWidth}" />
                 </DockPanel>
                 <DockPanel MinWidth="180" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text11}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
                     <NumericUpDown
                         Height="30"
                         HorizontalAlignment="Stretch"
@@ -58,7 +58,7 @@
             </panel:WrapPanelWithStretch>
             <panel:WrapPanelWithStretch IsEnabled="{Binding HaveGame}" RightMax="{Binding MinMode}">
                 <DockPanel MinWidth="210" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text4}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                     <NumericUpDown
                         Height="30"
                         HorizontalAlignment="Stretch"
@@ -67,7 +67,7 @@
                         Value="{Binding MinMem}" />
                 </DockPanel>
                 <DockPanel MinWidth="210" Margin="5,0,5,0">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text5}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
                     <NumericUpDown
                         Height="30"
                         HorizontalAlignment="Stretch"

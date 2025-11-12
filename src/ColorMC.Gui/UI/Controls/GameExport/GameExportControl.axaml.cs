@@ -68,7 +68,7 @@ public partial class GameExportControl : MenuControl
     public override async void Opened()
     {
         var model = (DataContext as GameExportModel)!;
-        model.Model.Progress(LanguageUtils.Get("GameExportWindow.Info7"));
+        model.Model.Progress(LanguageUtils.Get("GameExportWindow.Text5"));
 
         await model.LoadMod();
         model.LoadFile();

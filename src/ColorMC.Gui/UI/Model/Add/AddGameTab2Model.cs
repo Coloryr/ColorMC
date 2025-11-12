@@ -43,17 +43,17 @@ public partial class AddGameModel
         if (value != null && Type == null)
         {
             //测试获取压缩包类型
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info8"));
+            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text11"));
             var res = await GameBinding.CheckTypeAsync(value);
             Model.ProgressClose();
             if (res == null)
             {
-                Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error4"));
+                Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text15"));
             }
             else
             {
                 Type = res;
-                Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab2.Info7"), res.ToString()));
+                Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab2.Text10"), res.ToString()));
             }
         }
     }
@@ -66,7 +66,7 @@ public partial class AddGameModel
     {
         if (Type == null)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error3"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text14"));
             return;
         }
 
@@ -100,10 +100,10 @@ public partial class AddGameModel
     {
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error2"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text13"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info6"));
+        Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
         var zip = new ZipGui(Model);
         var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), zip);
@@ -111,11 +111,11 @@ public partial class AddGameModel
         Model.ProgressClose();
         if (!res.State)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Error1"));
+            Model.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text12"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Info5"));
+        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Text8"));
 
         if (Type == PackType.ZipPack)
         {

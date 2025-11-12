@@ -25,7 +25,7 @@
                         Margin="-2,-2,3,-2"
                         Classes="top"
                         Command="{Binding GetCloud}"
-                        Content="{setting:Localize NetFrpWindow.Tab4.Text2}"
+                        Content="{setting:Localize Text.RefashList}"
                         DockPanel.Dock="Right" />
                     <TextBlock Text="{setting:Localize GameBinding.Info6}" />
                     <ComboBox

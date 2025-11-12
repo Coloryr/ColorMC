@@ -35,7 +35,7 @@ public partial class ServerPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text2"),
+                Text = LanguageUtils.Get("Type.FileType.Mod"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
@@ -53,7 +53,7 @@ public partial class ServerPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text3"),
+                Text = LanguageUtils.Get("Type.FileType.Resourcepack"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
@@ -71,7 +71,7 @@ public partial class ServerPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = LanguageUtils.Get("ServerPackWindow.Tabs.Text4"),
+                Text = LanguageUtils.Get("Text.Config"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
@@ -105,16 +105,16 @@ public partial class ServerPackModel : MenuModel
 
         Obj.Text = Text;
 
-        Model.Progress(LanguageUtils.Get("ServerPackWindow.Tab1.Info1"));
+        Model.Progress(LanguageUtils.Get("ServerPackWindow.Tab1.Text12"));
         var res = await Obj.GenServerPackAsync(local);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("ServerPackWindow.Tab1.Info2"));
+            Model.Notify(LanguageUtils.Get("ServerPackWindow.Tab1.Text13"));
         }
         else
         {
-            Model.Show(LanguageUtils.Get("ServerPackWindow.Tab1.Error3"));
+            Model.Show(LanguageUtils.Get("ServerPackWindow.Tab1.Text11"));
         }
     }
 

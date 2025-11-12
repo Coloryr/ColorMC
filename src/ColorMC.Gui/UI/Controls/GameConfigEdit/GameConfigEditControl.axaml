@@ -45,7 +45,7 @@
                             DockPanel.Dock="Right"
                             IsVisible="{Binding !MinMode}"
                             Text="{Binding Name}"
-                            Watermark="{setting:Localize ConfigEditWindow.Text1}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab4.Text2}" />
                         <ComboBox
                             MinWidth="270"
                             Margin="0,0,10,10"
@@ -60,7 +60,7 @@
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding Load}"
-                            Content="{setting:Localize ConfigEditWindow.Text3}"
+                            Content="{setting:Localize Text.RefashList}"
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text41}" />
                     </panel:WrapPanelWithStretch>

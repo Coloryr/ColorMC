@@ -231,7 +231,7 @@ public static class BlockTexUtils
         var versions = await VersionPath.GetVersionsAsync();
         if (versions == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Error1") };
+            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Text6") };
         }
 
         //获取最新游戏版本
@@ -245,7 +245,7 @@ public static class BlockTexUtils
         var obj = await VersionPath.CheckUpdateAsync(last);
         if (obj == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Error1") };
+            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Text6") };
         }
 
         //下载游戏核心
@@ -255,13 +255,13 @@ public static class BlockTexUtils
             var res = await DownloadManager.StartAsync([ass]);
             if (!res)
             {
-                return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Error2") };
+                return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Text7") };
             }
         }
         using var stream = PathHelper.OpenRead(ass.Local);
         if (stream == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Error3") };
+            return new StringRes { Data = LanguageUtils.Get("LuckBlockWindow.Text8") };
         }
 
         //提取贴图

@@ -136,17 +136,17 @@ public static class LanguageUtils
     {
         return exception.State switch
         {
-            LaunchError.LoginCoreError => string.Format(Get("Core.Error111"), login.AuthType.GetName(), login.UUID),
-            LaunchError.LostVersionFile => string.Format(Get("Core.Error116"), obj.Version),
-            LaunchError.LostLoaderFile => string.Format(Get("Core.Error104"), obj.Version, obj.Loader.GetName(), obj.LoaderVersion),
-            LaunchError.LostAssetsFile => string.Format(Get("Core.Error103"), obj.Version, exception.InnerData),
-            LaunchError.CheckServerPackError => Get("Core.Error14"),
-            LaunchError.AuthLoginFail => string.Format(Get("Core.Error126"), login.AuthType.GetName(), login.UUID),
-            LaunchError.DownloadFileError => Get("Core.Error106"),
-            LaunchError.JavaNotFound => string.Format(Get("Core.Error107"), exception.InnerData),
-            LaunchError.CmdFileNotFound => string.Format(Get("Core.Error113"), exception.InnerData),
-            LaunchError.VersionError => Get("Core.Error108"),
-            LaunchError.SelectJavaNotFound => Get("Core.Error112"),
+            LaunchError.LoginCoreError => string.Format(Get("Game.Error.Log5"), obj.UUID, login.AuthType.GetName(), login.UUID),
+            LaunchError.LostVersionFile => string.Format(Get("Game.Error.Log6"), obj.UUID, obj.Version),
+            LaunchError.LostLoaderFile => string.Format(Get("Game.Error.Log7"), obj.UUID, obj.Version, obj.Loader.GetName(), obj.LoaderVersion),
+            LaunchError.LostAssetsFile => string.Format(Get("Game.Error.Log8"), obj.UUID, obj.Version, exception.InnerData),
+            LaunchError.CheckServerPackError => string.Format(Get("Game.Error.Log2"), obj.UUID),
+            LaunchError.AuthLoginFail => string.Format(Get("Game.Error.Log9"), obj.UUID, login.AuthType.GetName(), login.UUID),
+            LaunchError.DownloadFileError => string.Format(Get("Game.Error.Log1"), obj.UUID),
+            LaunchError.JavaNotFound => string.Format(Get("Game.Error.Log3"), obj.UUID, exception.InnerData),
+            LaunchError.CmdFileNotFound => string.Format(Get("Game.Error.Log10"), obj.UUID, exception.InnerData),
+            LaunchError.VersionError => string.Format(Get("Game.Error.Log4"), obj.UUID),
+            LaunchError.SelectJavaNotFound => string.Format(Get("Game.Error.Log11"), obj.UUID, exception.InnerData),
             _ => "",
         };
     }
@@ -155,17 +155,17 @@ public static class LanguageUtils
     {
         return type switch
         {
-            GameSystemLog.RuntimeLib => string.Format(Get("Core.Info28"), game.Name),
-            GameSystemLog.JavaRedirect => string.Format(Get("Core.Info21"), game.Name),
-            GameSystemLog.LoginTime => string.Format(Get("Core.Info30"), game.Name, obj.Category),
-            GameSystemLog.ServerPackCheckTime => string.Format(Get("Core.Info39"), game.Name, obj.Category),
-            GameSystemLog.CheckGameFileTime => string.Format(Get("Core.Info31"), game.Name, obj.Category),
-            GameSystemLog.DownloadFileTime => string.Format(Get("Core.Info33"), game.Name, obj.Category),
-            GameSystemLog.LaunchArgs => string.Format(Get("Core.Info27"), game.Name),
-            GameSystemLog.JavaPath => string.Format(Get("Core.Info29"), game.Name, obj.Category),
-            GameSystemLog.LaunchTime => string.Format(Get("Core.Info32"), game.Name, obj.Category),
-            GameSystemLog.CmdPreTime => string.Format(Get("Core.Info34"), game.Name, obj.Category),
-            GameSystemLog.CmdPostTime => string.Format(Get("Core.Info35"), game.Name, obj.Category),
+            GameSystemLog.RuntimeLib => string.Format(Get("Game.Log3"), game.Name),
+            GameSystemLog.JavaRedirect => string.Format(Get("Game.Log1"), game.Name),
+            GameSystemLog.LoginTime => string.Format(Get("Game.Log5"), game.Name, obj.Category),
+            GameSystemLog.ServerPackCheckTime => string.Format(Get("Game.Log11"), game.Name, obj.Category),
+            GameSystemLog.CheckGameFileTime => string.Format(Get("Game.Log6"), game.Name, obj.Category),
+            GameSystemLog.DownloadFileTime => string.Format(Get("Game.Log8"), game.Name, obj.Category),
+            GameSystemLog.LaunchArgs => string.Format(Get("Game.Log2"), game.Name),
+            GameSystemLog.JavaPath => string.Format(Get("Game.Log4"), game.Name, obj.Category),
+            GameSystemLog.LaunchTime => string.Format(Get("Game.Log7"), game.Name, obj.Category),
+            GameSystemLog.CmdPreTime => string.Format(Get("Game.Log9"), game.Name, obj.Category),
+            GameSystemLog.CmdPostTime => string.Format(Get("Game.Log10"), game.Name, obj.Category),
             _ => ""
         };
     }
@@ -272,11 +272,11 @@ public static class LanguageUtils
     {
         return state switch
         {
-            AuthState.OAuth => Get("Core.Error62"),
-            AuthState.XBox => Get("Core.Error63"),
-            AuthState.XSTS => Get("Core.Error64"),
-            AuthState.Token => Get("Core.Error65"),
-            AuthState.Profile => Get("Core.Error66"),
+            AuthState.OAuth => Get("Core.Error.Log13"),
+            AuthState.XBox => Get("Core.Error.Log14"),
+            AuthState.XSTS => Get("Core.Error.Log15"),
+            AuthState.Token => Get("Core.Error.Log16"),
+            AuthState.Profile => Get("Core.Error.Log17"),
             _ => ""
         };
     }
@@ -286,15 +286,15 @@ public static class LanguageUtils
     /// </summary>
     /// <param name="state">登录错误</param>
     /// <returns>信息</returns>
-    public static string GetName(this LoginFailState state)
+    public static string GetName(this LoginFailState state, AuthType type, string uuid)
     {
         return state switch
         {
-            LoginFailState.GetOAuthCodeDataFail => Get("Core.Error121"),
-            LoginFailState.GetOAuthCodeDataError => Get("Core.Error81"),
-            LoginFailState.OAuthGetTokenTimeout => Get("Core.Error122"),
-            LoginFailState.LoginAuthListEmpty => Get("Core.Error123"),
-            LoginFailState.LoginTokenTimeout => Get("Core.Error124"),
+            LoginFailState.GetDataFail => string.Format(Get("Core.Error.Log36"), type.GetName(), uuid),
+            LoginFailState.GetDataError => string.Format(Get("Core.Error.Log18"), type.GetName(), uuid),
+            LoginFailState.OAuthGetTokenTimeout =>string.Format(Get("Core.Error.Log37"), type.GetName(), uuid),
+            LoginFailState.LoginAuthListEmpty => Get("Core.Error.Log38"),
+            LoginFailState.LoginTokenTimeout => Get("Core.Error.Log39"),
             _ => "",
         };
     }
@@ -382,13 +382,13 @@ public static class LanguageUtils
     {
         return type switch
         {
-            ErrorType.FileNotExist => Get("Core.Error137"),
-            ErrorType.FileReadError => Get("Core.Error138"),
-            ErrorType.DonwloadFail => Get("Core.Error139"),
-            ErrorType.InstallFail => Get("Core.Error140"),
-            ErrorType.UnzipFail => Get("Core.Error141"),
-            ErrorType.SearchFail => Get("Core.Error142"),
-            _ => Get("Core.Error136")
+            ErrorType.FileNotExist => Get("Core.Error.Text1"),
+            ErrorType.FileReadError => Get("Core.Error.Text2"),
+            ErrorType.DonwloadFail => Get("Core.Error.Text3"),
+            ErrorType.InstallFail => Get("Core.Error.Text4"),
+            ErrorType.UnzipFail => Get("Core.Error.Text5"),
+            ErrorType.SearchFail => Get("Core.Error.Text6"),
+            _ => Get("Core.Error.Log43")
         };
     }
 }

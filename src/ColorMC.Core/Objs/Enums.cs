@@ -505,11 +505,11 @@ public enum LoginFailState
     /// <summary>
     /// 获取数据错误
     /// </summary>
-    GetOAuthCodeDataError,
+    GetDataError,
     /// <summary>
     /// 获取数据为空
     /// </summary>
-    GetOAuthCodeDataFail,
+    GetDataFail,
     /// <summary>
     /// 获取Token超时
     /// </summary>

@@ -113,7 +113,6 @@ public static class FrpConfigUtils
 
             if (save)
             {
-                Logs.Info(LanguageUtils.Get("Core.Info5"));
                 Save();
             }
         }
@@ -132,7 +131,6 @@ public static class FrpConfigUtils
     /// </summary>
     public static void SaveNow()
     {
-        Logs.Info(LanguageUtils.Get("Core.Info5"));
         PathHelper.WriteText(s_local, JsonUtils.ToString(Config, JsonGuiType.FrpConfigObj));
     }
 

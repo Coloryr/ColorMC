@@ -46,7 +46,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"
-                Text="{setting:Localize GameCloudWindow.Error10}" />
+                Text="{setting:Localize GameCloudWindow.Text28}" />
         </Border>
     </Panel>
 </UserControl>

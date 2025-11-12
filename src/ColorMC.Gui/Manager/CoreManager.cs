@@ -50,157 +50,157 @@ public static class CoreManager
         string title = "";
         if (arg is ConfigLoadErrorEventArgs)
         {
-            log = LanguageUtils.Get("Core.Error1");
-            title = LanguageUtils.Get("Core.Error120");
+            log = LanguageUtils.Get("Text.ConfigError");
+            title = LanguageUtils.Get("Core.Error.Log35");
         }
         else if (arg is ConfigSaveErrorEventArgs)
         {
-            log = LanguageUtils.Get("Core.Error2");
-            title = LanguageUtils.Get("Core.Error120");
+            log = LanguageUtils.Get("Core.Error.Log1");
+            title = LanguageUtils.Get("Core.Error.Log35");
         }
         else if (arg is DownloadSizeErrorEvnetArgs arg3)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error4"), arg3.File.Name, arg3.File.Url, arg3.File.AllSize, arg3.Size);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log3"), arg3.File.Name, arg3.File.Url, arg3.File.AllSize, arg3.Size);
         }
         else if (arg is DownloadHashErrorEventArgs arg4)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error12"), arg4.File.Name, arg4.File.Url, arg4.Hash, arg4.Now);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log6"), arg4.File.Name, arg4.File.Url, arg4.Hash, arg4.Now);
         }
         else if (arg is DownloadExceptionErrorEventArgs arg5)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error119"), arg5.File.Name, arg5.File.Url);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log34"), arg5.File.Name, arg5.File.Url);
         }
         else if (arg is GameLangLoadErrorEventArgs arg6)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error125"), arg6.Key);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log40"), arg6.Key);
         }
         else if (arg is GameServerPackErrorEventArgs arg7)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error101"), arg7.Game.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log31"), arg7.Game.Name);
         }
         else if (arg is GameLogFileErrorEventArgs arg8)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error94"), arg8.Game.Name, arg8.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log27"), arg8.Game.Name, arg8.File);
         }
         else if (arg is GameModErrorEventArgs arg9)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error85"), arg9.Game.Name, arg9.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log19"), arg9.Game.Name, arg9.File);
         }
         else if (arg is GameModAddErrorEventArgs arg10)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error87"), arg10.Game.Name, arg10.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log20"), arg10.Game.Name, arg10.File);
         }
         else if (arg is GameModReadErrorEventArgs arg11)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error100"), arg11.Game.Name, arg11.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log30"), arg11.Game.Name, arg11.File);
         }
         else if (arg is GameResourcepackReadErrorEventArgs arg12)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error127"), arg12.Game.Name, arg12.File);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log12"), arg12.Game.Name, arg12.File);
         }
         else if (arg is GameSaveAddErrorEventArgs arg13)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error128"), arg13.Game.Name, arg13.File);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log13"), arg13.Game.Name, arg13.File);
         }
         else if (arg is GameSaveRestoreErrorEventArgs arg14)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error92"), arg14.Game.Name, arg14.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log25"), arg14.Game.Name, arg14.File);
         }
         else if (arg is GameSaveReadErrorEventArgs arg15)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error88"), arg15.Game.Name, arg15.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log21"), arg15.Game.Name, arg15.File);
         }
         else if (arg is GameSchematicAddErrorEventArgs arg16)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error129"), arg16.Game.Name, arg16.File);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log14"), arg16.Game.Name, arg16.File);
         }
         else if (arg is GameSchematicReadErrorEventArgs arg17)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error130"), arg17.Game.Name, arg17.File);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log15"), arg17.Game.Name, arg17.File);
         }
         else if (arg is GameServerReadErrorEventArgs arg18)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error89"), arg18.Game.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log22"), arg18.Game.Name);
         }
         else if (arg is GameServerAddErrorEventArgs arg19)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error131"), arg19.Game.Name, arg19.Name, arg19.IP);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log16"), arg19.Game.Name, arg19.Name, arg19.IP);
         }
         else if (arg is GameServerDeleteErrorEventArgs arg20)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error132"), arg20.Server.Game.Name, arg20.Server.Name, arg20.Server.IP);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log17"), arg20.Server.Game.Name, arg20.Server.Name, arg20.Server.IP);
         }
         else if (arg is GameShaderpackAddErrorEventArgs arg21)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error133"), arg21.Game.Name, arg21.File);
+            log = string.Format(LanguageUtils.Get("Game.Error.Log18"), arg21.Game.Name, arg21.File);
         }
         else if (arg is GameDataPackReadErrorEventArgs arg22)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error117"), arg22.Save.Game.Name, arg22.Save.LevelName, arg22.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log32"), arg22.Save.Game.Name, arg22.Save.LevelName, arg22.File);
         }
         else if (arg is GameDataPackDeleteErrorEventArgs arg23)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error118"), arg23.Save.Game.Name, arg23.Save.LevelName);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log33"), arg23.Save.Game.Name, arg23.Save.LevelName);
         }
         else if (arg is InstallModPackErrorEventArgs arg24)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error50"), arg24.File);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log8"), arg24.File);
         }
         else if (arg is CheckJavaErrorEventArgs arg25)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error57"), arg25.Java);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log11"), arg25.Java);
         }
         else if (arg is ScanJavaErrorEventArgs)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error134"));
+            log = string.Format(LanguageUtils.Get("Core.Error.Log41"));
         }
         else if (arg is InstanceLoadErrorEventArgs arg26)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error98"), arg26.Path);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log29"), arg26.Path);
         }
         else if (arg is InstanceCreateErrorEventArgs arg27)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error95"), arg27.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log28"), arg27.Name);
         }
         else if (arg is InstanceReadModErrorEventArgs arg28)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error90"), arg28.Game.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log23"), arg28.Game.Name);
         }
         else if (arg is InstanceReadModErrorEventArgs arg29)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error90"), arg29.Game.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log23"), arg29.Game.Name);
         }
         else if (arg is InstanceReadCountErrorEventArgs arg30)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error91"), arg30.Game.Name);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log24"), arg30.Game.Name);
         }
         else if (arg is JavaInstallErrorEventArgs arg31)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error54"), arg31.Name, arg31.Url);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log10"), arg31.Name, arg31.Url);
         }
         else if (arg is ApiRequestErrorEventArgs arg32)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error44"), arg32.Url);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log7"), arg32.Url);
         }
         else if (arg is MojangGetVersionErrorEventArgs)
         {
-            log = LanguageUtils.Get("Core.Error61");
+            log = LanguageUtils.Get("Core.Error.Log12");
         }
         else if (arg is PlayerSkinGetErrorEventArgs arg33)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error5"), arg33.Login.AuthType.GetName(), arg33.Login.UUID);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log4"), arg33.Login.AuthType.GetName(), arg33.Login.UUID);
         }
         else if (arg is PlayerCapeGetErrorEventArgs arg34)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error135"), arg34.Login.AuthType.GetName(), arg34.Login.UUID);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log42"), arg34.Login.AuthType.GetName(), arg34.Login.UUID);
         }
         else if (arg is PlayerTexturesGetErrorEventArgs arg35)
         {
-            log = string.Format(LanguageUtils.Get("Core.Error6"), arg35.Login.AuthType.GetName(), arg35.Login.UUID);
+            log = string.Format(LanguageUtils.Get("Core.Error.Log5"), arg35.Login.AuthType.GetName(), arg35.Login.UUID);
         }
         else if (arg is LocalMavenErrorEventArgs)
         {
-            log = LanguageUtils.Get("Core.Error3");
+            log = LanguageUtils.Get("Core.Error.Log2");
         }
 
         if (arg is ExceptionErrorEventArgs error)

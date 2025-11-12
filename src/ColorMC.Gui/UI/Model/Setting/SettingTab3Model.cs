@@ -179,7 +179,7 @@ public partial class SettingModel
 
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -208,7 +208,7 @@ public partial class SettingModel
 
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -226,11 +226,11 @@ public partial class SettingModel
         ServerInfo = ColorMCCloudAPI.Info;
         if (ColorMCCloudAPI.Connect)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Info4"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text36"));
         }
         else
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error1"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text37"));
         }
     }
     /// <summary>
@@ -248,17 +248,17 @@ public partial class SettingModel
     [RelayCommand]
     public async Task StartCheck()
     {
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab3.Info1"));
+        Model.Progress(LanguageUtils.Get("SettingWindow.Tab3.Text33"));
         var res = await UpdateUtils.CheckNowVersion();
         Model.ProgressClose();
         if (res.Item1 == null)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error2"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text38"));
             return;
         }
         else if (res.Item1 == true)
         {
-            var res1 = await Model.TextAsync(LanguageUtils.Get("SettingWindow.Tab3.Info2"), res.Item2!);
+            var res1 = await Model.TextAsync(LanguageUtils.Get("SettingWindow.Tab3.Text34"), res.Item2!);
             if (res1)
             {
                 UpdateUtils.StartUpdate(Model);
@@ -266,7 +266,7 @@ public partial class SettingModel
         }
         else
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Info3"));
+            Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text35"));
         }
     }
     /// <summary>
@@ -277,7 +277,7 @@ public partial class SettingModel
     {
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -292,7 +292,7 @@ public partial class SettingModel
     {
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -309,13 +309,13 @@ public partial class SettingModel
         {
             if (!IPAddress.TryParse(url, out _))
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error4"));
+                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text40"));
                 return;
             }
 
             if (Dns.Any(item => item.Dns == DnsType.DnsOver && item.Url == url))
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error6"));
+                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text41"));
                 return;
             }
 
@@ -326,13 +326,13 @@ public partial class SettingModel
         {
             if (!url.StartsWith("https://"))
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error4"));
+                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text40"));
                 return;
             }
 
             if (Dns.Any(item => item.Dns == DnsType.DnsOverHttps && item.Url == url))
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Error6"));
+                Model.Show(LanguageUtils.Get("SettingWindow.Tab3.Text41"));
                 return;
             }
 
@@ -340,7 +340,7 @@ public partial class SettingModel
             ConfigBinding.AddDns(url, DnsType.DnsOverHttps);
         }
 
-        Model.Notify(LanguageUtils.Get("UserWindow.Info12"));
+        Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text32"));
     }
 
     /// <summary>
@@ -351,7 +351,7 @@ public partial class SettingModel
     {
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -368,7 +368,7 @@ public partial class SettingModel
         ServerInfo = ColorMCCloudAPI.Info;
         if (ColorMCCloudAPI.Connect)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Info4"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text36"));
         }
     }
 
@@ -437,7 +437,7 @@ public partial class SettingModel
 
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -451,7 +451,7 @@ public partial class SettingModel
 
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -465,7 +465,7 @@ public partial class SettingModel
 
         if (BaseBinding.IsDownload)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Error3"));
+            Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 

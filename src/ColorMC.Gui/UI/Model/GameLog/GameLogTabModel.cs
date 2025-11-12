@@ -250,21 +250,21 @@ public partial class GameLogModel : GameModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Error2"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Text26"));
             return;
         }
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Info4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Text19"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameLogWindow.Info6"));
+        Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
         var url = await McloAPI.PushAsync(Text.Text);
         Model.ProgressClose();
         if (url == null)
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Error1"));
+            Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
             return;
         }
         else
@@ -274,13 +274,13 @@ public partial class GameLogModel : GameModel
             {
                 return;
             }
-            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info5"), url), LanguageUtils.Get("GameLogWindow.Info8"), () =>
+            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url), LanguageUtils.Get("GameLogWindow.Text23"), () =>
             {
                 BaseBinding.CopyTextClipboard(top, url);
-                Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+                Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
             });
             BaseBinding.CopyTextClipboard(top, url);
-            Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+            Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
         }
     }
 
@@ -352,7 +352,7 @@ public partial class GameLogModel : GameModel
 
         if (IsGameRun)
         {
-            Model.SubTitle = LanguageUtils.Get("GameLogWindow.Info3");
+            Model.SubTitle = LanguageUtils.Get("GameLogWindow.Text18");
         }
         else
         {
@@ -487,12 +487,12 @@ public partial class GameLogModel : GameModel
             if (_nowLog == null || _nowLog.File != File)
             {
                 _nowLog = null;
-                Model.Progress(LanguageUtils.Get("GameLogWindow.Info1"));
+                Model.Progress(LanguageUtils.Get("Text.Loading"));
                 _nowLog = await GameBinding.ReadLogAsync(Obj, File);
                 Model.ProgressClose();
                 if (_nowLog == null)
                 {
-                    Model.Show(LanguageUtils.Get("GameLogWindow.Info2"));
+                    Model.Show(LanguageUtils.Get("GameLogWindow.Text17"));
                     return;
                 }
             }
@@ -603,15 +603,15 @@ public partial class GameLogModel : GameModel
         DispatcherTimer.RunOnce(() =>
         {
             //弹出日志上传选项
-            Model.ShowWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info9"), code), LanguageUtils.Get("GameLogWindow.Text8"), async () =>
+            Model.ShowWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text24"), code), LanguageUtils.Get("GameLogWindow.Text8"), async () =>
             {
                 Model.ShowClose();
-                Model.Progress(LanguageUtils.Get("GameLogWindow.Info6"));
+                Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
                 var url = await McloAPI.PushAsync(Text.Text);
                 Model.ProgressClose();
                 if (url == null)
                 {
-                    Model.Show(LanguageUtils.Get("GameLogWindow.Error1"));
+                    Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
                     return;
                 }
                 else
@@ -621,13 +621,13 @@ public partial class GameLogModel : GameModel
                     {
                         return;
                     }
-                    Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Info5"), url), LanguageUtils.Get("GameLogWindow.Info8"), () =>
+                    Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url), LanguageUtils.Get("GameLogWindow.Text23"), () =>
                     {
                         BaseBinding.CopyTextClipboard(top, url);
-                        Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+                        Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
                     });
                     BaseBinding.CopyTextClipboard(top, url);
-                    Model.Notify(LanguageUtils.Get("GameLogWindow.Info7"));
+                    Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
                 }
             });
         }, TimeSpan.FromMilliseconds(200));

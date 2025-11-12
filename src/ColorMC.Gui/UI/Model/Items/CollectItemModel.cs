@@ -103,7 +103,7 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddModPackWindow.Error5"), e);
+            Logs.Error(LanguageUtils.Get("AddModPackWindow.Text26"), e);
         }
 
         return null;

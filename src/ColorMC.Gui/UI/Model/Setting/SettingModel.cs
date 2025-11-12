@@ -77,7 +77,7 @@ public partial class SettingModel : MenuModel
                 [
                      new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("Button.RefashList"),
+                        Name = LanguageUtils.Get("Text.RefashList"),
                         Func = LoadJava
                     },
                     new SubMenuItemModel()
@@ -171,7 +171,7 @@ public partial class SettingModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/Setting/item8.svg",
-                Text = LanguageUtils.Get("SettingWindow.Tabs.Text8"),
+                Text = LanguageUtils.Get("MainWindow.Text56"),
                 SubMenu =
                 [
                     new SubMenuItemModel()

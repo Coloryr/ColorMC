@@ -44,7 +44,7 @@
                     </StackPanel>
                     <panel:WrapPanelWithStretch IsEnabled="{Binding !IsLoad}" RightMax="{Binding MinMode}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding VersionTypeList}"
@@ -64,7 +64,7 @@
                             HorizontalAlignment="Right"
                             Classes="top"
                             Command="{Binding LoadVersion}"
-                            Content="{setting:Localize GameEditWindow.Tab1.Text2}"
+                            Content="{setting:Localize Text.ReloadVersion}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
                     </panel:WrapPanelWithStretch>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -80,7 +80,7 @@
                             MinWidth="230"
                             Margin="0,0,10,10"
                             IsEnabled="{Binding !IsLoad}">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
                                 HorizontalAlignment="Stretch"
                                 VerticalContentAlignment="Center"
@@ -118,7 +118,7 @@
                                 Margin="-2,-3,-3,7"
                                 Classes="top"
                                 Command="{Binding GetLoader}"
-                                Content="{setting:Localize AddGameWindow.Tab1.Text12}"
+                                Content="{setting:Localize Text.ReloadVersion}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                         </StackPanel>
                     </panel:WrapPanelWithStretch>

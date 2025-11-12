@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// 添加资源<br/>
 /// 下载标记
 /// </summary>
-public partial class AddControlModel
+public partial class AddResourceControlModel
 {
     /// <summary>
     /// 下载标记

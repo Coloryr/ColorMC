@@ -43,13 +43,13 @@ public partial class AddGroupModel(BaseModel model, string? group) : ObservableO
 
         if (string.IsNullOrWhiteSpace(res.Text1))
         {
-            model.Show(LanguageUtils.Get("MainWindow.Error3"));
+            model.Show(LanguageUtils.Get("MainWindow.Text82"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(res.Text1))
         {
-            model.Show(LanguageUtils.Get("MainWindow.Error4"));
+            model.Show(LanguageUtils.Get("MainWindow.Text83"));
             return;
         }
 

@@ -531,7 +531,7 @@ public static class BaseBinding
 
             var obj = new JsonObject();
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info3"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text3"));
 
             //打包配置
             if (model.UiBg && File.Exists(conf.BackImage))
@@ -685,7 +685,7 @@ public static class BaseBinding
             //打包java
             if (model.Java)
             {
-                model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info4"));
+                model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text4"));
 
                 var list = new List<JvmConfigObj>();
                 foreach (var item in model.Javas)
@@ -722,7 +722,7 @@ public static class BaseBinding
                 }
             }
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info5"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text5"));
 
             //打包游戏实例
             foreach (var item in model.GetSelectItems())
@@ -733,7 +733,7 @@ public static class BaseBinding
                 await PutFileAsync(zip, tempfile, item);
             }
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Info6"));
+            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text6"));
 
             foreach (var item in model.Files)
             {
@@ -751,7 +751,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("BuildPackWindow.Error1"), e);
+            WindowManager.ShowError(LanguageUtils.Get("BuildPackWindow.Text8"), e);
         }
 
         return false;

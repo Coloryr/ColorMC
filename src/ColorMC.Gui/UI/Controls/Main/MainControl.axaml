@@ -141,7 +141,7 @@
                                                 VerticalAlignment="Bottom"
                                                 FontSize="14"
                                                 IsVisible="{Binding !MinMode}"
-                                                Text="{setting:Localize MainWindow.Text31}" />
+                                                Text="{setting:Localize Text.Set}" />
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>

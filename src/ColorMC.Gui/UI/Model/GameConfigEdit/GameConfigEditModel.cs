@@ -145,7 +145,7 @@ public partial class GameConfigEditModel : GameModel
 
         if (IsEdit)
         {
-            var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Info8"));
+            var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Text22"));
             if (!res)
             {
                 File = _lastName;
@@ -154,7 +154,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         _lastName = value;
-        Model.Progress(LanguageUtils.Get("ConfigEditWindow.Info7"));
+        Model.Progress(LanguageUtils.Get("Text.Loading"));
         ChunkData = null;
         var info = new FileInfo(value);
         //是不是NBT文件
@@ -177,7 +177,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (nbt is not NbtCompound nbt1)
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error9"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text35"));
                 return;
             }
 
@@ -202,7 +202,7 @@ public partial class GameConfigEditModel : GameModel
 
             if (ChunkData?.Nbt is not NbtList nbt1)
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error10"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text36"));
                 return;
             }
 
@@ -229,7 +229,7 @@ public partial class GameConfigEditModel : GameModel
             Text = new TextDocument(text);
         }
         IsEdit = false;
-        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Info10"));
+        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Text24"));
     }
 
     /// <summary>
@@ -290,7 +290,7 @@ public partial class GameConfigEditModel : GameModel
     [RelayCommand]
     public async Task Save()
     {
-        Model.Progress(LanguageUtils.Get("ConfigEditWindow.Info16"));
+        Model.Progress(LanguageUtils.Get("ConfigEditWindow.Text26"));
         var info = new FileInfo(File);
         if (info.Extension is Names.NameDatExt or Names.
             NameDatOldExt or Names.NameRioExt)
@@ -331,7 +331,7 @@ public partial class GameConfigEditModel : GameModel
         }
 
         Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Info9"));
+        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Text23"));
         IsEdit = false;
     }
 
@@ -352,7 +352,7 @@ public partial class GameConfigEditModel : GameModel
             var list = GameBinding.GetAllConfig(Obj);
             _items.AddRange(list);
         }
-        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Info11"));
+        Model.Notify(LanguageUtils.Get("ConfigEditWindow.Text25"));
         Load1();
     }
 
@@ -367,7 +367,7 @@ public partial class GameConfigEditModel : GameModel
         {
             if (_lastName != File && IsEdit)
             {
-                var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Info8"));
+                var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Text22"));
                 if (!res)
                 {
                     return;
@@ -395,7 +395,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (nbt == null)
             {
-                Model.Show(string.Format(LanguageUtils.Get("ConfigEditWindow.Error4"), fmodel.Chunk));
+                Model.Show(string.Format(LanguageUtils.Get("ConfigEditWindow.Text30"), fmodel.Chunk));
                 return;
             }
 
@@ -429,8 +429,8 @@ public partial class GameConfigEditModel : GameModel
                     else
                     {
                         Model.Show(string.Format(fmodel.IsEntity
-                            ? LanguageUtils.Get("ConfigEditWindow.Error8")
-                            : LanguageUtils.Get("ConfigEditWindow.Error6"), fmodel.PosName));
+                            ? LanguageUtils.Get("ConfigEditWindow.Text34")
+                            : LanguageUtils.Get("ConfigEditWindow.Text32"), fmodel.PosName));
                     }
                 }
             }
@@ -438,8 +438,8 @@ public partial class GameConfigEditModel : GameModel
         else
         {
             Model.Show(string.Format(fmodel.IsEntity
-                 ? LanguageUtils.Get("ConfigEditWindow.Error7")
-                 : LanguageUtils.Get("ConfigEditWindow.Error5"), chunkflie));
+                 ? LanguageUtils.Get("ConfigEditWindow.Text33")
+                 : LanguageUtils.Get("ConfigEditWindow.Text31"), chunkflie));
         }
     }
 
@@ -461,8 +461,8 @@ public partial class GameConfigEditModel : GameModel
             {
                 Type = 0,
                 DisplayType = true,
-                Title = LanguageUtils.Get("ConfigEditWindow.Info2"),
-                Title1 = LanguageUtils.Get("ConfigEditWindow.Info3"),
+                Title = LanguageUtils.Get("ConfigEditWindow.Text17"),
+                Title1 = LanguageUtils.Get("ConfigEditWindow.Text18"),
             };
             var res = await DialogHost.Show(model1, UseName);
             if (res is not true)
@@ -471,12 +471,12 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(model1.Key))
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error1"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text27"));
                 return;
             }
             else if (list.HaveKey(model1.Key))
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error2"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text28"));
                 return;
             }
 
@@ -499,7 +499,7 @@ public partial class GameConfigEditModel : GameModel
         if (model.Parent == null)
             return;
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Text16"));
         if (!res)
             return;
 
@@ -516,7 +516,7 @@ public partial class GameConfigEditModel : GameModel
     {
         var list1 = new List<NbtNodeModel?>(list);
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("ConfigEditWindow.Text16"));
         if (!res)
         {
             return;
@@ -546,8 +546,8 @@ public partial class GameConfigEditModel : GameModel
         {
             Key = nbt.Key!,
             DisplayType = false,
-            Title = LanguageUtils.Get("ConfigEditWindow.Info5"),
-            Title1 = LanguageUtils.Get("ConfigEditWindow.Info3")
+            Title = LanguageUtils.Get("ConfigEditWindow.Text19"),
+            Title1 = LanguageUtils.Get("ConfigEditWindow.Text18")
         };
         var res = await DialogHost.Show(model1, UseName);
         if (res is not true)
@@ -556,7 +556,7 @@ public partial class GameConfigEditModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(model1.Key))
         {
-            Model.Show(LanguageUtils.Get("ConfigEditWindow.Error1"));
+            Model.Show(LanguageUtils.Get("ConfigEditWindow.Text27"));
             return;
         }
         else if (model1.Key == nbt.Key)
@@ -565,7 +565,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (list.HaveKey(model1.Key))
         {
-            Model.Show(LanguageUtils.Get("ConfigEditWindow.Error2"));
+            Model.Show(LanguageUtils.Get("ConfigEditWindow.Text28"));
             return;
         }
 
@@ -666,8 +666,8 @@ public partial class GameConfigEditModel : GameModel
             {
                 Key = nbt.Nbt.Value,
                 DisplayType = false,
-                Title = LanguageUtils.Get("ConfigEditWindow.Info6"),
-                Title1 = LanguageUtils.Get("ConfigEditWindow.Info4"),
+                Title = LanguageUtils.Get("ConfigEditWindow.Text20"),
+                Title1 = LanguageUtils.Get("ConfigEditWindow.Text15"),
             };
             var res = await DialogHost.Show(model1, UseName);
             if (res is not true)
@@ -676,7 +676,7 @@ public partial class GameConfigEditModel : GameModel
             }
             if (string.IsNullOrWhiteSpace(model1.Key))
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error1"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text27"));
                 return;
             }
 
@@ -686,7 +686,7 @@ public partial class GameConfigEditModel : GameModel
             }
             catch
             {
-                Model.Show(LanguageUtils.Get("ConfigEditWindow.Error3"));
+                Model.Show(LanguageUtils.Get("ConfigEditWindow.Text29"));
             }
         }
         Model.Notify(LanguageUtils.Get("onfigEditWindow.Info14"));
@@ -707,7 +707,7 @@ public partial class GameConfigEditModel : GameModel
     /// </summary>
     public async void Find()
     {
-        var res = await Model.InputWithEditAsync(LanguageUtils.Get("ConfigEditWindow.Info3"), false);
+        var res = await Model.InputWithEditAsync(LanguageUtils.Get("ConfigEditWindow.Text18"), false);
         if (res.Cancel)
         {
             return;

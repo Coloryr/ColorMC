@@ -163,7 +163,7 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Type}"
-                                Header="{setting:Localize SettingWindow.Tab5.Text10}"
+                                Header="{setting:Localize Text.Type}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Arch}"

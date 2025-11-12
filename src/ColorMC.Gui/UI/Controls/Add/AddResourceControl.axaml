@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Add.AddControl"
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddResourceControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     d:DesignHeight="600"
     d:DesignWidth="800"
-    x:DataType="model:AddControlModel"
+    x:DataType="model:AddResourceControlModel"
     mc:Ignorable="d">
     <Panel>
         <ScrollViewer
@@ -25,7 +25,7 @@
                     <StackPanel Margin="15,15,5,15">
                         <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text6}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -34,7 +34,7 @@
                                     SelectedIndex="{Binding Type}" />
                             </DockPanel>
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text2}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddResourceWindow.Text2}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -55,7 +55,7 @@
                         </panel:WrapPanelWithStretch>
                         <panel:WrapPanelWithStretch IsEnabled="{Binding SourceLoad}" RightMax="{Binding MinMode}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text4}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Sort}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -63,7 +63,7 @@
                                     SelectedIndex="{Binding SortType}" />
                             </DockPanel>
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddWindow.Text5}" />
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Classification}" />
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
@@ -104,7 +104,7 @@
                                     Margin="-2,-3,-3,-2"
                                     Classes="top"
                                     Command="{Binding GetList}"
-                                    Content="{setting:Localize AddModPackWindow.Text8}"
+                                    Content="{setting:Localize Text.Search}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
                             </StackPanel>
                         </panel:WrapPanelWithStretch>
@@ -304,8 +304,8 @@
                             Margin="0,0,10,0"
                             IsChecked="{Binding LoadMoreMod}"
                             IsVisible="{Binding !IsUpgrade}"
-                            OffContent="{setting:Localize AddWindow.Text9}"
-                            OnContent="{setting:Localize AddWindow.Text9}" />
+                            OffContent="{setting:Localize AddResourceWindow.Text9}"
+                            OnContent="{setting:Localize AddResourceWindow.Text9}" />
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 Width="100"
@@ -313,7 +313,7 @@
                                 Margin="-2,-3,3,-3"
                                 Classes="top"
                                 Command="{Binding DownloadAllMod}"
-                                Content="{setting:Localize AddWindow.Text6}"
+                                Content="{setting:Localize AddResourceWindow.Text6}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text79}" />
                             <Button
                                 Width="100"

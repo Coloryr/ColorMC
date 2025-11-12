@@ -136,7 +136,7 @@ public static class WindowManager
     /// <summary>
     /// 游戏实例添加资源窗口
     /// </summary>
-    public static Dictionary<string, AddControl> GameAddWindows { get; } = [];
+    public static Dictionary<string, AddResourceControl> GameAddWindows { get; } = [];
     /// <summary>
     /// 游戏实例生成服务器整合包窗口
     /// </summary>
@@ -674,7 +674,7 @@ public static class WindowManager
                 }
                 else
                 {
-                    var con = new AddControl(obj);
+                    var con = new AddResourceControl(obj);
                     GameAddWindows.Add(obj.UUID, con);
                     AWindow(con);
                     con.GoFile(SourceType.Modrinth, data.Id);
@@ -722,7 +722,7 @@ public static class WindowManager
         }
         else
         {
-            var con = new AddControl(obj);
+            var con = new AddResourceControl(obj);
             GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoFile(type1, obj1.PID!);
@@ -743,7 +743,7 @@ public static class WindowManager
         }
         else
         {
-            var con = new AddControl(obj);
+            var con = new AddResourceControl(obj);
             GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoUpgrade(list);
@@ -763,7 +763,7 @@ public static class WindowManager
         }
         else
         {
-            var con = new AddControl(obj);
+            var con = new AddResourceControl(obj);
             GameAddWindows.Add(obj.UUID, con);
             AWindow(con);
             con.GoTo(type);

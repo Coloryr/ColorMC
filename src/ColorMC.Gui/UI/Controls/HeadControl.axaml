@@ -50,7 +50,7 @@
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Command="{Binding BackClick}"
-                    Content="{setting:Localize HeadControl.Text1}"
+                    Content="{setting:Localize Window.Text1}"
                     CornerRadius="0"
                     IsEnabled="{Binding HeadBackEnable}"
                     IsVisible="{Binding HeadBack}" />

@@ -18,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 添加游戏资源
 /// </summary>
-public partial class AddControlModel : GameModel
+public partial class AddResourceControlModel : GameModel
 {
     public const string NameScrollToHome = "Scroll:Home";
 
@@ -172,14 +172,14 @@ public partial class AddControlModel : GameModel
 
     private readonly string _useName;
 
-    public AddControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public AddResourceControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
     {
         _useName = ToString() ?? "AddControlModel";
     }
 
     partial void OnIsUpgradeChanged(bool value)
     {
-        ModDownloadText = LanguageUtils.Get(value ? "AddWindow.Text15" : "AddWindow.Text7");
+        ModDownloadText = LanguageUtils.Get(value ? "AddResourceWindow.Text15" : "AddResourceWindow.Text7");
     }
 
     /// <summary>
@@ -277,7 +277,7 @@ public partial class AddControlModel : GameModel
     {
         var type = _sourceTypeList[DownloadSource];
 
-        Model.Progress(LanguageUtils.Get("AddWindow.Info2"));
+        Model.Progress(LanguageUtils.Get("AddResourceWindow.Text17"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
@@ -285,7 +285,7 @@ public partial class AddControlModel : GameModel
             if (data == null)
             {
                 Model.ProgressClose();
-                Model.Show(LanguageUtils.Get("AddWindow.Error2"));
+                Model.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -324,7 +324,7 @@ public partial class AddControlModel : GameModel
             if (data == null)
             {
                 Model.ProgressClose();
-                Model.Show(LanguageUtils.Get("AddWindow.Error2"));
+                Model.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -375,7 +375,7 @@ public partial class AddControlModel : GameModel
 
         OnPropertyChanged(NameScrollToHome);
 
-        Model.Notify(LanguageUtils.Get("AddWindow.Info16"));
+        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -407,7 +407,7 @@ public partial class AddControlModel : GameModel
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddWindow.Info1"), item.Name));
+        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddResourceWindow.Text16"), item.Name));
         if (res)
         {
             Install(item);
@@ -434,7 +434,7 @@ public partial class AddControlModel : GameModel
     {
         if (_lastSelect == null)
         {
-            Model.Show(LanguageUtils.Get("AddWindow.Error1"));
+            Model.Show(LanguageUtils.Get("AddResourceWindow.Text25"));
             return;
         }
 
@@ -491,7 +491,7 @@ public partial class AddControlModel : GameModel
                 ? LanguageBinding.GetCurseForgeSortTypes()
                 : LanguageBinding.GetModrinthSortTypes());
             //获取支持的游戏版本和分类
-            Model.Progress(LanguageUtils.Get("AddModPackWindow.Info4"));
+            Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
             var list = type is SourceType.CurseForge
                 ? await CurseForgeHelper.GetGameVersionsAsync()
                 : await ModrinthHelper.GetGameVersionAsync();
@@ -539,7 +539,7 @@ public partial class AddControlModel : GameModel
         //McMod搜索源
         else if (type == SourceType.McMod)
         {
-            Model.Progress(LanguageUtils.Get("AddModPackWindow.Info4"));
+            Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
             //获取分类
             var list = await ColorMCAPI.GetMcModGroupAsync();
             Model.ProgressClose();
@@ -629,7 +629,7 @@ public partial class AddControlModel : GameModel
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Error4"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -638,7 +638,7 @@ public partial class AddControlModel : GameModel
 
         if (DownloadSource < _sourceTypeList.Count)
         {
-            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Info5"));
+            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 DownloadSource++;

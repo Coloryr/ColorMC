@@ -115,14 +115,14 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
             DownloadManager.Resume();
             Model.SetChoiseContent(_useName,
                 LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text1"));
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Info3"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Text11"));
         }
         else
         {
             DownloadManager.Pause();
             Model.SetChoiseContent(_useName,
                 LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text4"));
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Info2"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Text10"));
         }
     }
 
@@ -148,13 +148,13 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
         Model.HeadChoise1Display = false;
         Model.HeadChoiseDisplay = false;
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("DownloadWindow.Info1"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("DownloadWindow.Text9"));
         if (res)
         {
             DisplayList.Clear();
             _downloadList.Clear();
             DownloadManager.Stop();
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Info5"));
+            Model.Notify(LanguageUtils.Get("DownloadWindow.Text13"));
             return true;
         }
         else

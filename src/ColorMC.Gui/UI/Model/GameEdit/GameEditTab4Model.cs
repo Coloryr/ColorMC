@@ -184,12 +184,12 @@ public partial class GameEditModel
     /// </summary>
     private async void DependTestMod()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Info15"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text27"));
         var res = await GameBinding.ModCheckAsync(_modItems);
         Model.ProgressClose();
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info16"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text28"));
         }
     }
 
@@ -198,8 +198,8 @@ public partial class GameEditModel
     /// </summary>
     public async void StartSetMod()
     {
-        var res = await Model.InputAsync(LanguageUtils.Get("GameEditWindow.Tab4.Info24"),
-            LanguageUtils.Get("GameEditWindow.Tab4.Info25"));
+        var res = await Model.InputAsync(LanguageUtils.Get("GameEditWindow.Tab4.Text35"),
+            LanguageUtils.Get("GameEditWindow.Tab4.Text36"));
         if (res.Cancel)
         {
             return;
@@ -212,21 +212,21 @@ public partial class GameEditModel
 
         if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error8"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text45"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Info26"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text37"));
         var res1 = await GameBinding.MarkModsAsync(_obj, res.Text1, res.Text2);
         Model.ProgressClose();
         if (!res1)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error9"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text46"));
             return;
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info27"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text38"));
         }
     }
 
@@ -240,19 +240,19 @@ public partial class GameEditModel
             return;
         }
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab4.Info18"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab4.Text30"));
 
         _isModSet = true;
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Info19"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text31"));
         var res1 = await ModrinthHelper.AutoMarkAsync(_obj, res);
         Model.ProgressClose();
         if (!res1.State)
         {
-            Model.Show(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Error4"), res1.Data));
+            Model.Show(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text41"), res1.Data));
         }
         else
         {
-            Model.Notify(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info20"), res1.Data));
+            Model.Notify(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text32"), res1.Data));
         }
         _isModSet = false;
     }
@@ -262,22 +262,22 @@ public partial class GameEditModel
     /// </summary>
     private async void CheckMod()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Info10"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text23"));
         var res = await WebBinding.CheckModUpdateAsync(_obj, _modItems);
         Model.ProgressClose();
         if (res.Count > 0)
         {
             var res1 = await Model.ShowAsync(string.Format(
-                LanguageUtils.Get("GameEditWindow.Tab4.Info11"), res.Count));
+                LanguageUtils.Get("GameEditWindow.Tab4.Text24"), res.Count));
             if (res1)
             {
                 WebBinding.UpgradeMod(_obj, res);
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info22"));
+                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text33"));
             }
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Info13"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text25"));
         }
     }
 
@@ -298,11 +298,11 @@ public partial class GameEditModel
 
         if (res == false)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Error1"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Text7"));
             return;
         }
 
-        Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Info1"));
+        Model.Show(LanguageUtils.Get("GameEditWindow.Tab11.Text3"));
         LoadSchematic();
         var file = await PathBinding.AddFileAsync(top, _obj, FileType.Mod);
 
@@ -311,11 +311,11 @@ public partial class GameEditModel
 
         if (file == false)
         {
-            Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Error2"));
+            Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text40"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info2"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text20"));
         LoadMods();
     }
 
@@ -339,7 +339,7 @@ public partial class GameEditModel
     public async void DeleteMod(IEnumerable<ModDisplayModel> items)
     {
         var res = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info9"), items.Count()));
+            string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text22"), items.Count()));
         if (!res)
         {
             return;
@@ -362,11 +362,11 @@ public partial class GameEditModel
 
         if (error)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error7"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text44"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info3"));
+        Model.Notify(LanguageUtils.Get("Text.DeleteDone"));
     }
 
     /// <summary>
@@ -376,7 +376,7 @@ public partial class GameEditModel
     public async void DeleteMod(ModDisplayModel item)
     {
         var res = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info4"), item.Name));
+            string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text21"), item.Name));
         if (!res)
         {
             return;
@@ -388,12 +388,12 @@ public partial class GameEditModel
         }
         catch
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error7"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text44"));
             return;
         }
         ModList.Remove(item);
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info3"));
+        Model.Notify(LanguageUtils.Get("Text.DeleteDone"));
     }
 
     /// <summary>
@@ -416,7 +416,7 @@ public partial class GameEditModel
         }
         if (GameManager.IsGameRun(_obj))
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Error6"));
+            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text43"));
             return;
         }
         var res = GameBinding.ModEnableDisable(item.Obj);
@@ -450,7 +450,7 @@ public partial class GameEditModel
             }
 
             if (await Model.ShowAsync(
-                string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info17"), list.Count)))
+                string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text29"), list.Count)))
             {
                 foreach (var item1 in list)
                 {
@@ -487,13 +487,13 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadMods()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Info1"));
+        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab4.Text19"));
         _modItems.Clear();
         var res = await GameBinding.GetGameModsAsync(_obj);
         Model.ProgressClose();
         if (res == null)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Error1"));
+            Model.Show(LanguageUtils.Get("GameEditWindow.Tab4.Text39"));
             return;
         }
 
@@ -521,7 +521,7 @@ public partial class GameEditModel
 
         if (list1.Count != 0)
         {
-            var res1 = await Model.ShowAsync(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Info14"), count));
+            var res1 = await Model.ShowAsync(string.Format(LanguageUtils.Get("GameEditWindow.Tab4.Text26"), count));
             if (res1)
             {
                 DisplayMod(list1);
@@ -537,7 +537,7 @@ public partial class GameEditModel
             }
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Info23"));
+        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text34"));
 
         LoadModDisplay();
     }

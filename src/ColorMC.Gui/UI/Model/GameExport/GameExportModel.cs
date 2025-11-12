@@ -167,7 +167,7 @@ public partial class GameExportModel : MenuModel
     /// <param name="value"></param>
     async partial void OnTypeChanged(PackType value)
     {
-        Model.Progress(LanguageUtils.Get("GameExportWindow.Info6"));
+        Model.Progress(LanguageUtils.Get("GameExportWindow.Text4"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -264,7 +264,7 @@ public partial class GameExportModel : MenuModel
             }
         });
 
-        Model.Notify(LanguageUtils.Get("GameExportWindow.Info8"));
+        Model.Notify(LanguageUtils.Get("GameExportWindow.Text6"));
 
         LoadMods();
     }
@@ -280,12 +280,12 @@ public partial class GameExportModel : MenuModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Model.Show(LanguageUtils.Get("GameExportWindow.Error2"));
+                Model.Show(LanguageUtils.Get("GameExportWindow.Text8"));
                 return;
             }
         }
 
-        Model.Progress(LanguageUtils.Get("GameExportWindow.Info1"));
+        Model.Progress(LanguageUtils.Get("GameExportWindow.Text1"));
         var top = Model.GetTopLevel();
         if (top == null)
         {
@@ -300,11 +300,11 @@ public partial class GameExportModel : MenuModel
 
         if (file == false)
         {
-            Model.Show(LanguageUtils.Get("GameExportWindow.Error1"));
+            Model.Show(LanguageUtils.Get("GameExportWindow.Text7"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("GameExportWindow.Info2"));
+            Model.Notify(LanguageUtils.Get("GameExportWindow.Text2"));
         }
     }
 

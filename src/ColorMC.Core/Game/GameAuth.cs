@@ -54,7 +54,7 @@ public static class GameAuth
         var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken, loginOAuth.Token);
         if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Profile);
+            throw new LoginException(LoginFailState.GetDataFail, AuthState.Profile);
         }
 
         return new LoginObj()
@@ -86,7 +86,7 @@ public static class GameAuth
         profile = await MinecraftAPI.GetMinecraftProfileAsync(res4.AccessToken, token);
         if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
         {
-            throw new LoginException(LoginFailState.GetOAuthCodeDataFail, AuthState.Profile);
+            throw new LoginException(LoginFailState.GetDataFail, AuthState.Profile);
         }
 
         obj.UserName = profile.Name;

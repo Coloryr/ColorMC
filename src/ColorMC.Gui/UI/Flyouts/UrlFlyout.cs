@@ -19,7 +19,7 @@ public static class UrlFlyout
             {
                 BaseBinding.OpenUrl(url);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("AddWindow.Text13"), url1 != null, ()=>
+            new FlyoutMenuModel(LanguageUtils.Get("AddResourceWindow.Text13"), url1 != null, ()=>
             {
                 BaseBinding.OpenUrl(url1);
             })

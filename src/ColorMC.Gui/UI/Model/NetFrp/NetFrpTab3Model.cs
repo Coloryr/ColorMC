@@ -137,7 +137,7 @@ public partial class NetFrpModel
         catch
         {
             IsRuning = false;
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Error2"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
         }
 
         Text = new();
@@ -188,7 +188,7 @@ public partial class NetFrpModel
             Dispatcher.UIThread.Post(() =>
             {
                 IsOk = true;
-                Model.InputWithReadInfo(LanguageUtils.Get("NetFrpWindow.Tab3.Info1"), _remoteIP, false, true, false, null);
+                Model.InputWithReadInfo(LanguageUtils.Get("NetFrpWindow.Tab3.Text8"), _remoteIP, false, true, false, null);
             });
         }
     }
@@ -216,17 +216,17 @@ public partial class NetFrpModel
 
         if (model.Text?.Length > 80)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Error3"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text16"));
             return;
         }
 
         if (IsRuning == false)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Error2"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
             return;
         }
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Info3"));
+        var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Text10"));
         if (!res)
         {
             return;
@@ -235,10 +235,10 @@ public partial class NetFrpModel
         var user = UserBinding.GetLastUser();
         if (user?.AuthType != AuthType.OAuth)
         {
-            Model.ShowWithOk(LanguageUtils.Get("NetFrpWindow.Tab4.Error1"), WindowClose);
+            Model.ShowWithOk(LanguageUtils.Get("NetFrpWindow.Tab4.Text8"), WindowClose);
             return;
         }
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Info2"));
+        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Text6"));
         var res2 = await UserBinding.TestLogin(user, CancellationToken.None);
         Model.ProgressClose();
         if (!res)
@@ -247,16 +247,16 @@ public partial class NetFrpModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Info5"));
+        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Text12"));
         res = await ColorMCCloudAPI.PutCloudServerAsync(user.AccessToken, _remoteIP, model);
         Model.ProgressClose();
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Error1"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text14"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab3.Info4"));
+            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab3.Text11"));
         }
     }
 
@@ -280,7 +280,7 @@ public partial class NetFrpModel
 
         _now.IsStart = false;
 
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Info6"));
+        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Text13"));
         await Task.Run(() =>
         {
             _process.Kill(true);
@@ -313,7 +313,7 @@ public partial class NetFrpModel
     {
         if (_process != null)
         {
-            var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Info2"));
+            var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Text9"));
             if (res)
             {
                 Stop();

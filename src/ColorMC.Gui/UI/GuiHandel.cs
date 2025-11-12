@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI;
 
 public class ZipGui : IZipGui
 {
-    private readonly string _text = LanguageUtils.Get("AddJavaWindow.Info5");
+    private readonly string _text = LanguageUtils.Get("AddJavaWindow.Text11");
 
     private readonly BaseModel _model;
 
@@ -88,14 +88,14 @@ public class OverGameGui(BaseModel model) : IOverGameGui
     {
         model.ProgressClose();
         var test = await model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
+            string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
         model.Progress();
         return test;
     }
 
     public Task<bool> InstanceNameReplace()
     {
-        return model.ShowAsync(LanguageUtils.Get("Core.Info43"));
+        return model.ShowAsync(LanguageUtils.Get("AddGameWindow.Text4"));
     }
 }
 
@@ -105,37 +105,37 @@ public class CreateGameGui(BaseModel model) : ICreateInstanceGui
     {
         model.ProgressClose();
         var test = await model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Info2"), obj.Name));
+            string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
         model.Progress();
         return test;
     }
 
     public Task<bool> InstanceNameReplace()
     {
-        return model.ShowAsync(LanguageUtils.Get("Core.Info43"));
+        return model.ShowAsync(LanguageUtils.Get("AddGameWindow.Text4"));
     }
 
     public void ModPackState(CoreRunState state)
     {
         if (state == CoreRunState.Read)
         {
-            model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info1"));
+            model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text4"));
         }
         else if (state == CoreRunState.Init)
         {
-            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info2"));
+            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text5"));
         }
         else if (state == CoreRunState.GetInfo)
         {
             model.ProgressUpdate(-1);
-            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info3"));
+            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text6"));
         }
         else if (state == CoreRunState.Download)
         {
             model.ProgressUpdate(-1);
             if (!ConfigBinding.WindowMode())
             {
-                model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
+                model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text7"));
             }
             else
             {
@@ -146,7 +146,7 @@ public class CreateGameGui(BaseModel model) : ICreateInstanceGui
         {
             if (ConfigBinding.WindowMode())
             {
-                model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Info4"));
+                model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text7"));
             }
         }
     }
@@ -241,7 +241,7 @@ public class LauncherGui(BaseModel model) : ILaunchGui
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.ShowAsync(LanguageUtils.Get("BaseBinding.Info3"));
+            return model.ShowAsync(LanguageUtils.Get("App.Text36"));
         });
     }
 
@@ -249,7 +249,7 @@ public class LauncherGui(BaseModel model) : ILaunchGui
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.TextAsync(LanguageUtils.Get("BaseBinding.Info2"), text ?? "");
+            return model.TextAsync(LanguageUtils.Get("App.Text35"), text ?? "");
         });
     }
 }

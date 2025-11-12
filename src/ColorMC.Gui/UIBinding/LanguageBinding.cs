@@ -102,9 +102,9 @@ public static class LanguageBinding
     {
         return
         [
-            LanguageUtils.Get("Type.ExportPack.Item1"),
-            LanguageUtils.Get("Type.ExportPack.Item2"),
-            LanguageUtils.Get("Type.ExportPack.Item3"),
+            LanguageUtils.Get("Type.PackType.ColorMC"),
+            LanguageUtils.Get("Type.PackType.CurseForge"),
+            LanguageUtils.Get("Type.PackType.Modrinth"),
         ];
     }
 

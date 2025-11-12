@@ -356,13 +356,16 @@
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2" />
-    <PackageReference Include="System.IO.Hashing" Version="9.0.10" />
-    <PackageReference Include="System.Text.Json" Version="9.0.10" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.Image\MinecraftSkinRender.Image.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.OpenGL\MinecraftSkinRender.OpenGL.csproj" />
     <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\Add\AddResourceControl.axaml.cs">
+      <DependentUpon>AddResourceControl.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

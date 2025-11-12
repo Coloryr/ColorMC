@@ -58,7 +58,7 @@ public partial class NetFrpModel
 
         if (string.IsNullOrWhiteSpace(KeySakura))
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Error3"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text17"));
             return;
         }
 
@@ -100,12 +100,12 @@ public partial class NetFrpModel
     /// </summary>
     private async void LoadSakuraList()
     {
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab1.Info2"));
+        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab1.Text15"));
         var res = await SakuraFrpApi.GetChannelAsync(KeySakura);
         Model.ProgressClose();
         if (res == null)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Error2"));
+            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text16"));
             return;
         }
 

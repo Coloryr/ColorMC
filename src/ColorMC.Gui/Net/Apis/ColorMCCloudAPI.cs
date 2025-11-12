@@ -66,7 +66,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -85,7 +85,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -103,7 +103,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Core.Error45"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -156,7 +156,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Core.Error47"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log3"), e);
             return null;
         }
     }
@@ -203,7 +203,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Core.Error46"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log2"), e);
         }
         return false;
     }
@@ -281,13 +281,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Error3")
+            Data = LanguageUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -321,7 +321,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -358,7 +358,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -407,7 +407,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -451,7 +451,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -502,7 +502,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
     }
@@ -544,7 +544,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return null;
@@ -588,13 +588,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Error3")
+            Data = LanguageUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -633,7 +633,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return -1;
@@ -679,7 +679,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return null;
@@ -734,7 +734,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
             return -1;
         }
@@ -772,7 +772,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Error3");
+            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 

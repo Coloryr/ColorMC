@@ -14,7 +14,7 @@ public static class BlockFlyout
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("BlockBackpackFlyout.Text1"), true, model.Use)
+            new FlyoutMenuModel(LanguageUtils.Get("BlockBackpackWindow.Text2"), true, model.Use)
         ]).Show(con);
     }
 }

@@ -37,7 +37,7 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        Text="{setting:Localize WorldControl.Text1}" />
+                        Text="{setting:Localize GameEditWindow.Tab5.Text27}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         HorizontalAlignment="Left"
@@ -45,7 +45,7 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        Text="{setting:Localize WorldControl.Text2}" />
+                        Text="{setting:Localize GameEditWindow.Tab5.Text28}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
@@ -55,7 +55,7 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        Text="{setting:Localize WorldControl.Text3}" />
+                        Text="{setting:Localize GameEditWindow.Tab5.Text29}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         HorizontalAlignment="Left"
@@ -63,7 +63,7 @@
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
-                        Text="{setting:Localize WorldControl.Text4}" />
+                        Text="{setting:Localize GameEditWindow.Tab5.Text30}" />
                     <TextBlock
                         Margin="0,0,5,0"
                         HorizontalAlignment="Left"
@@ -78,7 +78,7 @@
                     TextWrapping="Wrap" />
             </StackPanel>
             <DockPanel Margin="5,95,5,5" IsVisible="{Binding IsSelect}">
-                <TextBlock DockPanel.Dock="Top" Text="{setting:Localize WorldControl.Text5}" />
+                <TextBlock DockPanel.Dock="Top" Text="{setting:Localize GameEditWindow.Tab5.Text31}" />
                 <Panel Margin="0,5,0,0">
                     <DataGrid
                         Name="DataGridDataPack"
@@ -92,7 +92,7 @@
                         <DataGrid.Columns>
                             <DataGridCheckBoxColumn
                                 Binding="{Binding Enable}"
-                                Header="{setting:Localize WorldControl.Text6}"
+                                Header="{setting:Localize Text.Enable}"
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Name}"
@@ -104,7 +104,7 @@
                                 IsReadOnly="True" />
                             <DataGridTextColumn
                                 Binding="{Binding Description}"
-                                Header="{setting:Localize WorldControl.Text7}"
+                                Header="{setting:Localize Text.Description}"
                                 IsReadOnly="True" />
                         </DataGrid.Columns>
                     </DataGrid>
@@ -116,7 +116,7 @@
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="20"
-                            Text="{setting:Localize WorldControl.Text8}" />
+                            Text="{setting:Localize GameEditWindow.Tab5.Text32}" />
                     </Border>
                 </Panel>
             </DockPanel>
