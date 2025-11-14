@@ -374,7 +374,7 @@ public partial class SettingModel
         var res = BaseBinding.TestCustomWindow();
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("BaseBinding.Error8"));
+            Model.Show(LanguageUtils.Get("App.Error.Text5"));
         }
     }
     /// <summary>

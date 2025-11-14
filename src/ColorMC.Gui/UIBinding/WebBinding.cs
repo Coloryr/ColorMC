@@ -232,7 +232,7 @@ public static class WebBinding
                 SourceType.CurseForge,
                 SourceType.Modrinth,
             ],
-            FileType.World =>
+            FileType.Save =>
             [
                 SourceType.CurseForge,
             ],
@@ -279,7 +279,7 @@ public static class WebBinding
                         4 => 1,
                         _ => 1
                     }, categoryId: categoryId, loader: loader),
-                FileType.World => await CurseForgeAPI.GetWorldListAsync(version, page, filter: filter,
+                FileType.Save => await CurseForgeAPI.GetWorldListAsync(version, page, filter: filter,
                     sortField: sort switch
                     {
                         0 => 1,
@@ -575,7 +575,7 @@ public static class WebBinding
         FileItemObj item;
         switch (type)
         {
-            case FileType.World:
+            case FileType.Save:
                 item = new FileItemObj
                 {
                     Name = data.DisplayName,

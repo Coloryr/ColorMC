@@ -161,7 +161,7 @@ public static class CurseForgeHelper
                     where item2.ClassId == type switch
                     {
                         FileType.Mod => CurseForgeAPI.ClassMod,
-                        FileType.World => CurseForgeAPI.ClassWorld,
+                        FileType.Save => CurseForgeAPI.ClassWorld,
                         FileType.Resourcepack => CurseForgeAPI.ClassResourcepack,
                         FileType.Shaderpack => CurseForgeAPI.ClassShaderpack,
                         _ => CurseForgeAPI.ClassModPack
@@ -253,7 +253,7 @@ public static class CurseForgeHelper
             var modid = item.ModId.ToString();
             mods.TryRemove(modid, out _);
 
-            if (path.FileType == FileType.World)
+            if (path.FileType == FileType.Save)
             {
                 item1.Later = (test) =>
                 {
@@ -358,7 +358,7 @@ public static class CurseForgeHelper
             {
                 item1.File = game.GetSavesPath();
                 item1.Path = Names.NameGameSavesDir;
-                item1.FileType = FileType.World;
+                item1.FileType = FileType.Save;
             }
         }
 

@@ -242,7 +242,7 @@ public static class LanguageBinding
         return
         [
             FileType.Mod.GetName(),
-            FileType.World.GetName(),
+            FileType.Save.GetName(),
             FileType.Shaderpack.GetName(),
             FileType.Resourcepack.GetName(),
             FileType.DataPacks.GetName(),

@@ -369,7 +369,7 @@ public static class LanguageUtils
         {
             FileType.ModPack => Get("Type.FileType.ModPack"),
             FileType.Mod => Get("Type.FileType.Mod"),
-            FileType.World => Get("Type.FileType.World"),
+            FileType.Save => Get("Type.FileType.World"),
             FileType.Shaderpack => Get("Type.FileType.Shaderpack"),
             FileType.Resourcepack => Get("Type.FileType.Resourcepack"),
             FileType.DataPacks => Get("Type.FileType.DataPacks"),
