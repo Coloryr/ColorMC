@@ -57,7 +57,7 @@ public static class ColorManager
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("Config.Error4"), e);
+            Logs.Error(LanguageUtils.Get("App.Error.Log15"), e);
         }
     }
 

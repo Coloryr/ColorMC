@@ -106,9 +106,9 @@ public static class GameBinding
             var file = await PathBinding.SelectFileAsync(top, FileType.GameIcon);
             if (file.Path != null)
             {
-                bool resize = await model.ShowAsync(LanguageUtils.Get("GameBinding.Info14"));
+                bool resize = await model.ShowAsync(LanguageUtils.Get("App.Text49"));
 
-                model.Progress(LanguageUtils.Get("GameBinding.Info4"));
+                model.Progress(LanguageUtils.Get("App.Text40"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Path)!);
 
                 if (resize && (info.Width > 100 || info.Height > 100))
@@ -124,12 +124,12 @@ public static class GameBinding
                 }
 
                 model.ProgressClose();
-                model.Notify(LanguageUtils.Get("GameBinding.Info3"));
+                model.Notify(LanguageUtils.Get("App.Text39"));
             }
         }
         catch (Exception e)
         {
-            var text = LanguageUtils.Get("GameBinding.Error2");
+            var text = LanguageUtils.Get("App.Text59");
             Logs.Error(text, e);
             WindowManager.ShowError(text, e);
         }
@@ -150,7 +150,7 @@ public static class GameBinding
         {
             return new GameLaunchListRes
             {
-                Message = LanguageUtils.Get("GameBinding.Error6")
+                Message = LanguageUtils.Get("App.Text63")
             };
         }
 
@@ -233,7 +233,7 @@ public static class GameBinding
             }
             else
             {
-                string title = LanguageUtils.Get("App.Error.Text4");
+                string title = LanguageUtils.Get("App.Text111");
                 bool login = false;
                 if (item.Value.Exception != null)
                 {
@@ -271,7 +271,7 @@ public static class GameBinding
     /// <param name="exception"></param>
     private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login, out string title, out bool loginfail)
     {
-        title = LanguageUtils.Get("App.Error.Text4");
+        title = LanguageUtils.Get("App.Text111");
         loginfail = false;
         if (exception is LaunchException e1)
         {
@@ -299,7 +299,7 @@ public static class GameBinding
 
     private static void DisplayCreateCmdCrash(Exception exception, GameSettingObj obj, LoginObj login)
     {
-        string title = LanguageUtils.Get("App.Error13");
+        string title = LanguageUtils.Get("App.Text107");
         if (exception is LaunchException e1)
         {
             var log = e1.GetName(obj, login);
@@ -335,7 +335,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = LanguageUtils.Get("GameBinding.Error6")
+                Message = LanguageUtils.Get("App.Text63")
             };
         }
 
@@ -343,7 +343,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = LanguageUtils.Get("App.Error.Text3")
+                Message = LanguageUtils.Get("App.Text110")
             };
         }
 
@@ -354,13 +354,13 @@ public static class GameBinding
             //检测加载器有没有启用
             if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
             {
-                var res2 = await model.ShowAsync(string.Format(LanguageUtils.Get("GameBinding.Info19"), obj.Name));
+                var res2 = await model.ShowAsync(string.Format(LanguageUtils.Get("App.Text53"), obj.Name));
                 if (!res2)
                 {
                     return new() { };
                 }
 
-                res2 = await model.ShowAsync(LanguageUtils.Get("GameBinding.Info23"));
+                res2 = await model.ShowAsync(LanguageUtils.Get("App.Text57"));
                 if (res2 == true)
                 {
                     GuiConfigUtils.Config.LaunchCheck.CheckLoader = false;
@@ -376,7 +376,8 @@ public static class GameBinding
                     || (mem <= 8192 && count > 300))
                 {
                     bool launch = false;
-                    await model.ShowChoiseCancelWait(LanguageUtils.Get("GameBinding.Info20"), LanguageUtils.Get("GameBinding.Info21"), () =>
+                    await model.ShowChoiseCancelWait(string.Format(LanguageUtils.Get("App.Text54"), count, mem), 
+                        LanguageUtils.Get("App.Text55"), () =>
                     {
                         model.ShowClose();
                         if (obj.JvmArg?.MaxMemory != null)
@@ -396,7 +397,7 @@ public static class GameBinding
                         return new();
                     }
 
-                    var res3 = await model.ShowAsync(LanguageUtils.Get("GameBinding.Info22"));
+                    var res3 = await model.ShowAsync(LanguageUtils.Get("App.Text56"));
                     if (res3 == true)
                     {
                         GuiConfigUtils.Config.LaunchCheck.CheckMemory = false;
@@ -652,7 +653,7 @@ public static class GameBinding
         {
             if (!File.Exists(obj.Local))
             {
-                return new() { Data = LanguageUtils.Get("GameBinding.Error15") };
+                return new() { Data = LanguageUtils.Get("App.Text72") };
             }
 
             if (obj.Disable)
@@ -668,7 +669,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = string.Format(LanguageUtils.Get("GameBinding.Error14"), obj.Local);
+            string temp = string.Format(LanguageUtils.Get("App.Text71"), obj.Local);
             Logs.Error(temp, e);
             return new() { Data = temp };
         }
@@ -976,7 +977,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string text = LanguageUtils.Get("GameBinding.Error7");
+            string text = LanguageUtils.Get("App.Text64");
             Logs.Error(text, e);
             WindowManager.ShowError(text, e);
             return false;
@@ -1137,11 +1138,11 @@ public static class GameBinding
                 var str = new StringBuilder();
                 foreach (var item in lost)
                 {
-                    str.Append(string.Format(LanguageUtils.Get("GameBinding.Info1"), item.Item1,
+                    str.Append(string.Format(LanguageUtils.Get("App.Text37"), item.Item1,
                         GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
-                WindowManager.ShowError(LanguageUtils.Get("GameBinding.Info2"), str.ToString());
+                WindowManager.ShowError(LanguageUtils.Get("App.Text38"), str.ToString());
                 return false;
             }
 
@@ -1428,7 +1429,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("GameBinding.Error8"), e);
+                Logs.Error(LanguageUtils.Get("App.Text65"), e);
             }
             return false;
         });
@@ -1452,7 +1453,7 @@ public static class GameBinding
         }, gui);
         if (game == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("GameBinding.Error9") };
+            return new StringRes { Data = LanguageUtils.Get("App.Text66") };
         }
 
         var cloud = new CloudDataObj()
@@ -1500,7 +1501,7 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return new() { Data = LanguageUtils.Get("GameBinding.Error10") };
+                    return new() { Data = LanguageUtils.Get("App.Text67") };
                 }
             }
         }
@@ -1557,12 +1558,12 @@ public static class GameBinding
             var data = await CoreHttpClient.GetStringAsync(text + "server.json");
             if (data == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("GameBinding.Error11") };
+                return new StringRes { Data = LanguageUtils.Get("App.Text68") };
             }
             var obj = JsonUtils.ToObj(data, JsonType.ServerPackObj);
             if (obj == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("GameBinding.Error12") };
+                return new StringRes { Data = LanguageUtils.Get("App.Text69") };
             }
 
             var game = obj.Game;
@@ -1582,16 +1583,16 @@ public static class GameBinding
 
             if (game == null)
             {
-                return new() { Data = LanguageUtils.Get("GameBinding.Error9") };
+                return new() { Data = LanguageUtils.Get("App.Text66") };
             }
 
-            model.Progress(LanguageUtils.Get("GameBinding.Info16"));
+            model.Progress(LanguageUtils.Get("App.Text51"));
 
             var res1 = await obj.UpdateAsync(new UpdateLaunchGui(model), CancellationToken.None);
             if (!res1)
             {
                 model.ProgressClose();
-                model.ShowWithOk(LanguageUtils.Get("GameBinding.Error10"), async () =>
+                model.ShowWithOk(LanguageUtils.Get("App.Text67"), async () =>
                 {
                     await game.RemoveAsync();
                 });
@@ -1605,7 +1606,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameBinding.Error12");
+            string temp = LanguageUtils.Get("App.Text69");
             Logs.Error(temp, e);
             return new() { Data = temp };
         }
@@ -1691,46 +1692,46 @@ public static class GameBinding
         await Task.Run(() =>
         {
             info.AppendLine($"ColorMC:{ColorMCCore.Version}")
-                .AppendLine($"{LanguageUtils.Get("GameBinding.Info5")}{obj.Name}")
-                .AppendLine($"{LanguageUtils.Get("GameBinding.Info6")}{obj.Version}");
+                .AppendLine($"{LanguageUtils.Get("App.Text41")}:{obj.Name}")
+                .AppendLine($"{LanguageUtils.Get("Text.GameVersion")}:{obj.Version}");
             if (obj.ModPack)
             {
-                info.AppendLine(string.Format(LanguageUtils.Get("GameBinding.Info12"),
+                info.AppendLine(string.Format(LanguageUtils.Get("App.Text47"),
                     obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(LanguageUtils.Get("GameBinding.Info8"),
+                    info.AppendLine(string.Format(LanguageUtils.Get("App.Text43"),
                         GetGameLoaderAsync(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
-                    info.AppendLine(string.Format(LanguageUtils.Get("GameBinding.Info7"),
+                    info.AppendLine(string.Format(LanguageUtils.Get("App.Text42"),
                         obj.Loader.GetName(), obj.LoaderVersion));
                 }
 
                 if (list.Count != 0)
                 {
-                    info.AppendLine(LanguageUtils.Get("GameBinding.Info9"));
+                    info.AppendLine(LanguageUtils.Get("App.Text44"));
 
                     foreach (var item in list)
                     {
-                        info.AppendLine(string.Format(LanguageUtils.Get("GameBinding.Info10"),
+                        info.AppendLine(string.Format(LanguageUtils.Get("App.Text45"),
                             item.Name, item.ModId, StringHelper.MakeString(item.Author),
                             Path.GetFileName(item.Local), item.Disable, item.CoreMod,
                             item.Sha1, StringHelper.MakeString(item.Loaders)));
                         if (obj.Mods.Values.FirstOrDefault(item => item.Sha1 == item.Sha1) is { } item1)
                         {
-                            info.AppendLine(string.Format(LanguageUtils.Get("GameBinding.Info11"),
+                            info.AppendLine(string.Format(LanguageUtils.Get("App.Text46"),
                                 GameDownloadHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
                         }
                     }
                 }
             }
         });
-        WindowManager.ShowError(LanguageUtils.Get("GameBinding.Info13"), info.ToString());
+        WindowManager.ShowError(LanguageUtils.Get("App.Text48"), info.ToString());
     }
 
     /// <summary>
@@ -1747,7 +1748,7 @@ public static class GameBinding
         }
         else
         {
-            return LanguageUtils.Get("GameBinding.Error13");
+            return LanguageUtils.Get("App.Text70");
         }
     }
 
@@ -1833,13 +1834,13 @@ public static class GameBinding
         var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
         if (top == null)
         {
-            model.Show(LanguageUtils.Get("App.Error7"));
+            model.Show(LanguageUtils.Get("App.Text101"));
             return;
         }
         var res = await UserBinding.GetLaunchUser(model);
         if (res.User is not { } user)
         {
-            model.Show(LanguageUtils.Get("GameBinding.Error3"));
+            model.Show(LanguageUtils.Get("App.Text60"));
             return;
         }
         var arg = MakeArg(user, model, -1);
@@ -1898,7 +1899,7 @@ public static class GameBinding
             var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
             if (res2 == false)
             {
-                model.Show(LanguageUtils.Get("App.Error7"));
+                model.Show(LanguageUtils.Get("App.Text101"));
             }
         }
         catch (Exception e)

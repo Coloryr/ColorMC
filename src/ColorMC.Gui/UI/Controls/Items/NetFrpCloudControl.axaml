@@ -71,7 +71,7 @@
                     </StackPanel>
                 </WrapPanel>
                 <WrapPanel IsVisible="{Binding HaveCustom}" Orientation="Horizontal">
-                    <TextBlock Margin="0,0,0,0" Text="{setting:Localize GameBinding.Info6}" />
+                    <TextBlock Margin="0,0,0,0" Text="{setting:Localize Text.GameVersion}" />
                     <TextBlock Margin="0,0,10,0" Text="{Binding Obj.Custom.Version, FallbackValue=1.12}" />
                     <StackPanel IsVisible="{Binding Obj.Custom.IsLoader, FallbackValue=false}" Orientation="Horizontal">
                         <TextBlock Text="{setting:Localize NetFrpWindow.Tab4.Text3}" />

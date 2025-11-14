@@ -41,7 +41,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 云同步信息
     /// </summary>
-    public static string Info { get; private set; } = LanguageUtils.Get("GameCloudUtils.Error2");
+    public static string Info { get; private set; } = LanguageUtils.Get("App.Text96");
     /// <summary>
     /// 是否已连接云同步服务器
     /// </summary>
@@ -230,12 +230,12 @@ public static class ColorMCCloudAPI
                 var value = res1.GetInt32();
                 if (value == 300)
                 {
-                    Info = LanguageUtils.Get("GameCloudUtils.Error4");
+                    Info = LanguageUtils.Get("App.Text98");
                     return;
                 }
                 else if (value != 100)
                 {
-                    Info = LanguageUtils.Get("GameCloudUtils.Error5");
+                    Info = LanguageUtils.Get("App.Text99");
                     return;
                 }
             }
@@ -488,13 +488,13 @@ public static class ColorMCCloudAPI
                     var value = res1.GetInt32();
                     if (value == 100)
                     {
-                        Info = string.Format(LanguageUtils.Get("GameCloudUtils.Info1"),
+                        Info = string.Format(LanguageUtils.Get("App.Text94"),
                             json.GetProperty("use").GetInt64(),
                             json.GetProperty("size").GetInt64());
                     }
                     else
                     {
-                        Info = LanguageUtils.Get("GameCloudUtils.Error5");
+                        Info = LanguageUtils.Get("App.Text99");
                     }
                 }
 

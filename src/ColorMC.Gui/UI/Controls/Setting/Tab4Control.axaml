@@ -8,7 +8,7 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="800"
+    d:DesignHeight="1600"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -91,7 +91,7 @@
                         <StackPanel Margin="5,0,0,0">
                             <CheckBox
                                 Margin="0,0,5,0"
-                                Content="{setting:Localize Type.FileType.Mod}"
+                                Content="{setting:Localize SettingWindow.Tab4.Text31}"
                                 IsChecked="{Binding CheckMod}" />
                             <Panel Margin="0,-5,0,0">
                                 <svg:SvgControl
@@ -108,20 +108,6 @@
                                     IsEnabled="{Binding CheckMod}" />
                             </Panel>
                         </StackPanel>
-                    </WrapPanel>
-                    <WrapPanel Margin="0,0,0,-5">
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text26}"
-                            IsChecked="{Binding CheckUser}" />
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text27}"
-                            IsChecked="{Binding CheckLoader}" />
-                        <CheckBox
-                            Margin="0,0,5,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text28}"
-                            IsChecked="{Binding CheckMemory}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -264,18 +250,16 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text13}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <CheckBox
+                        <ToggleSwitch
                             Margin="0,0,10,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text23}"
-                            IsChecked="{Binding SafeLog4j}" />
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text20}"
-                            IsChecked="{Binding PreRun}" />
-                        <CheckBox
-                            Content="{setting:Localize SettingWindow.Tab4.Text25}"
+                            IsChecked="{Binding PreRun}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text32}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text32}" />
+                        <ToggleSwitch
                             IsChecked="{Binding PreRunSame}"
-                            IsEnabled="{Binding PreRun}" />
+                            IsEnabled="{Binding PreRun}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text25}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text25}" />
                     </StackPanel>
                     <TextBox
                         Height="100"
@@ -285,28 +269,10 @@
                         IsEnabled="{Binding PreRun}"
                         Text="{Binding PreCmd}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-                </StackPanel>
-            </Border>
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <!--  运行后  -->
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/Setting/svg13.svg"
-                            Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text19}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <CheckBox
-                            Margin="0,0,10,0"
-                            Content="{setting:Localize SettingWindow.Tab4.Text18}"
-                            IsChecked="{Binding CloseBefore}" />
-                        <CheckBox Content="{setting:Localize SettingWindow.Tab4.Text20}" IsChecked="{Binding PostRun}" />
-                    </StackPanel>
+                    <ToggleSwitch
+                        IsChecked="{Binding PostRun}"
+                        OffContent="{setting:Localize SettingWindow.Tab4.Text20}"
+                        OnContent="{setting:Localize SettingWindow.Tab4.Text20}" />
                     <TextBox
                         Height="100"
                         Margin="0,5,0,0"

@@ -8,12 +8,78 @@ namespace ColorMC.Gui.UI.Model.Setting;
 
 public partial class SettingModel
 {
+    /// <summary>
+    /// 启用URI支持
+    /// </summary>
     [ObservableProperty]
     private bool _fastEnable;
+    /// <summary>
+    /// 启用Modrinth复写
+    /// </summary>
     [ObservableProperty]
     private bool _fastModrinth;
+    /// <summary>
+    /// 是否检测用户是否占用
+    /// </summary>
+    [ObservableProperty]
+    private bool _checkUser;
+    /// <summary>
+    /// 是否检测加载器是否启用
+    /// </summary>
+    [ObservableProperty]
+    private bool _checkLoader;
+    /// <summary>
+    /// 是否检测内存分配
+    /// </summary>
+    [ObservableProperty]
+    private bool _checkMemory;
+    /// <summary>
+    /// 是否启动后关闭启动器
+    /// </summary>
+    [ObservableProperty]
+    private bool _closeBefore;
+    /// <summary>
+    /// 是否启用安全Log4j
+    /// </summary>
+    [ObservableProperty]
+    private bool _safeLog4j;
 
     private bool _launchLoad;
+
+    partial void OnSafeLog4jChanged(bool value)
+    {
+        if (_launchLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetSafeLog4j(value);
+    }
+
+    partial void OnCloseBeforeChanged(bool value)
+    {
+        if (_launchLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetLaunchCloseConfig(value);
+    }
+
+    partial void OnCheckUserChanged(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckLoaderChanged(bool value)
+    {
+        SetCheck();
+    }
+
+    partial void OnCheckMemoryChanged(bool value)
+    {
+        SetCheck();
+    }
 
     partial void OnFastModrinthChanged(bool value)
     {
@@ -95,6 +161,17 @@ public partial class SettingModel
         }
     }
 
+    //保存配置
+    private void SetCheck()
+    {
+        if (_launchLoad)
+        {
+            return;
+        }
+
+        ConfigBinding.SetCheck(CheckUser, CheckLoader, CheckMemory);
+    }
+
     /// <summary>
     /// 加载启动器功能设置
     /// </summary>
@@ -103,8 +180,21 @@ public partial class SettingModel
         _launchLoad = true;
 
         var config = GuiConfigUtils.Config.LauncherFunction;
-        FastEnable = config.FastLaunch;
-        FastModrinth = config.FastModrinth;
+        if (config is { } con)
+        {
+            FastEnable = con.FastLaunch;
+            FastModrinth = con.FastModrinth;
+        }
+
+        var config1 = GuiConfigUtils.Config;
+        if (config1 is { } con1)
+        {
+            CloseBefore = con1.CloseBeforeLaunch;
+
+            CheckUser = con1.LaunchCheck.CheckUser;
+            CheckLoader = con1.LaunchCheck.CheckLoader;
+            CheckMemory = con1.LaunchCheck.CheckMemory;
+        }
 
         _launchLoad = false;
     }

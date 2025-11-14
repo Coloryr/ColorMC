@@ -70,7 +70,7 @@ public static class GameCloudUtils
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("GameCloudUtils.Error1"), e);
+                Logs.Error(LanguageUtils.Get("App.Text95"), e);
             }
         }
 
@@ -163,7 +163,7 @@ public static class GameCloudUtils
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("GameCloudUtils.Error3"), e);
+            Logs.Error(LanguageUtils.Get("App.Text97"), e);
         }
     }
 }

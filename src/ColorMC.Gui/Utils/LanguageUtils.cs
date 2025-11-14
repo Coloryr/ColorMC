@@ -1,13 +1,12 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text.Json;
 using ColorMC.Core.Game;
+using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Utils;
 
@@ -292,7 +291,7 @@ public static class LanguageUtils
         {
             LoginFailState.GetDataFail => string.Format(Get("Core.Error.Log36"), type.GetName(), uuid),
             LoginFailState.GetDataError => string.Format(Get("Core.Error.Log18"), type.GetName(), uuid),
-            LoginFailState.OAuthGetTokenTimeout =>string.Format(Get("Core.Error.Log37"), type.GetName(), uuid),
+            LoginFailState.OAuthGetTokenTimeout => string.Format(Get("Core.Error.Log37"), type.GetName(), uuid),
             LoginFailState.LoginAuthListEmpty => Get("Core.Error.Log38"),
             LoginFailState.LoginTokenTimeout => Get("Core.Error.Log39"),
             _ => "",
@@ -390,5 +389,331 @@ public static class LanguageUtils
             ErrorType.SearchFail => Get("Core.Error.Text6"),
             _ => Get("Core.Error.Log43")
         };
+    }
+
+    public static string[] GetDisplayList()
+    {
+        return
+        [
+            Get("Type.DisplayType.Item1"),
+            Get("Type.DisplayType.Item2"),
+            Get("Type.DisplayType.Item3"),
+            Get("Type.DisplayType.Item4"),
+        ];
+    }
+
+    public static string[] GetLockLoginType()
+    {
+        return
+        [
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
+    public static string[] GetLoginUserType()
+    {
+        return
+        [
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
+    public static string[] GetDisplayUserTypes()
+    {
+        return
+        [
+            "",
+            AuthType.Offline.GetName(),
+            AuthType.OAuth.GetName(),
+            AuthType.Nide8.GetName(),
+            AuthType.AuthlibInjector.GetName(),
+            AuthType.LittleSkin.GetName(),
+            AuthType.SelfLittleSkin.GetName()
+        ];
+    }
+
+    public static string[] GetGCTypes()
+    {
+        return
+        [
+            GCType.Auto.GetName(),
+            GCType.G1GC.GetName(),
+            GCType.ZGC.GetName(),
+            GCType.None.GetName()
+        ];
+    }
+
+    public static string[] GetAxisTypeName()
+    {
+        return
+        [
+            Get("Type.AxisType.Item1"),
+            Get("Type.AxisType.Item2")
+        ];
+    }
+
+    /// <summary>
+    /// 获取过滤器选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static string[] GetFilterName()
+    {
+        return
+        [
+            Get("Text.Name"),
+            Get("Text.FileName"),
+            Get("Text.Author"),
+            "modid",
+            Get("GameEditWindow.Tab4.Text16"),
+            Get("GameEditWindow.Tab4.Text17"),
+            Get("GameEditWindow.Tab4.Text18"),
+        ];
+    }
+
+    public static string[] GetExportName()
+    {
+        return
+        [
+            Get("Type.PackType.ColorMC"),
+            Get("Type.PackType.CurseForge"),
+            Get("Type.PackType.Modrinth"),
+        ];
+    }
+
+    public static string[] GetSkinType()
+    {
+        return
+        [
+            Get("Type.SkinType.Old"),
+            Get("Type.SkinType.New"),
+            Get("Type.SkinType.New_Slim")
+        ];
+    }
+    /// <summary>
+    /// 获取旋转选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static string[] GetSkinRotateName()
+    {
+        return
+        [
+            Get("Type.SkinRotate.Item1"),
+            Get("Type.SkinRotate.Item2"),
+            Get("Type.SkinRotate.Item3")
+        ];
+    }
+
+    /// <summary>
+    /// 获取下载源选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static string[] GetDownloadSources()
+    {
+        return
+        [
+            SourceLocal.Offical.GetName(),
+            SourceLocal.BMCLAPI.GetName()
+        ];
+    }
+
+    public static string[] GetDns()
+    {
+        return
+        [
+            Get("Type.Dns.Item1"),
+            Get("Type.Dns.Item2"),
+            Get("Type.Dns.Item3")
+        ];
+    }
+
+    /// <summary>
+    /// 获取窗口透明选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static string[] GetWindowTranTypes()
+    {
+        return
+        [
+            Get("Type.TranTypes.Item1"),
+            Get("Type.TranTypes.Item2"),
+            Get("Type.TranTypes.Item3"),
+            Get("Type.TranTypes.Item4"),
+            Get("Type.TranTypes.Item5")
+        ];
+    }
+    /// <summary>
+    /// 获取语言选项
+    /// </summary>
+    /// <returns>选项</returns>
+    public static string[] GetLanguages()
+    {
+        return
+        [
+            LanguageType.zh_cn.GetName(),
+            LanguageType.en_us.GetName()
+        ];
+    }
+
+    public static string[] GetCurseForgeSortTypes()
+    {
+        return
+        [
+            CurseForgeSortField.Featured.GetName(),
+            CurseForgeSortField.Popularity.GetName(),
+            CurseForgeSortField.LastUpdated.GetName(),
+            CurseForgeSortField.Name.GetName(),
+            CurseForgeSortField.TotalDownloads.GetName()
+        ];
+    }
+
+    public static string[] GetModrinthSortTypes()
+    {
+        return
+        [
+            ModrinthHelper.Relevance.GetName(),
+            ModrinthHelper.Downloads.GetName(),
+            ModrinthHelper.Follows.GetName(),
+            ModrinthHelper.Newest.GetName(),
+            ModrinthHelper.Updated.GetName()
+        ];
+    }
+
+    public static string[] GetSortOrder()
+    {
+        return
+        [
+            Get("Type.SortOrder.Item1"),
+            Get("Type.SortOrder.Item2")
+        ];
+    }
+
+    public static string[] GetSourceList()
+    {
+        return
+        [
+            SourceType.CurseForge.GetName(),
+            SourceType.Modrinth.GetName()
+        ];
+    }
+
+    public static string[] GetPackType()
+    {
+        return
+        [
+            PackType.ColorMC.GetName(),
+            PackType.CurseForge.GetName(),
+            PackType.Modrinth.GetName(),
+            PackType.MMC.GetName(),
+            PackType.HMCL.GetName(),
+            PackType.ZipPack.GetName()
+        ];
+    }
+
+    public static string[] GetAddType()
+    {
+        return
+        [
+            FileType.Mod.GetName(),
+            FileType.Save.GetName(),
+            FileType.Shaderpack.GetName(),
+            FileType.Resourcepack.GetName(),
+            FileType.DataPacks.GetName(),
+            FileType.Optifine.GetName()
+        ];
+    }
+
+    public static string[] GetNbtName()
+    {
+        return
+        [
+            "NbtEnd",
+            "NbtByte",
+            "NbtShort",
+            "NbtInt",
+            "NbtLong",
+            "NbtFloat",
+            "NbtDouble",
+            "NbtByteArray",
+            "NbtString",
+            "NbtList",
+            "NbtCompound",
+            "NbtIntArray",
+            "NbtLongArray",
+        ];
+    }
+
+    public static string[] GetPCJavaType()
+    {
+        return
+        [
+            "Adoptium",
+            "Zulu",
+            "Dragonwell",
+            "OpenJ9",
+        ];
+    }
+
+    public static string[] GetFuntionList()
+    {
+        return
+        [
+            Get("ServerPackWindow.Tab4.Text5"),
+            Get("ServerPackWindow.Tab4.Text6")
+        ];
+    }
+
+    public static string[] GetVersionType()
+    {
+        return
+        [
+            Get("Type.VersionType.Item1"),
+            Get("Type.VersionType.Item2"),
+            Get("Type.VersionType.Item3")
+        ];
+    }
+
+    public static string[] GetPos()
+    {
+        return
+        [
+            Get("Type.Postion.Item1"),
+            Get("Type.Postion.Item2"),
+            Get("Type.Postion.Item3"),
+            Get("Type.Postion.Item4"),
+            Get("Type.Postion.Item5"),
+            Get("Type.Postion.Item6"),
+            Get("Type.Postion.Item7"),
+            Get("Type.Postion.Item8"),
+            Get("Type.Postion.Item9"),
+        ];
+    }
+
+    public static string[] GetGuide()
+    {
+        return
+        [
+            Get("Type.Guide.Item1"),
+            Get("Type.Guide.Item2"),
+        ];
+    }
+
+    public static string[] GetLoader()
+    {
+        return
+        [
+            Loaders.Forge.GetName(),
+            Loaders.Fabric.GetName(),
+            Loaders.Quilt.GetName(),
+            Loaders.NeoForge.GetName(),
+        ];
     }
 }

@@ -81,7 +81,7 @@ public partial class MainModel
                 }
                 if (!find)
                 {
-                    UserType = LanguageUtils.Get("App.Error6");
+                    UserType = LanguageUtils.Get("App.Text100");
                 }
             }
             else

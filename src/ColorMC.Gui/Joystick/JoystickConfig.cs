@@ -64,7 +64,7 @@ public static class JoystickConfig
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("Config.Error3"), e);
+                Logs.Error(LanguageUtils.Get("App.Error.Log14"), e);
             }
 
             if (config == null || config.Keys == null

@@ -24,15 +24,15 @@ public partial class SettingModel
     /// <summary>
     /// 透明类型列表
     /// </summary>
-    public string[] TranTypeList { get; init; } = LanguageBinding.GetWindowTranTypes();
+    public string[] TranTypeList { get; init; } = LanguageUtils.GetWindowTranTypes();
     /// <summary>
     /// 语言列表
     /// </summary>
-    public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
+    public string[] LanguageList { get; init; } = LanguageUtils.GetLanguages();
     /// <summary>
     /// 位置列表
     /// </summary>
-    public string[] PosList { get; init; } = LanguageBinding.GetPos();
+    public string[] PosList { get; init; } = LanguageUtils.GetPos();
 
     /// <summary>
     /// 字体

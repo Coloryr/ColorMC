@@ -6,6 +6,7 @@ using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -24,7 +25,7 @@ public partial class ServerPackModel
     /// <summary>
     /// 打包方式
     /// </summary>
-    public string[] FuntionList { get; init; } = LanguageBinding.GetFuntionList();
+    public string[] FuntionList { get; init; } = LanguageUtils.GetFuntionList();
 
     /// <summary>
     /// 选中的文件

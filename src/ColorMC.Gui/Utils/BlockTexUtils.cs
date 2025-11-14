@@ -339,7 +339,7 @@ public static class BlockTexUtils
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Error4"), e);
+                Logs.Error(LanguageUtils.Get("App.Error.Log19"), e);
             }
         }
         Blocks ??= new()

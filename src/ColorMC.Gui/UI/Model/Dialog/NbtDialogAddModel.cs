@@ -1,5 +1,6 @@
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -15,7 +16,7 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     /// <summary>
     /// Nbt类型
     /// </summary>
-    public string[] TypeSource { get; init; } = LanguageBinding.GetNbtName();
+    public string[] TypeSource { get; init; } = LanguageUtils.GetNbtName();
 
     /// <summary>
     /// 标题1

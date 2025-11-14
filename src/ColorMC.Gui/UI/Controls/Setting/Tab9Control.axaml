@@ -55,6 +55,43 @@
                     </StackPanel>
                 </DockPanel>
             </Border>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <DockPanel Margin="15">
+                    <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg23.svg" />
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize SettingWindow.Tab9.Text5}" />
+                    </DockPanel>
+                    <WrapPanel Margin="0,0,0,-5">
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text23}"
+                            IsChecked="{Binding SafeLog4j}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab9.Text6}"
+                            IsChecked="{Binding CloseBefore}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text26}"
+                            IsChecked="{Binding CheckUser}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text27}"
+                            IsChecked="{Binding CheckLoader}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text28}"
+                            IsChecked="{Binding CheckMemory}" />
+                    </WrapPanel>
+                </DockPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

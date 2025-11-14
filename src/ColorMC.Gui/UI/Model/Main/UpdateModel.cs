@@ -42,7 +42,7 @@ public partial class MainModel
         var data = await ColorMCCloudAPI.GetNewLogAsync();
         if (data == null)
         {
-            Model.Show(LanguageUtils.Get("App.Error5"));
+            Model.Show(LanguageUtils.Get("App.Text113"));
         }
         else
         {

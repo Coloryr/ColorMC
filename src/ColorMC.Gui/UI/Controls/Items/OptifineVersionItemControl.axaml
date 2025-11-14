@@ -22,7 +22,7 @@
                 Foreground="{setting:Theme MainColor}"
                 Text="{Binding Version, FallbackValue=1234}" />
             <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+                <TextBlock Text="{setting:Localize Text.GameVersion}" />
                 <TextBlock Text="{Binding MCVersion}" />
             </StackPanel>
             <StackPanel Margin="0,0,5,0" Orientation="Horizontal">

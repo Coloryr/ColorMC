@@ -810,7 +810,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("WebBinding.Error1"), e);
+                Logs.Error(LanguageUtils.Get("App.Text75"), e);
             }
         });
 
@@ -1099,7 +1099,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
             return new();
         }
     }
@@ -1234,7 +1234,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
             return new GetJavaAdoptiumListRes();
         }
     }
@@ -1460,7 +1460,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
             return null;
         }
     }
@@ -1527,7 +1527,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("WebBinding.Error2"), e);
+            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
             return new GetJavaListRes();
         }
     }
@@ -1565,7 +1565,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("WebBinding.Error3"), e);
+            Logs.Error(LanguageUtils.Get("App.Text77"), e);
             return null;
         }
     }

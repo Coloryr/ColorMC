@@ -26,11 +26,11 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     /// <summary>
     /// 皮肤类型
     /// </summary>
-    public string[] SkinTypeList { get; init; } = LanguageBinding.GetSkinType();
+    public string[] SkinTypeList { get; init; } = LanguageUtils.GetSkinType();
     /// <summary>
     /// 皮肤关节旋转类型
     /// </summary>
-    public string[] SkinRotateList { get; init; } = LanguageBinding.GetSkinRotateName();
+    public string[] SkinRotateList { get; init; } = LanguageUtils.GetSkinRotateName();
 
     /// <summary>
     /// 皮肤类型

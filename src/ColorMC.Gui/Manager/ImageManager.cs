@@ -351,7 +351,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageUtils.Get("ImageManager.Error1"), file), e);
+                Logs.Error(string.Format(LanguageUtils.Get("App.Text92"), file), e);
             }
         }
         if (file1 != null && File.Exists(file1))
@@ -362,7 +362,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageUtils.Get("ImageManager.Error2"), file), e);
+                Logs.Error(string.Format(LanguageUtils.Get("App.Text93"), file), e);
             }
         }
 
@@ -620,7 +620,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("ImageUtils.Error2"), e);
+                Logs.Error(LanguageUtils.Get("App.Text91"), e);
             }
 
             return GameIcon;
@@ -706,7 +706,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("ImageUtils.Error1"), e);
+                Logs.Error(LanguageUtils.Get("App.Text90"), e);
                 return null;
             }
             finally

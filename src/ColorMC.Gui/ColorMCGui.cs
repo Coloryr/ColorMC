@@ -102,7 +102,7 @@ public static class ColorMCGui
             {
                 return;
             }
-            Logs.Error(LanguageUtils.Get("App.Error1"), e.Exception);
+            Logs.Error(LanguageUtils.Get("App.Error.Log16"), e.Exception);
         };
 
         RunType = RunType.Program;
