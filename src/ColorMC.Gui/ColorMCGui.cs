@@ -395,11 +395,11 @@ public static class ColorMCGui
                     }
 
 #if DEBUG
-                    opt.RenderingMode =
-                    [
-                        Win32RenderingMode.Vulkan,
-                        Win32RenderingMode.Software
-                    ];
+                    //opt.RenderingMode =
+                    //[
+                    //    Win32RenderingMode.Vulkan,
+                    //    Win32RenderingMode.Software
+                    //];
 #endif
                     builder.With(opt);
                     break;

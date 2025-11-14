@@ -107,17 +107,35 @@ public partial class GameGroupModel : TopModel
                 });
             }
 
-            foreach (var item in list1)
+            bool fast = list1.Count >= 100;
+            if (fast)
             {
-                Thread.Sleep(50);
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    GameList.Add(item);
-                    if (res)
+                    foreach (var item in list1)
                     {
-                        item.Index = index++;
+                        GameList.Add(item);
+                        if (res)
+                        {
+                            item.Index = index++;
+                        }
                     }
                 });
+            }
+            else
+            {
+                foreach (var item in list1)
+                {
+                    Thread.Sleep(50);
+                    Dispatcher.UIThread.Invoke(() =>
+                    {
+                        GameList.Add(item);
+                        if (res)
+                        {
+                            item.Index = index++;
+                        }
+                    });
+                }
             }
 
             Dispatcher.UIThread.Post(() =>

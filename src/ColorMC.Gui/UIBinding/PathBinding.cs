@@ -207,7 +207,7 @@ public static class PathBinding
             case PathType.ServerPackPath:
                 var res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = LanguageUtils.Get("PathBinding.Text2")
+                    Title = LanguageUtils.Get("App.Select.Text2")
                 });
                 if (res?.Any() == true)
                 {
@@ -217,7 +217,7 @@ public static class PathBinding
             case PathType.GamePath:
                 res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
-                    Title = LanguageUtils.Get("PathBinding.Text6")
+                    Title = LanguageUtils.Get("App.Select.Text5")
                 });
                 if (res?.Any() == true)
                 {
@@ -297,9 +297,9 @@ public static class PathBinding
                     Logs.Error(LanguageUtils.Get("PathBinding.Errro2"), e);
                     return false;
                 }
-            case FileType.World:
+            case FileType.Save:
                 file = await SaveFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text18"), ".zip", "world.zip");
+                    LanguageUtils.Get("App.Select.Text15"), ".zip", "world.zip");
                 if (file == null)
                     break;
 
@@ -316,7 +316,7 @@ public static class PathBinding
                 }
             case FileType.Skin:
                 file = await SaveFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text1"), ".png", "skin.png");
+                    LanguageUtils.Get("App.Select.Text1"), ".png", "skin.png");
                 if (file == null)
                     break;
 
@@ -338,7 +338,7 @@ public static class PathBinding
                 }
             case FileType.Text:
                 file = await SaveFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text3"), ".txt", "log.txt");
+                    LanguageUtils.Get("App.Select.Text3"), ".txt", "log.txt");
                 if (file == null)
                     break;
 
@@ -358,7 +358,7 @@ public static class PathBinding
                 }
             case FileType.InputConfig:
                 file = await SaveFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text15"), ".json", arg![0] + ".json");
+                    LanguageUtils.Get("App.Select.Text13"), ".json", arg![0] + ".json");
                 if (file == null)
                     break;
 
@@ -496,7 +496,7 @@ public static class PathBinding
                 res = await SelectFileAsync(top,
                     LanguageUtils.Get("AddGameWindow.Tab2.Text3"),
                     MODPACK,
-                    LanguageUtils.Get("PathBinding.Text5"));
+                    LanguageUtils.Get("App.Select.Text4"));
                 break;
             case FileType.Pic:
                 res = await SelectFileAsync(top,
@@ -512,15 +512,15 @@ public static class PathBinding
                 break;
             case FileType.Music:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text11"),
+                    LanguageUtils.Get("App.Select.Text10"),
                     AUDIO,
-                    LanguageUtils.Get("PathBinding.Text12"));
+                    LanguageUtils.Get("App.Select.Text11"));
                 break;
             case FileType.GameIcon:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text7"),
+                    LanguageUtils.Get("App.Select.Text6"),
                     PICFILE,
-                    LanguageUtils.Get("PathBinding.Text8"));
+                    LanguageUtils.Get("App.Select.Text7"));
                 break;
             case FileType.StartIcon:
                 res = await SelectFileAsync(top,
@@ -530,9 +530,9 @@ public static class PathBinding
                 break;
             case FileType.Head:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text9"),
+                    LanguageUtils.Get("App.Select.Text8"),
                     HEADFILE,
-                    LanguageUtils.Get("PathBinding.Text10"));
+                    LanguageUtils.Get("App.Select.Text9"));
                 break;
             case FileType.Loader:
                 res = await SelectFileAsync(top,
@@ -542,9 +542,9 @@ public static class PathBinding
                 break;
             case FileType.InputConfig:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text13"),
+                    LanguageUtils.Get("App.Select.Text12"),
                     JSON,
-                    LanguageUtils.Get("PathBinding.Text14"));
+                    LanguageUtils.Get("SettingWindow.Tab8.Text5"));
                 break;
         }
 
@@ -593,17 +593,17 @@ public static class PathBinding
                 return null;
             case FileType.Mod:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text16"),
+                    LanguageUtils.Get("App.Select.Text14"),
                     JARFILE,
-                    LanguageUtils.Get("PathBinding.Text17"), true);
+                    LanguageUtils.Get("Type.FileType.Mod"), true);
                 if (res?.Any() == true)
                 {
                     return await GameBinding.AddModsAsync(obj, res);
                 }
                 return null;
-            case FileType.World:
+            case FileType.Save:
                 res = await SelectFileAsync(top,
-                    LanguageUtils.Get("PathBinding.Text18"),
+                    LanguageUtils.Get("App.Select.Text15"),
                     ZIPFILE,
                     LanguageUtils.Get("PathBinding.Text19"));
                 if (res?.Any() == true)

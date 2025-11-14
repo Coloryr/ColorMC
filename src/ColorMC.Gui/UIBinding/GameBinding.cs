@@ -233,7 +233,7 @@ public static class GameBinding
             }
             else
             {
-                string title = LanguageUtils.Get("BaseBinding.Error4");
+                string title = LanguageUtils.Get("App.Error.Text4");
                 bool login = false;
                 if (item.Value.Exception != null)
                 {
@@ -271,7 +271,7 @@ public static class GameBinding
     /// <param name="exception"></param>
     private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login, out string title, out bool loginfail)
     {
-        title = LanguageUtils.Get("BaseBinding.Error4");
+        title = LanguageUtils.Get("App.Error.Text4");
         loginfail = false;
         if (exception is LaunchException e1)
         {
@@ -343,7 +343,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = LanguageUtils.Get("BaseBinding.Error3")
+                Message = LanguageUtils.Get("App.Error.Text3")
             };
         }
 
@@ -1262,7 +1262,7 @@ public static class GameBinding
                 }
 
                 return await obj.AddModsAsync(list1);
-            case FileType.World:
+            case FileType.Save:
                 foreach (var item in list)
                 {
                     var file = item.TryGetLocalPath();

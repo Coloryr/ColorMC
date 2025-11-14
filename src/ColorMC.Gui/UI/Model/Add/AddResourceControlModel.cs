@@ -163,7 +163,7 @@ public partial class AddResourceControlModel : GameModel
     private static readonly List<FileType> s_types =
     [
         FileType.Mod,
-        FileType.World,
+        FileType.Save,
         FileType.Shaderpack,
         FileType.Resourcepack,
         FileType.DataPacks,

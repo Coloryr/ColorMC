@@ -206,7 +206,7 @@ public static class BaseBinding
         }
         catch (Exception ex)
         {
-            var data = LanguageUtils.Get("BaseBinding.Error8");
+            var data = LanguageUtils.Get("App.Error.Text5");
             Logs.Error(data, ex);
             WindowManager.ShowError(data, ex);
 

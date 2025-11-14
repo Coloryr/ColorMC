@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 
 #if !DEBUG
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.Utils;
 using ColorMC.Gui.UIBinding;
 #endif
 

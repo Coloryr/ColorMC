@@ -44,7 +44,7 @@ public static class InstancesPath
     private static bool s_change;
     private static int s_delay;
 
-    private static readonly object s_lock = new();
+    private static readonly Lock s_lock = new();
 
     /// <summary>
     /// 游戏实例列表
@@ -128,27 +128,25 @@ public static class InstancesPath
     /// </summary>
     private static void StartChange()
     {
-        lock (s_lock)
+        s_lock.Enter();
+        s_delay = 500;
+        if (!s_change)
         {
-            s_delay = 500;
-            if (!s_change)
+            s_change = true;
+            Task.Run(() =>
             {
-                s_change = true;
-                Task.Run(() =>
+                while (s_delay != 0)
                 {
-                    while (s_delay != 0)
-                    {
-                        Thread.Sleep(s_delay);
-                        lock (s_lock)
-                        {
-                            s_delay = 0;
-                        }
-                    }
-                    ColorMCCore.OnInstanceChange();
-                    s_change = false;
-                });
-            }
+                    Thread.Sleep(s_delay);
+                    s_lock.Enter();
+                    s_delay = 0;
+                    s_lock.Exit();
+                }
+                ColorMCCore.OnInstanceChange();
+                s_change = false;
+            });
         }
+        s_lock.Exit();
     }
 
     /// <summary>

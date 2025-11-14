@@ -163,7 +163,7 @@ public partial class GameEditModel
     /// </summary>
     private void AddWorld()
     {
-        WindowManager.ShowAdd(_obj, FileType.World);
+        WindowManager.ShowAdd(_obj, FileType.Save);
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public partial class GameEditModel
             return;
         }
 
-        var file = await PathBinding.AddFileAsync(top, _obj, FileType.World);
+        var file = await PathBinding.AddFileAsync(top, _obj, FileType.Save);
         if (file == null)
         {
             return;
@@ -217,7 +217,7 @@ public partial class GameEditModel
     /// <param name="data"></param>
     public async void DropWorld(IDataTransfer data)
     {
-        var res = await GameBinding.AddFileAsync(_obj, data, FileType.World);
+        var res = await GameBinding.AddFileAsync(_obj, data, FileType.Save);
         if (res)
         {
             await LoadWorld();
@@ -269,7 +269,7 @@ public partial class GameEditModel
         }
 
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text9"));
-        var file = await PathBinding.SaveFileAsync(top, FileType.World, [obj]);
+        var file = await PathBinding.SaveFileAsync(top, FileType.Save, [obj]);
         Model.ProgressClose();
         if (file == null)
         {
