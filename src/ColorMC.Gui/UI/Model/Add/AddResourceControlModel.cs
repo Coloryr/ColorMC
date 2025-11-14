@@ -43,7 +43,7 @@ public partial class AddResourceControlModel : GameModel
     /// <summary>
     /// 显示的下载类型列表
     /// </summary>
-    public string[] TypeList { get; init; } = LanguageBinding.GetAddType();
+    public string[] TypeList { get; init; } = LanguageUtils.GetAddType();
     /// <summary>
     /// 显示的游戏版本列表
     /// </summary>
@@ -488,8 +488,8 @@ public partial class AddResourceControlModel : GameModel
         if (type is SourceType.CurseForge or SourceType.Modrinth)
         {
             SortTypeList.AddRange(type is SourceType.CurseForge
-                ? LanguageBinding.GetCurseForgeSortTypes()
-                : LanguageBinding.GetModrinthSortTypes());
+                ? LanguageUtils.GetCurseForgeSortTypes()
+                : LanguageUtils.GetModrinthSortTypes());
             //获取支持的游戏版本和分类
             Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
             var list = type is SourceType.CurseForge

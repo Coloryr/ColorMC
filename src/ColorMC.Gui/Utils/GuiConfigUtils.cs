@@ -48,7 +48,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("Config.Error2"), e);
+                Logs.Error(LanguageUtils.Get("App.Error.Log13"), e);
             }
 
             if (conf == null)

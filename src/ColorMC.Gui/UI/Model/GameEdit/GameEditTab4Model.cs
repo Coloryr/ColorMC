@@ -30,7 +30,7 @@ public partial class GameEditModel
     /// <summary>
     /// 过滤器列表
     /// </summary>
-    public string[] ModFilterList { get; init; } = LanguageBinding.GetFilterName();
+    public string[] ModFilterList { get; init; } = LanguageUtils.GetFilterName();
 
     /// <summary>
     /// 模组列表

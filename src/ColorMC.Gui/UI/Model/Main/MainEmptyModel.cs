@@ -17,7 +17,7 @@ public partial class MainModel
     /// <summary>
     /// 语言列表
     /// </summary>
-    public string[] LanguageList { get; init; } = LanguageBinding.GetLanguages();
+    public string[] LanguageList { get; init; } = LanguageUtils.GetLanguages();
 
     /// <summary>
     /// 选择语言

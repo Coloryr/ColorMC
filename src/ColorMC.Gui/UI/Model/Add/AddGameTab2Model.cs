@@ -20,7 +20,7 @@ public partial class AddGameModel
     /// <summary>
     /// 压缩包类型列表
     /// </summary>
-    public string[] PackTypeList { get; init; } = LanguageBinding.GetPackType();
+    public string[] PackTypeList { get; init; } = LanguageUtils.GetPackType();
 
     /// <summary>
     /// 压缩包位置

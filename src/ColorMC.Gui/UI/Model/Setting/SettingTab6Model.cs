@@ -42,11 +42,11 @@ public partial class SettingModel
     /// <summary>
     /// 登录类型列表
     /// </summary>
-    public string[] LoginList { get; init; } = LanguageBinding.GetLockLoginType();
+    public string[] LoginList { get; init; } = LanguageUtils.GetLockLoginType();
     /// <summary>
     /// 自定义主界面动画类型
     /// </summary>
-    public string[] DisplayList { get; init; } = LanguageBinding.GetDisplayList();
+    public string[] DisplayList { get; init; } = LanguageUtils.GetDisplayList();
 
     /// <summary>
     /// 选中的锁定类型
@@ -374,7 +374,7 @@ public partial class SettingModel
         var res = BaseBinding.TestCustomWindow();
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("App.Error.Text5"));
+            Model.Show(LanguageUtils.Get("App.Text112"));
         }
     }
     /// <summary>

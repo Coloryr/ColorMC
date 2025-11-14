@@ -42,7 +42,7 @@ public partial class GameEditModel
     /// <summary>
     /// 版本类型列表
     /// </summary>
-    public string[] VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
+    public string[] VersionTypeList { get; init; } = LanguageUtils.GetVersionType();
     /// <summary>
     /// 加载器类型列表
     /// </summary>

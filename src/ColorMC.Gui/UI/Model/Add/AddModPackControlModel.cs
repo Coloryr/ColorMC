@@ -27,7 +27,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// <summary>
     /// 下载源列表
     /// </summary>
-    public string[] SourceList { get; init; } = LanguageBinding.GetSourceList();
+    public string[] SourceList { get; init; } = LanguageUtils.GetSourceList();
 
     /// <summary>
     /// 游戏版本列表
@@ -277,8 +277,8 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             case 0:
             case 1:
                 SortTypeList.AddRange(Source == 0 ?
-                    LanguageBinding.GetCurseForgeSortTypes() :
-                    LanguageBinding.GetModrinthSortTypes());
+                    LanguageUtils.GetCurseForgeSortTypes() :
+                    LanguageUtils.GetModrinthSortTypes());
 
                 Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
                 var list = Source == 0 ?

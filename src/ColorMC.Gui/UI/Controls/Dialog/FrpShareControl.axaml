@@ -11,7 +11,7 @@
     <StackPanel Margin="5">
         <TextBlock Margin="0,0,0,10" Text="{setting:Localize NetFrpWindow.Tab3.Text4}" />
         <DockPanel Width="300">
-            <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+            <TextBlock Text="{setting:Localize Text.GameVersion}" />
             <ComboBox
                 HorizontalAlignment="Stretch"
                 ItemsSource="{Binding VersionList}"

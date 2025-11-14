@@ -19,7 +19,7 @@ public partial class GameEditModel
     /// <summary>
     /// GC类型列表
     /// </summary>
-    public string[] GCTypeList { get; init; } = LanguageBinding.GetGCTypes();
+    public string[] GCTypeList { get; init; } = LanguageUtils.GetGCTypes();
     /// <summary>
     /// Java列表
     /// </summary>

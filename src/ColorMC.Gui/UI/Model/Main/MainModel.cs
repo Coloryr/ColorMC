@@ -144,7 +144,7 @@ public partial class MainModel : TopModel, IMutTop
     [RelayCommand]
     public async Task OpenGuide()
     {
-        var list = LanguageBinding.GetGuide();
+        var list = LanguageUtils.GetGuide();
         var res = await Model.ShowCombo(LanguageUtils.Get("SettingWindow.Tab7.Text18"), list);
         if (res.Cancel)
         {

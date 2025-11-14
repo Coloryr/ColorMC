@@ -14,7 +14,7 @@ public partial class SettingModel
     /// <summary>
     /// GC类型
     /// </summary>
-    public string[] GCTypeList { get; init; } = LanguageBinding.GetGCTypes();
+    public string[] GCTypeList { get; init; } = LanguageUtils.GetGCTypes();
 
     /// <summary>
     /// 启动前命令
@@ -103,35 +103,10 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _fullScreen;
     /// <summary>
-    /// 是否启动后关闭启动器
-    /// </summary>
-    [ObservableProperty]
-    private bool _closeBefore;
-    /// <summary>
-    /// 是否启用安全Log4j
-    /// </summary>
-    [ObservableProperty]
-    private bool _safeLog4j;
-    /// <summary>
     /// 是否同时启动游戏
     /// </summary>
     [ObservableProperty]
     private bool _preRunSame;
-    /// <summary>
-    /// 是否检测用户是否占用
-    /// </summary>
-    [ObservableProperty]
-    private bool _checkUser;
-    /// <summary>
-    /// 是否检测加载器是否启用
-    /// </summary>
-    [ObservableProperty]
-    private bool _checkLoader;
-    /// <summary>
-    /// 是否检测内存分配
-    /// </summary>
-    [ObservableProperty]
-    private bool _checkMemory;
     /// <summary>
     /// 是否禁用ColorMC ASM
     /// </summary>
@@ -176,40 +151,9 @@ public partial class SettingModel
     /// </summary>
     private bool _argLoad = true;
 
-    //配置修改
-    partial void OnCloseBeforeChanged(bool value)
-    {
-        ConfigBinding.SetLaunchCloseConfig(value);
-    }
-
     partial void OnColorASMChanged(bool value)
     {
         SetArg();
-    }
-
-    partial void OnCheckUserChanged(bool value)
-    {
-        SetCheck();
-    }
-
-    partial void OnCheckLoaderChanged(bool value)
-    {
-        SetCheck();
-    }
-
-    partial void OnCheckMemoryChanged(bool value)
-    {
-        SetCheck();
-    }
-
-    partial void OnSafeLog4jChanged(bool value)
-    {
-        if (_argLoad)
-        {
-            return;
-        }
-
-        ConfigBinding.SetSafeLog4j(value);
     }
 
     partial void OnMaxMemoryChanged(uint? value)
@@ -367,27 +311,7 @@ public partial class SettingModel
             SafeLog4j = con.SafeLog4j;
         }
 
-        var config1 = GuiConfigUtils.Config;
-        if (config1 is { } con1)
-        {
-            CloseBefore = con1.CloseBeforeLaunch;
-
-            CheckUser = con1.LaunchCheck.CheckUser;
-            CheckLoader = con1.LaunchCheck.CheckLoader;
-            CheckMemory = con1.LaunchCheck.CheckMemory;
-        }
         _argLoad = false;
-    }
-
-    //保存配置
-    private void SetCheck()
-    {
-        if (_argLoad)
-        {
-            return;
-        }
-
-        ConfigBinding.SetCheck(CheckUser, CheckLoader, CheckMemory);
     }
 
     private void SetMemory()

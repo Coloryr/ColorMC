@@ -30,7 +30,7 @@ public partial class AddGameModel
     /// <summary>
     /// 游戏版本类型
     /// </summary>
-    public string[] VersionTypeList { get; init; } = LanguageBinding.GetVersionType();
+    public string[] VersionTypeList { get; init; } = LanguageUtils.GetVersionType();
     /// <summary>
     /// 加载器版本类型
     /// </summary>

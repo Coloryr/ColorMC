@@ -27,7 +27,7 @@
                         Command="{Binding GetCloud}"
                         Content="{setting:Localize Text.RefashList}"
                         DockPanel.Dock="Right" />
-                    <TextBlock Text="{setting:Localize GameBinding.Info6}" />
+                    <TextBlock Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"

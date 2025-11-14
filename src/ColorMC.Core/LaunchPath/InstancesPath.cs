@@ -142,7 +142,10 @@ public static class InstancesPath
                     s_delay = 0;
                     s_lock.Exit();
                 }
-                ColorMCCore.OnInstanceChange();
+                if (!DisableWatcher)
+                {
+                    ColorMCCore.OnInstanceChange();
+                }
                 s_change = false;
             });
         }

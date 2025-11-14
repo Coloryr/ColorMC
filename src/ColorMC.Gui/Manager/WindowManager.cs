@@ -240,7 +240,7 @@ public static class WindowManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Error3"), e);
+                Logs.Error(LanguageUtils.Get("App.Error.Log18"), e);
             }
         }
     }
@@ -411,7 +411,7 @@ public static class WindowManager
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
-                    CustomWindow?.Icon.Window?.Model.Show(LanguageUtils.Get("WindowManager.Info1"));
+                    CustomWindow?.Icon.Window?.Model.Show(LanguageUtils.Get("App.Text73"));
                 }
                 return true;
             }
@@ -422,7 +422,7 @@ public static class WindowManager
         }
         catch (Exception e)
         {
-            var data = LanguageUtils.Get("WindowManager.Error1");
+            var data = LanguageUtils.Get("App.Text74");
             Logs.Error(data, e);
             ShowError(data, e, !test);
         }
@@ -656,7 +656,7 @@ public static class WindowManager
                 {
                     MainWindow.Window.Show();
                     MainWindow.Window.WindowActivate();
-                    MainWindow.Window.Model.Show(LanguageUtils.Get("App.Error8"));
+                    MainWindow.Window.Model.Show(LanguageUtils.Get("App.Text102"));
                     return;
                 }
 

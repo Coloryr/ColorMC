@@ -4,6 +4,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -59,7 +60,7 @@ public partial class FrpShareModel : ObservableObject
             Version = version;
         }
 
-        Loaders.AddRange(LanguageBinding.GetLoader());
+        Loaders.AddRange(LanguageUtils.GetLoader());
         Loader = 0;
     }
 

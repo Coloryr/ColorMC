@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
@@ -262,17 +263,20 @@ public partial class MainModel
             return;
         }
         Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
-        foreach (var item in list)
+        InstancesPath.DisableWatcher = true;
+        await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             if (GameManager.IsAdd(item.Obj))
             {
                 Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
-                continue;
+                return;
             }
             await GameBinding.DeleteGameAsync(item.Obj);
-        }
+        });
+        InstancesPath.DisableWatcher = false;
         Model.ProgressClose();
         Model.InputClose();
+        LoadGameItem();
     }
 
     /// <summary>

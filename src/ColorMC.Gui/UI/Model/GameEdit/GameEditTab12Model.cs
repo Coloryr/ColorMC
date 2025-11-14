@@ -54,7 +54,7 @@ public partial class GameEditModel
             {
                 SchematicList.Add(new SchematicObj()
                 {
-                    Name = LanguageUtils.Get("GameBinding.Info17"),
+                    Name = LanguageUtils.Get("GameEditWindow.Tab12.Text10"),
                     Local = item.Local,
                 });
             }

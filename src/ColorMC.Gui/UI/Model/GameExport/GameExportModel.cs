@@ -37,7 +37,7 @@ public partial class GameExportModel : MenuModel
     /// <summary>
     /// 导出类型列表
     /// </summary>
-    public string[] ExportTypes { get; init; } = LanguageBinding.GetExportName();
+    public string[] ExportTypes { get; init; } = LanguageUtils.GetExportName();
 
     /// <summary>
     /// 在线下载的Mod列表

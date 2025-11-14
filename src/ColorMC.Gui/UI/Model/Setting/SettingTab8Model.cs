@@ -45,7 +45,7 @@ public partial class SettingModel
     /// <summary>
     /// 摇杆类型
     /// </summary>
-    public string[] AxisType { get; init; } = LanguageBinding.GetAxisTypeName();
+    public string[] AxisType { get; init; } = LanguageUtils.GetAxisTypeName();
 
     /// <summary>
     /// 选中的按钮

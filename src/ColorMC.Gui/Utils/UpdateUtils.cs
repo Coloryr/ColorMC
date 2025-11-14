@@ -120,11 +120,11 @@ public static class UpdateUtils
     //    if (ColorMCGui.BaseSha1 == null)
     //        return;
 
-    //    model.Progress(LanguageUtils.Get("UpdateChecker.Info2"));
+    //    model.Progress(LanguageUtils.Get("App.Text82"));
     //    var obj = await ColorMCCloudAPI.GetUpdateIndex();
     //    if (obj == null)
     //    {
-    //        model.Show(LanguageUtils.Get("UpdateChecker.Error3"));
+    //        model.Show(LanguageUtils.Get("App.Text86"));
     //        return;
     //    }
     //    var json = obj.RootElement;
@@ -133,7 +133,7 @@ public static class UpdateUtils
     //        || list.ValueKind is not JsonValueKind.Array
     //        || list.Deserialize(JsonGuiType.ListUpdateObj) is not { } update)
     //    {
-    //        model.Show(LanguageUtils.Get("UpdateChecker.Error3"));
+    //        model.Show(LanguageUtils.Get("App.Text86"));
     //        return;
     //    }
     //    bool find = false;
@@ -161,7 +161,7 @@ public static class UpdateUtils
     //        if (info.Item1 == null)
     //        {
     //            model.ProgressClose();
-    //            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
+    //            model.Show(LanguageUtils.Get("App.Text84"));
     //            return;
     //        }
     //        if (info.Item2 != null)
@@ -171,7 +171,7 @@ public static class UpdateUtils
     //        var res = await DownloadManager.StartAsync(down);
     //        if (res)
     //        {
-    //            model.ProgressUpdate(LanguageUtils.Get("UpdateChecker.Info3"));
+    //            model.ProgressUpdate(LanguageUtils.Get("App.Text83"));
     //            res = await StartPatch(info.Item1, diffs);
     //            model.ProgressClose();
     //            if (res)
@@ -180,13 +180,13 @@ public static class UpdateUtils
     //            }
     //            else
     //            {
-    //                model.Show(LanguageUtils.Get("UpdateChecker.Error2"));
+    //                model.Show(LanguageUtils.Get("App.Text85"));
     //            }
     //        }
     //        else
     //        {
     //            model.ProgressClose();
-    //            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
+    //            model.Show(LanguageUtils.Get("App.Text84"));
     //        }
     //    }
     //    else
@@ -203,7 +203,7 @@ public static class UpdateUtils
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        model.Progress(LanguageUtils.Get("UpdateChecker.Info2"));
+        model.Progress(LanguageUtils.Get("App.Text82"));
         var list = new List<FileItemObj>()
         {
             new()
@@ -232,7 +232,7 @@ public static class UpdateUtils
         }
         else
         {
-            model.Show(LanguageUtils.Get("UpdateChecker.Error1"));
+            model.Show(LanguageUtils.Get("App.Text84"));
         }
     }
 
@@ -273,7 +273,7 @@ public static class UpdateUtils
                 if (WebSha1s[a] != LocalSha1s[a])
                 {
                     index.TryGetProperty("info", out var data1);
-                    return (true, data1.GetString() ?? LanguageUtils.Get("UpdateChecker.Info1"));
+                    return (true, data1.GetString() ?? LanguageUtils.Get("App.Text81"));
                 }
             }
 
@@ -331,7 +331,7 @@ public static class UpdateUtils
     //        }
     //        catch (Exception e)
     //        {
-    //            Logs.Error(LanguageUtils.Get("UpdateChecker.Error1"), e);
+    //            Logs.Error(LanguageUtils.Get("App.Text84"), e);
     //            return false;
     //        }
     //    });

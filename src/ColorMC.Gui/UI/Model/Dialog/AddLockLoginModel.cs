@@ -1,5 +1,6 @@
 ﻿using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -14,7 +15,7 @@ public partial class AddLockLoginModel : ObservableObject
     /// <summary>
     /// 模型列表
     /// </summary>
-    public string[] Items { get; init; } = LanguageBinding.GetLockLoginType();
+    public string[] Items { get; init; } = LanguageUtils.GetLockLoginType();
 
     /// <summary>
     /// 选中项目

@@ -492,8 +492,8 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
         }
         else
         {
-            _userTypeList.AddRange(LanguageBinding.GetLoginUserType());
-            DisplayUserTypeList.AddRange(LanguageBinding.GetDisplayUserTypes());
+            _userTypeList.AddRange(LanguageUtils.GetLoginUserType());
+            DisplayUserTypeList.AddRange(LanguageUtils.GetDisplayUserTypes());
         }
 
         Load();

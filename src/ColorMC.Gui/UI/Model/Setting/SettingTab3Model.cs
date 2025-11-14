@@ -30,11 +30,11 @@ public partial class SettingModel
     /// <summary>
     /// 下载源列表
     /// </summary>
-    public string[] SourceList { get; init; } = LanguageBinding.GetDownloadSources();
+    public string[] SourceList { get; init; } = LanguageUtils.GetDownloadSources();
     /// <summary>
     /// Dns类型列表
     /// </summary>
-    public string[] DnsList { get; init; } = LanguageBinding.GetDns();
+    public string[] DnsList { get; init; } = LanguageUtils.GetDns();
     /// <summary>
     /// Dns列表
     /// </summary>
