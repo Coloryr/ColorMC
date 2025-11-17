@@ -591,7 +591,7 @@ public partial class SettingModel
                 DebugColor = color;
             }
         }
-        var config1 = ConfigLoad.Config;
+        var config1 = GuiConfigUtils.Config;
         if (config1 is { } con1)
         {
             Language = con1.Language;

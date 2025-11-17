@@ -129,14 +129,6 @@ public enum PackType
 }
 
 /// <summary>
-/// 语言
-/// </summary>
-public enum LanguageType
-{
-    zh_cn, en_us
-}
-
-/// <summary>
 /// 下载源
 /// </summary>
 public enum SourceLocal

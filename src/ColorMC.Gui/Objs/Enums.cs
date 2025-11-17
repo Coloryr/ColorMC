@@ -208,3 +208,11 @@ public enum ModFilterType
     /// </summary>
     Newer
 }
+
+/// <summary>
+/// 语言
+/// </summary>
+public enum LanguageType
+{
+    zh_cn, en_us
+}

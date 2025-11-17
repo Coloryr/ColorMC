@@ -14,6 +14,8 @@ public record ModrinthProjectObj
     public string Title { get; set; }
     [JsonPropertyName("description")]
     public string Description { get; set; }
+    [JsonPropertyName("body")]
+    public string Body { get; set; }
     //public string published { get; set; }
     [JsonPropertyName("updated")]
     public string Updated { get; set; }

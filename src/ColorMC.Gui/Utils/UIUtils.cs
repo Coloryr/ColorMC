@@ -4,6 +4,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core.Net.Motd;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 
@@ -87,6 +88,31 @@ public static class UIUtils
         {
             return $"{size}b/s";
         }
+    }
+
+    public static string MakeDownload(long times)
+    {
+        if (GuiConfigUtils.Config.Language == LanguageType.zh_cn)
+        {
+            if (times > 100000000)
+            {
+                return $"{times / 100000000}亿+";
+            }
+            else if (times > 10000)
+            {
+                return $"{times / 10000}万+";
+            }
+            else if (times > 1000)
+            {
+                return $"{times / 10000}千+";
+            }
+            else
+            {
+                return $"{times}次";
+            }
+        }
+
+        return times.ToString();
     }
 
     /// <summary>

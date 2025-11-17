@@ -87,7 +87,7 @@ public partial class MainModel
     public void LoadEmptyGame()
     {
         _emptyLoad = true;
-        var config = ConfigLoad.Config;
+        var config = GuiConfigUtils.Config;
         if (config != null)
         {
             Language = config.Language;

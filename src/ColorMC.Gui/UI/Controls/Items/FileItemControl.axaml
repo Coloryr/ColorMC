@@ -8,6 +8,7 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="100"
     d:DesignWidth="500"
     x:DataType="model:FileItemModel"
     Focusable="True"
@@ -36,11 +37,34 @@
                         FontSize="16"
                         Foreground="{setting:Theme MainColor}"
                         Text="{Binding Name, FallbackValue=1234}" />
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        Foreground="#FF9A9A9A"
-                        Text="{Binding Author, FallbackValue=Author}"
-                        TextTrimming="CharacterEllipsis" />
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                    <Border
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="5">
+                                        <Border.Background>
+                                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        DockPanel.Dock="Top"
+                                        Foreground="#FF9A9A9A"
+                                        Text="{Binding Name, FallbackValue=Author}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                     <WrapPanel DockPanel.Dock="Bottom">
                         <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
                         <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
@@ -49,7 +73,7 @@
                     </WrapPanel>
                     <TextBlock
                         Margin="0,0,30,0"
-                        MaxLines="2"
+                        MaxLines="1"
                         Text="{Binding Summary}"
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap" />

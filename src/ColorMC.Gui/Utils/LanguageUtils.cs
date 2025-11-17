@@ -7,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Objs;
 
 namespace ColorMC.Gui.Utils;
 

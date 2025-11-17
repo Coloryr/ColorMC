@@ -446,8 +446,8 @@ public static class ConfigBinding
     /// <param name="type"></param>
     public static void SetLanguage(LanguageType type)
     {
-        ConfigLoad.Config.Language = type;
-        ConfigLoad.Save();
+        GuiConfigUtils.Config.Language = type;
+        GuiConfigUtils.Save();
 
         LanguageUtils.Change(type);
     }

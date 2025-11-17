@@ -16,6 +16,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// <summary>
     /// 添加
     /// </summary>
+    public IAddFileControl? AddFile { get; set; }
     public IAddControl? Add { get; set; }
 
     /// <summary>
@@ -96,7 +97,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public void SetSelect()
     {
-        Add?.SetSelect(this);
+        AddFile?.SetSelect(this);
     }
 
     /// <summary>
@@ -104,7 +105,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public void Back()
     {
-        Add?.BackVersion();
+        AddFile?.BackVersion();
     }
 
     /// <summary>
@@ -112,7 +113,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public void Next()
     {
-        Add?.NextVersion();
+        AddFile?.NextVersion();
     }
 
     /// <summary>
