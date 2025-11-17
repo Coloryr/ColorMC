@@ -47,10 +47,12 @@ public record CurseForgeListObj
         {
             //public long id { get; set; }
             //public long gameId { get; set; }
-            //public string name { get; set; }
+            [JsonPropertyName("name")]
+            public string Name { get; set; }
             //public string slug { get; set; }
             //public string url { get; set; }
-            //public string iconUrl { get; set; }
+            [JsonPropertyName("iconUrl")]
+            public string IconUrl { get; set; }
             //public string dateModified { get; set; }
             //public bool isClass { get; set; }
             [JsonPropertyName("classId")]
@@ -62,7 +64,8 @@ public record CurseForgeListObj
             //public long id { get; set; }
             [JsonPropertyName("name")]
             public string Name { get; set; }
-            //public string url { get; set; }
+            [JsonPropertyName("avatarUrl")]
+            public string AvatarUrl { get; set; }
         }
         public record LogoObj
         {
@@ -74,15 +77,18 @@ public record CurseForgeListObj
             [JsonPropertyName("url")]
             public string Url { get; set; }
         }
-        //public record Screenshots
-        //{
-        //    public long id { get; set; }
-        //    public long modId { get; set; }
-        //    public string title { get; set; }
-        //    public string description { get; set; }
-        //    public string thumbnailUrl { get; set; }
-        //    public string url { get; set; }
-        //}
+        public record ScreenshotsObj
+        {
+            //public long id { get; set; }
+            //public long modId { get; set; }
+            [JsonPropertyName("title")]
+            public string Title { get; set; }
+            [JsonPropertyName("description")]
+            public string Description { get; set; }
+            //public string thumbnailUrl { get; set; }
+            [JsonPropertyName("url")]
+            public string Url { get; set; }
+        }
         //public record LatestFilesIndexes
         //{
         //    public string gameVersion { get; set; }
@@ -115,7 +121,8 @@ public record CurseForgeListObj
         public List<AuthorsObj> Authors { get; set; }
         [JsonPropertyName("logo")]
         public LogoObj Logo { get; set; }
-        //public List<Screenshots> screenshots { get; set; }
+        [JsonPropertyName("screenshots")]
+        public List<ScreenshotsObj> Screenshots { get; set; }
         //public long mainFileId { get; set; }
         //public List<CurseForgeModObj.DataObj> latestFiles { get; set; }
         //public List<LatestFilesIndexes> latestFilesIndexes { get; set; }

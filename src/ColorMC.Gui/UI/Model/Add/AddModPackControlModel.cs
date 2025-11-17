@@ -47,13 +47,14 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
 
     /// <summary>
+    /// 下载项目信息
+    /// </summary>
+    public AddFileInfoControlModel DisplayFile { get; init; }
+
+    /// <summary>
     /// 分类
     /// </summary>
     private readonly Dictionary<int, string> _categories = [];
-    /// <summary>
-    /// 选中的项目
-    /// </summary>
-    private FileItemModel? _last;
     /// <summary>
     /// 是否在加载
     /// </summary>
@@ -119,6 +120,8 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     [ObservableProperty]
     private bool _enableNextPage;
 
+    private FileItemModel? _last;
+
     /// <summary>
     /// 是否已经显示
     /// </summary>
@@ -134,6 +137,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     public AddModPackControlModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
+        DisplayFile = new AddFileInfoControlModel(model, this);
     }
 
     /// <summary>
@@ -175,7 +179,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
         }
 
-        GameVersionDownload = value;
+        DisplayFile.GameVersionDownload = value;
 
         Load();
     }
@@ -231,22 +235,9 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         Load();
     }
 
-    /// <summary>
-    /// 下载所选项目
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task Download()
+    protected override void MinModeChange()
     {
-        if (Item == null)
-            return;
-
-        var res = await Model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddModPackWindow.Text17"), Item.Name));
-        if (res)
-        {
-            Install(Item);
-        }
+        DisplayFile.MinMode = MinMode;
     }
 
     /// <summary>
@@ -268,6 +259,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         SortTypeList.Clear();
 
         GameVersionList.Clear();
+        DisplayFile.GameVersionList.Clear();
         _categories.Clear();
 
         ClearList();
@@ -295,6 +287,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
                     return;
                 }
                 GameVersionList.AddRange(list);
+                DisplayFile.GameVersionList.AddRange(list);
 
                 _categories.Add(0, "");
                 var a = 1;
@@ -331,10 +324,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     public void SetSelect(FileItemModel last)
     {
         IsSelect = true;
-        if (_last != null)
-        {
-            _last.IsSelect = false;
-        }
+        _last?.IsSelect = false;
         _last = last;
         _last.IsSelect = true;
     }
@@ -345,6 +335,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     private void Install()
     {
         DisplayVersion = true;
+        DisplayFile.Load(_last);
         LoadVersion();
     }
 
@@ -356,6 +347,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
         DisplayVersion = false;
+        DisplayFile.Close();
 
         if (_keep)
         {
@@ -535,7 +527,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         _close = true;
         _load = true;
         Model.RemoveChoiseData(_useName);
-        FileList.Clear();
+        DisplayFile.FileList.Clear();
         foreach (var item in DisplayList)
         {
             item.Close();
@@ -561,9 +553,9 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         });
 
         _load = true;
-        PageDownload = 0;
+        DisplayFile.PageDownload = 0;
         DisplayVersion = true;
-        LoadVersion(type, pid);
+        DisplayFile.LoadVersion(type, pid);
         _load = false;
     }
 }

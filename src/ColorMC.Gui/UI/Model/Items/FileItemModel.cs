@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
@@ -44,13 +46,25 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public string Summary { get; init; }
     /// <summary>
+    /// 简介
+    /// </summary>
+    public string SummaryOld { get; init; }
+    /// <summary>
     /// 作者
     /// </summary>
-    public string Author { get; init; }
+    public ObservableCollection<AuthorModel> Authors { get; init; } = [];
+    /// <summary>
+    /// 标签
+    /// </summary>
+    public ObservableCollection<TagModel> Tags { get; init; } = [];
+    /// <summary>
+    /// 截图
+    /// </summary>
+    public ObservableCollection<WebPicModel> Screenshots { get; init; } = [];
     /// <summary>
     /// 下载次数
     /// </summary>
-    public long DownloadCount { get; init; }
+    public string DownloadCount { get; init; }
     /// <summary>
     /// 更新时间
     /// </summary>
@@ -68,6 +82,13 @@ public partial class FileItemModel : SelectItemModel
     /// 是否显示标星
     /// </summary>
     public bool ShowStar { get; init; }
+    /// <summary>
+    /// 是否有百科翻译
+    /// </summary>
+    public bool HaveMcmod { get; init; }
+
+    public string SummaryHtml { get; private set; }
+    public string SummaryMarkdown { get; private set; }
 
     /// <summary>
     /// 星的图标
@@ -105,6 +126,11 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     [ObservableProperty]
     private bool _enableButton;
+    /// <summary>
+    /// 是否启用按钮
+    /// </summary>
+    [ObservableProperty]
+    private bool _isMarkdown;
 
     /// <summary>
     /// 文件类型
@@ -143,14 +169,33 @@ public partial class FileItemModel : SelectItemModel
 
     public FileItemModel(CurseForgeListObj.CurseForgeListDataObj data, FileType type, McModSearchItemObj? mcmod)
     {
+        HaveMcmod = mcmod != null;
+
         McMod = mcmod;
         Pid = data.Id.ToString();
 
         ID = data.Id.ToString();
         Name = mcmod?.McmodName ?? data.Name;
         Summary = mcmod?.McmodText ?? data.Summary;
-        Author = data.Authors.GetString();
-        DownloadCount = data.DownloadCount;
+        SummaryOld = data.Summary;
+        foreach (var item in data.Authors)
+        {
+            if (Authors.Count > 10)
+            {
+                Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), data.Authors.Count - 10), null));
+                break;
+            }
+            Authors.Add(new AuthorModel(item.Name, item.AvatarUrl));
+        }
+        foreach (var item in data.Categories)
+        {
+            Tags.Add(new TagModel(item.Name, item.IconUrl));
+        }
+        foreach (var item in data.Screenshots)
+        {
+            Screenshots.Add(new WebPicModel(item.Title, item.Description, item.Url));
+        }
+        DownloadCount = UIUtils.MakeDownload(data.DownloadCount);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.Logo?.Url;
         FileType = type;
@@ -165,18 +210,45 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id.ToString());
         }
+
+        LoadBody();
     }
 
-    public FileItemModel(ModrinthSearchObj.HitObj data, FileType type, McModSearchItemObj? mcmod)
+    public FileItemModel(ModrinthSearchObj.HitObj data, List<ModrinthTeamObj>? team, ModrinthProjectObj? project, FileType type, McModSearchItemObj? mcmod)
     {
+        HaveMcmod = mcmod != null;
+
         McMod = mcmod;
         Pid = data.ProjectId;
 
         ID = data.ProjectId;
-        Name = data.Title;
-        Summary = data.Description;
-        Author = data.Author;
-        DownloadCount = data.Downloads;
+        Name = mcmod?.McmodName ?? data.Title;
+        Summary = mcmod?.McmodText ?? data.Description;
+        if (project != null)
+        {
+            SummaryOld = project.Body;
+        }
+        else
+        {
+            SummaryOld = data.Description;
+        }
+        if (team != null)
+        {
+            foreach (var item in team)
+            {
+                if (Authors.Count > 10)
+                {
+                    Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 10), null));
+                    break;
+                }
+                Authors.Add(new AuthorModel(item.User.Username, item.User.AvatarUrl));
+            }
+        }
+        else
+        {
+            Authors.Add(new AuthorModel(data.Author, null));
+        }
+        DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.IconUrl;
         FileType = type;
@@ -191,6 +263,8 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.ProjectId);
         }
+
+        LoadBody();
     }
 
     public FileItemModel(ModrinthProjectObj data, FileType type, McModSearchItemObj? mcmod)
@@ -202,7 +276,7 @@ public partial class FileItemModel : SelectItemModel
         Name = data.Title;
         Summary = data.Description;
         //Author = data.Author;
-        DownloadCount = data.Downloads;
+        DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.Updated);
         Logo = data.IconUrl;
         FileType = type;
@@ -217,6 +291,8 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id);
         }
+
+        LoadBody();
     }
 
     public FileItemModel(McModSearchItemObj data, FileType type)
@@ -226,13 +302,28 @@ public partial class FileItemModel : SelectItemModel
         Logo = data.McmodIcon.StartsWith("//") ? "https:" + data.McmodIcon : data.McmodIcon;
         Name = data.McmodName;
         Summary = data.McmodText;
-        Author = data.McmodAuthor;
+        Authors.Add(new AuthorModel(data.McmodAuthor, null));
         FileType = FileType.Mod;
         SourceType = SourceType.McMod;
         ModifiedDate = data.McmodUpdateTime;
 
         HaveDownload = data.CurseforgeId != null || data.ModrinthId != null;
         IsModPack = type == FileType.ModPack;
+
+        LoadBody();
+    }
+
+    private void LoadBody()
+    {
+        if (SummaryOld.StartsWith('#'))
+        {
+            IsMarkdown = true;
+            SummaryMarkdown = SummaryOld;
+        }
+        else 
+        {
+            SummaryHtml = SummaryOld;
+        }
     }
 
     partial void OnIsStarChanged(bool value)
@@ -350,6 +441,18 @@ public partial class FileItemModel : SelectItemModel
     public void Close()
     {
         _close = true;
+        foreach (var item in Authors)
+        {
+            item.Close();
+        }
+        foreach (var item in Tags)
+        {
+            item.Close();
+        }
+        foreach (var item in Screenshots)
+        {
+            item.Close();
+        }
         if (_img != ImageManager.GameIcon)
         {
             _img?.Dispose();

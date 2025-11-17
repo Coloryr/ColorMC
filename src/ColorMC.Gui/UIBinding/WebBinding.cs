@@ -44,78 +44,86 @@ public static class WebBinding
     public static async Task<ModPackListRes> GetModPackListAsync(SourceType type, string? version,
         string? filter, int page, int sort, string categoryId)
     {
-        version ??= "";
-        filter ??= "";
-        if (type == SourceType.CurseForge)
+        try
         {
-            var list = await CurseForgeAPI.GetModPackListAsync(version, page, filter: filter,
-                sortField: sort switch
+            version ??= "";
+            filter ??= "";
+            if (type == SourceType.CurseForge)
+            {
+                var list = await CurseForgeAPI.GetModPackListAsync(version, page, filter: filter,
+                    sortField: sort switch
+                    {
+                        0 => 1,
+                        1 => 2,
+                        2 => 3,
+                        3 => 4,
+                        4 => 6,
+                        _ => 2
+                    }, sortOrder: sort switch
+                    {
+                        0 => 1,
+                        1 => 1,
+                        2 => 1,
+                        3 => 0,
+                        4 => 1,
+                        _ => 1
+                    }, categoryId: categoryId);
+                if (list == null)
                 {
-                    0 => 1,
-                    1 => 2,
-                    2 => 3,
-                    3 => 4,
-                    4 => 6,
-                    _ => 2
-                }, sortOrder: sort switch
+                    return new ModPackListRes();
+                }
+                var list1 = new List<FileItemModel>();
+                var modlist = new List<string>();
+                list.Data.ForEach(item =>
                 {
-                    0 => 1,
-                    1 => 1,
-                    2 => 1,
-                    3 => 0,
-                    4 => 1,
-                    _ => 1
-                }, categoryId: categoryId);
-            if (list == null)
-            {
-                return new();
-            }
-            var list1 = new List<FileItemModel>();
-            var modlist = new List<string>();
-            list.Data.ForEach(item =>
-            {
-                modlist.Add(item.Id.ToString());
-            });
-            var list2 = await ColorMCAPI.GetMcModFromCFAsync(modlist, 1);
-            list.Data.ForEach(item =>
-            {
-                var id = item.Id.ToString();
-                list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
-            });
+                    modlist.Add(item.Id.ToString());
+                });
+                var list2 = await ColorMCAPI.GetMcModFromCFAsync(modlist, 1);
+                list.Data.ForEach(item =>
+                {
+                    var id = item.Id.ToString();
+                    list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
+                });
 
-            return new()
+                return new ModPackListRes
+                {
+                    List = list1,
+                    Count = list.Pagination.TotalCount
+                };
+            }
+            else if (type == SourceType.Modrinth)
             {
-                List = list1,
-                Count = list.Pagination.TotalCount
-            };
+                var dir = new Dictionary<string, FileItemModel?>();
+                var list = await ModrinthAPI.GetModPackListAsync(version, page, filter: filter, 
+                    sortOrder: sort, categoryId: categoryId);
+                if (list == null)
+                {
+                    return new ModPackListRes();
+                }
+                var modlist = list.Hits.Select(item => item.ProjectId).ToList();
+                modlist.ForEach(item => { dir[item] = null; });
+                var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 1);
+                await Parallel.ForEachAsync(list.Hits, async (item, cancel) =>
+                {
+                    var team = await ModrinthAPI.GetTeamAsync(item.ProjectId);
+                    var project = await ModrinthAPI.GetProjectAsync(item.ProjectId);
+                    dir[item.ProjectId] = new FileItemModel(item, team, project,
+                        FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null);
+                });
+
+                return new ModPackListRes
+                {
+                    List = [.. dir.Values.Where(item => item != null).Select(item => item!)],
+                    Count = list.Hits.Count
+                };
+            }
         }
-        else if (type == SourceType.Modrinth)
+        catch (Exception e)
         {
-            var list = await ModrinthAPI.GetModPackListAsync(version, page, filter: filter, sortOrder: sort, categoryId: categoryId);
-            if (list == null)
-            {
-                return new();
-            }
-            var list1 = new List<FileItemModel>();
-            var modlist = new List<string>();
-            list.Hits.ForEach(item =>
-            {
-                modlist.Add(item.ProjectId);
-            });
-            var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 1);
-            list.Hits.ForEach(item =>
-            {
-                list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
-            });
-
-            return new()
-            {
-                List = list1,
-                Count = list.Hits.Count
-            };
+            Logs.Error("error", e);
         }
 
-        return new();
+        return new ModPackListRes();
     }
 
     /// <summary>
@@ -397,9 +405,12 @@ public static class WebBinding
                 modlist.Add(item.ProjectId);
             });
             var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 0);
-            list.Hits.ForEach(item =>
+            list.Hits.ForEach(async item =>
             {
-                list1.Add(new(item, now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
+                var team = await ModrinthAPI.GetTeamAsync(item.ProjectId);
+                var project = await ModrinthAPI.GetProjectAsync(item.ProjectId);
+                list1.Add(new FileItemModel(item, team, project,
+                    now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
             });
 
             return new ModPackListRes

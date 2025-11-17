@@ -309,6 +309,10 @@ public record LauncherSetting
 public record GuiConfigObj
 {
     /// <summary>
+    /// 语言
+    /// </summary>
+    public LanguageType Language { get; set; }
+    /// <summary>
     /// 使用的账户
     /// </summary>
     public LastUserSetting? LastUser { get; set; }

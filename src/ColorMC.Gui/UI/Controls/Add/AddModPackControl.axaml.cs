@@ -19,8 +19,6 @@ public partial class AddModPackControl : BaseUserControl
         InitializeComponent();
 
         Title = LanguageUtils.Get("AddModPackWindow.Title");
-
-        ModPackFiles.PointerPressed += ModPackFiles_PointerPressed;
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
@@ -63,24 +61,12 @@ public partial class AddModPackControl : BaseUserControl
         {
             if ((DataContext as AddModPackControlModel)!.DisplayVersion)
             {
-                ThemeManager.CrossFade.Start(null, ModPackFiles);
-                ThemeManager.CrossFade.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, ItemInfo);
             }
             else
             {
-                ThemeManager.CrossFade.Start(ModPackFiles, null);
-                ThemeManager.CrossFade.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(ItemInfo, null);
             }
-        }
-    }
-
-    private async void ModPackFiles_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var ev = e.GetCurrentPoint(this);
-        if (ev.Properties.IsXButton1Pressed)
-        {
-            await (DataContext as AddModPackControlModel)!.Download();
-            e.Handled = true;
         }
     }
 

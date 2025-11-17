@@ -262,10 +262,6 @@ public record GameCheckObj
 public record ConfigObj
 {
     /// <summary>
-    /// 语言
-    /// </summary>
-    public LanguageType Language { get; set; }
-    /// <summary>
     /// 配置文件版本
     /// </summary>
     public string Version { get; set; }

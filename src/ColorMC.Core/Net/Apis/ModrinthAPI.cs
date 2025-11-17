@@ -168,6 +168,26 @@ public static class ModrinthAPI
     }
 
     /// <summary>
+    /// 获取团队列表
+    /// </summary>
+    /// <param name="pid"></param>
+    /// <returns></returns>
+    public static async Task<List<ModrinthTeamObj>?> GetTeamAsync(string pid)
+    {
+        string url = $"{UrlHelper.Modrinth}project/{pid}/members";
+        try
+        {
+            using var stream = await SendAsync(url);
+            return JsonUtils.ToObj(stream, JsonType.ListModrinthTeamObj);
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 获取指定项目的内容
     /// </summary>
     /// <param name="id">项目ID</param>

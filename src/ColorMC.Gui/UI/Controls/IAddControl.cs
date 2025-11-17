@@ -2,6 +2,17 @@ using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls;
 
+public interface IAddFileControl
+{
+    /// <summary>
+    /// 选中
+    /// </summary>
+    /// <param name="item"></param>
+    public void SetSelect(FileVersionItemModel item);
+    void BackVersion();
+    void NextVersion();
+}
+
 /// <summary>
 /// 下载数据接口
 /// </summary>
@@ -17,20 +28,14 @@ public interface IAddControl
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileItemModel item);
-    /// <summary>
-    /// 选中
-    /// </summary>
-    /// <param name="item"></param>
-    public void SetSelect(FileVersionItemModel item);
+    void Back();
+    void Next();
+
     /// <summary>
     /// 安装
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileVersionItemModel item);
-    void Back();
-    void Next();
-    void BackVersion();
-    void NextVersion();
 }
 
 /// <summary>

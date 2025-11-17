@@ -94,6 +94,7 @@ namespace ColorMC.Core.Utils;
 [JsonSerializable(typeof(List<LoginObj>))]
 [JsonSerializable(typeof(Dictionary<string, MavenItemObj>))]
 [JsonSerializable(typeof(ServerPackObj))]
+[JsonSerializable(typeof(List<ModrinthTeamObj>))]
 public partial class SourceGenerationContext : JsonSerializerContext
 {
 
@@ -178,4 +179,5 @@ public static class JsonType
     public static JsonTypeInfo<Dictionary<string, MavenItemObj>> DictionaryStringMavenItemObj => SourceGenerationContext.Default.DictionaryStringMavenItemObj;
     public static JsonTypeInfo<ServerPackObj> ServerPackObj => SourceGenerationContext.Default.ServerPackObj;
     public static JsonTypeInfo<GameArgObj.GameArgumentsObj.GameJvmObj> GameJvmObj => SourceGenerationContext.Default.GameJvmObj;
+    public static JsonTypeInfo<List<ModrinthTeamObj>> ListModrinthTeamObj => SourceGenerationContext.Default.ListModrinthTeamObj;
 }

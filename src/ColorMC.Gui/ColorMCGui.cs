@@ -9,7 +9,6 @@ using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Media;
 using ColorMC.Core;
-using ColorMC.Core.Config;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Hook;
@@ -165,7 +164,7 @@ public static class ColorMCGui
 
             BaseBinding.ReadBuildConfig();
 
-            LanguageUtils.Load(ConfigLoad.Config.Language);
+            LanguageUtils.Load(GuiConfigUtils.Config.Language);
 
             IsInit = true;
 

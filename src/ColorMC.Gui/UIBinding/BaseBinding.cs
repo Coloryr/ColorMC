@@ -817,7 +817,7 @@ public static class BaseBinding
         var obj = VersionPath.GetVersion(version);
         var ass = obj?.AssetIndex?.GetIndex();
         string lang = "zh_cn.json";
-        if (ConfigLoad.Config.Language == LanguageType.en_us)
+        if (GuiConfigUtils.Config.Language == LanguageType.en_us)
         {
             lang = "en_us.json";
         }
