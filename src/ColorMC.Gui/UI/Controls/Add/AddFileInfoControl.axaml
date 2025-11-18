@@ -19,26 +19,81 @@
         Margin="10"
         HorizontalAlignment="Right"
         Classes="t5">
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-            <StackPanel Width="800">
-                <Panel Margin="15" DataContext="{Binding Last}">
-                    <Border
-                        Width="90"
-                        Height="90"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        CornerRadius="5">
-                        <Border.Background>
-                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-                    <StackPanel Margin="105,0,0,0">
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            FontSize="16"
-                            Foreground="{setting:Theme MainColor}"
-                            Text="{Binding Name, FallbackValue=1234}" />
-                        <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
+        <DockPanel Width="800">
+            <Panel
+                Margin="15"
+                DataContext="{Binding Last}"
+                DockPanel.Dock="Top">
+                <Border
+                    Width="90"
+                    Height="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    CornerRadius="5">
+                    <Border.Background>
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <StackPanel Margin="105,0,0,0">
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        FontSize="16"
+                        Foreground="{setting:Theme MainColor}"
+                        Text="{Binding Name, FallbackValue=1234}" />
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                    <Border
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="5">
+                                        <Border.Background>
+                                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        DockPanel.Dock="Top"
+                                        Foreground="#FF9A9A9A"
+                                        Text="{Binding Name, FallbackValue=Author}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+                <StackPanel
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding OpenWeb}"
+                        Content="{setting:Localize AddModPackWindow.Text31}"
+                        IsVisible="{Binding EnableButton}" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding Install}"
+                        Content="{setting:Localize AddModPackWindow.Text32}"
+                        IsEnabled="{Binding HaveDownload}"
+                        IsVisible="{Binding EnableButton, FallbackValue=true}" />
+                </StackPanel>
+            </Panel>
+            <TabControl>
+                <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
+                    <DockPanel Margin="10" DataContext="{Binding Last}">
+                        <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tags}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel />
@@ -46,112 +101,55 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                        <Border
-                                            Width="20"
-                                            Height="20"
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            CornerRadius="5">
-                                            <Border.Background>
-                                                <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                            </Border.Background>
-                                        </Border>
-                                        <TextBlock
-                                            Margin="5,0,0,0"
-                                            DockPanel.Dock="Top"
-                                            Foreground="#FF9A9A9A"
-                                            Text="{Binding Name, FallbackValue=Author}" />
-                                    </StackPanel>
+                                    <Border>
+                                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                            <Border
+                                                Width="20"
+                                                Height="20"
+                                                HorizontalAlignment="Left"
+                                                VerticalAlignment="Center"
+                                                CornerRadius="5">
+                                                <Border.Background>
+                                                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                                                </Border.Background>
+                                            </Border>
+                                            <TextBlock
+                                                Margin="5,0,0,0"
+                                                DockPanel.Dock="Top"
+                                                Foreground="#FF9A9A9A"
+                                                Text="{Binding Name, FallbackValue=Author}" />
+                                        </StackPanel>
+                                    </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                    </StackPanel>
-                    <StackPanel
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding OpenWeb}"
-                            Content="{setting:Localize AddModPackWindow.Text31}"
-                            IsVisible="{Binding EnableButton}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding Install}"
-                            Content="{setting:Localize AddModPackWindow.Text32}"
-                            IsEnabled="{Binding HaveDownload}"
-                            IsVisible="{Binding EnableButton, FallbackValue=true}" />
-                    </StackPanel>
-                </Panel>
-                <TabControl>
-                    <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
-                        <StackPanel
-                            Margin="10"
-                            DataContext="{Binding Last}"
-                            DockPanel.Dock="Top">
-                            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tags}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border>
-                                            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                                <Border
-                                                    Width="20"
-                                                    Height="20"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Center"
-                                                    CornerRadius="5">
-                                                    <Border.Background>
-                                                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                                    </Border.Background>
-                                                </Border>
-                                                <TextBlock
-                                                    Margin="5,0,0,0"
-                                                    DockPanel.Dock="Top"
-                                                    Foreground="#FF9A9A9A"
-                                                    Text="{Binding Name, FallbackValue=Author}" />
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                            <WrapPanel Margin="10,20,10,20" DockPanel.Dock="Bottom">
-                                <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
-                                <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
-                                <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
-                                <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
-                            </WrapPanel>
-                            <StackPanel>
-                                <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text33}" />
-                                <TextBlock
-                                    Margin="10,20,10,20"
-                                    IsVisible="{Binding HaveMcmod}"
-                                    Text="{Binding Summary}"
-                                    TextTrimming="CharacterEllipsis"
-                                    TextWrapping="Wrap" />
-                                <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text34}" />
-                                <Avalonia:HtmlPanel
-                                    Margin="10,20,10,20"
-                                    IsVisible="{Binding !IsMarkdown}"
-                                    Text="{Binding SummaryHtml}" />
-                                <md:MarkdownRender
-                                    Margin="10,20,10,20"
-                                    IsVisible="{Binding IsMarkdown}"
-                                    Value="{Binding SummaryMarkdown}" />
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
-                    <TabItem Header="{setting:Localize AddModPackWindow.Text35}">
-                        <DockPanel Name="ModPackFiles" Margin="10">
+                        <WrapPanel Margin="10,20,10,20" DockPanel.Dock="Top">
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
+                            <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
+                            <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
+                        </WrapPanel>
+                        <TextBlock
+                            DockPanel.Dock="Top"
+                            IsVisible="{Binding HaveMcmod}"
+                            Text="{setting:Localize AddModPackWindow.Text33}" />
+                        <TextBlock
+                            Margin="10,20,10,20"
+                            DockPanel.Dock="Top"
+                            IsVisible="{Binding HaveMcmod}"
+                            Text="{Binding Summary}"
+                            TextTrimming="CharacterEllipsis"
+                            TextWrapping="Wrap" />
+                        <TextBlock
+                            DockPanel.Dock="Top"
+                            IsVisible="{Binding HaveMcmod}"
+                            Text="{setting:Localize AddModPackWindow.Text34}" />
+                        <WebView Margin="10,20,10,20" HtmlContent="{Binding SummaryHtml}" />
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="{setting:Localize AddModPackWindow.Text35}">
+                    <ScrollViewer>
+                        <StackPanel Name="ModPackFiles" Margin="10">
                             <Border
                                 Margin="10,0,10,5"
                                 Classes="t2"
@@ -234,13 +232,13 @@
                                         Text="{setting:Localize AddModPackWindow.Text13}" />
                                 </Border>
                             </Panel>
-                        </DockPanel>
-                    </TabItem>
-                    <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
-                        <StackPanel />
-                    </TabItem>
-                </TabControl>
-            </StackPanel>
-        </ScrollViewer>
+                        </StackPanel>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
+                    <StackPanel />
+                </TabItem>
+            </TabControl>
+        </DockPanel>
     </Border>
 </UserControl>
