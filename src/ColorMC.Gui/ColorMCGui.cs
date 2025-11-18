@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Media;
-using Avalonia.WebView.Desktop;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -350,8 +349,7 @@ public static class ColorMCGui
 #else
             .LogToTrace()
 #endif
-            .UsePlatformDetect()
-            .UseDesktopWebView();
+            .UsePlatformDetect();
 
         switch (SystemInfo.Os)
         {

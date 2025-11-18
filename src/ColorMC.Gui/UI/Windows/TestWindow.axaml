@@ -2,6 +2,7 @@
     x:Class="ColorMC.Gui.TestWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Avalonia="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Views;assembly=ColorMC.Gui"
@@ -10,9 +11,9 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Panel>
-        <view:ButtonControl
-            Width="100"
-            Height="30"
-            Text="测试" />
+        <UniformGrid Columns="2" Rows="1">
+			<Avalonia:HtmlPanel Name="Web1" Margin="10" />
+            <Avalonia:HtmlPanel Name="Web2" Margin="10" />
+        </UniformGrid>
     </Panel>
 </Window>
