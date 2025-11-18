@@ -344,33 +344,25 @@
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.HtmlRenderer" Version="11.2.0" />
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 	<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.9.3" />
-    <PackageReference Include="MarkdownAIRender" Version="0.1.16" />
+    <PackageReference Include="MinecraftSkinRender" Version="1.0.0" />
+    <PackageReference Include="MinecraftSkinRender.Image" Version="1.0.0" />
+    <PackageReference Include="MinecraftSkinRender.OpenGL" Version="1.0.0" />
     <PackageReference Include="Silk.NET.SDL" Version="2.22.0" />
     <PackageReference Include="SkiaSharp" Version="2.88.9" />
     <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2" />
+    <PackageReference Include="WebView.Avalonia" Version="11.1.0" />
+    <PackageReference Include="WebView.Avalonia.Desktop" Version="11.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.Image\MinecraftSkinRender.Image.csproj" />
-    <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender.OpenGL\MinecraftSkinRender.OpenGL.csproj" />
-    <ProjectReference Include="..\..\MinecraftSkinRender\MinecraftSkinRender\MinecraftSkinRender.csproj" />
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\Add\AddFileInfoControl.axaml.cs">
-      <DependentUpon>AddFileInfoControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Add\AddResourceControl.axaml.cs">
-      <DependentUpon>AddResourceControl.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>
