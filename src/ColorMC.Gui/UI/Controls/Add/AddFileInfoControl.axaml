@@ -5,6 +5,7 @@
     xmlns:Avalonia="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
     xmlns:app="clr-namespace:ColorMC.Gui.Manager"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:html="clr-namespace:TheArtOfDev.HtmlRenderer.Avalonia;assembly=Avalonia.HtmlRenderer"
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/AIDotNet/Markdown.AIRender"
@@ -92,60 +93,62 @@
             </Panel>
             <TabControl>
                 <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
-                    <DockPanel Margin="10" DataContext="{Binding Last}">
-                        <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tags}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border>
-                                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                            <Border
-                                                Width="20"
-                                                Height="20"
-                                                HorizontalAlignment="Left"
-                                                VerticalAlignment="Center"
-                                                CornerRadius="5">
-                                                <Border.Background>
-                                                    <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                                </Border.Background>
-                                            </Border>
-                                            <TextBlock
-                                                Margin="5,0,0,0"
-                                                DockPanel.Dock="Top"
-                                                Foreground="#FF9A9A9A"
-                                                Text="{Binding Name, FallbackValue=Author}" />
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <WrapPanel Margin="10,20,10,20" DockPanel.Dock="Top">
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
-                            <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
-                            <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
-                        </WrapPanel>
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            IsVisible="{Binding HaveMcmod}"
-                            Text="{setting:Localize AddModPackWindow.Text33}" />
-                        <TextBlock
-                            Margin="10,20,10,20"
-                            DockPanel.Dock="Top"
-                            IsVisible="{Binding HaveMcmod}"
-                            Text="{Binding Summary}"
-                            TextTrimming="CharacterEllipsis"
-                            TextWrapping="Wrap" />
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            IsVisible="{Binding HaveMcmod}"
-                            Text="{setting:Localize AddModPackWindow.Text34}" />
-                        <WebView Margin="10,20,10,20" HtmlContent="{Binding SummaryHtml}" />
-                    </DockPanel>
+                    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="10" DataContext="{Binding Last}">
+                            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tags}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border>
+                                            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                                                <Border
+                                                    Width="20"
+                                                    Height="20"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    CornerRadius="5">
+                                                    <Border.Background>
+                                                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                                                    </Border.Background>
+                                                </Border>
+                                                <TextBlock
+                                                    Margin="5,0,0,0"
+                                                    DockPanel.Dock="Top"
+                                                    Foreground="#FF9A9A9A"
+                                                    Text="{Binding Name, FallbackValue=Author}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <WrapPanel Margin="10,20,10,20" DockPanel.Dock="Top">
+                                <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
+                                <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
+                                <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
+                                <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
+                            </WrapPanel>
+                            <TextBlock
+                                DockPanel.Dock="Top"
+                                IsVisible="{Binding HaveMcmod}"
+                                Text="{setting:Localize AddModPackWindow.Text33}" />
+                            <TextBlock
+                                Margin="10,20,10,20"
+                                DockPanel.Dock="Top"
+                                IsVisible="{Binding HaveMcmod}"
+                                Text="{Binding Summary}"
+                                TextTrimming="CharacterEllipsis"
+                                TextWrapping="Wrap" />
+                            <TextBlock
+                                DockPanel.Dock="Top"
+                                IsVisible="{Binding HaveMcmod}"
+                                Text="{setting:Localize AddModPackWindow.Text34}" />
+                            <html:HtmlPanel Margin="10,20,10,20" Text="{Binding SummaryOld}" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </TabItem>
                 <TabItem Header="{setting:Localize AddModPackWindow.Text35}">
                     <ScrollViewer>

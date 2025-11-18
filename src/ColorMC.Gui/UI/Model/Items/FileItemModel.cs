@@ -13,6 +13,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
+using Markdig;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -86,9 +87,6 @@ public partial class FileItemModel : SelectItemModel
     /// 是否有百科翻译
     /// </summary>
     public bool HaveMcmod { get; init; }
-
-    public string SummaryHtml { get; private set; }
-    public string SummaryMarkdown { get; private set; }
 
     /// <summary>
     /// 星的图标
@@ -177,12 +175,12 @@ public partial class FileItemModel : SelectItemModel
         ID = data.Id.ToString();
         Name = mcmod?.McmodName ?? data.Name;
         Summary = mcmod?.McmodText ?? data.Summary;
-        SummaryOld = data.Summary;
+        SummaryOld = Markdown.ToHtml(data.Summary, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         foreach (var item in data.Authors)
         {
-            if (Authors.Count > 10)
+            if (Authors.Count > 5)
             {
-                Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), data.Authors.Count - 10), null));
+                Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), data.Authors.Count - 5), null));
                 break;
             }
             Authors.Add(new AuthorModel(item.Name, item.AvatarUrl));
@@ -210,8 +208,6 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id.ToString());
         }
-
-        LoadBody();
     }
 
     public FileItemModel(ModrinthSearchObj.HitObj data, List<ModrinthTeamObj>? team, ModrinthProjectObj? project, FileType type, McModSearchItemObj? mcmod)
@@ -226,7 +222,7 @@ public partial class FileItemModel : SelectItemModel
         Summary = mcmod?.McmodText ?? data.Description;
         if (project != null)
         {
-            SummaryOld = project.Body;
+            SummaryOld = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         }
         else
         {
@@ -236,9 +232,9 @@ public partial class FileItemModel : SelectItemModel
         {
             foreach (var item in team)
             {
-                if (Authors.Count > 10)
+                if (Authors.Count > 5)
                 {
-                    Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 10), null));
+                    Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 5), null));
                     break;
                 }
                 Authors.Add(new AuthorModel(item.User.Username, item.User.AvatarUrl));
@@ -263,8 +259,6 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.ProjectId);
         }
-
-        LoadBody();
     }
 
     public FileItemModel(ModrinthProjectObj data, FileType type, McModSearchItemObj? mcmod)
@@ -291,8 +285,6 @@ public partial class FileItemModel : SelectItemModel
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id);
         }
-
-        LoadBody();
     }
 
     public FileItemModel(McModSearchItemObj data, FileType type)
@@ -302,6 +294,7 @@ public partial class FileItemModel : SelectItemModel
         Logo = data.McmodIcon.StartsWith("//") ? "https:" + data.McmodIcon : data.McmodIcon;
         Name = data.McmodName;
         Summary = data.McmodText;
+        SummaryOld = data.McmodText;
         Authors.Add(new AuthorModel(data.McmodAuthor, null));
         FileType = FileType.Mod;
         SourceType = SourceType.McMod;
@@ -309,21 +302,6 @@ public partial class FileItemModel : SelectItemModel
 
         HaveDownload = data.CurseforgeId != null || data.ModrinthId != null;
         IsModPack = type == FileType.ModPack;
-
-        LoadBody();
-    }
-
-    private void LoadBody()
-    {
-        if (SummaryOld.StartsWith('#'))
-        {
-            IsMarkdown = true;
-            SummaryMarkdown = SummaryOld;
-        }
-        else 
-        {
-            SummaryHtml = SummaryOld;
-        }
     }
 
     partial void OnIsStarChanged(bool value)
