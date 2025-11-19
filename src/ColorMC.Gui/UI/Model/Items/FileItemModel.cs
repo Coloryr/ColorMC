@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Helpers;
@@ -8,14 +9,13 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using Markdig;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Markdig;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -87,6 +87,10 @@ public partial class FileItemModel : SelectItemModel
     /// 是否有百科翻译
     /// </summary>
     public bool HaveMcmod { get; init; }
+    /// <summary>
+    /// 是否有截图列表
+    /// </summary>
+    public bool HaveScreenshots => Screenshots.Any();
 
     /// <summary>
     /// 星的图标
@@ -187,7 +191,7 @@ public partial class FileItemModel : SelectItemModel
         }
         foreach (var item in data.Categories)
         {
-            Tags.Add(new TagModel(item.Name, item.IconUrl));
+            Tags.Add(new TagModel(item.Name, item.IconUrl, null));
         }
         foreach (var item in data.Screenshots)
         {
@@ -220,13 +224,49 @@ public partial class FileItemModel : SelectItemModel
         ID = data.ProjectId;
         Name = mcmod?.McmodName ?? data.Title;
         Summary = mcmod?.McmodText ?? data.Description;
+
+        var cap = ModrinthHelper.Categories;
         if (project != null)
         {
             SummaryOld = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+
+            foreach (var item in project.Loaders)
+            {
+                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
+                {
+                    Tags.Add(new TagModel(item, null, capitem.Icon));
+                }
+            }
+
+            foreach (var item in project.Categories)
+            {
+                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
+                {
+                    Tags.Add(new TagModel(item, null, capitem.Icon));
+                }
+            }
+
+            foreach (var item in project.Gallery)
+            {
+                Screenshots.Add(new WebPicModel(item.Title, item.Description, item.RawUrl));
+            }
         }
         else
         {
             SummaryOld = data.Description;
+
+            foreach (var item in data.Categories)
+            {
+                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
+                {
+                    Tags.Add(new TagModel(item, null, capitem.Icon));
+                }
+            }
+
+            foreach (var item in data.Gallery)
+            {
+                Screenshots.Add(new WebPicModel(null, null, item));
+            }
         }
         if (team != null)
         {
@@ -244,6 +284,7 @@ public partial class FileItemModel : SelectItemModel
         {
             Authors.Add(new AuthorModel(data.Author, null));
         }
+
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.IconUrl;
@@ -351,6 +392,19 @@ public partial class FileItemModel : SelectItemModel
     }
 
     /// <summary>
+    /// 安装
+    /// </summary>
+    [RelayCommand]
+    public void Install()
+    {
+        if (!HaveDownload)
+        {
+            return;
+        }
+        Add?.Install(this);
+    }
+
+    /// <summary>
     /// 获取图标
     /// </summary>
     /// <returns></returns>
@@ -366,7 +420,7 @@ public partial class FileItemModel : SelectItemModel
         }
         try
         {
-            _img = await ImageManager.Load(Logo, true);
+            _img = await ImageManager.Load(Logo, 100);
             return _img;
         }
         catch (Exception e)
@@ -375,18 +429,6 @@ public partial class FileItemModel : SelectItemModel
         }
 
         return null;
-    }
-
-    /// <summary>
-    /// 安装
-    /// </summary>
-    public void Install()
-    {
-        if (!HaveDownload)
-        {
-            return;
-        }
-        Add?.Install(this);
     }
 
     /// <summary>
@@ -411,6 +453,13 @@ public partial class FileItemModel : SelectItemModel
     public void Next()
     {
         Add?.Next();
+    }
+    /// <summary>
+    /// 显示详情
+    /// </summary>
+    public void Show()
+    {
+        Add?.ShowInfo(this);
     }
 
     /// <summary>

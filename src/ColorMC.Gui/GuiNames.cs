@@ -1,5 +1,3 @@
-using System;
-
 namespace ColorMC.Gui;
 
 public static class GuiNames

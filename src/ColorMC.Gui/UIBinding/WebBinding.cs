@@ -94,7 +94,7 @@ public static class WebBinding
             else if (type == SourceType.Modrinth)
             {
                 var dir = new Dictionary<string, FileItemModel?>();
-                var list = await ModrinthAPI.GetModPackListAsync(version, page, filter: filter, 
+                var list = await ModrinthAPI.GetModPackListAsync(version, page, filter: filter,
                     sortOrder: sort, categoryId: categoryId);
                 if (list == null)
                 {

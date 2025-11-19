@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:app="clr-namespace:ColorMC.Gui.Manager"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
@@ -45,23 +46,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                    <Border
-                                        Width="20"
-                                        Height="20"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        CornerRadius="5">
-                                        <Border.Background>
-                                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                        </Border.Background>
-                                    </Border>
-                                    <TextBlock
-                                        Margin="5,0,0,0"
-                                        DockPanel.Dock="Top"
-                                        Foreground="#FF9A9A9A"
-                                        Text="{Binding Name, FallbackValue=Author}" />
-                                </StackPanel>
+                                <item:AutherItemControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -85,7 +70,8 @@
                         Margin="-2,-8,-3,3"
                         Classes="top"
                         Command="{Binding OpenWeb}"
-                        IsVisible="{Binding EnableButton}">
+                        IsVisible="{Binding EnableButton}"
+                        ToolTip.Tip="{setting:Localize AddModPackWindow.Text31}">
                         <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
                     </Button>
                     <Button
@@ -95,7 +81,8 @@
                         Classes="top"
                         Command="{Binding Install}"
                         IsEnabled="{Binding HaveDownload}"
-                        IsVisible="{Binding EnableButton, FallbackValue=true}">
+                        IsVisible="{Binding EnableButton, FallbackValue=true}"
+                        ToolTip.Tip="{setting:Localize AddModPackWindow.Text32}">
                         <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
                     </Button>
                 </StackPanel>

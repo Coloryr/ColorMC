@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Joystick;
@@ -163,7 +164,7 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetDownloadSource(SourceLocal value)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -181,7 +182,7 @@ public static class ConfigBinding
     /// <param name="value"></param>
     public static void SetDownloadThread(int value)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -200,7 +201,7 @@ public static class ConfigBinding
     /// <param name="password"></param>
     public static void SetDownloadProxy(string ip, ushort port, string user, string password)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -224,7 +225,7 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     public static void SetDownloadProxyEnable(bool v1, bool v2, bool v3)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -247,7 +248,7 @@ public static class ConfigBinding
     /// <param name="v3"></param>
     public static void SetDownloadCheck(bool v1, bool v2)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -854,7 +855,7 @@ public static class ConfigBinding
     /// <param name="dnsType"></param>
     public static void SetDns(bool dnsEnable, DnsType dnsType, bool v2)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -873,7 +874,7 @@ public static class ConfigBinding
     /// </summary>
     public static void AddDns(string url, DnsType dnsOver)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }
@@ -898,7 +899,7 @@ public static class ConfigBinding
     /// <param name="dns"></param>
     public static void RemoveDns(string url, DnsType dns)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             return;
         }

@@ -10,7 +10,6 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.ColorMC;

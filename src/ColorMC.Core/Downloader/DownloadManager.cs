@@ -13,7 +13,7 @@ public static class DownloadManager
     /// <summary>
     /// 下载状态
     /// </summary>
-    public static bool State => !s_download.IsEmpty;
+    public static bool State => !s_download.IsEmpty || s_tasks.Count != 0;
     /// <summary>
     /// 缓存路径
     /// </summary>
@@ -33,7 +33,7 @@ public static class DownloadManager
     /// </summary>
     private static readonly List<DownloadTask> s_tasks = [];
     /// <summary>
-    /// 下载任务
+    /// 剩余下载项目
     /// </summary>
     private static readonly ConcurrentQueue<DownloadItem> s_download = [];
 

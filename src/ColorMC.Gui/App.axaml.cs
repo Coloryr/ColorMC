@@ -27,7 +27,7 @@ public partial class App : Application
         {
             string temp = LanguageUtils.Get("App.Error.Log16");
             Logs.Error(temp, e.ExceptionObject as Exception);
-            WindowManager.ShowError(LanguageUtils.Get("App.Text103") ,temp, e.ExceptionObject as Exception);
+            WindowManager.ShowError(LanguageUtils.Get("App.Text103"), temp, e.ExceptionObject as Exception);
         };
         ColorMCGui.StartLock();
     }

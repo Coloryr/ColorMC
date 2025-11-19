@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -71,11 +69,29 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
     /// </summary>
     [ObservableProperty]
     private FileVersionItemModel _item;
+    /// <summary>
+    /// 在那个状态栏中
+    /// </summary>
+    [ObservableProperty]
+    private int _selectIndex = 0;
 
     private bool _load;
 
     private SourceType _type;
     private string _pid;
+
+    partial void OnSelectIndexChanged(int value)
+    {
+        if (_load)
+        {
+            return;
+        }
+
+        if (value == 1)
+        {
+            LoadVersion(_type, _pid);
+        }
+    }
 
     /// <summary>
     /// 页数改变
@@ -239,6 +255,7 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
 
     public void Load(FileItemModel? model)
     {
+        SelectIndex = 0;
         Last = model;
         if (model != null)
         {

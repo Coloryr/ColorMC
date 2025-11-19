@@ -19,20 +19,23 @@ public interface IAddFileControl
 public interface IAddControl
 {
     /// <summary>
-    /// 选中
+    /// 选中项目
     /// </summary>
     /// <param name="item"></param>
     public void SetSelect(FileItemModel item);
     /// <summary>
-    /// 安装
+    /// 安装最新版本
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileItemModel item);
+    /// <summary>
+    /// 显示详情页面
+    /// </summary>
+    public void ShowInfo(FileItemModel item);
     void Back();
     void Next();
-
     /// <summary>
-    /// 安装
+    /// 安装选中的版本
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileVersionItemModel item);
@@ -41,7 +44,7 @@ public interface IAddControl
 /// <summary>
 /// 下载数据接口
 /// </summary>
-public interface IAddOptifineControl : IAddControl
+public interface IAddOptifineControl
 {
     public void SetSelect(OptifineVersionItemModel item);
     public void Install(OptifineVersionItemModel item);

@@ -18,7 +18,10 @@ public record ModrinthSearchObj
         public string Description { get; set; }
         //[JsonPropertyName("body")]
         //public string Body { get; set; }
-        //public List<string> categories { get; set; }
+        [JsonPropertyName("categories")]
+        public List<string> Categories { get; set; }
+        [JsonPropertyName("gallery")]
+        public List<string> Gallery { get; set; }
         //public List<string> display_categories { get; set; }
         //public List<string> versions { get; set; }
         [JsonPropertyName("downloads")]

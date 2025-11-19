@@ -131,6 +131,10 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// 是否继续添加
     /// </summary>
     private bool _keep = false;
+    /// <summary>
+    /// 添加到的游戏分组
+    /// </summary>
+    private string? _group;
 
     private readonly string _useName;
 
@@ -217,7 +221,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
         }
 
-        Install();
+        DisplayItems();
     }
 
     /// <summary>
@@ -332,11 +336,10 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// <summary>
     /// 开始安装项目
     /// </summary>
-    private void Install()
+    private void DisplayItems()
     {
-        DisplayVersion = true;
         DisplayFile.Load(_last);
-        LoadVersion();
+        DisplayVersion = true;
     }
 
     /// <summary>
@@ -458,10 +461,29 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// 安装所选项目
     /// </summary>
     /// <param name="item"></param>
-    public void Install(FileItemModel item)
+    public async void Install(FileItemModel item)
     {
         SetSelect(item);
-        Install();
+        Model.Progress();
+        var res = await WebBinding.GetFileListAsync(item.SourceType,
+               item.Pid, 0, null, Loaders.Normal);
+        Model.ProgressClose();
+        if (res == null || res.List == null || res.List.Count == 0)
+        {
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
+            return;
+        }
+        var item1 = res.List.First();
+        if (item1.IsDownload)
+        {
+            var res1 = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text40"));
+            if (!res1)
+            {
+                return;
+            }
+        }
+
+        Install(item1);
     }
 
     /// <summary>
@@ -557,5 +579,16 @@ public partial class AddModPackControlModel : TopModel, IAddControl
         DisplayVersion = true;
         DisplayFile.LoadVersion(type, pid);
         _load = false;
+    }
+
+    public void SetGroup(string? group)
+    {
+        _group = group;
+    }
+
+    public void ShowInfo(FileItemModel item)
+    {
+        SetSelect(item);
+        DisplayItems();
     }
 }

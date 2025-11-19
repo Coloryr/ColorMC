@@ -140,7 +140,7 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
     /// <returns>是否已经停止</returns>
     public async Task<bool> Stop()
     {
-        if (!BaseBinding.IsDownload)
+        if (!DownloadManager.State)
         {
             return true;
         }

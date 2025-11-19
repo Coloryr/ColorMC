@@ -543,15 +543,17 @@ public static class WindowManager
     /// <summary>
     /// 显示添加整合包窗口
     /// </summary>
-    public static void ShowAddModPack()
+    public static void ShowAddModPack(string? group)
     {
         if (AddModPackWindow != null)
         {
             AddModPackWindow.Window?.WindowActivate();
+            AddModPackWindow.SetGroup(group);
         }
         else
         {
             AddModPackWindow = new();
+            AddModPackWindow.SetGroup(group);
             AWindow(AddModPackWindow);
         }
     }

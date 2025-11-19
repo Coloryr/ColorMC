@@ -63,7 +63,7 @@ public static class ModrinthHelper
     /// <summary>
     /// 分类列表
     /// </summary>
-    private static List<ModrinthCategoriesObj>? s_categories;
+    public static List<ModrinthCategoriesObj>? Categories { get; private set; }
 
     /// <summary>
     /// 游戏版本列表
@@ -175,7 +175,7 @@ public static class ModrinthHelper
     /// <returns>分组列表</returns>
     public static async Task<Dictionary<string, string>?> GetCategoriesAsync(FileType type)
     {
-        if (s_categories == null)
+        if (Categories == null)
         {
             var list6 = await ModrinthAPI.GetCategoriesAsync();
             if (list6 == null)
@@ -183,10 +183,10 @@ public static class ModrinthHelper
                 return null;
             }
 
-            s_categories = list6;
+            Categories = list6;
         }
 
-        var list7 = from item2 in s_categories
+        var list7 = from item2 in Categories
                     where item2.ProjectType == type switch
                     {
                         FileType.Shaderpack => ModrinthAPI.ClassShaderpack,

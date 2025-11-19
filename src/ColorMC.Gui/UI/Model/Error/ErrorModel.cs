@@ -30,7 +30,7 @@ public partial class ErrorModel : TopModel
     private ErrorModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "ErrorModel";
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"), 
+        Model.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"),
             LanguageUtils.Get("ErrorWindow.Text2"));
         Model.SetChoiseCall(_useName, Save, Push);
     }

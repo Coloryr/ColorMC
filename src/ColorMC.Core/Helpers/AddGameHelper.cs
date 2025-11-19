@@ -822,7 +822,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        var res2 = await InstallZip(name, group, item.Local, PackType.CurseForge,  gui, zipgui);
+        var res2 = await InstallZip(name, group, item.Local, PackType.CurseForge, gui, zipgui);
         if (res2.State)
         {
             res2.Game!.PID = data.ModId.ToString();

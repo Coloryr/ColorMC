@@ -42,15 +42,6 @@ public static class BaseBinding
     public static readonly DataFormat<string> DrapType = DataFormat.CreateStringApplicationFormat("Game");
 
     /// <summary>
-    /// 是否为第一次启动
-    /// </summary>
-    public static bool NewStart => ColorMCCore.NewStart;
-    /// <summary>
-    /// 是否正在下载
-    /// </summary>
-    public static bool IsDownload => DownloadManager.State;
-
-    /// <summary>
     /// 核心初始化完成
     /// </summary>
     public static async void Init1()

@@ -1,17 +1,10 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -55,12 +48,11 @@ public partial class AddModPackControlModel
         }
 
         var select = _last;
-        string? group = WindowManager.AddGameWindow?.GetGroup();
         if (data.SourceType == SourceType.CurseForge)
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text30"));
             var zip = new ZipGui(Model);
-            var res = await AddGameHelper.InstallCurseForge(null, group, (data.Data as CurseForgeModObj.CurseForgeDataObj)!,
+            var res = await AddGameHelper.InstallCurseForge(null, _group, (data.Data as CurseForgeModObj.CurseForgeDataObj)!,
                 select?.Logo,
                 new CreateGameGui(Model), zip);
             zip.Stop();
@@ -79,7 +71,7 @@ public partial class AddModPackControlModel
         {
             Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text30"));
             var zip = new ZipGui(Model);
-            var res = await AddGameHelper.InstallModrinth(null, group, (data.Data as ModrinthVersionObj)!,
+            var res = await AddGameHelper.InstallModrinth(null, _group, (data.Data as ModrinthVersionObj)!,
                 select?.Logo, new CreateGameGui(Model), zip);
             zip.Stop();
             Model.ProgressClose();
@@ -102,13 +94,11 @@ public partial class AddModPackControlModel
             return;
         }
 
-        SourceType type = (SourceType)Source;
         if (_last == null)
         {
             return;
         }
-        string id = _last.Pid;
 
-        DisplayFile.LoadVersion(type, id);
+        DisplayFile.LoadVersion((SourceType)Source, _last.Pid);
     }
 }

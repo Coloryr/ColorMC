@@ -376,7 +376,7 @@ public static class GameBinding
                     || (mem <= 8192 && count > 300))
                 {
                     bool launch = false;
-                    await model.ShowChoiseCancelWait(string.Format(LanguageUtils.Get("App.Text54"), count, mem), 
+                    await model.ShowChoiseCancelWait(string.Format(LanguageUtils.Get("App.Text54"), count, mem),
                         LanguageUtils.Get("App.Text55"), () =>
                     {
                         model.ShowClose();

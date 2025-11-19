@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UIBinding;
@@ -124,15 +123,8 @@ public partial class AddGameModel : TopModel
     [RelayCommand]
     public void GoModPack()
     {
-        Main = false;
-        Model.PushBack(BackMain);
-        OnPropertyChanged(NameTab1);
-        if (!ConfigBinding.WindowMode())
-        {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text39"));
-        }
-
-        WindowManager.ShowAddModPack();
+        WindowManager.ShowAddModPack(DefaultGroup);
+        WindowClose();
     }
 
     /// <summary>
