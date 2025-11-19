@@ -15,6 +15,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using MinecraftSkinRender;
 using MinecraftSkinRender.Image;
@@ -572,7 +573,7 @@ public static class ImageManager
     /// </summary>
     /// <param name="url">网址</param>
     /// <returns>位图</returns>
-    public static async Task<Bitmap?> Load(string url, bool zoom)
+    public static async Task<Bitmap?> Load(string url, int zoom)
     {
         if (!Directory.Exists(s_local))
         {
@@ -580,50 +581,44 @@ public static class ImageManager
         }
         //存在缓存
         var sha1 = HashHelper.GenSha256(url);
-        string file = Path.Combine(s_local, sha1);
-        if (File.Exists(file))
-        {
-            return new Bitmap(file);
-        }
-        else
+        string file = Path.Combine(s_local, sha1) + ".png";
+
+        if (!File.Exists(file))
         {
             try
             {
                 //从网络读取图片
                 using var data1 = await CoreHttpClient.GetStreamAsync(url);
-                if (data1 != null)
+                if (data1 == null)
                 {
-                    //压缩图片
-                    if (zoom)
-                    {
-                        using var temp = new MemoryStream();
-                        await data1.CopyToAsync(temp);
-                        temp.Seek(0, SeekOrigin.Begin);
-                        using var image1 = SKBitmap.Decode(temp);
-                        if (image1 == null)
-                        {
-                            return null;
-                        }
-                        using var image2 = await ImageUtils.ResizeAsync(image1, 100, 100);
-                        using var data = image2.Encode(SKEncodedImageFormat.Png, 100);
-                        await PathHelper.WriteBytesAsync(file, data.AsStream());
-                        return new Bitmap(file);
-                    }
-                    else
-                    {
-                        await PathHelper.WriteBytesAsync(file, data1);
-                        return new Bitmap(file);
-                    }
+                    return null;
                 }
-
-                return null;
+                using var temp = new MemoryStream();
+                await data1.CopyToAsync(temp);
+                temp.Seek(0, SeekOrigin.Begin);
+                using var image1 = SKBitmap.Decode(temp);
+                using var data = image1.Encode(SKEncodedImageFormat.Png, 100);
+                await PathHelper.WriteBytesAsync(file, data.AsStream());
             }
             catch (Exception e)
             {
                 Logs.Error(LanguageUtils.Get("App.Text91"), e);
+                return null;
             }
+        }
 
-            return GameIcon;
+        if (zoom > 0)
+        {
+            using var temp = PathHelper.OpenRead(file);
+            if (temp == null)
+            {
+                return null;
+            }
+            return Bitmap.DecodeToWidth(temp, zoom);
+        }
+        else
+        {
+            return new Bitmap(file);
         }
     }
 
@@ -651,18 +646,10 @@ public static class ImageManager
                     var assm = Assembly.GetExecutingAssembly();
                     stream = assm.GetManifestResourceStream(file)!;
                 }
-#if Phone
-                else if (SystemInfo.Os == OsType.Android)
-                {
-                    file = Path.Combine(ColorMCGui.BaseDir, "BG");
-                    stream1 = PathHelper.OpenRead(file);
-                }
-#else
                 else
                 {
                     stream = PathHelper.OpenRead(file);
                 }
-#endif
                 if (stream == null)
                 {
                     return null;
@@ -731,5 +718,15 @@ public static class ImageManager
     {
         using var temp = Cape2DTypaA.MakeCapeImage(cape);
         return temp.ToBitmap();
+    }
+
+    public static void Open(string url)
+    {
+        var sha1 = HashHelper.GenSha256(url);
+        string file = Path.Combine(s_local, sha1) + ".png";
+        if (File.Exists(file))
+        {
+            PathBinding.OpenPicFile(file);
+        }
     }
 }

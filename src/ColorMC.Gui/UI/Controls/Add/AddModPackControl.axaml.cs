@@ -72,6 +72,11 @@ public partial class AddModPackControl : BaseUserControl
 
     public void GoFile(SourceType type, string pid)
     {
-        (DataContext as AddModPackControlModel)!.GoFile(type, pid);
+        (DataContext as AddModPackControlModel)?.GoFile(type, pid);
+    }
+
+    public void SetGroup(string? group)
+    {
+        (DataContext as AddModPackControlModel)?.SetGroup(group);
     }
 }

@@ -25,7 +25,7 @@ public class ZipGui : IZipGui
     private int _size, _all;
 
     public ZipGui(BaseModel model)
-    { 
+    {
         _model = model;
         _isRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));

@@ -7,6 +7,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -18,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 添加游戏资源
 /// </summary>
-public partial class AddResourceControlModel : GameModel
+public partial class AddResourceControlModel : GameModel, IAddControl
 {
     public const string NameScrollToHome = "Scroll:Home";
 
@@ -702,6 +703,11 @@ public partial class AddResourceControlModel : GameModel
         {
             Refresh();
         }
+    }
+
+    public void ShowInfo(FileItemModel item)
+    {
+        SetSelect(item);
     }
 
     /// <summary>

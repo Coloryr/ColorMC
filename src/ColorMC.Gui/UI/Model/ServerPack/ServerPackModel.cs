@@ -1,8 +1,8 @@
+using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
-using ColorMC.Core.Game;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.ServerPack;

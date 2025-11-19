@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
+using ColorMC.Core.Downloader;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -177,7 +178,7 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -206,7 +207,7 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -275,7 +276,7 @@ public partial class SettingModel
     [RelayCommand]
     public void SetProxy()
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -290,7 +291,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task AddDnsItem()
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -349,7 +350,7 @@ public partial class SettingModel
     /// <param name="model"></param>
     public void DeleteDns(DnsItemModel model)
     {
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -435,7 +436,7 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -449,7 +450,7 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;
@@ -463,7 +464,7 @@ public partial class SettingModel
         if (_httpLoad)
             return;
 
-        if (BaseBinding.IsDownload)
+        if (DownloadManager.State)
         {
             Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
             return;

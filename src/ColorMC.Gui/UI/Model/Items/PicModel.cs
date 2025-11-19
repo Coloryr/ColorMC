@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
-public partial class PicModel(string name, string? logo, bool min) : ObservableObject
+public partial class PicModel(string? name, string? logo, int min) : SelectItemModel
 {
     /// <summary>
     /// 图标
@@ -18,7 +17,7 @@ public partial class PicModel(string name, string? logo, bool min) : ObservableO
     /// </summary>
     private Bitmap? _img;
 
-    public string Name => name;
+    public string? Name => name;
     public string? Logo => logo;
 
     /// <summary>

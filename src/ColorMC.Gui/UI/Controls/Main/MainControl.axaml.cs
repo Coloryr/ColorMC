@@ -237,7 +237,7 @@ public partial class MainControl : BaseUserControl
     public override async void Opened()
     {
         var config = GuiConfigUtils.Config.ServerCustom;
-        if (BaseBinding.NewStart || config.CustomStart)
+        if (ColorMCCore.NewStart || config.CustomStart)
         {
             MainView.Opacity = 0;
             var con1 = new MainStartControl();

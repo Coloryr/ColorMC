@@ -4,6 +4,18 @@ namespace ColorMC.Core.Objs.Modrinth;
 
 public record ModrinthProjectObj
 {
+    public record GalleryObj
+    {
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+        [JsonPropertyName("raw_url")]
+        public string RawUrl { get; set; }
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+        [JsonPropertyName("ordering")]
+        public int Ordering { get; set; }
+    }
+
     [JsonPropertyName("id")]
     public string Id { get; set; }
     //public string slug { get; set; }
@@ -27,7 +39,8 @@ public record ModrinthProjectObj
     public int Downloads { get; set; }
     //public int followers { get; set; }
     //public List<string> game_versions { get; set; }
-    //public List<string> loaders { get; set; }
+    [JsonPropertyName("loaders")]
+    public List<string> Loaders { get; set; }
     //public List<string> versions { get; set; }
     [JsonPropertyName("icon_url")]
     public string IconUrl { get; set; }
@@ -35,4 +48,8 @@ public record ModrinthProjectObj
     //public string source_url { get; set; }
     //public string wiki_url { get; set; }
     //public string discord_url { get; set; }
+    [JsonPropertyName("categories")]
+    public List<string> Categories { get; set; }
+    [JsonPropertyName("gallery")]
+    public List<GalleryObj> Gallery { get; set; }
 }

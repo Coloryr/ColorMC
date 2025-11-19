@@ -226,10 +226,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
     /// <param name="item"></param>
     public void SetSelect(FileVersionItemModel item)
     {
-        if (File != null)
-        {
-            File.IsSelect = false;
-        }
+        File?.IsSelect = false;
         File = item;
         item.IsSelect = true;
     }

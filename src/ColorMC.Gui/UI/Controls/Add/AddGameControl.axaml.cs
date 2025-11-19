@@ -167,13 +167,4 @@ public partial class AddGameControl : BaseUserControl
             model.SetFile(item.GetPath()!);
         }
     }
-
-    /// <summary>
-    /// 设置添加的游戏分组
-    /// </summary>
-    /// <returns></returns>
-    public string? GetGroup()
-    {
-        return (DataContext as AddGameModel)?.Group;
-    }
 }

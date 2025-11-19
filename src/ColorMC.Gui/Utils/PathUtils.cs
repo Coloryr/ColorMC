@@ -1,5 +1,3 @@
-using System.IO;
-using System.Reflection;
 using Avalonia.Platform.Storage;
 
 namespace ColorMC.Gui.Utils;

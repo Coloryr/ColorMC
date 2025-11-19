@@ -18,9 +18,10 @@
     mc:Ignorable="d">
     <Border
         Margin="10"
-        HorizontalAlignment="Right"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
         Classes="t5">
-        <DockPanel Width="800">
+        <DockPanel>
             <Panel
                 Margin="15"
                 DataContext="{Binding Last}"
@@ -49,23 +50,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                    <Border
-                                        Width="20"
-                                        Height="20"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Center"
-                                        CornerRadius="5">
-                                        <Border.Background>
-                                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                        </Border.Background>
-                                    </Border>
-                                    <TextBlock
-                                        Margin="5,0,0,0"
-                                        DockPanel.Dock="Top"
-                                        Foreground="#FF9A9A9A"
-                                        Text="{Binding Name, FallbackValue=Author}" />
-                                </StackPanel>
+                                <item:AutherItemControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -91,11 +76,11 @@
                         IsVisible="{Binding EnableButton, FallbackValue=true}" />
                 </StackPanel>
             </Panel>
-            <TabControl>
+            <TabControl SelectedIndex="{Binding SelectIndex}">
                 <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                         <StackPanel Margin="10" DataContext="{Binding Last}">
-                            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Tags}">
+                            <ItemsControl ItemsSource="{Binding Tags}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel />
@@ -103,49 +88,24 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border>
-                                            <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                                                <Border
-                                                    Width="20"
-                                                    Height="20"
-                                                    HorizontalAlignment="Left"
-                                                    VerticalAlignment="Center"
-                                                    CornerRadius="5">
-                                                    <Border.Background>
-                                                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                                                    </Border.Background>
-                                                </Border>
-                                                <TextBlock
-                                                    Margin="5,0,0,0"
-                                                    DockPanel.Dock="Top"
-                                                    Foreground="#FF9A9A9A"
-                                                    Text="{Binding Name, FallbackValue=Author}" />
-                                            </StackPanel>
-                                        </Border>
+                                        <item:TagItemControl DataContext="{Binding}" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <WrapPanel Margin="10,20,10,20" DockPanel.Dock="Top">
+                            <WrapPanel Margin="10,20,10,20">
                                 <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
                                 <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
                                 <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
                                 <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
                             </WrapPanel>
-                            <TextBlock
-                                DockPanel.Dock="Top"
-                                IsVisible="{Binding HaveMcmod}"
-                                Text="{setting:Localize AddModPackWindow.Text33}" />
+                            <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text33}" />
                             <TextBlock
                                 Margin="10,20,10,20"
-                                DockPanel.Dock="Top"
                                 IsVisible="{Binding HaveMcmod}"
                                 Text="{Binding Summary}"
                                 TextTrimming="CharacterEllipsis"
                                 TextWrapping="Wrap" />
-                            <TextBlock
-                                DockPanel.Dock="Top"
-                                IsVisible="{Binding HaveMcmod}"
-                                Text="{setting:Localize AddModPackWindow.Text34}" />
+                            <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text34}" />
                             <html:HtmlPanel Margin="10,20,10,20" Text="{Binding SummaryOld}" />
                         </StackPanel>
                     </ScrollViewer>
@@ -153,59 +113,54 @@
                 <TabItem Header="{setting:Localize AddModPackWindow.Text35}">
                     <ScrollViewer>
                         <StackPanel Name="ModPackFiles" Margin="10">
-                            <Border
-                                Margin="10,0,10,5"
-                                Classes="t2"
-                                DockPanel.Dock="Top">
-                                <panel:WrapPanelWithStretch
-                                    Margin="15,15,5,5"
-                                    DockPanel.Dock="Top"
-                                    RightMax="{Binding MinMode}">
-                                    <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
-                                        <ComboBox
-                                            Height="30"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            ItemsSource="{Binding GameVersionList}"
-                                            SelectedItem="{Binding GameVersionDownload}" />
-                                    </DockPanel>
-                                    <DockPanel MinWidth="140" Margin="0,0,10,10">
-                                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
-                                        <NumericUpDown
-                                            Height="30"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="Center"
-                                            FormatString="N0"
-                                            Maximum="{Binding MaxPageDownload}"
-                                            Minimum="0"
-                                            Value="{Binding PageDownload}" />
-                                    </DockPanel>
-                                    <StackPanel
-                                        Margin="0,1,10,10"
-                                        HorizontalAlignment="Right"
-                                        Orientation="Horizontal">
-                                        <Button
-                                            Width="100"
-                                            Height="35"
-                                            Margin="-2,-3,3,-3"
-                                            Classes="top"
-                                            Command="{Binding Search}"
-                                            Content="{setting:Localize AddModPackWindow.Text10}"
-                                            ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
-                                        <Button
-                                            Width="100"
-                                            Height="35"
-                                            Margin="-2,-3,-3,-3"
-                                            Classes="top"
-                                            Command="{Binding Download}"
-                                            Content="{setting:Localize AddModPackWindow.Text12}"
-                                            ToolTip.Tip="{setting:Localize ToolTip.Text91}" />
-                                    </StackPanel>
-                                </panel:WrapPanelWithStretch>
-                            </Border>
+                            <panel:WrapPanelWithStretch
+                                Margin="15,15,5,5"
+                                DockPanel.Dock="Top"
+                                RightMax="{Binding MinMode}">
+                                <DockPanel MinWidth="190" Margin="0,0,10,10">
+                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
+                                    <ComboBox
+                                        Height="30"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        ItemsSource="{Binding GameVersionList}"
+                                        SelectedItem="{Binding GameVersionDownload}" />
+                                </DockPanel>
+                                <DockPanel MinWidth="140" Margin="0,0,10,10">
+                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddModPackWindow.Text5}" />
+                                    <NumericUpDown
+                                        Height="30"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Center"
+                                        FormatString="N0"
+                                        Maximum="{Binding MaxPageDownload}"
+                                        Minimum="0"
+                                        Value="{Binding PageDownload}" />
+                                </DockPanel>
+                                <StackPanel
+                                    Margin="0,1,10,10"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal">
+                                    <Button
+                                        Width="100"
+                                        Height="35"
+                                        Margin="-2,-3,3,-3"
+                                        Classes="top"
+                                        Command="{Binding Search}"
+                                        Content="{setting:Localize AddModPackWindow.Text10}"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
+                                    <Button
+                                        Width="100"
+                                        Height="35"
+                                        Margin="-2,-3,-3,-3"
+                                        Classes="top"
+                                        Command="{Binding Download}"
+                                        Content="{setting:Localize AddModPackWindow.Text12}"
+                                        ToolTip.Tip="{setting:Localize ToolTip.Text91}" />
+                                </StackPanel>
+                            </panel:WrapPanelWithStretch>
                             <Panel>
-                                <StackPanel IsVisible="{Binding !EmptyVersionDisplay}">
+                                <StackPanel IsVisible="{Binding !EmptyVersionDisplay, FallbackValue=true}">
                                     <ItemsControl
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
@@ -238,8 +193,29 @@
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
-                <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
-                    <StackPanel />
+                <TabItem Header="{setting:Localize AddModPackWindow.Text37}">
+                    <Panel DataContext="{Binding Last}">
+                        <ScrollViewer IsVisible="{Binding HaveScreenshots}">
+                            <ItemsControl HorizontalAlignment="Center" ItemsSource="{Binding Screenshots}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <item:WebPicItemControl DataContext="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="30"
+                            IsVisible="{Binding !HaveScreenshots}"
+                            Text="{setting:Localize AddModPackWindow.Text38}" />
+                    </Panel>
                 </TabItem>
             </TabControl>
         </DockPanel>

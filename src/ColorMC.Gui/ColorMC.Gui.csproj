@@ -365,4 +365,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\Items\WebPicItemControl.axaml.cs">
+      <DependentUpon>WebPicItemControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

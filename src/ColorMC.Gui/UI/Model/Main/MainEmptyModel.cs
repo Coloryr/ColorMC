@@ -1,5 +1,3 @@
-using ColorMC.Core.Config;
-using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;

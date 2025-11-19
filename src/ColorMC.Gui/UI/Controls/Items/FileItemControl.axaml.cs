@@ -56,7 +56,7 @@ public partial class FileItemControl : UserControl
 
     private void FileItemControl_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        (DataContext as FileItemModel)?.Install();
+        (DataContext as FileItemModel)?.Show();
     }
 
     private void FileItemControl_PointerPressed(object? sender, PointerPressedEventArgs e)

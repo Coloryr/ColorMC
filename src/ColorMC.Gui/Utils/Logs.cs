@@ -48,7 +48,7 @@ public static class Logs
         s_local = ColorMCGui.BaseDir;
         try
         {
-            var stream = File.Open(Path.Combine(s_local, GuiNames.NameLogFile), 
+            var stream = File.Open(Path.Combine(s_local, GuiNames.NameLogFile),
                 FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
             s_writer = new(stream)

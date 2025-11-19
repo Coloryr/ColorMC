@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using ColorMC.Core;
 using ColorMC.Core.GuiHandel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
@@ -34,7 +33,7 @@ public static class JavaBinding
             }
             return new StringRes { State = true };
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             var log = string.Format(LanguageUtils.Get("Core.Error.Log9"), file, name);
             string title = LanguageUtils.Get("AddJavaWindow.Text14");
