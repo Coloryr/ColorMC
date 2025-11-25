@@ -1,10 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Controls.Dialog;
+using ColorMC.Gui.UI.Model.Dialog;
 
 namespace ColorMC.Gui.Utils;
 
@@ -13,6 +17,35 @@ namespace ColorMC.Gui.Utils;
 /// </summary>
 public static class UIUtils
 {
+    public static void InitDialog(DataTemplates templates)
+    {
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(ProgressBarModel),
+            Content = typeof(ProgressBarControl)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(Info3Model),
+            Content = typeof(Info3Control)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(Info4Model),
+            Content = typeof(Info4Control)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(Info5Model),
+            Content = typeof(Info5Control)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(Info6Model),
+            Content = typeof(Info6Control)
+        });
+    }
+
     /// <summary>
     /// 测量左边距
     /// </summary>

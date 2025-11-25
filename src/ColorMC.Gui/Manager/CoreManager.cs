@@ -27,7 +27,7 @@ public static class CoreManager
 
     private static void ColorMCCore_Download(DownloadEventArgs obj)
     {
-        obj.GuiHandel = WindowManager.ShowDownload(obj.Thread);
+        obj.GuiHandle = WindowManager.ShowDownload(obj.Thread);
     }
 
     private static void ColorMCCore_GameLog(GameLogEventArgs obj)

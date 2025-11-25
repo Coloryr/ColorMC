@@ -15,31 +15,7 @@ public partial class AddResourceControlModel
     /// <summary>
     /// 多个模组下载任务
     /// </summary>
-    private record ModListDownloadTask
-    {
-        /// <summary>
-        /// 下载的模组项目
-        /// </summary>
-        public required DownloadModArg? Modsave;
-        /// <summary>
-        /// 下载源
-        /// </summary>
-        public required SourceType Source;
-
-        /// <summary>
-        /// 下载结果
-        /// </summary>
-        public bool TaskRes;
-        /// <summary>
-        /// 是否结束
-        /// </summary>
-        public bool IsEnd;
-    }
-
-    /// <summary>
-    /// 多个模组下载任务
-    /// </summary>
-    private ModListDownloadTask? _nowTask;
+    private FileItemDownloadTask? _nowTask;
 
     /// <summary>
     /// Mod下载项目显示列表
@@ -81,7 +57,7 @@ public partial class AddResourceControlModel
     /// 下载一个列表的模组
     /// </summary>
     /// <param name="task"></param>
-    private async void DownloadListItem(ModListDownloadTask task)
+    private async void DownloadListItem(FileItemDownloadTask task)
     {
         CloseModDownloadDisplay();
 
@@ -95,10 +71,10 @@ public partial class AddResourceControlModel
                     Old = (item as ModUpgradeModel)!.Obj
                 }).ToList();
 
-            var list1 = new List<DownloadItemInfo>();
+            var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
-                var info = new DownloadItemInfo
+                var info = new FileItemDownloadModel
                 {
                     Type = FileType.Mod,
                     Source = task.Source,
@@ -108,7 +84,7 @@ public partial class AddResourceControlModel
                 list1.Add(info);
             }
 
-            task.TaskRes = await WebBinding.DownloadModAsync(Obj, list);
+            task.TaskRes = await WebBinding.DownloadModAsync(_obj, list);
 
             foreach (var item in list1)
             {
@@ -125,10 +101,10 @@ public partial class AddResourceControlModel
                 list.Add(task.Modsave);
             }
 
-            var list1 = new List<DownloadItemInfo>();
+            var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
-                var info = new DownloadItemInfo
+                var info = new FileItemDownloadModel
                 {
                     Type = FileType.Mod,
                     Source = task.Source,
@@ -138,7 +114,7 @@ public partial class AddResourceControlModel
                 list1.Add(info);
             }
 
-            task.TaskRes = await WebBinding.DownloadModAsync(Obj, list);
+            task.TaskRes = await WebBinding.DownloadModAsync(_obj, list);
 
             foreach (var item in list1)
             {
@@ -172,13 +148,13 @@ public partial class AddResourceControlModel
                 item.Download = true;
             }
         });
-        _nowTask = new ModListDownloadTask()
+        _nowTask = new FileItemDownloadTask()
         {
             Modsave = new DownloadModArg()
             {
                 Item = list.Item!,
                 Info = list.Info!,
-                Old = await Obj.ReadModAsync(mod)
+                Old = await _obj.ReadModAsync(mod)
             },
             Source = source
         };

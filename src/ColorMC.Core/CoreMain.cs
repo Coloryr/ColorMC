@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
 using ColorMC.Core.Objs;
@@ -64,7 +64,7 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏窗口句柄
     /// </summary>
-    private static readonly ConcurrentDictionary<string, GameHandel> s_games = [];
+    private static readonly ConcurrentDictionary<string, GameHandle> s_games = [];
     /// <summary>
     /// 游戏日志
     /// </summary>
@@ -221,7 +221,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="uuid"></param>
     /// <param name="handel"></param>
-    internal static void AddGameHandel(string uuid, GameHandel handel)
+    internal static void AddGameHandel(string uuid, GameHandle handel)
     {
         if (!s_games.TryAdd(uuid, handel))
         {
@@ -250,13 +250,13 @@ public static class ColorMCCore
     /// 获取下载窗口句柄
     /// </summary>
     /// <returns></returns>
-    internal static IDownloadGuiHandel? OnDownloadGui()
+    internal static IDownloadGui? OnDownloadGui()
     {
         var arg = new DownloadEventArgs
         {
             Thread = ConfigLoad.Config.Http.DownloadThread
         };
         Download?.Invoke(arg);
-        return arg.GuiHandel;
+        return arg.GuiHandle;
     }
 }

@@ -22,110 +22,12 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 添加整合包
 /// </summary>
-public partial class AddModPackControlModel : TopModel, IAddControl
+public partial class AddModPackControlModel : AddBaseModel
 {
-    /// <summary>
-    /// 下载源列表
-    /// </summary>
-    public string[] SourceList { get; init; } = LanguageUtils.GetSourceList();
-
-    /// <summary>
-    /// 游戏版本列表
-    /// </summary>
-    public ObservableCollection<string> GameVersionList { get; init; } = [];
-    /// <summary>
-    /// 分类列表
-    /// </summary>
-    public ObservableCollection<string> CategorieList { get; init; } = [];
-    /// <summary>
-    /// 排序列表
-    /// </summary>
-    public ObservableCollection<string> SortTypeList { get; init; } = [];
-    /// <summary>
-    /// 项目列表
-    /// </summary>
-    public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
-
-    /// <summary>
-    /// 下载项目信息
-    /// </summary>
-    public AddFileInfoControlModel DisplayFile { get; init; }
-
     /// <summary>
     /// 分类
     /// </summary>
     private readonly Dictionary<int, string> _categories = [];
-    /// <summary>
-    /// 是否在加载
-    /// </summary>
-    private bool _load = false;
-    /// <summary>
-    /// 是否关闭
-    /// </summary>
-    private bool _close = false;
-
-    /// <summary>
-    /// 下载源
-    /// </summary>
-    [ObservableProperty]
-    private int _source = -1;
-    /// <summary>
-    /// 分类
-    /// </summary>
-    [ObservableProperty]
-    private int _categorie;
-    /// <summary>
-    /// 排序
-    /// </summary>
-    [ObservableProperty]
-    private int _sortType;
-    /// <summary>
-    /// 当前页数
-    /// </summary>
-    [ObservableProperty]
-    private int? _page = 0;
-    /// <summary>
-    /// 最大页数
-    /// </summary>
-    [ObservableProperty]
-    private int _maxPage;
-    /// <summary>
-    /// 游戏版本
-    /// </summary>
-    [ObservableProperty]
-    private string? _gameVersion;
-    /// <summary>
-    /// 搜索文本
-    /// </summary>
-    [ObservableProperty]
-    private string? _text;
-    /// <summary>
-    /// 是否选中了项目
-    /// </summary>
-    [ObservableProperty]
-    private bool _isSelect = false;
-    /// <summary>
-    /// 是否没有项目
-    /// </summary>
-    [ObservableProperty]
-    private bool _emptyDisplay = true;
-    /// <summary>
-    /// 是否下载源加载数据
-    /// </summary>
-    [ObservableProperty]
-    private bool _sourceLoad;
-    /// <summary>
-    /// 是否允许下一页
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableNextPage;
-
-    private FileItemModel? _last;
-
-    /// <summary>
-    /// 是否已经显示
-    /// </summary>
-    public bool Display { get; set; }
 
     /// <summary>
     /// 是否继续添加
@@ -141,72 +43,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     public AddModPackControlModel(BaseModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
-        DisplayFile = new AddFileInfoControlModel(model, this);
-    }
-
-    /// <summary>
-    /// 分类改变
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnCategorieChanged(int value)
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        Load();
-    }
-
-    /// <summary>
-    /// 排序改变
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnSortTypeChanged(int value)
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        Load();
-    }
-
-    /// <summary>
-    /// 游戏版本改变
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnGameVersionChanged(string? value)
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        DisplayFile.GameVersionDownload = value;
-
-        Load();
-    }
-
-    /// <summary>
-    /// 页数改变
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnPageChanged(int? value)
-    {
-        if (_load)
-            return;
-
-        Load();
-    }
-
-    /// <summary>
-    /// 下载源改变
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnSourceChanged(int value)
-    {
-        LoadSourceData();
+        SourceList.AddRange(LanguageUtils.GetSourceList());
     }
 
     /// <summary>
@@ -215,7 +52,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     [RelayCommand]
     public void Select()
     {
-        if (_last == null)
+        if (_lastSelect == null)
         {
             Model.Show(LanguageUtils.Get("AddModPackWindow.Text22"));
             return;
@@ -236,7 +73,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
         }
 
-        Load();
+        LoadDisplayList();
     }
 
     protected override void MinModeChange()
@@ -247,7 +84,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// <summary>
     /// 加载搜索源数据
     /// </summary>
-    public async void LoadSourceData()
+    public override async void LoadSourceData()
     {
         if (_load)
         {
@@ -313,33 +150,12 @@ public partial class AddModPackControlModel : TopModel, IAddControl
                 GameVersion = GameVersionList.FirstOrDefault();
                 SortType = Source == 0 ? 1 : 0;
 
-                Load();
+                LoadDisplayList();
                 break;
         }
 
         SourceLoad = true;
         _load = false;
-    }
-
-    /// <summary>
-    /// 选中项目
-    /// </summary>
-    /// <param name="last"></param>
-    public void SetSelect(FileItemModel last)
-    {
-        IsSelect = true;
-        _last?.IsSelect = false;
-        _last = last;
-        _last.IsSelect = true;
-    }
-
-    /// <summary>
-    /// 开始安装项目
-    /// </summary>
-    private void DisplayItems()
-    {
-        DisplayFile.Load(_last);
-        DisplayVersion = true;
     }
 
     /// <summary>
@@ -383,7 +199,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             return;
         }
 
-        if (Source < SourceList.Length)
+        if (Source < SourceList.Count)
         {
             res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
@@ -396,7 +212,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     /// <summary>
     /// 加载项目列表
     /// </summary>
-    private async void Load()
+    public override async void LoadDisplayList()
     {
         //MO不允许少文字搜索
         if (Source == 1 && Categorie == 4 && Text?.Length < 3)
@@ -449,79 +265,12 @@ public partial class AddModPackControlModel : TopModel, IAddControl
 
         OnPropertyChanged(nameof(DisplayList));
 
-        _last = null;
+        _lastSelect = null;
 
         EmptyDisplay = DisplayList.Count == 0;
 
         Model.ProgressClose();
         Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
-    }
-
-    /// <summary>
-    /// 安装所选项目
-    /// </summary>
-    /// <param name="item"></param>
-    public async void Install(FileItemModel item)
-    {
-        SetSelect(item);
-        Model.Progress();
-        var res = await WebBinding.GetFileListAsync(item.SourceType,
-               item.Pid, 0, null, Loaders.Normal);
-        Model.ProgressClose();
-        if (res == null || res.List == null || res.List.Count == 0)
-        {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
-            return;
-        }
-        var item1 = res.List.First();
-        if (item1.IsDownload)
-        {
-            var res1 = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text40"));
-            if (!res1)
-            {
-                return;
-            }
-        }
-
-        Install(item1);
-    }
-
-    /// <summary>
-    /// 清理项目列表
-    /// </summary>
-    private void ClearList()
-    {
-        foreach (var item in DisplayList)
-        {
-            item.Close();
-        }
-        DisplayList.Clear();
-    }
-
-    /// <summary>
-    /// 上一页
-    /// </summary>
-    public void Back()
-    {
-        if (_load || Page <= 0)
-        {
-            return;
-        }
-
-        Page -= 1;
-    }
-
-    /// <summary>
-    /// 下一页
-    /// </summary>
-    public void Next()
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        Page += 1;
     }
 
     /// <summary>
@@ -531,11 +280,11 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     {
         if (DisplayVersion)
         {
-            LoadVersion();
+            LoadInfoVersion();
         }
         else
         {
-            Load();
+            LoadDisplayList();
         }
     }
 
@@ -555,7 +304,7 @@ public partial class AddModPackControlModel : TopModel, IAddControl
             item.Close();
         }
         DisplayList.Clear();
-        _last = null;
+        _lastSelect = null;
     }
 
     /// <summary>
@@ -584,11 +333,5 @@ public partial class AddModPackControlModel : TopModel, IAddControl
     public void SetGroup(string? group)
     {
         _group = group;
-    }
-
-    public void ShowInfo(FileItemModel item)
-    {
-        SetSelect(item);
-        DisplayItems();
     }
 }

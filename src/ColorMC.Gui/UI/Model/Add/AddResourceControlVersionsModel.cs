@@ -20,6 +20,8 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// </summary>
 public partial class AddResourceControlModel
 {
+    public override string Title => LanguageUtils.Get("AddGameWindow.Title");
+
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
@@ -29,16 +31,6 @@ public partial class AddResourceControlModel
     /// </summary>
     public ObservableCollection<FileVersionItemModel> FileList { get; init; } = [];
 
-    /// <summary>
-    /// 文件列表显示
-    /// </summary>
-    [ObservableProperty]
-    private bool _versionDisplay;
-    /// <summary>
-    /// 是否没有项目
-    /// </summary>
-    [ObservableProperty]
-    private bool _emptyVersionDisplay = true;
     /// <summary>
     /// 模组列表显示
     /// </summary>
@@ -98,26 +90,6 @@ public partial class AddResourceControlModel
     }
 
     /// <summary>
-    /// 文件列表显示
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnVersionDisplayChanged(bool value)
-    {
-        if (value)
-        {
-            Model.PushBack(back: () =>
-            {
-                VersionDisplay = false;
-            });
-        }
-        else
-        {
-            Model.PopBack();
-            Model.Title = LanguageUtils.Get("AddGameWindow.Title");
-        }
-    }
-
-    /// <summary>
     /// 文件列表页数修改
     /// </summary>
     /// <param name="value"></param>
@@ -171,7 +143,7 @@ public partial class AddResourceControlModel
         string? loadid = null;
         SourceType loadtype = SourceType.McMod;
 
-        var type = _sourceTypeList[DownloadSource];
+        var type = _sourceTypeList[Source];
 
         //如果是mcmod需要选择下载源
         if (type == SourceType.McMod)
@@ -237,11 +209,11 @@ public partial class AddResourceControlModel
             page = PageDownload ?? 0;
         }
 
-        VersionDisplay = true;
+        DisplayVersion = true;
         Model.Progress(LanguageUtils.Get("AddResourceWindow.Text18"));
 
         var res = await WebBinding.GetFileListAsync(type, pid, page,
-                GameVersionDownload, _now == FileType.Mod ? Obj.Loader : Loaders.Normal, _now);
+                GameVersionDownload, _now == FileType.Mod ? _obj.Loader : Loaders.Normal, _now);
         var list = res.List;
         var title = res.Name;
         MaxPageDownload = res.Count / 50;
@@ -272,7 +244,7 @@ public partial class AddResourceControlModel
                 }
                 var item1 = list[a];
                 item1.Add = this;
-                if (Obj.Mods.TryGetValue(item1.ID, out var value)
+                if (_obj.Mods.TryGetValue(item1.ID, out var value)
                     && value.FileId == item1.ID1)
                 {
                     item1.IsDownload = true;
@@ -295,7 +267,7 @@ public partial class AddResourceControlModel
             }
         }
 
-        EmptyVersionDisplay = FileList.Count == 0;
+        EmptyDisplay = FileList.Count == 0;
 
         Model.ProgressClose();
         Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
@@ -306,7 +278,7 @@ public partial class AddResourceControlModel
     /// 开始下载文件
     /// </summary>
     /// <param name="data"></param>
-    public async void Install(FileVersionItemModel data)
+    public override async void Install(FileVersionItemModel data)
     {
         if (data.IsDownload)
         {
@@ -314,7 +286,7 @@ public partial class AddResourceControlModel
         }
 
         ModInfoObj? mod = null;
-        if (_now == FileType.Mod && Obj.Mods.TryGetValue(data.ID, out mod))
+        if (_now == FileType.Mod && _obj.Mods.TryGetValue(data.ID, out mod))
         {
             var res1 = await Model.ShowAsync(LanguageUtils.Get("AddResourceWindow.Text23"));
             if (!res1)
@@ -323,17 +295,17 @@ public partial class AddResourceControlModel
             }
         }
 
-        VersionDisplay = false;
+        DisplayVersion = false;
         bool res = false;
 
-        GameManager.StartAdd(Obj.UUID);
+        GameManager.StartAdd(_obj.UUID);
         try
         {
             //数据包
             if (_now == FileType.DataPacks)
             {
                 //选择存档
-                var list = await Obj.GetSavesAsync();
+                var list = await _obj.GetSavesAsync();
                 if (list.Count == 0)
                 {
                     Model.Show(LanguageUtils.Get("AddResourceWindow.Text29"));
@@ -351,10 +323,10 @@ public partial class AddResourceControlModel
 
                 try
                 {
-                    DownloadItemInfo? info = null;
+                    FileItemDownloadModel? info = null;
                     if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                     {
-                        info = new DownloadItemInfo
+                        info = new FileItemDownloadModel
                         {
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
@@ -366,7 +338,7 @@ public partial class AddResourceControlModel
                     }
                     else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                     {
-                        info = new DownloadItemInfo
+                        info = new FileItemDownloadModel
                         {
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
@@ -394,9 +366,9 @@ public partial class AddResourceControlModel
                 {
                     var list = data.SourceType switch
                     {
-                        SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(Obj,
+                        SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(_obj,
                         data.Data as CurseForgeModObj.CurseForgeDataObj),
-                        SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(Obj,
+                        SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(_obj,
                         data.Data as ModrinthVersionObj),
                         _ => null
                     };
@@ -408,7 +380,7 @@ public partial class AddResourceControlModel
 
                     if (list.List!.Count == 0)
                     {
-                        var info = new DownloadItemInfo
+                        var info = new FileItemDownloadModel
                         {
                             Type = FileType.Mod,
                             Source = data.SourceType,
@@ -416,13 +388,13 @@ public partial class AddResourceControlModel
                         };
                         StartDownload(info);
 
-                        res = await WebBinding.DownloadModAsync(Obj,
+                        res = await WebBinding.DownloadModAsync(_obj,
                         [
                             new DownloadModArg()
                             {
                                 Item = list.Item!,
                                 Info = list.Info!,
-                                Old = await Obj.ReadModAsync(mod)
+                                Old = await _obj.ReadModAsync(mod)
                             }
                         ]);
 
@@ -445,9 +417,9 @@ public partial class AddResourceControlModel
                 {
                     res = data.SourceType switch
                     {
-                        SourceType.CurseForge => await WebBinding.DownloadAsync(_now, Obj,
+                        SourceType.CurseForge => await WebBinding.DownloadAsync(_now, _obj,
                             data.Data as CurseForgeModObj.CurseForgeDataObj),
-                        SourceType.Modrinth => await WebBinding.DownloadAsync(_now, Obj,
+                        SourceType.Modrinth => await WebBinding.DownloadAsync(_now, _obj,
                             data.Data as ModrinthVersionObj),
                         _ => false
                     };
@@ -471,7 +443,7 @@ public partial class AddResourceControlModel
         }
         finally
         {
-            GameManager.StopAdd(Obj.UUID);
+            GameManager.StopAdd(_obj.UUID);
         }
     }
 }

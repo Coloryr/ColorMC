@@ -9,7 +9,7 @@ namespace ColorMC.Core.Game;
 /// <summary>
 /// 游戏句柄
 /// </summary>
-public class GameHandel
+public class GameHandle
 {
     /// <summary>
     /// 游戏进程
@@ -26,7 +26,7 @@ public class GameHandel
     /// <summary>
     /// 游戏实例主窗口句柄
     /// </summary>
-    public IntPtr Handel => Process.MainWindowHandle;
+    public IntPtr Handle => Process.MainWindowHandle;
     /// <summary>
     /// 是否为管理员启动，且无法获取句柄
     /// </summary>
@@ -38,7 +38,7 @@ public class GameHandel
     /// 游戏句柄
     /// </summary>
     /// <param name="run">游戏运行参数</param>
-    public GameHandel(GameRunObj run)
+    public GameHandle(GameRunObj run)
     {
         _game = run.Obj;
 

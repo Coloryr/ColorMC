@@ -43,7 +43,7 @@ public static class JavaHelper
     /// </summary>
     /// <param name="path">路径</param>
     /// <returns>Java信息</returns>
-    public static JavaInfo? GetJavaInfo(string path)
+    public static JavaInfoObj? GetJavaInfo(string path)
     {
         try
         {
@@ -83,7 +83,7 @@ public static class JavaHelper
                         var arch = SystemInfo.IsArm
                             ? (is64 ? ArchEnum.aarch64 : ArchEnum.arm)
                             : (is64 ? ArchEnum.x86_64 : ArchEnum.x86);
-                        var info = new JavaInfo()
+                        var info = new JavaInfoObj()
                         {
                             Path = path,
                             Version = version,
@@ -215,9 +215,9 @@ public static class JavaHelper
     /// </summary>
     /// <param name="local">文件路径</param>
     /// <returns>Java版本</returns>
-    public static List<JavaInfo>? FindJava(string local)
+    public static List<JavaInfoObj>? FindJava(string local)
     {
-        var list = new List<JavaInfo>();
+        var list = new List<JavaInfoObj>();
         var list1 = PathHelper.GetAllFiles(local)
             .Where(item => item.Name == "javaw.exe" || item.Name == "java.exe");
         foreach (var item in list1)
@@ -236,10 +236,10 @@ public static class JavaHelper
     /// 查找本机所有Java
     /// </summary>
     /// <returns>Java列表</returns>
-    public static async Task<List<JavaInfo>?> FindJava()
+    public static async Task<List<JavaInfoObj>?> FindJava()
     {
         bool ex = false;
-        var list = new List<JavaInfo>();
+        var list = new List<JavaInfoObj>();
 
         await Task.Run(() =>
         {

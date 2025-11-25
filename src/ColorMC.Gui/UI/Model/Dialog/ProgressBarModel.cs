@@ -5,7 +5,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// 进度条信息
 /// </summary>
-public partial class Info1Model : ObservableObject
+public partial class ProgressBarModel : ObservableObject
 {
     /// <summary>
     /// 显示的文本
@@ -21,5 +21,5 @@ public partial class Info1Model : ObservableObject
     /// 是否为循环滚动
     /// </summary>
     [ObservableProperty]
-    private bool _indeterminate;
+    private bool _indeterminate = true;
 }

@@ -19,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 添加游戏资源
 /// </summary>
-public partial class AddResourceControlModel : GameModel, IAddControl
+public partial class AddResourceControlModel : AddBaseModel, IAddControl
 {
     public const string NameScrollToHome = "Scroll:Home";
 
@@ -45,118 +45,28 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     /// 显示的下载类型列表
     /// </summary>
     public string[] TypeList { get; init; } = LanguageUtils.GetAddType();
-    /// <summary>
-    /// 显示的游戏版本列表
-    /// </summary>
-    public ObservableCollection<string> GameVersionList { get; init; } = [];
-    /// <summary>
-    /// 显示的下载源列表
-    /// </summary>
-    public ObservableCollection<string> DownloadSourceList { get; init; } = [];
-    /// <summary>
-    /// 显示的排序列表
-    /// </summary>
-    public ObservableCollection<string> SortTypeList { get; init; } = [];
-    /// <summary>
-    /// 显示的分类列表
-    /// </summary>
-    public ObservableCollection<string> CategorieList { get; init; } = [];
-
-    /// <summary>
-    /// 显示的项目列表
-    /// </summary>
-    public ObservableCollection<FileItemModel> DisplayList { get; init; } = [];
-
-    /// <summary>
-    /// 是否没有项目
-    /// </summary>
-    [ObservableProperty]
-    private bool _emptyDisplay = true;
-    /// <summary>
-    /// 是否选择了项目
-    /// </summary>
-    [ObservableProperty]
-    private bool _isSelect;
-    /// <summary>
-    /// 搜索源数据是否加载了
-    /// </summary>
-    [ObservableProperty]
-    private bool _sourceLoad;
+    
     /// <summary>
     /// 是否为模组升级模式
     /// </summary>
     [ObservableProperty]
     private bool _isUpgrade;
-    /// <summary>
-    /// 项目列表是否有下一页
-    /// </summary>
-    [ObservableProperty]
-    private bool _nextPage;
 
     /// <summary>
     /// 下载类型
     /// </summary>
     [ObservableProperty]
     private int _type = -1;
-    /// <summary>
-    /// 排序类型
-    /// </summary>
-    [ObservableProperty]
-    private int _sortType = -1;
-    /// <summary>
-    /// 搜索源
-    /// </summary>
-    [ObservableProperty]
-    private int _downloadSource = -1;
-    /// <summary>
-    /// 分类
-    /// </summary>
-    [ObservableProperty]
-    private int _categorie;
-    /// <summary>
-    /// 项目当前页数
-    /// </summary>
-    [ObservableProperty]
-    private int? _page = 0;
-    /// <summary>
-    /// 项目最大页数
-    /// </summary>
-    [ObservableProperty]
-    private int _maxPage;
-
-    /// <summary>
-    /// 游戏版本
-    /// </summary>
-    [ObservableProperty]
-    private string? _gameVersion;
-    /// <summary>
-    /// 名字
-    /// </summary>
-    [ObservableProperty]
-    private string? _name;
 
     /// <summary>
     /// 当前文件类型
     /// </summary>
     private FileType _now;
-    /// <summary>
-    /// 是否在加载
-    /// </summary>
-    private bool _load = false;
-    /// <summary>
-    /// 是否关闭
-    /// </summary>
-    private bool _close = false;
 
     /// <summary>
-    /// 选中的下载项目
+    /// 游戏实例
     /// </summary>
-    private FileItemModel? _lastSelect;
-
-    /// <summary>
-    /// 是否已经显示
-    /// </summary>
-    public bool Display { get; set; }
+    public GameSettingObj _obj;
 
     /// <summary>
     /// 可以下载的文件类型
@@ -173,8 +83,9 @@ public partial class AddResourceControlModel : GameModel, IAddControl
 
     private readonly string _useName;
 
-    public AddResourceControlModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public AddResourceControlModel(BaseModel model, GameSettingObj obj) : base(model)
     {
+        _obj = obj;
         _useName = ToString() ?? "AddControlModel";
     }
 
@@ -209,65 +120,15 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         Page = 0;
 
         FileList.Clear();
-        DownloadSourceList.Clear();
+        SourceList.Clear();
 
         _sourceTypeList.Clear();
         _sourceTypeList.AddRange(WebBinding.GetSourceList(_now));
-        _sourceTypeList.ForEach(item => DownloadSourceList.Add(item.GetName()));
+        _sourceTypeList.ForEach(item => SourceList.Add(item.GetName()));
 
         _load = false;
 
-        DownloadSource = 0;
-    }
-
-    /// <summary>
-    /// 排序类型选择
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnSortTypeChanged(int value)
-    {
-        Refresh();
-    }
-
-    /// <summary>
-    /// 分类选择
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnCategorieChanged(int value)
-    {
-        Refresh();
-    }
-
-    /// <summary>
-    /// 页数修改
-    /// </summary>
-    /// <param name="value"></param>
-    async partial void OnPageChanged(int? value)
-    {
-        if (!Display || _load)
-        {
-            return;
-        }
-
-        await GetList();
-    }
-
-    /// <summary>
-    /// 搜索源修改
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnDownloadSourceChanged(int value)
-    {
-        LoadSourceData();
-    }
-
-    /// <summary>
-    /// 游戏版本修改
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnGameVersionChanged(string? value)
-    {
-        Refresh();
+        Source = 0;
     }
 
     /// <summary>
@@ -276,13 +137,13 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     [RelayCommand]
     public async Task GetList()
     {
-        var type = _sourceTypeList[DownloadSource];
+        var type = _sourceTypeList[Source];
 
         Model.Progress(LanguageUtils.Get("AddResourceWindow.Text17"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
-            var data = await WebBinding.SearchMcmodAsync(Name ?? "", Page ?? 0, Obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
+            var data = await WebBinding.SearchMcmodAsync(Text ?? "", Page ?? 0, _obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
             if (data == null)
             {
                 Model.ProgressClose();
@@ -308,8 +169,8 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         else
         {
             //其他搜索源
-            var res = await WebBinding.GetListAsync(_now, type, GameVersion, Name, Page ?? 0,
-                SortType, Categorie < 0 ? "" : _categories[Categorie], Obj.Loader);
+            var res = await WebBinding.GetListAsync(_now, type, GameVersion, Text, Page ?? 0,
+                SortType, Categorie < 0 ? "" : _categories[Categorie], _obj.Loader);
 
             var data = res.List;
 
@@ -343,7 +204,7 @@ public partial class AddResourceControlModel : GameModel, IAddControl
                     }
                     var item = data[a];
                     item.Add = this;
-                    if (Obj.Mods.ContainsKey(item.ID))
+                    if (_obj.Mods.ContainsKey(item.ID))
                     {
                         item.IsDownload = true;
                     }
@@ -386,7 +247,7 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     [RelayCommand]
     public async Task GetNameList()
     {
-        if (!string.IsNullOrWhiteSpace(Name) && Page != 0)
+        if (!string.IsNullOrWhiteSpace(Text) && Page != 0)
         {
             Page = 0;
             return;
@@ -442,20 +303,6 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         InstallItem(_lastSelect);
     }
 
-    /// <summary>
-    /// 下一页
-    /// </summary>
-    [RelayCommand]
-    public void Next()
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        Page += 1;
-    }
-
     [RelayCommand]
     public void NextVersion()
     {
@@ -470,7 +317,7 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     /// <summary>
     /// 加载下载源信息
     /// </summary>
-    public async void LoadSourceData()
+    public override async void LoadSourceData()
     {
         if (!Display || _load)
         {
@@ -484,7 +331,7 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         CategorieList.Clear();
 
         ClearList();
-        var type = _sourceTypeList[DownloadSource];
+        var type = _sourceTypeList[Source];
 
         if (type is SourceType.CurseForge or SourceType.Modrinth)
         {
@@ -523,9 +370,9 @@ public partial class AddResourceControlModel : GameModel, IAddControl
             CategorieList.AddRange(list2);
 
             //自动设置游戏版本
-            if (GameVersionList.Contains(Obj.Version))
+            if (GameVersionList.Contains(_obj.Version))
             {
-                GameVersionOptifine = GameVersion = GameVersionDownload = Obj.Version;
+                GameVersionOptifine = GameVersion = GameVersionDownload = _obj.Version;
             }
             else
             {
@@ -566,9 +413,9 @@ public partial class AddResourceControlModel : GameModel, IAddControl
             CategorieList.AddRange(_categories.Values);
 
             //自动设置游戏版本
-            if (GameVersionList.Contains(Obj.Version))
+            if (GameVersionList.Contains(_obj.Version))
             {
-                GameVersionOptifine = GameVersion = GameVersionDownload = Obj.Version;
+                GameVersionOptifine = GameVersion = GameVersionDownload = _obj.Version;
             }
             else
             {
@@ -591,7 +438,7 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     {
         //跳转到模组类型
         Type = 0;
-        DownloadSource = (int)type;
+        Source = (int)type;
         await Task.Run(() =>
         {
             while ((!Display || _load) && !_close)
@@ -615,13 +462,8 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     /// <summary>
     /// 刷新项目列表
     /// </summary>
-    public async void Refresh()
+    public override async void LoadDisplayList()
     {
-        if (!Display || _load)
-        {
-            return;
-        }
-
         await GetList();
     }
 
@@ -637,12 +479,12 @@ public partial class AddResourceControlModel : GameModel, IAddControl
             return;
         }
 
-        if (DownloadSource < _sourceTypeList.Count)
+        if (Source < _sourceTypeList.Count)
         {
             res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
-                DownloadSource++;
+                Source++;
             }
         }
     }
@@ -660,34 +502,8 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         else
         {
             Type = s_types.IndexOf(file);
-            DownloadSource = 0;
+            Source = 0;
         }
-    }
-
-    /// <summary>
-    /// 上一页
-    /// </summary>
-    public void Back()
-    {
-        if (_load || Page <= 0)
-        {
-            return;
-        }
-
-        Page -= 1;
-    }
-
-    /// <summary>
-    /// 上一页
-    /// </summary>
-    public void BackVersion()
-    {
-        if (_load || PageDownload <= 0)
-        {
-            return;
-        }
-
-        Page -= 1;
     }
 
     /// <summary>
@@ -695,61 +511,30 @@ public partial class AddResourceControlModel : GameModel, IAddControl
     /// </summary>
     public void Reload()
     {
-        if (VersionDisplay)
+        if (DisplayVersion)
         {
             Refresh1();
         }
         else
         {
-            Refresh();
+            LoadDisplayList();
         }
-    }
-
-    public void ShowInfo(FileItemModel item)
-    {
-        SetSelect(item);
     }
 
     /// <summary>
     /// 打开文件列表
     /// </summary>
     /// <param name="item">项目</param>
-    public void Install(FileItemModel item)
+    public override void Install(FileItemModel item)
     {
         SetSelect(item);
         InstallItem(item);
     }
 
-    /// <summary>
-    /// 选择项目
-    /// </summary>
-    /// <param name="last"></param>
-    public void SetSelect(FileItemModel last)
-    {
-        IsSelect = true;
-        if (_lastSelect != null)
-        {
-            _lastSelect.IsSelect = false;
-        }
-        _lastSelect = last;
-        _lastSelect.IsSelect = true;
-    }
-
-    /// <summary>
-    /// 清理项目列表
-    /// </summary>
-    private void ClearList()
-    {
-        foreach (var item in DisplayList)
-        {
-            item.Close();
-        }
-        DisplayList.Clear();
-    }
-
     public override void Close()
     {
-        if (VersionDisplay || OptifineDisplay || ModDownloadDisplay)
+        base.Close();
+        if (DisplayVersion || OptifineDisplay || ModDownloadDisplay)
         {
             Model.PopBack();
         }
@@ -762,6 +547,5 @@ public partial class AddResourceControlModel : GameModel, IAddControl
         DownloadOptifineList.Clear();
         DownloadModList.Clear();
         FileList.Clear();
-        ClearList();
     }
 }

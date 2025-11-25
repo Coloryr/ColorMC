@@ -220,7 +220,7 @@ public static class Launch
             list1?.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         }
 
-        JavaInfo? jvm = null;
+        JavaInfoObj? jvm = null;
         if (!string.IsNullOrWhiteSpace(obj.JvmName))
         {
             jvm = JvmPath.GetInfo(obj.JvmName);
@@ -466,12 +466,12 @@ public static class Launch
             //启动进程
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var handel = new GameHandel(item1);
+            var handel = new GameHandle(item1);
             stopwatch.Stop();
             ColorMCCore.OnGameLog(item1.Obj, GameSystemLog.LaunchTime, stopwatch.Elapsed.ToString(), "");
 
             ColorMCCore.AddGameHandel(item1.Obj.UUID, handel);
-            list.Add(item1.Obj, new GameLaunchRes { Handel = handel });
+            list.Add(item1.Obj, new GameLaunchRes { Handle = handel });
         }
 
         return list;
@@ -574,7 +574,7 @@ public static class Launch
     /// <param name="token">取消Token</param>
     /// <exception cref="LaunchException">启动错误</exception>
     /// <returns>游戏句柄</returns>
-    public static async Task<GameHandel?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg,
+    public static async Task<GameHandle?> StartGameAsync(this GameSettingObj obj, GameLaunchArg larg,
         CancellationToken token)
     {
         ColorMCCore.GameLogClear(obj);
@@ -709,7 +709,7 @@ public static class Launch
         //启动进程
         stopwatch.Reset();
         stopwatch.Start();
-        var handel = new GameHandel(new GameRunObj
+        var handel = new GameHandle(new GameRunObj
         {
             Obj = obj,
             Arg = arg,

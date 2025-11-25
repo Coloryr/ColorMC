@@ -569,3 +569,30 @@ public enum ErrorType
     /// </summary>
     SearchFail,
 }
+
+/// <summary>
+/// 整合包安装状态
+/// </summary>
+public enum ModpackState
+{ 
+    /// <summary>
+    /// 读取压缩包信息
+    /// </summary>
+    ReadInfo,
+    /// <summary>
+    /// 获取模组信息
+    /// </summary>
+    GetInfo,
+    /// <summary>
+    /// 下载文件
+    /// </summary>
+    DownloadFile,
+    /// <summary>
+    /// 解压文件
+    /// </summary>
+    Unzip,
+    /// <summary>
+    /// 完成
+    /// </summary>
+    Done
+}

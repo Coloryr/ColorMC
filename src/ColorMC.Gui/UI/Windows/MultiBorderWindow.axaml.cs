@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Windows;
 
@@ -11,7 +12,7 @@ namespace ColorMC.Gui.UI.Windows;
 /// </summary>
 public partial class MultiBorderWindow : AMultiWindow
 {
-    public override HeadControl Head => HeadControl;
+    public override HeadControl Head => MainView.HeadControl;
 
     public override int DefaultWidth => 770;
     public override int DefaultHeight => 460;
@@ -52,6 +53,6 @@ public partial class MultiBorderWindow : AMultiWindow
 
     protected override void SetChild(Control control)
     {
-        MainControl.Child = control;
+        MainView.MainControl.Child = control;
     }
 }

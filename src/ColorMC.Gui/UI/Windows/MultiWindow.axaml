@@ -3,13 +3,10 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
-    xmlns:dialogview="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
+    xmlns:view1="clr-namespace:ColorMC.Gui.UI.Windows"
     Title="{Binding Title}"
     Width="760"
     Height="450"
@@ -30,41 +27,5 @@
     <Design.DataContext>
         <model:BaseModel />
     </Design.DataContext>
-    <Panel Background="{setting:Theme WindowTranColor}">
-        <Image
-            IsVisible="{Binding BgVisible}"
-            Opacity="{Binding BgOpacity}"
-            Source="{Binding BackImage}"
-            Stretch="UniformToFill" />
-        <DockPanel Background="{setting:Theme WindowBG}">
-            <view:HeadControl
-                Name="HeadControl"
-                DockPanel.Dock="Top"
-                IsVisible="{Binding EnableHead}" />
-            <dialog:DialogHost
-                Background="{setting:Theme ButtonBG}"
-                DisableOpeningAnimation="True"
-                Identifier="{Binding WindowId}"
-                OverlayBackground="Transparent">
-                <dialog:DialogHost.DataTemplates>
-                    <DataTemplate DataType="dialogmodel:Info1Model">
-                        <dialogview:Info1Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info3Model">
-                        <dialogview:Info3Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info4Model">
-                        <dialogview:Info4Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info5Model">
-                        <dialogview:Info5Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info6Model">
-                        <dialogview:Info6Control DataContext="{Binding}" />
-                    </DataTemplate>
-                </dialog:DialogHost.DataTemplates>
-                <Decorator Name="MainControl" />
-            </dialog:DialogHost>
-        </DockPanel>
-    </Panel>
+    <view1:MainView Name="MainView" />
 </Window>

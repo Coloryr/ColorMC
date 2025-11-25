@@ -1,18 +1,18 @@
 ﻿using ColorMC.Core.Objs;
 
-namespace ColorMC.Core.GuiHandel;
+namespace ColorMC.Core.GuiHandle;
 
 /// <summary>
 /// 下载界面调用所需参数
 /// </summary>
-public interface IDownloadGuiHandel
+public interface IDownloadGui
 {
     /// <summary>
     /// 下载状态更新
     /// </summary>
     /// <param name="thread">当前线程</param>
-    /// <param name="state">状态</param>
-    /// <param name="count">下载总数</param>
+    /// <param name="state">是否还在下载</param>
+    /// <param name="count">下载任务总数</param>
     public void Update(int thread, bool state, int count);
     /// <summary>
     /// 下载任务更新

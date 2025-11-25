@@ -31,27 +31,11 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost
+                Name="Dialog"
                 Background="{setting:Theme ButtonBG}"
                 DisableOpeningAnimation="True"
                 Identifier="{Binding WindowId}"
                 OverlayBackground="Transparent">
-                <dialog:DialogHost.DataTemplates>
-                    <DataTemplate DataType="dialogmodel:Info1Model">
-                        <dialogview:Info1Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info3Model">
-                        <dialogview:Info3Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info4Model">
-                        <dialogview:Info4Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info5Model">
-                        <dialogview:Info5Control DataContext="{Binding}" />
-                    </DataTemplate>
-                    <DataTemplate DataType="dialogmodel:Info6Model">
-                        <dialogview:Info6Control DataContext="{Binding}" />
-                    </DataTemplate>
-                </dialog:DialogHost.DataTemplates>
                 <Panel>
                     <Decorator Name="Controls" />
                     <Panel

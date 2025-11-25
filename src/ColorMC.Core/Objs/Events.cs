@@ -1,4 +1,4 @@
-﻿using ColorMC.Core.GuiHandel;
+﻿using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
 
@@ -684,5 +684,5 @@ public class DownloadEventArgs : EventArgs
     /// <summary>
     /// 界面操作回调
     /// </summary>
-    public IDownloadGuiHandel? GuiHandel { get; set; }
+    public IDownloadGui? GuiHandle { get; set; }
 }

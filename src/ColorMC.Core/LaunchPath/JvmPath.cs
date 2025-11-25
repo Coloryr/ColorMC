@@ -1,6 +1,6 @@
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -15,7 +15,7 @@ public static class JvmPath
     /// <summary>
     /// Jvm列表
     /// </summary>
-    public static Dictionary<string, JavaInfo> Jvms { get; } = [];
+    public static Dictionary<string, JavaInfoObj> Jvms { get; } = [];
 
     /// <summary>
     /// 下载的Java位置
@@ -51,7 +51,7 @@ public static class JvmPath
     /// </summary>
     /// <param name="info">Java信息</param>
     /// <returns>路径</returns>
-    public static string GetPath(this JavaInfo info)
+    public static string GetPath(this JavaInfoObj info)
     {
         if (info.Path.StartsWith(Names.NameJavaDir))
         {
@@ -280,7 +280,7 @@ public static class JvmPath
     /// </summary>
     /// <param name="name">名字</param>
     /// <returns>Java信息</returns>
-    public static JavaInfo? GetInfo(string? name)
+    public static JavaInfoObj? GetInfo(string? name)
     {
         if (name == null)
             return null;
@@ -310,7 +310,7 @@ public static class JvmPath
     /// </summary>
     /// <param name="jv">主版本</param>
     /// <returns>Java信息</returns>
-    public static JavaInfo? FindJava(int jv)
+    public static JavaInfoObj? FindJava(int jv)
     {
         var list = Jvms.Where(a => a.Value.MajorVersion == jv)
             .Select(a => a.Value);

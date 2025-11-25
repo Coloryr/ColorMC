@@ -18,12 +18,12 @@ namespace ColorMC.Test;
 
 public static class TestItem
 {
-    private static GameHandel? Start(GameSettingObj obj, LoginObj obj1)
+    private static GameHandle? Start(GameSettingObj obj, LoginObj obj1)
     {
         return obj.StartGameAsync(new GameLaunchArg
         {
             Auth = obj1
-        }, CancellationToken.None).Result as GameHandel;
+        }, CancellationToken.None).Result as GameHandle;
     }
 
     public static void Item1()
@@ -188,7 +188,7 @@ public static class TestItem
 
         CoreHttpClient.Source = SourceLocal.Offical;
 
-        GameHandel? process;
+        GameHandle? process;
         //process = game.StartGame(login).Result;
         //process?.WaitForExit();
 

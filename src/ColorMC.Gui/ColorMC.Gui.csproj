@@ -344,6 +344,7 @@
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.HtmlRenderer" Version="11.3.9" />
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 	<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
@@ -360,14 +361,13 @@
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.6.2" />
-	  <PackageReference Include="Avalonia.HtmlRenderer" Version="11.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UI\Controls\Items\WebPicItemControl.axaml.cs">
-      <DependentUpon>WebPicItemControl.axaml</DependentUpon>
+    <Compile Update="UI\Controls\Dialog\ProgressBarControl.axaml.cs">
+      <DependentUpon>ProgressBarControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

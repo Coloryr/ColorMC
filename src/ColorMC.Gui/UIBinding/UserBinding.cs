@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using ColorMC.Core.Game;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;

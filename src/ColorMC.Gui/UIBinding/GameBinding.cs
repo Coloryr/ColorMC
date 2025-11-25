@@ -17,7 +17,7 @@ using ColorMC.Core.Chunk;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Nbt;
@@ -216,7 +216,7 @@ public static class GameBinding
         //逐一启动
         foreach (var item in res1)
         {
-            if (item.Value.Handel is { } handel)
+            if (item.Value.Handle is { } handle)
             {
                 item.Key.LaunchData.LastTime = DateTime.Now;
                 item.Key.SaveLaunchData();
@@ -224,7 +224,7 @@ public static class GameBinding
                 GameCountUtils.LaunchDone(item.Key);
                 GameStateUpdate(item.Key);
 
-                GameManager.StartGameHandel(item.Key, handel);
+                GameManager.StartGameHandle(item.Key, handle);
 
                 list1.Add(item.Key.UUID, new GameLaunchOneRes
                 {
@@ -482,9 +482,9 @@ public static class GameBinding
             GameCountUtils.LaunchDone(obj);
             GameStateUpdate(obj);
 
-            if (pr is { } handel)
+            if (pr is { } handle)
             {
-                GameManager.StartGameHandel(obj, handel);
+                GameManager.StartGameHandle(obj, handle);
 
                 if (hide)
                 {

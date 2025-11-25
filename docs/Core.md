@@ -164,7 +164,7 @@ var game = await InstancesPath.CreateGame(new()
 //上一步登录的账户
 var auth = AuthDatabase.Auths.First().Value;
 //启动游戏
-var handel = await game.StartGameAsync(new()
+var handle = await game.StartGameAsync(new()
 {
     Auth = auth
 }, CancellationToken.None);

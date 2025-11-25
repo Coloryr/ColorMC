@@ -1,0 +1,64 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.FileItemDownloadControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:FileItemDownloadModel"
+    mc:Ignorable="d">
+    <Border Margin="10,5,10,5" Classes="t3">
+        <StackPanel Margin="15">
+            <TextBlock
+                Foreground="{setting:Theme MainColor}"
+                Text="{Binding Name, FallbackValue=Name}"
+                TextTrimming="CharacterEllipsis" />
+            <DockPanel Margin="0,0,0,5">
+                <StackPanel
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <TextBlock Text="{Binding Now, StringFormat=0.00, FallbackValue=50}" />
+                    <TextBlock Text="%" />
+                </StackPanel>
+                <TextBlock
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Info, FallbackValue=Name}"
+                    TextTrimming="CharacterEllipsis" />
+            </DockPanel>
+            <ProgressBar
+                Height="10"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Stretch"
+                CornerRadius="20"
+                Maximum="100"
+                Value="{Binding Now}" />
+            <DockPanel Margin="0,0,0,5" IsVisible="{Binding ShowSub}">
+                <StackPanel
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Right"
+                    DockPanel.Dock="Right"
+                    Orientation="Horizontal">
+                    <TextBlock Text="{Binding NowSub, StringFormat=0.00, FallbackValue=50}" />
+                    <TextBlock Text="%" />
+                </StackPanel>
+                <TextBlock
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding SubInfo, FallbackValue=Name}"
+                    TextTrimming="CharacterEllipsis" />
+            </DockPanel>
+            <ProgressBar
+                Height="10"
+                Margin="0,0,0,5"
+                HorizontalAlignment="Stretch"
+                CornerRadius="20"
+                IsVisible="{Binding ShowSub}"
+                Maximum="100"
+                Value="{Binding NowSub}" />
+        </StackPanel>
+    </Border>
+</UserControl>

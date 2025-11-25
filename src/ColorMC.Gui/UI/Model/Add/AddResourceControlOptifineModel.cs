@@ -68,7 +68,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
         {
             Model.PopBack();
             Type = 0;
-            DownloadSource = 0;
+            Source = 0;
         }
     }
 
@@ -124,9 +124,9 @@ public partial class AddResourceControlModel : IAddOptifineControl
     /// </summary>
     public async Task OptifineOpen()
     {
-        if (GameVersionList.Contains(Obj.Version))
+        if (GameVersionList.Contains(_obj.Version))
         {
-            GameVersionOptifine = Obj.Version;
+            GameVersionOptifine = _obj.Version;
         }
 
         OptifineDisplay = true;
@@ -160,10 +160,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
     /// <param name="item"></param>
     public void SetSelect(OptifineVersionItemModel item)
     {
-        if (OptifineItem != null)
-        {
-            OptifineItem.IsSelect = false;
-        }
+        OptifineItem?.IsSelect = false;
         OptifineItem = item;
         item.IsSelect = true;
     }
@@ -181,7 +178,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
             return;
         }
         Model.Progress(LanguageUtils.Get("Text.Downloading"));
-        var res1 = await OptifineAPI.DownloadOptifineAsync(Obj, item.Obj);
+        var res1 = await OptifineAPI.DownloadOptifineAsync(_obj, item.Obj);
         Model.ProgressClose();
         if (res1 == false)
         {

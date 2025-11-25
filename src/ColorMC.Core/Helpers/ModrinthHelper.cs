@@ -2,13 +2,13 @@ using System.Collections.Concurrent;
 using System.Text;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
-using SharpCompress.Archives.Zip;
+using ColorMC.Core.Worker;
 
 namespace ColorMC.Core.Helpers;
 
@@ -235,9 +235,11 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>下载列表</returns>
-    public static List<FileItemObj> GetModrinthModInfo(GameSettingObj game, ModrinthPackObj info, ICreateInstanceGui? gui)
+    public static MakeDownloadItemsRes GetModrinthModInfo(GameSettingObj game, ModrinthPackObj info, IModPackGui? gui)
     {
         var list = new List<FileItemObj>();
+
+        var mods = new Dictionary<string, ModInfoObj>();
 
         var size = info.Files.Count;
         var now = 0;
@@ -251,8 +253,8 @@ public static class ModrinthHelper
 
             if (item.ColorMc != null)
             {
-                game.Mods.Remove(item.ColorMc.PID);
-                game.Mods.Add(item.ColorMc.PID, new()
+                mods.Remove(item.ColorMc.PID);
+                mods.Add(item.ColorMc.PID, new()
                 {
                     Path = item.Path[..item.Path.IndexOf('/')],
                     Name = item.Path,
@@ -264,7 +266,7 @@ public static class ModrinthHelper
                 });
 
                 now++;
-                gui?.StateUpdate(size, now);
+                gui?.SetNowSub(size, now);
                 continue;
             }
             else if (url != null)
@@ -272,8 +274,8 @@ public static class ModrinthHelper
                 var modid = StringHelper.GetString(url, "data/", "/ver");
                 var fileid = StringHelper.GetString(url, "versions/", "/");
 
-                game.Mods.Remove(modid);
-                game.Mods.Add(modid, new()
+                mods.Remove(modid);
+                mods.Add(modid, new()
                 {
                     Path = item.Path[..item.Path.IndexOf('/')],
                     Name = item.Path,
@@ -291,10 +293,15 @@ public static class ModrinthHelper
 
             now++;
 
-            gui?.StateUpdate(size, now);
+            gui?.SetNowSub(size, now);
         }
 
-        return list;
+        return new MakeDownloadItemsRes
+        {
+            State = true,
+            List = list,
+            Mods = mods
+        };
     }
 
     /// <summary>
@@ -459,7 +466,7 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    public static async Task<bool> UpgradeModPackAsync(GameSettingObj game, ModrinthVersionObj data, ICreateInstanceGui? gui)
+    public static async Task<bool> UpgradeModPackAsync(GameSettingObj game, ModrinthVersionObj data, IModPackGui? gui)
     {
         var item = data.MakeDownloadObj(Path.Combine(DownloadManager.DownloadDir));
 
@@ -467,7 +474,7 @@ public static class ModrinthHelper
         if (!res)
             return false;
 
-        res = await UpgradeModrinthModPackAsync(game, item.Local, gui);
+        res = await UpgradeAsync(game, item.Local, gui);
         if (res)
         {
             game.PID = data.ProjectId;
@@ -484,240 +491,48 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>升级结果</returns>
-    private static async Task<bool> UpgradeModrinthModPackAsync(GameSettingObj game, string zip, ICreateInstanceGui? gui)
+    private static async Task<bool> UpgradeAsync(GameSettingObj game, string zip, IModPackGui? packgui)
     {
-        using var stream3 = PathHelper.OpenRead(zip);
-        if (stream3 == null)
-        {
-            return false;
-        }
-        using var zFile = ZipArchive.Open(stream3);
-        ModrinthPackObj? info = null;
-        //获取主信息
-        if (zFile.Entries.FirstOrDefault(item => item.Key
-         == Names.NameModrinthFile) is { } ent)
-        {
-            using var stream = ent.OpenEntryStream();
-            info = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
-        }
-        else
-        {
-            return false;
-        }
-        if (info == null)
+        packgui?.SetStateText(ModpackState.ReadInfo);
+        packgui?.SetNow(1, 5);
+
+        using var work = new ModrinthWork(zip, null, packgui);
+
+        if (!work.ReadInfo() || !await work.ReadVersion())
         {
             return false;
         }
 
-        gui?.ModPackState(CoreRunState.Init);
-        //获取版本数据
+        work.UpdateGame(game);
 
-        if (info.Dependencies.TryGetValue(Names.NameForgeKey, out var version))
+        packgui?.SetStateText(ModpackState.Unzip);
+        packgui?.SetNow(2, 5);
+
+        if (!await work.Unzip())
         {
-            game.Loader = Loaders.Forge;
-            game.LoaderVersion = version;
-        }
-        else if (info.Dependencies.TryGetValue(Names.NameNeoForgeKey, out version))
-        {
-            game.Loader = Loaders.NeoForge;
-            game.LoaderVersion = version;
-        }
-        else if (info.Dependencies.TryGetValue(Names.NameFabricLoaderKey, out version))
-        {
-            game.Loader = Loaders.Fabric;
-            game.LoaderVersion = version;
-        }
-        else if (info.Dependencies.TryGetValue(Names.NameQuiltLoaderKey, out version))
-        {
-            game.Loader = Loaders.Quilt;
-            game.LoaderVersion = version;
+            return false;
         }
 
-        int length = Names.NameOverrideDir.Length;
-        string dir = Names.NameOverrideDir + "/";
+        packgui?.SetText(null);
+        packgui?.SetNowSub(0, 0);
 
-        //解压文件
-        foreach (var e in zFile.Entries)
+        packgui?.SetStateText(ModpackState.GetInfo);
+        packgui?.SetNow(3, 5);
+
+        if (!await work.CheckUpgrade())
         {
-            if (!FuntionUtils.IsFile(e))
-            {
-                continue;
-            }
-            if (e.Key!.StartsWith(dir))
-            {
-                using var stream = e.OpenEntryStream();
-                string file = Path.GetFullPath(game.GetGamePath() + e.Key[length..]);
-                file = PathHelper.ReplacePathName(file);
-                await PathHelper.WriteBytesAsync(file, stream);
-            }
-            else
-            {
-                using var stream = e.OpenEntryStream();
-                string file = Path.GetFullPath(game.GetBasePath() + "/" + e.Key);
-                file = PathHelper.ReplacePathName(file);
-                await PathHelper.WriteBytesAsync(file, stream);
-            }
+            return false;
         }
 
-        //获取当前整合包数据
-        ModrinthPackObj? info3 = null;
-        var json = Path.Combine(game.GetBasePath(), Names.NameModrinthFile);
-        if (File.Exists(json))
-        {
-            try
-            {
-                using var stream = PathHelper.OpenRead(json);
-                info3 = JsonUtils.ToObj(stream, JsonType.ModrinthPackObj);
-            }
-            catch
-            {
+        packgui?.SetText(null);
+        packgui?.SetNowSub(0, 0);
+        packgui?.SetStateText(ModpackState.DownloadFile);
+        packgui?.SetNow(4, 5);
 
-            }
-        }
+        await work.Download();
 
-        var obj1 = game.CopyObj();
-        obj1.Mods.Clear();
-
-        //获取Mod信息
-        var list = GetModrinthModInfo(obj1, info, gui);
-        var list1 = new List<FileItemObj>();
-
-        string path = game.GetGamePath();
-
-        if (info3 != null)
-        {
-            //筛选新旧整合包文件差距
-            var addlist = new List<ModrinthPackObj.ModrinthPackFileObj>();
-            var removelist = new List<ModrinthPackObj.ModrinthPackFileObj>();
-
-            ModrinthPackObj.ModrinthPackFileObj?[] temp1 = [.. info.Files];
-            ModrinthPackObj.ModrinthPackFileObj?[] temp2 = [.. info3.Files];
-
-            for (int b = 0; b < temp1.Length; b++)
-            {
-                var item = temp1[b];
-                if (item == null)
-                    continue;
-                for (int a = 0; a < temp2.Length; a++)
-                {
-                    var item1 = temp2[a];
-                    if (item1 == null)
-                        continue;
-                    if (item.Hashes.Sha1 == item1.Hashes.Sha1)
-                    {
-                        temp1[b] = null;
-                        temp2[a] = null;
-                    }
-                }
-            }
-
-            foreach (var item in temp1)
-            {
-                if (item != null)
-                {
-                    removelist.Add(item);
-                }
-            }
-
-            foreach (var item in temp2)
-            {
-                if (item != null)
-                {
-                    addlist.Add(item);
-                }
-            }
-
-            foreach (var item in removelist)
-            {
-                PathHelper.Delete(Path.Combine(path, item.Path));
-
-                var url = item.Downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
-                if (url is { })
-                {
-                    var modid = StringHelper.GetString(url, "data/", "/ver");
-                    game.Mods.Remove(modid);
-                }
-            }
-
-            foreach (var item in addlist)
-            {
-                var item11 = list.First(a => a.Sha1 == item.Hashes.Sha1);
-                list1.Add(item11);
-                var url = item.Downloads.FirstOrDefault(a => a.StartsWith($"{UrlHelper.ModrinthDownload}data/"));
-                if (url != null)
-                {
-                    var modid = StringHelper.GetString(url, "data/", "/ver");
-                    var fileid = StringHelper.GetString(url, "versions/", "/");
-
-                    game.Mods.Remove(modid);
-                    game.Mods.Add(modid, new()
-                    {
-                        Path = item.Path[..item.Path.IndexOf('/')],
-                        Name = item.Path,
-                        File = item.Path,
-                        Sha1 = item11.Sha1!,
-                        ModId = modid,
-                        FileId = fileid,
-                        Url = url
-                    });
-                }
-            }
-        }
-        else
-        {
-            //没有整合包信息
-            var addlist = new List<ModInfoObj>();
-            var removelist = new List<ModInfoObj>();
-
-            ModInfoObj[] temp1 = [.. game.Mods.Values];
-            ModInfoObj?[] temp2 = [.. obj1.Mods.Values];
-
-            foreach (var item in temp1)
-            {
-                for (int a = 0; a < temp2.Length; a++)
-                {
-                    var item1 = temp2[a];
-                    if (item1 == null)
-                        continue;
-                    if (item.ModId == item1.ModId)
-                    {
-                        temp2[a] = null;
-                        if (item.FileId != item1.FileId
-                            || item.Sha1 != item1.Sha1)
-                        {
-                            addlist.Add(item1);
-                            removelist.Add(item);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            foreach (var item in temp2)
-            {
-                if (item != null)
-                {
-                    addlist.Add(item);
-                }
-            }
-
-            foreach (var item in removelist)
-            {
-                PathHelper.Delete(Path.GetFullPath($"{path}/{item.File}"));
-                game.Mods.Remove(item.ModId);
-            }
-
-            foreach (var item in addlist)
-            {
-                list1.Add(list.First(a => a.Sha1 == item.Sha1));
-                game.Mods.Add(item.ModId, item);
-            }
-        }
-
-        using var stream1 = ent.OpenEntryStream();
-        PathHelper.WriteBytes(json, stream1);
-
-        await DownloadManager.StartAsync(list1);
+        packgui?.SetStateText(ModpackState.Done);
+        packgui?.SetNow(5, 5);
 
         return true;
     }

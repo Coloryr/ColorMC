@@ -1,4 +1,4 @@
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;

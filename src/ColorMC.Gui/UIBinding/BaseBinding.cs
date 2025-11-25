@@ -25,6 +25,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.BuildPack;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using SharpCompress.Common;
@@ -509,7 +510,7 @@ public static class BaseBinding
     /// <param name="model"></param>
     /// <param name="output"></param>
     /// <returns></returns>
-    public static async Task<bool> BuildPackAsync(BuildPackModel model, string output)
+    public static async Task<bool> BuildPackAsync(BuildPackModel model, ProgressBarModel dialog, string output)
     {
         try
         {
@@ -522,7 +523,7 @@ public static class BaseBinding
 
             var obj = new JsonObject();
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text3"));
+            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text3");
 
             //打包配置
             if (model.UiBg && File.Exists(conf.BackImage))
@@ -676,7 +677,7 @@ public static class BaseBinding
             //打包java
             if (model.Java)
             {
-                model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text4"));
+                dialog.Text = LanguageUtils.Get("BuildPackWindow.Text4");
 
                 var list = new List<JvmConfigObj>();
                 foreach (var item in model.Javas)
@@ -713,7 +714,7 @@ public static class BaseBinding
                 }
             }
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text5"));
+            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text5");
 
             //打包游戏实例
             foreach (var item in model.GetSelectItems())
@@ -724,7 +725,7 @@ public static class BaseBinding
                 await PutFileAsync(zip, tempfile, item);
             }
 
-            model.Model.ProgressUpdate(LanguageUtils.Get("BuildPackWindow.Text6"));
+            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text6");
 
             foreach (var item in model.Files)
             {
@@ -791,9 +792,12 @@ public static class BaseBinding
         }
 
         using var temp = PathHelper.OpenRead(file)!;
-        model.Progress(LanguageUtils.Get("App.Text26"));
+        model.ShowDialog(new ProgressBarModel
+        {
+            Text = LanguageUtils.Get("App.Text26")
+        });
         await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
-        model.ProgressClose();
+        model.CloseDialog();
 
         ColorMCGui.Reboot();
     }

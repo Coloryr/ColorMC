@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using ColorMC.Core.Config;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Downloader;
@@ -108,7 +108,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>是否成功</returns>
-    public static async Task<bool> StartAsync(ICollection<FileItemObj> list)
+    public static async Task<bool> StartAsync(ICollection<FileItemObj> list, IProgressGui? gui = null)
     {
         if (s_stop)
         {
@@ -116,14 +116,14 @@ public static class DownloadManager
         }
         var arg = ColorMCCore.OnDownloadGui();
 
-        return await StartAsync(list, arg);
+        return await StartAsync(list, arg, gui);
     }
 
     /// <summary>
     /// 进行下一个任务
     /// </summary>
     /// <param name="arg">下载参数</param>
-    internal static void TaskDone(IDownloadGuiHandel? arg, DownloadTask task)
+    internal static void TaskDone(IDownloadGui? arg, DownloadTask task)
     {
         s_tasks.Remove(task);
 
@@ -145,11 +145,11 @@ public static class DownloadManager
     /// 开始下载
     /// </summary>
     /// <param name="list">下载列表</param>
-    /// <param name="arg">下载参数</param>
+    /// <param name="gui">下载参数</param>
     /// <returns>是否完成</returns>
-    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGuiHandel? arg)
+    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGui? gui, IProgressGui? pgui)
     {
-        var task = new DownloadTask(arg);
+        var task = new DownloadTask(gui, pgui);
         s_tasks.Add(task);
 
         var names = new List<string>();
@@ -172,7 +172,7 @@ public static class DownloadManager
 
         Start();
 
-        arg?.Update(s_threads.Count, true, s_tasks.Count);
+        gui?.Update(s_threads.Count, true, s_tasks.Count);
 
         return task.WaitDone();
     }

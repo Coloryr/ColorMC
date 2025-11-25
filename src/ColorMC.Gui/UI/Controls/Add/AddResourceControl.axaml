@@ -38,8 +38,8 @@
                                 <ComboBox
                                     Height="30"
                                     HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding DownloadSourceList}"
-                                    SelectedIndex="{Binding DownloadSource}" />
+                                    ItemsSource="{Binding SourceList}"
+                                    SelectedIndex="{Binding Source}" />
                             </DockPanel>
                             <DockPanel
                                 MinWidth="190"
@@ -80,7 +80,7 @@
                                 MinWidth="190"
                                 Margin="0,0,10,10"
                                 HorizontalAlignment="Stretch"
-                                Text="{Binding Name}"
+                                Text="{Binding Text}"
                                 Watermark="{setting:Localize Text.Name}">
                                 <TextBox.KeyBindings>
                                     <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
@@ -144,7 +144,7 @@
             </DockPanel>
         </ScrollViewer>
         <ScrollViewer
-            Name="VersionDisplay"
+            Name="DisplayVersion"
             IsVisible="False"
             VerticalScrollBarVisibility="Visible">
             <DockPanel Margin="10">
@@ -200,7 +200,7 @@
                     </panel:WrapPanelWithStretch>
                 </Border>
                 <Panel>
-                    <StackPanel IsVisible="{Binding !EmptyVersionDisplay}">
+                    <StackPanel IsVisible="{Binding !EmptyDisplay}">
                         <ItemsControl
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -223,7 +223,7 @@
                     <Border
                         Margin="10,5,10,10"
                         Classes="t1"
-                        IsVisible="{Binding EmptyVersionDisplay}">
+                        IsVisible="{Binding EmptyDisplay}">
                         <TextBlock
                             HorizontalAlignment="Center"
                             FontSize="30"
