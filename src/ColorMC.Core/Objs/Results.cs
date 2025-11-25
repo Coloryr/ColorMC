@@ -118,7 +118,8 @@ public record LangRes
 /// </summary>
 public record MakeDownloadItemsRes : BaseRes
 {
-    public ConcurrentBag<FileItemObj>? List;
+    public IEnumerable<FileItemObj>? List;
+    public IDictionary<string, ModInfoObj> Mods;
 }
 
 /// <summary>
@@ -185,7 +186,7 @@ public record IntRes : BaseRes
 /// </summary>
 public record GameLaunchRes
 {
-    public GameHandel? Handel;
+    public GameHandle? Handle;
     public Exception? Exception;
 }
 

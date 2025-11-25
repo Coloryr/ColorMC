@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using Avalonia.Threading;
 using ColorMC.Core.Downloader;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Timer = System.Timers.Timer;
@@ -18,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.Download;
 /// <summary>
 /// 下载窗口
 /// </summary>
-public partial class DownloadModel : TopModel, IDownloadGuiHandel
+public partial class DownloadModel : TopModel, IDownloadGui
 {
     /// <summary>
     /// 显示项目
@@ -276,7 +275,7 @@ public partial class DownloadModel : TopModel, IDownloadGuiHandel
     /// 开始下载
     /// </summary>
     /// <returns>Gui</returns>
-    public IDownloadGuiHandel Start()
+    public IDownloadGui Start()
     {
         _needRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));

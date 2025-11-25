@@ -8,7 +8,7 @@ using Avalonia.Styling;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ColorMC.Core.Config;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net.Apis;
@@ -474,7 +474,7 @@ public static class WindowManager
     /// 显示下载窗口
     /// </summary>
     /// <returns>Gui调用参数</returns>
-    public static IDownloadGuiHandel ShowDownload(int thread)
+    public static IDownloadGui ShowDownload(int thread)
     {
         return Dispatcher.UIThread.Invoke(() =>
         {

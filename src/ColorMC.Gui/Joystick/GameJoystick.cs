@@ -83,26 +83,26 @@ public class GameJoystick
     /// 开始处理手柄操作
     /// </summary>
     /// <param name="obj">游戏储存</param>
-    /// <param name="handel">游戏操作句柄</param>
-    public static void Start(GameSettingObj obj, GameHandel handel)
+    /// <param name="handle">游戏操作句柄</param>
+    public static void Start(GameSettingObj obj, GameHandle handle)
     {
         if (NowGameJoystick.Remove(obj.UUID, out var value))
         {
             value.Stop();
         }
-        NowGameJoystick.Add(obj.UUID, new(obj, handel));
+        NowGameJoystick.Add(obj.UUID, new(obj, handle));
     }
 
     /// <summary>
     /// 游戏手柄操作
     /// </summary>
     /// <param name="obj">游戏储存</param>
-    /// <param name="handel">游戏操作句柄</param>
-    private GameJoystick(GameSettingObj obj, GameHandel handel)
+    /// <param name="handle">游戏操作句柄</param>
+    private GameJoystick(GameSettingObj obj, GameHandle handle)
     {
         if (SystemInfo.Os == OsType.Windows)
         {
-            _implementation = new Win32Native(handel.Handel);
+            _implementation = new Win32Native(handle.Handle);
         }
         else if (SystemInfo.Os == OsType.Linux)
         {

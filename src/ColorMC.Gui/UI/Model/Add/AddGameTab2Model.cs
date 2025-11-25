@@ -104,8 +104,10 @@ public partial class AddGameModel
         Model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
         var zip = new ZipGui(Model);
-        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), zip);
+        var pack = new TopModPackGui(Model);
+        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new CreateGameGui(Model), zip, pack);
         zip.Stop();
+        pack.Stop();
         Model.ProgressClose();
         if (!res.State)
         {

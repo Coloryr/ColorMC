@@ -3,7 +3,7 @@
 /// <summary>
 /// Java信息
 /// </summary>
-public record JavaInfo
+public record JavaInfoObj
 {
     public string Name { get; set; }
     /// <summary>

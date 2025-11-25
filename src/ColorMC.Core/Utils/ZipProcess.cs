@@ -1,5 +1,5 @@
 using System.Formats.Tar;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Common;

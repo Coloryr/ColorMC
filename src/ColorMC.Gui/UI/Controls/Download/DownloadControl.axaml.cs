@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Download;
@@ -45,7 +45,7 @@ public partial class DownloadControl : BaseUserControl
     /// 开始下载更新
     /// </summary>
     /// <returns></returns>
-    public IDownloadGuiHandel Start()
+    public IDownloadGui Start()
     {
         return (DataContext as DownloadModel)!.Start();
     }

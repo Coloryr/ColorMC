@@ -1,62 +1,75 @@
+using System.Linq;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel
 {
-    /// <summary>
-    /// 是否显示文件列表
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayVersion = false;
+    public override string Title => LanguageUtils.Get("AddModPackWindow.Title");
 
     /// <summary>
-    /// 游戏列表显示
+    /// 安装所选项目
     /// </summary>
-    /// <param name="value"></param>
-    partial void OnDisplayVersionChanged(bool value)
+    /// <param name="item"></param>
+    public override async void Install(FileItemModel item)
     {
-        if (value)
+        SetSelect(item);
+        Model.Progress();
+        var res = await WebBinding.GetFileListAsync(item.SourceType,
+               item.Pid, 0, null, Loaders.Normal);
+        Model.ProgressClose();
+        if (res == null || res.List == null || res.List.Count == 0)
         {
-            Model.PushBack(back: () =>
+            Model.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
+            return;
+        }
+        var item1 = res.List.First();
+        if (item1.IsDownload)
+        {
+            var res1 = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text40"));
+            if (!res1)
             {
-                DisplayVersion = false;
-            });
+                return;
+            }
         }
-        else
-        {
-            Model.PopBack();
-            Model.Title = LanguageUtils.Get("AddModPackWindow.Title");
-        }
+
+        Install(item1);
     }
 
     /// <summary>
     /// 安装所选文件
     /// </summary>
     /// <param name="data"></param>
-    public async void Install(FileVersionItemModel data)
+    public override async void Install(FileVersionItemModel data)
     {
         if (data.IsDownload)
         {
             return;
         }
 
-        var select = _last;
+        var select = _lastSelect;
         if (data.SourceType == SourceType.CurseForge)
         {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text30"));
-            var zip = new ZipGui(Model);
-            var res = await AddGameHelper.InstallCurseForge(null, _group, (data.Data as CurseForgeModObj.CurseForgeDataObj)!,
-                select?.Logo,
-                new CreateGameGui(Model), zip);
-            zip.Stop();
-            Model.ProgressClose();
+            var data1 = (data.Data as CurseForgeModObj.CurseForgeDataObj)!;
+            var info = new FileItemDownloadModel()
+            {
+                Name = data1.DisplayName,
+                Source = data.SourceType,
+                PID = data1.Id.ToString(),
+                Type = FileType.ModPack
+            };
+            StartDownload(info);
+            var gui = new CreateGameGui(Model);
+            var pack = new ModpackGui(info);
+            var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack);
+            pack.Stop();
 
             if (!res.State)
             {
@@ -69,11 +82,20 @@ public partial class AddModPackControlModel
         }
         else if (data.SourceType == SourceType.Modrinth)
         {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text30"));
-            var zip = new ZipGui(Model);
-            var res = await AddGameHelper.InstallModrinth(null, _group, (data.Data as ModrinthVersionObj)!,
-                select?.Logo, new CreateGameGui(Model), zip);
-            zip.Stop();
+            var data1 = (data.Data as ModrinthVersionObj)!;
+            var info = new FileItemDownloadModel()
+            {
+                Name = data1.Name,
+                Source = data.SourceType,
+                PID = data1.Id,
+                Type = FileType.ModPack
+            };
+            StartDownload(info);
+            var pack = new ModpackGui(info);
+            var gui = new CreateGameGui(Model);
+            var res = await AddGameHelper.InstallModrinth(_group, data1 ,
+                select?.Logo, gui, pack);
+            pack.Stop();
             Model.ProgressClose();
 
             if (!res.State)
@@ -87,18 +109,18 @@ public partial class AddModPackControlModel
         }
     }
 
-    private void LoadVersion()
+    private void LoadInfoVersion()
     {
         if (DisplayVersion == false)
         {
             return;
         }
 
-        if (_last == null)
+        if (_lastSelect == null)
         {
             return;
         }
 
-        DisplayFile.LoadVersion((SourceType)Source, _last.Pid);
+        DisplayFile.LoadVersion((SourceType)Source, _lastSelect.Pid);
     }
 }

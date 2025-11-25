@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Objs;
 
-namespace ColorMC.Core.GuiHandel;
+namespace ColorMC.Core.GuiHandle;
 
 public interface IOverGameGui
 {

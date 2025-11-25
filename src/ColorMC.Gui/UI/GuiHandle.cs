@@ -1,16 +1,74 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Avalonia.Threading;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI;
+
+public class TopModPackGui : IModPackGui
+{
+    private bool _isRun;
+    private bool _haveUpdate;
+
+    private int _size, _all;
+    private BaseModel _model;
+
+    public TopModPackGui(BaseModel model)
+    {
+        _model = model;
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+    }
+
+    public void SetNow(int value, int all)
+    {
+        _model.ProgressUpdate((double)value / all * 100);
+    }
+
+    public void SetNowProcess(int value, int all)
+    {
+        _size = value;
+        _all = all;
+        _haveUpdate = true;
+    }
+
+    public void SetNowSub(int value, int all)
+    {
+        //_model.ProgressUpdate((double)value / all);
+    }
+
+    public void SetStateText(ModpackState state)
+    {
+        _model.ProgressUpdate(state.GetName());
+    }
+
+    public void SetText(string? text)
+    {
+        //_info.Info = text;
+    }
+
+    private bool Run()
+    {
+        if (_haveUpdate)
+        {
+            _model.ProgressUpdate((double)_size / _all * 100);
+        }
+        _haveUpdate = false;
+        return _isRun;
+    }
+
+    public void Stop()
+    {
+        _isRun = false;
+    }
+}
 
 public class ZipGui : IZipGui
 {
@@ -251,5 +309,71 @@ public class LauncherGui(BaseModel model) : ILaunchGui
         {
             return model.TextAsync(LanguageUtils.Get("App.Text35"), text ?? "");
         });
+    }
+}
+
+public class ModpackGui : IModPackGui
+{
+    private readonly FileItemDownloadModel _info;
+
+    private bool _isRun;
+    private bool _haveUpdate;
+
+    private int _size, _all;
+
+    public ModpackGui(FileItemDownloadModel info)
+    {
+        _info = info;
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+    }
+
+    public void SetNow(int value, int all)
+    {
+        _info.Now = (double)value / all;
+    }
+
+    public void SetNowProcess(int value, int all)
+    {
+        _size = value;
+        _all = all;
+        _haveUpdate = true;
+    }
+
+    public void SetNowSub(int value, int all)
+    {
+        _info.NowSub = (double)value / all;
+    }
+
+    public void SetStateText(ModpackState state)
+    {
+        _info.Info = state.GetName();
+        if (state is ModpackState.GetInfo or ModpackState.Unzip or ModpackState.DownloadFile)
+        {
+            _info.ShowSub = true;
+        }
+        else
+        {
+            _info.ShowSub = false;
+        }
+    }
+
+    public void SetText(string? text)
+    {
+        _info.Info = text;
+    }
+
+    private bool Run()
+    {
+        if (_haveUpdate)
+        {
+            _info.NowSub = (double)_size / _all;
+        }
+        _haveUpdate = false;
+        return _isRun;
+    }
+
+    public void Stop()
+    {
+        _isRun = false;
     }
 }

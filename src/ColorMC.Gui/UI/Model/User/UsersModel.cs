@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Avalonia.Input;
 using AvaloniaEdit.Utils;
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;

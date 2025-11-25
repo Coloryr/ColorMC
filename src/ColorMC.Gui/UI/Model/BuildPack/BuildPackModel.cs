@@ -1,4 +1,5 @@
 using ColorMC.Core;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
@@ -72,9 +73,13 @@ public partial class BuildPackModel : MenuModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("BuildPackWindow.Text1"));
-        var res = await BaseBinding.BuildPackAsync(this, local.GetPath()!);
-        Model.ProgressClose();
+        var dialog = new ProgressBarModel
+        {
+            Text = LanguageUtils.Get("BuildPackWindow.Text1")
+        };
+        Model.ShowDialog(dialog);
+        var res = await BaseBinding.BuildPackAsync(this, dialog, local.GetPath()!);
+        Model.CloseDialog();
         if (!res)
         {
             Model.Show(LanguageUtils.Get("BuildPackWindow.Text8"));

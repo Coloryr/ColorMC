@@ -74,6 +74,19 @@ public static class LanguageUtils
         return input;
     }
 
+    public static string GetName(this ModpackState state)
+    {
+        return state switch
+        {
+            ModpackState.ReadInfo => Get("Type.ModpackState.Item1"),
+            ModpackState.GetInfo => Get("Type.ModpackState.Item2"),
+            ModpackState.DownloadFile => Get("Type.ModpackState.Item3"),
+            ModpackState.Unzip => Get("Type.ModpackState.Item4"),
+            ModpackState.Done => Get("Type.ModpackState.Item55"),
+            _ => ""
+        };
+    }
+
     public static string GetName(this MSortingObj type)
     {
         return Get($"Type.Modrinth.SortingType.{type.Data}");

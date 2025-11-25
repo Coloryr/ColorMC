@@ -1,4 +1,4 @@
-using ColorMC.Core.GuiHandel;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.Downloader;
@@ -6,8 +6,8 @@ namespace ColorMC.Core.Downloader;
 /// <remarks>
 /// 下载任务
 /// </remarks>
-/// <param name="arg">GUI下载参数</param>
-internal class DownloadTask(IDownloadGuiHandel? arg)
+/// <param name="gui">GUI下载参数</param>
+internal class DownloadTask(IDownloadGui? gui, IProgressGui? pgui)
 {
     /// <summary>
     /// 任务是否已经取消
@@ -44,7 +44,7 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
     public void SetSize(int size)
     {
         _allSize = size;
-        arg?.UpdateTask(UpdateType.AddItems, _allSize);
+        gui?.UpdateTask(UpdateType.AddItems, _allSize);
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
         _cancel.Cancel();
         _semaphore.Release();
 
-        DownloadManager.TaskDone(arg, this);
+        DownloadManager.TaskDone(gui, this);
     }
 
     /// <summary>
@@ -83,7 +83,8 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
     public void Done()
     {
         _doneSize++;
-        arg?.UpdateTask(UpdateType.ItemDone, 1);
+        gui?.UpdateTask(UpdateType.ItemDone, 1);
+        pgui?.SetNowProcess(_doneSize + _errorSize, _allSize);
 
         ItemDone();
     }
@@ -94,7 +95,8 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
     public void Error()
     {
         _errorSize++;
-        arg?.UpdateTask(UpdateType.ItemDone, 1);
+        gui?.UpdateTask(UpdateType.ItemDone, 1);
+        pgui?.SetNowProcess(_doneSize + _errorSize, _allSize);
 
         ItemDone();
     }
@@ -108,7 +110,7 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
         {
             //任务结束
             _semaphore.Release();
-            DownloadManager.TaskDone(arg, this);
+            DownloadManager.TaskDone(gui, this);
         }
     }
 
@@ -119,6 +121,6 @@ internal class DownloadTask(IDownloadGuiHandel? arg)
     /// <param name="obj">下载文件</param>
     public void UpdateItem(int index, FileItemObj obj)
     {
-        arg?.UpdateItem(index, obj);
+        gui?.UpdateItem(index, obj);
     }
 }

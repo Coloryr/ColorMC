@@ -371,8 +371,8 @@ public static class GameManager
     /// 游戏进程启动后
     /// </summary>
     /// <param name="obj"></param>
-    /// <param name="handel"></param>
-    public static void StartGameHandel(GameSettingObj obj, GameHandel handel)
+    /// <param name="handle"></param>
+    public static void StartGameHandle(GameSettingObj obj, GameHandle handle)
     {
         new Thread(() =>
         {
@@ -382,7 +382,7 @@ public static class GameManager
 
                 do
                 {
-                    if (handel.IsExit || IsConnect(obj.UUID))
+                    if (handle.IsExit || IsConnect(obj.UUID))
                     {
                         break;
                     }
@@ -390,7 +390,7 @@ public static class GameManager
                 }
                 while (true);
 
-                if (handel.IsExit)
+                if (handle.IsExit)
                 {
                     return;
                 }
@@ -398,9 +398,9 @@ public static class GameManager
                 var config = GuiConfigUtils.Config.Input;
 
                 //启用手柄支持
-                if (config.Enable && !config.Disable && !handel.IsOutAdmin)
+                if (config.Enable && !config.Disable && !handle.IsOutAdmin)
                 {
-                    GameJoystick.Start(obj, handel);
+                    GameJoystick.Start(obj, handle);
                 }
 
                 //修改窗口标题
@@ -451,14 +451,14 @@ public static class GameManager
 
                     LaunchSocketUtils.SetTitle(obj, title1);
 
-                    if (!conf.CycTitle || conf.TitleDelay <= 0 || handel.IsExit)
+                    if (!conf.CycTitle || conf.TitleDelay <= 0 || handle.IsExit)
                     {
                         break;
                     }
 
                     Thread.Sleep(conf.TitleDelay);
                 }
-                while (!ColorMCGui.IsClose && !handel.IsExit);
+                while (!ColorMCGui.IsClose && !handle.IsExit);
             }
             catch
             {
@@ -466,7 +466,7 @@ public static class GameManager
             }
         })
         {
-            Name = "ColorMC Game " + handel.UUID + " Handel",
+            Name = "ColorMC Game " + handle.UUID + " Handle",
             IsBackground = true
         }.Start();
     }

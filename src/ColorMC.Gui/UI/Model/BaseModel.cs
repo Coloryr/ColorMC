@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
 using AvaloniaEdit.Utils;
@@ -25,10 +26,6 @@ public partial class BaseModel : ObservableObject
     public const string NameIconChange = "Icon:Change";
     public const string NameGetTopLevel = "TopLevel:Get";
 
-    /// <summary>
-    /// 进度条
-    /// </summary>
-    private readonly Info1Model _info1;
     /// <summary>
     /// 输入框
     /// </summary>
@@ -221,7 +218,6 @@ public partial class BaseModel : ObservableObject
 
     public BaseModel()
     {
-        _info1 = new();
         _info3 = new(WindowId);
         _info4 = new(WindowId);
         _info5 = new(WindowId);
@@ -231,7 +227,6 @@ public partial class BaseModel : ObservableObject
     public BaseModel(string name)
     {
         WindowId = name;
-        _info1 = new();
         _info3 = new(WindowId);
         _info4 = new(WindowId);
         _info5 = new(WindowId);
@@ -382,61 +377,22 @@ public partial class BaseModel : ObservableObject
             HeadBackDisplay = false;
         }
     }
-
     /// <summary>
-    /// 显示进度条
+    /// 显示弹窗
     /// </summary>
-    public void Progress()
+    /// <param name="model"></param>
+    public void ShowDialog(object model)
     {
         ShowClose();
-        DialogHost.Show(_info1, WindowId);
-
         Lock();
+        DialogHost.Show(model, WindowId);
     }
     /// <summary>
-    /// 显示进度条信息
+    /// 关闭弹窗
     /// </summary>
-    /// <param name="data">信息</param>
-    public void Progress(string data)
+    public void CloseDialog()
     {
         ShowClose();
-        _info1.Indeterminate = true;
-        _info1.Text = data;
-        Progress();
-    }
-    /// <summary>
-    /// 更新进度条信息
-    /// </summary>
-    /// <param name="value">进度</param>
-    public void ProgressUpdate(double value)
-    {
-        if (value == -1)
-        {
-            _info1.Indeterminate = true;
-        }
-        else
-        {
-            _info1.Indeterminate = false;
-            _info1.Value = value;
-        }
-    }
-    /// <summary>
-    /// 更新进度条信息
-    /// </summary>
-    /// <param name="data">信息</param>
-    public void ProgressUpdate(string data)
-    {
-        _info1.Text = data;
-    }
-    /// <summary>
-    /// 关闭进度条
-    /// </summary>
-    public void ProgressClose()
-    {
-        _info1.Indeterminate = false;
-
-        ShowClose();
-
         Unlock();
     }
 

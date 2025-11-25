@@ -1,0 +1,35 @@
+<Panel
+    x:Class="ColorMC.Gui.UI.Windows.MainView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:BaseModel"
+    Background="{setting:Theme WindowTranColor}"
+    mc:Ignorable="d">
+    <Image
+        IsVisible="{Binding BgVisible}"
+        Opacity="{Binding BgOpacity}"
+        Source="{Binding BackImage}"
+        Stretch="UniformToFill" />
+    <DockPanel Background="{setting:Theme WindowBG}">
+        <view:HeadControl
+            Name="HeadControl"
+            DockPanel.Dock="Top"
+            IsVisible="{Binding EnableHead}" />
+        <dialog:DialogHost
+            Name="Dialog"
+            Background="{setting:Theme ButtonBG}"
+            DisableOpeningAnimation="True"
+            Identifier="{Binding WindowId}"
+            OverlayBackground="Transparent">
+            <Decorator Name="MainControl" />
+        </dialog:DialogHost>
+    </DockPanel>
+</Panel>

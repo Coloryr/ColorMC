@@ -1,4 +1,4 @@
-﻿namespace ColorMC.Core.GuiHandel;
+﻿namespace ColorMC.Core.GuiHandle;
 
 public interface IZipGui
 {

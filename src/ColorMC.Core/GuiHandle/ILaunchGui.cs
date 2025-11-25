@@ -1,6 +1,6 @@
 ﻿using ColorMC.Core.Objs.Login;
 
-namespace ColorMC.Core.GuiHandel;
+namespace ColorMC.Core.GuiHandle;
 
 public interface ILaunchGui : IUpdateGui
 {
