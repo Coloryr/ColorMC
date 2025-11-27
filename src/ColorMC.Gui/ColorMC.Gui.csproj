@@ -350,7 +350,7 @@
 	<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="DialogHost.Avalonia" Version="0.10.1" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.10.2" />
     <PackageReference Include="Markdig" Version="0.44.0" />
     <PackageReference Include="MinecraftSkinRender" Version="1.0.0" />
     <PackageReference Include="MinecraftSkinRender.Image" Version="1.0.0" />
