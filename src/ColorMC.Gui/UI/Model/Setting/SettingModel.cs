@@ -176,7 +176,7 @@ public partial class SettingModel : MenuModel
                 [
                     new SubMenuItemModel()
                     {
-                        Name = LanguageUtils.Get("SettingWindow.Tab8.Info8"),
+                        Name = LanguageUtils.Get("SettingWindow.Tab8.Text42"),
                         Func = ReloadInput
                     }
                 ]
