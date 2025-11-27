@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Controls.Templates;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
-using AvaloniaEdit.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,30 +14,14 @@ using DialogHostAvalonia;
 namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
-/// 窗口基础模型
+/// 窗口模型
 /// </summary>
-public partial class BaseModel : ObservableObject
+public partial class WindowModel : ObservableObject
 {
     public const string NameInfoShow = "Info:Show";
     public const string NameIconChange = "Icon:Change";
     public const string NameGetTopLevel = "TopLevel:Get";
 
-    /// <summary>
-    /// 输入框
-    /// </summary>
-    private readonly Info3Model _info3;
-    /// <summary>
-    /// 选择框
-    /// </summary>
-    private readonly Info4Model _info4;
-    /// <summary>
-    /// 单选框
-    /// </summary>
-    private readonly Info5Model _info5;
-    /// <summary>
-    /// 长文本
-    /// </summary>
-    private readonly Info6Model _info6;
     /// <summary>
     /// 返回按钮
     /// </summary>
@@ -66,6 +46,10 @@ public partial class BaseModel : ObservableObject
     /// 系统窗口
     /// </summary>
     private TopLevel? _top;
+    /// <summary>
+    /// 锁定计数
+    /// </summary>
+    private int _lockCount;
 
     /// <summary>
     /// 提示弹出文本
@@ -216,21 +200,14 @@ public partial class BaseModel : ObservableObject
     /// </summary>
     public string WindowId { get; init; }
 
-    public BaseModel()
+    public WindowModel()
     {
-        _info3 = new(WindowId);
-        _info4 = new(WindowId);
-        _info5 = new(WindowId);
-        _info6 = new(WindowId);
+
     }
 
-    public BaseModel(string name)
+    public WindowModel(string name)
     {
         WindowId = name;
-        _info3 = new(WindowId);
-        _info4 = new(WindowId);
-        _info5 = new(WindowId);
-        _info6 = new(WindowId);
     }
 
     /// <summary>
@@ -285,19 +262,24 @@ public partial class BaseModel : ObservableObject
         }
         HeadCloseDisplay = false;
         _isWork = true;
+        _lockCount++;
     }
     /// <summary>
     /// 解除锁定模式
     /// </summary>
     public void Unlock()
     {
-        _isWork = false;
-        if (!_listBack.IsEmpty)
+        _lockCount--;
+        if (_lockCount <= 0)
         {
-            HeadBackEnable = true;
-            HeadBackDisplay = true;
+            _isWork = false;
+            if (!_listBack.IsEmpty)
+            {
+                HeadBackEnable = true;
+                HeadBackDisplay = true;
+            }
+            HeadCloseDisplay = true;
         }
-        HeadCloseDisplay = true;
     }
 
     /// <summary>
@@ -359,12 +341,10 @@ public partial class BaseModel : ObservableObject
     public void PushBack(Action back)
     {
         _listBack.Push(back);
-#if !Phone
         if (!_listBack.IsEmpty)
         {
             HeadBackDisplay = true;
         }
-#endif
     }
     /// <summary>
     /// 删除一个返回
@@ -383,16 +363,33 @@ public partial class BaseModel : ObservableObject
     /// <param name="model"></param>
     public void ShowDialog(object model)
     {
-        ShowClose();
         Lock();
         DialogHost.Show(model, WindowId);
     }
+
+    /// <summary>
+    /// 打开弹窗并等待
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    public Task<object?> ShowDialogWait(object model)
+    {
+        return DialogHost.Show(model, WindowId);
+    }
+
     /// <summary>
     /// 关闭弹窗
     /// </summary>
-    public void CloseDialog()
+    public void CloseDialog(object model)
     {
-        ShowClose();
+        try
+        {
+            DialogHost.Close(WindowId, null, model);
+        }
+        catch
+        {
+
+        }
         Unlock();
     }
 
@@ -404,454 +401,6 @@ public partial class BaseModel : ObservableObject
     {
         NotifyText = data;
         OnPropertyChanged(NameInfoShow);
-    }
-
-    /// <summary>
-    /// 关闭输入框
-    /// </summary>
-    public void InputClose()
-    {
-        _info3.ValueVisable = false;
-
-        ShowClose();
-    }
-    /// <summary>
-    /// 显示一个输入框
-    /// </summary>
-    /// <param name="title">标题</param>
-    /// <param name="data">显示内容</param>
-    /// <returns>输入结果</returns>
-    public async Task<InputRes> Input(string title, string data)
-    {
-        ShowClose();
-
-        _info3.CancelEnable = true;
-        _info3.CancelVisible = true;
-        _info3.ConfirmEnable = true;
-
-        _info3.Text2Visable = false;
-        _info3.TextReadonly = false;
-        _info3.ValueVisable = false;
-
-        _info3.Text1 = data;
-        _info3.Watermark1 = title;
-
-        _info3.Call = null;
-        _info3.ChoiseVisible = false;
-
-        Lock();
-        var res = await DialogHost.Show(_info3, WindowId);
-
-        Unlock();
-
-        return new InputRes
-        {
-            Cancel = res is not true,
-            Text1 = _info3.Text1
-        };
-    }
-
-    /// <summary>
-    /// 显示一个输入框，里面有基础内容
-    /// </summary>
-    /// <param name="data1">内容1</param>
-    /// <param name="data2">内容2</param>
-    /// <param name="text1">提示内容1</param>
-    /// <param name="text2">提示内容2</param>
-    /// <returns></returns>
-    public async Task<InputRes> InputWithEdit(string data1, string data2, string text1 = "", string text2 = "")
-    {
-        ShowClose();
-
-        _info3.TextReadonly = false;
-        _info3.Text1 = data1;
-        _info3.Text2 = data2;
-
-        _info3.Text2Visable = true;
-
-        _info3.Watermark1 = text1;
-        _info3.Watermark2 = text2;
-
-        _info3.ValueVisable = false;
-
-        _info3.CancelEnable = true;
-        _info3.CancelVisible = true;
-        _info3.ConfirmEnable = true;
-
-        _info3.Password = '\0';
-
-        _info3.Call = null;
-        _info3.ChoiseVisible = false;
-
-        Lock();
-        var res = await DialogHost.Show(_info3, WindowId);
-
-        Unlock();
-
-        return new InputRes
-        {
-            Cancel = res is not true,
-            Text1 = _info3.Text1,
-            Text2 = _info3.Text2
-        };
-    }
-    /// <summary>
-    /// 显示一个输入框，里面有基础内容，并等待输入关闭
-    /// </summary>
-    /// <param name="title">显示的标题</param>
-    /// <param name="lock1">是否为只读</param>
-    /// <returns></returns>
-    public async Task<InputRes> InputWithEditAsync(string title, bool lock1)
-    {
-        ShowClose();
-        _info3.Text2Visable = false;
-        _info3.TextReadonly = lock1;
-        _info3.Call = null;
-        _info3.ChoiseVisible = false;
-
-        if (lock1)
-        {
-            _info3.Text1 = title;
-            _info3.Watermark1 = "";
-
-            _info3.ValueVisable = true;
-
-            _info3.CancelEnable = false;
-            _info3.CancelVisible = false;
-            _info3.ConfirmEnable = false;
-
-            _info3.Password = '\0';
-        }
-        else
-        {
-            _info3.Text1 = "";
-            _info3.ValueVisable = false;
-
-            _info3.Watermark1 = title;
-
-            _info3.CancelEnable = true;
-            _info3.CancelVisible = true;
-            _info3.ConfirmEnable = true;
-        }
-
-        Lock();
-        var res = await DialogHost.Show(_info3, WindowId);
-        Unlock();
-
-        return new InputRes
-        {
-            Cancel = res is not true,
-            Text1 = _info3.Text1
-        };
-    }
-    /// <summary>
-    /// 显示一个输入框，并等待输入关闭
-    /// </summary>
-    /// <param name="title1">输入框提示1</param>
-    /// <param name="title2">输入框提示2</param>
-    /// <returns></returns>
-    public async Task<InputRes> InputAsync(string title1, string title2)
-    {
-        ShowClose();
-        _info3.TextReadonly = false;
-
-        _info3.ValueVisable = false;
-
-        _info3.Text1 = "";
-        _info3.Text2 = "";
-
-        _info3.Text2Visable = true;
-
-        _info3.Watermark1 = title1;
-        _info3.Watermark2 = title2;
-
-        _info3.ConfirmEnable = true;
-
-        _info3.CancelEnable = true;
-        _info3.CancelVisible = true;
-
-        _info3.ChoiseVisible = false;
-
-        Lock();
-        var res = await DialogHost.Show(_info3, WindowId);
-        Unlock();
-
-        _info3.Call = null;
-
-        return new InputRes
-        {
-            Cancel = res is not true,
-            Text1 = _info3.Text1,
-            Text2 = _info3.Text2
-        };
-    }
-    /// <summary>
-    /// 显示一个输入框，显示两个只读内容
-    /// </summary>
-    /// <param name="text1">内容1</param>
-    /// <param name="text2">内容2</param>
-    /// <param name="iscancel">是否可以取消</param>
-    /// <param name="isconfirm">是否可以确认</param>
-    /// <param name="isvalue">是否显示滚动条</param>
-    /// <param name="cancel">按下取消后执行</param>
-    public void InputWithReadInfo(string text1, string text2, bool iscancel, bool isconfirm, bool isvalue, Action? cancel)
-    {
-        ShowClose();
-
-        _info3.TextReadonly = true;
-        _info3.Text1 = text1;
-        _info3.Text2 = text2;
-
-        _info3.Watermark1 = "";
-        _info3.Watermark2 = "";
-
-        _info3.Text2Visable = true;
-
-        _info3.Password = '\0';
-
-        _info3.ChoiseVisible = false;
-
-        _info3.Call = cancel;
-        _info3.ConfirmEnable = isconfirm;
-        _info3.ValueVisable = isvalue;
-        _info3.CancelEnable = iscancel;
-        _info3.CancelVisible = iscancel;
-
-        Lock();
-
-        DialogHost.Show(_info3, WindowId);
-    }
-    /// <summary>
-    /// 显示一个输入框，显示一个只读内容，设置一个选择按钮
-    /// </summary>
-    /// <param name="title">显示内容</param>
-    /// <param name="choiseText">选项内容</param>
-    /// <param name="choise">选项事件</param>
-    public void InputWithChoise(string title, string choiseText, Action? choise)
-    {
-        ShowClose();
-
-        _info3.TextReadonly = true;
-        _info3.Text1 = title;
-
-        _info3.Watermark1 = "";
-
-        _info3.ValueVisable = false;
-
-        _info3.Text2Visable = false;
-        _info3.ConfirmEnable = true;
-
-        _info3.ChoiseCall = choise;
-        _info3.ChoiseText = choiseText;
-        _info3.ChoiseVisible = true;
-
-        DialogHost.Show(_info3, WindowId);
-    }
-
-    /// <summary>
-    /// 显示一个对话框，选择确定还是取消
-    /// </summary>
-    /// <param name="data">要显示的内容</param>
-    /// <returns>结果</returns>
-    public async Task<bool> ShowAsync(string data)
-    {
-        ShowClose();
-
-        _info4.ConfirmVisable = true;
-        bool reut = false;
-        _info4.EnableButton = true;
-        _info4.Text = data;
-        _info4.CancelVisable = true;
-        _info4.ChoiseVisiable = false;
-
-        _info4.Call = (res) =>
-        {
-            reut = res;
-        };
-
-        Lock();
-        await DialogHost.Show(_info4, WindowId);
-
-        Unlock();
-
-        _info4.Call = null;
-
-        return reut;
-    }
-    /// <summary>
-    /// 显示一个对话框，自定义取消操作
-    /// </summary>
-    /// <param name="data">显示内容</param>
-    /// <param name="action">取消操作</param>
-    public void ShowWithCancel(string data, Action action)
-    {
-        ShowClose();
-
-        _info4.EnableButton = true;
-        _info4.Text = data;
-        _info4.CancelVisable = true;
-        _info4.ConfirmVisable = false;
-        _info4.ChoiseVisiable = false;
-
-        _info4.Call = (res) =>
-        {
-            _info4.ConfirmVisable = true;
-            action.Invoke();
-        };
-
-        DialogHost.Show(_info4, WindowId);
-    }
-    /// <summary>
-    /// 显示一个对话框，关闭取消按钮
-    /// </summary>
-    /// <param name="data">内容</param>
-    public void Show(string data)
-    {
-        ShowClose();
-
-        _info4.ConfirmVisable = true;
-        _info4.EnableButton = true;
-        _info4.CancelVisable = false;
-        _info4.Call = null;
-        _info4.Text = data;
-        _info4.ChoiseVisiable = false;
-
-        DialogHost.Show(_info4, WindowId);
-    }
-    /// <summary>
-    /// 显示一个对话框，自定义确认操作
-    /// </summary>
-    /// <param name="data">显示内容</param>
-    /// <param name="action">确认执行</param>
-    public void ShowWithOk(string data, Action action)
-    {
-        ShowClose();
-
-        _info4.ConfirmVisable = true;
-        _info4.EnableButton = true;
-        _info4.CancelVisable = false;
-        _info4.Text = data;
-        _info4.ChoiseVisiable = false;
-
-        _info4.Call = (res) =>
-        {
-            action.Invoke();
-        };
-
-        DialogHost.Show(_info4, WindowId);
-    }
-    /// <summary>
-    /// 显示一个选择框，并显示一个自定义选项
-    /// </summary>
-    /// <param name="data">内容</param>
-    /// <param name="choise">选择按钮内容</param>
-    /// <param name="action">选择执行内容</param>
-    public void ShowWithChoise(string data, string choise, Action action)
-    {
-        ShowClose();
-
-        _info4.ConfirmVisable = true;
-        _info4.EnableButton = true;
-        _info4.CancelVisable = false;
-        _info4.Call = null;
-        _info4.Text = data;
-        _info4.ChoiseVisiable = true;
-        _info4.ChoiseText = choise;
-        _info4.ChoiseCall = action;
-
-        DialogHost.Show(_info4, WindowId);
-    }
-    /// <summary>
-    /// 显示一个选择框，自定义取消操作，显示一个自定义选项，并等待执行结束
-    /// </summary>
-    /// <param name="data">显示内容</param>
-    /// <param name="choise">选择内容</param>
-    /// <param name="action">选择执行</param>
-    /// <param name="cancel">取消时执行</param>
-    /// <returns></returns>
-    public async Task ShowChoiseCancelWait(string data, string choise, Action action, Action<bool> cancel)
-    {
-        ShowClose();
-
-        _info4.ConfirmVisable = true;
-        _info4.EnableButton = true;
-        _info4.CancelVisable = true;
-        _info4.Call = cancel;
-        _info4.Text = data;
-        _info4.ChoiseVisiable = true;
-        _info4.ChoiseText = choise;
-        _info4.ChoiseCall = action;
-
-        await DialogHost.Show(_info4, WindowId);
-    }
-
-    /// <summary>
-    /// 显示一个选择框，下拉选择
-    /// </summary>
-    /// <param name="title">标题</param>
-    /// <param name="data1">下拉内容</param>
-    /// <returns></returns>
-    public async Task<ComboRes> ShowCombo(string title, IEnumerable<string> data1)
-    {
-        ShowClose();
-
-        _info5.Text = title;
-        _info5.Items.Clear();
-        _info5.Items.AddRange(data1);
-        _info5.Select = null!;
-        foreach (var item in data1)
-        {
-            _info5.Select = item;
-            break;
-        }
-
-        Lock();
-        var res = await DialogHost.Show(_info5, WindowId);
-        Unlock();
-
-        return new ComboRes
-        {
-            Cancel = res is not true,
-            Index = _info5.Index,
-            Item = _info5.Select
-        };
-    }
-
-    /// <summary>
-    /// 显示一个文字框，显示两段文字
-    /// </summary>
-    /// <param name="data1">文字1</param>
-    /// <param name="data2">文字2</param>
-    public void Text(string data1, string data2)
-    {
-        ShowClose();
-
-        _info6.Text1 = data1;
-        _info6.Text2 = data2;
-        _info6.CancelEnable = false;
-
-        DialogHost.Show(_info6, WindowId);
-    }
-    /// <summary>
-    /// 显示一个文字框，等待选择确认还是取消
-    /// </summary>
-    /// <param name="data">文字1</param>
-    /// <param name="data1">文字2</param>
-    /// <returns></returns>
-    public async Task<bool> TextAsync(string data, string data1)
-    {
-        ShowClose();
-
-        _info6.Text1 = data;
-        _info6.Text2 = data1;
-        _info6.CancelEnable = true;
-
-        Lock();
-        var res = await DialogHost.Show(_info6, WindowId);
-
-        Unlock();
-
-        return res is true;
     }
 
     /// <summary>
@@ -875,21 +424,41 @@ public partial class BaseModel : ObservableObject
         return top;
     }
 
-    /// <summary>
-    /// 关闭弹框
-    /// </summary>
-    public void ShowClose()
+    public void Show(string text)
     {
-        try
+        ShowDialog(new ChoiceModel(WindowId)
         {
-            if (DialogHost.IsDialogOpen(WindowId))
-            {
-                DialogHost.Close(WindowId);
-            }
-        }
-        catch
-        {
+            Text = text
+        });
+    }
 
-        }
+    public Task<object?> ShowWait(string text)
+    {
+        return ShowDialogWait(new ChoiceModel(WindowId)
+        {
+            Text = text
+        });
+    }
+
+    public ProgressModel ShowProgress(string text)
+    {
+        var dialog = new ProgressModel
+        {
+            Text = text
+        };
+        ShowDialog(dialog);
+
+        return dialog;
+    }
+
+    public async Task<bool> ShowChoice(string text)
+    {
+        var dialog = new ChoiceModel(WindowId)
+        {
+            Text = text,
+            CancelVisable = true
+        };
+
+        return await DialogHost.Show(dialog, WindowId) is true;
     }
 }

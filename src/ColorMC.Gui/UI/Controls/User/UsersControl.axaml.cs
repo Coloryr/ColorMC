@@ -75,7 +75,7 @@ public partial class UsersControl : BaseUserControl
         (DataContext as UsersModel)?.SetAdd();
     }
 
-    protected override UsersModel GenModel(BaseModel model)
+    protected override UsersModel GenModel(WindowModel model)
     {
         return new UsersModel(model);
     }

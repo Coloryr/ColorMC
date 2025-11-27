@@ -36,6 +36,7 @@ using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.ColorMC;
 using ColorMC.Gui.UI;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
@@ -75,7 +76,7 @@ public static class GameBinding
     /// <param name="group">游戏分组</param>
     /// <returns></returns>
     public static async Task<GameRes> AddGameAsync(string? name, string local, List<string>? unselect,
-        string? group, bool open, ICreateInstanceGui gui, IZipGui zipgui)
+        string? group, bool open, IOverGameGui gui, IZipGui zipgui)
     {
         var res = await AddGameHelper.AddGameFolder(local, name, group, unselect, gui, zipgui);
 
@@ -99,16 +100,21 @@ public static class GameBinding
     /// <param name="model">基础窗口模型</param>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task SetGameIconFromFileAsync(TopLevel top, BaseModel model, GameSettingObj obj)
+    public static async Task SetGameIconFromFileAsync(TopLevel top, WindowModel model, GameSettingObj obj)
     {
         try
         {
             var file = await PathBinding.SelectFileAsync(top, FileType.GameIcon);
             if (file.Path != null)
             {
-                bool resize = await model.ShowAsync(LanguageUtils.Get("App.Text49"));
+                var dialog1 = new ChoiceModel(model.WindowId)
+                {
+                    Text = LanguageUtils.Get("App.Text49"),
+                    CancelVisable = true,
+                };
+                bool resize = await model.ShowDialogWait(dialog1) is true;
 
-                model.Progress(LanguageUtils.Get("App.Text40"));
+                var dialog = model.ShowProgress(LanguageUtils.Get("App.Text40"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Path)!);
 
                 if (resize && (info.Width > 100 || info.Height > 100))
@@ -123,7 +129,7 @@ public static class GameBinding
                     obj.SetGameIconFromBytes(data.AsSpan().ToArray());
                 }
 
-                model.ProgressClose();
+                model.CloseDialog(dialog);
                 model.Notify(LanguageUtils.Get("App.Text39"));
             }
         }
@@ -138,10 +144,11 @@ public static class GameBinding
     /// <summary>
     /// 启动多个实例
     /// </summary>
-    /// <param name="model">基础窗口模型</param>
     /// <param name="objs">游戏实例列表</param>
+    /// <param name="window">基础窗口模型</param>
+    /// <param name="progress">进度条模型</param>
     /// <returns></returns>
-    public static async Task<GameLaunchListRes> LaunchAsync(BaseModel model, ICollection<GameSettingObj> objs)
+    public static async Task<GameLaunchListRes> LaunchAsync(ICollection<GameSettingObj> objs, WindowModel window, ProgressModel? progress)
     {
         var list = objs.Where(item => !GameManager.IsGameRun(item))
             .ToList();
@@ -154,7 +161,7 @@ public static class GameBinding
             };
         }
 
-        var res = await UserBinding.GetLaunchUser(model);
+        var res = await UserBinding.GetLaunchUser(window);
         if (res.User is not { } user)
         {
             return new GameLaunchListRes { Message = res.Message };
@@ -172,8 +179,13 @@ public static class GameBinding
             cancels[item.UUID] = GameManager.StartGame(item);
         }
 
-        var arg = MakeArg(user, model, port);
-        arg.Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch;
+        var arg = new GameLaunchArg
+        {
+            Auth = user,
+            Gui = new LauncherGui(window, progress),
+            Mixinport = port,
+            Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch
+        };
 
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
@@ -194,7 +206,7 @@ public static class GameBinding
             return await objs.StartGameAsync(arg, cancels);
         });
 
-        model.SubTitle = "";
+        window.SubTitle = "";
         FuntionUtils.RunGC();
 
         //if (s_launchCancel.IsCancellationRequested)
@@ -323,12 +335,12 @@ public static class GameBinding
     /// <summary>
     /// 启动游戏
     /// </summary>
-    /// <param name="model">基础窗口模型</param>
+    /// <param name="window">基础窗口模型</param>
     /// <param name="obj">游戏实例</param>
     /// <param name="world">进入的存档</param>
     /// <param name="hide">是否隐藏启动器</param>
     /// <returns></returns>
-    public static async Task<GameLaunchOneRes> LaunchAsync(BaseModel model, GameSettingObj? obj,
+    public static async Task<GameLaunchOneRes> LaunchAsync(GameSettingObj? obj, WindowModel window, ProgressModel? progress,
         SaveObj? world = null, bool hide = false)
     {
         if (obj == null)
@@ -354,14 +366,14 @@ public static class GameBinding
             //检测加载器有没有启用
             if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
             {
-                var res2 = await model.ShowAsync(string.Format(LanguageUtils.Get("App.Text53"), obj.Name));
+                var res2 = await window.ShowChoice(string.Format(LanguageUtils.Get("App.Text53"), obj.Name));
                 if (!res2)
                 {
                     return new() { };
                 }
 
-                res2 = await model.ShowAsync(LanguageUtils.Get("App.Text57"));
-                if (res2 == true)
+                res2 = await window.ShowChoice(LanguageUtils.Get("App.Text57"));
+                if (res2)
                 {
                     GuiConfigUtils.Config.LaunchCheck.CheckLoader = false;
                     GuiConfigUtils.Save();
@@ -375,11 +387,16 @@ public static class GameBinding
                 if ((mem <= 4096 && count > 150)
                     || (mem <= 8192 && count > 300))
                 {
-                    bool launch = false;
-                    await model.ShowChoiseCancelWait(string.Format(LanguageUtils.Get("App.Text54"), count, mem),
-                        LanguageUtils.Get("App.Text55"), () =>
+                    var dialog = new ChoiceModel(window.WindowId)
                     {
-                        model.ShowClose();
+                        Text = string.Format(LanguageUtils.Get("App.Text54"), count, mem),
+                        ChoiceText = LanguageUtils.Get("App.Text55"),
+                        CancelVisable = true,
+                        ChoiceVisiable = true
+                    };
+                    dialog.ChoiceCall = () =>
+                    {
+                        window.CloseDialog(dialog);
                         if (obj.JvmArg?.MaxMemory != null)
                         {
                             WindowManager.ShowGameEdit(obj, GameEditWindowType.Arg);
@@ -388,17 +405,14 @@ public static class GameBinding
                         {
                             WindowManager.ShowSetting(SettingType.Arg);
                         }
-                    }, (data) =>
+                    };
+                    if (await window.ShowDialogWait(dialog) is not true)
                     {
-                        launch = data;
-                    });
-                    if (!launch)
-                    {
-                        return new();
+                        return new GameLaunchOneRes();
                     }
 
-                    var res3 = await model.ShowAsync(LanguageUtils.Get("App.Text56"));
-                    if (res3 == true)
+                    var res3 = await window.ShowChoice(LanguageUtils.Get("App.Text56"));
+                    if (res3)
                     {
                         GuiConfigUtils.Config.LaunchCheck.CheckMemory = false;
                         GuiConfigUtils.Save();
@@ -408,7 +422,7 @@ public static class GameBinding
         }
 
         //获取选中的账户
-        var res = await UserBinding.GetLaunchUser(model);
+        var res = await UserBinding.GetLaunchUser(window);
         if (res.User is not { } user)
         {
             return new() { Message = res.Message };
@@ -424,9 +438,15 @@ public static class GameBinding
         UserManager.LockUser(user);
 
         string? temp = null;
-        var arg = MakeArg(user, model, port);
-        arg.World = world;
-        arg.Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch;
+        var arg = new GameLaunchArg
+        {
+            Auth = user,
+            Gui = new LauncherGui(window, progress),
+            Mixinport = port,
+            Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch,
+            World = world
+        };
+
         //设置自动加入服务器
         if (GuiConfigUtils.Config.ServerCustom.JoinServer &&
             !string.IsNullOrEmpty(GuiConfigUtils.Config.ServerCustom.IP))
@@ -456,8 +476,7 @@ public static class GameBinding
 
         arg.Gui?.StateUpdate(obj, LaunchState.End);
 
-        model.ProgressClose();
-        model.SubTitle = "";
+        window.SubTitle = "";
         FuntionUtils.RunGC();
 
         //是否取消启动
@@ -511,23 +530,6 @@ public static class GameBinding
             Message = temp,
             User = user,
             LoginFail = login
-        };
-    }
-
-    /// <summary>
-    /// 创建启动参数
-    /// </summary>
-    /// <param name="user">登录的账户</param>
-    /// <param name="model">基础窗口模型</param>
-    /// <param name="port">ColorMC ASM端口</param>
-    /// <returns></returns>
-    private static GameLaunchArg MakeArg(LoginObj user, BaseModel model, int port)
-    {
-        return new GameLaunchArg
-        {
-            Auth = user,
-            Gui = new LauncherGui(model),
-            Mixinport = port
         };
     }
 
@@ -1002,11 +1004,9 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <param name="data">实例名字</param>
-    /// <param name="request">UI相关</param>
-    /// <param name="overwirte">UI相关</param>
     /// <returns></returns>
     public static async Task<bool> CopyGameAsync(GameSettingObj obj, string data,
-        ICreateInstanceGui gui)
+        IOverGameGui gui)
     {
         if (GameManager.IsGameRun(obj))
         {
@@ -1440,10 +1440,8 @@ public static class GameBinding
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="group"></param>
-    /// <param name="request"></param>
-    /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadCloudAsync(CloundListObj obj, string? group, ICreateInstanceGui gui)
+    public static async Task<StringRes> DownloadCloudAsync(CloundListObj obj, string? group, IOverGameGui gui)
     {
         var game = await InstancesPath.CreateGameAsync(new GameSettingObj()
         {
@@ -1544,14 +1542,13 @@ public static class GameBinding
     /// <summary>
     /// 下载服务器包
     /// </summary>
-    /// <param name="model"></param>
+    /// <param name="window"></param>
     /// <param name="name"></param>
     /// <param name="group"></param>
     /// <param name="text"></param>
-    /// <param name="overwirte"></param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadServerPackAsync(BaseModel model,
-        string? name, string? group, string text, ICreateInstanceGui gui)
+    public static async Task<StringRes> DownloadServerPackAsync(WindowModel window, ProgressModel progress,
+        string? name, string? group, string text, IOverGameGui gui)
     {
         try
         {
@@ -1583,26 +1580,26 @@ public static class GameBinding
 
             if (game == null)
             {
-                return new() { Data = LanguageUtils.Get("App.Text66") };
+                return new StringRes { Data = LanguageUtils.Get("App.Text66") };
             }
 
-            model.Progress(LanguageUtils.Get("App.Text51"));
+            var dialog = window.ShowProgress(LanguageUtils.Get("App.Text51"));
 
-            var res1 = await obj.UpdateAsync(new UpdateLaunchGui(model), CancellationToken.None);
+            var res1 = await obj.UpdateAsync(new UpdateLaunchGui(progress), CancellationToken.None);
             if (!res1)
             {
-                model.ProgressClose();
-                model.ShowWithOk(LanguageUtils.Get("App.Text67"), async () =>
-                {
-                    await game.RemoveAsync();
-                });
+                window.CloseDialog(dialog);
+                dialog = window.ShowProgress(LanguageUtils.Get("App.Text67"));
+                await game.RemoveAsync();
+                window.CloseDialog(dialog);
+                window.Show(LanguageUtils.Get("App.Text67"));
 
-                return new();
+                return new StringRes();
             }
 
             PathHelper.WriteText(game.GetServerPackFile(), data);
 
-            return new() { State = true, Data = game.UUID };
+            return new StringRes { State = true, Data = game.UUID };
         }
         catch (Exception e)
         {
@@ -1828,30 +1825,36 @@ public static class GameBinding
     /// 导出启动参数
     /// </summary>
     /// <param name="obj">游戏实例</param>
-    /// <param name="model"></param>
-    public static async void ExportCmd(GameSettingObj obj, BaseModel model, CancellationToken token)
+    /// <param name="window"></param>
+    public static async void ExportCmd(GameSettingObj obj, WindowModel window, CancellationToken token)
     {
         var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
         if (top == null)
         {
-            model.Show(LanguageUtils.Get("App.Text101"));
+            window.Show(LanguageUtils.Get("App.Text101"));
             return;
         }
-        var res = await UserBinding.GetLaunchUser(model);
+        var res = await UserBinding.GetLaunchUser(window);
         if (res.User is not { } user)
         {
-            model.Show(LanguageUtils.Get("App.Text60"));
+            window.Show(LanguageUtils.Get("App.Text60"));
             return;
         }
-        var arg = MakeArg(user, model, -1);
+        var arg = new GameLaunchArg
+        {
+            Auth = user,
+            Gui = new LauncherGui(window, null),
+            Mixinport = -1,
+        };
 
-        model.Progress(LanguageUtils.Get("App.Text25"));
         try
         {
+            var dialog = window.ShowProgress(LanguageUtils.Get("App.Text25"));
             var res1 = await obj.CreateGameCmdAsync(arg, token);
             if (!res1.Res)
             {
-                model.Show(res1.Message!);
+                window.CloseDialog(dialog);
+                window.Show(res1.Message!);
                 return;
             }
 
@@ -1899,7 +1902,7 @@ public static class GameBinding
             var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
             if (res2 == false)
             {
-                model.Show(LanguageUtils.Get("App.Text101"));
+                window.Show(LanguageUtils.Get("App.Text101"));
             }
         }
         catch (Exception e)
@@ -1994,7 +1997,7 @@ public static class GameBinding
     /// <param name="files">选中的配置</param>
     /// <param name="model">Gui回调</param>
     /// <returns></returns>
-    public static async Task<StringRes> UploadConfigAsync(GameSettingObj obj, List<string> files, ProcessUpdateArg model)
+    public static async Task<StringRes> UploadConfigAsync(GameSettingObj obj, List<string> files, ProgressModel progress)
     {
         if (!ColorMCCloudAPI.Connect)
         {
@@ -2004,7 +2007,7 @@ public static class GameBinding
             };
         }
 
-        model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text8"));
+        progress.Text = LanguageUtils.Get("GameCloudWindow.Text8");
 
         var data = GameCloudUtils.GetCloudData(obj);
         string dir = obj.GetBasePath();
@@ -2017,7 +2020,7 @@ public static class GameBinding
         string name = Path.Combine(dir, GuiNames.NameCloudConfigFile);
         files.Remove(name);
         await new ZipProcess().ZipFileAsync(name, files, dir);
-        model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text9"));
+        progress.Text = LanguageUtils.Get("GameCloudWindow.Text9");
         var res = await ColorMCCloudAPI.UploadConfigAsync(obj, name);
         PathHelper.Delete(name);
         if (res.Data1 == 100)
@@ -2056,46 +2059,45 @@ public static class GameBinding
     /// <param name="game">游戏实例</param>
     /// <param name="model">UI相关</param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadConfigAsync(GameSettingObj game, ProcessUpdateArg model)
+    public static async Task<StringRes> DownloadConfigAsync(GameSettingObj game, ProgressModel progress)
     {
         if (!ColorMCCloudAPI.Connect)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text29")
             };
         }
 
-        model.Update?.Invoke(LanguageUtils.Get("Text.Downloading"));
         var data = GameCloudUtils.GetCloudData(game);
         string local = Path.Combine(game.GetBasePath(), GuiNames.NameCloudConfigFile);
         var res = await ColorMCCloudAPI.DownloadConfigAsync(game.UUID, local);
         if (res == 101)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res != 100)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text21")
             };
         }
 
-        model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text11"));
+        progress.Text = LanguageUtils.Get("GameCloudWindow.Text33");
         var res1 = await UnZipCloudConfigAsync(game, data, local);
         if (!res1)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text24")
             };
         }
 
-        return new() { State = true };
+        return new StringRes { State = true };
     }
 
     /// <summary>
@@ -2141,33 +2143,32 @@ public static class GameBinding
     /// <param name="world">存档</param>
     /// <param name="model">Gui回调</param>
     /// <returns></returns>
-    public static async Task<StringRes> UploadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    public static async Task<StringRes> UploadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProgressModel model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text29")
             };
         }
 
-        model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text9"));
         string dir = world.World.Local;
         string local = Path.Combine(world.World.Game.GetSavesPath(), $"{world.World.LevelName}{Names.NameZipExt}");
         if (!world.HaveCloud)
         {
-            model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text8"));
+            model.Text = LanguageUtils.Get("GameCloudWindow.Text35");
             using var stream = PathHelper.OpenWrite(local);
             using var zip = await new ZipProcess().ZipFileAsync(dir, stream);
         }
         else
         {
-            model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text12"));
+            model.Text = LanguageUtils.Get("GameCloudWindow.Text12");
             //云端文件
             var list = await ColorMCCloudAPI.GetWorldFilesAsync(game, world.World);
             if (list == null)
             {
-                return new()
+                return new StringRes
                 {
                     Data = LanguageUtils.Get("GameCloudWindow.Text25")
                 };
@@ -2206,12 +2207,12 @@ public static class GameBinding
             }
             if (pack.Count == 0)
             {
-                return new()
+                return new StringRes
                 {
                     Data = LanguageUtils.Get("GameCloudWindow.Text13")
                 };
             }
-            model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text8"));
+            model.Text = LanguageUtils.Get("GameCloudWindow.Text35");
             await new ZipProcess().ZipFileAsync(local, pack, dir);
             if (have)
             {
@@ -2223,24 +2224,24 @@ public static class GameBinding
         PathHelper.Delete(local);
         if (res == 100)
         {
-            return new() { State = true };
+            return new StringRes { State = true };
         }
         else if (res == 101)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res == 104)
         {
-            return new()
+            return new StringRes
             {
                 Data = LanguageUtils.Get("GameCloudWindow.Text23")
             };
         }
 
-        return new()
+        return new StringRes
         {
             Data = LanguageUtils.Get("GameCloudWindow.Text21")
         };
@@ -2253,7 +2254,7 @@ public static class GameBinding
     /// <param name="world">云存档</param>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProcessUpdateArg model)
+    public static async Task<StringRes> DownloadCloudWorldAsync(GameSettingObj game, WorldCloudModel world, ProgressModel model)
     {
         if (!ColorMCCloudAPI.Connect)
         {
@@ -2263,7 +2264,6 @@ public static class GameBinding
             };
         }
 
-        model.Update?.Invoke(LanguageUtils.Get("Text.Downloading"));
         string dir = Path.Combine(game.GetSavesPath(), world.Cloud.Name);
         string local = Path.Combine(game.GetSavesPath(), $"{world.Cloud.Name}{Names.NameZipExt}");
         var list = new Dictionary<string, string>();
@@ -2283,7 +2283,7 @@ public static class GameBinding
         var res = await ColorMCCloudAPI.DownloadWorldAsync(game, world.Cloud, local, list);
         if (res == 100)
         {
-            model.Update?.Invoke(LanguageUtils.Get("GameCloudWindow.Text11"));
+            model.Text = LanguageUtils.Get("GameCloudWindow.Text37");
             try
             {
                 using var file = PathHelper.OpenRead(local)!;

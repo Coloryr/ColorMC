@@ -608,7 +608,7 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task OpenJava()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -625,7 +625,7 @@ public partial class GameEditModel
     /// </summary>
     private async void DeleteConfig()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab2.Text44"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("GameEditWindow.Tab2.Text44"));
         if (res)
         {
             GameBinding.DeleteConfig(_obj);

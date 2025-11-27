@@ -58,7 +58,7 @@ public partial class NetFrpModel
 
         if (string.IsNullOrWhiteSpace(KeySakura))
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text17"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text17"));
             return;
         }
 
@@ -100,12 +100,12 @@ public partial class NetFrpModel
     /// </summary>
     private async void LoadSakuraList()
     {
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab1.Text15"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab1.Text15"));
         var res = await SakuraFrpApi.GetChannelAsync(KeySakura);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res == null)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text16"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text16"));
             return;
         }
 
@@ -128,11 +128,7 @@ public partial class NetFrpModel
     /// <param name="model"></param>
     public void SelectSakura(NetFrpRemoteModel model)
     {
-        if (_itemSakura != null)
-        {
-            _itemSakura.IsSelect = false;
-        }
-
+        _itemSakura?.IsSelect = false;
         _itemSakura = model;
         model.IsSelect = true;
     }

@@ -22,7 +22,7 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, List<string>? unselect, ICreateInstanceGui? gui, IZipGui? zipgui)
+    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, List<string>? unselect, IOverGameGui? gui, IZipGui? zipgui)
     {
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -128,7 +128,7 @@ public static class AddGameHelper
     /// <returns>导入结果</returns>
     private static async Task<GameRes> ModPackAsync(PackType type, string? group, Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
-        packgui?.SetStateText(ModpackState.ReadInfo);
+        packgui?.SetState(ModpackState.ReadInfo);
         packgui?.SetNow(1, 5);
 
         using IModPackWork work = type switch
@@ -145,7 +145,7 @@ public static class AddGameHelper
 
         var game = await work.CreateGame(group);
 
-        packgui?.SetStateText(ModpackState.Unzip);
+        packgui?.SetState(ModpackState.Unzip);
         packgui?.SetNow(2, 5);
 
         if (!await work.Unzip())
@@ -153,10 +153,10 @@ public static class AddGameHelper
             return new GameRes() { Game = game };
         }
 
-        packgui?.SetText(null);
+        packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
 
-        packgui?.SetStateText(ModpackState.GetInfo);
+        packgui?.SetState(ModpackState.GetInfo);
         packgui?.SetNow(3, 5);
 
         if (!await work.GetInfo())
@@ -164,14 +164,14 @@ public static class AddGameHelper
             return new GameRes { Game = game };
         }
 
-        packgui?.SetText(null);
+        packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
-        packgui?.SetStateText(ModpackState.DownloadFile);
+        packgui?.SetState(ModpackState.DownloadFile);
         packgui?.SetNow(4, 5);
 
         await work.Download();
 
-        packgui?.SetStateText(ModpackState.Done);
+        packgui?.SetState(ModpackState.Done);
         packgui?.SetNow(5, 5);
 
         return new GameRes { State = true, Game = game };
@@ -183,9 +183,9 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ColorMCAsync(Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
+    private static async Task<GameRes> ColorMCAsync(Stream st, IOverGameGui? gui ,IModPackGui? packgui)
     {
-        gui?.ModPackState(CoreRunState.Read);
+        packgui?.SetState(ModpackState.ReadInfo);
         //直接解压
         using var zFile = ZipArchive.Open(st);
         GameSettingObj? game = null;
@@ -212,6 +212,9 @@ public static class AddGameHelper
         var size = zFile.Entries.Count;
         var index = 0;
 
+        packgui?.SetState(ModpackState.Unzip);
+        packgui?.SetNowSub(index, size);
+
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
@@ -219,14 +222,16 @@ public static class AddGameHelper
                 index++;
                 continue;
             }
-            zipgui?.ZipUpdate(e.Key!, index, size);
+            packgui?.SetNowSub(index, size);
+            packgui?.SetSubText(e.Key!);
             index++;
             using var stream = e.OpenEntryStream();
             string file = Path.GetFullPath(game.GetBasePath() + "/" + e.Key);
             await PathHelper.WriteBytesAsync(file, stream);
         }
 
-        zipgui?.Done();
+        packgui?.SetSubText(null);
+        packgui?.SetState(ModpackState.Done);
 
         return new GameRes { State = true, Game = game };
     }
@@ -237,9 +242,9 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
+    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
-        gui?.ModPackState(CoreRunState.Read);
+        packgui?.SetState(ModpackState.ReadInfo);
         using var zFile = ZipArchive.Open(st);
         string path = "";
         MMCObj? mmc = null;
@@ -293,8 +298,6 @@ public static class AddGameHelper
             game.Icon = res.Icon + ".png";
         }
 
-        gui?.ModPackState(CoreRunState.Start);
-
         game = await InstancesPath.CreateGameAsync(game, gui);
 
         if (game == null)
@@ -304,6 +307,10 @@ public static class AddGameHelper
 
         var size = zFile.Entries.Count;
         var index = 0;
+
+        packgui?.SetState(ModpackState.Unzip);
+        packgui?.SetNowSub(index, size);
+
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
@@ -313,7 +320,8 @@ public static class AddGameHelper
             }
             if (e.Key!.StartsWith(path))
             {
-                zipgui?.ZipUpdate(e.Key, index, size);
+                packgui?.SetNowSub(index, size);
+                packgui?.SetSubText(e.Key);
                 index++;
                 using var stream = e.OpenEntryStream();
                 string file1 = Path.GetFullPath($"{game.GetBasePath()}/{e.Key[path.Length..]}");
@@ -321,7 +329,7 @@ public static class AddGameHelper
             }
         }
 
-        zipgui?.Done();
+        packgui?.SetSubText(null);
 
         game.ReadCustomJson();
         if (game.CustomJson.Count > 0)
@@ -329,6 +337,8 @@ public static class AddGameHelper
             game.CustomLoader ??= new();
             game.CustomLoader.CustomJson = true;
         }
+
+        packgui?.SetState(ModpackState.Done);
 
         return new GameRes { State = true, Game = game };
     }
@@ -339,9 +349,9 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
+    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
-        gui?.ModPackState(CoreRunState.Read);
+        packgui?.SetState(ModpackState.ReadInfo);
         using var zFile = ZipArchive.Open(st);
         HMCLObj? obj = null;
         CurseForgePackObj? obj1 = null;
@@ -375,8 +385,6 @@ public static class AddGameHelper
             game.Name = Path.GetFileName(file);
         }
 
-        gui?.ModPackState(CoreRunState.Start);
-
         game = await InstancesPath.CreateGameAsync(game, gui);
 
         if (game == null)
@@ -393,6 +401,10 @@ public static class AddGameHelper
 
         var size = zFile.Entries.Count;
         var index = 0;
+
+        packgui?.SetState(ModpackState.Unzip);
+        packgui?.SetNowSub(index, size);
+
         foreach (var e in zFile.Entries)
         {
             if (!FuntionUtils.IsFile(e))
@@ -402,7 +414,8 @@ public static class AddGameHelper
             }
             if (e.Key!.StartsWith(overrides))
             {
-                zipgui?.ZipUpdate(e.Key, index, size);
+                packgui?.SetNowSub(index, size);
+                packgui?.SetSubText(e.Key);
                 index++;
                 string file1 = Path.GetFullPath(game.GetGamePath() + e.Key[overrides.Length..]);
                 if (e.Key.EndsWith(Names.NameIconFile))
@@ -414,6 +427,8 @@ public static class AddGameHelper
             }
         }
 
+        packgui?.SetState(ModpackState.Done);
+
         return new GameRes { State = true, Game = game };
     }
 
@@ -422,16 +437,14 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, Stream st, ICreateInstanceGui? gui, IZipGui? zipgui)
+    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
-        gui?.ModPackState(CoreRunState.Read);
+        packgui?.SetState(ModpackState.ReadInfo);
 
         if (string.IsNullOrWhiteSpace(name))
         {
             name = Path.GetFileName(file);
         }
-
-        gui?.ModPackState(CoreRunState.Start);
 
         var game = await InstancesPath.CreateGameAsync(new GameSettingObj()
         {
@@ -444,7 +457,35 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        await new ZipProcess(zipgui).UnzipAsync(game.GetGamePath(), file, st!);
+        using var zFile = ZipArchive.Open(st);
+        var size = zFile.Entries.Count;
+        var index = 0;
+
+        packgui?.SetState(ModpackState.Unzip);
+        packgui?.SetNowSub(index, size);
+
+        foreach (var e in zFile.Entries)
+        {
+            if (!FuntionUtils.IsFile(e))
+            {
+                index++;
+                continue;
+            }
+
+            packgui?.SetNowSub(index, size);
+            packgui?.SetSubText(e.Key);
+            index++;
+            string file1 = Path.GetFullPath(game.GetGamePath() + e.Key);
+            if (e.Key!.EndsWith(Names.NameIconFile))
+            {
+                file1 = game.GetIconFile();
+            }
+            using var stream = e.OpenEntryStream();
+            await PathHelper.WriteBytesAsync(file1, stream);
+        }
+
+        packgui?.SetState(ModpackState.ReadInfo);
+        packgui?.SetSubText(null);
 
         //尝试解析版本号
         var files = Directory.GetFiles(game!.GetGamePath());
@@ -481,6 +522,8 @@ public static class AddGameHelper
             }
         }
 
+        packgui?.SetState(ModpackState.Done);
+
         return new GameRes { State = true, Game = game };
     }
 
@@ -490,7 +533,7 @@ public static class AddGameHelper
     /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallZip(string? name, string? group, string file,
-        PackType type, ICreateInstanceGui? gui, IZipGui? zipgui, IModPackGui? packgui)
+        PackType type, IOverGameGui? gui, IModPackGui? packgui)
     {
         GameRes? res1 = null;
         Stream? st = null;
@@ -523,15 +566,13 @@ public static class AddGameHelper
             }
             res1 = type switch
             {
-                PackType.ColorMC => await ColorMCAsync(st, gui, zipgui),
+                PackType.ColorMC => await ColorMCAsync(st, gui, packgui),
                 PackType.CurseForge or PackType.Modrinth => await ModPackAsync(type, group, st, gui, packgui),
-                PackType.MMC => await MMCAsync(name, group, file, st, gui, zipgui),
-                PackType.HMCL => await HMCLAsync(name, group, file, st, gui, zipgui),
-                PackType.ZipPack => await UnzipAsync(name, group, file, st, gui, zipgui),
+                PackType.MMC => await MMCAsync(name, group, file, st, gui, packgui),
+                PackType.HMCL => await HMCLAsync(name, group, file, st, gui, packgui),
+                PackType.ZipPack => await UnzipAsync(name, group, file, st, gui, packgui),
                 _ => null
             };
-
-            gui?.ModPackState(CoreRunState.End);
 
             return res1 ?? new GameRes();
         }
@@ -548,7 +589,7 @@ public static class AddGameHelper
         {
             await game.RemoveAsync();
         }
-        gui?.ModPackState(CoreRunState.End);
+
         return new GameRes();
     }
 
@@ -558,7 +599,7 @@ public static class AddGameHelper
     /// <param name="arg">整合包信息</param>
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallModrinth(string? group,
-        ModrinthVersionObj data, string? icon, ICreateInstanceGui? gui, IModPackGui? packgui)
+        ModrinthVersionObj data, string? icon, IOverGameGui? gui, IModPackGui? packgui)
     {
         var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
 
@@ -568,7 +609,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        var res2 = await InstallZip(null, group, item.Local, PackType.Modrinth, gui, null, packgui);
+        var res2 = await InstallZip(null, group, item.Local, PackType.Modrinth, gui, packgui);
         if (res2.State)
         {
             res2.Game!.PID = data.ProjectId;
@@ -589,7 +630,7 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">整合包信息</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, string? icon, ICreateInstanceGui? gui, IModPackGui? packgui)
+    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, string? icon, IOverGameGui? gui, IModPackGui? packgui)
     {
         var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
 
@@ -599,7 +640,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        var res2 = await InstallZip(null, group, item.Local, PackType.CurseForge, gui, null, packgui);
+        var res2 = await InstallZip(null, group, item.Local, PackType.CurseForge, gui, packgui);
         if (res2.State)
         {
             res2.Game!.PID = data.ModId.ToString();

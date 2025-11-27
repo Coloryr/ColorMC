@@ -78,9 +78,9 @@ public partial class ModExportModel : ObservableObject
     /// <summary>
     /// 操作
     /// </summary>
-    private readonly BaseModel _model;
+    private readonly WindowModel _model;
 
-    public ModExportModel(BaseModel model, string? pid, string? fid)
+    public ModExportModel(WindowModel model, string? pid, string? fid)
     {
         _pID = pid;
         _fID = fid;

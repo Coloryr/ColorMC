@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Count;
 /// <summary>
 /// 游戏统计
 /// </summary>
-public partial class CountModel : TopModel
+public partial class CountModel : ControlModel
 {
     /// <summary>
     /// 累计启动次数
@@ -112,7 +112,7 @@ public partial class CountModel : TopModel
     /// </summary>
     public ObservableCollection<string> Game { get; init; } = [];
 
-    public CountModel(BaseModel model) : base(model)
+    public CountModel(WindowModel model) : base(model)
     {
         _date1 = _date = DateTime.Now;
         var data = GameCountUtils.Count;

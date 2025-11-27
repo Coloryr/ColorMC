@@ -39,6 +39,7 @@ using ColorMC.Gui.UI.Controls.Setting;
 using ColorMC.Gui.UI.Controls.Skin;
 using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Windows;
 using ColorMC.Gui.UIBinding;
@@ -642,8 +643,7 @@ public static class WindowManager
     /// <param name="name">搜索内容</param>
     public static async void ShowAdd(string name)
     {
-        var window = MainWindow;
-        if (MainWindow == null || MainWindow.Window == null)
+        if (MainWindow == null || MainWindow.Window is not { } window)
         {
             return;
         }
@@ -656,18 +656,24 @@ public static class WindowManager
                 var list = InstancesPath.Games;
                 if (list.Count == 0)
                 {
-                    MainWindow.Window.Show();
-                    MainWindow.Window.WindowActivate();
-                    MainWindow.Window.Model.Show(LanguageUtils.Get("App.Text102"));
+                    window.Show();
+                    window.WindowActivate();
+                    window.Model.Show(LanguageUtils.Get("App.Text102"));
                     return;
                 }
 
-                var res = await MainWindow.Window.Model.ShowCombo(LanguageUtils.Get(LanguageUtils.Get("App.Text27")), list.Select(item => item.Name));
-                if (res.Cancel)
+                var dialog = new SelectModel(window.Model.WindowId)
+                {
+                    Text = LanguageUtils.Get("App.Text27"),
+                    Items = [.. list.Select(item => item.Name)]
+                };
+
+                var res = await window.Model.ShowDialogWait(dialog) is true;
+                if (!res)
                 {
                     return;
                 }
-                var obj = list[res.Index];
+                var obj = list[dialog.Index];
 
                 if (GameAddWindows.TryGetValue(obj.UUID, out var value))
                 {
@@ -1061,7 +1067,7 @@ public static class WindowManager
     /// 更新窗口信息
     /// </summary>
     /// <param name="model">窗口模型</param>
-    public static void UpdateWindow(BaseModel model)
+    public static void UpdateWindow(WindowModel model)
     {
         model.BackImage = ImageManager.BackBitmap;
         //更新背景图

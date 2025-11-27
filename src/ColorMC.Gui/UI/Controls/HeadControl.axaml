@@ -9,7 +9,7 @@
     Height="35"
     d:DesignHeight="35"
     d:DesignWidth="800"
-    x:DataType="model:BaseModel"
+    x:DataType="model:WindowModel"
     Background="Transparent"
     mc:Ignorable="d">
     <Panel RenderOptions.TextRenderingMode="Antialias">

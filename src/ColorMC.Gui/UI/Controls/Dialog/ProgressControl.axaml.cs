@@ -3,11 +3,11 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// 下拉框弹窗
+/// 进度条弹窗
 /// </summary>
-public partial class Info5Control : UserControl
+public partial class ProgressControl : UserControl
 {
-    public Info5Control()
+    public ProgressControl()
     {
         InitializeComponent();
     }

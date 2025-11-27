@@ -21,19 +21,19 @@ public partial class AddModPackControlModel
     public override async void Install(FileItemModel item)
     {
         SetSelect(item);
-        Model.Progress();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
         var res = await WebBinding.GetFileListAsync(item.SourceType,
                item.Pid, 0, null, Loaders.Normal);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res == null || res.List == null || res.List.Count == 0)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
             return;
         }
         var item1 = res.List.First();
         if (item1.IsDownload)
         {
-            var res1 = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text40"));
+            var res1 = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text40"));
             if (!res1)
             {
                 return;
@@ -66,14 +66,14 @@ public partial class AddModPackControlModel
                 Type = FileType.ModPack
             };
             StartDownload(info);
-            var gui = new CreateGameGui(Model);
+            var gui = new OverGameGui(Window);
             var pack = new ModpackGui(info);
             var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack);
             pack.Stop();
 
             if (!res.State)
             {
-                Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text50"));
+                Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text50"));
             }
             else
             {
@@ -92,15 +92,14 @@ public partial class AddModPackControlModel
             };
             StartDownload(info);
             var pack = new ModpackGui(info);
-            var gui = new CreateGameGui(Model);
+            var gui = new OverGameGui(Window);
             var res = await AddGameHelper.InstallModrinth(_group, data1 ,
                 select?.Logo, gui, pack);
             pack.Stop();
-            Model.ProgressClose();
 
             if (!res.State)
             {
-                Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text50"));
+                Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text50"));
             }
             else
             {

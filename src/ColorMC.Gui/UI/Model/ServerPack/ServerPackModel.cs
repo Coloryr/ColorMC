@@ -19,7 +19,7 @@ public partial class ServerPackModel : MenuModel
 
     private readonly string _useName;
 
-    public ServerPackModel(BaseModel model, ServerPackObj obj) : base(model)
+    public ServerPackModel(WindowModel model, ServerPackObj obj) : base(model)
     {
         Obj = obj;
 
@@ -83,8 +83,8 @@ public partial class ServerPackModel : MenuModel
             },
         ]);
 
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
-        Model.SetChoiseCall(_useName, Gen);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
+        Window.SetChoiseCall(_useName, Gen);
     }
 
     /// <summary>
@@ -92,7 +92,7 @@ public partial class ServerPackModel : MenuModel
     /// </summary>
     public async void Gen()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -105,22 +105,22 @@ public partial class ServerPackModel : MenuModel
 
         Obj.Text = Text;
 
-        Model.Progress(LanguageUtils.Get("ServerPackWindow.Tab1.Text12"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("ServerPackWindow.Tab1.Text12"));
         var res = await Obj.GenServerPackAsync(local);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("ServerPackWindow.Tab1.Text13"));
+            Window.Notify(LanguageUtils.Get("ServerPackWindow.Tab1.Text13"));
         }
         else
         {
-            Model.Show(LanguageUtils.Get("ServerPackWindow.Tab1.Text11"));
+            Window.Show(LanguageUtils.Get("ServerPackWindow.Tab1.Text11"));
         }
     }
 
     public override void Close()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
         ModList.Clear();
         ResourceList.Clear();
         NameList.Clear();

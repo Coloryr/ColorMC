@@ -23,7 +23,7 @@ public partial class GameEditModel : MenuModel
     /// </summary>
     private readonly Timer _timer;
 
-    public GameEditModel(BaseModel model, GameSettingObj obj) : base(model)
+    public GameEditModel(WindowModel model, GameSettingObj obj) : base(model)
     {
         _obj = obj;
 

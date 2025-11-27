@@ -1,12 +1,12 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Dialog.Info4Control"
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.ChoiceControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    x:DataType="dialogmodel:Info4Model"
+    x:DataType="dialogmodel:ChoiceModel"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
         <TextBlock
@@ -25,10 +25,10 @@
                 Height="35"
                 Margin="10,0,10,0"
                 Classes="top"
-                Command="{Binding Choise}"
-                Content="{Binding ChoiseText}"
-                IsEnabled="{Binding ChoiseVisiable}"
-                IsVisible="{Binding ChoiseVisiable}" />
+                Command="{Binding Choice}"
+                Content="{Binding ChoiceText}"
+                IsEnabled="{Binding ChoiceVisiable}"
+                IsVisible="{Binding ChoiceVisiable}" />
             <Button
                 Width="100"
                 Height="35"

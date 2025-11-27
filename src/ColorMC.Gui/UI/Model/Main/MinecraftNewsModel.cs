@@ -56,7 +56,7 @@ public partial class MainModel
         if (data == null)
         {
             IsHaveNews = false;
-            Model.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
             return;
         }
 

@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Model.Skin;
 /// 皮肤页面
 /// </summary>
 /// <param name="model"></param>
-public partial class SkinModel(BaseModel model) : TopModel(model)
+public partial class SkinModel(WindowModel model) : ControlModel(model)
 {
     public const string RotateName = "Rotate";
     public const string ScollName = "Scoll";
@@ -382,7 +382,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public async Task Save()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -390,7 +390,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
         var res = await PathBinding.SaveFileAsync(top, FileType.Skin, null);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("ConfigEditWindow.Text23"));
+            Window.Notify(LanguageUtils.Get("ConfigEditWindow.Text23"));
         }
     }
     /// <summary>
@@ -442,7 +442,7 @@ public partial class SkinModel(BaseModel model) : TopModel(model)
     [RelayCommand]
     public void Edit()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;

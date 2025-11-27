@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 下拉框
 /// </summary>
 /// <param name="name">窗口Id</param>
-public partial class Info5Model(string? name) : ObservableObject
+public partial class SelectModel(string? name) : ObservableObject
 {
     /// <summary>
     /// 显示文本
@@ -20,7 +20,7 @@ public partial class Info5Model(string? name) : ObservableObject
     /// 选择项
     /// </summary>
     [ObservableProperty]
-    private string _select;
+    private string? _select;
     /// <summary>
     /// 选择项
     /// </summary>
@@ -38,7 +38,7 @@ public partial class Info5Model(string? name) : ObservableObject
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close(name, false);
+        DialogHost.Close(name, false, this);
     }
 
     /// <summary>
@@ -47,6 +47,6 @@ public partial class Info5Model(string? name) : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close(name, true);
+        DialogHost.Close(name, true, this);
     }
 }

@@ -466,12 +466,8 @@ public class GameJoystick
         }
     }
 
-    /// <summary>
-    /// 创建显示模型
-    /// </summary>
-    /// <returns>显示用模型</returns>
-    public JoystickSettingModel MakeModel()
+    public JoystickSettingModel MakeModel(string window)
     {
-        return new JoystickSettingModel(_controlIndex, _configUUID);
+        return new JoystickSettingModel(window, _controlIndex, _configUUID);
     }
 }

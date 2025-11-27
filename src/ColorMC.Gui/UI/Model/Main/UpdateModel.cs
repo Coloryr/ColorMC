@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -42,11 +43,16 @@ public partial class MainModel
         var data = await ColorMCCloudAPI.GetNewLogAsync();
         if (data == null)
         {
-            Model.Show(LanguageUtils.Get("App.Text113"));
+            Window.Show(LanguageUtils.Get("App.Text113"));
         }
         else
         {
-            Model.Text(LanguageUtils.Get("App.Text24"), data);
+            var dialog = new LongTextModel(Window.WindowId)
+            { 
+                Text1 = LanguageUtils.Get("App.Text24"),
+                Text2 = data
+            };
+            Window.ShowDialog(dialog);
         }
 
         _isGetNewInfo = false;

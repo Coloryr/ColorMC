@@ -3,6 +3,7 @@ using System.Linq;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -14,7 +15,7 @@ namespace ColorMC.Gui.UI.Model.LuckBlock;
 /// <summary>
 /// 方块背包界面
 /// </summary>
-public partial class BlockBackpackModel : TopModel, IBlockTop
+public partial class BlockBackpackModel(WindowModel model) : ControlModel(model), IBlockTop
 {
     /// <summary>
     /// 方块列表
@@ -26,11 +27,6 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     /// </summary>
     [ObservableProperty]
     private bool _isEmpty;
-
-    public BlockBackpackModel(BaseModel model) : base(model)
-    {
-
-    }
 
     [RelayCommand]
     public void OpenLuck()
@@ -44,19 +40,21 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     public async void Load()
     {
         Blocks.Clear();
-        Model.Progress(LanguageUtils.Get("LuckBlockWindow.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.ShowWithOk(res.Data!, Close);
+            await Window.ShowWait(res.Data!);
+            WindowClose();
             return;
         }
 
         var list = await BaseBinding.BuildUnlockItems();
         if (list == null)
         {
-            Model.ShowWithOk(LanguageUtils.Get("LuckBlockWindow.Text9"), Close);
+            await Window.ShowWait(LanguageUtils.Get("LuckBlockWindow.Text9"));
+            WindowClose();
             return;
         }
 
@@ -82,13 +80,18 @@ public partial class BlockBackpackModel : TopModel, IBlockTop
     {
         var list = InstancesPath.Games;
         var names = list.Select(item => item.Name);
-        var res = await Model.ShowCombo(LanguageUtils.Get("BlockBackpackWindow.Text1"), names);
-        if (res.Cancel || res.Index == -1)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("BlockBackpackWindow.Text1"),
+            Items = [.. names]
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true || dialog.Index == -1)
         {
             return;
         }
 
-        var game = list[res.Index];
+        var game = list[dialog.Index];
         GameBinding.SetGameIconBlock(game, model.Key);
     }
 }

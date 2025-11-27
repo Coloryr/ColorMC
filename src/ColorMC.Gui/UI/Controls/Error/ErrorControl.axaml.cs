@@ -60,7 +60,7 @@ public partial class ErrorControl : BaseUserControl
         }
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new ErrorModel(model, _log, _e, _close);
     }

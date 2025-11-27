@@ -13,6 +13,7 @@ using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -167,13 +168,13 @@ public partial class GameItemModel : GameModel
         }
     }
 
-    public GameItemModel(BaseModel model, string? group) : base(model, new() { })
+    public GameItemModel(WindowModel model, string? group) : base(model, new() { })
     {
         _group = group;
         _isNew = true;
     }
 
-    public GameItemModel(BaseModel model, IMainTop? top, GameSettingObj obj) : base(model, obj)
+    public GameItemModel(WindowModel model, IMainTop? top, GameSettingObj obj) : base(model, obj)
     {
         _top = top;
         _group = obj.GroupName;
@@ -442,18 +443,23 @@ public partial class GameItemModel : GameModel
     /// </summary>
     public async void Rename()
     {
-        var res = await Model.Input(LanguageUtils.Get("MainWindow.Text69"), Obj.Name);
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("MainWindow.Text69"),
+            Text1 = Obj.Name
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(res.Text1))
+        if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text82"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text82"));
             return;
         }
 
-        GameBinding.SetGameName(Obj, res.Text1);
+        GameBinding.SetGameName(Obj, dialog.Text1);
         OnPropertyChanged(nameof(Name));
     }
 
@@ -464,12 +470,12 @@ public partial class GameItemModel : GameModel
     {
         if (GameJoystick.NowGameJoystick.TryGetValue(Obj.UUID, out var value))
         {
-            var model = value.MakeModel();
-            var res = await DialogHost.Show(model, MainControl.DialogName);
+            var dialog = value.MakeModel(Window.WindowId);
+            var res = await Window.ShowDialogWait(dialog);
             if (res is true)
             {
-                value.ChangeConfig(model);
-                Model.Notify(LanguageUtils.Get("MainWindow.Text76"));
+                value.ChangeConfig(dialog);
+                Window.Notify(LanguageUtils.Get("MainWindow.Text76"));
             }
         }
     }
@@ -479,27 +485,31 @@ public partial class GameItemModel : GameModel
     /// </summary>
     public async void Copy()
     {
-        var res = await Model.Input(LanguageUtils.Get("MainWindow.Text69"),
-            Obj.Name + LanguageUtils.Get("App.Text34"));
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("MainWindow.Text69"),
+            Text1 = Obj.Name + LanguageUtils.Get("App.Text34")
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(res.Text1))
+        if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text82"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text82"));
             return;
         }
 
-        var res1 = await GameBinding.CopyGameAsync(Obj, res.Text1, new CreateGameGui(Model));
+        var res1 = await GameBinding.CopyGameAsync(Obj, dialog.Text1, new OverGameGui(Window));
         if (!res1)
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text84"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text84"));
             return;
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("MainWindow.Text70"));
+            Window.Notify(LanguageUtils.Get("MainWindow.Text70"));
         }
     }
 
@@ -510,23 +520,22 @@ public partial class GameItemModel : GameModel
     {
         if (GameManager.IsAdd(Obj))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Text67"), Obj.Name));
+        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text67"), Obj.Name));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
         res = await GameBinding.DeleteGameAsync(Obj);
-        Model.ProgressClose();
-        Model.InputClose();
+        Window.CloseDialog(dialog);
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text75"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text75"));
         }
     }
 

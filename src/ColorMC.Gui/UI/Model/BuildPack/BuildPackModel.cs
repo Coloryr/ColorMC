@@ -12,7 +12,7 @@ public partial class BuildPackModel : MenuModel
 {
     private readonly string _useName;
 
-    public BuildPackModel(BaseModel model) : base(model)
+    public BuildPackModel(WindowModel model) : base(model)
     {
         _useName = ToString() ?? "BuildPackModel";
 
@@ -35,13 +35,13 @@ public partial class BuildPackModel : MenuModel
             }
         ]);
 
-        Model.SetChoiseCall(_useName, Build);
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
+        Window.SetChoiseCall(_useName, Build);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
     }
 
     public override void Close()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public partial class BuildPackModel : MenuModel
     /// </summary>
     private async void Build()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -73,20 +73,16 @@ public partial class BuildPackModel : MenuModel
             return;
         }
 
-        var dialog = new ProgressBarModel
-        {
-            Text = LanguageUtils.Get("BuildPackWindow.Text1")
-        };
-        Model.ShowDialog(dialog);
+        var dialog = Window.ShowProgress(LanguageUtils.Get("BuildPackWindow.Text1"));
         var res = await BaseBinding.BuildPackAsync(this, dialog, local.GetPath()!);
-        Model.CloseDialog();
+        Window.CloseDialog(dialog);
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("BuildPackWindow.Text8"));
+            Window.Show(LanguageUtils.Get("BuildPackWindow.Text8"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("BuildPackWindow.Text7"));
+            Window.Notify(LanguageUtils.Get("BuildPackWindow.Text7"));
         }
     }
 }

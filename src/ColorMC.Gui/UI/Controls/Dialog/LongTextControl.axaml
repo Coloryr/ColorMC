@@ -1,12 +1,12 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Dialog.Info6Control"
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.LongTextControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    x:DataType="dialogmodel:Info6Model"
+    x:DataType="dialogmodel:LongTextModel"
     mc:Ignorable="d">
     <DockPanel>
         <TextBlock

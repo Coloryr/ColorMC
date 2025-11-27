@@ -111,11 +111,11 @@ public partial class WorldModel : SelectItemModel
     /// </summary>
     private async void LoadList()
     {
-        TopModel.Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text20"));
+        var dialog = TopModel.Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab5.Text20"));
         IsSelect = false;
         await Load();
         IsSelect = true;
-        TopModel.Model.ProgressClose();
+        TopModel.Window.CloseDialog(dialog);
     }
 
     /// <summary>
@@ -169,7 +169,7 @@ public partial class WorldModel : SelectItemModel
     /// <param name="item"></param>
     public async void Delete(DataPackModel item)
     {
-        var res = await TopModel.Model.ShowAsync(
+        var res = await TopModel.Window.ShowChoice(
             string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Text19"), item.Name));
         if (!res)
         {
@@ -189,7 +189,7 @@ public partial class WorldModel : SelectItemModel
     /// <param name="items"></param>
     public async void Delete(IEnumerable<DataPackModel> items)
     {
-        var res = await TopModel.Model.ShowAsync(
+        var res = await TopModel.Window.ShowChoice(
             string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Text18"), items.Count()));
         if (!res)
         {

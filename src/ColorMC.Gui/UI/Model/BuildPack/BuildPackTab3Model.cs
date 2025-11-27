@@ -32,7 +32,7 @@ public partial class BuildPackModel
     [RelayCommand]
     public async Task AddFile()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;

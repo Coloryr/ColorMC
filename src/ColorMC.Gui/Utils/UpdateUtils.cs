@@ -97,7 +97,7 @@ public static class UpdateUtils
     /// <summary>
     /// 开始更新
     /// </summary>
-    public static void StartUpdate(BaseModel model)
+    public static void StartUpdate(WindowModel model)
     {
         if (ColorMCGui.BaseSha1 == null)
             return;
@@ -198,12 +198,12 @@ public static class UpdateUtils
     /// <summary>
     /// 开始基文件更新
     /// </summary>
-    private static async void StartDownloadUpdate(BaseModel model)
+    private static async void StartDownloadUpdate(WindowModel window)
     {
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        model.Progress(LanguageUtils.Get("App.Text82"));
+        var dialog = window.ShowProgress(LanguageUtils.Get("App.Text82"));
         var list = new List<FileItemObj>()
         {
             new()
@@ -225,14 +225,14 @@ public static class UpdateUtils
         };
 
         var res = await DownloadManager.StartAsync(list);
-        model.ProgressClose();
+        window.CloseDialog(dialog);
         if (res)
         {
             ColorMCGui.Reboot();
         }
         else
         {
-            model.Show(LanguageUtils.Get("App.Text84"));
+            window.Show(LanguageUtils.Get("App.Text84"));
         }
     }
 

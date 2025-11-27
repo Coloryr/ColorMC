@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -13,7 +14,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) : ObservableObject, IAddFileControl
+public partial class AddFileInfoControlModel(WindowModel model, IAddControl add) : ObservableObject, IAddFileControl
 {
     /// <summary>
     /// 游戏版本列表
@@ -140,7 +141,7 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
         if (Item == null)
             return;
 
-        var res = await model.ShowAsync(
+        var res = await model.ShowChoice(
             string.Format(LanguageUtils.Get("AddModPackWindow.Text17"), Item.Name));
         if (res)
         {
@@ -155,7 +156,7 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
     {
         _load = true;
         FileList.Clear();
-        model.Progress(LanguageUtils.Get("AddModPackWindow.Text19"));
+        var dialog = model.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
         List<FileVersionItemModel>? list = null;
         var page = 0;
         PageDownload ??= 0;
@@ -183,7 +184,7 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
         if (list == null)
         {
             model.Show(LanguageUtils.Get("AddModPackWindow.Text24"));
-            model.ProgressClose();
+            model.CloseDialog(dialog);
             _load = false;
             return;
         }
@@ -210,7 +211,7 @@ public partial class AddFileInfoControlModel(BaseModel model, IAddControl add) :
 
         EmptyVersionDisplay = FileList.Count == 0;
 
-        model.ProgressClose();
+        model.CloseDialog(dialog);
         model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
         model.Title = LanguageUtils.Get("AddModPackWindow.Title") + ": " + title;
         _load = false;

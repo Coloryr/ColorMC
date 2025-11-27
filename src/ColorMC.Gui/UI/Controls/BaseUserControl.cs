@@ -55,7 +55,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     /// 设置模型
     /// </summary>
     /// <param name="model">基础窗口模型</param>
-    public void SetBaseModel(BaseModel model)
+    public void SetBaseModel(WindowModel model)
     {
         var topmodel = GenModel(model);
         topmodel.PropertyChanged += Model_PropertyChanged;
@@ -67,7 +67,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     /// </summary>
     /// <param name="model">基础窗口模型</param>
     /// <returns></returns>
-    protected abstract TopModel GenModel(BaseModel model);
+    protected abstract ControlModel GenModel(WindowModel model);
     /// <summary>
     /// 窗口状态修改
     /// </summary>
@@ -139,7 +139,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == TopModel.WindowCloseName)
+        if (e.PropertyName == ControlModel.WindowCloseName)
         {
             Window?.Close();
         }
@@ -147,7 +147,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
 
     private void BaseUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        if (DataContext is TopModel model)
+        if (DataContext is ControlModel model)
         {
             model.WidthChange(-1, e.NewSize.Width);
         }

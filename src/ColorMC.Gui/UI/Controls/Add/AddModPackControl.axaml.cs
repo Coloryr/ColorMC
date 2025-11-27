@@ -44,7 +44,7 @@ public partial class AddModPackControl : BaseUserControl
         (DataContext as AddModPackControlModel)!.Display = true;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new AddModPackControlModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

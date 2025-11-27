@@ -22,14 +22,3 @@ public record DownloadModArg
     /// </summary>
     public ModObj? Old;
 }
-
-/// <summary>
-/// 进度修改
-/// </summary>
-public record ProcessUpdateArg
-{
-    /// <summary>
-    /// 回调
-    /// </summary>
-    public Action<string>? Update;
-}

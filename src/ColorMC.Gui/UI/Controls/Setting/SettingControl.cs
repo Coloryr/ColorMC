@@ -88,7 +88,7 @@ public partial class SettingControl : MenuControl
         (DataContext as SettingModel)?.Load();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new SettingModel(model);
     }

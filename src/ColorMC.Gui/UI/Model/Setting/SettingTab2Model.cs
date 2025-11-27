@@ -380,9 +380,9 @@ public partial class SettingModel
 
         if (value)
         {
-            Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+            var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
             await ConfigBinding.SetBackLimit(value, PicResize);
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
     }
 
@@ -432,7 +432,7 @@ public partial class SettingModel
         ConfigBinding.ResetColor();
         MainColor = Color.Parse(ThemeManager.MainColorStr);
         _load = false;
-        Model.Notify(LanguageUtils.Get("Text.Reset"));
+        Window.Notify(LanguageUtils.Get("Text.Reset"));
     }
     /// <summary>
     /// 设置背景图片大小
@@ -441,10 +441,10 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SetPicSize()
     {
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
-        Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.CloseDialog(dialog);
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 设置背景图片透明
@@ -453,7 +453,7 @@ public partial class SettingModel
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 删除背景图
@@ -472,7 +472,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task OpenPic()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -502,11 +502,11 @@ public partial class SettingModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
 
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 加载UI设置

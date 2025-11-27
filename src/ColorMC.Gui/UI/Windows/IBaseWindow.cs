@@ -15,7 +15,7 @@ public interface IBaseWindow
     /// <summary>
     /// 窗口基础模型
     /// </summary>
-    public BaseModel Model { get; }
+    public WindowModel Model { get; }
     /// <summary>
     /// 显示内容
     /// </summary>

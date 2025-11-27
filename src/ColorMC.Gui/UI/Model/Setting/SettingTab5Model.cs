@@ -63,17 +63,17 @@ public partial class SettingModel
     {
         if (string.IsNullOrWhiteSpace(JavaName) || string.IsNullOrWhiteSpace(JavaLocal))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab5.Text13"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab5.Text13"));
 
         var res = JavaBinding.AddJava(JavaName, JavaLocal);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
 
@@ -90,7 +90,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SelectJava()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -120,7 +120,7 @@ public partial class SettingModel
     /// </summary>
     private async void AddJavaZip()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -131,18 +131,18 @@ public partial class SettingModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab5.Text17"));
-        var zip = new ZipGui(Model);
-        var res = await JavaBinding.AddJavaZipAsync(file.Path, file.FileName, new ZipGui(Model));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab5.Text17"));
+        var zip = new ZipGui(Window, dialog);
+        var res = await JavaBinding.AddJavaZipAsync(file.Path, file.FileName, zip);
         zip.Stop();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text16"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text16"));
         }
         LoadJava();
     }
@@ -155,7 +155,7 @@ public partial class SettingModel
 #if Phone
         return;
 #endif
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -166,26 +166,26 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Text6"), file));
+        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Text6"), file));
         if (!res)
         {
             return;
         }
 
         JavaFinding = true;
-        Model.SubTitle = LanguageUtils.Get("SettingWindow.Tab5.Text18");
+        Window.SubTitle = LanguageUtils.Get("SettingWindow.Tab5.Text18");
         var list = await Task.Run(() => JavaHelper.FindJava(file));
-        Model.SubTitle = null;
+        Window.SubTitle = null;
         JavaFinding = false;
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text20"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text20"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         LoadJava();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text15"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text15"));
     }
 
     /// <summary>
@@ -194,19 +194,19 @@ public partial class SettingModel
     public async void FindJava()
     {
         JavaFinding = true;
-        Model.SubTitle = LanguageUtils.Get("SettingWindow.Tab5.Text18");
+        Window.SubTitle = LanguageUtils.Get("SettingWindow.Tab5.Text18");
         var list = await Task.Run(JavaHelper.FindJava);
-        Model.SubTitle = null;
+        Window.SubTitle = null;
         JavaFinding = false;
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text20"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text20"));
             return;
         }
 
         list.ForEach(item => JvmPath.AddItem(item.Type + "_" + item.Version, item.Path));
         LoadJava();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text15"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab5.Text15"));
     }
 
     /// <summary>
@@ -223,7 +223,7 @@ public partial class SettingModel
     /// </summary>
     private async void DeleteJava()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab5.Text14"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab5.Text14"));
         if (!res)
             return;
 

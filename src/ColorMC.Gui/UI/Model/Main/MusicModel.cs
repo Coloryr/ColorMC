@@ -71,7 +71,7 @@ public partial class MainModel
         {
             BaseBinding.MusicPause();
             AudioIcon = ImageManager.MusicIcons[0];
-            Model.Title = "ColorMC";
+            Window.Title = "ColorMC";
         }
         else
         {
@@ -84,7 +84,7 @@ public partial class MainModel
                 BaseBinding.MusicPlay();
             }
             AudioIcon = ImageManager.MusicIcons[1];
-            Model.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
+            Window.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
         }
 
         _isplay = !_isplay;
@@ -104,7 +104,7 @@ public partial class MainModel
             {
                 _musicLoop = false;
                 AudioIcon = ImageManager.MusicIcons[0];
-                Model.Title = "ColorMC";
+                Window.Title = "ColorMC";
                 _isplay = false;
             }
             return _musicLoop;
@@ -119,7 +119,7 @@ public partial class MainModel
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config?.PlayMusic == true && !string.IsNullOrWhiteSpace(config.Music))
         {
-            Model.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
+            Window.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
             MusicDisplay = true;
 
             MusicLoopStart();
@@ -129,7 +129,7 @@ public partial class MainModel
             {
                 if (!string.IsNullOrWhiteSpace(res.Message))
                 {
-                    Model.Show(res.Message);
+                    Window.Show(res.Message);
                 }
             }
             else

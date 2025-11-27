@@ -38,7 +38,7 @@ public abstract partial class MenuControl : BaseUserControl
 
     private void TabPanel_SizeChanged(object? sender, SizeChangedEventArgs e)
     {
-        if (DataContext is TopModel model)
+        if (DataContext is ControlModel model)
         {
             model.WidthChange(0, e.NewSize.Width);
         }

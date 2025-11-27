@@ -42,7 +42,7 @@ public partial class NetFrpControl : MenuControl
         }
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new NetFrpModel(model);
     }

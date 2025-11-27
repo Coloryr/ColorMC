@@ -10,6 +10,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -221,11 +222,11 @@ public partial class GameEditModel
     {
         if (value)
         {
-            Model.Lock();
+            Window.Lock();
         }
         else
         {
-            Model.Unlock();
+            Window.Unlock();
         }
     }
     /// <summary>
@@ -259,7 +260,7 @@ public partial class GameEditModel
         }
 
         _obj.SaveOptions(opt);
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text17"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text17"));
     }
     /// <summary>
     /// 版本类型修改
@@ -449,7 +450,7 @@ public partial class GameEditModel
         }
 
         IsLoad = true;
-        Model.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text33");
+        Window.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text33");
         var list = await Task.Run(() =>
         {
             var ass = _obj.FindAsset();
@@ -479,9 +480,9 @@ public partial class GameEditModel
             a++;
         }
         IsLoad = false;
-        Model.SubTitle = "";
+        Window.SubTitle = "";
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text40"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text40"));
     }
     /// <summary>
     /// 检查模组更新
@@ -492,47 +493,47 @@ public partial class GameEditModel
     {
         if (string.IsNullOrWhiteSpace(FID) || string.IsNullOrWhiteSpace(PID))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text44"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text44"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text26"));
         //尝试通过ID获取版本号
         if (GameDownloadHelper.TestSourceType(PID, FID) == SourceType.Modrinth)
         {
             var list = await ModrinthAPI.GetFileVersionsAsync(PID, _obj.Version, _obj.Loader);
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
             if (list == null)
             {
-                Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text27"));
+                Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text27"));
             }
             else if (list.Count == 0)
             {
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text28"));
+                Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text28"));
             }
             else if (list[0].Id.ToString() == FID)
             {
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text29"));
+                Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text29"));
             }
             else
             {
-                var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab1.Text30"));
+                var res = await Window.ShowChoice(LanguageUtils.Get("GameEditWindow.Tab1.Text30"));
                 if (!res)
                 {
                     return;
                 }
 
-                Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text32"));
+                dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text32"));
                 var item = list[0];
-                res = await ModrinthHelper.UpgradeModPackAsync(_obj, item, new TopModPackGui(Model));
-                Model.ProgressClose();
+                res = await ModrinthHelper.UpgradeModPackAsync(_obj, item, new TopModPackGui(Window, dialog));
+                Window.CloseDialog(dialog);
                 if (!res)
                 {
-                    Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text43"));
+                    Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text43"));
                 }
                 else
                 {
-                    Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text31"));
+                    Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text31"));
                     FID = item.Id.ToString();
                 }
             }
@@ -540,40 +541,40 @@ public partial class GameEditModel
         else
         {
             var list = await CurseForgeAPI.GetCurseForgeFilesAsync(PID, _obj.Version);
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
             if (list == null)
             {
-                Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text27"));
+                Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text27"));
             }
             else if (list.Data.Count == 0)
             {
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text28"));
+                Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text28"));
             }
             else if (list.Data[0].Id.ToString() == FID)
             {
-                Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text29"));
+                Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text29"));
             }
             else
             {
-                var res = await Model.ShowAsync(LanguageUtils.Get("GameEditWindow.Tab1.Text30"));
+                var res = await Window.ShowChoice(LanguageUtils.Get("GameEditWindow.Tab1.Text30"));
                 if (!res)
                 {
                     return;
                 }
 
-                Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text32"));
+                dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text32"));
                 var item = list.Data[0];
-                res = await CurseForgeHelper.UpgradeModPackAsync(_obj, item, new TopModPackGui(Model));
-                Model.ProgressClose();
+                res = await CurseForgeHelper.UpgradeModPackAsync(_obj, item, new TopModPackGui(Window, dialog));
+                Window.CloseDialog(dialog);
                 if (!res)
                 {
-                    Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text43"));
+                    Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text43"));
                 }
                 else
                 {
-                    Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text31"));
+                    Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text31"));
                     FID = item.Id.ToString();
-                    res = await Model.ShowAsync(string.Format(LanguageUtils.Get("GameEditWindow.Tab1.Text41"), item.DisplayName));
+                    res = await Window.ShowChoice(string.Format(LanguageUtils.Get("GameEditWindow.Tab1.Text41"), item.DisplayName));
                     if (res)
                     {
                         GameBinding.SetGameName(_obj, item.DisplayName);
@@ -589,27 +590,31 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task AddGroup()
     {
-        var res = await Model.InputWithEditAsync(LanguageUtils.Get("Text.Group"), false);
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("Text.Group")
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(res.Text1))
+        if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
+            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
             return;
         }
 
-        if (!GameBinding.AddGameGroup(res.Text1))
+        if (!GameBinding.AddGameGroup(dialog.Text1))
         {
-            Model.Progress(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
+            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
+        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
 
-        GroupList.Add(res.Text1);
+        GroupList.Add(dialog.Text1);
     }
     /// <summary>
     /// 获取加载器版本
@@ -635,7 +640,7 @@ public partial class GameEditModel
             return;
         }
         IsLoad = true;
-        Model.SubTitle = loader switch
+        Window.SubTitle = loader switch
         {
             Loaders.Forge => LanguageUtils.Get("AddGameWindow.Tab1.Text24"),
             Loaders.NeoForge => LanguageUtils.Get("AddGameWindow.Tab1.Text38"),
@@ -655,10 +660,10 @@ public partial class GameEditModel
         };
 
         IsLoad = false;
-        Model.SubTitle = "";
+        Window.SubTitle = "";
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text44"));
+            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text44"));
             return;
         }
 
@@ -669,7 +674,7 @@ public partial class GameEditModel
             LoaderVersion = version;
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text39"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text39"));
     }
 
     /// <summary>
@@ -702,7 +707,7 @@ public partial class GameEditModel
         LoaderTypeList.Add(Loaders.Custom.GetName());
 
         IsLoad = true;
-        Model.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text27");
+        Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text27");
 
         var res = await GameHelper.GetSupportLoaderAsync(GameVersion);
         foreach (var item in res.Done)
@@ -712,7 +717,7 @@ public partial class GameEditModel
         }
         foreach (var item in res.Fail)
         {
-            Model.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Text55"), item.GetName()));
+            Window.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Text55"), item.GetName()));
         }
         if (_loaderTypeList.Contains(loaderType))
         {
@@ -725,11 +730,11 @@ public partial class GameEditModel
         }
 
         IsLoad = false;
-        Model.SubTitle = "";
+        Window.SubTitle = "";
 
         _gameLoad = false;
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text38"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text38"));
     }
 
     /// <summary>
@@ -743,13 +748,13 @@ public partial class GameEditModel
 
         EnableLoader = false;
         IsLoad = true;
-        Model.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text36");
+        Window.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text36");
         var res = await GameBinding.ReloadVersionAsync();
         IsLoad = false;
-        Model.SubTitle = "";
+        Window.SubTitle = "";
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text45"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text45"));
             return;
         }
 
@@ -757,7 +762,7 @@ public partial class GameEditModel
 
         _gameLoad = false;
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text37"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab1.Text37"));
     }
 
     /// <summary>
@@ -767,7 +772,7 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task SelectLoader()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -785,7 +790,7 @@ public partial class GameEditModel
         }
         else
         {
-            Model.Show(res.Error.GetName());
+            Window.Show(res.Error.GetName());
         }
     }
 
@@ -836,29 +841,29 @@ public partial class GameEditModel
     {
         if (GameManager.IsGameRun(_obj))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text42"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text42"));
             return;
         }
 
         if (GameManager.IsAdd(_obj))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(
+        var res = await Window.ShowChoice(string.Format(
             LanguageUtils.Get("GameEditWindow.Tab1.Text25"), _obj.Name));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
         var res1 = await GameBinding.DeleteGameAsync(_obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res1)
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text75"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text75"));
         }
     }
 
@@ -867,9 +872,9 @@ public partial class GameEditModel
     /// </summary>
     private async void GenGameInfo()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text34"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text34"));
         await GameBinding.GenGameInfoAsync(_obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
     }
 
     /// <summary>
@@ -912,18 +917,23 @@ public partial class GameEditModel
     /// </summary>
     private async void Rename()
     {
-        var res = await Model.Input(LanguageUtils.Get("MainWindow.Text69"), _obj.Name);
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("MainWindow.Text69"),
+            Text1 = _obj.Name
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
-        if (string.IsNullOrWhiteSpace(res.Text1))
+        if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text82"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text82"));
             return;
         }
 
-        GameBinding.SetGameName(_obj, res.Text1);
+        GameBinding.SetGameName(_obj, dialog.Text1);
     }
 
     /// <summary>
@@ -933,16 +943,6 @@ public partial class GameEditModel
     {
         GroupList.Clear();
         GroupList.AddRange(InstancesPath.GroupKeys);
-    }
-
-    /// <summary>
-    /// 进度条更新
-    /// </summary>
-    /// <param name="size"></param>
-    /// <param name="now"></param>
-    private void ProgressUpdate(int size, int now)
-    {
-        Model.ProgressUpdate((double)now / size * 100);
     }
 
     /// <summary>

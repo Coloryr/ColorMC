@@ -30,7 +30,7 @@ public partial class MinecraftNewsControl : BaseUserControl
         WindowManager.NewsWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new MinecraftNewsModel(model);
     }

@@ -44,7 +44,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     /// <summary>
     /// 基础窗口模型
     /// </summary>
-    public BaseModel Model => (DataContext as BaseModel)!;
+    public WindowModel Model => (DataContext as WindowModel)!;
     /// <summary>
     /// 窗口ID
     /// </summary>
@@ -62,7 +62,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 
         WindowId = ToString() ?? "SingleControl";
 
-        var model = new BaseModel("AllControl");
+        var model = new WindowModel("AllControl");
         model.PropertyChanged += Model_PropertyChanged;
         DataContext = model;
 
@@ -99,7 +99,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == BaseModel.NameInfoShow)
+        if (e.PropertyName == WindowModel.NameInfoShow)
         {
             _windowNotification.Show(new TextBlock()
             {
@@ -108,8 +108,8 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
                 Text = Model.NotifyText
             });
         }
-        else if (e.PropertyName == BaseModel.NameGetTopLevel
-            && DataContext is BaseModel model)
+        else if (e.PropertyName == WindowModel.NameGetTopLevel
+            && DataContext is WindowModel model)
         {
             model.SetTopLevel(TopLevel.GetTopLevel(this));
         }
@@ -230,7 +230,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
         SetTitle(_nowControl.Title);
         SetIcon(_nowControl.GetIcon());
 
-        ((con as UserControl)?.DataContext as TopModel)?.Close();
+        ((con as UserControl)?.DataContext as ControlModel)?.Close();
         con.Closed();
 
         Model.PopBack();

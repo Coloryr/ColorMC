@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 下载标记
 /// </summary>
-public abstract partial class AddBaseModel : TopModel, IAddControl
+public abstract partial class AddBaseModel : ControlModel, IAddControl
 {
     /// <summary>
     /// 下载源
@@ -137,7 +137,7 @@ public abstract partial class AddBaseModel : TopModel, IAddControl
     /// </summary>
     protected bool _close = false;
 
-    public AddBaseModel(BaseModel model) : base(model)
+    public AddBaseModel(WindowModel model) : base(model)
     {
         DisplayFile = new AddFileInfoControlModel(model, this);
     }
@@ -150,15 +150,15 @@ public abstract partial class AddBaseModel : TopModel, IAddControl
     {
         if (value)
         {
-            Model.PushBack(back: () =>
+            Window.PushBack(back: () =>
             {
                 DisplayVersion = false;
             });
         }
         else
         {
-            Model.PopBack();
-            Model.Title = Title;
+            Window.PopBack();
+            Window.Title = Title;
         }
     }
 

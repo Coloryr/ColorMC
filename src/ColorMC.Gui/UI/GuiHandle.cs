@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using ColorMC.Core.GuiHandle;
@@ -7,29 +9,89 @@ using ColorMC.Core.Objs.Login;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI;
 
+public class LoginGui(WindowModel window) : ILoginGui
+{
+    /// <summary>
+    /// 登录账户选择
+    /// </summary>
+    /// <param name="items"></param>
+    /// <returns></returns>
+    public async Task<int> SelectAuth(List<string> items)
+    {
+        var dialog = new SelectModel(window.WindowId)
+        {
+            Text = LanguageUtils.Get("UserWindow.Text36"),
+            Items = [.. items]
+        };
+        var res = await window.ShowDialogWait(dialog);
+        if (res is not true)
+        {
+            return -1;
+        }
+        return dialog.Index;
+    }
+}
+
+public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOAuthGui
+{
+    public CancellationToken Token => model.Token;
+
+    public void LoginOAuthCode(string? url, string code)
+    {
+        var dialog = new InputModel(model.Window.WindowId)
+        {
+            Text1 = string.Format(LanguageUtils.Get("UserWindow.Text15"), url),
+            Text2 = string.Format(LanguageUtils.Get("UserWindow.Text16"), code),
+            TextReadonly = true,
+            ChoiseCall = model.SetCancel,
+            ChoiseText = LanguageUtils.Get("Button.Cancel"),
+            ChoiseVisible = true
+        };
+        model.Window.ShowDialog(dialog);
+        BaseBinding.OpenUrl($"{url}?otc={code}");
+        var top = model.Window.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        BaseBinding.CopyTextClipboard(top, code);
+    }
+
+    public void LoginOAuthState(AuthState state)
+    {
+        progress?.Text = string.Format(LanguageUtils.Get("UserWindow.Text22"), state.GetName());
+    }
+}
+
 public class TopModPackGui : IModPackGui
 {
+    private readonly WindowModel _model;
+    private readonly ProgressModel _progress;
+
     private bool _isRun;
     private bool _haveUpdate;
 
     private int _size, _all;
-    private BaseModel _model;
 
-    public TopModPackGui(BaseModel model)
+    public TopModPackGui(WindowModel model, ProgressModel progress)
     {
+        _progress = progress;
         _model = model;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
     }
 
     public void SetNow(int value, int all)
     {
-        _model.ProgressUpdate((double)value / all * 100);
+        _progress.Indeterminate = false;
+        _progress.Value = (double)value / all * 100;
     }
 
     public void SetNowProcess(int value, int all)
@@ -44,12 +106,12 @@ public class TopModPackGui : IModPackGui
         //_model.ProgressUpdate((double)value / all);
     }
 
-    public void SetStateText(ModpackState state)
+    public void SetState(ModpackState state)
     {
-        _model.ProgressUpdate(state.GetName());
+        _progress.Text = state.GetName();
     }
 
-    public void SetText(string? text)
+    public void SetSubText(string? text)
     {
         //_info.Info = text;
     }
@@ -58,7 +120,7 @@ public class TopModPackGui : IModPackGui
     {
         if (_haveUpdate)
         {
-            _model.ProgressUpdate((double)_size / _all * 100);
+            _progress.Value = (double)_size / _all * 100;
         }
         _haveUpdate = false;
         return _isRun;
@@ -74,7 +136,8 @@ public class ZipGui : IZipGui
 {
     private readonly string _text = LanguageUtils.Get("AddJavaWindow.Text11");
 
-    private readonly BaseModel _model;
+    private readonly WindowModel _model;
+    private readonly ProgressModel _progress;
 
     private bool _isRun;
     private bool _haveUpdate;
@@ -82,9 +145,10 @@ public class ZipGui : IZipGui
     private string _name;
     private int _size, _all;
 
-    public ZipGui(BaseModel model)
+    public ZipGui(WindowModel model, ProgressModel progress)
     {
         _model = model;
+        _progress = progress;
         _isRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
     }
@@ -93,16 +157,13 @@ public class ZipGui : IZipGui
     {
         Dispatcher.UIThread.Post(() =>
         {
-            _model.ProgressUpdate(_text);
+            _progress.Text = _text;
         });
     }
 
-    public async Task<bool> FileRename(string? text)
+    public Task<bool> FileRename(string? text)
     {
-        _model.ProgressClose();
-        var test = await _model.ShowAsync(string.Format(LanguageUtils.Get("App.Text33"), text));
-        _model.Progress();
-        return test;
+        return _model.ShowChoice(string.Format(LanguageUtils.Get("App.Text33"), text));
     }
 
     public void ZipUpdate(string text, int size, int all)
@@ -122,8 +183,8 @@ public class ZipGui : IZipGui
     {
         if (_haveUpdate)
         {
-            _model.ProgressUpdate($"{_text} {_name} {_size}/{_all}");
-            _model.ProgressUpdate((double)_size / _all * 100);
+            _progress.Text = $"{_text} {_name} {_size}/{_all}";
+            _progress.Value = (double)_size / _all * 100;
         }
         _haveUpdate = false;
         return _isRun;
@@ -140,109 +201,46 @@ public class ZipGui : IZipGui
     }
 }
 
-public class OverGameGui(BaseModel model) : IOverGameGui
+public class OverGameGui(WindowModel model) : IOverGameGui
 {
-    public async Task<bool> GameOverwirte(GameSettingObj obj)
+    public Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        model.ProgressClose();
-        var test = await model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
-        model.Progress();
-        return test;
+        return model.ShowChoice(string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
     }
 
     public Task<bool> InstanceNameReplace()
     {
-        return model.ShowAsync(LanguageUtils.Get("AddGameWindow.Text4"));
+        return model.ShowChoice(LanguageUtils.Get("AddGameWindow.Text4"));
     }
 }
 
-public class CreateGameGui(BaseModel model) : ICreateInstanceGui
-{
-    public async Task<bool> GameOverwirte(GameSettingObj obj)
-    {
-        model.ProgressClose();
-        var test = await model.ShowAsync(
-            string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
-        model.Progress();
-        return test;
-    }
-
-    public Task<bool> InstanceNameReplace()
-    {
-        return model.ShowAsync(LanguageUtils.Get("AddGameWindow.Text4"));
-    }
-
-    public void ModPackState(CoreRunState state)
-    {
-        if (state == CoreRunState.Read)
-        {
-            model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text4"));
-        }
-        else if (state == CoreRunState.Init)
-        {
-            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text5"));
-        }
-        else if (state == CoreRunState.GetInfo)
-        {
-            model.ProgressUpdate(-1);
-            model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text6"));
-        }
-        else if (state == CoreRunState.Download)
-        {
-            model.ProgressUpdate(-1);
-            if (!ConfigBinding.WindowMode())
-            {
-                model.ProgressUpdate(LanguageUtils.Get("AddGameWindow.Tab2.Text7"));
-            }
-            else
-            {
-                model.ProgressClose();
-            }
-        }
-        else if (state == CoreRunState.DownloadDone)
-        {
-            if (ConfigBinding.WindowMode())
-            {
-                model.Progress(LanguageUtils.Get("AddGameWindow.Tab2.Text7"));
-            }
-        }
-    }
-
-    public void StateUpdate(int now, int count)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            model.ProgressUpdate((double)now / count * 100);
-        });
-    }
-}
-
-public class UpdateLaunchGui(BaseModel model) : IUpdateGui
+public class UpdateLaunchGui(ProgressModel progress) : IUpdateGui
 {
     public void StateUpdate(GameSettingObj obj, LaunchState state)
     {
         if (state == LaunchState.CheckServerPack)
         {
-            model.ProgressUpdate(LanguageUtils.Get("App.Text28"));
+            progress.Text = LanguageUtils.Get("App.Text28");
         }
         else if (state == LaunchState.DownloadServerPack)
         {
-            model.ProgressUpdate(LanguageUtils.Get("App.Text29"));
+            progress.Text = LanguageUtils.Get("App.Text29");
         }
         else if (state == LaunchState.DownloadServerPackDone)
         {
-            model.ProgressUpdate(LanguageUtils.Get("App.Text30"));
+            progress.Text = LanguageUtils.Get("App.Text30");
         }
     }
 }
 
-public class LauncherGui(BaseModel model) : ILaunchGui
+public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGui
 {
     public Task<bool> LaunchProcess(bool pre)
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
-                     model.ShowAsync(pre ? LanguageUtils.Get("App.Text17") : LanguageUtils.Get("App.Text18")));
+        {
+            return model.ShowChoice(pre ? LanguageUtils.Get("App.Text17") : LanguageUtils.Get("App.Text18"));
+        });
     }
 
     public void StateUpdate(GameSettingObj obj, LaunchState state)
@@ -263,13 +261,9 @@ public class LauncherGui(BaseModel model) : ILaunchGui
                 LaunchState.DownloadServerPackDone => "App.Text30",
                 _ => ""
             });
-            if (GuiConfigUtils.Config.CloseBeforeLaunch)
+            if (progress != null)
             {
-                if (state == LaunchState.End)
-                {
-                    model.ProgressClose();
-                }
-                model.ProgressUpdate(text);
+                progress.Text = text;
             }
             else
             {
@@ -282,7 +276,7 @@ public class LauncherGui(BaseModel model) : ILaunchGui
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.ShowAsync(string.Format(
+            return model.ShowChoice(string.Format(
                 LanguageUtils.Get("App.Text16"), obj.UserName));
         });
     }
@@ -299,15 +293,22 @@ public class LauncherGui(BaseModel model) : ILaunchGui
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.ShowAsync(LanguageUtils.Get("App.Text36"));
+            return model.ShowChoice(LanguageUtils.Get("App.Text36"));
         });
     }
 
-    public Task<bool> ServerPackUpgrade(string text)
+    public async Task<bool> ServerPackUpgrade(string text)
     {
-        return Dispatcher.UIThread.InvokeAsync(() =>
+        var dialog = new LongTextModel(model.WindowId)
         {
-            return model.TextAsync(LanguageUtils.Get("App.Text35"), text ?? "");
+            Text1 = LanguageUtils.Get("App.Text36"),
+            Text2 = text ?? "",
+            CancelEnable = true
+        };
+
+        return await Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            return await model.ShowDialogWait(dialog) is true;
         });
     }
 }
@@ -344,7 +345,7 @@ public class ModpackGui : IModPackGui
         _info.NowSub = (double)value / all;
     }
 
-    public void SetStateText(ModpackState state)
+    public void SetState(ModpackState state)
     {
         _info.Info = state.GetName();
         if (state is ModpackState.GetInfo or ModpackState.Unzip or ModpackState.DownloadFile)
@@ -357,7 +358,7 @@ public class ModpackGui : IModPackGui
         }
     }
 
-    public void SetText(string? text)
+    public void SetSubText(string? text)
     {
         _info.Info = text;
     }

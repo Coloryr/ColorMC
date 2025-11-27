@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -47,31 +48,35 @@ public partial class GameEditModel
     /// </summary>
     private async void AddServer()
     {
-        var res = await Model.InputAsync(
-            LanguageUtils.Get("GameEditWindow.Tab10.Text4"),
-            LanguageUtils.Get("Text.ServerAddress"));
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("GameEditWindow.Tab10.Text4"),
+            Watermark2 = LanguageUtils.Get("Text.ServerAddress"),
+            Text2Visable = true
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        if (string.IsNullOrWhiteSpace(dialog.Text1) || string.IsNullOrWhiteSpace(dialog.Text2))
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text11"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text11"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
-        var res1 = await _obj.AddServerAsync(res.Text1, res.Text2);
-        Model.ProgressClose();
+        var dialog1 = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
+        var res1 = await _obj.AddServerAsync(dialog.Text1, dialog.Text2);
+        Window.CloseDialog(dialog1);
         if (res1)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text10"));
+            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text10"));
             LoadServer();
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text12"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text12"));
         }
     }
 
@@ -80,12 +85,12 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadServer()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text5"));
         ServerList.Clear();
         ServerList.AddRange(await _obj.GetServerInfosAsync());
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         ServerEmptyDisplay = ServerList.Count == 0;
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text8"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text8"));
     }
 
     /// <summary>
@@ -94,22 +99,22 @@ public partial class GameEditModel
     /// <param name="obj"></param>
     public async void DeleteServer(ServerInfoObj obj)
     {
-        var res = await Model.ShowAsync("GameEditWindow.Tab10.Text9");
+        var res = await Window.ShowChoice("GameEditWindow.Tab10.Text9");
         if (!res)
         {
             return;
         }
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
         res = await obj.DeleteAsync();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
+            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
             LoadServer();
         }
         else
         {
-            Model.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text13"));
+            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text13"));
         }
     }
 }

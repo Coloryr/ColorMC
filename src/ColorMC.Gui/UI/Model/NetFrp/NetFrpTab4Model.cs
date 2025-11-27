@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -66,13 +67,13 @@ public partial class NetFrpModel
     /// </summary>
     public async void LoadCloud()
     {
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab4.Text5"));
         CloudServers.Clear();
         var list = await WebBinding.GetFrpServerAsync(Version);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab4.Text9"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab4.Text9"));
             return;
         }
         foreach (var item in list)
@@ -110,13 +111,18 @@ public partial class NetFrpModel
             }
         }
         //选择一个游戏实例
-        var select = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab4.Text7"), list1);
-        if (select.Cancel)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("NetFrpWindow.Tab4.Text7"),
+            Items = [.. list1] 
+        };
+        var select = await Window.ShowDialogWait(dialog);
+        if (select is not true)
         {
             return;
         }
 
-        var item1 = list2[select.Index];
+        var item1 = list2[dialog.Index];
         var item2 = item1.CopyObj();
         item2.UUID = item1.UUID;
         item2.LaunchData = item1.LaunchData;
@@ -128,17 +134,17 @@ public partial class NetFrpModel
                 IP = temp[0],
                 Port = ushort.Parse(temp[1])
             };
-            var res = await GameBinding.LaunchAsync(Model, item2);
+            var res = await GameBinding.LaunchAsync(item2, Window, null);
             if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
             {
-                Model.Show(res.Message!);
+                Window.Show(res.Message!);
             }
         }
         catch (Exception e)
         {
             var temp1 = LanguageUtils.Get("NetFrpWindow.Tab4.Text10");
             Logs.Error(temp1, e);
-            Model.Show(temp1);
+            Window.Show(temp1);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.News;
 /// Minecraft news窗口
 /// </summary>
 /// <param name="model"></param>
-public partial class MinecraftNewsModel : TopModel
+public partial class MinecraftNewsModel : ControlModel
 {
     /// <summary>
     /// 新闻列表
@@ -25,7 +25,7 @@ public partial class MinecraftNewsModel : TopModel
 
     private readonly string _use;
 
-    public MinecraftNewsModel(BaseModel model) : base(model)
+    public MinecraftNewsModel(WindowModel model) : base(model)
     {
         _use = ToString() ?? "MinecraftNewsModel";
     }
@@ -39,12 +39,12 @@ public partial class MinecraftNewsModel : TopModel
     {
         News.Clear();
         _newsPage = 0;
-        Model.Progress(LanguageUtils.Get("Text.Loading"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
         var data = await WebBinding.LoadNewsAsync(_newsPage);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (data == null)
         {
-            Model.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
             return;
         }
 
@@ -52,7 +52,7 @@ public partial class MinecraftNewsModel : TopModel
         {
             News.Add(new(item));
         }
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
     }
 
     /// <summary>
@@ -62,12 +62,12 @@ public partial class MinecraftNewsModel : TopModel
     [RelayCommand]
     public async Task NewsNextPage()
     {
-        Model.Progress(LanguageUtils.Get("Text.Loading"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
         var data = await WebBinding.LoadNewsAsync(++_newsPage);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (data == null)
         {
-            Model.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
             return;
         }
 
@@ -82,8 +82,8 @@ public partial class MinecraftNewsModel : TopModel
     /// </summary>
     public async void LoadNews()
     {
-        Model.SetChoiseContent(_use, LanguageUtils.Get("Button.Refash"));
-        Model.SetChoiseCall(_use, Reload);
+        Window.SetChoiseContent(_use, LanguageUtils.Get("Button.Refash"));
+        Window.SetChoiseCall(_use, Reload);
         await ReloadNews();
     }
 

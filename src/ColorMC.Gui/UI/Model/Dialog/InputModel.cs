@@ -9,12 +9,8 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 输入框信息
 /// </summary>
 /// <param name="name">窗口ID</param>
-public partial class Info3Model(string? name) : ObservableObject
+public partial class InputModel(string? name) : ObservableObject
 {
-    /// <summary>
-    /// 执行
-    /// </summary>
-    public Action? Call;
     /// <summary>
     /// 选择执行
     /// </summary>
@@ -44,17 +40,17 @@ public partial class Info3Model(string? name) : ObservableObject
     /// 是否启用确认
     /// </summary>
     [ObservableProperty]
-    private bool _confirmEnable;
+    private bool _confirmEnable = true;
     /// <summary>
     /// 是否启用取消
     /// </summary>
     [ObservableProperty]
-    private bool _cancelEnable;
+    private bool _cancelEnable = true;
     /// <summary>
     /// 是否显示取消
     /// </summary>
     [ObservableProperty]
-    private bool _cancelVisible;
+    private bool _cancelVisible = true;
     /// <summary>
     /// 文本是否只读
     /// </summary>
@@ -74,7 +70,7 @@ public partial class Info3Model(string? name) : ObservableObject
     /// 是否密码
     /// </summary>
     [ObservableProperty]
-    private char _password;
+    private char? _password;
     /// <summary>
     /// 选择按钮是否显示
     /// </summary>
@@ -101,14 +97,8 @@ public partial class Info3Model(string? name) : ObservableObject
     [RelayCommand]
     public void Cancel()
     {
-        if (Call != null)
-        {
-            Call();
-            CancelEnable = false;
-            Call = null;
-            return;
-        }
-        DialogHost.Close(name, false);
+        CancelEnable = false;
+        DialogHost.Close(name, false, this);
     }
 
     /// <summary>
@@ -117,6 +107,7 @@ public partial class Info3Model(string? name) : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close(name, true);
+        ConfirmEnable = false;
+        DialogHost.Close(name, true, this);
     }
 }

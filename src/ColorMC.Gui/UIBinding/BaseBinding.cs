@@ -510,7 +510,7 @@ public static class BaseBinding
     /// <param name="model"></param>
     /// <param name="output"></param>
     /// <returns></returns>
-    public static async Task<bool> BuildPackAsync(BuildPackModel model, ProgressBarModel dialog, string output)
+    public static async Task<bool> BuildPackAsync(BuildPackModel model, ProgressModel dialog, string output)
     {
         try
         {
@@ -784,7 +784,7 @@ public static class BaseBinding
     /// </summary>
     /// <param name="model"></param>
     /// <param name="item"></param>
-    public static async void ReadBuildConfig(BaseModel model, IStorageItem item)
+    public static async void ReadBuildConfig(WindowModel model, IStorageItem item)
     {
         if (item.GetPath() is not { } file)
         {
@@ -792,12 +792,9 @@ public static class BaseBinding
         }
 
         using var temp = PathHelper.OpenRead(file)!;
-        model.ShowDialog(new ProgressBarModel
-        {
-            Text = LanguageUtils.Get("App.Text26")
-        });
+        var dialog = model.ShowProgress(LanguageUtils.Get("App.Text26"));
         await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
-        model.CloseDialog();
+        model.CloseDialog(dialog);
 
         ColorMCGui.Reboot();
     }

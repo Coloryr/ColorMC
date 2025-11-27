@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 文本显示
 /// </summary>
 /// <param name="name">窗口Id</param>
-public partial class Info6Model(string? name) : ObservableObject
+public partial class LongTextModel(string? name) : ObservableObject
 {
     /// <summary>
     /// 文本1
@@ -33,7 +33,7 @@ public partial class Info6Model(string? name) : ObservableObject
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close(name, false);
+        DialogHost.Close(name, false, this);
     }
 
     /// <summary>
@@ -42,6 +42,6 @@ public partial class Info6Model(string? name) : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close(name, true);
+        DialogHost.Close(name, true, this);
     }
 }
