@@ -198,7 +198,7 @@ public partial class GameConfigEditControl : BaseUserControl
         WindowManager.GameConfigEditWindows.Remove(key);
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new GameConfigEditModel(model, _obj, _world);
         amodel.PropertyChanged += Model_PropertyChanged;

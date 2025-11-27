@@ -14,7 +14,7 @@ public interface IModPackGui : IProgressGui
     /// 设置整合包安装状态
     /// </summary>
     /// <param name="state"></param>
-    void SetStateText(ModpackState state);
+    void SetState(ModpackState state);
     /// <summary>
     /// 设置当前进度
     /// </summary>
@@ -25,7 +25,7 @@ public interface IModPackGui : IProgressGui
     /// 显示文件
     /// </summary>
     /// <param name="text"></param>
-    void SetText(string? text);
+    void SetSubText(string? text);
     /// <summary>
     /// 子进度
     /// </summary>

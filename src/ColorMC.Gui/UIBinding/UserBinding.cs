@@ -399,7 +399,7 @@ public static class UserBinding
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    public static async Task<GameLaunchUserRes> GetLaunchUser(BaseModel model)
+    public static async Task<GameLaunchUserRes> GetLaunchUser(WindowModel model)
     {
         var login = GetLastUser();
         if (login == null)
@@ -418,13 +418,13 @@ public static class UserBinding
 
         if (UserManager.IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
-            var res = await model.ShowAsync(LanguageUtils.Get("App.Text58"));
+            var res = await model.ShowChoice(LanguageUtils.Get("App.Text58"));
             if (!res)
             {
                 return new GameLaunchUserRes { Message = LanguageUtils.Get("App.Text62") };
             }
 
-            res = await model.ShowAsync(LanguageUtils.Get("App.Text52"));
+            res = await model.ShowChoice(LanguageUtils.Get("App.Text52"));
             if (res)
             {
                 GuiConfigUtils.Config.LaunchCheck.CheckUser = false;

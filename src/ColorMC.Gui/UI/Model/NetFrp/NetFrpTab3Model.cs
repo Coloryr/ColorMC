@@ -137,7 +137,7 @@ public partial class NetFrpModel
         catch
         {
             IsRuning = false;
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
         }
 
         Text = new();
@@ -188,7 +188,13 @@ public partial class NetFrpModel
             Dispatcher.UIThread.Post(() =>
             {
                 IsOk = true;
-                Model.InputWithReadInfo(LanguageUtils.Get("NetFrpWindow.Tab3.Text8"), _remoteIP, false, true, false, null);
+                var dialog = new InputModel(Window.WindowId)
+                {
+                    Text1 = LanguageUtils.Get("NetFrpWindow.Tab3.Text8"),
+                    Text2 = _remoteIP,
+                    TextReadonly = true
+                };
+                Window.ShowDialog(dialog);
             });
         }
     }
@@ -216,17 +222,17 @@ public partial class NetFrpModel
 
         if (model.Text?.Length > 80)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text16"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text16"));
             return;
         }
 
         if (IsRuning == false)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
             return;
         }
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Text10"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("NetFrpWindow.Tab3.Text10"));
         if (!res)
         {
             return;
@@ -235,28 +241,30 @@ public partial class NetFrpModel
         var user = UserBinding.GetLastUser();
         if (user?.AuthType != AuthType.OAuth)
         {
-            Model.ShowWithOk(LanguageUtils.Get("NetFrpWindow.Tab4.Text8"), WindowClose);
+            await Window.ShowWait(LanguageUtils.Get("NetFrpWindow.Tab4.Text8"));
+            WindowClose();
             return;
         }
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab4.Text6"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab4.Text6"));
         var res2 = await UserBinding.TestLogin(user, CancellationToken.None);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res)
         {
-            Model.ShowWithOk(res2.Data!, WindowClose);
+            await Window.ShowWait(res2.Data!);
+            WindowClose();
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Text12"));
+        dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab3.Text12"));
         res = await ColorMCCloudAPI.PutCloudServerAsync(user.AccessToken, _remoteIP, model);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text14"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text14"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab3.Text11"));
+            Window.Notify(LanguageUtils.Get("NetFrpWindow.Tab3.Text11"));
         }
     }
 
@@ -280,7 +288,7 @@ public partial class NetFrpModel
 
         _now.IsStart = false;
 
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab3.Text13"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab3.Text13"));
         await Task.Run(() =>
         {
             _process.Kill(true);
@@ -289,7 +297,7 @@ public partial class NetFrpModel
             _process = null;
             _isStoping = false;
         });
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
     }
 
     /// <summary>
@@ -313,7 +321,7 @@ public partial class NetFrpModel
     {
         if (_process != null)
         {
-            var res = await Model.ShowAsync(LanguageUtils.Get("NetFrpWindow.Tab3.Text9"));
+            var res = await Window.ShowChoice(LanguageUtils.Get("NetFrpWindow.Tab3.Text9"));
             if (res)
             {
                 Stop();
@@ -333,18 +341,18 @@ public partial class NetFrpModel
     {
         if (IsOk && IsRuning)
         {
-            Model.SetChoiseCall(_name, Share, Stop);
-            Model.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"), LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
+            Window.SetChoiseCall(_name, Share, Stop);
+            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"), LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
         }
         else if (IsOk)
         {
-            Model.SetChoiseCall(_name, Share);
-            Model.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"));
+            Window.SetChoiseCall(_name, Share);
+            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"));
         }
         else if (IsRuning)
         {
-            Model.SetChoiseCall(_name, Stop);
-            Model.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
+            Window.SetChoiseCall(_name, Stop);
+            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
         }
         else
         {

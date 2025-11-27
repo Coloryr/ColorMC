@@ -7,7 +7,7 @@ namespace ColorMC.Gui.UI.Model;
 /// </summary>
 /// <param name="model">基础窗口</param>
 /// <param name="obj">游戏实例</param>
-public abstract partial class GameModel(BaseModel model, GameSettingObj obj) : TopModel(model)
+public abstract partial class GameModel(WindowModel model, GameSettingObj obj) : ControlModel(model)
 {
     /// <summary>
     /// 游戏实例

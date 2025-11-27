@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// <summary>
 /// 主界面
 /// </summary>
-public partial class MainModel : TopModel, IMutTop
+public partial class MainModel : ControlModel, IMutTop
 {
     public const string SwitchView = "SwitchView";
 
@@ -90,7 +91,7 @@ public partial class MainModel : TopModel, IMutTop
     /// </summary>
     private bool _isGetNewInfo;
 
-    public MainModel(BaseModel model) : base(model)
+    public MainModel(WindowModel model) : base(model)
     {
         ImageManager.SkinChange += SkinChange;
 
@@ -145,12 +146,17 @@ public partial class MainModel : TopModel, IMutTop
     public async Task OpenGuide()
     {
         var list = LanguageUtils.GetGuide();
-        var res = await Model.ShowCombo(LanguageUtils.Get("SettingWindow.Tab7.Text18"), list);
-        if (res.Cancel)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("SettingWindow.Tab7.Text18"),
+            Items = [.. list]
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
-        WebBinding.OpenWeb(res.Index == 0 ? WebType.Guide1 : WebType.Guide);
+        WebBinding.OpenWeb(dialog.Index == 0 ? WebType.Guide1 : WebType.Guide);
     }
     /// <summary>
     /// 打开映射大厅
@@ -164,7 +170,7 @@ public partial class MainModel : TopModel, IMutTop
         }
         else
         {
-            Model.Show(LanguageUtils.Get("MainWindow.Text85"));
+            Window.Show(LanguageUtils.Get("MainWindow.Text85"));
         }
     }
     /// <summary>

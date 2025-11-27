@@ -89,7 +89,7 @@ public partial class ServerPackControl : MenuControl
         WindowManager.ServerPackWindows.Remove(_obj.UUID);
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var pack = _obj.GetServerPack().Pack;
         if (pack == null)

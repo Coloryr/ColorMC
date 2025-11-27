@@ -9,14 +9,12 @@ using Avalonia.Threading;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Main;
 
@@ -257,25 +255,24 @@ public partial class MainModel
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Text78"), list.Count));
+        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text78"), list.Count));
         if (!res)
         {
             return;
         }
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
         InstancesPath.DisableWatcher = true;
         await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             if (GameManager.IsAdd(item.Obj))
             {
-                Model.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
+                Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
                 return;
             }
             await GameBinding.DeleteGameAsync(item.Obj);
         });
         InstancesPath.DisableWatcher = false;
-        Model.ProgressClose();
-        Model.InputClose();
+        Window.CloseDialog(dialog);
         LoadGameItem();
     }
 
@@ -304,8 +301,8 @@ public partial class MainModel
             return;
         }
 
-        var model = new AddGroupModel(Model, null);
-        var res = await DialogHost.Show(model, MainControl.DialogName);
+        var model = new AddGroupModel(Window, null);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;
@@ -341,8 +338,8 @@ public partial class MainModel
     /// <param name="obj"></param>
     public async void EditGroup(GameItemModel obj)
     {
-        var model = new AddGroupModel(Model, obj.Obj.GroupName);
-        var res = await DialogHost.Show(model, MainControl.DialogName);
+        var model = new AddGroupModel(Window, obj.Obj.GroupName);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;
@@ -375,7 +372,7 @@ public partial class MainModel
             else
             {
                 IsGameError = false;
-                OneGame = new(Model, this, game)
+                OneGame = new(Window, this, game)
                 {
                     OneGame = true,
                     IsSelect = true
@@ -400,7 +397,7 @@ public partial class MainModel
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Model, this, " ", LanguageUtils.Get("MainWindow.Text68"), item.Value);
+                        DefaultGroup = new(Window, this, " ", LanguageUtils.Get("MainWindow.Text68"), item.Value);
                         if (list.Count > 0)
                         {
                             DefaultGroup.Expander = false;
@@ -409,7 +406,7 @@ public partial class MainModel
                     }
                     else
                     {
-                        var group = new GameGroupModel(Model, this, item.Key, item.Key, item.Value);
+                        var group = new GameGroupModel(Window, this, item.Key, item.Key, item.Value);
                         GameGroups.Add(group);
                         if (list.Count > 0)
                         {
@@ -443,7 +440,7 @@ public partial class MainModel
                 }
                 foreach (var item in list)
                 {
-                    var group = new GameGroupModel(Model, this, item.Key, item.Key, item.Value);
+                    var group = new GameGroupModel(Window, this, item.Key, item.Key, item.Value);
                     GameGroups.Add(group);
                     if (list.Count > 0)
                     {
@@ -552,26 +549,27 @@ public partial class MainModel
         Select(obj);
 
         IsLaunch = true;
+        ProgressModel? progress = null;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            Model.Progress(LanguageUtils.Get("MainWindow.Text66"));
+            progress = Window.ShowProgress(LanguageUtils.Get("MainWindow.Text66"));
         }
         var item = Game!;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Model.Notify(LanguageUtils.Get(string.Format(LanguageUtils.Get("MainWindow.Text72"), game.Name)));
-        var res = await GameBinding.LaunchAsync(Model, game, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
+        Window.Notify(LanguageUtils.Get(string.Format(LanguageUtils.Get("MainWindow.Text72"), game.Name)));
+        var res = await GameBinding.LaunchAsync(game, Window, progress, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         item.IsLoad = false;
-        if (GuiConfigUtils.Config.CloseBeforeLaunch)
+        if (progress != null)
         {
-            Model.ProgressClose();
+            Window.CloseDialog(progress);
         }
         if (res.Res == false)
         {
             if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
             {
-                var res1 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Text86"), res.Message!));
+                var res1 = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text86"), res.Message!));
                 if (res1)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -579,20 +577,15 @@ public partial class MainModel
             }
             else if (!string.IsNullOrWhiteSpace(res.Message))
             {
-                Model.Show(res.Message!);
+                Window.Show(res.Message!);
             }
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("MainWindow.Text65"));
+            Window.Notify(LanguageUtils.Get("MainWindow.Text65"));
 
             item.IsLaunch = true;
             Launchs.Add(game.UUID, item);
-
-            if (GuiConfigUtils.Config.CloseBeforeLaunch)
-            {
-                Model.Progress(LanguageUtils.Get("MainWindow.Text71"));
-            }
         }
         IsLaunch = false;
     }
@@ -623,12 +616,12 @@ public partial class MainModel
             item.IsLoad = true;
         }
 
-        Model.Progress(LanguageUtils.Get("MainWindow.Text66"));
-        var res1 = await GameBinding.LaunchAsync(Model, list1);
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("MainWindow.Text66"));
+        var res1 = await GameBinding.LaunchAsync(list1, Window, dialog);
+        Window.CloseDialog(dialog);
         if (res1.Message != null)
         {
-            Model.Show(res1.Message);
+            Window.Show(res1.Message);
             return;
         }
 
@@ -650,7 +643,7 @@ public partial class MainModel
         {
             if (item.Value.LoginFail && res1.User!.AuthType != AuthType.OAuth)
             {
-                var res2 = await Model.ShowAsync(string.Format(LanguageUtils.Get("MainWindow.Text86"), item.Value.Message!));
+                var res2 = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text86"), item.Value.Message!));
                 if (res2)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -740,6 +733,6 @@ public partial class MainModel
     /// <param name="obj"></param>
     public void ExportCmd(GameSettingObj obj)
     {
-        GameBinding.ExportCmd(obj, Model, CancellationToken.None);
+        GameBinding.ExportCmd(obj, Window, CancellationToken.None);
     }
 }

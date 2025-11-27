@@ -9,6 +9,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -20,7 +21,7 @@ namespace ColorMC.Gui.UI.Model.Collect;
 /// <summary>
 /// 收藏界面
 /// </summary>
-public partial class CollectModel : TopModel, ICollectControl
+public partial class CollectModel : ControlModel, ICollectControl
 {
     /// <summary>
     /// 收藏项目
@@ -93,7 +94,7 @@ public partial class CollectModel : TopModel, ICollectControl
     /// </summary>
     private GameSettingObj? _choise;
 
-    public CollectModel(BaseModel model) : base(model)
+    public CollectModel(WindowModel model) : base(model)
     {
         var conf = CollectUtils.Collect;
 
@@ -170,8 +171,8 @@ public partial class CollectModel : TopModel, ICollectControl
 
         if (InstancesPath.GetGame(_choise.UUID) == null)
         {
-            Model.Show(LanguageUtils.Get("CollectWindow.Text20"));
-            Model.BackClick();
+            Window.Show(LanguageUtils.Get("CollectWindow.Text20"));
+            Window.BackClick();
             return;
         }
 
@@ -186,7 +187,7 @@ public partial class CollectModel : TopModel, ICollectControl
             }
 
             var download = item.FileItems[item.SelectVersion];
-            var item2 = await WebBinding.MakeDownloadAsync(_choise, download, Model);
+            var item2 = await WebBinding.MakeDownloadAsync(_choise, download, Window);
             if (item2 == null)
             {
                 return;
@@ -195,16 +196,16 @@ public partial class CollectModel : TopModel, ICollectControl
         });
 
         //开始下载
-        Model.Progress(LanguageUtils.Get("CollectWindow.Text15"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text15"));
         var res = await DownloadManager.StartAsync([.. list]);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res)
         {
-            Model.Show(LanguageUtils.Get("CollectWindow.Text21"));
+            Window.Show(LanguageUtils.Get("CollectWindow.Text21"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("CollectWindow.Text16"));
+            Window.Notify(LanguageUtils.Get("CollectWindow.Text16"));
         }
     }
 
@@ -215,19 +216,23 @@ public partial class CollectModel : TopModel, ICollectControl
     [RelayCommand]
     public async Task AddGroup()
     {
-        var res = await Model.InputWithEditAsync(LanguageUtils.Get("CollectWindow.Text7"), false);
-        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("CollectWindow.Text7")
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true || string.IsNullOrWhiteSpace(dialog.Text1))
         {
             return;
         }
-        if (CollectUtils.Collect.Groups.ContainsKey(res.Text1))
+        if (CollectUtils.Collect.Groups.ContainsKey(dialog.Text1))
         {
-            Model.Show(LanguageUtils.Get("CollectWindow.Text19"));
+            Window.Show(LanguageUtils.Get("CollectWindow.Text19"));
             return;
         }
-        CollectUtils.AddGroup(res.Text1);
-        Groups.Add(res.Text1);
-        Group = res.Text1;
+        CollectUtils.AddGroup(dialog.Text1);
+        Groups.Add(dialog.Text1);
+        Group = dialog.Text1;
     }
 
     /// <summary>
@@ -237,7 +242,7 @@ public partial class CollectModel : TopModel, ICollectControl
     [RelayCommand]
     public async Task DeleteGroup()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Text10"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text10"));
         if (!res)
         {
             return;
@@ -255,8 +260,8 @@ public partial class CollectModel : TopModel, ICollectControl
     {
         if (string.IsNullOrWhiteSpace(Group))
         {
-            var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Text8"));
-            if (res == true)
+            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text8"));
+            if (res)
             {
                 CollectUtils.Clear();
                 Close();
@@ -266,8 +271,8 @@ public partial class CollectModel : TopModel, ICollectControl
         }
         else
         {
-            var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Text9"));
-            if (res == true)
+            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text9"));
+            if (res)
             {
                 CollectUtils.Clear(Group);
                 Load();
@@ -302,15 +307,20 @@ public partial class CollectModel : TopModel, ICollectControl
         }
 
         //选择一个游戏实例
-        var res = await Model.ShowCombo(LanguageUtils.Get("CollectWindow.Text12"), items);
-        if (res.Cancel)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("CollectWindow.Text12"),
+            Items = [.. items]
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
 
-        _choise = items1[res.Index];
+        _choise = items1[dialog.Index];
 
-        Model.Progress(LanguageUtils.Get("CollectWindow.Text14"));
+        var dialog1 = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text14"));
 
         var list = new ConcurrentBag<FileModVersionModel>();
 
@@ -333,8 +343,8 @@ public partial class CollectModel : TopModel, ICollectControl
 
         DownloadList.AddRange(list);
 
-        Model.ProgressClose();
-        Model.PushBack(() =>
+        Window.CloseDialog(dialog1);
+        Window.PushBack(() =>
         {
             DownloadList.Clear();
             IsDownload = false;
@@ -484,10 +494,7 @@ public partial class CollectModel : TopModel, ICollectControl
     /// <param name="item"></param>
     public void SetSelect(CollectItemModel item)
     {
-        if (_select != null)
-        {
-            _select.IsSelect = false;
-        }
+        _select?.IsSelect = false;
         _select = item;
         item.IsSelect = true;
     }
@@ -544,7 +551,7 @@ public partial class CollectModel : TopModel, ICollectControl
             return;
         }
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("CollectWindow.Text17"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text17"));
         if (!res)
         {
             return;
@@ -576,8 +583,13 @@ public partial class CollectModel : TopModel, ICollectControl
         var list = new List<string>(CollectUtils.Collect.Groups.Keys);
         list.Remove(Group);
 
-        var res = await Model.ShowCombo(LanguageUtils.Get("CollectWindow.Text18"), list);
-        if (res.Cancel)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("CollectWindow.Text18"),
+            Items = [.. list]
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }

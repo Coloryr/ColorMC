@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.CustomGui;
 
-public partial class UIModel(BaseModel model) : TopModel(model)
+public partial class UIModel(WindowModel model) : ControlModel(model)
 {
     /// <summary>
     /// 游戏列表
@@ -54,16 +54,16 @@ public partial class UIModel(BaseModel model) : TopModel(model)
     {
         if (SelectGame == null)
         {
-            Model.Show("你还没有选择游戏");
+            Window.Show("你还没有选择游戏");
             return;
         }
 
-        Model.Progress("正在启动游戏");
-        var res = await GameBinding.LaunchAsync(Model, SelectGame.Obj, hide: true);
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress("正在启动游戏");
+        var res = await GameBinding.LaunchAsync(SelectGame.Obj, Window, dialog, hide: true);
+        Window.CloseDialog(dialog);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
-            Model.Show("游戏启动失败\n" + res.Message);
+            Window.Show("游戏启动失败\n" + res.Message);
         }
     }
 
@@ -80,7 +80,7 @@ public partial class UIModel(BaseModel model) : TopModel(model)
         Games.Clear();
         foreach (var item in InstancesPath.Games)
         {
-            Games.Add(new(Model, null, item));
+            Games.Add(new(Window, null, item));
         }
     }
 }

@@ -40,7 +40,7 @@ public partial class AddModPackControlModel : AddBaseModel
 
     private readonly string _useName;
 
-    public AddModPackControlModel(BaseModel model) : base(model)
+    public AddModPackControlModel(WindowModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
         SourceList.AddRange(LanguageUtils.GetSourceList());
@@ -54,7 +54,7 @@ public partial class AddModPackControlModel : AddBaseModel
     {
         if (_lastSelect == null)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Text22"));
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text22"));
             return;
         }
 
@@ -113,14 +113,14 @@ public partial class AddModPackControlModel : AddBaseModel
                     LanguageUtils.GetCurseForgeSortTypes() :
                     LanguageUtils.GetModrinthSortTypes());
 
-                Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
+                var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
                 var list = Source == 0 ?
                     await CurseForgeHelper.GetGameVersionsAsync() :
                     await ModrinthHelper.GetGameVersionAsync();
                 var list1 = Source == 0 ?
                     await CurseForgeHelper.GetCategoriesAsync(FileType.ModPack) :
                     await ModrinthHelper.GetCategoriesAsync(FileType.ModPack);
-                Model.ProgressClose();
+                Window.CloseDialog(dialog);
                 if (list == null || list1 == null)
                 {
                     _load = false;
@@ -163,7 +163,7 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     private async void Done(string? uuid)
     {
-        Model.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
+        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
         DisplayVersion = false;
         DisplayFile.Close();
@@ -176,8 +176,8 @@ public partial class AddModPackControlModel : AddBaseModel
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
-        if (res != true)
+        var res = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
+        if (!res)
         {
             Dispatcher.UIThread.Post(WindowClose);
         }
@@ -192,7 +192,7 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text25"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -201,7 +201,7 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (Source < SourceList.Count)
         {
-            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
+            res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 Source++;
@@ -217,11 +217,11 @@ public partial class AddModPackControlModel : AddBaseModel
         //MO不允许少文字搜索
         if (Source == 1 && Categorie == 4 && Text?.Length < 3)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Text27"));
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text27"));
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("AddModPackWindow.Text18"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text18"));
         var res = await WebBinding.GetModPackListAsync((SourceType)Source,
             GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
@@ -242,8 +242,8 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (data == null)
         {
-            Model.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
-            Model.ProgressClose();
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            Window.CloseDialog(dialog);
             return;
         }
 
@@ -269,8 +269,8 @@ public partial class AddModPackControlModel : AddBaseModel
 
         EmptyDisplay = DisplayList.Count == 0;
 
-        Model.ProgressClose();
-        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.CloseDialog(dialog);
+        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -292,12 +292,12 @@ public partial class AddModPackControlModel : AddBaseModel
     {
         if (DisplayVersion)
         {
-            Model.PopBack();
+            Window.PopBack();
         }
 
         _close = true;
         _load = true;
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
         DisplayFile.FileList.Clear();
         foreach (var item in DisplayList)
         {

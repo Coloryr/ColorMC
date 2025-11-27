@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Avalonia.Threading;
 using ColorMC.Core.Game;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -58,7 +59,7 @@ public partial class NetFrpModel
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text9"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text9"));
             return;
         }
         var list = new List<string>();
@@ -81,24 +82,29 @@ public partial class NetFrpModel
             list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
         }
 
-        var res = await Model.ShowCombo(LanguageUtils.Get("NetFrpWindow.Tab2.Text6"), list);
-        if (res.Cancel)
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LanguageUtils.Get("NetFrpWindow.Tab2.Text6"),
+            Items = [.. list]
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
 
         //选择一个通道
-        var item1 = list1[res.Index];
+        var item1 = list1[dialog.Index];
         var res1 = await BaseBinding.StartFrpAsync(item1, local);
         if (!res1.Res)
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text8"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text8"));
         }
         else
         {
             local.IsStart = true;
             SetProcess(res1.Process!, local, res1.IP!);
-            Model.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Text7"));
+            Window.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Text7"));
             NowView = 5;
         }
     }

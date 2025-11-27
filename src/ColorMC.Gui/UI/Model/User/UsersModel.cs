@@ -25,7 +25,7 @@ namespace ColorMC.Gui.UI.Model.User;
 /// <summary>
 /// 账户页面
 /// </summary>
-public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
+public partial class UsersModel : ControlModel
 {
     /// <summary>
     /// 当前账户类型列表
@@ -92,7 +92,7 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
 
     private CancellationTokenSource _tokenSource;
 
-    public UsersModel(BaseModel model) : base(model)
+    public UsersModel(WindowModel model) : base(model)
     {
         LoadUsers();
     }
@@ -128,6 +128,8 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
         }
         _tokenSource = new();
 
+        var gui = new LoginGui(Window);
+
         switch (type)
         {
             case AuthType.Offline:
@@ -135,33 +137,33 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                var res = await UserBinding.AddUserAsync(AuthType.Offline, this, this, name);
+                var res = await UserBinding.AddUserAsync(AuthType.Offline, new LoginOAuthGui(this, null), gui, name);
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.OAuth:
                 _cancel = false;
                 _isOAuth = true;
-                Model.Progress(LanguageUtils.Get("Text.Loading"));
-                res = await UserBinding.AddUserAsync(AuthType.OAuth, this, this);
-                Model.ProgressClose();
+                var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
+                res = await UserBinding.AddUserAsync(AuthType.OAuth, new LoginOAuthGui(this, dialog), gui);
+                Window.CloseDialog(dialog);
                 if (_cancel)
                 {
                     break;
                 }
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 _isOAuth = false;
                 break;
             case AuthType.Nide8:
@@ -169,116 +171,103 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
                 _isOAuth = false;
                 if (server?.Length != 32)
                 {
-                    Model.Show(LanguageUtils.Get("UserWindow.Text23"));
+                    Window.Show(LanguageUtils.Get("UserWindow.Text23"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                     string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                Model.Progress(LanguageUtils.Get("UserWindow.Text11"));
-                res = await UserBinding.AddUserAsync(AuthType.Nide8, this, this,
+                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                res = await UserBinding.AddUserAsync(AuthType.Nide8, new LoginOAuthGui(this, dialog), gui,
                     server, model.User, model.Password);
-                Model.ProgressClose();
+                Window.CloseDialog(dialog);
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.AuthlibInjector:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(LanguageUtils.Get("UserWindow.Text24"));
+                    Window.Show(LanguageUtils.Get("UserWindow.Text24"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                Model.Progress(LanguageUtils.Get("UserWindow.Text11"));
-                res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, this,
-                    this, server, model.User, model.Password);
-                Model.ProgressClose();
+                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, new LoginOAuthGui(this, dialog),
+                    gui, server, model.User, model.Password);
+                Window.CloseDialog(dialog);
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.LittleSkin:
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                Model.Progress(LanguageUtils.Get("UserWindow.Text11"));
-                res = await UserBinding.AddUserAsync(AuthType.LittleSkin, this,
-                    this, model.User, model.Password);
-                Model.ProgressClose();
+                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                res = await UserBinding.AddUserAsync(AuthType.LittleSkin, new LoginOAuthGui(this, dialog),
+                    gui, model.User, model.Password);
+                Window.CloseDialog(dialog);
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.SelfLittleSkin:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Model.Show(LanguageUtils.Get("UserWindow.Text24"));
+                    Window.Show(LanguageUtils.Get("UserWindow.Text24"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Model.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                Model.Progress(LanguageUtils.Get("UserWindow.Text11"));
-                res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, this,
-                    this, model.User, model.Password, server);
-                Model.ProgressClose();
+                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, new LoginOAuthGui(this, dialog),
+                    gui, model.User, model.Password, server);
+                Window.CloseDialog(dialog);
                 if (!res.State)
                 {
-                    Model.Show(res.Data!);
+                    Window.Show(res.Data!);
                     break;
                 }
-                Model.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
                 break;
             default:
-                Model.Show(LanguageUtils.Get("UserWindow.Text25"));
+                Window.Show(LanguageUtils.Get("UserWindow.Text25"));
                 break;
         }
         Load();
     }
 
-    /// <summary>
-    /// 登录账户选择
-    /// </summary>
-    /// <param name="items"></param>
-    /// <returns></returns>
-    public async Task<int> SelectAuth(List<string> items)
-    {
-        var res = await Model.ShowCombo(LanguageUtils.Get("UserWindow.Text36"), items);
-        if (res.Cancel)
-        {
-            return -1;
-        }
-        return res.Index;
-    }
+
 
     /// <summary>
     /// 删除账户
@@ -298,7 +287,7 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
     {
         UserBinding.SetSelectUser(item.UUID, item.AuthType);
 
-        Model.Notify(LanguageUtils.Get("UserWindow.Text14"));
+        Window.Notify(LanguageUtils.Get("UserWindow.Text14"));
         foreach (var item1 in UserList)
         {
             if (item1.AuthType == item.AuthType && item1.UUID == item.UUID)
@@ -354,19 +343,19 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
     /// <param name="obj"></param>
     public async void Refresh(UserDisplayModel obj)
     {
-        Model.Progress(LanguageUtils.Get("UserWindow.Text12"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text12"));
         var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType, Token);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(string.Format(LanguageUtils.Get("UserWindow.Text26"), res.Data));
+            Window.Show(string.Format(LanguageUtils.Get("UserWindow.Text26"), res.Data));
             AuthType type;
             if (LockLogin)
             {
                 var index = FindLockLogin(obj.AuthType, obj.Text1);
                 if (index == -1)
                 {
-                    Model.Show(LanguageUtils.Get("UserWindow.Text29"));
+                    Window.Show(LanguageUtils.Get("UserWindow.Text29"));
                     return;
                 }
                 var login = _locks[index];
@@ -400,7 +389,7 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("UserWindow.Text13"));
+            Window.Notify(LanguageUtils.Get("UserWindow.Text13"));
         }
     }
 
@@ -442,7 +431,7 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
             var index = FindLockLogin(obj.AuthType, obj.Text1);
             if (index == -1)
             {
-                Model.Show(LanguageUtils.Get("UserWindow.Text29"));
+                Window.Show(LanguageUtils.Get("UserWindow.Text29"));
                 return;
             }
             type = index;
@@ -564,26 +553,12 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
     }
 
     /// <summary>
-    /// 展示OAuth信息
+    /// 取消登录
     /// </summary>
-    /// <param name="url"></param>
-    /// <param name="code"></param>
-    public void LoginOAuthCode(string? url, string code)
+    public void SetCancel()
     {
-        Model.ProgressClose();
-        Model.InputWithReadInfo(string.Format(LanguageUtils.Get("UserWindow.Text15"), url),
-            string.Format(LanguageUtils.Get("UserWindow.Text16"), code), true, false, true, () =>
-            {
-                _cancel = true;
-                _tokenSource.Cancel();
-            });
-        BaseBinding.OpenUrl($"{url}?otc={code}");
-        var top = Model.GetTopLevel();
-        if (top == null)
-        {
-            return;
-        }
-        BaseBinding.CopyTextClipboard(top, code);
+        _cancel = true;
+        _tokenSource.Cancel();
     }
 
     public override void Close()
@@ -629,24 +604,30 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
             return;
         }
 
-        var res = await Model.InputWithEdit(obj.Name, obj.UUID,
-            LanguageUtils.Get("UserWindow.Text10"), LanguageUtils.Get("UserWindow.Text21"));
-        if (res.Cancel)
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Text1 = obj.Name,
+            Text2 = obj.UUID,
+            Watermark1 = LanguageUtils.Get("UserWindow.Text10"),
+            Watermark2 = LanguageUtils.Get("UserWindow.Text21")
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true)
         {
             return;
         }
-        else if (string.IsNullOrWhiteSpace(res.Text1) || string.IsNullOrWhiteSpace(res.Text2))
+        else if (string.IsNullOrWhiteSpace(dialog.Text1) || string.IsNullOrWhiteSpace(dialog.Text2))
         {
-            Model.Show(LanguageUtils.Get("UserWindow.Text27"));
+            Window.Show(LanguageUtils.Get("UserWindow.Text27"));
             return;
         }
-        else if (res.Text2.Length != 32 || !CheckHelpers.CheckIs(res.Text2))
+        else if (dialog.Text2.Length != 32 || !CheckHelpers.CheckIs(dialog.Text2))
         {
-            Model.Show(LanguageUtils.Get("UserWindow.Text28"));
+            Window.Show(LanguageUtils.Get("UserWindow.Text28"));
             return;
         }
 
-        UserBinding.EditUser(obj.Obj, res.Text1, res.Text2);
+        UserBinding.EditUser(obj.Obj, dialog.Text1, dialog.Text2);
     }
 
     /// <summary>
@@ -694,10 +675,5 @@ public partial class UsersModel : TopModel, ILoginOAuthGui, ILoginGui
         {
             item.ReloadHead();
         }
-    }
-
-    public void LoginOAuthState(AuthState state)
-    {
-        Model.Progress(string.Format(LanguageUtils.Get("UserWindow.Text22"), state.GetName()));
     }
 }

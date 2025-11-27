@@ -32,7 +32,7 @@ public partial class SettingModel : MenuModel
     /// </summary>
     private readonly Timer _timer;
 
-    public SettingModel(BaseModel model) : base(model)
+    public SettingModel(WindowModel model) : base(model)
     {
         IsWindows = SystemInfo.Os == OsType.Windows;
 

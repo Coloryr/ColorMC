@@ -32,7 +32,7 @@ public partial class AddGameControl : BaseUserControl
         AddHandler(DragDrop.DropEvent, Drop);
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new AddGameModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;

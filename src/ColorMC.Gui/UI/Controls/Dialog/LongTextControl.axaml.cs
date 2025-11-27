@@ -3,11 +3,11 @@ using Avalonia.Controls;
 namespace ColorMC.Gui.UI.Controls.Dialog;
 
 /// <summary>
-/// 选择弹窗
+/// 信息弹窗
 /// </summary>
-public partial class Info4Control : UserControl
+public partial class LongTextControl : UserControl
 {
-    public Info4Control()
+    public LongTextControl()
     {
         InitializeComponent();
     }

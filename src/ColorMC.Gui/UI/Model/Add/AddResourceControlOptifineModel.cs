@@ -59,14 +59,14 @@ public partial class AddResourceControlModel : IAddOptifineControl
     {
         if (value)
         {
-            Model.PushBack(back: () =>
+            Window.PushBack(back: () =>
             {
                 OptifineDisplay = false;
             });
         }
         else
         {
-            Model.PopBack();
+            Window.PopBack();
             Type = 0;
             Source = 0;
         }
@@ -92,13 +92,13 @@ public partial class AddResourceControlModel : IAddOptifineControl
         GameVersionList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
-        Model.Progress(LanguageUtils.Get("AddResourceWindow.Text21"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text21"));
         var list = await OptifineAPI.GetOptifineVersionAsync();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         _load = false;
         if (list == null)
         {
-            Model.Show(LanguageUtils.Get("AddResourceWindow.Text33"));
+            Window.Show(LanguageUtils.Get("AddResourceWindow.Text33"));
             return;
         }
 
@@ -116,7 +116,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
                                  select newgroup.Key);
 
         LoadOptifineVersion();
-        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -171,22 +171,22 @@ public partial class AddResourceControlModel : IAddOptifineControl
     /// <param name="item"></param>
     public async void Install(OptifineVersionItemModel item)
     {
-        var res = await Model.ShowAsync(string.Format(
+        var res = await Window.ShowChoice(string.Format(
             LanguageUtils.Get("AddResourceWindow.Text20"), item.Version));
         if (!res)
         {
             return;
         }
-        Model.Progress(LanguageUtils.Get("Text.Downloading"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Downloading"));
         var res1 = await OptifineAPI.DownloadOptifineAsync(_obj, item.Obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res1 == false)
         {
-            Model.Show(LanguageUtils.Get("AddResourceWindow.Text35"));
+            Window.Show(LanguageUtils.Get("AddResourceWindow.Text35"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("Text.Downloaded"));
+            Window.Notify(LanguageUtils.Get("Text.Downloaded"));
             OptifineDisplay = false;
         }
     }
@@ -255,7 +255,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
     private void OpenModDownloadDisplay()
     {
         ModDownloadDisplay = true;
-        Model.PushBack(back: CloseModDownloadDisplay);
+        Window.PushBack(back: CloseModDownloadDisplay);
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
     private void CloseModDownloadDisplay()
     {
         ModDownloadDisplay = false;
-        Model.PopBack();
+        Window.PopBack();
         DownloadModList.Clear();
     }
 }

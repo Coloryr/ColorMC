@@ -74,7 +74,7 @@ public partial class AddResourceControl : BaseUserControl
         ReloadIcon();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new AddResourceControlModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;

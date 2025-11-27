@@ -57,7 +57,7 @@ public partial class NetFrpModel
 
         if (string.IsNullOrWhiteSpace(KeyOpenFrp))
         {
-            Model.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text17"));
+            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab1.Text17"));
             return;
         }
 
@@ -99,9 +99,9 @@ public partial class NetFrpModel
     /// </summary>
     private async void LoadOpenFrpList()
     {
-        Model.Progress(LanguageUtils.Get("NetFrpWindow.Tab1.Text15"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab1.Text15"));
         var res1 = await OpenFrpApi.GetChannelAsync(KeyOpenFrp);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res1 == null || res1.Data == null)
         {
             return;

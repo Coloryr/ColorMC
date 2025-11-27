@@ -55,7 +55,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeBackRunDir()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text32"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text32"));
         if (!res)
         {
             return;
@@ -74,13 +74,13 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeRunDir()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text30"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text30"));
         if (!res)
         {
             return;
         }
 
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -104,7 +104,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open1()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -123,7 +123,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open2()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -142,7 +142,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open3()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -162,7 +162,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task Open4()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -183,29 +183,29 @@ public partial class SettingModel
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
             WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
     }
 
@@ -218,28 +218,28 @@ public partial class SettingModel
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text28"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text28"));
 
         try
         {
             var res = AuthDatabase.LoadData(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text40"));
+                Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text40"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text29"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text29"));
         }
         catch (Exception)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text41"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text41"));
         }
         finally
         {
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
     }
 
@@ -252,29 +252,29 @@ public partial class SettingModel
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
             WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
     }
 
@@ -287,29 +287,29 @@ public partial class SettingModel
         var local = Local4;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        Model.Progress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = FrpConfigUtils.Load(local, true);
             if (!res)
             {
-                Model.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LanguageUtils.Get("Text.ConfigError"));
                 return;
             }
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
             WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
     }
 
@@ -320,7 +320,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ClearTemp()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text21"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text21"));
         if (res)
         {
             BaseBinding.DeleteTemp();
@@ -343,12 +343,12 @@ public partial class SettingModel
     /// </summary>
     private async void Reset()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text22"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text22"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        Model.Notify(LanguageUtils.Get("Text.Reset"));
+        Window.Notify(LanguageUtils.Get("Text.Reset"));
     }
 
     /// <summary>
@@ -356,12 +356,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearUser()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text24"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text24"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text25"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text25"));
     }
 
     /// <summary>
@@ -369,12 +369,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearWindow()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab1.Text34"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text34"));
         if (!res)
             return;
 
         WindowManager.Reset();
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text35"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text35"));
     }
 
     /// <summary>
@@ -382,7 +382,7 @@ public partial class SettingModel
     /// </summary>
     private async void DumpUser()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -390,7 +390,7 @@ public partial class SettingModel
         var res = await PathBinding.SaveFileAsync(top, FileType.User, null);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text33"));
+            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text33"));
         }
     }
 

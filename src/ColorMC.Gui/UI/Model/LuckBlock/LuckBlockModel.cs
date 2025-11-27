@@ -19,7 +19,7 @@ namespace ColorMC.Gui.UI.Model.LuckBlock;
 /// 方块抽奖界面
 /// </summary>
 /// <param name="model"></param>
-public partial class LuckBlockModel(BaseModel model) : TopModel(model)
+public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
 {
     private readonly Random _random = new();
 
@@ -107,20 +107,22 @@ public partial class LuckBlockModel(BaseModel model) : TopModel(model)
 
     public async void LoadBlocks()
     {
-        Model.Progress(LanguageUtils.Get("LuckBlockWindow.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.ShowWithOk(res.Data!, Close);
+            await Window.ShowWait(res.Data!);
+            WindowClose();
             return;
         }
 
         var list = await BaseBinding.BuildLotteryItems();
         if (list == null)
         {
-            Model.ShowWithOk(LanguageUtils.Get("LuckBlockWindow.Text9"), Close);
-
+            await Window.ShowWait(LanguageUtils.Get("LuckBlockWindow.Text9"));
+            WindowClose();
+            return;
         }
 
         LotteryItems.AddRange(list);

@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// </summary>
 /// <param name="model">窗口</param>
 /// <param name="usename">窗口Id</param>
-public partial class NbtDialogEditModel(BaseModel model, string usename) : ObservableObject
+public partial class NbtDialogEditModel(WindowModel model, string usename) : ObservableObject
 {
     /// <summary>
     /// 是否显示修改

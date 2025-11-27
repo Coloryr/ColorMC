@@ -9,16 +9,12 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 确认框
 /// </summary>
 /// <param name="name">窗口ID</param>
-public partial class Info4Model(string? name) : ObservableObject
+public partial class ChoiceModel(string? name) : ObservableObject
 {
-    /// <summary>
-    /// 执行
-    /// </summary>
-    public Action<bool>? Call;
     /// <summary>
     /// 选择执行
     /// </summary>
-    public Action? ChoiseCall;
+    public Action? ChoiceCall;
 
     /// <summary>
     /// 显示的文本
@@ -29,7 +25,7 @@ public partial class Info4Model(string? name) : ObservableObject
     /// 是否启用默认按钮
     /// </summary>
     [ObservableProperty]
-    private bool _enableButton;
+    private bool _enableButton = true;
     /// <summary>
     /// 是否显示取消按钮
     /// </summary>
@@ -45,32 +41,30 @@ public partial class Info4Model(string? name) : ObservableObject
     /// 选择按钮文本
     /// </summary>
     [ObservableProperty]
-    private string _choiseText;
+    private string _choiceText;
     /// <summary>
     /// 是否显示选择按钮
     /// </summary>
     [ObservableProperty]
-    private bool _choiseVisiable;
+    private bool _choiceVisiable;
 
     [RelayCommand]
-    public void Choise()
+    public void Choice()
     {
-        ChoiseCall?.Invoke();
+        ChoiceCall?.Invoke();
     }
 
     [RelayCommand]
     public void Cancel()
     {
         EnableButton = false;
-        Call?.Invoke(false);
-        DialogHost.Close(name);
+        DialogHost.Close(name, false, this);
     }
 
     [RelayCommand]
     public void Confirm()
     {
         EnableButton = false;
-        Call?.Invoke(true);
-        DialogHost.Close(name);
+        DialogHost.Close(name, true, this);
     }
 }

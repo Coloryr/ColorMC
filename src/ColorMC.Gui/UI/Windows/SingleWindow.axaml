@@ -14,7 +14,7 @@
     MinHeight="450"
     d:DesignHeight="450"
     d:DesignWidth="760"
-    x:DataType="model:BaseModel"
+    x:DataType="model:WindowModel"
     Background="Transparent"
     ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"

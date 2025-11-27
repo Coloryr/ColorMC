@@ -175,7 +175,7 @@ public partial class GameLogControl : BaseUserControl
         (DataContext as GameLogModel)!.LoadFileList();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new GameLogModel(model, _obj);
         amodel.PropertyChanged += Model_PropertyChanged;

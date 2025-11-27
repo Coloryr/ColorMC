@@ -24,8 +24,6 @@ namespace ColorMC.Gui.UI.Controls.Main;
 /// </summary>
 public partial class MainControl : BaseUserControl
 {
-    public const string DialogName = "MainCon";
-
     /// <summary>
     /// 单游戏实例
     /// </summary>
@@ -177,13 +175,13 @@ public partial class MainControl : BaseUserControl
                             }
                             if (!InstancesPath.IsNotGame)
                             {
-                                var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Text80"));
+                                var res = await model.Window.ShowChoice(LanguageUtils.Get("MainWindow.Text80"));
                                 if (res is not true)
                                 {
                                     return;
                                 }
                             }
-                            BaseBinding.ReadBuildConfig(model.Model, item);
+                            BaseBinding.ReadBuildConfig(model.Window, item);
                         }
 
                         break;
@@ -252,7 +250,7 @@ public partial class MainControl : BaseUserControl
         if (ColorMCGui.IsCrash)
         {
             var model = (DataContext as MainModel)!;
-            model.Model.Show(LanguageUtils.Get("MainWindow.Text81"));
+            model.Window.Show(LanguageUtils.Get("MainWindow.Text81"));
         }
     }
 
@@ -261,7 +259,7 @@ public partial class MainControl : BaseUserControl
         var model = (DataContext as MainModel)!;
         if (model.IsLaunch)
         {
-            var res = await model.Model.ShowAsync(LanguageUtils.Get("MainWindow.Text74"));
+            var res = await model.Window.ShowChoice(LanguageUtils.Get("MainWindow.Text74"));
             if (res)
             {
                 return false;
@@ -320,7 +318,7 @@ public partial class MainControl : BaseUserControl
         });
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new MainModel(model);
         amodel.PropertyChanged += Amodel_PropertyChanged;
@@ -360,7 +358,7 @@ public partial class MainControl : BaseUserControl
                 }
             }
         }
-        else if (e.PropertyName == TopModel.MinModeName)
+        else if (e.PropertyName == ControlModel.MinModeName)
         {
             if (DataContext is MainModel model)
             {

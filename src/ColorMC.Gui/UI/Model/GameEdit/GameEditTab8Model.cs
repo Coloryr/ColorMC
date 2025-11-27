@@ -57,18 +57,18 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task LoadResource()
     {
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab8.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab8.Text5"));
         _resourceItems.Clear();
 
         var res = await _obj.GetResourcepacksAsync(false);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         foreach (var item in res)
         {
             _resourceItems.Add(new(this, item));
         }
 
         LoadResourceDisplay();
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text7"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text7"));
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public partial class GameEditModel
     /// </summary>
     private async void ImportResource()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -113,11 +113,11 @@ public partial class GameEditModel
 
         if (file == false)
         {
-            Model.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text8"));
+            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text8"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text20"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text20"));
         await LoadResource();
     }
 
@@ -135,7 +135,7 @@ public partial class GameEditModel
     /// <param name="obj">资源包</param>
     public async void DeleteResource(ResourcepackObj obj)
     {
-        var res = await Model.ShowAsync(
+        var res = await Window.ShowChoice(
             string.Format(LanguageUtils.Get("GameEditWindow.Tab8.Text4"), obj.Local));
         if (!res)
         {
@@ -143,7 +143,7 @@ public partial class GameEditModel
         }
 
         await obj.Delete();
-        Model.Notify(LanguageUtils.Get("Text.DeleteDone"));
+        Window.Notify(LanguageUtils.Get("Text.DeleteDone"));
         await LoadResource();
     }
 

@@ -72,7 +72,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task OpenUrl5()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("SettingWindow.Tab7.Text18"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab7.Text18"));
         WebBinding.OpenWeb(res ? WebType.Guide1 : WebType.Guide);
     }
 

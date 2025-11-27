@@ -5,7 +5,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// 进度条信息
 /// </summary>
-public partial class ProgressBarModel : ObservableObject
+public partial class ProgressModel : ObservableObject
 {
     /// <summary>
     /// 显示的文本

@@ -36,7 +36,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     /// <summary>
     /// 窗口模型
     /// </summary>
-    public BaseModel Model => (DataContext as BaseModel)!;
+    public WindowModel Model => (DataContext as WindowModel)!;
 
     /// <summary>
     /// 窗口上方控制栏
@@ -56,7 +56,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         InitBaseWindow();
 
-        var model = new BaseModel(con.WindowId);
+        var model = new WindowModel(con.WindowId);
         model.PropertyChanged += Model_PropertyChanged;
         DataContext = model;
         _con = con;
@@ -116,7 +116,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             return;
         }
-        if (e.PropertyName == BaseModel.NameInfoShow)
+        if (e.PropertyName == WindowModel.NameInfoShow)
         {
             //弹出一个提示
             _windowNotification.Show(new TextBlock()
@@ -126,8 +126,8 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
                 Text = Model.NotifyText
             });
         }
-        else if (e.PropertyName == BaseModel.NameGetTopLevel
-            && DataContext is BaseModel model)
+        else if (e.PropertyName == WindowModel.NameGetTopLevel
+            && DataContext is WindowModel model)
         {
             model.SetTopLevel(GetTopLevel(this));
         }
@@ -242,7 +242,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
         ImageManager.BGUpdate -= AMultiWindow_PicUpdate;
 
-        ((ICon as UserControl)?.DataContext as TopModel)?.Close();
+        ((ICon as UserControl)?.DataContext as ControlModel)?.Close();
         DataContext = null;
         ICon.Closed();
 

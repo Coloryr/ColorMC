@@ -10,7 +10,7 @@
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:BaseModel"
+    x:DataType="model:WindowModel"
     Background="{setting:Theme WindowTranColor}"
     mc:Ignorable="d">
     <Image
@@ -28,6 +28,7 @@
             Background="{setting:Theme ButtonBG}"
             DisableOpeningAnimation="True"
             Identifier="{Binding WindowId}"
+            IsMultipleDialogsEnabled="True"
             OverlayBackground="Transparent">
             <Decorator Name="MainControl" />
         </dialog:DialogHost>

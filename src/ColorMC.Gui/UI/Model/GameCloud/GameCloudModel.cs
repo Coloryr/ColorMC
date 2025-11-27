@@ -10,6 +10,7 @@ using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -78,7 +79,7 @@ public partial class GameCloudModel : MenuModel
 
     private readonly string _useName;
 
-    public GameCloudModel(BaseModel model, GameSettingObj obj) : base(model)
+    public GameCloudModel(WindowModel model, GameSettingObj obj) : base(model)
     {
         _useName = ToString() + ":" + obj.UUID;
 
@@ -120,16 +121,16 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameCloudWindow.Text3"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text3"));
         var res = await GameBinding.StartCloudAsync(Obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (res.State == false)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text4"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text4"));
         Enable = true;
     }
 
@@ -145,22 +146,22 @@ public partial class GameCloudModel : MenuModel
             return;
         }
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameCloudWindow.Text7"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("GameCloudWindow.Text7"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameCloudWindow.Text5"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text5"));
         var res1 = await GameBinding.StopCloudAsync(Obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res1.State)
         {
-            Model.Show(res1.Data!);
+            Window.Show(res1.Data!);
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text6"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text6"));
         Enable = false;
     }
 
@@ -172,18 +173,15 @@ public partial class GameCloudModel : MenuModel
     public async Task UploadConfig()
     {
         var files = _files.GetSelectItems(true);
-        Model.Progress();
-        var res = await GameBinding.UploadConfigAsync(Obj, files, new()
-        {
-            Update = ProgressUpdate
-        });
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text9"));
+        var res = await GameBinding.UploadConfigAsync(Obj, files, dialog);
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text14"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text14"));
         await LoadCloud();
         LocalConfigTime = ConfigTime;
     }
@@ -195,18 +193,15 @@ public partial class GameCloudModel : MenuModel
     [RelayCommand]
     public async Task DownloadConfig()
     {
-        Model.Progress();
-        var res = await GameBinding.DownloadConfigAsync(Obj, new()
-        {
-            Update = ProgressUpdate
-        });
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text32"));
+        var res = await GameBinding.DownloadConfigAsync(Obj, dialog);
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text15"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text15"));
         await LoadCloud();
         LocalConfigTime = ConfigTime;
         GameCloudUtils.Save();
@@ -217,12 +212,12 @@ public partial class GameCloudModel : MenuModel
     /// </summary>
     public async Task LoadCloud()
     {
-        Model.Progress(LanguageUtils.Get("GameCloudWindow.Text1"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text1"));
         var res = await GameBinding.HaveCloudAsync(Obj);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
         Enable = res.Data1;
@@ -237,7 +232,11 @@ public partial class GameCloudModel : MenuModel
     {
         if (!ColorMCCloudAPI.Connect)
         {
-            Model.ShowWithOk(LanguageUtils.Get("GameCloudWindow.Erro1"), WindowClose);
+            await Window.ShowDialogWait(new ChoiceModel(Window.WindowId)
+            { 
+                Text = LanguageUtils.Get("GameCloudWindow.Erro1")
+            });
+            WindowClose();
             return false;
         }
         await LoadCloud();
@@ -290,7 +289,7 @@ public partial class GameCloudModel : MenuModel
         _files.SetSelectItems(list);
 
         Source = _files.Source;
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text19"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text19"));
     }
 
     /// <summary>
@@ -299,10 +298,7 @@ public partial class GameCloudModel : MenuModel
     /// <param name="item">存档</param>
     public void SetSelectWorld(WorldCloudModel item)
     {
-        if (_selectWorld != null)
-        {
-            _selectWorld.IsSelect = false;
-        }
+        _selectWorld?.IsSelect = false;
         _selectWorld = item;
         _selectWorld.IsSelect = true;
     }
@@ -313,13 +309,13 @@ public partial class GameCloudModel : MenuModel
     public async void LoadWorld()
     {
         WorldCloudList.Clear();
-        Model.Progress(LanguageUtils.Get("GameEditWindow.Tab5.Text10"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab5.Text10"));
         var res = await GameBinding.GetCloudWorldListAsync(Obj);
         var worlds = await Obj.GetSavesAsync();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res.State || res.Worlds == null)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
         foreach (var item in res.Worlds)
@@ -339,7 +335,7 @@ public partial class GameCloudModel : MenuModel
         {
             WorldCloudList.Add(new(this, item));
         }
-        Model.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text21"));
+        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab5.Text21"));
     }
 
     public override void Close()
@@ -360,18 +356,15 @@ public partial class GameCloudModel : MenuModel
     /// <param name="world">云存档</param>
     public async void UploadWorld(WorldCloudModel world)
     {
-        Model.Progress();
-        var res = await GameBinding.UploadCloudWorldAsync(Obj, world, new()
-        {
-            Update = ProgressUpdate
-        });
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text34"));
+        var res = await GameBinding.UploadCloudWorldAsync(Obj, world, dialog);
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text14"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text14"));
         LoadWorld();
     }
 
@@ -381,18 +374,15 @@ public partial class GameCloudModel : MenuModel
     /// <param name="world">云存档</param>
     public async void DownloadWorld(WorldCloudModel world)
     {
-        Model.Progress();
-        var res = await GameBinding.DownloadCloudWorldAsync(Obj, world, new()
-        {
-            Update = ProgressUpdate
-        });
-        Model.ProgressClose();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text36"));
+        var res = await GameBinding.DownloadCloudWorldAsync(Obj, world, dialog);
+        Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Model.Show(res.Data!);
+            Window.Show(res.Data!);
             return;
         }
-        Model.Notify(LanguageUtils.Get("GameCloudWindow.Text15"));
+        Window.Notify(LanguageUtils.Get("GameCloudWindow.Text15"));
         LoadWorld();
     }
 
@@ -402,22 +392,22 @@ public partial class GameCloudModel : MenuModel
     /// <param name="world">云存档</param>
     public async void DeleteCloud(WorldCloudModel world)
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameCloudWindow.Text16"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("GameCloudWindow.Text16"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameCloudWindow.Text18"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameCloudWindow.Text18"));
         var res1 = await GameBinding.DeleteCloudWorldAsync(Obj, world.Cloud.Name);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res1.State)
         {
-            Model.Show(res1.Data!);
+            Window.Show(res1.Data!);
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("Text.DeleteDone"));
+            Window.Notify(LanguageUtils.Get("Text.DeleteDone"));
         }
     }
 
@@ -441,24 +431,12 @@ public partial class GameCloudModel : MenuModel
     }
 
     /// <summary>
-    /// 下载进度更新
-    /// </summary>
-    /// <param name="data"></param>
-    private void ProgressUpdate(string data)
-    {
-        Dispatcher.UIThread.Post(() =>
-        {
-            Model.ProgressUpdate(data);
-        });
-    }
-
-    /// <summary>
     /// 设置标题栏
     /// </summary>
     public void SetHeadBack()
     {
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
-        Model.SetChoiseCall(_useName, Reload);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
+        Window.SetChoiseCall(_useName, Reload);
     }
 
     /// <summary>
@@ -466,6 +444,6 @@ public partial class GameCloudModel : MenuModel
     /// </summary>
     public void RemoveHeadBack()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
     }
 }

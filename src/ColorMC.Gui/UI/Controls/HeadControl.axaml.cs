@@ -252,7 +252,7 @@ public partial class HeadControl : UserControl
     {
         base.OnDataContextChanged(e);
 
-        if (DataContext is BaseModel model)
+        if (DataContext is WindowModel model)
         {
             _buttonMin.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());
             _buttonMax.Bind(IsVisibleProperty, model.HeadDisplayObservale.ToBinding());

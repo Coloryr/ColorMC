@@ -17,7 +17,7 @@ namespace ColorMC.Gui.UI.Model.Download;
 /// <summary>
 /// 下载窗口
 /// </summary>
-public partial class DownloadModel : TopModel, IDownloadGui
+public partial class DownloadModel : ControlModel, IDownloadGui
 {
     /// <summary>
     /// 显示项目
@@ -80,7 +80,7 @@ public partial class DownloadModel : TopModel, IDownloadGui
     /// </summary>
     private bool _needRun;
 
-    public DownloadModel(int thread, BaseModel model) : base(model)
+    public DownloadModel(int thread, WindowModel model) : base(model)
     {
         _useName = ToString() ?? "DownloadModel";
 
@@ -97,10 +97,10 @@ public partial class DownloadModel : TopModel, IDownloadGui
             _downloadList.Add(a, item11);
         }
 
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("DownloadWindow.Text2"),
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("DownloadWindow.Text2"),
             LanguageUtils.Get("DownloadWindow.Text1"));
-        Model.SetChoiseCall(_useName, () => _ = Stop(), Pause);
-        Model.HeadBackEnable = false;
+        Window.SetChoiseCall(_useName, () => _ = Stop(), Pause);
+        Window.HeadBackEnable = false;
     }
 
     /// <summary>
@@ -112,16 +112,16 @@ public partial class DownloadModel : TopModel, IDownloadGui
         if (!value)
         {
             DownloadManager.Resume();
-            Model.SetChoiseContent(_useName,
+            Window.SetChoiseContent(_useName,
                 LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text1"));
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Text11"));
+            Window.Notify(LanguageUtils.Get("DownloadWindow.Text11"));
         }
         else
         {
             DownloadManager.Pause();
-            Model.SetChoiseContent(_useName,
+            Window.SetChoiseContent(_useName,
                 LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text4"));
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Text10"));
+            Window.Notify(LanguageUtils.Get("DownloadWindow.Text10"));
         }
     }
 
@@ -144,22 +144,22 @@ public partial class DownloadModel : TopModel, IDownloadGui
             return true;
         }
 
-        Model.HeadChoise1Display = false;
-        Model.HeadChoiseDisplay = false;
+        Window.HeadChoise1Display = false;
+        Window.HeadChoiseDisplay = false;
 
-        var res = await Model.ShowAsync(LanguageUtils.Get("DownloadWindow.Text9"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("DownloadWindow.Text9"));
         if (res)
         {
             DisplayList.Clear();
             _downloadList.Clear();
             DownloadManager.Stop();
-            Model.Notify(LanguageUtils.Get("DownloadWindow.Text13"));
+            Window.Notify(LanguageUtils.Get("DownloadWindow.Text13"));
             return true;
         }
         else
         {
-            Model.HeadChoise1Display = true;
-            Model.HeadChoiseDisplay = true;
+            Window.HeadChoise1Display = true;
+            Window.HeadChoiseDisplay = true;
 
             return false;
         }
@@ -223,8 +223,8 @@ public partial class DownloadModel : TopModel, IDownloadGui
     {
         _needRun = false;
         _timer.Dispose();
-        Model.HeadBackEnable = true;
-        Model.RemoveChoiseData(_useName);
+        Window.HeadBackEnable = true;
+        Window.RemoveChoiseData(_useName);
         DisplayList.Clear();
         _downloadList.Clear();
     }

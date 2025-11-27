@@ -38,9 +38,12 @@ public partial class JoystickSettingModel : ObservableObject
     /// 配置列表
     /// </summary>
     private readonly List<string> UUIDs = [];
+    private readonly string _id;
 
-    public JoystickSettingModel(int now, string? config)
+    public JoystickSettingModel(string id, int now, string? config)
     {
+        _id = id;
+
         Load();
         Load1();
 
@@ -63,7 +66,7 @@ public partial class JoystickSettingModel : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close(MainControl.DialogName, true);
+        DialogHost.Close(_id, true, this);
     }
 
     /// <summary>
@@ -72,7 +75,7 @@ public partial class JoystickSettingModel : ObservableObject
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close(MainControl.DialogName, false);
+        DialogHost.Close(_id, false, this);
     }
 
     /// <summary>

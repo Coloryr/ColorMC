@@ -81,7 +81,7 @@ public partial class GameCloudControl : MenuControl
         WindowManager.GameCloudWindows.Remove((DataContext as GameCloudModel)!.Obj.UUID);
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new GameCloudModel(model, _obj);
     }

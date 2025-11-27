@@ -455,7 +455,7 @@ public static class CurseForgeHelper
     /// <returns>是否升级完成</returns>
     private static async Task<bool> UpgradeAsync(GameSettingObj game, string zip, IModPackGui? packgui)
     {
-        packgui?.SetStateText(ModpackState.ReadInfo);
+        packgui?.SetState(ModpackState.ReadInfo);
         packgui?.SetNow(1, 5);
 
         using var work = new CurseForgeWork(zip, null, packgui);
@@ -467,7 +467,7 @@ public static class CurseForgeHelper
 
         work.UpdateGame(game);
 
-        packgui?.SetStateText(ModpackState.Unzip);
+        packgui?.SetState(ModpackState.Unzip);
         packgui?.SetNow(2, 5);
 
         if (!await work.Unzip())
@@ -475,10 +475,10 @@ public static class CurseForgeHelper
             return false;
         }
 
-        packgui?.SetText(null);
+        packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
 
-        packgui?.SetStateText(ModpackState.GetInfo);
+        packgui?.SetState(ModpackState.GetInfo);
         packgui?.SetNow(3, 5);
 
         if (!await work.CheckUpgrade())
@@ -486,14 +486,14 @@ public static class CurseForgeHelper
             return false;
         }
 
-        packgui?.SetText(null);
+        packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
-        packgui?.SetStateText(ModpackState.DownloadFile);
+        packgui?.SetState(ModpackState.DownloadFile);
         packgui?.SetNow(4, 5);
 
         await work.Download();
 
-        packgui?.SetStateText(ModpackState.Done);
+        packgui?.SetState(ModpackState.Done);
         packgui?.SetNow(5, 5);
 
         return true;

@@ -4,6 +4,7 @@ using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.GameExport;
 using ColorMC.Gui.Utils;
 
@@ -68,12 +69,16 @@ public partial class GameExportControl : MenuControl
     public override async void Opened()
     {
         var model = (DataContext as GameExportModel)!;
-        model.Model.Progress(LanguageUtils.Get("GameExportWindow.Text5"));
+        var dialog = new ProgressModel
+        {
+            Text = LanguageUtils.Get("GameExportWindow.Text5")
+        };
+        model.Window.ShowDialog(dialog);
 
         await model.LoadMod();
         model.LoadFile();
 
-        model.Model.ProgressClose();
+        model.Window.CloseDialog(dialog);
         model.NowView = 0;
     }
 
@@ -86,7 +91,7 @@ public partial class GameExportControl : MenuControl
         WindowManager.GameExportWindows.Remove(_obj.UUID);
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new GameExportModel(model, _obj);
     }

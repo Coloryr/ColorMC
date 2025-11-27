@@ -199,44 +199,6 @@ public record ModPackListRes
 }
 
 /// <summary>
-/// 输入信息结果
-/// </summary>
-public record InputRes
-{
-    /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool Cancel;
-    /// <summary>
-    /// 输入结果1
-    /// </summary>
-    public string? Text1;
-    /// <summary>
-    /// 输入结果2
-    /// </summary>
-    public string? Text2;
-}
-
-/// <summary>
-/// 选中框选择结果
-/// </summary>
-public record ComboRes
-{
-    /// <summary>
-    /// 是否取消
-    /// </summary>
-    public bool Cancel;
-    /// <summary>
-    /// 选中的项目
-    /// </summary>
-    public int Index;
-    /// <summary>
-    /// 选中的项目
-    /// </summary>
-    public string? Item;
-}
-
-/// <summary>
 /// 云同步结果
 /// </summary>
 public record CloudRes : StringRes
@@ -305,4 +267,10 @@ public record SelectRes
     /// 文件名
     /// </summary>
     public string? FileName;
+}
+
+public record KeyRes
+{
+    public bool Positive;
+    public byte Key;
 }

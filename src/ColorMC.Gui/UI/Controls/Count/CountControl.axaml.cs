@@ -22,7 +22,7 @@ public partial class CountControl : BaseUserControl
         WindowManager.CountWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new CountModel(model);
     }

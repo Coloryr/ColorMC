@@ -13,7 +13,7 @@ public partial class NetFrpModel : MenuModel
 {
     private readonly string _name;
 
-    public NetFrpModel(BaseModel model) : base(model)
+    public NetFrpModel(WindowModel model) : base(model)
     {
         _name = ToString() ?? "NetFrpModel";
 
@@ -107,7 +107,7 @@ public partial class NetFrpModel : MenuModel
     /// </summary>
     public void RemoveClick()
     {
-        Model.RemoveChoiseData(_name);
+        Window.RemoveChoiseData(_name);
     }
 
     public override void Close()

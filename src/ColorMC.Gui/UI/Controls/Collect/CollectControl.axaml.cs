@@ -23,7 +23,7 @@ public partial class CollectControl : BaseUserControl
         WindowManager.CollectWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var model1 = new CollectModel(model);
         model1.PropertyChanged += Model1_PropertyChanged;

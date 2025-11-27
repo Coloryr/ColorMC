@@ -18,7 +18,7 @@ public partial class UIControl : BaseUserControl
         (DataContext as UIModel)?.Load();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new UIModel(model);
     }

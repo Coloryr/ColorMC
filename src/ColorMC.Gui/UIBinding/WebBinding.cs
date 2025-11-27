@@ -1588,12 +1588,12 @@ public static class WebBinding
     /// <param name="model">需要下载的内容</param>
     /// <param name="model1">窗口</param>
     /// <returns></returns>
-    public static async Task<FileItemObj?> MakeDownloadAsync(GameSettingObj obj, FileVersionItemModel model, BaseModel model1)
+    public static async Task<FileItemObj?> MakeDownloadAsync(GameSettingObj obj, FileVersionItemModel model, WindowModel model1)
     {
         Core.Objs.ModInfoObj? mod = null;
         if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
         {
-            var res1 = await model1.ShowAsync(LanguageUtils.Get("AddResourceWindow.Text23"));
+            var res1 = await model1.ShowChoice(LanguageUtils.Get("AddResourceWindow.Text23"));
             if (!res1)
             {
                 return null;

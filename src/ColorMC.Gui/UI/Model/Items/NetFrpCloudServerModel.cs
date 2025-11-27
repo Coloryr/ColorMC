@@ -87,7 +87,7 @@ public partial class NetFrpCloudServerModel(ColorMCCloudServerObj obj, NetFrpMod
     [RelayCommand]
     public void Copy()
     {
-        var toplevel = top.Model.GetTopLevel();
+        var toplevel = top.Window.GetTopLevel();
         if (toplevel == null)
         {
             return;

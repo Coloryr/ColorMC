@@ -21,28 +21,38 @@ public static class UIUtils
     {
         templates.Add(new DataTemplate
         {
-            DataType = typeof(ProgressBarModel),
-            Content = typeof(ProgressBarControl)
+            DataType = typeof(ProgressModel),
+            Content = typeof(ProgressControl)
         });
         templates.Add(new DataTemplate
         {
-            DataType = typeof(Info3Model),
-            Content = typeof(Info3Control)
+            DataType = typeof(InputModel),
+            Content = typeof(InputControl)
         });
         templates.Add(new DataTemplate
         {
-            DataType = typeof(Info4Model),
-            Content = typeof(Info4Control)
+            DataType = typeof(ChoiceModel),
+            Content = typeof(ChoiceControl)
         });
         templates.Add(new DataTemplate
         {
-            DataType = typeof(Info5Model),
-            Content = typeof(Info5Control)
+            DataType = typeof(SelectModel),
+            Content = typeof(SelectControl)
         });
         templates.Add(new DataTemplate
         {
-            DataType = typeof(Info6Model),
-            Content = typeof(Info6Control)
+            DataType = typeof(LongTextModel),
+            Content = typeof(LongTextControl)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(AddGroupModel),
+            Content = typeof(GroupEditControl)
+        });
+        templates.Add(new DataTemplate
+        {
+            DataType = typeof(JoystickSettingModel),
+            Content = typeof(JoystickSettingControl)
         });
     }
 

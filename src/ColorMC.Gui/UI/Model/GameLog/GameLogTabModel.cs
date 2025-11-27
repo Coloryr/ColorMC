@@ -13,6 +13,7 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -144,7 +145,7 @@ public partial class GameLogModel : GameModel
 
     private GameRuntimeLog? _nowLog;
 
-    public GameLogModel(BaseModel model, GameSettingObj obj) : base(model, obj)
+    public GameLogModel(WindowModel model, GameSettingObj obj) : base(model, obj)
     {
         _text = new();
 
@@ -250,37 +251,44 @@ public partial class GameLogModel : GameModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Text26"));
+            Window.Show(LanguageUtils.Get("GameLogWindow.Text26"));
             return;
         }
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Text19"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("GameLogWindow.Text19"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameLogWindow.Text21"));
         var url = await McloAPI.PushAsync(Text.Text);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (url == null)
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
+            Window.Show(LanguageUtils.Get("GameLogWindow.Text25"));
             return;
         }
         else
         {
-            var top = Model.GetTopLevel();
+            var top = Window.GetTopLevel();
             if (top == null)
             {
                 return;
             }
-            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url), LanguageUtils.Get("GameLogWindow.Text23"), () =>
+            var dialog1 = new InputModel(Window.WindowId)
             {
-                BaseBinding.CopyTextClipboard(top, url);
-                Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
-            });
+                Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
+                ChoiseText = LanguageUtils.Get("GameLogWindow.Text23"),
+                TextReadonly = true,
+                ChoiseCall = () =>
+                {
+                    BaseBinding.CopyTextClipboard(top, url);
+                    Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+                }
+            };
+            Window.ShowDialog(dialog1);
             BaseBinding.CopyTextClipboard(top, url);
-            Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+            Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
         }
     }
 
@@ -322,11 +330,11 @@ public partial class GameLogModel : GameModel
         _isKill = false;
         IsGameRun = true;
 
-        var res = await GameBinding.LaunchAsync(Model, Obj, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
+        var res = await GameBinding.LaunchAsync(Obj, Window, null, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         if (!res.Res && !string.IsNullOrWhiteSpace(res.Message))
         {
             IsGameRun = false;
-            Model.Show(res.Message!);
+            Window.Show(res.Message!);
             return;
         }
         Load();
@@ -352,11 +360,11 @@ public partial class GameLogModel : GameModel
 
         if (IsGameRun)
         {
-            Model.SubTitle = LanguageUtils.Get("GameLogWindow.Text18");
+            Window.SubTitle = LanguageUtils.Get("GameLogWindow.Text18");
         }
         else
         {
-            Model.SubTitle = "";
+            Window.SubTitle = "";
         }
 
         LoadLast();
@@ -487,12 +495,12 @@ public partial class GameLogModel : GameModel
             if (_nowLog == null || _nowLog.File != File)
             {
                 _nowLog = null;
-                Model.Progress(LanguageUtils.Get("Text.Loading"));
+                var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
                 _nowLog = await GameBinding.ReadLogAsync(Obj, File);
-                Model.ProgressClose();
+                Window.CloseDialog(dialog);
                 if (_nowLog == null)
                 {
-                    Model.Show(LanguageUtils.Get("GameLogWindow.Text17"));
+                    Window.Show(LanguageUtils.Get("GameLogWindow.Text17"));
                     return;
                 }
             }
@@ -603,33 +611,49 @@ public partial class GameLogModel : GameModel
         DispatcherTimer.RunOnce(() =>
         {
             //弹出日志上传选项
-            Model.ShowWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text24"), code), LanguageUtils.Get("GameLogWindow.Text8"), async () =>
+            var dialog = new InputModel(Window.WindowId)
             {
-                Model.ShowClose();
-                Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
+                Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text24"), code),
+                ChoiseText = LanguageUtils.Get("GameLogWindow.Text8"),
+                TextReadonly = true
+            };
+
+            dialog.ChoiseCall = async () =>
+            {
+                Window.CloseDialog(dialog);
+                var dialog1 = Window.ShowProgress(LanguageUtils.Get("GameLogWindow.Text21"));
                 var url = await McloAPI.PushAsync(Text.Text);
-                Model.ProgressClose();
+                Window.CloseDialog(dialog1);
                 if (url == null)
                 {
-                    Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
+                    Window.Show(LanguageUtils.Get("GameLogWindow.Text25"));
                     return;
                 }
                 else
                 {
-                    var top = Model.GetTopLevel();
+                    var top = Window.GetTopLevel();
                     if (top == null)
                     {
                         return;
                     }
-                    Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url), LanguageUtils.Get("GameLogWindow.Text23"), () =>
+                    var dialog2 = new InputModel(Window.WindowId)
                     {
-                        BaseBinding.CopyTextClipboard(top, url);
-                        Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
-                    });
+                        Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
+                        ChoiseText = LanguageUtils.Get("GameLogWindow.Text23"),
+                        TextReadonly = true,
+                        ChoiseCall = () =>
+                        {
+                            BaseBinding.CopyTextClipboard(top, url);
+                            Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+                        }
+                    };
+                    Window.ShowDialog(dialog2);
                     BaseBinding.CopyTextClipboard(top, url);
-                    Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+                    Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
                 }
-            });
+            };
+
+            Window.ShowDialog(dialog);
         }, TimeSpan.FromMilliseconds(200));
         LoadFileList();
         var item = Obj.GetLastCrash();

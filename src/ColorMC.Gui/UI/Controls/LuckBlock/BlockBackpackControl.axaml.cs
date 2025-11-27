@@ -39,7 +39,7 @@ public partial class BlockBackpackControl : BaseUserControl
         });
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new BlockBackpackModel(model);
     }

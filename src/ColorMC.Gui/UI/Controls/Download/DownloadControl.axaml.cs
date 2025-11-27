@@ -36,7 +36,7 @@ public partial class DownloadControl : BaseUserControl
         return DataContext is DownloadModel model && !await model.Stop();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new DownloadModel(_thread, model);
     }

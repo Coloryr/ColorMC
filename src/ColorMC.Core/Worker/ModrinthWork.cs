@@ -335,7 +335,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
                 continue;
             }
 
-            Packgui?.SetText(e.Key!);
+            Packgui?.SetSubText(e.Key!);
             index++;
             if (e.Key!.StartsWith(dir))
             {

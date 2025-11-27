@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model;
 /// 带菜单窗口
 /// </summary>
 /// <param name="model">基础窗口</param>
-public abstract partial class MenuModel(BaseModel model) : TopModel(model)
+public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
 {
     public const string NameSideOpen = "SideOpen";
     public const string NameSideClose = "SideClose";

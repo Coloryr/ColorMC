@@ -44,7 +44,7 @@ public partial class LuckBlockControl : BaseUserControl
         WindowManager.LuckBlockWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new LuckBlockModel(model);
     }

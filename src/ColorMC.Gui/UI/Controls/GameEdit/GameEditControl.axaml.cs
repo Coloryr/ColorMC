@@ -123,7 +123,7 @@ public partial class GameEditControl : MenuControl
         (DataContext as GameEditModel)?.Load();
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new GameEditModel(model, _obj);
     }

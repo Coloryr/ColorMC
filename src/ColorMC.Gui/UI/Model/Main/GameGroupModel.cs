@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// <summary>
 /// 游戏分组
 /// </summary>
-public partial class GameGroupModel : TopModel
+public partial class GameGroupModel : ControlModel
 {
     /// <summary>
     /// 游戏列表
@@ -56,7 +56,7 @@ public partial class GameGroupModel : TopModel
     /// </summary>
     private readonly GameItemModel _addItem;
 
-    public GameGroupModel(BaseModel model, IMutTop top, string key, string name, List<GameSettingObj> list) : base(model)
+    public GameGroupModel(WindowModel model, IMutTop top, string key, string name, List<GameSettingObj> list) : base(model)
     {
         Top = top;
         Header = name;
@@ -65,10 +65,10 @@ public partial class GameGroupModel : TopModel
         Items.Clear();
         foreach (var item in list)
         {
-            var model1 = new GameItemModel(Model, Top, item);
+            var model1 = new GameItemModel(Window, Top, item);
             Items.Add(item.UUID, model1);
         }
-        _addItem = new(Model, Key == Names.NameDefaultGroup ? null : Key);
+        _addItem = new(Window, Key == Names.NameDefaultGroup ? null : Key);
         Task.Run(() =>
         {
             bool res = false;
@@ -152,7 +152,7 @@ public partial class GameGroupModel : TopModel
     [RelayCommand]
     public async Task LaunchAll()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("MainWindow.Text77"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("MainWindow.Text77"));
         if (!res)
         {
             return;
@@ -266,7 +266,7 @@ public partial class GameGroupModel : TopModel
         //筛选添加的内容
         foreach (var item in ins)
         {
-            var model1 = new GameItemModel(Model, Top, item);
+            var model1 = new GameItemModel(Window, Top, item);
             Items.Add(item.UUID, model1);
         }
 

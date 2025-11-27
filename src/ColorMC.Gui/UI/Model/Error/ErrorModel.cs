@@ -3,6 +3,7 @@ using System.Text;
 using AvaloniaEdit.Document;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,7 +13,7 @@ namespace ColorMC.Gui.UI.Model.Error;
 /// <summary>
 /// 错误窗口
 /// </summary>
-public partial class ErrorModel : TopModel
+public partial class ErrorModel : ControlModel
 {
     /// <summary>
     /// 显示的文本
@@ -27,15 +28,15 @@ public partial class ErrorModel : TopModel
 
     private readonly string _useName;
 
-    private ErrorModel(BaseModel model) : base(model)
+    private ErrorModel(WindowModel model) : base(model)
     {
         _useName = ToString() ?? "ErrorModel";
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"),
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"),
             LanguageUtils.Get("ErrorWindow.Text2"));
-        Model.SetChoiseCall(_useName, Save, Push);
+        Window.SetChoiseCall(_useName, Save, Push);
     }
 
-    public ErrorModel(BaseModel model, string? log, Exception? e, bool close) : this(model)
+    public ErrorModel(WindowModel model, string? log, Exception? e, bool close) : this(model)
     {
         var builder = new StringBuilder();
         if (!string.IsNullOrWhiteSpace(log))
@@ -51,7 +52,7 @@ public partial class ErrorModel : TopModel
         NeedClose = close;
     }
 
-    public ErrorModel(BaseModel model, string log, bool close) : this(model)
+    public ErrorModel(WindowModel model, string log, bool close) : this(model)
     {
         _text = new TextDocument(log);
 
@@ -63,7 +64,7 @@ public partial class ErrorModel : TopModel
     /// </summary>
     public async void Save()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -71,7 +72,7 @@ public partial class ErrorModel : TopModel
         var res = await PathBinding.SaveFileAsync(top, FileType.Text, [Text.Text]);
         if (res == true)
         {
-            Model.Notify(LanguageUtils.Get("ErrorWindow.Text3"));
+            Window.Notify(LanguageUtils.Get("ErrorWindow.Text3"));
         }
     }
 
@@ -82,43 +83,49 @@ public partial class ErrorModel : TopModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Text26"));
+            Window.Show(LanguageUtils.Get("GameLogWindow.Text26"));
             return;
         }
-        var res = await Model.ShowAsync(LanguageUtils.Get("GameLogWindow.Text19"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("GameLogWindow.Text19"));
         if (!res)
         {
             return;
         }
 
-        Model.Progress(LanguageUtils.Get("GameLogWindow.Text21"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameLogWindow.Text21"));
         var url = await McloAPI.PushAsync(Text.Text);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (url == null)
         {
-            Model.Show(LanguageUtils.Get("GameLogWindow.Text25"));
+            Window.Show(LanguageUtils.Get("GameLogWindow.Text25"));
             return;
         }
         else
         {
-            var top = Model.GetTopLevel();
+            var top = Window.GetTopLevel();
             if (top == null)
             {
                 return;
             }
-            Model.InputWithChoise(string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
-                LanguageUtils.Get("GameLogWindow.Text23"), () =>
+            var dialog1 = new InputModel(Window.WindowId)
             {
-                BaseBinding.CopyTextClipboard(top, url);
-                Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
-            });
+                Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
+                ChoiseText = LanguageUtils.Get("GameLogWindow.Text23"),
+                TextReadonly = true,
+                ChoiseCall = () => 
+                {
+                    BaseBinding.CopyTextClipboard(top, url);
+                    Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+                }
+            };
+            Window.ShowDialog(dialog1);
             BaseBinding.CopyTextClipboard(top, url);
-            Model.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+            Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
         }
     }
 
     public override void Close()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
     }
 }

@@ -6,6 +6,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;
@@ -17,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 添加Java
 /// </summary>
-public partial class AddJavaControlModel : TopModel
+public partial class AddJavaControlModel : ControlModel
 {
     /// <summary>
     /// JAVA列表
@@ -90,12 +91,12 @@ public partial class AddJavaControlModel : TopModel
     /// </summary>
     private readonly int _needJava;
 
-    public AddJavaControlModel(BaseModel model, int version) : base(model)
+    public AddJavaControlModel(WindowModel model, int version) : base(model)
     {
         _useName = ToString() ?? "AddJavaControlModel";
         _needJava = version;
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
-        Model.SetChoiseCall(_useName, Load);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
+        Window.SetChoiseCall(_useName, Load);
     }
 
     /// <summary>
@@ -172,8 +173,8 @@ public partial class AddJavaControlModel : TopModel
     {
         _load = true;
 
-        Model.Progress(LanguageUtils.Get("AddJavaWindow.Text10"));
-        Model.ChoiseEnable = false;
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddJavaWindow.Text10"));
+        Window.ChoiseEnable = false;
 
         _javaList.Clear();
         JavaList.Clear();
@@ -284,15 +285,15 @@ public partial class AddJavaControlModel : TopModel
 
             Select();
 
-            Model.ChoiseEnable = true;
-            Model.ProgressClose();
-            Model.Notify(LanguageUtils.Get("AddJavaWindow.Text12"));
+            Window.ChoiseEnable = true;
+            Window.CloseDialog(dialog);
+            Window.Notify(LanguageUtils.Get("AddJavaWindow.Text12"));
         }
         else
         {
-            Model.ChoiseEnable = true;
-            Model.ProgressClose();
-            Model.Show(LanguageUtils.Get("AddJavaWindow.Text13"));
+            Window.ChoiseEnable = true;
+            Window.CloseDialog(dialog);
+            Window.Show(LanguageUtils.Get("AddJavaWindow.Text13"));
         }
 
         _load = false;
@@ -304,30 +305,26 @@ public partial class AddJavaControlModel : TopModel
     /// <param name="obj"></param>
     public async void Install(JavaDownloadModel obj)
     {
-        var res = await Model.ShowAsync(string.Format(
+        var res = await Window.ShowChoice(string.Format(
             LanguageUtils.Get("AddJavaWindow.Text7"), obj.Name));
         if (!res)
         {
             return;
         }
 
-        if (GuiConfigUtils.Config.WindowMode != true)
-        {
-            Model.Progress(LanguageUtils.Get("AddJavaWindow.Text8"));
-        }
-
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddJavaWindow.Text8"));
         //开始下载Java
-        var zip = new ZipGui(Model);
+        var zip = new ZipGui(Window, dialog);
         var res1 = await JavaBinding.DownloadJavaAsync(obj, zip);
         zip.Stop();
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (!res1.State)
         {
-            Model.Show(res1.Data!);
+            Window.Show(res1.Data!);
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("AddJavaWindow.Text9"));
+        Window.Notify(LanguageUtils.Get("AddJavaWindow.Text9"));
         (WindowManager.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 
@@ -374,7 +371,7 @@ public partial class AddJavaControlModel : TopModel
 
     public override void Close()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
         _load = true;
         _javaList.Clear();
         JavaList.Clear();

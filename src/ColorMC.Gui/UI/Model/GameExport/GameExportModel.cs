@@ -130,7 +130,7 @@ public partial class GameExportModel : MenuModel
 
     private readonly string _useName;
 
-    public GameExportModel(BaseModel model, GameSettingObj obj) : base(model)
+    public GameExportModel(WindowModel model, GameSettingObj obj) : base(model)
     {
         Obj = obj;
 
@@ -167,7 +167,7 @@ public partial class GameExportModel : MenuModel
     /// <param name="value"></param>
     async partial void OnTypeChanged(PackType value)
     {
-        Model.Progress(LanguageUtils.Get("GameExportWindow.Text4"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameExportWindow.Text4"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -186,7 +186,7 @@ public partial class GameExportModel : MenuModel
             await LoadFiles();
         }
 
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
     }
 
     /// <summary>
@@ -240,7 +240,7 @@ public partial class GameExportModel : MenuModel
             var item1 = Obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
             if (item1 != null)
             {
-                obj1 = new ModExportModel(Model, item1.ModId, item1.FileId)
+                obj1 = new ModExportModel(Window, item1.ModId, item1.FileId)
                 {
                     Type = Type,
                     Obj = item,
@@ -255,7 +255,7 @@ public partial class GameExportModel : MenuModel
             }
             else
             {
-                obj1 = new ModExportModel(Model, null, null)
+                obj1 = new ModExportModel(Window, null, null)
                 {
                     Type = Type,
                     Obj = item
@@ -264,7 +264,7 @@ public partial class GameExportModel : MenuModel
             }
         });
 
-        Model.Notify(LanguageUtils.Get("GameExportWindow.Text6"));
+        Window.Notify(LanguageUtils.Get("GameExportWindow.Text6"));
 
         LoadMods();
     }
@@ -280,19 +280,19 @@ public partial class GameExportModel : MenuModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Model.Show(LanguageUtils.Get("GameExportWindow.Text8"));
+                Window.Show(LanguageUtils.Get("GameExportWindow.Text8"));
                 return;
             }
         }
 
-        Model.Progress(LanguageUtils.Get("GameExportWindow.Text1"));
-        var top = Model.GetTopLevel();
+        var dialog = Window.ShowProgress(LanguageUtils.Get("GameExportWindow.Text1"));
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
         }
         var file = await PathBinding.ExportAsync(top, this);
-        Model.ProgressClose();
+        Window.CloseDialog(dialog);
         if (file == null)
         {
             return;
@@ -300,11 +300,11 @@ public partial class GameExportModel : MenuModel
 
         if (file == false)
         {
-            Model.Show(LanguageUtils.Get("GameExportWindow.Text7"));
+            Window.Show(LanguageUtils.Get("GameExportWindow.Text7"));
         }
         else
         {
-            Model.Notify(LanguageUtils.Get("GameExportWindow.Text2"));
+            Window.Notify(LanguageUtils.Get("GameExportWindow.Text2"));
         }
     }
 
@@ -432,8 +432,8 @@ public partial class GameExportModel : MenuModel
     /// </summary>
     public void SetTab3Choise()
     {
-        Model.SetChoiseCall(_useName, SelectAllFile, UnSelectAllFile);
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
+        Window.SetChoiseCall(_useName, SelectAllFile, UnSelectAllFile);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>
@@ -441,8 +441,8 @@ public partial class GameExportModel : MenuModel
     /// </summary>
     public void SetTab2Choise()
     {
-        Model.SetChoiseCall(_useName, SelectAllMod, UnSelectAllMod);
-        Model.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
+        Window.SetChoiseCall(_useName, SelectAllMod, UnSelectAllMod);
+        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>
@@ -450,7 +450,7 @@ public partial class GameExportModel : MenuModel
     /// </summary>
     public void RemoveChoise()
     {
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
     }
 
     /// <summary>

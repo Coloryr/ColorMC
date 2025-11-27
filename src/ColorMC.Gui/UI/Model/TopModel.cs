@@ -3,10 +3,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace ColorMC.Gui.UI.Model;
 
 /// <summary>
-/// 窗口模型
+/// 控件模型
 /// </summary>
-/// <param name="model"></param>
-public abstract partial class TopModel(BaseModel model) : ObservableObject
+/// <param name="window"></param>
+public abstract partial class ControlModel(WindowModel window) : ObservableObject
 {
     public const int MinModeWidth = 520;
 
@@ -14,7 +14,7 @@ public abstract partial class TopModel(BaseModel model) : ObservableObject
 
     public const string MinModeName = nameof(MinMode);
 
-    public BaseModel Model => model;
+    public WindowModel Window => window;
 
     /// <summary>
     /// 是否为小界面模式

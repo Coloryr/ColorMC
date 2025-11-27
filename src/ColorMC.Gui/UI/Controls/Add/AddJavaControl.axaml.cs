@@ -49,7 +49,7 @@ public partial class AddJavaControl : BaseUserControl
         WindowManager.AddJavaWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         return new AddJavaControlModel(model, NeedJava);
     }

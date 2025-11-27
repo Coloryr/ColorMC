@@ -8,7 +8,9 @@ using Avalonia.Threading;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -373,7 +375,7 @@ public partial class SettingModel
             }
             if (_controlPtr == IntPtr.Zero)
             {
-                Model.Show(LanguageUtils.Get("SettingWindow.Tab8.Error1"));
+                Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Error1"));
             }
             else
             {
@@ -414,7 +416,7 @@ public partial class SettingModel
         {
             return;
         }
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -426,11 +428,11 @@ public partial class SettingModel
         }
         else if (res != true)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab8.Error4"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Error4"));
             return;
         }
 
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info14"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info14"));
     }
     /// <summary>
     /// 导入手柄设置
@@ -439,7 +441,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ImportInputConfig()
     {
-        var top = Model.GetTopLevel();
+        var top = Window.GetTopLevel();
         if (top == null)
         {
             return;
@@ -453,7 +455,7 @@ public partial class SettingModel
         var obj = JoystickConfig.Load(file.Path);
         if (obj == null)
         {
-            Model.Show(LanguageUtils.Get("SettingWindow.Tab8.Error2"));
+            Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Error2"));
             return;
         }
 
@@ -463,7 +465,7 @@ public partial class SettingModel
         Configs.Add(obj.Name);
         _controlUUIDs.Add(obj.UUID);
 
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info15"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info15"));
     }
     /// <summary>
     /// 删除手柄设置
@@ -477,7 +479,7 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("SettingWindow.Tab8.Info1"), _controlObj.Name));
+        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("SettingWindow.Tab8.Info1"), _controlObj.Name));
         if (!res)
         {
             return;
@@ -505,16 +507,21 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Model.Input(LanguageUtils.Get("SettingWindow.Tab8.Info2"), _controlObj.Name);
-        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("SettingWindow.Tab8.Info2"),
+            Text1 = _controlObj.Name
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true || string.IsNullOrWhiteSpace(dialog.Text1))
         {
             return;
         }
 
-        _controlObj.Name = res.Text1;
+        _controlObj.Name = dialog.Text1;
         var last = SelectConfig;
         var now = NowConfig == last;
-        Configs[SelectConfig] = res.Text1;
+        Configs[SelectConfig] = dialog.Text1;
         SelectConfig = last;
         if (now)
         {
@@ -530,13 +537,17 @@ public partial class SettingModel
     [RelayCommand]
     public async Task NewInputConfig()
     {
-        var res = await Model.InputWithEditAsync(LanguageUtils.Get("SettingWindow.Tab8.Info2"), false);
-        if (res.Cancel || string.IsNullOrWhiteSpace(res.Text1))
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Watermark1 = LanguageUtils.Get("SettingWindow.Tab8.Info2")
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is not true || string.IsNullOrWhiteSpace(dialog.Text1))
         {
             return;
         }
 
-        var obj = ConfigBinding.NewInput(res.Text1);
+        var obj = ConfigBinding.NewInput(dialog.Text1);
         _controlUUIDs.Add(obj.UUID);
         Configs.Add(obj.Name);
 
@@ -554,23 +565,30 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info3"), () =>
+        var dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info3"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key = await WaitAxis(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key == null)
         {
             return;
         }
-        var key1 = ((byte, bool))key;
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info4"), () =>
+        dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info4"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key2 = await WaitKey(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key2 == null)
         {
             return;
@@ -578,14 +596,14 @@ public partial class SettingModel
         var item1 = new InputAxisButtonModel(this)
         {
             UUID = Guid.NewGuid().ToString().ToLower()[..8],
-            InputKey = key1.Item1,
+            InputKey = key.Key,
             Obj = key2,
-            Start = key1.Item2 ? (short)2000 : (short)-2000,
-            End = key1.Item2 ? short.MaxValue : short.MinValue
+            Start = key.Positive ? (short)2000 : (short)-2000,
+            End = key.Positive ? short.MaxValue : short.MinValue
         };
         InputAxisList.Add(item1);
         ConfigBinding.AddAxisInput(_controlObj, item1.UUID, item1.GenObj());
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info5"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info5"));
     }
     /// <summary>
     /// 添加按钮输入
@@ -600,23 +618,31 @@ public partial class SettingModel
         }
 
         using var cannel = new CancellationTokenSource();
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info6"), () =>
+        var dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info6"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key = await WaitInput(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key == null)
         {
             return;
         }
         var key1 = (byte)key;
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info4"), () =>
+        dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info4"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key2 = await WaitKey(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key2 == null)
         {
             return;
@@ -636,7 +662,7 @@ public partial class SettingModel
         };
         InputList.Add(item1);
         ConfigBinding.AddInput(_controlObj, item1.InputKey, item1.Obj);
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info7"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info7"));
     }
     /// <summary>
     /// 设置按钮
@@ -647,12 +673,16 @@ public partial class SettingModel
     public async Task SetItemButton(object? right)
     {
         using var cannel = new CancellationTokenSource();
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info6"), () =>
+        var dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info6"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key = await WaitInput(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key == null)
         {
             return;
@@ -852,12 +882,16 @@ public partial class SettingModel
             return;
         }
         using var cannel = new CancellationTokenSource();
-        Model.ShowWithCancel(LanguageUtils.Get("SettingWindow.Tab8.Info4"), () =>
+        var dialog = new ChoiceModel(Window.WindowId)
         {
-            cannel.Cancel();
-        });
+            Text = LanguageUtils.Get("SettingWindow.Tab8.Info4"),
+            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            ChoiceVisiable = true,
+            ChoiceCall = cannel.Cancel
+        };
+        Window.ShowDialog(dialog);
         var key2 = await WaitKey(cannel.Token);
-        Model.ShowClose();
+        Window.CloseDialog(dialog);
         if (key2 == null)
         {
             return;
@@ -873,7 +907,7 @@ public partial class SettingModel
         {
             ConfigBinding.AddInput(_controlObj, item.InputKey, item.Obj);
         }
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info9"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info9"));
     }
 
     /// <summary>
@@ -896,7 +930,7 @@ public partial class SettingModel
             InputList.Remove(item);
             ConfigBinding.DeleteInput(_controlObj, item.InputKey);
         }
-        Model.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info10"));
+        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Info10"));
     }
 
     /// <summary>
@@ -1054,7 +1088,7 @@ public partial class SettingModel
     /// </summary>
     /// <param name="token"></param>
     /// <returns></returns>
-    public Task<(byte, bool)?> WaitAxis(CancellationToken token)
+    public Task<KeyRes?> WaitAxis(CancellationToken token)
     {
         byte keys = 0;
         bool output = false;
@@ -1066,7 +1100,7 @@ public partial class SettingModel
             keys = key;
             output = true;
         };
-        return Task.Run<(byte, bool)?>(() =>
+        return Task.Run(() =>
         {
             while (!output)
             {
@@ -1077,7 +1111,11 @@ public partial class SettingModel
                 System.Threading.Thread.Sleep(100);
             }
 
-            return (keys, positives);
+            return new KeyRes
+            { 
+                Key = keys,
+                Positive = positives
+            };
         });
     }
 

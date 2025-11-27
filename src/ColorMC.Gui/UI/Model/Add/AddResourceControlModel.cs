@@ -83,7 +83,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
     private readonly string _useName;
 
-    public AddResourceControlModel(BaseModel model, GameSettingObj obj) : base(model)
+    public AddResourceControlModel(WindowModel model, GameSettingObj obj) : base(model)
     {
         _obj = obj;
         _useName = ToString() ?? "AddControlModel";
@@ -139,15 +139,15 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     {
         var type = _sourceTypeList[Source];
 
-        Model.Progress(LanguageUtils.Get("AddResourceWindow.Text17"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text17"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
             var data = await WebBinding.SearchMcmodAsync(Text ?? "", Page ?? 0, _obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
             if (data == null)
             {
-                Model.ProgressClose();
-                Model.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                Window.CloseDialog(dialog);
+                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -164,7 +164,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
             EmptyDisplay = DisplayList.Count == 0;
 
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
         else
         {
@@ -185,8 +185,8 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
             if (data == null)
             {
-                Model.ProgressClose();
-                Model.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                Window.CloseDialog(dialog);
+                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -232,12 +232,12 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
             EmptyDisplay = DisplayList.Count == 0;
 
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
         }
 
         OnPropertyChanged(NameScrollToHome);
 
-        Model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -269,7 +269,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             return;
         }
 
-        var res = await Model.ShowAsync(string.Format(LanguageUtils.Get("AddResourceWindow.Text16"), item.Name));
+        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("AddResourceWindow.Text16"), item.Name));
         if (res)
         {
             Install(item);
@@ -296,7 +296,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     {
         if (_lastSelect == null)
         {
-            Model.Show(LanguageUtils.Get("AddResourceWindow.Text25"));
+            Window.Show(LanguageUtils.Get("AddResourceWindow.Text25"));
             return;
         }
 
@@ -339,14 +339,14 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 ? LanguageUtils.GetCurseForgeSortTypes()
                 : LanguageUtils.GetModrinthSortTypes());
             //获取支持的游戏版本和分类
-            Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
+            var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
             var list = type is SourceType.CurseForge
                 ? await CurseForgeHelper.GetGameVersionsAsync()
                 : await ModrinthHelper.GetGameVersionAsync();
             var list1 = type is SourceType.CurseForge
                 ? await CurseForgeHelper.GetCategoriesAsync(_now)
                 : await ModrinthHelper.GetCategoriesAsync(_now);
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
             if (list == null || list1 == null)
             {
                 _load = false;
@@ -387,10 +387,10 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         //McMod搜索源
         else if (type == SourceType.McMod)
         {
-            Model.Progress(LanguageUtils.Get("AddModPackWindow.Text20"));
+            var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
             //获取分类
             var list = await ColorMCAPI.GetMcModGroupAsync();
-            Model.ProgressClose();
+            Window.CloseDialog(dialog);
             if (list == null)
             {
                 _load = false;
@@ -472,7 +472,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text25"));
+        var res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -481,7 +481,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
         if (Source < _sourceTypeList.Count)
         {
-            res = await Model.ShowAsync(LanguageUtils.Get("AddModPackWindow.Text21"));
+            res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 Source++;
@@ -536,12 +536,12 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         base.Close();
         if (DisplayVersion || OptifineDisplay || ModDownloadDisplay)
         {
-            Model.PopBack();
+            Window.PopBack();
         }
 
         _close = true;
         _load = true;
-        Model.RemoveChoiseData(_useName);
+        Window.RemoveChoiseData(_useName);
         _modList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();

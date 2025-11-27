@@ -48,8 +48,8 @@ public partial class SkinControl : BaseUserControl
                 Decorator1.IsVisible = false;
                 Decorator1.Child = null;
                 Decorator2.Child = _side;
-                model.Model.SetChoiseCall(WindowId, DisplaySide);
-                model.Model.SetChoiseContent(WindowId, LanguageUtils.Get("SkinWindow.Text10"));
+                model.Window.SetChoiseCall(WindowId, DisplaySide);
+                model.Window.SetChoiseContent(WindowId, LanguageUtils.Get("SkinWindow.Text10"));
             }
             else
             {
@@ -57,7 +57,7 @@ public partial class SkinControl : BaseUserControl
                 Decorator1.IsVisible = true;
                 Decorator2.Child = null;
                 Decorator1.Child = _side;
-                model.Model.RemoveChoiseData(WindowId);
+                model.Window.RemoveChoiseData(WindowId);
             }
         }
     }
@@ -79,7 +79,7 @@ public partial class SkinControl : BaseUserControl
 
     private void Model_PropertyChanged1(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == TopModel.MinModeName)
+        if (e.PropertyName == ControlModel.MinModeName)
         {
             MinModelChange();
         }
@@ -134,7 +134,7 @@ public partial class SkinControl : BaseUserControl
         WindowManager.SkinWindow = null;
     }
 
-    protected override TopModel GenModel(BaseModel model)
+    protected override ControlModel GenModel(WindowModel model)
     {
         var amodel = new SkinModel(model);
         amodel.PropertyChanged += Model_PropertyChanged;
