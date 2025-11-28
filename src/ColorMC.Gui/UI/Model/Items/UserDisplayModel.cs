@@ -131,22 +131,6 @@ public partial class UserDisplayModel : SelectItemModel
     }
 
     /// <summary>
-    /// 设置小模式
-    /// </summary>
-    /// <param name="mode"></param>
-    public void SetMin(bool mode)
-    {
-        if (mode)
-        {
-            Width = double.NaN;
-        }
-        else
-        {
-            Width = DefaultWidth;
-        }
-    }
-
-    /// <summary>
     /// 选中
     /// </summary>
     public void Select()

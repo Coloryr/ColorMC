@@ -22,7 +22,7 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
-                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                        <WrapPanel>
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddResourceWindow.Text2}" />
                                 <ComboBox
@@ -64,7 +64,7 @@
                                     ItemsSource="{Binding CategorieList}"
                                     SelectedIndex="{Binding Categorie}" />
                             </DockPanel>
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <panel:WrapPanelWithStretch
                             Margin="0,0,0,-10"
                             IsEnabled="{Binding SourceLoad}"
@@ -122,7 +122,7 @@
                             Margin="6,0,6,5"
                             HorizontalAlignment="Stretch"
                             Classes="top"
-                            Command="{Binding Next}"
+                            Command="{Binding NextListPage}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
                             IsVisible="{Binding EnableNextPage}" />
                     </StackPanel>
@@ -143,6 +143,25 @@
             Background="{setting:Theme TopViewBG}"
             IsVisible="False">
             <panel1:AddFileInfoControl DataContext="{Binding DisplayFile}" />
+        </Panel>
+        <Panel
+            Name="DownloadInfo"
+            Margin="0,0,0,50"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            IsVisible="False">
+            <panel1:DownloadListControl />
+        </Panel>
+        <Panel IsVisible="{Binding HaveDownload}">
+            <Button
+                Height="30"
+                Margin="10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Command="{Binding ShowDownload}"
+                CornerRadius="20">
+                <TextBlock Margin="10,0,10,0" Text="{Binding DownloadText}" />
+            </Button>
         </Panel>
     </Panel>
 </UserControl>

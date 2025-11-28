@@ -29,7 +29,7 @@
     TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
     <Design.DataContext>
-        <model:BaseModel />
+        <model:WindowModel />
     </Design.DataContext>
     <Panel>
         <view1:BorderControl />

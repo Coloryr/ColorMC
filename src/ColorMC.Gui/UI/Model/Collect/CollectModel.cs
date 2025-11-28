@@ -426,14 +426,6 @@ public partial class CollectModel : ControlModel, ICollectControl
         }
     }
 
-    protected override void MinModeChange()
-    {
-        foreach (var item in _list)
-        {
-            item.Value.SetMin(MinMode);
-        }
-    }
-
     public override void Close()
     {
         CollectList.Clear();

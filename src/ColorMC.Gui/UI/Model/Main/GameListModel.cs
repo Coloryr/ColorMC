@@ -489,7 +489,6 @@ public partial class MainModel
                 Game = last;
             });
         }
-        MinModeChange();
     }
 
     /// <summary>

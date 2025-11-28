@@ -58,8 +58,6 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     {
         InitializeComponent();
 
-        UIUtils.InitDialog(Dialog.DataTemplates);
-
         WindowId = ToString() ?? "SingleControl";
 
         var model = new WindowModel("AllControl");

@@ -373,17 +373,4 @@ public partial class GameGroupModel : ControlModel
             item.IsCheck = true;
         }
     }
-
-    /// <summary>
-    /// 设置小模式
-    /// </summary>
-    /// <param name="minMode"></param>
-    public void SetMinMode(bool minMode)
-    {
-        MinMode = minMode;
-        foreach (var item in Items.Values)
-        {
-            item.MinMode = minMode;
-        }
-    }
 }

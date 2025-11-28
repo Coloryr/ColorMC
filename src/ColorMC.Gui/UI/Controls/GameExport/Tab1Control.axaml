@@ -16,10 +16,7 @@
     <Panel Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel Margin="15">
-                <panel:WrapPanelWithStretch
-                    Margin="0,0,0,10"
-                    DockPanel.Dock="Top"
-                    RightMax="{Binding MinMode}">
+                <WrapPanel Margin="0,0,0,10" DockPanel.Dock="Top">
                     <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -36,7 +33,7 @@
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding ExportTypes}"
                         SelectedIndex="{Binding Type}" />
-                </panel:WrapPanelWithStretch>
+                </WrapPanel>
                 <DockPanel DockPanel.Dock="Bottom">
                     <Button
                         Width="100"

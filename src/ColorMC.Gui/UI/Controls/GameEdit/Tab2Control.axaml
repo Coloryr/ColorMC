@@ -39,7 +39,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
@@ -65,7 +65,7 @@
                             IsChecked="{Binding MaxWindow}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <TextBox
                         Height="100"
                         Margin="0,0,10,5"
@@ -122,7 +122,7 @@
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{Binding Memory}" />
                     <!--  Jvm内存  -->
-                    <panel:WrapPanelWithStretch Margin="0,0,0,0" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,0">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
@@ -141,8 +141,8 @@
                                 Minimum="1"
                                 Value="{Binding MaxMem}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
                         <ComboBox
                             MinWidth="200"
@@ -150,7 +150,7 @@
                             IsEnabled="{Binding EnableJvmName}"
                             ItemsSource="{Binding JvmList}"
                             SelectedItem="{Binding JvmName}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <DockPanel Margin="0,0,10,0">
                         <Button
                             Width="100"

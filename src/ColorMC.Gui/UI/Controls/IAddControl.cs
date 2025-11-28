@@ -9,8 +9,14 @@ public interface IAddFileControl
     /// </summary>
     /// <param name="item"></param>
     public void SetSelect(FileVersionItemModel item);
-    void BackVersion();
-    void NextVersion();
+    /// <summary>
+    /// 上一页
+    /// </summary>
+    void LastVersionPage();
+    /// <summary>
+    /// 下一页
+    /// </summary>
+    void NextVersionPage();
 }
 
 /// <summary>
@@ -32,13 +38,23 @@ public interface IAddControl
     /// 显示详情页面
     /// </summary>
     public void ShowInfo(FileItemModel item);
-    void Back();
-    void Next();
+    /// <summary>
+    /// 上一页
+    /// </summary>
+    void LastListPage();
+    /// <summary>
+    /// 下一页
+    /// </summary>
+    void NextListPage();
     /// <summary>
     /// 安装选中的版本
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileVersionItemModel item);
+    /// <summary>
+    /// 返回界面
+    /// </summary>
+    public void Back();
 }
 
 /// <summary>

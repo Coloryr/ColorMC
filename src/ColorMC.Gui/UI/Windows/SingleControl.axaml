@@ -17,7 +17,7 @@
     FontFamily="{setting:Font}"
     mc:Ignorable="d">
     <Design.DataContext>
-        <model:BaseModel />
+        <model:WindowModel />
     </Design.DataContext>
     <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
         <Image
@@ -31,7 +31,6 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost
-                Name="Dialog"
                 Background="{setting:Theme ButtonBG}"
                 DisableOpeningAnimation="True"
                 Identifier="{Binding WindowId}"

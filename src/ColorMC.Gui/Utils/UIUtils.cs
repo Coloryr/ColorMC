@@ -1,7 +1,8 @@
+using System;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Avalonia.Markup.Xaml.Templates;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Avalonia.VisualTree;
@@ -12,50 +13,47 @@ using ColorMC.Gui.UI.Model.Dialog;
 
 namespace ColorMC.Gui.Utils;
 
+public class TemplateSelector : IDataTemplate
+{
+    private static readonly Dictionary<Type, Type> _templates = [];
+
+    static TemplateSelector()
+    {
+        _templates.Add(typeof(ProgressModel), typeof(ProgressControl));
+        _templates.Add(typeof(InputModel), typeof(InputControl));
+        _templates.Add(typeof(ChoiceModel), typeof(ChoiceControl));
+        _templates.Add(typeof(SelectModel), typeof(SelectControl));
+        _templates.Add(typeof(LongTextModel), typeof(LongTextControl));
+        _templates.Add(typeof(AddGroupModel), typeof(GroupEditControl));
+        _templates.Add(typeof(JoystickSettingModel), typeof(JoystickSettingControl));
+    }
+
+    public Control? Build(object? param)
+    {
+        var key = (param?.GetType())
+            ?? throw new ArgumentNullException(nameof(param));
+
+        if (_templates.TryGetValue(key, out var view))
+        {
+            return Activator.CreateInstance(view) as Control;
+        }
+
+        return null;
+    }
+
+    public bool Match(object? data)
+    {
+        var key = data?.GetType();
+        return key != null
+            && _templates.ContainsKey(key);
+    }
+}
+
 /// <summary>
 /// UI处理
 /// </summary>
 public static class UIUtils
 {
-    public static void InitDialog(DataTemplates templates)
-    {
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(ProgressModel),
-            Content = typeof(ProgressControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(InputModel),
-            Content = typeof(InputControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(ChoiceModel),
-            Content = typeof(ChoiceControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(SelectModel),
-            Content = typeof(SelectControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(LongTextModel),
-            Content = typeof(LongTextControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(AddGroupModel),
-            Content = typeof(GroupEditControl)
-        });
-        templates.Add(new DataTemplate
-        {
-            DataType = typeof(JoystickSettingModel),
-            Content = typeof(JoystickSettingControl)
-        });
-    }
-
     /// <summary>
     /// 测量左边距
     /// </summary>

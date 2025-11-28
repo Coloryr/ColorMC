@@ -10,9 +10,10 @@
     d:DesignWidth="800"
     x:DataType="model:FileItemDownloadModel"
     mc:Ignorable="d">
-    <Border Margin="10,5,10,5" Classes="t3">
+    <Border Margin="10,5,10,5" Classes="t5">
         <StackPanel Margin="15">
             <TextBlock
+                HorizontalAlignment="Center"
                 Foreground="{setting:Theme MainColor}"
                 Text="{Binding Name, FallbackValue=Name}"
                 TextTrimming="CharacterEllipsis" />
@@ -32,7 +33,7 @@
             </DockPanel>
             <ProgressBar
                 Height="10"
-                Margin="0,0,0,5"
+                Margin="0,0,0,10"
                 HorizontalAlignment="Stretch"
                 CornerRadius="20"
                 Maximum="100"

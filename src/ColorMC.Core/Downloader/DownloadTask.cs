@@ -122,5 +122,9 @@ internal class DownloadTask(IDownloadGui? gui, IProgressGui? pgui)
     public void UpdateItem(int index, FileItemObj obj)
     {
         gui?.UpdateItem(index, obj);
+        if (_allSize == 1 && pgui != null)
+        {
+            pgui?.SetNowProcess((int)(obj.NowSize / 1000), (int)(obj.AllSize / 1000));
+        }
     }
 }

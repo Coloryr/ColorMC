@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using ColorMC.Gui.Objs;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -76,12 +76,27 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// </summary>
     [ObservableProperty]
     private string? _text;
+    /// <summary>
+    /// 下载文本
+    /// </summary>
+    [ObservableProperty]
+    private string? _downloadText;
 
     /// <summary>
     /// 是否显示文件列表
     /// </summary>
     [ObservableProperty]
     private bool _displayVersion = false;
+    /// <summary>
+    /// 是否显示下载列表
+    /// </summary>
+    [ObservableProperty]
+    private bool _displayDownload = false;
+    /// <summary>
+    /// 是否有下载项目
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveDownload = false;
 
     /// <summary>
     /// 是否已经显示
@@ -148,16 +163,8 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// <param name="value"></param>
     partial void OnDisplayVersionChanged(bool value)
     {
-        if (value)
+        if (!value)
         {
-            Window.PushBack(back: () =>
-            {
-                DisplayVersion = false;
-            });
-        }
-        else
-        {
-            Window.PopBack();
             Window.Title = Title;
         }
     }
@@ -239,10 +246,17 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     public abstract void Install(FileVersionItemModel data);
     public abstract void Install(FileItemModel item);
 
+    public void Opened()
+    {
+        Display = true;
+        Source = 0;
+    }
+
     /// <summary>
     /// 上一页
     /// </summary>
-    public void Back()
+    [RelayCommand]
+    public void LastListPage()
     {
         if (_load || Page <= 0)
         {
@@ -252,11 +266,17 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
         Page -= 1;
     }
 
+    [RelayCommand]
+    public void ShowDownload()
+    {
+        DisplayDownload = !DisplayDownload;
+    }
+
     /// <summary>
     /// 下一页
     /// </summary>
     [RelayCommand]
-    public void Next()
+    public void NextListPage()
     {
         if (_load)
         {
@@ -321,6 +341,8 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
                 item.NowDownload = true;
             }
         }
+
+        DownloadReload();
     }
 
     /// <summary>
@@ -341,6 +363,8 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
                 item.IsDownload = done;
             }
         }
+
+        DownloadReload();
     }
 
     /// <summary>
@@ -362,5 +386,23 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     public override void Close()
     {
         ClearList();
+    }
+
+    public void Back()
+    {
+        DisplayVersion = false;
+    }
+
+    private void DownloadReload()
+    {
+        HaveDownload = NowDownload.Any();
+        if (HaveDownload)
+        {
+            DownloadText = string.Format(LanguageUtils.Get("AddModPackWindow.Text41"), NowDownload.Count);
+        }
+        else
+        {
+            DownloadText = "";
+        }
     }
 }

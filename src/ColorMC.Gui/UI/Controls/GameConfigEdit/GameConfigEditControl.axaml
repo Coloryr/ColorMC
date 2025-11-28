@@ -37,13 +37,12 @@
                 Classes="t2"
                 DockPanel.Dock="Top">
                 <StackPanel Margin="15,15,5,15" DockPanel.Dock="Top">
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <TextBox
                             Width="270"
                             Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
                             DockPanel.Dock="Right"
-                            IsVisible="{Binding !MinMode}"
                             Text="{Binding Name}"
                             Watermark="{setting:Localize GameEditWindow.Tab4.Text2}" />
                         <ComboBox
@@ -63,7 +62,7 @@
                             Content="{setting:Localize Text.RefashList}"
                             DockPanel.Dock="Right"
                             ToolTip.Tip="{setting:Localize ToolTip.Text41}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <panel:WrapPanelWithStretch RightMax="True">
                         <Button
                             Width="100"

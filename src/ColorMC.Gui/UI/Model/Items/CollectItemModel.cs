@@ -110,22 +110,6 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     }
 
     /// <summary>
-    /// 设置小模式
-    /// </summary>
-    /// <param name="min"></param>
-    public void SetMin(bool min)
-    {
-        if (min)
-        {
-            Width = double.NaN;
-        }
-        else
-        {
-            Width = DefaultWidth;
-        }
-    }
-
-    /// <summary>
     /// 清理图标
     /// </summary>
     public void Close()

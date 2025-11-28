@@ -8,6 +8,7 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
@@ -25,10 +26,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch
-                        IsEnabled="{Binding !CustomJson}"
-                        IsVisible="{Binding !CustomJson}"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel IsEnabled="{Binding !CustomJson}" IsVisible="{Binding !CustomJson}">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
@@ -55,8 +53,8 @@
                             Content="{setting:Localize Text.ReloadVersion}"
                             IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text13}" />
                             <ComboBox
@@ -75,7 +73,7 @@
                             Content="{setting:Localize Button.Refash}"
                             IsEnabled="{Binding !IsLoad}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text99}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <StackPanel
                         Margin="0,0,0,10"
                         IsVisible="{Binding !CustomJson}"
@@ -90,7 +88,7 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     </StackPanel>
                     <Decorator IsEnabled="{Binding !CustomJson}" IsVisible="{Binding !CustomJson}">
-                        <panel:WrapPanelWithStretch IsEnabled="{Binding !GameVersionEmpty}" RightMax="{Binding MinMode}">
+                        <WrapPanel IsEnabled="{Binding !GameVersionEmpty}">
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                                 <ComboBox
@@ -131,7 +129,7 @@
                                     Content="{setting:Localize Text.ReloadVersion}"
                                     ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                             </StackPanel>
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                     </Decorator>
                     <Decorator IsEnabled="{Binding !CustomJson}" IsVisible="{Binding !CustomJson}">
                         <StackPanel IsEnabled="{Binding CustomLoader}" IsVisible="{Binding CustomLoader}">
@@ -175,7 +173,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                             <ComboBox
@@ -193,7 +191,7 @@
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -294,7 +292,7 @@
                             IsEnabled="{Binding ModPack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}" />
                     </WrapPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="260">
                             <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />
                             <TextBox
@@ -303,8 +301,8 @@
                                 Text="{Binding PID}"
                                 Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch Margin="0,10,0,0" RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel Margin="0,10,0,0">
                         <DockPanel MinWidth="260">
                             <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text9}" />
                             <TextBox
@@ -313,7 +311,7 @@
                                 Text="{Binding FID}"
                                 Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -328,7 +326,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text18}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,0" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,0">
                         <DockPanel MinWidth="260">
                             <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text19}" />
                             <ComboBox
@@ -336,7 +334,7 @@
                                 ItemsSource="{Binding EncodingList}"
                                 SelectedIndex="{Binding Encoding}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <ToggleSwitch
                         IsChecked="{Binding LogAutoShow}"
                         OffContent="{setting:Localize GameEditWindow.Tab1.Text20}"

@@ -23,7 +23,7 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
-                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                        <WrapPanel>
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                                 <ComboBox
@@ -52,8 +52,8 @@
                                     ItemsSource="{Binding GameVersionList}"
                                     SelectedItem="{Binding GameVersion}" />
                             </DockPanel>
-                        </panel:WrapPanelWithStretch>
-                        <panel:WrapPanelWithStretch IsEnabled="{Binding SourceLoad}" RightMax="{Binding MinMode}">
+                        </WrapPanel>
+                        <WrapPanel IsEnabled="{Binding SourceLoad}">
                             <DockPanel MinWidth="190" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Sort}" />
                                 <ComboBox
@@ -70,7 +70,7 @@
                                     ItemsSource="{Binding CategorieList}"
                                     SelectedIndex="{Binding Categorie}" />
                             </DockPanel>
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <panel:WrapPanelWithStretch
                             Margin="0,0,0,-10"
                             IsEnabled="{Binding SourceLoad}"
@@ -127,7 +127,7 @@
                             Margin="6,0,6,5"
                             HorizontalAlignment="Stretch"
                             Classes="top"
-                            Command="{Binding Next}"
+                            Command="{Binding NextListPage}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
                             IsVisible="{Binding NextPage}" />
                     </StackPanel>
@@ -152,10 +152,7 @@
                     Margin="10,0,10,5"
                     Classes="t2"
                     DockPanel.Dock="Top">
-                    <panel:WrapPanelWithStretch
-                        Margin="15,15,5,5"
-                        DockPanel.Dock="Top"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="15,15,5,5" DockPanel.Dock="Top">
                         <DockPanel MinWidth="190" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
@@ -197,7 +194,7 @@
                                 Content="{setting:Localize AddModPackWindow.Text12}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text78}" />
                         </StackPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </Border>
                 <Panel>
                     <StackPanel IsVisible="{Binding !EmptyDisplay}">
@@ -241,10 +238,7 @@
                     Margin="10,0,10,5"
                     Classes="t2"
                     DockPanel.Dock="Top">
-                    <panel:WrapPanelWithStretch
-                        Margin="15,15,5,5"
-                        DockPanel.Dock="Top"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="15,15,5,5" DockPanel.Dock="Top">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                             <ComboBox
@@ -264,7 +258,7 @@
                                 Content="{setting:Localize AddModPackWindow.Text10}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
                         </Decorator>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </Border>
                 <Panel>
                     <ItemsControl

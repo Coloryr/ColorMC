@@ -21,50 +21,13 @@ public partial class SkinControl : BaseUserControl
     /// </summary>
     private FpsTimer _renderTimer;
 
-    private readonly SkinSideControl _side = new();
-
     public SkinControl() : base(WindowManager.GetUseName<SkinControl>())
     {
         InitializeComponent();
 
         Title = LanguageUtils.Get("SkinWindow.Title");
 
-        SidePanel3.PointerPressed += SidePanel3_PointerPressed;
-
         ImageManager.SkinChange += SkinChange;
-    }
-
-    private void SidePanel3_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        SidePanel3.IsVisible = false;
-    }
-
-    private void MinModelChange()
-    {
-        if (DataContext is SkinModel model)
-        {
-            if (model.MinMode)
-            {
-                Decorator1.IsVisible = false;
-                Decorator1.Child = null;
-                Decorator2.Child = _side;
-                model.Window.SetChoiseCall(WindowId, DisplaySide);
-                model.Window.SetChoiseContent(WindowId, LanguageUtils.Get("SkinWindow.Text10"));
-            }
-            else
-            {
-                SidePanel3.IsVisible = false;
-                Decorator1.IsVisible = true;
-                Decorator2.Child = null;
-                Decorator1.Child = _side;
-                model.Window.RemoveChoiseData(WindowId);
-            }
-        }
-    }
-
-    private void DisplaySide()
-    {
-        SidePanel3.IsVisible = !SidePanel3.IsVisible;
     }
 
     protected override void OnDataContextChanged(EventArgs e)
@@ -79,11 +42,7 @@ public partial class SkinControl : BaseUserControl
 
     private void Model_PropertyChanged1(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == ControlModel.MinModeName)
-        {
-            MinModelChange();
-        }
-        else if (e.PropertyName == SkinModel.ResetName)
+        if (e.PropertyName == SkinModel.ResetName)
         {
             Skin.Reset();
         }
@@ -122,7 +81,6 @@ public partial class SkinControl : BaseUserControl
                 });
             }
         };
-        MinModelChange();
     }
 
     public override void Closed()

@@ -7,12 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:utils="clr-namespace:ColorMC.Gui.Utils"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:WindowModel"
     Background="{setting:Theme WindowTranColor}"
     mc:Ignorable="d">
+    <Design.DataContext>
+        <model:WindowModel />
+    </Design.DataContext>
     <Image
         IsVisible="{Binding BgVisible}"
         Opacity="{Binding BgOpacity}"
@@ -24,12 +28,14 @@
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
         <dialog:DialogHost
-            Name="Dialog"
             Background="{setting:Theme ButtonBG}"
             DisableOpeningAnimation="True"
             Identifier="{Binding WindowId}"
             IsMultipleDialogsEnabled="True"
             OverlayBackground="Transparent">
+            <dialog:DialogHost.DataTemplates>
+                <utils:TemplateSelector />
+            </dialog:DialogHost.DataTemplates>
             <Decorator Name="MainControl" />
         </dialog:DialogHost>
     </DockPanel>

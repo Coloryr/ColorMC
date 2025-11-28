@@ -103,7 +103,7 @@ public partial class AddGameModel
         }
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
-        var pack = new TopModPackGui(Window, dialog);
+        var pack = new TopModPackGui(dialog);
         var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new OverGameGui(Window), pack);
         pack.Stop();
         Window.CloseDialog(dialog);

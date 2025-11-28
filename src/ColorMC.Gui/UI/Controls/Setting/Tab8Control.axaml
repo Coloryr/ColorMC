@@ -9,6 +9,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:views="clr-namespace:ColorMC.Gui.UI.Views"
+    d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -43,7 +44,7 @@
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
                                 <TextBlock Text="{Binding InputNum}" />
                             </DockPanel>
-                            <panel:WrapPanelWithStretch Margin="0,0,10,10" RightMax="{Binding MinMode}">
+                            <WrapPanel Margin="0,0,10,10">
                                 <DockPanel MinWidth="230">
                                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
                                     <ComboBox
@@ -51,8 +52,8 @@
                                         ItemsSource="{Binding InputNames}"
                                         SelectedIndex="{Binding InputIndex}" />
                                 </DockPanel>
-                            </panel:WrapPanelWithStretch>
-                            <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                            </WrapPanel>
+                            <WrapPanel>
                                 <DockPanel MinWidth="230" Margin="0,0,10,10">
                                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
                                     <ComboBox
@@ -67,7 +68,7 @@
                                         ItemsSource="{Binding Configs}"
                                         SelectedIndex="{Binding NowConfig}" />
                                 </DockPanel>
-                            </panel:WrapPanelWithStretch>
+                            </WrapPanel>
                             <WrapPanel Margin="0,0,10,-5">
                                 <Button
                                     Width="100"
@@ -211,7 +212,7 @@
                         DockPanel.Dock="Bottom"
                         Text="{setting:Localize SettingWindow.Tab8.Text16}"
                         TextWrapping="Wrap" />
-                    <panel:WrapPanelWithStretch DockPanel.Dock="Bottom" RightMax="{Binding MinMode}">
+                    <WrapPanel DockPanel.Dock="Bottom">
                         <DockPanel MinWidth="260">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text15}" />
                             <TextBlock
@@ -225,7 +226,7 @@
                                 Maximum="1"
                                 Value="{Binding ToBackValue}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <DataGrid
                         Name="DataGrid2"
                         Height="300"
@@ -287,7 +288,7 @@
                             Path="/Resource/Icon/Setting/svg24.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab8.Text17}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text18}" />
                             <ComboBox
@@ -302,9 +303,9 @@
                                 ItemsSource="{Binding AxisType}"
                                 SelectedIndex="{Binding InputCursorAxis}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab8.Text20}" />
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-10">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text22}" />
                             <Panel>
@@ -369,8 +370,8 @@
                                 </DockPanel>
                             </Panel>
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel Margin="0,0,0,-10">
                         <DockPanel MinWidth="260" Margin="0,0,10,-10">
                             <TextBlock Margin="0,-10,5,0" Text="{setting:Localize SettingWindow.Tab8.Text23}" />
                             <TextBlock
@@ -419,7 +420,7 @@
                                 SmallChange="0.01"
                                 Value="{Binding DownRate}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border

@@ -41,7 +41,7 @@
                                 Path="/Resource/Icon/Setting/svg7.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                         </StackPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
+                        <WrapPanel Margin="0,0,0,-10">
                             <DockPanel MinWidth="230" Margin="0,0,10,10">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.DownloadSource}" />
                                 <ComboBox
@@ -58,7 +58,7 @@
                                     Minimum="1"
                                     Value="{Binding Thread}" />
                             </DockPanel>
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <WrapPanel>
                             <ToggleSwitch
                                 Margin="0,0,20,0"

@@ -18,10 +18,7 @@
             Classes="t2"
             DockPanel.Dock="Top">
             <WrapPanel Margin="15,15,15,5">
-                <panel:WrapPanelWithStretch
-                    Margin="0,0,0,5"
-                    HorizontalAlignment="Left"
-                    RightMax="{Binding MinMode}">
+                <WrapPanel Margin="0,0,0,5" HorizontalAlignment="Left">
                     <ToggleSwitch
                         Margin="0,0,10,0"
                         VerticalAlignment="Center"
@@ -39,7 +36,7 @@
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding FileList}"
                         SelectedItem="{Binding File}" />
-                </panel:WrapPanelWithStretch>
+                </WrapPanel>
                 <WrapPanel Margin="0,0,0,-5">
                     <Button
                         Width="100"
@@ -109,7 +106,7 @@
                         Content="{setting:Localize GameLogWindow.Text14}"
                         IsChecked="{Binding EnableNone}" />
                 </WrapPanel>
-                <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                <WrapPanel>
                     <DockPanel MinWidth="230" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text15}" />
                         <ComboBox
@@ -124,7 +121,7 @@
                             ItemsSource="{Binding Categorys}"
                             SelectedItem="{Binding SelectCategory}" />
                     </DockPanel>
-                </panel:WrapPanelWithStretch>
+                </WrapPanel>
             </WrapPanel>
         </Border>
         <ae:TextEditor

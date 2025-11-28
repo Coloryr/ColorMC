@@ -10,7 +10,7 @@
     Title="{Binding Title}"
     Width="760"
     Height="450"
-    MinWidth="335"
+    MinWidth="760"
     MinHeight="450"
     d:DesignHeight="450"
     d:DesignWidth="760"
@@ -25,8 +25,7 @@
     TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
     <Design.DataContext>
-        <model:BaseModel />
+        <model:WindowModel />
     </Design.DataContext>
-
     <views1:SingleControl Name="Win" />
 </Window>
