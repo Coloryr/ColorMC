@@ -78,11 +78,12 @@ public static class LanguageUtils
     {
         return state switch
         {
+            ModpackState.DownloadPack => Get("Type.ModpackState.Item6"),
             ModpackState.ReadInfo => Get("Type.ModpackState.Item1"),
             ModpackState.GetInfo => Get("Type.ModpackState.Item2"),
             ModpackState.DownloadFile => Get("Type.ModpackState.Item3"),
             ModpackState.Unzip => Get("Type.ModpackState.Item4"),
-            ModpackState.Done => Get("Type.ModpackState.Item55"),
+            ModpackState.Done => Get("Type.ModpackState.Item5"),
             _ => ""
         };
     }

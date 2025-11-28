@@ -8,12 +8,14 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     VerticalAlignment="Top"
+    d:DesignHeight="120"
+    d:DesignWidth="80"
     x:DataType="model:GameItemModel"
     IsVisible="{Binding IsDisplay}"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Panel Background="Transparent">
-        <Panel Width="80" IsVisible="{Binding !MinMode, FallbackValue=false}">
+        <Panel Width="80">
             <Button
                 Width="68"
                 HorizontalAlignment="Center"
@@ -73,74 +75,6 @@
                         TextTrimming="{Binding Trim}"
                         TextWrapping="{Binding Wrap}" />
                 </StackPanel>
-            </Button>
-        </Panel>
-        <Panel IsVisible="{Binding MinMode, FallbackValue=true}">
-            <Button
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="{Binding AddGame}"
-                CornerRadius="5"
-                IsHitTestVisible="{Binding !ShowCheck}"
-                IsVisible="{Binding IsNew, FallbackValue=false}">
-                <StackPanel Margin="5" Orientation="Horizontal">
-                    <svg:SvgControl
-                        Width="65"
-                        Height="65"
-                        Path="/Resource/Icon/add1.svg" />
-                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
-                </StackPanel>
-            </Button>
-            <Button
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Stretch"
-                Background="Transparent"
-                BorderThickness="0"
-                IsHitTestVisible="{Binding !ShowCheck}"
-                IsVisible="{Binding !IsNew, FallbackValue=True}">
-                <DockPanel Margin="5">
-                    <Panel>
-                        <Border
-                            Width="70"
-                            Height="70"
-                            VerticalAlignment="Center"
-                            CornerRadius="5">
-                            <Border.Background>
-                                <ImageBrush Source="{Binding Pic}" Stretch="UniformToFill" />
-                            </Border.Background>
-                        </Border>
-                        <Image
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding IsLaunch}"
-                            Source="resm:ColorMC.Gui.Resource.Pic.launch.png"
-                            Stretch="UniformToFill" />
-                        <Image
-                            Width="30"
-                            Height="30"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            IsVisible="{Binding IsLoad}"
-                            Source="resm:ColorMC.Gui.Resource.Pic.load.png"
-                            Stretch="UniformToFill" />
-                    </Panel>
-                    <StackPanel VerticalAlignment="Center">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="13"
-                            Text="{Binding Name, FallbackValue=1234}"
-                            TextAlignment="Center"
-                            TextTrimming="{Binding Trim}"
-                            TextWrapping="{Binding Wrap}" />
-                    </StackPanel>
-                </DockPanel>
             </Button>
         </Panel>
         <Decorator IsEnabled="{Binding !ShowCheck}">

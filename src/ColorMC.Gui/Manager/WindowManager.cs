@@ -217,7 +217,7 @@ public static class WindowManager
         }
 
 #if DEBUG
-        new TestWindow().Show();
+        //new TestWindow().Show();
 #endif
     }
 

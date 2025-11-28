@@ -130,6 +130,7 @@ public static class AddGameHelper
     {
         packgui?.SetState(ModpackState.ReadInfo);
         packgui?.SetNow(1, 5);
+        packgui?.SetNowSub(0, 1);
 
         using IModPackWork work = type switch
         {
@@ -147,6 +148,7 @@ public static class AddGameHelper
 
         packgui?.SetState(ModpackState.Unzip);
         packgui?.SetNow(2, 5);
+        packgui?.SetNowSub(0, 1);
 
         if (!await work.Unzip())
         {
@@ -158,6 +160,7 @@ public static class AddGameHelper
 
         packgui?.SetState(ModpackState.GetInfo);
         packgui?.SetNow(3, 5);
+        packgui?.SetNowSub(0, 1);
 
         if (!await work.GetInfo())
         {
@@ -165,7 +168,7 @@ public static class AddGameHelper
         }
 
         packgui?.SetSubText(null);
-        packgui?.SetNowSub(0, 0);
+        packgui?.SetNowSub(0, 1);
         packgui?.SetState(ModpackState.DownloadFile);
         packgui?.SetNow(4, 5);
 
@@ -630,11 +633,16 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">整合包信息</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, string? icon, IOverGameGui? gui, IModPackGui? packgui)
+    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, 
+        string? icon, IOverGameGui? gui, IModPackGui? packgui)
     {
+        packgui?.SetState(ModpackState.DownloadPack);
+
         var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
 
-        var res1 = await DownloadManager.StartAsync([item]);
+        packgui?.SetSubText(item.Name);
+        var res1 = await DownloadManager.StartAsync([item], packgui);
+        packgui?.SetSubText(null);
         if (!res1)
         {
             return new GameRes();

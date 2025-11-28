@@ -40,8 +40,7 @@ public partial class AddModPackControl : BaseUserControl
 
     public override void Opened()
     {
-        (DataContext as AddModPackControlModel)!.Source = 0;
-        (DataContext as AddModPackControlModel)!.Display = true;
+        (DataContext as AddModPackControlModel)?.Opened();
     }
 
     protected override ControlModel GenModel(WindowModel model)
@@ -66,6 +65,17 @@ public partial class AddModPackControl : BaseUserControl
             else
             {
                 ThemeManager.CrossFade.Start(ItemInfo, null);
+            }
+        }
+        else if (e.PropertyName == nameof(AddModPackControlModel.DisplayDownload))
+        {
+            if ((DataContext as AddModPackControlModel)!.DisplayDownload)
+            {
+                ThemeManager.CrossFade.Start(null, DownloadInfo);
+            }
+            else
+            {
+                ThemeManager.CrossFade.Start(DownloadInfo, null);
             }
         }
     }

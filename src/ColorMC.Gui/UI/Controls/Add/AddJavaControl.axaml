@@ -17,10 +17,7 @@
             Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel>
-                <panel:WrapPanelWithStretch
-                    Margin="15,15,5,-10"
-                    RightMax="{Binding MinMode}"
-                    DockPanel.Dock="Top">
+                <WrapPanel Margin="15,15,5,-10" DockPanel.Dock="Top">
                     <DockPanel MinWidth="150" Margin="0,0,10,10">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                         <ComboBox
@@ -51,7 +48,7 @@
                             SelectedIndex="{Binding ArchIndex}"
                             SelectedItem="{Binding Arch}" />
                     </DockPanel>
-                </panel:WrapPanelWithStretch>
+                </WrapPanel>
                 <TextBlock
                     Margin="15,0,15,15"
                     DockPanel.Dock="Bottom"

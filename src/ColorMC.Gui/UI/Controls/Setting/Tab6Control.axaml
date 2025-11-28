@@ -88,7 +88,7 @@
                                 Path="/Resource/Icon/Setting/svg18.svg" />
                             <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text27}" />
                         </StackPanel>
-                        <panel:WrapPanelWithStretch Margin="0,0,0,0" RightMax="{Binding MinMode}">
+                        <WrapPanel Margin="0,0,0,0">
                             <ToggleSwitch
                                 Margin="0,0,10,5"
                                 IsChecked="{Binding EnableOneGame}"
@@ -101,7 +101,7 @@
                                 IsEnabled="{Binding EnableOneGame}"
                                 ItemsSource="{Binding GameList}"
                                 SelectedIndex="{Binding Game}" />
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <DockPanel>
                             <Button
                                 Width="100"
@@ -265,7 +265,7 @@
                                 OffContent="{setting:Localize SettingWindow.Tab6.Text26}"
                                 OnContent="{setting:Localize SettingWindow.Tab6.Text26}" />
                         </WrapPanel>
-                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                        <WrapPanel>
                             <DockPanel MinWidth="260">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text18}" />
                                 <TextBlock
@@ -287,7 +287,7 @@
                                     TickFrequency="1"
                                     Value="{Binding Volume}" />
                             </DockPanel>
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <TextBox
                             Margin="0,5,0,5"
                             Classes="input1"

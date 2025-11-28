@@ -10,7 +10,7 @@
     Title="{Binding Title}"
     Width="770"
     Height="460"
-    MinWidth="345"
+    MinWidth="770"
     MinHeight="460"
     d:DesignHeight="460"
     d:DesignWidth="770"
@@ -25,9 +25,8 @@
     TransparencyLevelHint="{Binding Hints}"
     mc:Ignorable="d">
     <Design.DataContext>
-        <model:BaseModel />
+        <model:WindowModel />
     </Design.DataContext>
-
     <Panel>
         <view:BorderControl />
         <view:SingleControl Name="Win" Margin="5" />

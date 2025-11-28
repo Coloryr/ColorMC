@@ -25,8 +25,7 @@
                     Command="{Binding AddPackGame}"
                     Content="{setting:Localize AddGameWindow.Text1}"
                     DockPanel.Dock="Bottom"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                     />
+                    ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
                 <StackPanel>
                     <TextBox
                         Height="30"
@@ -45,8 +44,7 @@
                             Command="{Binding SelectPack}"
                             Content="{setting:Localize AddGameWindow.Tab2.Text3}"
                             DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text85}"
-                             />
+                            ToolTip.Tip="{setting:Localize ToolTip.Text85}" />
                         <TextBox
                             Height="30"
                             Margin="0,0,10,0"
@@ -62,7 +60,7 @@
                             Path="/Resource/Icon/AddMenu/item2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
@@ -70,7 +68,7 @@
                                 ItemsSource="{Binding PackTypeList}"
                                 SelectedIndex="{Binding Type}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -79,7 +77,7 @@
                             Path="/Resource/Icon/GameEdit/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                             <ComboBox
@@ -96,9 +94,8 @@
                             Classes="top"
                             Command="{Binding AddGroup}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}"
-                             />
-                    </panel:WrapPanelWithStretch>
+                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
+                    </WrapPanel>
                 </StackPanel>
             </DockPanel>
         </Border>

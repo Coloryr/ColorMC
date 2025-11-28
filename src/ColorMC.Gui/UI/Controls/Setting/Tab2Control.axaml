@@ -42,7 +42,7 @@
                             Path="/Resource/Icon/Setting/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-5">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -63,7 +63,7 @@
                             IsEnabled="{Binding EnableWindowTran}"
                             ItemsSource="{Binding TranTypeList}"
                             SelectedIndex="{Binding WindowTranType}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <ToggleSwitch
                         Margin="0,0,10,10"
                         VerticalAlignment="Center"
@@ -87,7 +87,7 @@
                             Path="/Resource/Icon/Setting/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-5" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-5">
                         <DockPanel MinWidth="180" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
                             <ComboBox
@@ -115,7 +115,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <TextBlock
                         Margin="0,0,10,0"
                         Text="{setting:Localize SettingWindow.Tab2.Text21}"
@@ -137,10 +137,7 @@
                         IsChecked="{Binding EnableAm}"
                         OffContent="{setting:Localize SettingWindow.Tab2.Text63}"
                         OnContent="{setting:Localize SettingWindow.Tab2.Text63}" />
-                    <panel:WrapPanelWithStretch
-                        Margin="0,0,0,-10"
-                        IsEnabled="{Binding EnableAm}"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding EnableAm}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
                             <TextBlock
@@ -166,7 +163,7 @@
                             IsChecked="{Binding AmFade}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text42}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text42}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -218,10 +215,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text61}"
                             DockPanel.Dock="Right" />
                     </WrapPanel>
-                    <panel:WrapPanelWithStretch
-                        Margin="0,0,0,0"
-                        IsEnabled="{Binding EnableBG}"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableBG}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
                             <TextBlock
@@ -251,11 +245,8 @@
                             Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize Text.Set}" />
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch
-                        Margin="0,0,0,0"
-                        IsEnabled="{Binding EnableBG}"
-                        RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableBG}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
                             <TextBlock
@@ -285,8 +276,8 @@
                             Classes="top"
                             Command="{Binding SetPicTran}"
                             Content="{setting:Localize Text.Set}" />
-                    </panel:WrapPanelWithStretch>
-                    <panel:WrapPanelWithStretch IsEnabled="{Binding EnableBG}" RightMax="{Binding MinMode}">
+                    </WrapPanel>
+                    <WrapPanel IsEnabled="{Binding EnableBG}">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -322,7 +313,7 @@
                             Command="{Binding SetPicSize}"
                             Content="{setting:Localize Text.Set}"
                             IsEnabled="{Binding EnablePicResize}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />
                 </StackPanel>
             </Border>
@@ -375,10 +366,7 @@
                         IsChecked="{Binding EnableRGB}"
                         OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
                         OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
-                    <panel:WrapPanelWithStretch
-                        Margin="0,0,0,0"
-                        IsEnabled="{Binding EnableRGB}"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableRGB}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                             <TextBlock
@@ -419,7 +407,7 @@
                                 TickFrequency="1"
                                 Value="{Binding RgbV2}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab2.Text62}" />
                     <WrapPanel Margin="0,0,0,-5">
                         <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
@@ -469,10 +457,7 @@
                             GroupName="Group2"
                             IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}" />
                     </WrapPanel>
-                    <panel:WrapPanelWithStretch
-                        Margin="0,0,0,-10"
-                        IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}"
-                        RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />
                             <TextBlock
@@ -513,7 +498,7 @@
                                 TickFrequency="1"
                                 Value="{Binding HeadY}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

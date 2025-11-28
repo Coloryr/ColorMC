@@ -60,12 +60,6 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     private bool _enableNextPageDownload;
 
     /// <summary>
-    /// 是否为小界面模式
-    /// </summary>
-    [ObservableProperty]
-    private bool _minMode;
-
-    /// <summary>
     /// 选中的文件
     /// </summary>
     [ObservableProperty]
@@ -147,6 +141,12 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
         {
             add.Install(Item);
         }
+    }
+
+    [RelayCommand]
+    public void CloseView()
+    {
+        add.Back();
     }
 
     /// <summary>
@@ -231,7 +231,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     /// <summary>
     /// 返回上一页
     /// </summary>
-    public void BackVersion()
+    public void LastVersionPage()
     {
         if (_load || PageDownload <= 0)
         {
@@ -244,7 +244,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     /// <summary>
     /// 下一页
     /// </summary>
-    public void NextVersion()
+    public void NextVersionPage()
     {
         if (_load)
         {

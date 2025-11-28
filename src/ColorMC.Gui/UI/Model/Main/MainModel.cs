@@ -42,11 +42,6 @@ public partial class MainModel : ControlModel, IMutTop
     [ObservableProperty]
     private bool _isGameError;
     /// <summary>
-    /// 是否显示侧边栏
-    /// </summary>
-    [ObservableProperty]
-    private bool _sideDisplay = true;
-    /// <summary>
     /// 是否显示音乐
     /// </summary>
     [ObservableProperty]
@@ -180,14 +175,6 @@ public partial class MainModel : ControlModel, IMutTop
     public void OpenNews()
     {
         WindowManager.ShowNews();
-    }
-
-    protected override void MinModeChange()
-    {
-        foreach (var item in GameGroups)
-        {
-            item.SetMinMode(MinMode);
-        }
     }
 
     /// <summary>

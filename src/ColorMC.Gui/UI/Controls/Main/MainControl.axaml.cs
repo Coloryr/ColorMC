@@ -337,74 +337,11 @@ public partial class MainControl : BaseUserControl
             {
                 if (!model.HaveCard)
                 {
-                    if (!model.MinMode)
-                    {
-                        model.SideDisplay = false;
-                    }
                     ContentOut.Margin = new(0, 0, 20, 0);
                 }
                 else
                 {
-                    if (!model.MinMode)
-                    {
-                        model.SideDisplay = true;
-                        ContentOut.Margin = new(0, 0, 10, 0);
-                    }
-                    else
-                    {
-                        model.SideDisplay = false;
-                        ContentOut.Margin = new(0, 0, 20, 0);
-                    }
-                }
-            }
-        }
-        else if (e.PropertyName == ControlModel.MinModeName)
-        {
-            if (DataContext is MainModel model)
-            {
-                if (model.MinMode)
-                {
-                    //TopRight.IsVisible = false;
-
-                    Head.Children.Remove(HeadTop);
-                    ContentTop.Children.Add(HeadTop);
-                    HeadTop.Margin = new(0, 0, 0, 10);
-
-                    //TopRight.Child = null;
-                    //ContentTop.Children.Add(UserButton);
-                    //UserButton.Margin = new(0, 0, 0, 10);
-
-                    Right.Child = null;
-                    ContentTop.Children.Add(RightSide);
-
-                    model.SideDisplay = false;
-                    ContentOut.Margin = new(0, 0, 20, 0);
-                }
-                else
-                {
-                    //TopRight.IsVisible = true;
-
-                    ContentTop.Children.Remove(HeadTop);
-                    Head.Children.Add(HeadTop);
-                    HeadTop.Margin = new(0, 0, 10, 0);
-
-                    //ContentTop.Children.Remove(UserButton);
-                    //TopRight.Child = UserButton;
-                    //UserButton.Margin = new(0);
-
-                    ContentTop.Children.Remove(RightSide);
-                    Right.Child = RightSide;
-
-                    if (!model.HaveCard)
-                    {
-                        model.SideDisplay = false;
-                        ContentOut.Margin = new(0, 0, 20, 0);
-                    }
-                    else
-                    {
-                        model.SideDisplay = true;
-                        ContentOut.Margin = new(0, 0, 10, 0);
-                    }
+                    ContentOut.Margin = new(0, 0, 10, 0);
                 }
             }
         }

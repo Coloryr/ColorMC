@@ -24,7 +24,7 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15">
-                        <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                        <WrapPanel>
                             <DockPanel MinWidth="230" Margin="0,0,5,0">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize CollectWindow.Text1}" />
                                 <ComboBox
@@ -60,7 +60,7 @@
                                 Command="{Binding InstallSelect}"
                                 Content="{setting:Localize CollectWindow.Text6}"
                                 IsEnabled="{Binding HaveChoise}" />
-                        </panel:WrapPanelWithStretch>
+                        </WrapPanel>
                         <WrapPanel Margin="0,0,0,-5">
                             <CheckBox
                                 Margin="0,0,10,0"
@@ -83,7 +83,9 @@
                         VerticalAlignment="Stretch"
                         ItemsSource="{Binding CollectList}">
                         <ItemsControl.ItemsPanel>
-                            <Binding Converter="{StaticResource MinModeToPanelTemplateConverter}" Path="MinMode" />
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

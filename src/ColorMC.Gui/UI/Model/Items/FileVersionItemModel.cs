@@ -105,7 +105,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public void Back()
     {
-        AddFile?.BackVersion();
+        AddFile?.LastVersionPage();
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public void Next()
     {
-        AddFile?.NextVersion();
+        AddFile?.NextVersionPage();
     }
 
     /// <summary>

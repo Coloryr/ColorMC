@@ -661,14 +661,6 @@ public partial class UsersModel : ControlModel
         Add(model);
     }
 
-    protected override void MinModeChange()
-    {
-        foreach (var item in UserList)
-        {
-            item.SetMin(MinMode);
-        }
-    }
-
     public void ReloadHead()
     {
         foreach (var item in UserList)

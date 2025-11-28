@@ -576,6 +576,10 @@ public enum ErrorType
 public enum ModpackState
 { 
     /// <summary>
+    /// 下载
+    /// </summary>
+    DownloadPack,
+    /// <summary>
     /// 读取压缩包信息
     /// </summary>
     ReadInfo,

@@ -8,7 +8,5 @@ public partial class MainView : Panel
     public MainView()
     {
         InitializeComponent();
-
-        UIUtils.InitDialog(Dialog.DataTemplates);
     }
 }

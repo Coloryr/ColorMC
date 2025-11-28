@@ -56,27 +56,6 @@ public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
     }
 
     /// <summary>
-    /// 窗口宽度切换
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="width"></param>
-    public override void WidthChange(int index, double width)
-    {
-        if (index != 0)
-        {
-            return;
-        }
-        if (width < 450)
-        {
-            MinMode = true;
-        }
-        else
-        {
-            MinMode = false;
-        }
-    }
-
-    /// <summary>
     /// 设置菜单
     /// </summary>
     /// <param name="items"></param>

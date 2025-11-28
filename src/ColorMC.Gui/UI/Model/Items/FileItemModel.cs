@@ -444,7 +444,7 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public void Back()
     {
-        Add?.Back();
+        Add?.LastListPage();
     }
 
     /// <summary>
@@ -452,7 +452,7 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public void Next()
     {
-        Add?.Next();
+        Add?.NextListPage();
     }
     /// <summary>
     /// 显示详情

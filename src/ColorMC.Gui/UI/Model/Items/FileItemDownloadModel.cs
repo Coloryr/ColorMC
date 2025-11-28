@@ -32,7 +32,7 @@ public partial class FileItemDownloadModel : ObservableObject
     /// 当前信息
     /// </summary>
     [ObservableProperty]
-    private string _subInfo;
+    private string? _subInfo;
     /// <summary>
     /// 进度
     /// </summary>

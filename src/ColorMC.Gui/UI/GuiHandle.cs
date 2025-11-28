@@ -73,7 +73,6 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
 
 public class TopModPackGui : IModPackGui
 {
-    private readonly WindowModel _model;
     private readonly ProgressModel _progress;
 
     private bool _isRun;
@@ -81,10 +80,10 @@ public class TopModPackGui : IModPackGui
 
     private int _size, _all;
 
-    public TopModPackGui(WindowModel model, ProgressModel progress)
+    public TopModPackGui(ProgressModel progress)
     {
         _progress = progress;
-        _model = model;
+        _isRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
     }
 
@@ -325,12 +324,13 @@ public class ModpackGui : IModPackGui
     public ModpackGui(FileItemDownloadModel info)
     {
         _info = info;
+        _isRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
     }
 
     public void SetNow(int value, int all)
     {
-        _info.Now = (double)value / all;
+        _info.Now = (double)value / all * 100;
     }
 
     public void SetNowProcess(int value, int all)
@@ -342,13 +342,14 @@ public class ModpackGui : IModPackGui
 
     public void SetNowSub(int value, int all)
     {
-        _info.NowSub = (double)value / all;
+        _info.NowSub = (double)value / all * 100;
     }
 
     public void SetState(ModpackState state)
     {
         _info.Info = state.GetName();
-        if (state is ModpackState.GetInfo or ModpackState.Unzip or ModpackState.DownloadFile)
+        if (state is ModpackState.DownloadPack or ModpackState.GetInfo
+            or ModpackState.Unzip or ModpackState.DownloadFile)
         {
             _info.ShowSub = true;
         }
@@ -356,18 +357,27 @@ public class ModpackGui : IModPackGui
         {
             _info.ShowSub = false;
         }
+
+        if (state == ModpackState.GetInfo)
+        {
+            _info.SubInfo = LanguageUtils.Get("App.Text115");
+        }
+        else if (state == ModpackState.DownloadFile)
+        {
+            _info.SubInfo = LanguageUtils.Get("AddGameWindow.Tab2.Text7");
+        }
     }
 
     public void SetSubText(string? text)
     {
-        _info.Info = text;
+        _info.SubInfo = text;
     }
 
     private bool Run()
     {
         if (_haveUpdate)
         {
-            _info.NowSub = (double)_size / _all;
+            _info.NowSub = (double)_size / _all * 100;
         }
         _haveUpdate = false;
         return _isRun;

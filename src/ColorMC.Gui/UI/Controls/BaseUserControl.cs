@@ -12,7 +12,7 @@ namespace ColorMC.Gui.UI.Controls;
 /// <summary>
 /// 基础页面
 /// </summary>
-public abstract class BaseUserControl : UserControl, IBaseControl
+public abstract class BaseUserControl(string id) : UserControl, IBaseControl
 {
     /// <summary>
     /// 实际窗口
@@ -42,14 +42,7 @@ public abstract class BaseUserControl : UserControl, IBaseControl
     /// <summary>
     /// 窗口Id
     /// </summary>
-    public string WindowId { get; private init; }
-
-    public BaseUserControl(string id)
-    {
-        WindowId = id;
-
-        SizeChanged += BaseUserControl_SizeChanged;
-    }
+    public string WindowId => id;
 
     /// <summary>
     /// 设置模型
@@ -142,14 +135,6 @@ public abstract class BaseUserControl : UserControl, IBaseControl
         if (e.PropertyName == ControlModel.WindowCloseName)
         {
             Window?.Close();
-        }
-    }
-
-    private void BaseUserControl_SizeChanged(object? sender, SizeChangedEventArgs e)
-    {
-        if (DataContext is ControlModel model)
-        {
-            model.WidthChange(-1, e.NewSize.Width);
         }
     }
 }

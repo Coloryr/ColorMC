@@ -124,7 +124,7 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
-                    <panel:WrapPanelWithStretch Margin="0,0,0,-10" RightMax="{Binding MinMode}">
+                    <WrapPanel Margin="0,0,0,-10">
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
                             <NumericUpDown
@@ -150,7 +150,7 @@
                             IsChecked="{Binding FullScreen}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -167,7 +167,7 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{Binding Memory}" />
-                    <panel:WrapPanelWithStretch RightMax="{Binding MinMode}">
+                    <WrapPanel>
                         <DockPanel MinWidth="230" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                             <NumericUpDown
@@ -194,7 +194,7 @@
                                 ItemsSource="{Binding GCTypeList}"
                                 SelectedIndex="{Binding GC}" />
                         </DockPanel>
-                    </panel:WrapPanelWithStretch>
+                    </WrapPanel>
                     <!--  Jvm附加参数  -->
                     <TextBox
                         Margin="0,0,10,10"
