@@ -6,10 +6,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="250"
+    d:DesignWidth="500"
     x:DataType="model:FileVersionItemModel"
     mc:Ignorable="d">
     <Border
-        Margin="10,5,10,5"
+        Margin="5,5,5,5"
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"
         CornerRadius="5">

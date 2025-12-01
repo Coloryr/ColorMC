@@ -32,7 +32,6 @@
             DisableOpeningAnimation="True"
             Identifier="{Binding WindowId}"
             IsMultipleDialogsEnabled="True"
-			DialogMargin="0"
             OverlayBackground="Transparent">
             <dialog:DialogHost.DataTemplates>
                 <utils:TemplateSelector />
