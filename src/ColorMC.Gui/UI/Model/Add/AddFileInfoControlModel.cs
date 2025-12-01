@@ -30,12 +30,12 @@ public partial class AddBaseModel : IAddFileControl
     /// 文件列表当前页数
     /// </summary>
     [ObservableProperty]
-    private int? _pageDownload = 0;
+    private int? _pageVersion = 1;
     /// <summary>
     /// 文件列表最大页数
     /// </summary>
     [ObservableProperty]
-    private int _maxPageDownload;
+    private int _maxPageVersion;
     /// <summary>
     /// 文件列表游戏版本
     /// </summary>
@@ -47,11 +47,6 @@ public partial class AddBaseModel : IAddFileControl
     /// </summary>
     [ObservableProperty]
     private bool _emptyVersionDisplay;
-    /// <summary>
-    /// 是否允许文件列表下一页
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableNextPageDownload;
     /// <summary>
     /// 是否显示项目详情
     /// </summary>
@@ -68,6 +63,17 @@ public partial class AddBaseModel : IAddFileControl
     /// </summary>
     [ObservableProperty]
     private int _selectIndex = 0;
+
+    /// <summary>
+    /// 项目列表是否有下一页
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveNextVersionPage;
+    /// <summary>
+    /// 是否有上一页
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveLastVersionPage;
 
     partial void OnSelectIndexChanged(int value)
     {
@@ -86,7 +92,7 @@ public partial class AddBaseModel : IAddFileControl
     /// 页数改变
     /// </summary>
     /// <param name="value"></param>
-    partial void OnPageDownloadChanged(int? value)
+    partial void OnPageVersionChanged(int? value)
     {
         if (_load)
         {
@@ -108,6 +114,34 @@ public partial class AddBaseModel : IAddFileControl
         }
 
         LoadVersion(Last.SourceType, Last.ID);
+    }
+
+    /// <summary>
+    /// 返回上一页
+    /// </summary>
+    [RelayCommand]
+    public void LastVersionPage()
+    {
+        if (_load || PageVersion <= 1)
+        {
+            return;
+        }
+
+        PageVersion -= 1;
+    }
+
+    /// <summary>
+    /// 下一页
+    /// </summary>
+    [RelayCommand]
+    public void NextVersionPage()
+    {
+        if (_load)
+        {
+            return;
+        }
+
+        PageVersion += 1;
     }
 
     /// <summary>
@@ -141,6 +175,8 @@ public partial class AddBaseModel : IAddFileControl
     public void CloseView()
     {
         DisplayItemInfo = false;
+        FileList.Clear();
+        SelectIndex = 0;
     }
 
     /// <summary>
@@ -152,18 +188,19 @@ public partial class AddBaseModel : IAddFileControl
         FileList.Clear();
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
         List<FileVersionItemModel>? list = null;
-        var page = 0;
-        PageDownload ??= 0;
+        var page = 1;
+        PageVersion ??= 1;
 
         if (type == SourceType.CurseForge)
         {
-            page = PageDownload ?? 0;
+            page = PageVersion ?? 1;
         }
 
+        page--;
         var res = await WebBinding.GetFileListAsync(type,
                pid, page,
                 GameVersionDownload, Loaders.Normal);
-        MaxPageDownload = res.Count / 50;
+        MaxPageVersion = res.Count / 50;
         list = res.List;
         var title = res.Name;
 
@@ -173,7 +210,7 @@ public partial class AddBaseModel : IAddFileControl
             page = 0;
         }
 
-        EnableNextPageDownload = (MaxPageDownload - PageDownload) > 0;
+        VersionPageLoad();
 
         if (list == null)
         {
@@ -221,29 +258,9 @@ public partial class AddBaseModel : IAddFileControl
         item.IsSelect = true;
     }
 
-    /// <summary>
-    /// 返回上一页
-    /// </summary>
-    public void LastVersionPage()
+    protected void VersionPageLoad()
     {
-        if (_load || PageDownload <= 0)
-        {
-            return;
-        }
-
-        PageDownload -= 1;
-    }
-
-    /// <summary>
-    /// 下一页
-    /// </summary>
-    public void NextVersionPage()
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        PageDownload += 1;
+        HaveNextVersionPage = PageVersion < MaxPageVersion;
+        HaveLastVersionPage = PageVersion > 1;
     }
 }
