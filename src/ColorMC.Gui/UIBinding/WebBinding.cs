@@ -32,6 +32,47 @@ namespace ColorMC.Gui.UIBinding;
 public static class WebBinding
 {
     /// <summary>
+    /// 获取整合包信息
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    public static async Task<FileItemModel?> GetModpackAsync(SourceType type, string id)
+    {
+        if (type == SourceType.CurseForge)
+        {
+            var res = await CurseForgeAPI.GetModInfoAsync(id);
+            if (res == null)
+            {
+                return null;
+            }
+
+            var list2 = await ColorMCAPI.GetMcModFromCFAsync([id], 1);
+            if (list2 != null && list2.TryGetValue(id, out var mcmod))
+            {
+                return new FileItemModel(res.Data, FileType.ModPack, mcmod);
+            }
+
+            return new FileItemModel(res.Data, FileType.ModPack, null);
+        }
+        else
+        {
+            var res = await ModrinthAPI.GetProjectAsync(id);
+            if (res == null)
+            {
+                return null;
+            }
+            var list2 = await ColorMCAPI.GetMcModFromMOAsync([id], 1);
+            if (list2 != null && list2.TryGetValue(id, out var mcmod))
+            {
+                return new FileItemModel(res, FileType.ModPack, mcmod);
+            }
+
+            return new FileItemModel(res, FileType.ModPack, null);
+        }
+    }
+
+    /// <summary>
     /// 获取整合包列表
     /// </summary>
     /// <param name="type"></param>

@@ -107,19 +107,4 @@ public partial class AddModPackControlModel
             }
         }
     }
-
-    private void LoadInfoVersion()
-    {
-        if (DisplayVersion == false)
-        {
-            return;
-        }
-
-        if (_lastSelect == null)
-        {
-            return;
-        }
-
-        DisplayFile.LoadVersion((SourceType)Source, _lastSelect.Pid);
-    }
 }

@@ -1,0 +1,37 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Add.AddDownloadListControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:AddBaseModel"
+    mc:Ignorable="d">
+    <Panel>
+        <ScrollViewer
+            Margin="0,0,0,50"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding NowDownload}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <view:FileItemDownloadControl Margin="0,5,0,0" DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <Button
+            Height="30"
+            Margin="10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Command="{Binding ShowDownload}"
+            CornerRadius="20"
+            IsVisible="{Binding HaveDownload}">
+            <TextBlock Margin="10,0,10,0" Text="{Binding DownloadText}" />
+        </Button>
+    </Panel>
+</UserControl>

@@ -22,57 +22,73 @@
                     Classes="t2"
                     DockPanel.Dock="Top">
                     <StackPanel Margin="15,15,5,15">
-                        <WrapPanel>
-                            <DockPanel MinWidth="190" Margin="0,0,10,10">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddResourceWindow.Text2}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding SourceList}"
-                                    SelectedIndex="{Binding Source}" />
-                            </DockPanel>
-                            <DockPanel
-                                MinWidth="190"
-                                Margin="0,0,10,10"
-                                IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding GameVersionList}"
-                                    SelectedItem="{Binding GameVersion}" />
-                            </DockPanel>
-                            <DockPanel
-                                MinWidth="190"
-                                Margin="0,0,10,10"
-                                IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Sort}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding SortTypeList}"
-                                    SelectedIndex="{Binding SortType}" />
-                            </DockPanel>
-                            <DockPanel
-                                MinWidth="190"
-                                Margin="0,0,10,10"
-                                IsEnabled="{Binding SourceLoad}">
-                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Classification}" />
-                                <ComboBox
-                                    Height="30"
-                                    HorizontalAlignment="Stretch"
-                                    ItemsSource="{Binding CategorieList}"
-                                    SelectedIndex="{Binding Categorie}" />
-                            </DockPanel>
-                        </WrapPanel>
-                        <panel:WrapPanelWithStretch
-                            Margin="0,0,0,-10"
-                            IsEnabled="{Binding SourceLoad}"
-                            LeftMax="True">
+                        <Grid ColumnDefinitions="auto,*,auto,*" RowDefinitions="auto,auto">
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Center"
+                                Text="{setting:Localize AddResourceWindow.Text2}" />
+                            <ComboBox
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Height="30"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding SourceList}"
+                                SelectedIndex="{Binding Source}" />
+                            <TextBlock
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Margin="0,0,5,0"
+                                HorizontalAlignment="Center"
+                                Text="{setting:Localize Text.GameVersion}" />
+                            <ComboBox
+                                Grid.Row="0"
+                                Grid.Column="3"
+                                Height="30"
+                                Margin="0,0,10,0"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding GameVersionList}"
+                                SelectedItem="{Binding GameVersion}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,10,5,0"
+                                HorizontalAlignment="Center"
+                                Text="{setting:Localize Text.Sort}" />
+                            <ComboBox
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Height="30"
+                                Margin="0,10,10,0"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding SortTypeList}"
+                                SelectedIndex="{Binding SortType}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Margin="0,10,5,0"
+                                HorizontalAlignment="Center"
+                                Text="{setting:Localize Text.Classification}" />
+                            <ComboBox
+                                Grid.Row="1"
+                                Grid.Column="3"
+                                Height="30"
+                                Margin="0,10,10,0"
+                                HorizontalAlignment="Stretch"
+                                ItemsSource="{Binding CategorieList}"
+                                SelectedIndex="{Binding Categorie}" />
+                        </Grid>
+                        <Grid
+                            Margin="0,10,0,0"
+                            ColumnDefinitions="*,auto,auto"
+                            IsEnabled="{Binding SourceLoad}">
                             <TextBox
+                                Grid.Column="0"
                                 Height="30"
                                 MinWidth="190"
-                                Margin="0,0,10,10"
+                                Margin="0,0,10,0"
                                 HorizontalAlignment="Stretch"
                                 Text="{Binding Text}"
                                 Watermark="{setting:Localize Text.Name}">
@@ -80,28 +96,48 @@
                                     <KeyBinding Command="{Binding Reload}" Gesture="Enter" />
                                 </TextBox.KeyBindings>
                             </TextBox>
+                            <Button
+                                Grid.Column="1"
+                                Width="100"
+                                Height="35"
+                                Margin="-2,-3,-3,-2"
+                                Classes="top"
+                                Command="{Binding Reload}"
+                                Content="{setting:Localize Text.Search}"
+                                ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
                             <StackPanel
-                                Margin="0,0,10,10"
-                                HorizontalAlignment="Right"
+                                Grid.Column="2"
+                                Margin="10,0,0,0"
                                 Orientation="Horizontal">
+                                <Button
+                                    Width="35"
+                                    Height="35"
+                                    Margin="-5"
+                                    Classes="top"
+                                    Command="{Binding LastListPage}"
+                                    Content="-"
+                                    IsEnabled="{Binding LastPage}" />
                                 <NumericUpDown
-                                    Width="110"
+                                    Width="60"
                                     Height="30"
-                                    Margin="0,0,10,0"
-                                    FormatString="N0"
+                                    Margin="5,0,5,0"
                                     Maximum="{Binding MaxPage}"
-                                    Minimum="0"
+                                    Minimum="1"
+                                    ShowButtonSpinner="False"
                                     Value="{Binding Page}" />
                                 <Button
-                                    Width="100"
+                                    Width="35"
                                     Height="35"
-                                    Margin="-2,-3,-3,-2"
+                                    Margin="-5"
                                     Classes="top"
-                                    Command="{Binding Reload}"
-                                    Content="{setting:Localize Text.Search}"
-                                    ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
+                                    Command="{Binding NextListPage}"
+                                    Content="+"
+                                    IsEnabled="{Binding NextPage}" />
+                                <TextBlock Margin="5,0,0,0" Text="/" />
+                                <TextBlock Text="{Binding MaxPage}" />
+                                <TextBlock Text="{setting:Localize AddModPackWindow.Text42}" />
                             </StackPanel>
-                        </panel:WrapPanelWithStretch>
+                        </Grid>
                     </StackPanel>
                 </Border>
                 <Panel>
@@ -124,7 +160,7 @@
                             Classes="top"
                             Command="{Binding NextListPage}"
                             Content="{setting:Localize AddModPackWindow.Text14}"
-                            IsVisible="{Binding EnableNextPage}" />
+                            IsVisible="{Binding NextPage}" />
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"
@@ -138,30 +174,11 @@
                 </Panel>
             </DockPanel>
         </ScrollViewer>
-        <Panel
-            Name="ItemInfo"
-            Background="{setting:Theme TopViewBG}"
-            IsVisible="False">
-            <panel1:AddFileInfoControl DataContext="{Binding DisplayFile}" />
-        </Panel>
-        <Panel
+        <panel1:AddFileInfoControl Name="ItemInfo" IsVisible="False" />
+        <panel1:AddDownloadListControl
             Name="DownloadInfo"
-            Margin="0,0,0,50"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            IsVisible="False">
-            <panel1:DownloadListControl />
-        </Panel>
-        <Panel IsVisible="{Binding HaveDownload}">
-            <Button
-                Height="30"
-                Margin="10"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Command="{Binding ShowDownload}"
-                CornerRadius="20">
-                <TextBlock Margin="10,0,10,0" Text="{Binding DownloadText}" />
-            </Button>
-        </Panel>
+            IsVisible="False" />
     </Panel>
 </UserControl>

@@ -8,6 +8,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -63,9 +64,9 @@ public partial class AddModPackControlModel : AddBaseModel
     [RelayCommand]
     public void Reload()
     {
-        if (!string.IsNullOrWhiteSpace(Text) && Page != 0)
+        if (!string.IsNullOrWhiteSpace(Text) && Page != 1)
         {
-            Page = 0;
+            Page = 1;
             return;
         }
 
@@ -91,7 +92,6 @@ public partial class AddModPackControlModel : AddBaseModel
         SortTypeList.Clear();
 
         GameVersionList.Clear();
-        DisplayFile.GameVersionList.Clear();
         _categories.Clear();
 
         ClearList();
@@ -119,7 +119,6 @@ public partial class AddModPackControlModel : AddBaseModel
                     return;
                 }
                 GameVersionList.AddRange(list);
-                DisplayFile.GameVersionList.AddRange(list);
 
                 _categories.Add(0, "");
                 var a = 1;
@@ -155,9 +154,6 @@ public partial class AddModPackControlModel : AddBaseModel
     private async void Done(string? uuid)
     {
         Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
-
-        DisplayVersion = false;
-        DisplayFile.Close();
 
         if (_keep)
         {
@@ -213,21 +209,23 @@ public partial class AddModPackControlModel : AddBaseModel
         }
 
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text18"));
+        var page = Page ?? 1;
+        page -= 1;
         var res = await WebBinding.GetModPackListAsync((SourceType)Source,
-            GameVersion, Text, Page ?? 0, Source == 2 ? Categorie : SortType,
+            GameVersion, Text, page, Source == 2 ? Categorie : SortType,
             Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
 
         //制作分页
         if (Source == 0)
         {
             MaxPage = res.Count / 20;
-            EnableNextPage = (MaxPage - Page) > 0;
         }
         else
         {
             MaxPage = int.MaxValue;
-            EnableNextPage = true;
         }
+
+        PageLoad();
 
         var data = res.List;
 
@@ -269,11 +267,11 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     public void ReloadF5()
     {
-        if (DisplayVersion)
-        {
-            LoadInfoVersion();
-        }
-        else
+        //if (DisplayVersion)
+        //{
+        //    LoadInfoVersion();
+        //}
+        //else
         {
             LoadDisplayList();
         }
@@ -281,15 +279,9 @@ public partial class AddModPackControlModel : AddBaseModel
 
     public override void Close()
     {
-        if (DisplayVersion)
-        {
-            Window.PopBack();
-        }
-
         _close = true;
         _load = true;
         Window.RemoveChoiseData(_useName);
-        DisplayFile.FileList.Clear();
         foreach (var item in DisplayList)
         {
             item.Close();
@@ -315,9 +307,17 @@ public partial class AddModPackControlModel : AddBaseModel
         });
 
         _load = true;
-        DisplayFile.PageDownload = 0;
-        DisplayVersion = true;
-        DisplayFile.LoadVersion(type, pid);
+
+        var res = await WebBinding.GetModpackAsync(type, pid);
+        if (res == null)
+        {
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            _load = false;
+            return;
+        }
+        Last = res;
+        DisplayItemInfo = true;
+
         _load = false;
     }
 

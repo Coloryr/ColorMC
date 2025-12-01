@@ -215,7 +215,6 @@ public partial class AddResourceControlModel
             page = PageDownload ?? 0;
         }
 
-        DisplayVersion = true;
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text18"));
 
         var res = await WebBinding.GetFileListAsync(type, pid, page,
@@ -301,7 +300,6 @@ public partial class AddResourceControlModel
             }
         }
 
-        DisplayVersion = false;
         bool res = false;
 
         GameManager.StartAdd(_obj.UUID);

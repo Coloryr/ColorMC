@@ -18,7 +18,7 @@ public partial class AddFileInfoControl : UserControl
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            (DataContext as AddFileInfoControlModel)?.Download();
+            (DataContext as AddBaseModel)?.Download();
             e.Handled = true;
         }
     }

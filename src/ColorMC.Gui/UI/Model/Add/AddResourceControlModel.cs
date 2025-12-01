@@ -511,11 +511,11 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// </summary>
     public void Reload()
     {
-        if (DisplayVersion)
-        {
-            Refresh1();
-        }
-        else
+        //if (DisplayVersion)
+        //{
+        //    Refresh1();
+        //}
+        //else
         {
             LoadDisplayList();
         }
@@ -534,7 +534,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     public override void Close()
     {
         base.Close();
-        if (DisplayVersion || OptifineDisplay || ModDownloadDisplay)
+        if (OptifineDisplay || ModDownloadDisplay)
         {
             Window.PopBack();
         }

@@ -757,6 +757,7 @@
 	"AddModPackWindow.Text39": "获取版本列表失败",
 	"AddModPackWindow.Text40": "已经安装过了，是否还要继续安装",
 	"AddModPackWindow.Text41": "当前有{0}个整合包安装中",
+	"AddModPackWindow.Text42": "页",
 	"AddResourceWindow.Title": "游戏实例添加资源 {0}",
 	"AddResourceWindow.Text2": "搜索源",
 	"AddResourceWindow.Text6": "全部下载",

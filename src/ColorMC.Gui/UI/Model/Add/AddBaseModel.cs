@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,7 +12,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// <summary>
 /// 下载标记
 /// </summary>
-public abstract partial class AddBaseModel : ControlModel, IAddControl
+public abstract partial class AddBaseModel(WindowModel model) : ControlModel(model), IAddControl
 {
     /// <summary>
     /// 下载源
@@ -33,17 +34,17 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// </summary>
     [ObservableProperty]
     private bool _isSelect;
-    /// <summary>
-    /// 是否允许下一页
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableNextPage;
 
     /// <summary>
     /// 项目列表是否有下一页
     /// </summary>
     [ObservableProperty]
     private bool _nextPage;
+    /// <summary>
+    /// 是否有上一页
+    /// </summary>
+    [ObservableProperty]
+    private bool _lastPage;
 
     /// <summary>
     /// 排序类型
@@ -59,7 +60,7 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// 项目当前页数
     /// </summary>
     [ObservableProperty]
-    private int? _page = 0;
+    private int? _page = 1;
     /// <summary>
     /// 项目最大页数
     /// </summary>
@@ -82,11 +83,6 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     [ObservableProperty]
     private string? _downloadText;
 
-    /// <summary>
-    /// 是否显示文件列表
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayVersion = false;
     /// <summary>
     /// 是否显示下载列表
     /// </summary>
@@ -130,11 +126,6 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     public ObservableCollection<string> CategorieList { get; init; } = [];
 
     /// <summary>
-    /// 下载项目信息
-    /// </summary>
-    public AddFileInfoControlModel DisplayFile { get; init; }
-
-    /// <summary>
     /// 正在下载的项目
     /// </summary>
     public ObservableCollection<FileItemDownloadModel> NowDownload { get; init; } = [];
@@ -151,23 +142,6 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// 是否关闭
     /// </summary>
     protected bool _close = false;
-
-    public AddBaseModel(WindowModel model) : base(model)
-    {
-        DisplayFile = new AddFileInfoControlModel(model, this);
-    }
-
-    /// <summary>
-    /// 游戏列表显示
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnDisplayVersionChanged(bool value)
-    {
-        if (!value)
-        {
-            Window.Title = Title;
-        }
-    }
 
     /// <summary>
     /// 分类改变
@@ -208,8 +182,6 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
             return;
         }
 
-        DisplayFile.GameVersionDownload = value;
-
         LoadDisplayList();
     }
 
@@ -219,8 +191,13 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// <param name="value"></param>
     partial void OnPageChanged(int? value)
     {
-        if (!Display || _load)
+        if (!Display || _load || value == null)
         {
+            return;
+        }
+        if (value > MaxPage)
+        {
+            Page = MaxPage;
             return;
         }
 
@@ -258,12 +235,13 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     [RelayCommand]
     public void LastListPage()
     {
-        if (_load || Page <= 0)
+        if (_load || Page <= 1)
         {
             return;
         }
 
         Page -= 1;
+        PageLoad();
     }
 
     [RelayCommand]
@@ -284,6 +262,7 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
         }
 
         Page += 1;
+        PageLoad();
     }
 
     /// <summary>
@@ -303,8 +282,11 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
     /// </summary>
     public void DisplayItems()
     {
-        DisplayFile.Load(_lastSelect);
-        DisplayVersion = true;
+        if (_lastSelect != null)
+        {
+            Last = _lastSelect;
+            DisplayItemInfo = true;
+        }
     }
 
     public void ShowInfo(FileItemModel item)
@@ -388,11 +370,6 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
         ClearList();
     }
 
-    public void Back()
-    {
-        DisplayVersion = false;
-    }
-
     private void DownloadReload()
     {
         HaveDownload = NowDownload.Any();
@@ -404,5 +381,11 @@ public abstract partial class AddBaseModel : ControlModel, IAddControl
         {
             DownloadText = "";
         }
+    }
+
+    protected void PageLoad()
+    {
+        NextPage = Page < MaxPage;
+        LastPage = Page > 1;
     }
 }
