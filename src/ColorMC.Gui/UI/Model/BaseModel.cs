@@ -363,7 +363,6 @@ public partial class WindowModel : ObservableObject
     /// <param name="model"></param>
     public void ShowDialog(object model)
     {
-        Lock();
         DialogHost.Show(model, WindowId);
     }
 
@@ -382,14 +381,7 @@ public partial class WindowModel : ObservableObject
     /// </summary>
     public void CloseDialog(object model)
     {
-        try
-        {
-            DialogHost.Close(WindowId, null, model);
-        }
-        catch
-        {
-
-        }
+        DialogHost.Close(WindowId, null, model);
         Unlock();
     }
 
@@ -434,6 +426,7 @@ public partial class WindowModel : ObservableObject
 
     public Task<object?> ShowWait(string text)
     {
+        Lock();
         return ShowDialogWait(new ChoiceModel(WindowId)
         {
             Text = text
@@ -442,6 +435,7 @@ public partial class WindowModel : ObservableObject
 
     public ProgressModel ShowProgress(string text)
     {
+        Lock();
         var dialog = new ProgressModel
         {
             Text = text
@@ -453,6 +447,7 @@ public partial class WindowModel : ObservableObject
 
     public async Task<bool> ShowChoice(string text)
     {
+        Lock();
         var dialog = new ChoiceModel(WindowId)
         {
             Text = text,

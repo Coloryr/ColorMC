@@ -35,7 +35,7 @@ public partial class AddResourceControl : BaseUserControl
 
         Title = string.Format(LanguageUtils.Get("AddResourceWindow.Title"), obj.Name);
 
-        DisplayVersion.PointerPressed += DisplayVersion_PointerPressed;
+        //DisplayVersion.PointerPressed += DisplayVersion_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
         ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
 
@@ -151,34 +151,21 @@ public partial class AddResourceControl : BaseUserControl
                 ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
-        else if (e.PropertyName == nameof(AddBaseModel.DisplayVersion))
-        {
-            if (model.DisplayVersion == true)
-            {
-                ThemeManager.CrossFade.Start(null, DisplayVersion);
-                ThemeManager.CrossFade.Start(ScrollViewer1, null);
-            }
-            else
-            {
-                ThemeManager.CrossFade.Start(DisplayVersion, null);
-                ThemeManager.CrossFade.Start(null, ScrollViewer1);
-            }
-        }
         else if (e.PropertyName == AddResourceControlModel.NameScrollToHome)
         {
             ScrollViewer1.ScrollToHome();
         }
     }
 
-    private void DisplayVersion_PointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var ev = e.GetCurrentPoint(this);
-        if (ev.Properties.IsXButton1Pressed)
-        {
-            (DataContext as AddResourceControlModel)!.DisplayVersion = false;
-            e.Handled = true;
-        }
-    }
+    //private void DisplayVersion_PointerPressed(object? sender, PointerPressedEventArgs e)
+    //{
+    //    var ev = e.GetCurrentPoint(this);
+    //    if (ev.Properties.IsXButton1Pressed)
+    //    {
+    //        e.Handled = true;
+    //    }
+    //}
+
     private void OptifineDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);

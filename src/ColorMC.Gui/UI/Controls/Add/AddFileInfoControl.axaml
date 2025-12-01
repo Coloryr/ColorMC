@@ -12,15 +12,14 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:DataType="model:AddFileInfoControlModel"
+    x:DataType="model:AddBaseModel"
+    Background="{setting:Theme TopViewBG}"
     mc:Ignorable="d">
-    <Border
-        Margin="20"
-        HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch"
-        Classes="t5">
+    <Border Margin="20" Classes="t5">
         <DockPanel>
             <Panel Margin="15" DockPanel.Dock="Top">
                 <Panel DataContext="{Binding Last}">
@@ -54,6 +53,7 @@
                         </ItemsControl>
                     </StackPanel>
                     <StackPanel
+                        Margin="0,0,-3,-3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         Orientation="Horizontal">
@@ -75,18 +75,19 @@
                     </StackPanel>
                 </Panel>
                 <Button
-                    Width="30"
-                    Height="30"
-                    Margin="0,0,5,0"
+                    Width="35"
+                    Height="35"
+                    Margin="-3"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
+                    Classes="top"
                     Command="{Binding CloseView}"
                     CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                     <svg:SvgControl Path="/Resource/Icon/close.svg" />
                 </Button>
             </Panel>
-            <TabControl SelectedIndex="{Binding SelectIndex}">
+            <TabControl Margin="5,0,5,10" SelectedIndex="{Binding SelectIndex}">
                 <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
                     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
                         <StackPanel Margin="10" DataContext="{Binding Last}">

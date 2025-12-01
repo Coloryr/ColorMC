@@ -368,6 +368,9 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\Add\AddDownloadListControl.axaml.cs">
+      <DependentUpon>AddDownloadListControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\Dialog\ChoiceControl.axaml.cs">
       <DependentUpon>ChoiceControl.axaml</DependentUpon>
     </Compile>

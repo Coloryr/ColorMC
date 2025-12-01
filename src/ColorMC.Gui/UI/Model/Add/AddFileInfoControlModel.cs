@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -14,13 +13,8 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
-public partial class AddFileInfoControlModel(WindowModel model, IAddControl add) : ObservableObject, IAddFileControl
+public partial class AddBaseModel : IAddFileControl
 {
-    /// <summary>
-    /// 游戏版本列表
-    /// </summary>
-    public ObservableCollection<string> GameVersionList { get; init; } = [];
-
     /// <summary>
     /// 文件列表
     /// </summary>
@@ -30,7 +24,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     /// 选中的项目
     /// </summary>
     [ObservableProperty]
-    private FileItemModel? _last;
+    private FileItemModel _last;
 
     /// <summary>
     /// 文件列表当前页数
@@ -58,6 +52,11 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     /// </summary>
     [ObservableProperty]
     private bool _enableNextPageDownload;
+    /// <summary>
+    /// 是否显示项目详情
+    /// </summary>
+    [ObservableProperty]
+    private bool _displayItemInfo;
 
     /// <summary>
     /// 选中的文件
@@ -70,11 +69,6 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     [ObservableProperty]
     private int _selectIndex = 0;
 
-    private bool _load;
-
-    private SourceType _type;
-    private string _pid;
-
     partial void OnSelectIndexChanged(int value)
     {
         if (_load)
@@ -84,7 +78,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
 
         if (value == 1)
         {
-            LoadVersion(_type, _pid);
+            LoadVersion(Last.SourceType, Last.ID);
         }
     }
 
@@ -99,7 +93,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
             return;
         }
 
-        LoadVersion(_type, _pid);
+        LoadVersion(Last.SourceType, Last.ID);
     }
 
     /// <summary>
@@ -113,7 +107,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
             return;
         }
 
-        LoadVersion(_type, _pid);
+        LoadVersion(Last.SourceType, Last.ID);
     }
 
     /// <summary>
@@ -122,7 +116,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     [RelayCommand]
     public void Search()
     {
-        LoadVersion(_type, _pid);
+        LoadVersion(Last.SourceType, Last.ID);
     }
 
     /// <summary>
@@ -135,18 +129,18 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
         if (Item == null)
             return;
 
-        var res = await model.ShowChoice(
+        var res = await Window.ShowChoice(
             string.Format(LanguageUtils.Get("AddModPackWindow.Text17"), Item.Name));
         if (res)
         {
-            add.Install(Item);
+            Install(Item);
         }
     }
 
     [RelayCommand]
     public void CloseView()
     {
-        add.Back();
+        DisplayItemInfo = false;
     }
 
     /// <summary>
@@ -156,7 +150,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
     {
         _load = true;
         FileList.Clear();
-        var dialog = model.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
         List<FileVersionItemModel>? list = null;
         var page = 0;
         PageDownload ??= 0;
@@ -183,8 +177,8 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
 
         if (list == null)
         {
-            model.Show(LanguageUtils.Get("AddModPackWindow.Text24"));
-            model.CloseDialog(dialog);
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text24"));
+            Window.CloseDialog(dialog);
             _load = false;
             return;
         }
@@ -198,7 +192,7 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
                 break;
             }
             var item = list[a];
-            item.Add = add;
+            item.Add = this;
             item.AddFile = this;
             var games = InstancesPath.Games;
             if (games.Any(item1 => item1.ModPack && item1.ModPackType == type
@@ -211,9 +205,8 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
 
         EmptyVersionDisplay = FileList.Count == 0;
 
-        model.CloseDialog(dialog);
-        model.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
-        model.Title = LanguageUtils.Get("AddModPackWindow.Title") + ": " + title;
+        Window.CloseDialog(dialog);
+        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
         _load = false;
     }
 
@@ -252,21 +245,5 @@ public partial class AddFileInfoControlModel(WindowModel model, IAddControl add)
         }
 
         PageDownload += 1;
-    }
-
-    public void Load(FileItemModel? model)
-    {
-        SelectIndex = 0;
-        Last = model;
-        if (model != null)
-        {
-            _type = model.SourceType;
-            _pid = model.ID;
-        }
-    }
-
-    public void Close()
-    {
-        Last = null;
     }
 }

@@ -51,10 +51,6 @@ public interface IAddControl
     /// </summary>
     /// <param name="item"></param>
     public void Install(FileVersionItemModel item);
-    /// <summary>
-    /// 返回界面
-    /// </summary>
-    public void Back();
 }
 
 /// <summary>

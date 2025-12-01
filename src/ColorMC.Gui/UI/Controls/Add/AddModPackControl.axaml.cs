@@ -52,30 +52,30 @@ public partial class AddModPackControl : BaseUserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(AddModPackControlModel.DisplayList))
+        if (e.PropertyName == nameof(AddBaseModel.DisplayList))
         {
             ScrollViewer1.ScrollToHome();
         }
-        else if (e.PropertyName == nameof(AddModPackControlModel.DisplayVersion))
+        else if (e.PropertyName == nameof(AddBaseModel.DisplayDownload))
         {
-            if ((DataContext as AddModPackControlModel)!.DisplayVersion)
-            {
-                ThemeManager.CrossFade.Start(null, ItemInfo);
-            }
-            else
-            {
-                ThemeManager.CrossFade.Start(ItemInfo, null);
-            }
-        }
-        else if (e.PropertyName == nameof(AddModPackControlModel.DisplayDownload))
-        {
-            if ((DataContext as AddModPackControlModel)!.DisplayDownload)
+            if ((DataContext as AddBaseModel)!.DisplayDownload)
             {
                 ThemeManager.CrossFade.Start(null, DownloadInfo);
             }
             else
             {
                 ThemeManager.CrossFade.Start(DownloadInfo, null);
+            }
+        }
+        else if (e.PropertyName == nameof(AddBaseModel.DisplayItemInfo))
+        {
+            if ((DataContext as AddBaseModel)!.DisplayItemInfo)
+            {
+                ThemeManager.CrossFade.Start(null, ItemInfo);
+            }
+            else
+            {
+                ThemeManager.CrossFade.Start(ItemInfo, null);
             }
         }
     }

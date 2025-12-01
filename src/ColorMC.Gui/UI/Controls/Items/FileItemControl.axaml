@@ -9,8 +9,8 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="100"
-    d:DesignWidth="500"
+    d:DesignHeight="130"
+    d:DesignWidth="600"
     x:DataType="model:FileItemModel"
     Focusable="True"
     ToolTip.Tip="{setting:Localize ToolTip.Text49}"
@@ -63,38 +63,15 @@
                         TextTrimming="CharacterEllipsis"
                         TextWrapping="Wrap" />
                 </DockPanel>
-                <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <Button
-                        Width="35"
-                        Height="35"
-                        Margin="-2,-8,-3,3"
-                        Classes="top"
-                        Command="{Binding OpenWeb}"
-                        IsVisible="{Binding EnableButton}"
-                        ToolTip.Tip="{setting:Localize AddModPackWindow.Text31}">
-                        <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
-                    </Button>
-                    <Button
-                        Width="35"
-                        Height="35"
-                        Margin="-2,-3,-3,-2"
-                        Classes="top"
-                        Command="{Binding Install}"
-                        IsEnabled="{Binding HaveDownload}"
-                        IsVisible="{Binding EnableButton, FallbackValue=true}"
-                        ToolTip.Tip="{setting:Localize AddModPackWindow.Text32}">
-                        <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
-                    </Button>
-                </StackPanel>
-                <TextBlock
-                    Padding="3"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Background="{setting:Theme TopBGColor}"
-                    Foreground="{setting:Theme FontColor}"
-                    IsVisible="{Binding IsDownload, FallbackValue=true}"
-                    Text="{setting:Localize Text.Downloaded}" />
             </Panel>
+            <TextBlock
+                Margin="0,10,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Background="{setting:Theme TopBGColor}"
+                Foreground="{setting:Theme FontColor}"
+                IsVisible="{Binding IsDownload, FallbackValue=true}"
+                Text="{setting:Localize Text.Downloaded}" />
             <Border Classes="t4" IsVisible="{Binding NowDownload, FallbackValue=false}">
                 <StackPanel VerticalAlignment="Center">
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddModPackWindow.Text30}" />
