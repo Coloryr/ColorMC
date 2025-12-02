@@ -119,7 +119,16 @@ public class TopModPackGui : IModPackGui
     {
         if (_haveUpdate)
         {
-            _progress.Value = (double)_size / _all * 100;
+            if (_all == 0)
+            {
+                _all = 1;
+            }
+            var temp = (double)_size / _all * 100;
+            if (temp > 100)
+            {
+                temp = 100;
+            }
+            _progress.Value = 100;
         }
         _haveUpdate = false;
         return _isRun;
@@ -167,10 +176,7 @@ public class ZipGui : IZipGui
 
     public void ZipUpdate(string text, int size, int all)
     {
-        if (text.Length > 40)
-        {
-            text = "..." + text[^40..];
-        }
+        UIUtils.StringCut(ref text);
         _name = text;
         _all = all;
         _size = size;
@@ -319,6 +325,8 @@ public class ModpackGui : IModPackGui
     private bool _isRun;
     private bool _haveUpdate;
 
+    private string? _text;
+
     private int _size, _all;
 
     public ModpackGui(FileItemDownloadModel info)
@@ -342,7 +350,9 @@ public class ModpackGui : IModPackGui
 
     public void SetNowSub(int value, int all)
     {
-        _info.NowSub = (double)value / all * 100;
+        _size = value;
+        _all = all;
+        _haveUpdate = true;
     }
 
     public void SetState(ModpackState state)
@@ -361,23 +371,36 @@ public class ModpackGui : IModPackGui
         if (state == ModpackState.GetInfo)
         {
             _info.SubInfo = LanguageUtils.Get("App.Text115");
+            _haveUpdate = false;
         }
         else if (state == ModpackState.DownloadFile)
         {
             _info.SubInfo = LanguageUtils.Get("AddGameWindow.Tab2.Text7");
+            _haveUpdate = false;
         }
     }
 
     public void SetSubText(string? text)
     {
-        _info.SubInfo = text;
+        _text = text;
+        _haveUpdate = true;
     }
 
     private bool Run()
     {
         if (_haveUpdate)
         {
-            _info.NowSub = (double)_size / _all * 100;
+            if (_all == 0)
+            {
+                _all = 1;
+            }
+            var temp = (double)_size / _all * 100;
+            if (temp > 100)
+            {
+                temp = 100;
+            }
+            _info.NowSub = temp;
+            _info.SubInfo = _text;
         }
         _haveUpdate = false;
         return _isRun;

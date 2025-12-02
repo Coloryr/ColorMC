@@ -277,8 +277,11 @@ public partial class DownloadModel : ControlModel, IDownloadGui
     /// <returns>Gui</returns>
     public IDownloadGui Start()
     {
-        _needRun = true;
-        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+        if (!_needRun)
+        {
+            _needRun = true;
+            DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+        }
 
         return this;
     }

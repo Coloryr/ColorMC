@@ -6,17 +6,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:FileItemDownloadModel"
     mc:Ignorable="d">
-    <Border Margin="10,5,10,5" Classes="t5">
+    <Border
+        Width="350"
+        Margin="10,5,10,5"
+        Classes="t5">
         <StackPanel Margin="15">
-            <TextBlock
-                HorizontalAlignment="Center"
-                Foreground="{setting:Theme MainColor}"
-                Text="{Binding Name, FallbackValue=Name}"
-                TextTrimming="CharacterEllipsis" />
+            <DockPanel>
+                <Button
+                    Width="35"
+                    Height="35"
+                    Margin="-3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Classes="top"
+                    Command="{Binding Cancel}"
+                    CornerRadius="5"
+                    DockPanel.Dock="Right">
+                    <svg:SvgControl Path="/Resource/Icon/close.svg" />
+                </Button>
+                <TextBlock
+                    Margin="0,0,5,0"
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=Name}"
+                    TextTrimming="CharacterEllipsis" />
+            </DockPanel>
             <DockPanel Margin="0,0,0,5">
                 <StackPanel
                     Margin="5,0,0,0"
@@ -27,7 +45,7 @@
                     <TextBlock Text="%" />
                 </StackPanel>
                 <TextBlock
-                    Foreground="{setting:Theme MainColor}"
+                    Foreground="#FF9A9A9A"
                     Text="{Binding Info, FallbackValue=Name}"
                     TextTrimming="CharacterEllipsis" />
             </DockPanel>
@@ -48,7 +66,7 @@
                     <TextBlock Text="%" />
                 </StackPanel>
                 <TextBlock
-                    Foreground="{setting:Theme MainColor}"
+                    Foreground="#FF9A9A9A"
                     Text="{Binding SubInfo, FallbackValue=Name}"
                     TextTrimming="CharacterEllipsis" />
             </DockPanel>

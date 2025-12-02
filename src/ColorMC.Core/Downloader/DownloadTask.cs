@@ -7,7 +7,7 @@ namespace ColorMC.Core.Downloader;
 /// 下载任务
 /// </remarks>
 /// <param name="gui">GUI下载参数</param>
-internal class DownloadTask(IDownloadGui? gui, IProgressGui? pgui)
+internal class DownloadTask(IDownloadGui? gui, IProgressGui? pgui, CancellationToken token)
 {
     /// <summary>
     /// 任务是否已经取消
@@ -18,7 +18,7 @@ internal class DownloadTask(IDownloadGui? gui, IProgressGui? pgui)
     /// <summary>
     /// 取消下载
     /// </summary>
-    private readonly CancellationTokenSource _cancel = new();
+    private readonly CancellationTokenSource _cancel = CancellationTokenSource.CreateLinkedTokenSource(token);
 
     /// <summary>
     /// 总下载数量

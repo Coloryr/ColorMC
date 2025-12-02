@@ -13,12 +13,12 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 {
     private CurseForgePackObj? _info;
 
-    public CurseForgeWork(Stream st, IOverGameGui? gui, IModPackGui? packgui) : base(st, gui, packgui)
+    public CurseForgeWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
     {
 
     }
 
-    public CurseForgeWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui)
+    public CurseForgeWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui, default)
     {
 
     }
@@ -138,7 +138,6 @@ public class CurseForgeWork : ModPackWork, IModPackWork
     /// <summary>
     /// 解压文件
     /// </summary>
-    /// <param name="packgui"></param>
     /// <returns></returns>
     public async Task<bool> Unzip()
     {
@@ -153,6 +152,10 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 
         foreach (var e in Zip.Entries)
         {
+            if (Token.IsCancellationRequested)
+            {
+                return false;
+            }
             if (!FuntionUtils.IsFile(e))
             {
                 index++;
@@ -193,7 +196,12 @@ public class CurseForgeWork : ModPackWork, IModPackWork
             return false;
         }
 
-        var list = await CurseForgeHelper.GetModPackInfoAsync(Game, _info, Packgui);
+        var list = await CurseForgeHelper.GetModPackInfoAsync(Game, _info, Packgui, Token);
+
+        if (Token.IsCancellationRequested)
+        {
+            return false;
+        }
 
         Game.Mods.Clear();
         foreach (var item in Game.Mods)
@@ -215,7 +223,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
     {
         if (Downloads != null)
         {
-            await DownloadManager.StartAsync(Downloads, Packgui);
+            await DownloadManager.StartAsync(Downloads, Packgui, Token);
         }
     }
 

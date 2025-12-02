@@ -1,12 +1,16 @@
-﻿using ColorMC.Core.Objs;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using ColorMC.Core.Objs;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
 /// <summary>
 /// 下载标记
 /// </summary>
-public partial class FileItemDownloadModel : ObservableObject
+public partial class FileItemDownloadModel(WindowModel window) : ObservableObject
 {
     /// <summary>
     /// 资源类型
@@ -48,4 +52,17 @@ public partial class FileItemDownloadModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _showSub;
+
+    private CancellationTokenSource _cancel = new();
+
+    public CancellationToken Token => _cancel.Token;
+
+    [RelayCommand]
+    public async Task Cancel()
+    {
+        if (await window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text43")))
+        {
+            _cancel.Cancel();
+        }
+    }
 }

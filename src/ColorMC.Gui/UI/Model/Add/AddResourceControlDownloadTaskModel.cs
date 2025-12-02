@@ -74,7 +74,7 @@ public partial class AddResourceControlModel
             var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
-                var info = new FileItemDownloadModel
+                var info = new FileItemDownloadModel(Window)
                 {
                     Type = FileType.Mod,
                     Source = task.Source,
@@ -104,7 +104,7 @@ public partial class AddResourceControlModel
             var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
-                var info = new FileItemDownloadModel
+                var info = new FileItemDownloadModel(Window)
                 {
                     Type = FileType.Mod,
                     Source = task.Source,

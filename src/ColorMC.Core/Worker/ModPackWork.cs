@@ -16,17 +16,21 @@ public abstract class ModPackWork
     protected GameSettingObj? Game;
     protected List<FileItemObj>? Downloads;
 
-    public ModPackWork(Stream st, IOverGameGui? gui, IModPackGui? packgui)
+    protected CancellationToken Token;
+
+    public ModPackWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
     {
         Gui = gui;
         Packgui = packgui;
         Zip = ZipArchive.Open(st);
+        Token = token;
     }
 
-    public ModPackWork(string file, IOverGameGui? gui, IModPackGui? packgui)
+    public ModPackWork(string file, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
     {
         Gui = gui;
         Packgui = packgui;
         Zip = ZipArchive.Open(file);
+        Token = token;
     }
 }

@@ -163,14 +163,17 @@ public partial class AddModPackControlModel : AddBaseModel
         var model = WindowManager.MainWindow?.DataContext as MainModel;
         model?.Select(uuid);
 
-        var res = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
-        if (!res)
+        if (!HaveDownload)
         {
-            Dispatcher.UIThread.Post(WindowClose);
-        }
-        else
-        {
-            _keep = true;
+            var res = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
+            if (!res)
+            {
+                Dispatcher.UIThread.Post(WindowClose);
+            }
+            else
+            {
+                _keep = true;
+            }
         }
     }
 
@@ -267,11 +270,11 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     public void ReloadF5()
     {
-        //if (DisplayVersion)
-        //{
-        //    LoadInfoVersion();
-        //}
-        //else
+        if (DisplayItemInfo)
+        {
+            LoadInfoVersion();
+        }
+        else
         {
             LoadDisplayList();
         }
@@ -279,14 +282,11 @@ public partial class AddModPackControlModel : AddBaseModel
 
     public override void Close()
     {
+        base.Close();
         _close = true;
         _load = true;
         Window.RemoveChoiseData(_useName);
-        foreach (var item in DisplayList)
-        {
-            item.Close();
-        }
-        DisplayList.Clear();
+
         _lastSelect = null;
     }
 
