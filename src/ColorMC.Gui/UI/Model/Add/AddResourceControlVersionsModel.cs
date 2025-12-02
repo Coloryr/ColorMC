@@ -319,7 +319,7 @@ public partial class AddResourceControlModel
                 var dialog1 = new SelectModel(Window.WindowId)
                 {
                     Text = LanguageUtils.Get("AddResourceWindow.Text19"),
-                    Items = [..  world]
+                    Items = [.. world]
                 };
                 var res1 = await Window.ShowDialogWait(dialog1);
                 if (res1 is not true)

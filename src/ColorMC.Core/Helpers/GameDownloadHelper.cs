@@ -887,7 +887,7 @@ public static class GameDownloadHelper
         {
             return null;
         }
-        
+
         VersionPath.AddGame(res.Meta, res.Text, mc, version);
 
         foreach (var item in res.Meta.Libraries)

@@ -14,10 +14,10 @@ public class NbtLongArray : NbtBase
     /// 数据
     /// </summary>
     public List<long> ValueLongArray { get; set; }
-    public override string Value 
-    { 
-        get => $"[{ValueLongArray.Count}]"; 
-        set => throw new NotSupportedException(); 
+    public override string Value
+    {
+        get => $"[{ValueLongArray.Count}]";
+        set => throw new NotSupportedException();
     }
 
     public NbtLongArray()

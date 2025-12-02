@@ -1,5 +1,3 @@
-using System.Net;
-using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Utils;
 

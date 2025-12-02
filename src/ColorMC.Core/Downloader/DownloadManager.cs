@@ -108,7 +108,7 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>是否成功</returns>
-    public static async Task<bool> StartAsync(ICollection<FileItemObj> list, 
+    public static async Task<bool> StartAsync(ICollection<FileItemObj> list,
         IProgressGui? gui = null, CancellationToken token = default)
     {
         if (s_stop)
@@ -155,7 +155,7 @@ public static class DownloadManager
     /// <param name="list">下载列表</param>
     /// <param name="gui">下载参数</param>
     /// <returns>是否完成</returns>
-    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGui? gui, 
+    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGui? gui,
         IProgressGui? pgui, CancellationToken token)
     {
         var task = new DownloadTask(gui, pgui, token);
@@ -165,7 +165,7 @@ public static class DownloadManager
         //装填下载内容
         foreach (var item in list)
         {
-            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) 
+            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url)
                 || names.Contains(item.Name))
             {
                 continue;

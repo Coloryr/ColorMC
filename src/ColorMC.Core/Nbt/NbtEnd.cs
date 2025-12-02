@@ -15,8 +15,8 @@ public class NbtEnd : NbtBase
         NbtType = NbtType.NbtEnd;
     }
 
-    public override string Value 
-    { 
+    public override string Value
+    {
         get => "";
         set { }
     }

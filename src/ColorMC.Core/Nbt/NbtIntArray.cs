@@ -15,10 +15,10 @@ public class NbtIntArray : NbtBase
     /// </summary>
     public List<int> ValueIntArray { get; set; }
 
-    public override string Value 
-    { 
-        get => $"[{ValueIntArray.Count}]"; 
-        set => throw new NotSupportedException(); 
+    public override string Value
+    {
+        get => $"[{ValueIntArray.Count}]";
+        set => throw new NotSupportedException();
     }
 
     public NbtIntArray()

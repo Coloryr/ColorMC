@@ -15,10 +15,10 @@ public class NbtDouble : NbtBase
     /// </summary>
     public double ValueDouble { get; set; }
 
-    public override string Value 
-    { 
-        get => ValueDouble.ToString(); 
-        set => ValueDouble = double.Parse(value); 
+    public override string Value
+    {
+        get => ValueDouble.ToString();
+        set => ValueDouble = double.Parse(value);
     }
 
     public NbtDouble()

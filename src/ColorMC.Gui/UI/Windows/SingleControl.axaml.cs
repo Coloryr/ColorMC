@@ -15,7 +15,6 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Main;
 using ColorMC.Gui.UI.Model;
-using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Windows;
 

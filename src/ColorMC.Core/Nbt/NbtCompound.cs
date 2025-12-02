@@ -19,10 +19,10 @@ public class NbtCompound : NbtBase, IEnumerable<KeyValuePair<string, NbtBase>>
     /// </summary>
     public int Count => Entries.Count;
 
-    public override string Value 
-    { 
-        get => '{' + $"{Count}" + '}'; 
-        set => throw new NotSupportedException(); 
+    public override string Value
+    {
+        get => '{' + $"{Count}" + '}';
+        set => throw new NotSupportedException();
     }
 
     /// <summary>
