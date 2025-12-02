@@ -22,7 +22,8 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, List<string>? unselect, IOverGameGui? gui, IZipGui? zipgui)
+    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, 
+        List<string>? unselect, IOverGameGui? gui, IZipGui? zipgui)
     {
         if (string.IsNullOrWhiteSpace(local))
         {
@@ -126,7 +127,8 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ModPackAsync(PackType type, string? group, Stream st, IOverGameGui? gui, IModPackGui? packgui)
+    private static async Task<GameRes> ModPackAsync(PackType type, string? group, Stream st, 
+        IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
     {
         packgui?.SetState(ModpackState.ReadInfo);
         packgui?.SetNow(1, 5);
@@ -134,8 +136,8 @@ public static class AddGameHelper
 
         using IModPackWork work = type switch
         {
-            PackType.CurseForge => new CurseForgeWork(st, gui, packgui),
-            PackType.Modrinth => new ModrinthWork(st, gui, packgui),
+            PackType.CurseForge => new CurseForgeWork(st, gui, packgui, token),
+            PackType.Modrinth => new ModrinthWork(st, gui, packgui, token),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
 
@@ -144,13 +146,23 @@ public static class AddGameHelper
             return new GameRes();
         }
 
+        if (token.IsCancellationRequested)
+        {
+            return new GameRes();
+        }
+
         var game = await work.CreateGame(group);
+
+        if (token.IsCancellationRequested)
+        {
+            return new GameRes { Game = game };
+        }
 
         packgui?.SetState(ModpackState.Unzip);
         packgui?.SetNow(2, 5);
         packgui?.SetNowSub(0, 1);
 
-        if (!await work.Unzip())
+        if (!await work.Unzip() || token.IsCancellationRequested)
         {
             return new GameRes() { Game = game };
         }
@@ -162,7 +174,7 @@ public static class AddGameHelper
         packgui?.SetNow(3, 5);
         packgui?.SetNowSub(0, 1);
 
-        if (!await work.GetInfo())
+        if (!await work.GetInfo() || token.IsCancellationRequested)
         {
             return new GameRes { Game = game };
         }
@@ -245,7 +257,8 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, Stream st, IOverGameGui? gui, IModPackGui? packgui)
+    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, 
+        Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
         packgui?.SetState(ModpackState.ReadInfo);
         using var zFile = ZipArchive.Open(st);
@@ -533,10 +546,9 @@ public static class AddGameHelper
     /// <summary>
     /// 导入整合包
     /// </summary>
-    /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallZip(string? name, string? group, string file,
-        PackType type, IOverGameGui? gui, IModPackGui? packgui)
+        PackType type, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token = default)
     {
         GameRes? res1 = null;
         Stream? st = null;
@@ -552,7 +564,7 @@ public static class AddGameHelper
                     Overwrite = true,
                     Local = file1,
                     Name = Path.GetFileName(file)
-                }]);
+                }], token: token);
                 if (!res)
                 {
                     return new GameRes();
@@ -570,7 +582,7 @@ public static class AddGameHelper
             res1 = type switch
             {
                 PackType.ColorMC => await ColorMCAsync(st, gui, packgui),
-                PackType.CurseForge or PackType.Modrinth => await ModPackAsync(type, group, st, gui, packgui),
+                PackType.CurseForge or PackType.Modrinth => await ModPackAsync(type, group, st, gui, packgui, token),
                 PackType.MMC => await MMCAsync(name, group, file, st, gui, packgui),
                 PackType.HMCL => await HMCLAsync(name, group, file, st, gui, packgui),
                 PackType.ZipPack => await UnzipAsync(name, group, file, st, gui, packgui),
@@ -631,25 +643,24 @@ public static class AddGameHelper
     /// <summary>
     /// 下载并安装curseforge整合包
     /// </summary>
-    /// <param name="arg">整合包信息</param>
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, 
-        string? icon, IOverGameGui? gui, IModPackGui? packgui)
+        string? icon, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token = default)
     {
         packgui?.SetState(ModpackState.DownloadPack);
 
         var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
 
         packgui?.SetSubText(item.Name);
-        var res1 = await DownloadManager.StartAsync([item], packgui);
+        var res1 = await DownloadManager.StartAsync([item], packgui, token);
         packgui?.SetSubText(null);
         if (!res1)
         {
             return new GameRes();
         }
 
-        var res2 = await InstallZip(null, group, item.Local, PackType.CurseForge, gui, packgui);
-        if (res2.State)
+        var res2 = await InstallZip(null, group, item.Local, PackType.CurseForge, gui, packgui, token);
+        if (res2.State && !token.IsCancellationRequested)
         {
             res2.Game!.PID = data.ModId.ToString();
             res2.Game.FID = data.Id.ToString();

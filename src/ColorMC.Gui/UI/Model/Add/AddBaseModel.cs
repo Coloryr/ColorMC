@@ -1,7 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +15,8 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// </summary>
 public abstract partial class AddBaseModel(WindowModel model) : ControlModel(model), IAddControl
 {
+    private readonly string[] _displayStage = [".    ", "..   ", "...  ", ".... ", "....."];
+
     /// <summary>
     /// 下载源
     /// </summary>
@@ -83,6 +86,9 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     [ObservableProperty]
     private string? _downloadText;
 
+    [ObservableProperty]
+    private string? _displayText;
+
     /// <summary>
     /// 是否显示下载列表
     /// </summary>
@@ -98,11 +104,6 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// 是否已经显示
     /// </summary>
     public bool Display { get; set; }
-
-    /// <summary>
-    /// 获取打开详情的时候的标题
-    /// </summary>
-    public abstract string Title { get; }
 
     /// <summary>
     /// 显示的项目列表
@@ -142,6 +143,9 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// 是否关闭
     /// </summary>
     protected bool _close = false;
+
+    private bool _isDisplayRun;
+    private int _displayRunStage;
 
     /// <summary>
     /// 分类改变
@@ -368,18 +372,39 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     public override void Close()
     {
         ClearList();
+
+        FileList.Clear();
+
+        _isDisplayRun = false;
     }
+
+    private void StartDisplay()
+    {
+        _isDisplayRun = true;
+        DispatcherTimer.Run(Run, TimeSpan.FromSeconds(0.5));
+    }
+
+    private bool Run()
+    {
+        DisplayText = _displayStage[_displayRunStage];
+        _displayRunStage++;
+        _displayRunStage = _displayRunStage % _displayStage.Length;
+        return _isDisplayRun;
+    }
+
 
     private void DownloadReload()
     {
         HaveDownload = NowDownload.Any();
         if (HaveDownload)
         {
+            StartDisplay();
             DownloadText = string.Format(LanguageUtils.Get("AddModPackWindow.Text41"), NowDownload.Count);
         }
         else
         {
             DownloadText = "";
+            _isDisplayRun = false;
         }
     }
 

@@ -52,10 +52,11 @@ internal class DownloadThread
     /// 启动信号量
     /// </summary>
     private readonly Semaphore _semaphoreWait = new(0, 2);
-    /// <summary>
-    /// 暂停信号量
-    /// </summary>
-    private readonly Semaphore _semaphorePause = new(0, 2);
+    ///// <summary>
+    ///// 暂停信号量
+    ///// </summary>
+    //private readonly Semaphore _semaphorePause = new(0, 2);
+    private TaskCompletionSource? _pauseTask;
     /// <summary>
     /// 是否在暂停
     /// </summary>
@@ -137,6 +138,7 @@ internal class DownloadThread
     /// </summary>
     internal void Pause()
     {
+        _pauseTask = new TaskCompletionSource();
         _pause = true;
     }
 
@@ -146,7 +148,7 @@ internal class DownloadThread
     internal void Resume()
     {
         _pause = false;
-        _semaphorePause.Release();
+        _pauseTask?.TrySetResult();
     }
 
     /// <summary>
@@ -162,7 +164,7 @@ internal class DownloadThread
 
         item.File.State = DownloadItemState.Pause;
         item.Task.UpdateItem(_index, item.File);
-        _semaphorePause.WaitOne();
+        _pauseTask?.Task.Wait(item.Task.Token);
     }
 
     /// <summary>
@@ -320,10 +322,9 @@ internal class DownloadThread
 
         while (DownloadManager.GetDownloadItem() is { } item)
         {
-            CheckPause(item);
-
             if (item.Task.Token.IsCancellationRequested)
             {
+                item.Task.Done();
                 break;
             }
 
@@ -467,6 +468,10 @@ internal class DownloadThread
                 }
                 finally
                 {
+                    if (item.Task.Token.IsCancellationRequested)
+                    {
+                        item.Task.Done();
+                    }
                     if (buffer != null)
                     {
                         ArrayPool<byte>.Shared.Return(buffer);

@@ -29,7 +29,7 @@ public static class McloAPI
                 })
             };
 
-            using var data = await CoreHttpClient.SendAsync(httpRequest);
+            using var data = await CoreHttpClient.SendAsync(httpRequest, CancellationToken.None);
             using var stream = await data.Content.ReadAsStreamAsync();
             var obj = JsonUtils.ToObj(stream, JsonType.McloResObj);
             if (obj?.Success != true)

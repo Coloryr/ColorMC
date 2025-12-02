@@ -12,12 +12,12 @@ public class ModrinthWork : ModPackWork, IModPackWork
 {
     private ModrinthPackObj? _info;
 
-    public ModrinthWork(Stream st, IOverGameGui? gui, IModPackGui? packgui) : base(st, gui, packgui)
+    public ModrinthWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
     {
 
     }
 
-    public ModrinthWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui)
+    public ModrinthWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui, default)
     {
 
     }
@@ -212,7 +212,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
     {
         if (Downloads != null)
         {
-            await DownloadManager.StartAsync(Downloads, Packgui);
+            await DownloadManager.StartAsync(Downloads, Packgui, Token);
         }
     }
 
@@ -223,7 +223,12 @@ public class ModrinthWork : ModPackWork, IModPackWork
             return false;
         }
 
-        var list = ModrinthHelper.GetModrinthModInfo(Game, _info, Packgui);
+        var list = ModrinthHelper.GetModrinthModInfo(Game, _info, Packgui, Token);
+
+        if (Token.IsCancellationRequested)
+        {
+            return false;
+        }
 
         Game.Mods.Clear();
         foreach (var item in Game.Mods)
@@ -328,6 +333,10 @@ public class ModrinthWork : ModPackWork, IModPackWork
         //解压文件
         foreach (var e in Zip.Entries)
         {
+            if (Token.IsCancellationRequested)
+            {
+                return false;
+            }
             if (!FuntionUtils.IsFile(e))
             {
                 index++;

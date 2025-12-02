@@ -108,7 +108,8 @@ public static class DownloadManager
     /// </summary>
     /// <param name="list">下载列表</param>
     /// <returns>是否成功</returns>
-    public static async Task<bool> StartAsync(ICollection<FileItemObj> list, IProgressGui? gui = null)
+    public static async Task<bool> StartAsync(ICollection<FileItemObj> list, 
+        IProgressGui? gui = null, CancellationToken token = default)
     {
         if (s_stop)
         {
@@ -116,7 +117,7 @@ public static class DownloadManager
         }
         var arg = ColorMCCore.OnDownloadGui();
 
-        return await StartAsync(list, arg, gui);
+        return await StartAsync(list, arg, gui, token);
     }
 
     /// <summary>
@@ -127,8 +128,15 @@ public static class DownloadManager
     {
         s_tasks.Remove(task);
 
+        var state = s_tasks.Count > 0;
+
         //若没有下一个任务则全部完成
-        arg?.Update(s_threads.Count, s_tasks.Count > 0, s_tasks.Count);
+        arg?.Update(s_threads.Count, state, s_tasks.Count);
+
+        if (state == false)
+        {
+            Resume();
+        }
     }
 
     internal static DownloadItem? GetDownloadItem()
@@ -147,16 +155,18 @@ public static class DownloadManager
     /// <param name="list">下载列表</param>
     /// <param name="gui">下载参数</param>
     /// <returns>是否完成</returns>
-    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGui? gui, IProgressGui? pgui)
+    private static Task<bool> StartAsync(ICollection<FileItemObj> list, IDownloadGui? gui, 
+        IProgressGui? pgui, CancellationToken token)
     {
-        var task = new DownloadTask(gui, pgui);
+        var task = new DownloadTask(gui, pgui, token);
         s_tasks.Add(task);
 
         var names = new List<string>();
         //装填下载内容
         foreach (var item in list)
         {
-            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) || names.Contains(item.Name))
+            if (string.IsNullOrWhiteSpace(item.Name) || string.IsNullOrWhiteSpace(item.Url) 
+                || names.Contains(item.Name))
             {
                 continue;
             }

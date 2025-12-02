@@ -235,7 +235,8 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>下载列表</returns>
-    public static MakeDownloadItemsRes GetModrinthModInfo(GameSettingObj game, ModrinthPackObj info, IModPackGui? gui)
+    public static MakeDownloadItemsRes GetModrinthModInfo(GameSettingObj game, 
+        ModrinthPackObj info, IModPackGui? gui, CancellationToken token = default)
     {
         var list = new List<FileItemObj>();
 
@@ -245,6 +246,11 @@ public static class ModrinthHelper
         var now = 0;
         foreach (var item in info.Files)
         {
+            if (token.IsCancellationRequested)
+            {
+                return new MakeDownloadItemsRes();
+            }
+
             var item11 = item.MakeDownloadObj(game);
             list.Add(item11);
 

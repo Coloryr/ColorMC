@@ -25,19 +25,20 @@ public static class CurseForgeAPI
     /// <summary>
     /// 添加CF KEY并发送请求
     /// </summary>
-    /// <param name="httpRequest"></param>
+    /// <param name="req"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    private static async Task<Stream?> SendAsync(HttpRequestMessage httpRequest)
+    private static async Task<Stream?> SendAsync(HttpRequestMessage req, CancellationToken token = default)
     {
-        httpRequest.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey ?? throw new Exception("CurseForge key is empty"));
-        var data = await CoreHttpClient.SendAsync(httpRequest);
+        req.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey 
+            ?? throw new Exception("CurseForge key is not set"));
+        var data = await CoreHttpClient.SendAsync(req, token);
         if (data.StatusCode != HttpStatusCode.OK)
         {
             data.Dispose();
             return null;
         }
-        return await data.Content.ReadAsStreamAsync();
+        return await data.Content.ReadAsStreamAsync(token);
     }
 
     /// <summary>
@@ -157,16 +158,16 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取Mod信息
     /// </summary>
-    public static async Task<CurseForgeModObj?> GetModAsync(CurseForgePackObj.FilesObj obj)
+    public static async Task<CurseForgeModObj?> GetModAsync(CurseForgePackObj.FilesObj obj, CancellationToken token = default)
     {
         string temp = $"{UrlHelper.CurseForge}mods/{obj.ProjectID}/files/{obj.FileID}";
         try
         {
-            using var data = await SendAsync(new()
+            using var data = await SendAsync(new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri(temp)
-            });
+            }, token);
             return JsonUtils.ToObj(data, JsonType.CurseForgeModObj);
         }
         catch (Exception e)
@@ -179,19 +180,20 @@ public static class CurseForgeAPI
     /// <summary>
     /// 查询Mod信息
     /// </summary>
-    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> GetFilesAsync(List<CurseForgePackObj.FilesObj> obj)
+    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> 
+        GetFilesAsync(List<CurseForgePackObj.FilesObj> obj, CancellationToken token = default)
     {
         string temp = $"{UrlHelper.CurseForge}mods/files";
         try
         {
             var arg1 = new CurseForgeGetFilesObj { FileIds = [] };
             obj.ForEach(a => arg1.FileIds.Add(a.FileID));
-            using var data = await SendAsync(new()
+            using var data = await SendAsync(new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(temp),
                 Content = new StringContent(JsonUtils.ToString(arg1, JsonType.CurseForgeGetFilesObj), MediaTypeHeaderValue.Parse("application/json"))
-            });
+            }, token);
             return JsonUtils.ToObj(data, JsonType.CurseForgeGetFilesResObj)?.Data;
         }
         catch (Exception e)

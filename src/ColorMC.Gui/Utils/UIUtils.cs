@@ -229,4 +229,12 @@ public static class UIUtils
 
         return Brush.Parse(color);
     }
+
+    public static void StringCut(ref string text)
+    {
+        if (text.Length > 40)
+        {
+            text = "..." + text[^40..];
+        }
+    }
 }

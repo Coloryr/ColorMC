@@ -84,7 +84,7 @@ public partial class AddBaseModel : IAddFileControl
 
         if (value == 1)
         {
-            LoadVersion(Last.SourceType, Last.ID);
+            LoadInfoVersion();
         }
     }
 
@@ -99,7 +99,7 @@ public partial class AddBaseModel : IAddFileControl
             return;
         }
 
-        LoadVersion(Last.SourceType, Last.ID);
+        LoadInfoVersion();
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public partial class AddBaseModel : IAddFileControl
             return;
         }
 
-        LoadVersion(Last.SourceType, Last.ID);
+        LoadInfoVersion();
     }
 
     /// <summary>
@@ -150,7 +150,7 @@ public partial class AddBaseModel : IAddFileControl
     [RelayCommand]
     public void Search()
     {
-        LoadVersion(Last.SourceType, Last.ID);
+        LoadInfoVersion();
     }
 
     /// <summary>
@@ -262,5 +262,10 @@ public partial class AddBaseModel : IAddFileControl
     {
         HaveNextVersionPage = PageVersion < MaxPageVersion;
         HaveLastVersionPage = PageVersion > 1;
+    }
+
+    protected void LoadInfoVersion()
+    {
+        LoadVersion(Last.SourceType, Last.ID);
     }
 }

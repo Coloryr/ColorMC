@@ -56,17 +56,6 @@ public partial class AddModPackControl : BaseUserControl
         {
             ScrollViewer1.ScrollToHome();
         }
-        else if (e.PropertyName == nameof(AddBaseModel.DisplayDownload))
-        {
-            if ((DataContext as AddBaseModel)!.DisplayDownload)
-            {
-                ThemeManager.CrossFade.Start(null, DownloadInfo);
-            }
-            else
-            {
-                ThemeManager.CrossFade.Start(DownloadInfo, null);
-            }
-        }
         else if (e.PropertyName == nameof(AddBaseModel.DisplayItemInfo))
         {
             if ((DataContext as AddBaseModel)!.DisplayItemInfo)

@@ -12,8 +12,10 @@
     mc:Ignorable="d">
     <Panel>
         <ScrollViewer
+            Name="DownloadInfo"
             Margin="0,0,0,50"
             HorizontalScrollBarVisibility="Disabled"
+            IsVisible="False"
             VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding NowDownload}">
                 <ItemsControl.ItemTemplate>
@@ -31,7 +33,10 @@
             Command="{Binding ShowDownload}"
             CornerRadius="20"
             IsVisible="{Binding HaveDownload}">
-            <TextBlock Margin="10,0,10,0" Text="{Binding DownloadText}" />
+            <StackPanel Margin="10,0,10,0" Orientation="Horizontal">
+                <TextBlock Text="{Binding DownloadText}" />
+                <TextBlock Text="{Binding DisplayText}" />
+            </StackPanel>
         </Button>
     </Panel>
 </UserControl>

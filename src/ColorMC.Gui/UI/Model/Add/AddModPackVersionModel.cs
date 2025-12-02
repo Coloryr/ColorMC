@@ -3,7 +3,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -12,8 +11,6 @@ namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddModPackControlModel
 {
-    public override string Title => LanguageUtils.Get("AddModPackWindow.Title");
-
     /// <summary>
     /// 安装所选项目
     /// </summary>
@@ -58,7 +55,7 @@ public partial class AddModPackControlModel
         if (data.SourceType == SourceType.CurseForge)
         {
             var data1 = (data.Data as CurseForgeModObj.CurseForgeDataObj)!;
-            var info = new FileItemDownloadModel()
+            var info = new FileItemDownloadModel(Window)
             {
                 Name = data1.DisplayName,
                 Source = data.SourceType,
@@ -68,8 +65,13 @@ public partial class AddModPackControlModel
             StartDownload(info);
             var gui = new OverGameGui(Window);
             var pack = new ModpackGui(info);
-            var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack);
+            var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack, info.Token);
             pack.Stop();
+            StopDownload(info, res.State);
+            if (info.Token.IsCancellationRequested)
+            {
+                return;
+            }
 
             if (!res.State)
             {
@@ -83,7 +85,7 @@ public partial class AddModPackControlModel
         else if (data.SourceType == SourceType.Modrinth)
         {
             var data1 = (data.Data as ModrinthVersionObj)!;
-            var info = new FileItemDownloadModel()
+            var info = new FileItemDownloadModel(Window)
             {
                 Name = data1.Name,
                 Source = data.SourceType,
@@ -93,10 +95,9 @@ public partial class AddModPackControlModel
             StartDownload(info);
             var pack = new ModpackGui(info);
             var gui = new OverGameGui(Window);
-            var res = await AddGameHelper.InstallModrinth(_group, data1 ,
-                select?.Logo, gui, pack);
+            var res = await AddGameHelper.InstallModrinth(_group, data1, select?.Logo, gui, pack);
             pack.Stop();
-
+            StopDownload(info, res.State);
             if (!res.State)
             {
                 Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text50"));

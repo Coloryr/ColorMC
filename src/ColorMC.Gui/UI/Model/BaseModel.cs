@@ -427,10 +427,13 @@ public partial class WindowModel : ObservableObject
     public Task<object?> ShowWait(string text)
     {
         Lock();
-        return ShowDialogWait(new ChoiceModel(WindowId)
+        var res = ShowDialogWait(new ChoiceModel(WindowId)
         {
             Text = text
         });
+        Unlock();
+
+        return res;
     }
 
     public ProgressModel ShowProgress(string text)
@@ -454,6 +457,9 @@ public partial class WindowModel : ObservableObject
             CancelVisable = true
         };
 
-        return await DialogHost.Show(dialog, WindowId) is true;
+        var res = await DialogHost.Show(dialog, WindowId) is true;
+        Unlock();
+
+        return res;
     }
 }

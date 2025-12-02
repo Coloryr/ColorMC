@@ -21,8 +21,6 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// </summary>
 public partial class AddResourceControlModel
 {
-    public override string Title => LanguageUtils.Get("AddGameWindow.Title");
-
     /// <summary>
     /// 显示的下载模组项目列表
     /// </summary>
@@ -335,7 +333,7 @@ public partial class AddResourceControlModel
                     FileItemDownloadModel? info = null;
                     if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                     {
-                        info = new FileItemDownloadModel
+                        info = new FileItemDownloadModel(Window)
                         {
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
@@ -347,7 +345,7 @@ public partial class AddResourceControlModel
                     }
                     else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                     {
-                        info = new FileItemDownloadModel
+                        info = new FileItemDownloadModel(Window)
                         {
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
@@ -389,7 +387,7 @@ public partial class AddResourceControlModel
 
                     if (list.List!.Count == 0)
                     {
-                        var info = new FileItemDownloadModel
+                        var info = new FileItemDownloadModel(Window)
                         {
                             Type = FileType.Mod,
                             Source = data.SourceType,

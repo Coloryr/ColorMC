@@ -236,7 +236,8 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">获取信息</param>
     /// <returns>项目信息</returns>
-    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GameSettingObj game, CurseForgePackObj data, IModPackGui? gui)
+    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GameSettingObj game, CurseForgePackObj data, 
+        IModPackGui? gui, CancellationToken token = default)
     {
         var size = data.Files.Count;
         var now = 0;
@@ -271,7 +272,7 @@ public static class CurseForgeHelper
         }
 
         //一次性获取
-        var res = await CurseForgeAPI.GetFilesAsync(data.Files);
+        var res = await CurseForgeAPI.GetFilesAsync(data.Files, token);
         if (res != null)
         {
             var res1 = res.Distinct(CurseForgeDataComparer.Instance);
@@ -281,7 +282,7 @@ public static class CurseForgeHelper
                 MaxDegreeOfParallelism = 1
             }, async (item, cancel) =>
 #else
-            await Parallel.ForEachAsync(res1, async (item, cancel) =>
+            await Parallel.ForEachAsync(res1, token, async (item, cancel) =>
 #endif
             {
                 await BuildItem(item);
@@ -291,9 +292,9 @@ public static class CurseForgeHelper
         {
             //逐一获取
             bool done = true;
-            await Parallel.ForEachAsync(data.Files, async (item, token) =>
+            await Parallel.ForEachAsync(data.Files, token, async (item, token) =>
             {
-                var res = await CurseForgeAPI.GetModAsync(item);
+                var res = await CurseForgeAPI.GetModAsync(item, token);
                 if (res == null || res.Data == null)
                 {
                     done = false;
@@ -306,6 +307,11 @@ public static class CurseForgeHelper
             {
                 return new MakeDownloadItemsRes();
             }
+        }
+
+        if (token.IsCancellationRequested)
+        {
+            return new MakeDownloadItemsRes();
         }
 
         return new MakeDownloadItemsRes 

@@ -176,9 +176,8 @@
         </ScrollViewer>
         <panel1:AddFileInfoControl Name="ItemInfo" IsVisible="False" />
         <panel1:AddDownloadListControl
-            Name="DownloadInfo"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            IsVisible="False" />
+            IsVisible="{Binding HaveDownload}" />
     </Panel>
 </UserControl>

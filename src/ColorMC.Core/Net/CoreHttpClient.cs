@@ -295,20 +295,20 @@ public static class CoreHttpClient
     /// <summary>
     /// 发送请求
     /// </summary>
-    /// <param name="httpRequest"></param>
+    /// <param name="req"></param>
     /// <returns></returns>
-    public static Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest)
+    public static Task<HttpResponseMessage> SendAsync(HttpRequestMessage req, CancellationToken token)
     {
-        return _downloadClient.SendAsync(httpRequest);
+        return _downloadClient.SendAsync(req, token);
     }
 
     /// <summary>
     /// 发送请求
     /// </summary>
-    /// <param name="httpRequest"></param>
+    /// <param name="req"></param>
     /// <returns></returns>
-    public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage httpRequest, CancellationToken token)
+    public static Task<HttpResponseMessage> SendLoginAsync(HttpRequestMessage req, CancellationToken token)
     {
-        return _loginClient.SendAsync(httpRequest, token);
+        return _loginClient.SendAsync(req, token);
     }
 }
