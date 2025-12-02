@@ -15,10 +15,10 @@ public class NbtByte : NbtBase
     /// </summary>
     public byte ValueByte { get; set; }
 
-    public override string Value 
-    { 
-        get => ValueByte.ToString(); 
-        set => ValueByte = byte.Parse(value); 
+    public override string Value
+    {
+        get => ValueByte.ToString();
+        set => ValueByte = byte.Parse(value);
     }
 
     public NbtByte()

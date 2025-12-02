@@ -30,7 +30,7 @@ public static class CurseForgeAPI
     /// <exception cref="Exception"></exception>
     private static async Task<Stream?> SendAsync(HttpRequestMessage req, CancellationToken token = default)
     {
-        req.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey 
+        req.Headers.Add("x-api-key", ColorMCCore.CoreArg.CurseForgeKey
             ?? throw new Exception("CurseForge key is not set"));
         var data = await CoreHttpClient.SendAsync(req, token);
         if (data.StatusCode != HttpStatusCode.OK)
@@ -180,7 +180,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 查询Mod信息
     /// </summary>
-    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?> 
+    public static async Task<List<CurseForgeModObj.CurseForgeDataObj>?>
         GetFilesAsync(List<CurseForgePackObj.FilesObj> obj, CancellationToken token = default)
     {
         string temp = $"{UrlHelper.CurseForge}mods/files";

@@ -15,10 +15,10 @@ public class NbtFloat : NbtBase
     /// </summary>
     public float ValueFloat { get; set; }
 
-    public override string Value 
-    { 
-        get => ValueFloat.ToString(); 
-        set => ValueFloat = float.Parse(value); 
+    public override string Value
+    {
+        get => ValueFloat.ToString();
+        set => ValueFloat = float.Parse(value);
     }
 
     public NbtFloat()

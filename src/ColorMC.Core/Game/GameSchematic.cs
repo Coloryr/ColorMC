@@ -66,7 +66,7 @@ public static class GameSchematic
             {
                 ColorMCCore.OnError(new GameSchematicReadErrorEventArgs(obj, item, e));
                 list.Add(new SchematicObj
-                { 
+                {
                     Local = item,
                     Broken = true
                 });
@@ -137,7 +137,7 @@ public static class GameSchematic
     /// <returns></returns>
     private static async Task<SchematicObj> ReadNBTAsync(string file)
     {
-        if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag 
+        if (await NbtBase.ReadAsync<NbtCompound>(file) is not { } tag
             || tag.TryGet<NbtList>("size") is not { } size
             || size.Count != 3)
         {

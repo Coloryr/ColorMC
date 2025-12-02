@@ -1,5 +1,4 @@
 using System.Text.Json.Nodes;
-using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Nbt;
 using ColorMC.Core.Objs;

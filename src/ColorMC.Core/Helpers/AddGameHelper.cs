@@ -22,7 +22,7 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group, 
+    public static async Task<GameRes> AddGameFolder(string local, string? name, string? group,
         List<string>? unselect, IOverGameGui? gui, IZipGui? zipgui)
     {
         if (string.IsNullOrWhiteSpace(local))
@@ -127,7 +127,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ModPackAsync(PackType type, string? group, Stream st, 
+    private static async Task<GameRes> ModPackAsync(PackType type, string? group, Stream st,
         IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
     {
         packgui?.SetState(ModpackState.ReadInfo);
@@ -198,7 +198,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ColorMCAsync(Stream st, IOverGameGui? gui ,IModPackGui? packgui)
+    private static async Task<GameRes> ColorMCAsync(Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
         packgui?.SetState(ModpackState.ReadInfo);
         //直接解压
@@ -257,7 +257,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> MMCAsync(string? name, string? group, string file, 
+    private static async Task<GameRes> MMCAsync(string? name, string? group, string file,
         Stream st, IOverGameGui? gui, IModPackGui? packgui)
     {
         packgui?.SetState(ModpackState.ReadInfo);
@@ -644,7 +644,7 @@ public static class AddGameHelper
     /// 下载并安装curseforge整合包
     /// </summary>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data, 
+    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data,
         string? icon, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token = default)
     {
         packgui?.SetState(ModpackState.DownloadPack);

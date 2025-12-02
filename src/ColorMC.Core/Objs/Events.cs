@@ -334,7 +334,7 @@ public class GameSchematicReadErrorEventArgs(GameSettingObj game, string file, E
 /// </summary>
 /// <param name="game"></param>
 /// <param name="exception"></param>
-public class GameServerReadErrorEventArgs(GameSettingObj game,  Exception exception) : ExceptionErrorEventArgs(exception, false, false)
+public class GameServerReadErrorEventArgs(GameSettingObj game, Exception exception) : ExceptionErrorEventArgs(exception, false, false)
 {
     /// <summary>
     /// 游戏实例
@@ -613,7 +613,7 @@ public class PlayerTexturesGetErrorEventArgs(LoginObj login, Exception exception
 /// </summary>
 /// <param name="exception"></param>
 public class LocalMavenErrorEventArgs(Exception exception) : ExceptionErrorEventArgs(exception, false, false)
-{ 
+{
 
 }
 

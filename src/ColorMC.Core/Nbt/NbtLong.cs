@@ -17,9 +17,9 @@ public class NbtLong : NbtBase
     public long ValueLong { get; set; }
 
     public override string Value
-    { 
+    {
         get => ValueLong.ToString();
-        set => ValueLong = long.Parse(value); 
+        set => ValueLong = long.Parse(value);
     }
 
     public NbtLong()

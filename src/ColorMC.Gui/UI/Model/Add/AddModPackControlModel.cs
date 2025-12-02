@@ -8,7 +8,6 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;

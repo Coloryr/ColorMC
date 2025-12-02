@@ -5,9 +5,7 @@ using System.Text.Json;
 using Ae.Dns.Client;
 using Ae.Dns.Protocol;
 using ColorMC.Core.Config;
-using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Net;
 

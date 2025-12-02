@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,7 +44,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// 显示的下载类型列表
     /// </summary>
     public string[] TypeList { get; init; } = LanguageUtils.GetAddType();
-    
+
     /// <summary>
     /// 是否为模组升级模式
     /// </summary>

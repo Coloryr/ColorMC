@@ -48,7 +48,7 @@ public partial class MainModel
         else
         {
             var dialog = new LongTextModel(Window.WindowId)
-            { 
+            {
                 Text1 = LanguageUtils.Get("App.Text24"),
                 Text2 = data
             };

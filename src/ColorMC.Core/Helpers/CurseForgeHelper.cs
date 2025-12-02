@@ -9,7 +9,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using ColorMC.Core.Worker;
-using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -236,7 +235,7 @@ public static class CurseForgeHelper
     /// </summary>
     /// <param name="arg">获取信息</param>
     /// <returns>项目信息</returns>
-    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GameSettingObj game, CurseForgePackObj data, 
+    public static async Task<MakeDownloadItemsRes> GetModPackInfoAsync(GameSettingObj game, CurseForgePackObj data,
         IModPackGui? gui, CancellationToken token = default)
     {
         var size = data.Files.Count;
@@ -314,11 +313,11 @@ public static class CurseForgeHelper
             return new MakeDownloadItemsRes();
         }
 
-        return new MakeDownloadItemsRes 
-        { 
-            List = list, 
-            Mods = mods, 
-            State = true 
+        return new MakeDownloadItemsRes
+        {
+            List = list,
+            Mods = mods,
+            State = true
         };
     }
 

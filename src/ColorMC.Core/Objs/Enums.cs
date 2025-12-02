@@ -478,7 +478,7 @@ public enum UpdateType
 /// 实例修改
 /// </summary>
 public enum InstanceChangeType
-{ 
+{
     /// <summary>
     /// 数量修改
     /// </summary>
@@ -493,7 +493,7 @@ public enum InstanceChangeType
 /// 登录错误状态
 /// </summary>
 public enum LoginFailState
-{ 
+{
     /// <summary>
     /// 获取数据错误
     /// </summary>
@@ -524,7 +524,7 @@ public enum SchematicType
     /// <summary>
     /// 原版
     /// </summary>
-    Minecraft, 
+    Minecraft,
     /// <summary>
     /// 投影模组
     /// </summary>
@@ -532,7 +532,7 @@ public enum SchematicType
     /// <summary>
     /// 创世神模组
     /// </summary>
-    WorldEdit, 
+    WorldEdit,
     /// <summary>
     /// 机械动力蓝图
     /// </summary>
@@ -543,7 +543,7 @@ public enum SchematicType
 /// 操作错误类型
 /// </summary>
 public enum ErrorType
-{ 
+{
     /// <summary>
     /// 文件不存在
     /// </summary>
@@ -574,7 +574,7 @@ public enum ErrorType
 /// 整合包安装状态
 /// </summary>
 public enum ModpackState
-{ 
+{
     /// <summary>
     /// 下载
     /// </summary>

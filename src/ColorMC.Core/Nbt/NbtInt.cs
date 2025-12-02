@@ -15,10 +15,10 @@ public class NbtInt : NbtBase
     /// </summary>
     public int ValueInt { get; set; }
 
-    public override string Value 
+    public override string Value
     {
         get => ValueInt.ToString();
-        set => ValueInt = int.Parse(value); 
+        set => ValueInt = int.Parse(value);
     }
 
     public NbtInt()

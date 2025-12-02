@@ -68,9 +68,9 @@ public static class AuthlibHelper
     /// <returns>Nide8Injector下载实例</returns>
     public static async Task<FileItemObj?> ReadyNide8Async(CancellationToken token)
     {
-        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token) 
+        var data = await CoreHttpClient.GetStringAsync($"{UrlHelper.Nide8}00000000000000000000000000000000/", token)
             ?? throw new LaunchException(LaunchError.LoginCoreError);
-        var obj = JsonUtils.ReadObj(data) 
+        var obj = JsonUtils.ReadObj(data)
             ?? throw new LaunchException(LaunchError.LoginCoreError);
         var sha1 = obj.GetString("jarHash")!;
         var item = BuildNide8Item(obj.GetString("jarVersion")!);

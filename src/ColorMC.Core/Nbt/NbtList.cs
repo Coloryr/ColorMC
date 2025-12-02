@@ -33,10 +33,10 @@ public class NbtList : NbtBase, IEnumerable<NbtBase>
     /// </summary>
     public int Count => _values.Count;
 
-    public override string Value 
-    { 
-        get => $"[{_values.Count}]"; 
-        set => throw new NotSupportedException(); 
+    public override string Value
+    {
+        get => $"[{_values.Count}]";
+        set => throw new NotSupportedException();
     }
 
     public NbtList()

@@ -1,7 +1,5 @@
-using System.Threading;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Items;
 

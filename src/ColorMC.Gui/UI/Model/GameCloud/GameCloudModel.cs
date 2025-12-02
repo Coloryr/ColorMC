@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.LaunchPath;
@@ -233,7 +232,7 @@ public partial class GameCloudModel : MenuModel
         if (!ColorMCCloudAPI.Connect)
         {
             await Window.ShowDialogWait(new ChoiceModel(Window.WindowId)
-            { 
+            {
                 Text = LanguageUtils.Get("GameCloudWindow.Erro1")
             });
             WindowClose();

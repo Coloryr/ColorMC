@@ -484,11 +484,11 @@ public static class ServerPack
     public static async Task ServerPackCheckAsync(this GameSettingObj obj, ILaunchGui? gui, CancellationToken token)
     {
         var obj2 = obj.GetServerPack();
-        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token) 
+        var res = await CoreHttpClient.GetStringAsync($"{obj.ServerUrl}{Names.NameShaFile}", token)
             ?? throw new LaunchException(LaunchError.CheckServerPackFail);
         if (obj2.Sha1 == null || obj2.Sha1 != res)
         {
-            var res1 = await CoreHttpClient.GetStreamAsync($"{obj.ServerUrl}{Names.NameServerFile}", token) 
+            var res1 = await CoreHttpClient.GetStreamAsync($"{obj.ServerUrl}{Names.NameServerFile}", token)
                 ?? throw new LaunchException(LaunchError.CheckServerPackFail);
             try
             {

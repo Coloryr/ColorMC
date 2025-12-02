@@ -114,7 +114,7 @@ public partial class NetFrpModel
         var dialog = new SelectModel(Window.WindowId)
         {
             Text = LanguageUtils.Get("NetFrpWindow.Tab4.Text7"),
-            Items = [.. list1] 
+            Items = [.. list1]
         };
         var select = await Window.ShowDialogWait(dialog);
         if (select is not true)

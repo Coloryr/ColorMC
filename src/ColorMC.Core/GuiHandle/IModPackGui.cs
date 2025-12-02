@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ColorMC.Core.Objs;
+﻿using ColorMC.Core.Objs;
 
 namespace ColorMC.Core.GuiHandle;
 

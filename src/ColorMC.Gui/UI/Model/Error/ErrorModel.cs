@@ -112,7 +112,7 @@ public partial class ErrorModel : ControlModel
                 Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
                 ChoiseText = LanguageUtils.Get("GameLogWindow.Text23"),
                 TextReadonly = true,
-                ChoiseCall = () => 
+                ChoiseCall = () =>
                 {
                     BaseBinding.CopyTextClipboard(top, url);
                     Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));

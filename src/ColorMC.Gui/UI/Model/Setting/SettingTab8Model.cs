@@ -1112,7 +1112,7 @@ public partial class SettingModel
             }
 
             return new KeyRes
-            { 
+            {
                 Key = keys,
                 Positive = positives
             };

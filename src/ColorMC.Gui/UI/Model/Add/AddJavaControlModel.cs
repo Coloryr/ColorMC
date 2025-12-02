@@ -6,7 +6,6 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Setting;
 using ColorMC.Gui.UIBinding;

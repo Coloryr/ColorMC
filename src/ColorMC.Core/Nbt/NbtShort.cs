@@ -15,10 +15,10 @@ public class NbtShort : NbtBase
     /// </summary>
     public short ValueShort { get; set; }
 
-    public override string Value 
+    public override string Value
     {
-        get => ValueShort.ToString(); 
-        set => ValueShort = short.Parse(value); 
+        get => ValueShort.ToString();
+        set => ValueShort = short.Parse(value);
     }
 
     public NbtShort()
