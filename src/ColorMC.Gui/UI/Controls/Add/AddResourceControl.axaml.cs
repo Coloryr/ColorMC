@@ -35,9 +35,8 @@ public partial class AddResourceControl : BaseUserControl
 
         Title = string.Format(LanguageUtils.Get("AddResourceWindow.Title"), obj.Name);
 
-        //DisplayVersion.PointerPressed += DisplayVersion_PointerPressed;
+        ItemInfo.PointerPressed += ItemInfo_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
-        ModDownloadDisplay.PointerPressed += ModDownloadDisplay_PointerPressed;
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -85,7 +84,7 @@ public partial class AddResourceControl : BaseUserControl
     {
         if (e.Key == Key.F5)
         {
-            (DataContext as AddResourceControlModel)!.Reload();
+            (DataContext as AddResourceControlModel)?.ReloadF5();
 
             return Task.FromResult(true);
         }
@@ -109,7 +108,7 @@ public partial class AddResourceControl : BaseUserControl
 
     public override void Opened()
     {
-        (DataContext as AddResourceControlModel)!.Display = true;
+        (DataContext as AddResourceControlModel)?.Display = true;
     }
 
     public void GoTo(FileType type)
@@ -119,7 +118,7 @@ public partial class AddResourceControl : BaseUserControl
 
     public void GoFile(SourceType type, string pid)
     {
-        (DataContext as AddResourceControlModel)!.GoFile(type, pid);
+        (DataContext as AddResourceControlModel)?.GoFile(type, pid);
     }
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -138,33 +137,22 @@ public partial class AddResourceControl : BaseUserControl
                 ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
-        else if (e.PropertyName == nameof(AddResourceControlModel.ModDownloadDisplay))
+        else if (e.PropertyName == nameof(AddBaseModel.DisplayItemInfo))
         {
-            if (model.ModDownloadDisplay == true)
+            if ((DataContext as AddBaseModel)!.DisplayItemInfo)
             {
-                ThemeManager.CrossFade.Start(null, ModDownloadDisplay);
-                ThemeManager.CrossFade.Start(ScrollViewer1, null);
+                ThemeManager.CrossFade.Start(null, ItemInfo);
             }
             else
             {
-                ThemeManager.CrossFade.Start(ModDownloadDisplay, null);
-                ThemeManager.CrossFade.Start(null, ScrollViewer1);
+                ThemeManager.CrossFade.Start(ItemInfo, null);
             }
         }
-        else if (e.PropertyName == AddResourceControlModel.NameScrollToHome)
+        else if (e.PropertyName == nameof(AddBaseModel.DisplayList))
         {
             ScrollViewer1.ScrollToHome();
         }
     }
-
-    //private void DisplayVersion_PointerPressed(object? sender, PointerPressedEventArgs e)
-    //{
-    //    var ev = e.GetCurrentPoint(this);
-    //    if (ev.Properties.IsXButton1Pressed)
-    //    {
-    //        e.Handled = true;
-    //    }
-    //}
 
     private void OptifineDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
@@ -175,12 +163,13 @@ public partial class AddResourceControl : BaseUserControl
             e.Handled = true;
         }
     }
-    private void ModDownloadDisplay_PointerPressed(object? sender, PointerPressedEventArgs e)
+
+    private void ItemInfo_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var ev = e.GetCurrentPoint(this);
         if (ev.Properties.IsXButton1Pressed)
         {
-            (DataContext as AddResourceControlModel)!.ModDownloadDisplay = false;
+            (DataContext as AddBaseModel)!.DisplayItemInfo = false;
             e.Handled = true;
         }
     }
@@ -191,6 +180,6 @@ public partial class AddResourceControl : BaseUserControl
     /// <param name="list"></param>
     public void GoUpgrade(ICollection<ModUpgradeModel> list)
     {
-        (DataContext as AddResourceControlModel)!.Upgrade(list);
+        (DataContext as AddResourceControlModel)?.Upgrade(list);
     }
 }

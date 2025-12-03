@@ -39,7 +39,9 @@ public partial class AddModPackControlModel : AddBaseModel
     public AddModPackControlModel(WindowModel model) : base(model)
     {
         _useName = ToString() ?? "AddModPackControlModel";
-        SourceList.AddRange(LanguageUtils.GetSourceList());
+
+        SourceTypeList.AddRange([SourceType.CurseForge, SourceType.Modrinth]);
+        SourceTypeList.ForEach(item => SourceList.Add(item.GetName()));
     }
 
     /// <summary>
@@ -55,21 +57,6 @@ public partial class AddModPackControlModel : AddBaseModel
         }
 
         DisplayItems();
-    }
-
-    /// <summary>
-    /// 刷新项目列表
-    /// </summary>
-    [RelayCommand]
-    public void Reload()
-    {
-        if (!string.IsNullOrWhiteSpace(Text) && Page != 1)
-        {
-            Page = 1;
-            return;
-        }
-
-        LoadDisplayList();
     }
 
     /// <summary>
@@ -204,7 +191,9 @@ public partial class AddModPackControlModel : AddBaseModel
     public override async void LoadDisplayList()
     {
         //MO不允许少文字搜索
-        if (Source == 1 && Categorie == 4 && Text?.Length < 3)
+        var type = SourceTypeList[Source];
+
+        if (type == SourceType.Modrinth && Categorie == 4 && Text?.Length < 3)
         {
             Window.Show(LanguageUtils.Get("AddModPackWindow.Text27"));
             return;
@@ -213,25 +202,16 @@ public partial class AddModPackControlModel : AddBaseModel
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text18"));
         var page = Page ?? 1;
         page -= 1;
-        var res = await WebBinding.GetModPackListAsync((SourceType)Source,
-            GameVersion, Text, page, Source == 2 ? Categorie : SortType,
-            Source == 2 ? "" : Categorie < 0 ? "" : _categories[Categorie]);
+        var res = await WebBinding.GetModPackListAsync(type,
+            GameVersion, Text, page, SortType,
+            Categorie < 0 ? "" : _categories[Categorie]);
 
         //制作分页
-        if (Source == 0)
-        {
-            MaxPage = res.Count / 20;
-        }
-        else
-        {
-            MaxPage = int.MaxValue;
-        }
+        MaxPage = res.TotalCount / 20;
 
         PageLoad();
 
-        var data = res.List;
-
-        if (data == null)
+        if (res.List == null)
         {
             Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
             Window.CloseDialog(dialog);
@@ -240,17 +220,11 @@ public partial class AddModPackControlModel : AddBaseModel
 
         DisplayList.Clear();
 
-        //一页20
-        int b = 0;
-        for (int a = 0; a < data.Count; a++, b++)
+        foreach (var item in res.List)
         {
-            if (b >= 20)
-            {
-                break;
-            }
-            var item = data[a];
             item.IsDownload = InstancesPath.Games.Any(item1 => item1.ModPack && item1.PID == item.Pid);
             item.Add = this;
+            TestFileItem(item);
             DisplayList.Add(item);
         }
 
@@ -262,21 +236,6 @@ public partial class AddModPackControlModel : AddBaseModel
 
         Window.CloseDialog(dialog);
         Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
-    }
-
-    /// <summary>
-    /// F5重载版本列表
-    /// </summary>
-    public void ReloadF5()
-    {
-        if (DisplayItemInfo)
-        {
-            LoadInfoVersion();
-        }
-        else
-        {
-            LoadDisplayList();
-        }
     }
 
     public override void Close()

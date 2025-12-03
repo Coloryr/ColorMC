@@ -236,7 +236,7 @@ public static class ModrinthHelper
     /// <param name="arg">参数</param>
     /// <returns>下载列表</returns>
     public static MakeDownloadItemsRes GetModrinthModInfo(GameSettingObj game,
-        ModrinthPackObj info, IModPackGui? gui, CancellationToken token = default)
+        ModrinthPackObj info, IAddGui? gui, CancellationToken token = default)
     {
         var list = new List<FileItemObj>();
 
@@ -472,7 +472,7 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>是否升级完成</returns>
-    public static async Task<bool> UpgradeModPackAsync(GameSettingObj game, ModrinthVersionObj data, IModPackGui? gui)
+    public static async Task<bool> UpgradeModPackAsync(GameSettingObj game, ModrinthVersionObj data, IAddGui? gui)
     {
         var item = data.MakeDownloadObj(Path.Combine(DownloadManager.DownloadDir));
 
@@ -497,9 +497,9 @@ public static class ModrinthHelper
     /// </summary>
     /// <param name="arg">参数</param>
     /// <returns>升级结果</returns>
-    private static async Task<bool> UpgradeAsync(GameSettingObj game, string zip, IModPackGui? packgui)
+    private static async Task<bool> UpgradeAsync(GameSettingObj game, string zip, IAddGui? packgui)
     {
-        packgui?.SetState(ModpackState.ReadInfo);
+        packgui?.SetState(AddState.ReadInfo);
         packgui?.SetNow(1, 5);
 
         using var work = new ModrinthWork(zip, null, packgui);
@@ -511,7 +511,7 @@ public static class ModrinthHelper
 
         work.UpdateGame(game);
 
-        packgui?.SetState(ModpackState.Unzip);
+        packgui?.SetState(AddState.Unzip);
         packgui?.SetNow(2, 5);
 
         if (!await work.Unzip())
@@ -522,7 +522,7 @@ public static class ModrinthHelper
         packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
 
-        packgui?.SetState(ModpackState.GetInfo);
+        packgui?.SetState(AddState.GetInfo);
         packgui?.SetNow(3, 5);
 
         if (!await work.CheckUpgrade())
@@ -532,12 +532,12 @@ public static class ModrinthHelper
 
         packgui?.SetSubText(null);
         packgui?.SetNowSub(0, 0);
-        packgui?.SetState(ModpackState.DownloadFile);
+        packgui?.SetState(AddState.DownloadFile);
         packgui?.SetNow(4, 5);
 
         await work.Download();
 
-        packgui?.SetState(ModpackState.Done);
+        packgui?.SetState(AddState.Done);
         packgui?.SetNow(5, 5);
 
         return true;

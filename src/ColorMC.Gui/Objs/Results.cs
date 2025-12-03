@@ -195,7 +195,7 @@ public record ModPackListRes
     /// <summary>
     /// 总数量
     /// </summary>
-    public int Count;
+    public int TotalCount;
 }
 
 /// <summary>

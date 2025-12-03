@@ -41,7 +41,6 @@ public partial class MinecraftNewsModel : ControlModel
         _newsPage = 0;
         var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
         var data = await WebBinding.LoadNewsAsync(_newsPage);
-        Window.CloseDialog(dialog);
         if (data == null)
         {
             Window.Notify(LanguageUtils.Get("MainWindow.Text87"));

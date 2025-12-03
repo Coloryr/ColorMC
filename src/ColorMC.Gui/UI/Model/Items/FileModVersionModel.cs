@@ -36,11 +36,13 @@ public partial class FileModVersionModel : SelectItemModel
     /// <summary>
     /// 下载项目列表
     /// </summary>
-    public List<DownloadModArg> Items;
+    public List<DownloadModObj> Items;
     /// <summary>
     /// 文件列表
     /// </summary>
     public List<FileVersionItemModel> FileItems;
+
+    public bool IsDisable { get; init; }
 
     public FileModVersionModel(string name, List<FileVersionItemModel> version)
     {
@@ -56,7 +58,7 @@ public partial class FileModVersionModel : SelectItemModel
         }
     }
 
-    public FileModVersionModel(string name, List<string> version, List<DownloadModArg> items, bool opt)
+    public FileModVersionModel(string name, List<string> version, List<DownloadModObj> items, bool opt)
     {
         Download = false;
         Name = name;

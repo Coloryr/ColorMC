@@ -39,4 +39,6 @@ public record ModrinthSearchObj
     }
     [JsonPropertyName("hits")]
     public List<HitObj> Hits { get; set; }
+    [JsonPropertyName("total_hits")]
+    public int TotalHits { get; set; }
 }

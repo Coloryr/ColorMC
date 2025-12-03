@@ -4,173 +4,126 @@ using System.Threading.Tasks;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
-using CommunityToolkit.Mvvm.Input;
+using ColorMC.Gui.Utils;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
 public partial class AddResourceControlModel
 {
     /// <summary>
-    /// 多个模组下载任务
+    /// 下载的模组
     /// </summary>
-    private FileItemDownloadTask? _nowTask;
+    [ObservableProperty]
+    private FileModVersionModel? _mod;
 
     /// <summary>
-    /// Mod下载项目显示列表
+    /// 文件列表是否显示下一页
     /// </summary>
-    private readonly List<FileModVersionModel> _modList = [];
-
-    /// <summary>
-    /// 下载所选模组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public void DownloadMod()
-    {
-        if (_nowTask != null)
-        {
-            DownloadListItem(_nowTask);
-        }
-    }
-
-    /// <summary>
-    /// 选择下载所有模组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public void DownloadAllMod()
-    {
-        foreach (var item in DownloadModList)
-        {
-            item.Download = true;
-        }
-
-        if (_nowTask != null)
-        {
-            DownloadListItem(_nowTask);
-        }
-    }
+    [ObservableProperty]
+    private bool _nextPageDisplay;
 
     /// <summary>
     /// 下载一个列表的模组
     /// </summary>
     /// <param name="task"></param>
-    private async void DownloadListItem(FileItemDownloadTask task)
+    private async Task<bool> DownloadListItem(ModDependModel task)
     {
-        CloseModDownloadDisplay();
-
-        if (DownloadModList.Any(item => item is ModUpgradeModel))
+        if (task.DownloadModList.Any(item => item is ModUpgradeModel))
         {
-            var list = DownloadModList.Where(item => item is ModUpgradeModel && item.Download)
-                .Select(item => new DownloadModArg()
+            var list = task.DownloadModList.Where(item => item is ModUpgradeModel && item.Download)
+                .Select(item => new DownloadModObj()
                 {
                     Info = item.Items[item.SelectVersion].Info,
                     Item = item.Items[item.SelectVersion].Item,
                     Old = (item as ModUpgradeModel)!.Obj
-                }).ToList();
+                });
 
             var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
                 var info = new FileItemDownloadModel(Window)
                 {
+                    Name = item.Item.Name,
                     Type = FileType.Mod,
                     Source = task.Source,
-                    PID = item.Info.ModId
+                    Pid = item.Info.ModId
                 };
                 StartDownload(info);
                 list1.Add(info);
             }
-
-            task.TaskRes = await WebBinding.DownloadModAsync(_obj, list);
-
+            var info1 = new FileItemDownloadModel(Window)
+            {
+                Name = LanguageUtils.Get("AddResourceWindow.Text37"),
+                Type = FileType.Mod,
+                Source = SourceType.ColorMC,
+                Pid = ""
+            };
+            var pack = new ResourceGui(info1);
+            var res = await WebBinding.DownloadModAsync(_obj, list, pack, info1.Token);
+            pack.Stop();
             foreach (var item in list1)
             {
-                StopDownload(item, task.TaskRes);
+                StopDownload(item, res);
             }
+
+            return res;
         }
         else
         {
-            var list = DownloadModList.Where(item => item.Download)
-                                .Select(item => item.Items[item.SelectVersion]).ToList();
+            var list = task.DownloadModList.Where(item => item.Download && !item.IsDisable)
+                                .Select(item => item.Items[item.SelectVersion]);
 
-            if (task.Modsave != null)
+            var info = new FileItemDownloadModel(Window)
             {
-                list.Add(task.Modsave);
-            }
+                Name = task.Modsave.Item.Name,
+                Type = FileType.Mod,
+                Source = task.Source,
+                Pid = task.Modsave.Info.ModId,
+                SubPid = [.. list.Select(item1 => item1.Info.ModId)]
+            };
+            StartDownload(info);
+            var pack = new ResourceGui(info);
+            var res = await WebBinding.DownloadModAsync(_obj, list, pack, info.Token);
+            StopDownload(info, res);
 
-            var list1 = new List<FileItemDownloadModel>();
-            foreach (var item in list)
-            {
-                var info = new FileItemDownloadModel(Window)
-                {
-                    Type = FileType.Mod,
-                    Source = task.Source,
-                    PID = item.Info.ModId
-                };
-                StartDownload(info);
-                list1.Add(info);
-            }
-
-            task.TaskRes = await WebBinding.DownloadModAsync(_obj, list);
-
-            foreach (var item in list1)
-            {
-                StopDownload(item, task.TaskRes);
-            }
+            return res;
         }
-
-        task.IsEnd = true;
     }
 
-    private async Task<bool> StartListTask(ModDownloadListRes list, ModInfoObj? mod, SourceType source)
+    private async Task<bool?> StartListTask(ModDownloadListRes list, ModInfoObj? mod, SourceType source, string name, string version)
     {
-        if (ModDownloadDisplay)
+        //添加模组信息
+        var dialog = new ModDependModel(Window.WindowId, list.List, name, version, new DownloadModObj()
         {
-            await Task.Run(async () =>
-            {
-                while (ModDownloadDisplay)
-                {
-                    await Task.Delay(500);
-                }
-            });
+            Item = list.Item!,
+            Info = list.Info!,
+            Old = await _obj.ReadModAsync(mod)
+        }, source);
+
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is true)
+        {
+            return await DownloadListItem(dialog);
         }
 
-        //添加模组信息
-        _modList.Clear();
-        _modList.AddRange(list.List);
-        _modList.ForEach(item =>
+        return null;
+    }
+
+    /// <summary>
+    /// 升级所选的模组
+    /// </summary>
+    /// <param name="list"></param>
+    public async void Upgrade(ICollection<ModUpgradeModel> list)
+    {
+        var dialog = new ModDependModel(Window.WindowId, list);
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is true)
         {
-            if (item.Optional == false)
-            {
-                item.Download = true;
-            }
-        });
-        _nowTask = new FileItemDownloadTask()
-        {
-            Modsave = new DownloadModArg()
-            {
-                Item = list.Item!,
-                Info = list.Info!,
-                Old = await _obj.ReadModAsync(mod)
-            },
-            Source = source
-        };
-
-        OpenModDownloadDisplay();
-
-        ModsLoad();
-
-        await Task.Run(async () =>
-        {
-            while (!_nowTask.IsEnd)
-            {
-                await Task.Delay(500);
-            }
-        });
-
-        return _nowTask.TaskRes;
+            await DownloadListItem(dialog);
+        }
     }
 }

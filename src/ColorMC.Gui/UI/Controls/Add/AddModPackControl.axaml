@@ -87,27 +87,26 @@
                             <TextBox
                                 Grid.Column="0"
                                 Height="30"
-                                MinWidth="190"
-                                Margin="0,0,10,0"
+                                Margin="0,0,7,0"
                                 HorizontalAlignment="Stretch"
                                 Text="{Binding Text}"
-                                Watermark="{setting:Localize Text.Name}">
+                                Watermark="{setting:Localize AddModPackWindow.Text44}">
                                 <TextBox.KeyBindings>
-                                    <KeyBinding Command="{Binding Reload}" Gesture="Enter" />
+                                    <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
                                 </TextBox.KeyBindings>
                             </TextBox>
                             <Button
                                 Grid.Column="1"
                                 Width="100"
                                 Height="35"
-                                Margin="-2,-3,-3,-2"
+                                Margin="-2,-3,-4,-2"
                                 Classes="top"
                                 Command="{Binding Reload}"
                                 Content="{setting:Localize Text.Search}"
                                 ToolTip.Tip="{setting:Localize ToolTip.Text75}" />
                             <StackPanel
                                 Grid.Column="2"
-                                Margin="10,0,0,0"
+                                Margin="10,0,10,0"
                                 Orientation="Horizontal">
                                 <Button
                                     Width="35"

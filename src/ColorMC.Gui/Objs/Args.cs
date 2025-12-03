@@ -6,7 +6,7 @@ namespace ColorMC.Gui.Objs;
 /// <summary>
 /// 模组下载
 /// </summary>
-public record DownloadModArg
+public record DownloadModObj
 {
     /// <summary>
     /// 下载项目

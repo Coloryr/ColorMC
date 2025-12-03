@@ -13,12 +13,12 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 {
     private CurseForgePackObj? _info;
 
-    public CurseForgeWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
+    public CurseForgeWork(Stream st, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
     {
 
     }
 
-    public CurseForgeWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui, default)
+    public CurseForgeWork(string file, IOverGameGui? gui, IAddGui? packgui) : base(file, gui, packgui, default)
     {
 
     }

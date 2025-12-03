@@ -27,6 +27,7 @@ public partial class AddModPackControlModel
             Window.Show(LanguageUtils.Get("AddModPackWindow.Text39"));
             return;
         }
+
         var item1 = res.List.First();
         if (item1.IsDownload)
         {
@@ -59,12 +60,12 @@ public partial class AddModPackControlModel
             {
                 Name = data1.DisplayName,
                 Source = data.SourceType,
-                PID = data1.Id.ToString(),
+                Pid = data1.Id.ToString(),
                 Type = FileType.ModPack
             };
             StartDownload(info);
             var gui = new OverGameGui(Window);
-            var pack = new ModpackGui(info);
+            var pack = new ModPackGui(info);
             var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack, info.Token);
             pack.Stop();
             StopDownload(info, res.State);
@@ -89,11 +90,11 @@ public partial class AddModPackControlModel
             {
                 Name = data1.Name,
                 Source = data.SourceType,
-                PID = data1.Id,
+                Pid = data1.Id,
                 Type = FileType.ModPack
             };
             StartDownload(info);
-            var pack = new ModpackGui(info);
+            var pack = new ModPackGui(info);
             var gui = new OverGameGui(Window);
             var res = await AddGameHelper.InstallModrinth(_group, data1, select?.Logo, gui, pack);
             pack.Stop();

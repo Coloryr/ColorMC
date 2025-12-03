@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="50"
+    d:DesignWidth="500"
     x:DataType="model:FileModVersionModel"
     mc:Ignorable="d">
     <Border
@@ -14,7 +16,10 @@
         BoxShadow="{Binding Border}"
         CornerRadius="5">
         <DockPanel Margin="15">
-            <CheckBox Content="{setting:Localize AddResourceWindow.Text11}" IsChecked="{Binding Download}" />
+            <CheckBox
+                Content="{setting:Localize AddResourceWindow.Text11}"
+                IsChecked="{Binding Download}"
+                IsEnabled="{Binding !IsDisable}" />
             <DockPanel Margin="15,0,0,0">
                 <TextBlock
                     Margin="0,0,0,5"
@@ -27,6 +32,7 @@
                     <ComboBox
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
+                        IsEnabled="{Binding !IsDisable}"
                         ItemsSource="{Binding Version}"
                         SelectedIndex="{Binding SelectVersion}" />
                 </DockPanel>

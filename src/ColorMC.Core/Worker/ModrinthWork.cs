@@ -12,12 +12,12 @@ public class ModrinthWork : ModPackWork, IModPackWork
 {
     private ModrinthPackObj? _info;
 
-    public ModrinthWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
+    public ModrinthWork(Stream st, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(st, gui, packgui, token)
     {
 
     }
 
-    public ModrinthWork(string file, IOverGameGui? gui, IModPackGui? packgui) : base(file, gui, packgui, default)
+    public ModrinthWork(string file, IOverGameGui? gui, IAddGui? packgui) : base(file, gui, packgui, default)
     {
 
     }
