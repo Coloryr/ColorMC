@@ -5,13 +5,13 @@ namespace ColorMC.Core.GuiHandle;
 /// <summary>
 /// 整合包安装回调
 /// </summary>
-public interface IModPackGui : IProgressGui
+public interface IAddGui : IProgressGui
 {
     /// <summary>
     /// 设置整合包安装状态
     /// </summary>
     /// <param name="state"></param>
-    void SetState(ModpackState state);
+    void SetState(AddState state);
     /// <summary>
     /// 设置当前进度
     /// </summary>

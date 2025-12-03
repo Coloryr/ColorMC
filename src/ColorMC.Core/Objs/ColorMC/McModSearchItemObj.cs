@@ -14,6 +14,8 @@ public record McModSearchItemObj
     public string McmodAuthor { get; set; }
     [JsonPropertyName("mcmod_text")]
     public string McmodText { get; set; }
+    [JsonPropertyName("mcmod_html")]
+    public string McmodHtml { get; set; }
     [JsonPropertyName("mcmod_type")]
     public int McmodType { get; set; }
     [JsonPropertyName("mcmod_mod_type")]

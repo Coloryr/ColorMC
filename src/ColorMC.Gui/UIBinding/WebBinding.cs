@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Game;
+using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Net;
@@ -129,7 +131,7 @@ public static class WebBinding
                 return new ModPackListRes
                 {
                     List = list1,
-                    Count = list.Pagination.TotalCount
+                    TotalCount = list.Pagination.TotalCount
                 };
             }
             else if (type == SourceType.Modrinth)
@@ -141,21 +143,24 @@ public static class WebBinding
                 {
                     return new ModPackListRes();
                 }
-                var modlist = list.Hits.Select(item => item.ProjectId).ToList();
-                modlist.ForEach(item => { dir[item] = null; });
-                var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 1);
-                await Parallel.ForEachAsync(list.Hits, async (item, cancel) =>
+
+                var list1 = new List<FileItemModel>();
+                var modlist = new List<string>();
+                list.Hits.ForEach(item =>
                 {
-                    var team = await ModrinthAPI.GetTeamAsync(item.ProjectId);
-                    var project = await ModrinthAPI.GetProjectAsync(item.ProjectId);
-                    dir[item.ProjectId] = new FileItemModel(item, team, project,
-                        FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null);
+                    modlist.Add(item.ProjectId);
                 });
+                var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 1);
+                foreach (var item in list.Hits)
+                {
+                    list1.Add(new FileItemModel(item,
+                        FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
+                }
 
                 return new ModPackListRes
                 {
-                    List = [.. dir.Values.Where(item => item != null).Select(item => item!)],
-                    Count = list.Hits.Count
+                    List = list1,
+                    TotalCount = list.TotalHits
                 };
             }
         }
@@ -213,9 +218,9 @@ public static class WebBinding
     {
         if (type == SourceType.CurseForge)
         {
-            var data1 = await CurseForgeAPI.GetModInfoAsync(id);
+            var data = await CurseForgeAPI.GetModInfoAsync(id);
             var list = await CurseForgeAPI.GetCurseForgeFilesAsync(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
-            if (data1 == null || list == null)
+            if (data == null || list == null)
             {
                 return new FileListRes();
             }
@@ -223,21 +228,21 @@ public static class WebBinding
             var list1 = new List<FileVersionItemModel>();
             list.Data.ForEach(item =>
             {
-                list1.Add(new FileVersionItemModel(item, type1));
+                list1.Add(new FileVersionItemModel(item, type1, data.Data.Name));
             });
 
             return new FileListRes
             {
                 List = list1,
                 Count = list.Pagination.TotalCount,
-                Name = data1.Data.Name
+                Name = data.Data.Name
             };
         }
         else if (type == SourceType.Modrinth)
         {
-            var data1 = await ModrinthAPI.GetProjectAsync(id);
+            var data = await ModrinthAPI.GetProjectAsync(id);
             var list = await ModrinthAPI.GetFileVersionsAsync(id, mc, loader);
-            if (data1 == null || list == null)
+            if (data == null || list == null)
             {
                 return new FileListRes();
             }
@@ -245,14 +250,14 @@ public static class WebBinding
             var list1 = new List<FileVersionItemModel>();
             list.ForEach(item =>
             {
-                list1.Add(new FileVersionItemModel(item, type1));
+                list1.Add(new FileVersionItemModel(item, type1, data.Title));
             });
 
             return new FileListRes
             {
                 List = list1,
                 Count = list.Count,
-                Name = data1.Title
+                Name = data.Title
             };
         }
 
@@ -422,7 +427,7 @@ public static class WebBinding
             return new ModPackListRes
             {
                 List = list1,
-                Count = list.Pagination.TotalCount
+                TotalCount = list.Pagination.TotalCount
             };
         }
         else if (type == SourceType.Modrinth)
@@ -446,18 +451,16 @@ public static class WebBinding
                 modlist.Add(item.ProjectId);
             });
             var list2 = await ColorMCAPI.GetMcModFromMOAsync(modlist, 0);
-            list.Hits.ForEach(async item =>
+            foreach (var item in list.Hits)
             {
-                var team = await ModrinthAPI.GetTeamAsync(item.ProjectId);
-                var project = await ModrinthAPI.GetProjectAsync(item.ProjectId);
-                list1.Add(new FileItemModel(item, team, project,
+                list1.Add(new FileItemModel(item,
                     now, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
-            });
+            }
 
             return new ModPackListRes
             {
                 List = list1,
-                Count = list.Hits.Count
+                TotalCount = list.TotalHits
             };
         }
 
@@ -491,7 +494,7 @@ public static class WebBinding
                 }
 
                 List<string> version = [];
-                List<DownloadModArg> items = [];
+                List<DownloadModObj> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.DisplayName);
@@ -538,7 +541,7 @@ public static class WebBinding
                     continue;
                 }
                 List<string> version = [];
-                List<DownloadModArg> items = [];
+                List<DownloadModObj> items = [];
                 foreach (var item2 in item1.List)
                 {
                     version.Add(item2.Name);
@@ -571,7 +574,7 @@ public static class WebBinding
     /// <param name="obj"></param>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static async Task<bool> DownloadModAsync(GameSettingObj obj, ICollection<DownloadModArg> list)
+    public static async Task<bool> DownloadModAsync(GameSettingObj obj, IEnumerable<DownloadModObj> list, IAddGui gui, CancellationToken token)
     {
         var list1 = new List<FileItemObj>();
         var setting = GameManager.ReadConfig(obj);
@@ -605,7 +608,7 @@ public static class WebBinding
         }
 
         GameManager.WriteConfig(obj, setting);
-        return await DownloadManager.StartAsync(list1);
+        return await DownloadManager.StartAsync(list1, gui, token);
     }
 
     /// <summary>
@@ -714,7 +717,7 @@ public static class WebBinding
     /// <param name="save">存档</param>
     /// <param name="data">数据包信息</param>
     /// <returns>是否成功下载</returns>
-    public static async Task<bool> DownloadAsync(SaveObj save, CurseForgeModObj.CurseForgeDataObj? data)
+    public static async Task<bool> DownloadResourceAsync(SaveObj save, CurseForgeModObj.CurseForgeDataObj? data, IAddGui gui, CancellationToken token)
     {
         if (data == null)
         {
@@ -724,7 +727,7 @@ public static class WebBinding
         var item = CurseForgeHelper.MakeDownloadObj(data, save.GetSaveDataPacksPath());
         item.Overwrite = true;
 
-        return await DownloadManager.StartAsync([item]);
+        return await DownloadManager.StartAsync([item], gui, token);
     }
 
     /// <summary>
@@ -733,7 +736,7 @@ public static class WebBinding
     /// <param name="obj1"></param>
     /// <param name="data"></param>
     /// <returns></returns>
-    public static async Task<bool> DownloadAsync(SaveObj obj1, ModrinthVersionObj? data)
+    public static async Task<bool> DownloadResourceAsync(SaveObj obj1, ModrinthVersionObj? data, IAddGui gui, CancellationToken token)
     {
         if (data == null)
         {
@@ -749,7 +752,7 @@ public static class WebBinding
             Local = Path.GetFullPath(obj1.GetSaveDataPacksPath() + "/" + file.Filename),
             Sha1 = file.Hashes.Sha1,
             Overwrite = true
-        }]);
+        }], gui, token);
     }
 
     /// <summary>
@@ -830,7 +833,7 @@ public static class WebBinding
                 item.HaveNew();
 
                 List<string> version = [];
-                List<DownloadModArg> items = [];
+                List<DownloadModObj> items = [];
                 foreach (var item1 in list1)
                 {
                     if (item1.ID1 == item.FID)
@@ -1646,11 +1649,11 @@ public static class WebBinding
             try
             {
                 var setting = GameManager.ReadConfig(obj);
-                DownloadModArg? arg = null;
+                DownloadModObj? arg = null;
                 if (model.SourceType == SourceType.CurseForge)
                 {
                     var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
-                    arg = new DownloadModArg()
+                    arg = new DownloadModObj()
                     {
                         Item = data.MakeDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),
@@ -1660,7 +1663,7 @@ public static class WebBinding
                 else
                 {
                     var data = (model.Data as ModrinthVersionObj)!;
-                    arg = new DownloadModArg()
+                    arg = new DownloadModObj()
                     {
                         Item = data.MakeDownloadObj(obj),
                         Info = data.MakeModInfo(Names.NameGameModDir),

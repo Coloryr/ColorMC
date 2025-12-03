@@ -7,11 +7,9 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -20,12 +18,6 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// </summary>
 public partial class AddResourceControlModel : AddBaseModel, IAddControl
 {
-    public const string NameScrollToHome = "Scroll:Home";
-
-    /// <summary>
-    /// 下载源列表
-    /// </summary>
-    private readonly List<SourceType> _sourceTypeList = [];
     /// <summary>
     /// 类型列表
     /// </summary>
@@ -44,12 +36,6 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// 显示的下载类型列表
     /// </summary>
     public string[] TypeList { get; init; } = LanguageUtils.GetAddType();
-
-    /// <summary>
-    /// 是否为模组升级模式
-    /// </summary>
-    [ObservableProperty]
-    private bool _isUpgrade;
 
     /// <summary>
     /// 下载类型
@@ -88,11 +74,6 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         _useName = ToString() ?? "AddControlModel";
     }
 
-    partial void OnIsUpgradeChanged(bool value)
-    {
-        ModDownloadText = LanguageUtils.Get(value ? "AddResourceWindow.Text15" : "AddResourceWindow.Text7");
-    }
-
     /// <summary>
     /// 下载类型选择
     /// </summary>
@@ -100,7 +81,9 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     async partial void OnTypeChanged(int value)
     {
         if (!Display)
+        {
             return;
+        }
 
         if (s_types[Type] == FileType.Optifine)
         {
@@ -116,201 +99,20 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         SortTypeList.Clear();
         CategorieList.Clear();
 
-        Page = 0;
+        Page = 1;
 
         FileList.Clear();
         SourceList.Clear();
 
-        _sourceTypeList.Clear();
-        _sourceTypeList.AddRange(WebBinding.GetSourceList(_now));
-        _sourceTypeList.ForEach(item => SourceList.Add(item.GetName()));
+        SourceTypeList.Clear();
+        SourceTypeList.AddRange(WebBinding.GetSourceList(_now));
+        SourceTypeList.ForEach(item => SourceList.Add(item.GetName()));
 
         _load = false;
 
         Source = 0;
-    }
 
-    /// <summary>
-    /// 获取项目列表
-    /// </summary>
-    [RelayCommand]
-    public async Task GetList()
-    {
-        var type = _sourceTypeList[Source];
-
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text17"));
-        if (type == SourceType.McMod)
-        {
-            //McMod搜索源
-            var data = await WebBinding.SearchMcmodAsync(Text ?? "", Page ?? 0, _obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
-            if (data == null)
-            {
-                Window.CloseDialog(dialog);
-                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
-                return;
-            }
-
-            ClearList();
-
-            foreach (var item in data)
-            {
-                item.Add = this;
-                TestFileItem(item);
-                DisplayList.Add(item);
-            }
-
-            _lastSelect = null;
-
-            EmptyDisplay = DisplayList.Count == 0;
-
-            Window.CloseDialog(dialog);
-        }
-        else
-        {
-            //其他搜索源
-            var res = await WebBinding.GetListAsync(_now, type, GameVersion, Text, Page ?? 0,
-                SortType, Categorie < 0 ? "" : _categories[Categorie], _obj.Loader);
-
-            var data = res.List;
-
-            MaxPage = res.Count / 20;
-            var page = 0;
-            if (type == SourceType.Modrinth)
-            {
-                page = Page ?? 0;
-            }
-
-            NextPage = (MaxPage - Page) > 0;
-
-            if (data == null)
-            {
-                Window.CloseDialog(dialog);
-                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
-                return;
-            }
-
-            ClearList();
-
-            //模组分页需要特殊处理
-            if (_now == FileType.Mod)
-            {
-                int b = 0;
-                for (int a = page * 50; a < data.Count; a++, b++)
-                {
-                    if (b >= 50)
-                    {
-                        break;
-                    }
-                    var item = data[a];
-                    item.Add = this;
-                    if (_obj.Mods.ContainsKey(item.ID))
-                    {
-                        item.IsDownload = true;
-                    }
-                    TestFileItem(item);
-                    DisplayList.Add(item);
-                }
-            }
-            else
-            {
-                int b = 0;
-                for (int a = page * 50; a < data.Count; a++, b++)
-                {
-                    if (b >= 50)
-                    {
-                        break;
-                    }
-                    var item = data[a];
-                    item.Add = this;
-                    TestFileItem(item);
-                    DisplayList.Add(item);
-                }
-            }
-
-            _lastSelect = null;
-
-            EmptyDisplay = DisplayList.Count == 0;
-
-            Window.CloseDialog(dialog);
-        }
-
-        OnPropertyChanged(NameScrollToHome);
-
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
-    }
-
-    /// <summary>
-    /// 根据名字刷新
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task GetNameList()
-    {
-        if (!string.IsNullOrWhiteSpace(Text) && Page != 0)
-        {
-            Page = 0;
-            return;
-        }
-
-        await GetList();
-    }
-
-    /// <summary>
-    /// 转到文件下载
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task GoFile()
-    {
-        var item = File;
-        if (item == null)
-        {
-            return;
-        }
-
-        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("AddResourceWindow.Text16"), item.Name));
-        if (res)
-        {
-            Install(item);
-        }
-    }
-
-    /// <summary>
-    /// 刷新
-    /// </summary>
-    [RelayCommand]
-    public void Refresh1()
-    {
-        if (_lastSelect != null)
-        {
-            LoadVersions(_lastSelect);
-        }
-    }
-
-    /// <summary>
-    /// 转到文件列表
-    /// </summary>
-    [RelayCommand]
-    public void GoInstall()
-    {
-        if (_lastSelect == null)
-        {
-            Window.Show(LanguageUtils.Get("AddResourceWindow.Text25"));
-            return;
-        }
-
-        InstallItem(_lastSelect);
-    }
-
-    [RelayCommand]
-    public void NextVersion()
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        PageDownload++;
+        LoadSourceData();
     }
 
     /// <summary>
@@ -330,7 +132,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         CategorieList.Clear();
 
         ClearList();
-        var type = _sourceTypeList[Source];
+        var type = SourceTypeList[Source];
 
         if (type is SourceType.CurseForge or SourceType.Modrinth)
         {
@@ -381,7 +183,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             SortType = type is SourceType.CurseForge ? 1 : 0;
             Categorie = 0;
 
-            await GetList();
+            LoadDisplayList();
         }
         //McMod搜索源
         else if (type == SourceType.McMod)
@@ -421,40 +223,10 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 GameVersionOptifine = GameVersion = GameVersionDownload = GameVersionList.FirstOrDefault();
             }
 
-            await GetList();
+            LoadDisplayList();
         }
 
         SourceLoad = true;
-        _load = false;
-    }
-
-    /// <summary>
-    /// 转到下载类型
-    /// </summary>
-    /// <param name="type">下载源</param>
-    /// <param name="pid">项目ID</param>
-    public async void GoFile(SourceType type, string pid)
-    {
-        //跳转到模组类型
-        Type = 0;
-        Source = (int)type;
-        await Task.Run(() =>
-        {
-            while ((!Display || _load) && !_close)
-            {
-                Thread.Sleep(100);
-            }
-        });
-
-        _load = true;
-
-        var res = await WebBinding.GetFileItemAsync(type, pid, FileType.Mod);
-        if (res != null)
-        {
-            _lastSelect = res;
-            LoadVersions(_lastSelect);
-        }
-
         _load = false;
     }
 
@@ -463,7 +235,85 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// </summary>
     public override async void LoadDisplayList()
     {
-        await GetList();
+        var type = SourceTypeList[Source];
+
+        var page = Page ?? 1;
+        page--;
+
+        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text17"));
+        if (type == SourceType.McMod)
+        {
+            //McMod搜索源
+            var data = await WebBinding.SearchMcmodAsync(Text ?? "", page,
+                _obj.Loader, GameVersion ?? "", _categories[Categorie], SortType);
+            if (data == null)
+            {
+                Window.CloseDialog(dialog);
+                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                return;
+            }
+
+            ClearList();
+
+            foreach (var item in data)
+            {
+                item.Add = this;
+                TestFileItem(item);
+                DisplayList.Add(item);
+            }
+        }
+        else
+        {
+            //其他搜索源
+            var res = await WebBinding.GetListAsync(_now, type, GameVersion, Text, page,
+                SortType, Categorie < 0 ? "" : _categories[Categorie], _obj.Loader);
+
+            MaxPage = res.TotalCount / 20;
+
+            PageLoad();
+
+            if (res.List == null)
+            {
+                Window.CloseDialog(dialog);
+                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                return;
+            }
+
+            ClearList();
+
+            //模组分页需要特殊处理
+            if (_now == FileType.Mod)
+            {
+                foreach (var item in res.List)
+                {
+                    item.Add = this;
+                    if (_obj.Mods.ContainsKey(item.ID))
+                    {
+                        item.IsDownload = true;
+                    }
+                    TestFileItem(item);
+                    DisplayList.Add(item);
+                }
+            }
+            else
+            {
+                foreach (var item in res.List)
+                {
+                    item.Add = this;
+                    TestFileItem(item);
+                    DisplayList.Add(item);
+                }
+            }
+        }
+
+        OnPropertyChanged(nameof(DisplayList));
+
+        _lastSelect = null;
+
+        EmptyDisplay = DisplayList.Count == 0;
+
+        Window.CloseDialog(dialog);
+        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -478,7 +328,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             return;
         }
 
-        if (Source < _sourceTypeList.Count)
+        if (Source < SourceTypeList.Count)
         {
             res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text21"));
             if (res)
@@ -506,34 +356,42 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     }
 
     /// <summary>
-    /// 重载
+    /// 转到下载类型
     /// </summary>
-    public void Reload()
+    /// <param name="type">下载源</param>
+    /// <param name="pid">项目ID</param>
+    public async void GoFile(SourceType type, string pid)
     {
-        //if (DisplayVersion)
-        //{
-        //    Refresh1();
-        //}
-        //else
+        //跳转到模组类型
+        Type = 0;
+        Source = (int)type;
+        await Task.Run(() =>
         {
-            LoadDisplayList();
-        }
-    }
+            while ((!Display || _load) && !_close)
+            {
+                Thread.Sleep(100);
+            }
+        });
 
-    /// <summary>
-    /// 打开文件列表
-    /// </summary>
-    /// <param name="item">项目</param>
-    public override void Install(FileItemModel item)
-    {
-        SetSelect(item);
-        InstallItem(item);
+        _load = true;
+
+        var res = await WebBinding.GetFileItemAsync(type, pid, FileType.Mod);
+        if (res == null)
+        {
+            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            _load = false;
+            return;
+        }
+        Last = res;
+        DisplayItemInfo = true;
+
+        _load = false;
     }
 
     public override void Close()
     {
         base.Close();
-        if (OptifineDisplay || ModDownloadDisplay)
+        if (OptifineDisplay)
         {
             Window.PopBack();
         }
@@ -541,10 +399,8 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         _close = true;
         _load = true;
         Window.RemoveChoiseData(_useName);
-        _modList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
-        DownloadModList.Clear();
         FileList.Clear();
     }
 }

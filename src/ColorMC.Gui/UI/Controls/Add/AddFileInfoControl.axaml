@@ -109,12 +109,10 @@
                                 <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
                             </WrapPanel>
                             <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text33}" />
-                            <TextBlock
+                            <html:HtmlPanel
                                 Margin="10,20,10,20"
                                 IsVisible="{Binding HaveMcmod}"
-                                Text="{Binding Summary}"
-                                TextTrimming="CharacterEllipsis"
-                                TextWrapping="Wrap" />
+                                Text="{Binding McModHtml}" />
                             <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text34}" />
                             <html:HtmlPanel Margin="10,20,10,20" Text="{Binding SummaryOld}" />
                         </StackPanel>

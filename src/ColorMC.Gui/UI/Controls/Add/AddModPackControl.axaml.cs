@@ -18,6 +18,8 @@ public partial class AddModPackControl : BaseUserControl
     {
         InitializeComponent();
 
+        ItemInfo.PointerPressed += ItemInfo_PointerPressed;
+
         Title = LanguageUtils.Get("AddModPackWindow.Title");
     }
 
@@ -66,6 +68,16 @@ public partial class AddModPackControl : BaseUserControl
             {
                 ThemeManager.CrossFade.Start(ItemInfo, null);
             }
+        }
+    }
+
+    private void ItemInfo_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var ev = e.GetCurrentPoint(this);
+        if (ev.Properties.IsXButton1Pressed)
+        {
+            (DataContext as AddBaseModel)!.DisplayItemInfo = false;
+            e.Handled = true;
         }
     }
 

@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
@@ -49,7 +50,12 @@ public partial class FileItemModel : SelectItemModel
     /// <summary>
     /// 简介
     /// </summary>
-    public string SummaryOld { get; init; }
+    [ObservableProperty]
+    private string _summaryOld;
+    /// <summary>
+    /// 百科显示内容
+    /// </summary>
+    public string McModHtml { get; init; }
     /// <summary>
     /// 作者
     /// </summary>
@@ -178,8 +184,9 @@ public partial class FileItemModel : SelectItemModel
 
         ID = data.Id.ToString();
         Name = mcmod?.McmodName ?? data.Name;
-        Summary = mcmod?.McmodText ?? data.Summary;
         SummaryOld = Markdown.ToHtml(data.Summary, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+        Summary = mcmod?.McmodText ?? data.Summary;
+        McModHtml = mcmod?.McmodHtml ?? Summary;
         foreach (var item in data.Authors)
         {
             if (Authors.Count > 5)
@@ -191,6 +198,10 @@ public partial class FileItemModel : SelectItemModel
         }
         foreach (var item in data.Categories)
         {
+            if (Tags.Any(item1 => item.Name == item1.Name && item.IconUrl == item1.Logo))
+            {
+                continue;
+            }
             Tags.Add(new TagModel(item.Name, item.IconUrl, null));
         }
         foreach (var item in data.Screenshots)
@@ -214,8 +225,57 @@ public partial class FileItemModel : SelectItemModel
         }
     }
 
-    public FileItemModel(ModrinthSearchObj.HitObj data, List<ModrinthTeamObj>? team, ModrinthProjectObj? project, FileType type, McModSearchItemObj? mcmod)
+    public FileItemModel(ModrinthSearchObj.HitObj data, FileType type, McModSearchItemObj? mcmod)
     {
+        var cap = ModrinthHelper.Categories;
+
+        Task.Run(async () =>
+        {
+            var team = await ModrinthAPI.GetTeamAsync(data.ProjectId);
+            var project = await ModrinthAPI.GetProjectAsync(data.ProjectId);
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (project != null)
+                {
+                    SummaryOld = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+                    Tags.Clear();
+                    foreach (var item in project.Loaders)
+                    {
+                        if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
+                        {
+                            Tags.Add(new TagModel(item, null, capitem.Icon));
+                        }
+                    }
+                    foreach (var item in project.Categories)
+                    {
+                        if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
+                        {
+                            Tags.Add(new TagModel(item, null, capitem.Icon));
+                        }
+                    }
+                    Screenshots.Clear();
+                    foreach (var item in project.Gallery)
+                    {
+                        Screenshots.Add(new WebPicModel(item.Title, item.Description, item.RawUrl));
+                    }
+                }
+                if (team != null && team.Count > 0)
+                {
+                    Authors.Clear();
+                    foreach (var item in team)
+                    {
+                        if (Authors.Count >= 5)
+                        {
+                            Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 5), null));
+                            break;
+                        }
+                        Authors.Add(new AuthorModel(item.User.Username, item.User.AvatarUrl));
+                    }
+                }
+            });
+        });
+
         HaveMcmod = mcmod != null;
 
         McMod = mcmod;
@@ -224,67 +284,21 @@ public partial class FileItemModel : SelectItemModel
         ID = data.ProjectId;
         Name = mcmod?.McmodName ?? data.Title;
         Summary = mcmod?.McmodText ?? data.Description;
+        McModHtml = mcmod?.McmodHtml ?? Summary;
 
-        var cap = ModrinthHelper.Categories;
-        if (project != null)
+        Authors.Add(new AuthorModel(data.Author, null));
+        SummaryOld = data.Description;
+        foreach (var item in data.Categories)
         {
-            SummaryOld = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-
-            foreach (var item in project.Loaders)
+            if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
             {
-                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
-                {
-                    Tags.Add(new TagModel(item, null, capitem.Icon));
-                }
-            }
-
-            foreach (var item in project.Categories)
-            {
-                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
-                {
-                    Tags.Add(new TagModel(item, null, capitem.Icon));
-                }
-            }
-
-            foreach (var item in project.Gallery)
-            {
-                Screenshots.Add(new WebPicModel(item.Title, item.Description, item.RawUrl));
+                Tags.Add(new TagModel(item, null, capitem.Icon));
             }
         }
-        else
+        foreach (var item in data.Gallery)
         {
-            SummaryOld = data.Description;
-
-            foreach (var item in data.Categories)
-            {
-                if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
-                {
-                    Tags.Add(new TagModel(item, null, capitem.Icon));
-                }
-            }
-
-            foreach (var item in data.Gallery)
-            {
-                Screenshots.Add(new WebPicModel(null, null, item));
-            }
+            Screenshots.Add(new WebPicModel(null, null, item));
         }
-        if (team != null)
-        {
-            foreach (var item in team)
-            {
-                if (Authors.Count > 5)
-                {
-                    Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 5), null));
-                    break;
-                }
-                Authors.Add(new AuthorModel(item.User.Username, item.User.AvatarUrl));
-            }
-        }
-        else
-        {
-            Authors.Add(new AuthorModel(data.Author, null));
-        }
-
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.IconUrl;
@@ -310,6 +324,7 @@ public partial class FileItemModel : SelectItemModel
         ID = data.Id;
         Name = data.Title;
         Summary = data.Description;
+        McModHtml = mcmod?.McmodHtml ?? mcmod?.McmodText ?? data.Description;
         //Author = data.Author;
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.Updated);
@@ -336,6 +351,7 @@ public partial class FileItemModel : SelectItemModel
         Name = data.McmodName;
         Summary = data.McmodText;
         SummaryOld = data.McmodText;
+        McModHtml = data.McmodHtml ?? data.McmodText ?? "";
         Authors.Add(new AuthorModel(data.McmodAuthor, null));
         FileType = FileType.Mod;
         SourceType = SourceType.McMod;

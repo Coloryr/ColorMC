@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
@@ -11,7 +11,6 @@ using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ColorMC.Gui.UI.Model.Add;
 
@@ -22,127 +21,17 @@ namespace ColorMC.Gui.UI.Model.Add;
 public partial class AddResourceControlModel
 {
     /// <summary>
-    /// 显示的下载模组项目列表
-    /// </summary>
-    public ObservableCollection<FileModVersionModel> DownloadModList { get; init; } = [];
-    /// <summary>
-    /// 显示的文件列表
-    /// </summary>
-    public ObservableCollection<FileVersionItemModel> FileList { get; init; } = [];
-
-    /// <summary>
-    /// 模组列表显示
-    /// </summary>
-    [ObservableProperty]
-    private bool _modDownloadDisplay;
-    /// <summary>
-    /// 展示所有附属模组
-    /// </summary>
-    [ObservableProperty]
-    private bool _loadMoreMod;
-    /// <summary>
-    /// 文件列表是否显示下一页
-    /// </summary>
-    [ObservableProperty]
-    private bool _nextPageDisplay;
-
-    /// <summary>
-    /// 文件列表当前页数
-    /// </summary>
-    [ObservableProperty]
-    private int? _pageDownload;
-    /// <summary>
-    /// 文件最大页数
-    /// </summary>
-    [ObservableProperty]
-    private int _maxPageDownload;
-
-    /// <summary>
-    /// 文件列表游戏版本
-    /// </summary>
-    [ObservableProperty]
-    private string? _gameVersionDownload;
-    /// <summary>
-    /// 模组扩展选项文字
-    /// </summary>
-    [ObservableProperty]
-    private string? _modDownloadText = LanguageUtils.Get("AddResourceWindow.Text7");
-
-    /// <summary>
-    /// 项目
-    /// </summary>
-    [ObservableProperty]
-    private FileVersionItemModel? _file;
-    /// <summary>
-    /// 下载的模组
-    /// </summary>
-    [ObservableProperty]
-    private FileModVersionModel? _mod;
-
-    /// <summary>
-    /// 加载更多模组
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnLoadMoreModChanged(bool value)
-    {
-        ModsLoad(true);
-    }
-
-    /// <summary>
-    /// 文件列表页数修改
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnPageDownloadChanged(int? value)
-    {
-        if (!Display || _load)
-        {
-            return;
-        }
-
-        if (_lastSelect != null)
-        {
-            LoadVersions(_lastSelect);
-        }
-    }
-
-    /// <summary>
-    /// 文件列表游戏版本修改
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnGameVersionDownloadChanged(string? value)
-    {
-        if (!Display || _load)
-        {
-            return;
-        }
-
-        if (_lastSelect != null)
-        {
-            LoadVersions(_lastSelect);
-        }
-    }
-
-    /// <summary>
-    /// 打开文件列表
-    /// </summary>
-    private void InstallItem(FileItemModel item)
-    {
-        _load = true;
-        PageDownload = 0;
-        LoadVersions(item);
-        _load = false;
-    }
-
-    /// <summary>
-    /// 加载项目版本列表
+    /// 安装所选项目
     /// </summary>
     /// <param name="item">项目</param>
-    private async void LoadVersions(FileItemModel item)
+    public override async void Install(FileItemModel item)
     {
+        SetSelect(item);
+
         string? loadid = null;
         SourceType loadtype = SourceType.McMod;
 
-        var type = _sourceTypeList[Source];
+        var type = SourceTypeList[Source];
 
         //如果是mcmod需要选择下载源
         if (type == SourceType.McMod)
@@ -155,8 +44,7 @@ public partial class AddResourceControlModel
                     Text = LanguageUtils.Get("AddResourceWindow.Text22"),
                     Items = [.. _sourceTypeNameList]
                 };
-                var res = await Window.ShowDialogWait(dialog);
-                if (res is not true)
+                if (await Window.ShowDialogWait(dialog) is not true)
                 {
                     return;
                 }
@@ -192,89 +80,27 @@ public partial class AddResourceControlModel
             return;
         }
 
-        LoadVersions(loadtype, loadid);
-    }
-
-    /// <summary>
-    /// 加载文件列表
-    /// </summary>
-    /// <param name="type">下载源</param>
-    /// <param name="pid">资源ID</param>
-    private async void LoadVersions(SourceType type, string pid)
-    {
-        FileList.Clear();
-
-        int page = 0;
-
-        PageDownload ??= 0;
-
-        if (type == SourceType.CurseForge)
-        {
-            page = PageDownload ?? 0;
-        }
-
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text18"));
-
-        var res = await WebBinding.GetFileListAsync(type, pid, page,
+        var dialog1 = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text18"));
+        var res = await WebBinding.GetFileListAsync(loadtype, loadid, 0,
                 GameVersionDownload, _now == FileType.Mod ? _obj.Loader : Loaders.Normal, _now);
-        var list = res.List;
-        var title = res.Name;
-        MaxPageDownload = res.Count / 50;
-
-        //curseforge只有50个项目
-        if (type == SourceType.CurseForge)
-        {
-            page = 0;
-        }
-
-        NextPageDisplay = (MaxPageDownload - PageDownload) > 0;
-
-        if (list == null)
+        Window.CloseDialog(dialog1);
+        if (res == null || res.List == null || res.List.Count == 0)
         {
             Window.Show(LanguageUtils.Get("AddResourceWindow.Text27"));
-            Window.CloseDialog(dialog);
             return;
         }
 
-        if (_now == FileType.Mod)
+        var item1 = res.List.First();
+        if (item1.IsDownload)
         {
-            int b = 0;
-            for (int a = page * 50; a < list.Count; a++, b++)
+            var res1 = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text40"));
+            if (!res1)
             {
-                if (b >= 50)
-                {
-                    break;
-                }
-                var item1 = list[a];
-                item1.Add = this;
-                if (_obj.Mods.TryGetValue(item1.ID, out var value)
-                    && value.FileId == item1.ID1)
-                {
-                    item1.IsDownload = true;
-                }
-                FileList.Add(item1);
-            }
-        }
-        else
-        {
-            int b = 0;
-            for (int a = page * 50; a < list.Count; a++, b++)
-            {
-                if (b >= 50)
-                {
-                    break;
-                }
-                var item1 = list[a];
-                item1.Add = this;
-                FileList.Add(item1);
+                return;
             }
         }
 
-        EmptyDisplay = FileList.Count == 0;
-
-        Window.CloseDialog(dialog);
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
-        Window.Title = LanguageUtils.Get("AddGameWindow.Title") + ": " + title;
+        Install(item1);
     }
 
     /// <summary>
@@ -335,25 +161,29 @@ public partial class AddResourceControlModel
                     {
                         info = new FileItemDownloadModel(Window)
                         {
+                            Name = data1.DisplayName,
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
-                            PID = data1.ModId.ToString()
+                            Pid = data1.ModId.ToString()
                         };
                         StartDownload(info);
-
-                        res = await WebBinding.DownloadAsync(item, data1);
+                        var pack = new ResourceGui(info);
+                        res = await WebBinding.DownloadResourceAsync(item, data1, pack, info.Token);
+                        pack.Stop();
                     }
                     else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                     {
                         info = new FileItemDownloadModel(Window)
                         {
+                            Name = data2.Name,
                             Type = FileType.DataPacks,
                             Source = data.SourceType,
-                            PID = data2.ProjectId
+                            Pid = data2.ProjectId
                         };
                         StartDownload(info);
-
-                        res = await WebBinding.DownloadAsync(item, data2);
+                        var pack = new ResourceGui(info);
+                        res = await WebBinding.DownloadResourceAsync(item, data2, pack, info.Token);
+                        pack.Stop();
                     }
                     if (info != null)
                     {
@@ -371,6 +201,7 @@ public partial class AddResourceControlModel
             {
                 try
                 {
+                    var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text40"));
                     var list = data.SourceType switch
                     {
                         SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(_obj,
@@ -379,6 +210,7 @@ public partial class AddResourceControlModel
                         data.Data as ModrinthVersionObj),
                         _ => null
                     };
+                    Window.CloseDialog(dialog);
                     if (list == null)
                     {
                         Window.Show(LanguageUtils.Get("AddResourceWindow.Text32"));
@@ -389,27 +221,35 @@ public partial class AddResourceControlModel
                     {
                         var info = new FileItemDownloadModel(Window)
                         {
+                            Name = list.Info.Name,
                             Type = FileType.Mod,
                             Source = data.SourceType,
-                            PID = list.Info.ModId
+                            Pid = list.Info.ModId
                         };
                         StartDownload(info);
-
+                        var pack = new ResourceGui(info);
                         res = await WebBinding.DownloadModAsync(_obj,
                         [
-                            new DownloadModArg()
+                            new DownloadModObj()
                             {
                                 Item = list.Item!,
                                 Info = list.Info!,
                                 Old = await _obj.ReadModAsync(mod)
                             }
-                        ]);
+                        ], pack, info.Token);
 
                         StopDownload(info, res);
                     }
                     else
                     {
-                        res = await StartListTask(list, mod, data.SourceType);
+                        if (await StartListTask(list, mod, data.SourceType, data.ProjectName, data.Name) is { } value)
+                        {
+                            res = value;
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                 }
                 catch (Exception e)

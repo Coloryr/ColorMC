@@ -74,16 +74,16 @@ public static class LanguageUtils
         return input;
     }
 
-    public static string GetName(this ModpackState state)
+    public static string GetName(this AddState state)
     {
         return state switch
         {
-            ModpackState.DownloadPack => Get("Type.ModpackState.Item6"),
-            ModpackState.ReadInfo => Get("Type.ModpackState.Item1"),
-            ModpackState.GetInfo => Get("Type.ModpackState.Item2"),
-            ModpackState.DownloadFile => Get("Type.ModpackState.Item3"),
-            ModpackState.Unzip => Get("Type.ModpackState.Item4"),
-            ModpackState.Done => Get("Type.ModpackState.Item5"),
+            AddState.DownloadPack => Get("Type.ModpackState.Item6"),
+            AddState.ReadInfo => Get("Type.ModpackState.Item1"),
+            AddState.GetInfo => Get("Type.ModpackState.Item2"),
+            AddState.DownloadFile => Get("Type.ModpackState.Item3"),
+            AddState.Unzip => Get("Type.ModpackState.Item4"),
+            AddState.Done => Get("Type.ModpackState.Item5"),
             _ => ""
         };
     }

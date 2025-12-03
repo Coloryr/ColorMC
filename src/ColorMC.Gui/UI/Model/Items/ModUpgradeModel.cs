@@ -11,7 +11,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <param name="name"></param>
 /// <param name="version"></param>
 /// <param name="items"></param>
-public partial class ModUpgradeModel(ModObj obj, string name, List<string> version, List<DownloadModArg> items)
+public partial class ModUpgradeModel(ModObj obj, string name, List<string> version, List<DownloadModObj> items)
     : FileModVersionModel(name, version, items, false)
 {
     /// <summary>

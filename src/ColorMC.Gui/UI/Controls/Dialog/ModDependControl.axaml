@@ -1,0 +1,79 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Dialog.ModDependControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="350"
+    d:DesignWidth="500"
+    x:DataType="model:ModDependModel"
+    mc:Ignorable="d">
+    <Panel>
+        <DockPanel>
+            <StackPanel Margin="0,0,0,5" DockPanel.Dock="Top">
+                <TextBlock
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Center"
+                    Foreground="{setting:Theme MainColor}"
+                    Text="{Binding Name, FallbackValue=Name}" />
+                <TextBlock
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Center"
+                    Foreground="#FF9A9A9A"
+                    Text="{Binding ModDownloadText, FallbackValue=Text}" />
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <ToggleSwitch
+                        Margin="0,0,10,0"
+                        IsChecked="{Binding LoadMoreMod}"
+                        IsVisible="{Binding !IsUpgrade}"
+                        OffContent="{setting:Localize AddResourceWindow.Text9}"
+                        OnContent="{setting:Localize AddResourceWindow.Text9}" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,3,-3"
+                        Classes="top"
+                        Command="{Binding DownloadAllMod}"
+                        Content="{setting:Localize AddResourceWindow.Text6}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text79}" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-3,3,-3"
+                        Classes="top"
+                        Command="{Binding DownloadMod}"
+                        Content="{setting:Localize AddModPackWindow.Text12}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text80}" />
+                </StackPanel>
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                <ItemsControl
+                    Margin="0,0,0,5"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding DownloadModList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:FileModVersionControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+        <Button
+            Width="35"
+            Height="35"
+            Margin="-3"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Classes="top"
+            Command="{Binding Cancel}"
+            CornerRadius="5">
+            <svg:SvgControl Path="/Resource/Icon/close.svg" />
+        </Button>
+    </Panel>
+</UserControl>

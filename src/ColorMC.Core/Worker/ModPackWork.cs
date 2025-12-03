@@ -8,7 +8,7 @@ public abstract class ModPackWork
 {
     protected readonly ZipArchive Zip;
     protected readonly IOverGameGui? Gui;
-    protected readonly IModPackGui? Packgui;
+    protected readonly IAddGui? Packgui;
 
     protected Loaders Loader = Loaders.Normal;
     protected string LoaderVersion = "";
@@ -18,7 +18,7 @@ public abstract class ModPackWork
 
     protected CancellationToken Token;
 
-    public ModPackWork(Stream st, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
+    public ModPackWork(Stream st, IOverGameGui? gui, IAddGui? packgui, CancellationToken token)
     {
         Gui = gui;
         Packgui = packgui;
@@ -26,7 +26,7 @@ public abstract class ModPackWork
         Token = token;
     }
 
-    public ModPackWork(string file, IOverGameGui? gui, IModPackGui? packgui, CancellationToken token)
+    public ModPackWork(string file, IOverGameGui? gui, IAddGui? packgui, CancellationToken token)
     {
         Gui = gui;
         Packgui = packgui;

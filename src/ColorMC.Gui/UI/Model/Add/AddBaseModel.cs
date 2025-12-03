@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
@@ -144,6 +147,11 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// </summary>
     protected bool _close = false;
 
+    /// <summary>
+    /// 下载源列表
+    /// </summary>
+    protected readonly List<SourceType> SourceTypeList = [];
+
     private bool _isDisplayRun;
     private int _displayRunStage;
 
@@ -227,10 +235,29 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     public abstract void Install(FileVersionItemModel data);
     public abstract void Install(FileItemModel item);
 
-    public void Opened()
+    /// <summary>
+    /// 获取项目列表
+    /// </summary>
+    [RelayCommand]
+    public void Reload()
     {
-        Display = true;
-        Source = 0;
+        LoadDisplayList();
+    }
+
+    /// <summary>
+    /// 根据名字刷新
+    /// </summary>
+    /// <returns></returns>
+    [RelayCommand]
+    public async Task GetNameList()
+    {
+        if (!string.IsNullOrWhiteSpace(Text) && Page != 1)
+        {
+            Page = 1;
+            return;
+        }
+
+        LoadDisplayList();
     }
 
     /// <summary>
@@ -321,10 +348,16 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
 
         foreach (var item in DisplayList)
         {
-            if (item.FileType == info.Type && item.SourceType == info.Source
-                && item.ID == info.PID)
+            if (item.FileType == info.Type && item.SourceType == info.Source)
             {
-                item.NowDownload = true;
+                if (item.ID == info.Pid)
+                {
+                    item.NowDownload = true;
+                }
+                else if (info.SubPid != null && info.SubPid.Contains(item.ID))
+                {
+                    item.NowDownload = true;
+                }
             }
         }
 
@@ -342,11 +375,18 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
 
         foreach (var item in DisplayList)
         {
-            if (item.FileType == info.Type && item.SourceType == info.Source
-                && item.ID == info.PID)
+            if (item.FileType == info.Type && item.SourceType == info.Source )
             {
-                item.NowDownload = false;
-                item.IsDownload = done;
+                if (item.ID == info.Pid)
+                {
+                    item.NowDownload = false;
+                    item.IsDownload = done;
+                }
+                else if (info.SubPid != null && info.SubPid.Contains(item.ID))
+                {
+                    item.NowDownload = false;
+                    item.NowDownload = done;
+                }
             }
         }
 
@@ -362,11 +402,32 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
         foreach (var info in NowDownload)
         {
             if (item.FileType == info.Type && item.SourceType == info.Source
-                && item.ID == info.PID)
+                && item.ID == info.Pid)
             {
                 item.NowDownload = true;
             }
         }
+    }
+
+    /// <summary>
+    /// F5重载版本列表
+    /// </summary>
+    public void ReloadF5()
+    {
+        if (DisplayItemInfo)
+        {
+            LoadInfoVersion();
+        }
+        else
+        {
+            LoadDisplayList();
+        }
+    }
+
+    public void Opened()
+    {
+        Display = true;
+        Source = 0;
     }
 
     public override void Close()
@@ -388,7 +449,7 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     {
         DisplayText = _displayStage[_displayRunStage];
         _displayRunStage++;
-        _displayRunStage = _displayRunStage % _displayStage.Length;
+        _displayRunStage %= _displayStage.Length;
         return _isDisplayRun;
     }
 
@@ -403,7 +464,7 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
         }
         else
         {
-            DownloadText = "";
+            DownloadText = LanguageUtils.Get("AddModPackWindow.Text45");
             _isDisplayRun = false;
         }
     }

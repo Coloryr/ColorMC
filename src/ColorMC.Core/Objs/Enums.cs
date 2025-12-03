@@ -571,9 +571,9 @@ public enum ErrorType
 }
 
 /// <summary>
-/// 整合包安装状态
+/// 项目安装状态
 /// </summary>
-public enum ModpackState
+public enum AddState
 {
     /// <summary>
     /// 下载

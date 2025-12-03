@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Utils;
@@ -23,7 +24,11 @@ public partial class FileItemDownloadModel(WindowModel window) : ObservableObjec
     /// <summary>
     /// 项目ID
     /// </summary>
-    public required string PID;
+    public required string Pid;
+    /// <summary>
+    /// 项目子ID
+    /// </summary>
+    public List<string>? SubPid;
 
     public string Name { get; init; }
 

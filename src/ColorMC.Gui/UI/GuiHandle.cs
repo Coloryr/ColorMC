@@ -71,7 +71,7 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
     }
 }
 
-public class TopModPackGui : IModPackGui
+public class TopModPackGui : IAddGui
 {
     private readonly ProgressModel _progress;
 
@@ -105,7 +105,7 @@ public class TopModPackGui : IModPackGui
         //_model.ProgressUpdate((double)value / all);
     }
 
-    public void SetState(ModpackState state)
+    public void SetState(AddState state)
     {
         _progress.Text = state.GetName();
     }
@@ -318,7 +318,77 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
     }
 }
 
-public class ModpackGui : IModPackGui
+public class ResourceGui : IAddGui
+{
+    private readonly FileItemDownloadModel _info;
+
+    private bool _isRun;
+    private bool _haveUpdate;
+
+    private int _size, _all;
+
+    public ResourceGui(FileItemDownloadModel info)
+    {
+        _info = info;
+        _isRun = true;
+        DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
+
+        _info.Info = LanguageUtils.Get("AddResourceWindow.Text36");
+    }
+
+    public void SetNow(int value, int all)
+    {
+        
+    }
+
+    public void SetNowProcess(int value, int all)
+    {
+        _size = value;
+        _all = all;
+        _haveUpdate = true;
+    }
+
+    public void SetNowSub(int value, int all)
+    {
+        
+    }
+
+    public void SetState(AddState state)
+    {
+        
+    }
+
+    public void SetSubText(string? text)
+    {
+        
+    }
+
+    private bool Run()
+    {
+        if (_haveUpdate)
+        {
+            if (_all == 0)
+            {
+                _all = 1;
+            }
+            var temp = (double)_size / _all * 100;
+            if (temp > 100)
+            {
+                temp = 100;
+            }
+            _info.Now = temp;
+        }
+        _haveUpdate = false;
+        return _isRun;
+    }
+
+    public void Stop()
+    {
+        _isRun = false;
+    }
+}
+
+public class ModPackGui : IAddGui
 {
     private readonly FileItemDownloadModel _info;
 
@@ -329,7 +399,7 @@ public class ModpackGui : IModPackGui
 
     private int _size, _all;
 
-    public ModpackGui(FileItemDownloadModel info)
+    public ModPackGui(FileItemDownloadModel info)
     {
         _info = info;
         _isRun = true;
@@ -355,11 +425,11 @@ public class ModpackGui : IModPackGui
         _haveUpdate = true;
     }
 
-    public void SetState(ModpackState state)
+    public void SetState(AddState state)
     {
         _info.Info = state.GetName();
-        if (state is ModpackState.DownloadPack or ModpackState.GetInfo
-            or ModpackState.Unzip or ModpackState.DownloadFile)
+        if (state is AddState.DownloadPack or AddState.GetInfo
+            or AddState.Unzip or AddState.DownloadFile)
         {
             _info.ShowSub = true;
         }
@@ -368,12 +438,12 @@ public class ModpackGui : IModPackGui
             _info.ShowSub = false;
         }
 
-        if (state == ModpackState.GetInfo)
+        if (state == AddState.GetInfo)
         {
             _info.SubInfo = LanguageUtils.Get("App.Text115");
             _haveUpdate = false;
         }
-        else if (state == ModpackState.DownloadFile)
+        else if (state == AddState.DownloadFile)
         {
             _info.SubInfo = LanguageUtils.Get("AddGameWindow.Tab2.Text7");
             _haveUpdate = false;

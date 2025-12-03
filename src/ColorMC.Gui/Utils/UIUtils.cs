@@ -26,6 +26,7 @@ public class TemplateSelector : IDataTemplate
         _templates.Add(typeof(LongTextModel), typeof(LongTextControl));
         _templates.Add(typeof(AddGroupModel), typeof(GroupEditControl));
         _templates.Add(typeof(JoystickSettingModel), typeof(JoystickSettingControl));
+        _templates.Add(typeof(ModDependModel), typeof(ModDependControl));
     }
 
     public Control? Build(object? param)
