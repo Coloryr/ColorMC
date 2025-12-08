@@ -224,6 +224,7 @@ public partial class AddModPackControlModel : AddBaseModel
         {
             item.IsDownload = InstancesPath.Games.Any(item1 => item1.ModPack && item1.PID == item.Pid);
             item.Add = this;
+            item.Window = Window;
             TestFileItem(item);
             DisplayList.Add(item);
         }

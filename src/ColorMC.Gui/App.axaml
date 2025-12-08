@@ -46,6 +46,7 @@
         <StyleInclude Source="/Style/ToggleSwitch.axaml" />
         <StyleInclude Source="/Style/WindowNotificationManager.axaml" />
         <StyleInclude Source="/Style/ColorPicker.axaml" />
+		<StyleInclude Source="/Style/AutoCompleteBox.axaml" />
     </Application.Styles>
     <Application.Resources>
         <ResourceDictionary>

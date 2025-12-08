@@ -58,7 +58,7 @@ public partial class FileItemDownloadModel(WindowModel window) : ObservableObjec
     [ObservableProperty]
     private bool _showSub;
 
-    private CancellationTokenSource _cancel = new();
+    private readonly CancellationTokenSource _cancel = new();
 
     public CancellationToken Token => _cancel.Token;
 

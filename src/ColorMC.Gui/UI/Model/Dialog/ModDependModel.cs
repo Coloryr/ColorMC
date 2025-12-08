@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs;
@@ -23,7 +24,7 @@ public partial class ModDependModel : ObservableObject
     public ObservableCollection<FileModVersionModel> DownloadModList { get; init; } = [];
 
     /// <summary>
-    /// 
+    /// 名字
     /// </summary>
     public string Name { get; init; }
 
@@ -45,27 +46,29 @@ public partial class ModDependModel : ObservableObject
     /// <summary>
     /// 下载的模组项目
     /// </summary>
-    public DownloadModObj Modsave;
+    public DownloadModObj Modsave { get; init; }
     /// <summary>
     /// 下载源
     /// </summary>
-    public SourceType Source;
+    public SourceType Source { get; init; }
 
     private readonly string _window;
 
-    public ModDependModel(string window, IEnumerable<FileModVersionModel> list, string name, string version, 
-        DownloadModObj save, SourceType source)
+    /// <summary>
+    /// 模组带依赖下载
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="list"></param>
+    /// <param name="source"></param>
+    public ModDependModel(string window, IEnumerable<FileModVersionModel> list, SourceType source)
     {
         IsUpgrade = false;
         _window = window;
         Source = source;
-        Name = string.Format(LanguageUtils.Get("AddResourceWindow.Text38"), save.Info.Name);
+        var item1 = list.First();
+        Modsave = item1.Items.First();
+        Name = string.Format(LanguageUtils.Get("AddResourceWindow.Text38"), item1.Name);
         ModDownloadText = LanguageUtils.Get("AddResourceWindow.Text7");
-        _modList.Add(new FileModVersionModel(name, [version], [save], false)
-        {
-            IsDisable = true,
-            Download = true,
-        });
 
         foreach (var item in list)
         {
@@ -80,6 +83,11 @@ public partial class ModDependModel : ObservableObject
         ModsLoad();
     }
 
+    /// <summary>
+    /// 模组升级列表
+    /// </summary>
+    /// <param name="window"></param>
+    /// <param name="list"></param>
     public ModDependModel(string window, IEnumerable<FileModVersionModel> list)
     {
         IsUpgrade = true;
@@ -145,6 +153,7 @@ public partial class ModDependModel : ObservableObject
     public void ModsLoad(bool ischange = false)
     {
         DownloadModList.Clear();
+
         if (LoadMoreMod)
         {
             DownloadModList.AddRange(_modList);

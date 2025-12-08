@@ -258,6 +258,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             foreach (var item in data)
             {
                 item.Add = this;
+                item.Window = Window;
                 TestFileItem(item);
                 DisplayList.Add(item);
             }
@@ -287,6 +288,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 foreach (var item in res.List)
                 {
                     item.Add = this;
+                    item.Window = Window;
                     if (_obj.Mods.ContainsKey(item.ID))
                     {
                         item.IsDownload = true;
@@ -300,6 +302,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 foreach (var item in res.List)
                 {
                     item.Add = this;
+                    item.Window = Window;
                     TestFileItem(item);
                     DisplayList.Add(item);
                 }

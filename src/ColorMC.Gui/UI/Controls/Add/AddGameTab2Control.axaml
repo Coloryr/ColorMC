@@ -60,15 +60,13 @@
                             Path="/Resource/Icon/AddMenu/item2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding PackTypeList}"
-                                SelectedIndex="{Binding Type}" />
-                        </DockPanel>
-                    </WrapPanel>
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
+                        <ComboBox
+                            Width="230"
+                            ItemsSource="{Binding PackTypeList}"
+                            SelectedIndex="{Binding Type}" />
+                    </StackPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -77,25 +75,14 @@
                             Path="/Resource/Icon/GameEdit/svg3.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GroupList}"
-                                SelectedItem="{Binding Group}" />
-                        </DockPanel>
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,7,7"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
-                    </WrapPanel>
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
+                        <ComboBox
+                            Width="230"
+                            IsEditable="True"
+                            ItemsSource="{Binding GroupList}"
+                            Text="{Binding Group}" />
+                    </StackPanel>
                 </StackPanel>
             </DockPanel>
         </Border>

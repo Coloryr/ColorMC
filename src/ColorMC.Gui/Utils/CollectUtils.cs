@@ -27,11 +27,6 @@ public static class CollectUtils
     public static CollectObj Collect { get; set; }
 
     /// <summary>
-    /// 收藏列表
-    /// </summary>
-    private static readonly Dictionary<string, int> s_itemUse = [];
-
-    /// <summary>
     /// 初始化收藏
     /// </summary>
     public static void Init()
@@ -84,14 +79,6 @@ public static class CollectUtils
                     item.Value.Remove(item1);
                     continue;
                 }
-                if (s_itemUse.TryGetValue(item1, out int value))
-                {
-                    s_itemUse[item1] = ++value;
-                }
-                else
-                {
-                    s_itemUse[item1] = 1;
-                }
             }
         }
 
@@ -118,20 +105,17 @@ public static class CollectUtils
             return;
         }
 
+        foreach (var item in Collect.Groups)
+        {
+            item.Value.Remove(uuid);
+        }
+
+        Collect.Items.Remove(uuid);
+
         if (WindowManager.CollectWindow is { } window
             && window.DataContext is CollectModel model1)
         {
-            if (string.IsNullOrWhiteSpace(model1.Group)
-                && Collect.Groups.TryGetValue(model1.Group, out var gourp))
-            {
-                gourp.Remove(uuid);
-            }
-            RemoveItem(uuid);
             model1.Update();
-        }
-        else
-        {
-            RemoveItem(uuid);
         }
 
         Save();
@@ -143,22 +127,12 @@ public static class CollectUtils
     /// <param name="uuid">收藏UUID</param>
     public static void RemoveItem(string uuid)
     {
-        if (s_itemUse.TryGetValue(uuid, out var use))
+        foreach (var item in Collect.Groups)
         {
-            if (use == 1)
-            {
-                Collect.Items.Remove(uuid);
-                s_itemUse.Remove(uuid);
-            }
-            else
-            {
-                s_itemUse[uuid] = use - 1;
-            }
+            item.Value.Remove(uuid);
         }
-        else
-        {
-            Collect.Items.Remove(uuid);
-        }
+
+        Collect.Items.Remove(uuid);
     }
 
     /// <summary>
@@ -188,17 +162,9 @@ public static class CollectUtils
             && window.DataContext is CollectModel model1)
         {
             if (!string.IsNullOrWhiteSpace(model1.Group)
-                && Collect.Groups.TryGetValue(model1.Group, out var gourp))
+                && Collect.Groups.TryGetValue(model1.Group, out var group))
             {
-                gourp.Add(uuid);
-                if (s_itemUse.TryGetValue(uuid, out int value))
-                {
-                    s_itemUse[uuid] = ++value;
-                }
-                else
-                {
-                    s_itemUse[uuid] = 1;
-                }
+                group.Add(uuid);
             }
 
             model1.Update();
@@ -233,10 +199,11 @@ public static class CollectUtils
 
     private static CollectObj Make()
     {
-        return new()
+        return new CollectObj
         {
             Items = [],
             Groups = [],
+            ModPack = true,
             Mod = true,
             ResourcePack = true,
             Shaderpack = true
@@ -254,40 +221,12 @@ public static class CollectUtils
     }
 
     /// <summary>
-    /// 删除收藏分组
-    /// </summary>
-    /// <param name="group">分组名字</param>
-    private static void RemoveGroupItem(string group)
-    {
-        if (Collect.Groups.TryGetValue(group, out var list))
-        {
-            foreach (var item in list)
-            {
-                if (s_itemUse.TryGetValue(item, out var use))
-                {
-                    if (use == 1)
-                    {
-                        Collect.Items.Remove(item);
-                    }
-                    else
-                    {
-                        s_itemUse[item] = use - 1;
-                    }
-                }
-            }
-        }
-    }
-
-    /// <summary>
     /// 删除分组
     /// </summary>
     /// <param name="group"></param>
     public static void DeleteGroup(string group)
     {
-        RemoveGroupItem(group);
-
         Collect.Groups.Remove(group);
-
         Save();
     }
 
@@ -311,8 +250,6 @@ public static class CollectUtils
     /// <param name="group"></param>
     public static void Clear(string group)
     {
-        RemoveGroupItem(group);
-
         if (Collect.Groups.TryGetValue(group, out var list))
         {
             list.Clear();
@@ -327,8 +264,9 @@ public static class CollectUtils
     /// <param name="mod"></param>
     /// <param name="resourcepack"></param>
     /// <param name="shaderpack"></param>
-    public static void Setting(bool mod, bool resourcepack, bool shaderpack)
+    public static void Setting(bool modpack, bool mod, bool resourcepack, bool shaderpack)
     {
+        Collect.ModPack = modpack;
         Collect.Mod = mod;
         Collect.ResourcePack = resourcepack;
         Collect.Shaderpack = shaderpack;
@@ -352,26 +290,12 @@ public static class CollectUtils
     /// </summary>
     /// <param name="group">分组</param>
     /// <param name="list">需要删除的</param>
-    public static void RemoveItem(string group, List<string> list)
+    public static void RemoveItem(string group, IEnumerable<string> list)
     {
-        if (string.IsNullOrWhiteSpace(group))
+        if (Collect.Groups.TryGetValue(group, out var group1))
         {
             foreach (var item in list)
             {
-                Collect.Items.Remove(item);
-                s_itemUse.Remove(item);
-
-                foreach (var item1 in Collect.Groups)
-                {
-                    item1.Value.Remove(item);
-                }
-            }
-        }
-        else if (Collect.Groups.TryGetValue(group, out var group1))
-        {
-            foreach (var item in list)
-            {
-                RemoveItem(item);
                 group1.Remove(item);
             }
         }
@@ -391,14 +315,6 @@ public static class CollectUtils
             foreach (var item in list)
             {
                 group1.Add(item);
-                if (s_itemUse.TryGetValue(item, out var use))
-                {
-                    s_itemUse[item] = use - 1;
-                }
-                else
-                {
-                    s_itemUse[item] = 1;
-                }
             }
         }
 

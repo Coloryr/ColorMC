@@ -154,128 +154,106 @@ public partial class AddResourceControlModel
                 }
                 var item = list[dialog1.Index];
 
-                try
+                FileItemDownloadModel? info = null;
+                if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                 {
-                    FileItemDownloadModel? info = null;
-                    if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
+                    info = new FileItemDownloadModel(Window)
                     {
-                        info = new FileItemDownloadModel(Window)
-                        {
-                            Name = data1.DisplayName,
-                            Type = FileType.DataPacks,
-                            Source = data.SourceType,
-                            Pid = data1.ModId.ToString()
-                        };
-                        StartDownload(info);
-                        var pack = new ResourceGui(info);
-                        res = await WebBinding.DownloadResourceAsync(item, data1, pack, info.Token);
-                        pack.Stop();
-                    }
-                    else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
-                    {
-                        info = new FileItemDownloadModel(Window)
-                        {
-                            Name = data2.Name,
-                            Type = FileType.DataPacks,
-                            Source = data.SourceType,
-                            Pid = data2.ProjectId
-                        };
-                        StartDownload(info);
-                        var pack = new ResourceGui(info);
-                        res = await WebBinding.DownloadResourceAsync(item, data2, pack, info.Token);
-                        pack.Stop();
-                    }
-                    if (info != null)
-                    {
-                        StopDownload(info, res);
-                    }
+                        Name = data1.DisplayName,
+                        Type = FileType.DataPacks,
+                        Source = data.SourceType,
+                        Pid = data1.ModId.ToString()
+                    };
+                    StartDownload(info);
+                    var pack = new ResourceGui(info);
+                    res = await WebBinding.DownloadResourceAsync(item, data1, pack, info.Token);
+                    pack.Stop();
                 }
-                catch (Exception e)
+                else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                 {
-                    Logs.Error(LanguageUtils.Get("AddResourceWindow.Text30"), e);
-                    res = false;
+                    info = new FileItemDownloadModel(Window)
+                    {
+                        Name = data2.Name,
+                        Type = FileType.DataPacks,
+                        Source = data.SourceType,
+                        Pid = data2.ProjectId
+                    };
+                    StartDownload(info);
+                    var pack = new ResourceGui(info);
+                    res = await WebBinding.DownloadResourceAsync(item, data2, pack, info.Token);
+                    pack.Stop();
+                }
+                if (info != null)
+                {
+                    StopDownload(info, res);
                 }
             }
             //模组
             else if (_now == FileType.Mod)
             {
-                try
+                var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text40"));
+                var list = data.SourceType switch
                 {
-                    var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text40"));
-                    var list = data.SourceType switch
-                    {
-                        SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(_obj,
-                        data.Data as CurseForgeModObj.CurseForgeDataObj),
-                        SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(_obj,
-                        data.Data as ModrinthVersionObj),
-                        _ => null
-                    };
-                    Window.CloseDialog(dialog);
-                    if (list == null)
-                    {
-                        Window.Show(LanguageUtils.Get("AddResourceWindow.Text32"));
-                        return;
-                    }
+                    SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(_obj,
+                    data.Data as CurseForgeModObj.CurseForgeDataObj),
+                    SourceType.Modrinth => await WebBinding.GetDownloadModListAsync(_obj,
+                    data.Data as ModrinthVersionObj),
+                    _ => null
+                };
+                Window.CloseDialog(dialog);
+                if (list == null)
+                {
+                    Window.Show(LanguageUtils.Get("AddResourceWindow.Text32"));
+                    return;
+                }
 
-                    if (list.List!.Count == 0)
+                if (list.List!.Count == 0)
+                {
+                    var info = new FileItemDownloadModel(Window)
                     {
-                        var info = new FileItemDownloadModel(Window)
-                        {
-                            Name = list.Info.Name,
-                            Type = FileType.Mod,
-                            Source = data.SourceType,
-                            Pid = list.Info.ModId
-                        };
-                        StartDownload(info);
-                        var pack = new ResourceGui(info);
-                        res = await WebBinding.DownloadModAsync(_obj,
-                        [
-                            new DownloadModObj()
+                        Name = list.Info.Name,
+                        Type = FileType.Mod,
+                        Source = data.SourceType,
+                        Pid = list.Info.ModId
+                    };
+                    StartDownload(info);
+                    var pack = new ResourceGui(info);
+                    res = await WebBinding.DownloadModAsync(_obj,
+                    [
+                        new DownloadModObj()
                             {
                                 Item = list.Item!,
                                 Info = list.Info!,
                                 Old = await _obj.ReadModAsync(mod)
                             }
-                        ], pack, info.Token);
+                    ], pack, info.Token);
 
-                        StopDownload(info, res);
+                    StopDownload(info, res);
+                }
+                else
+                {
+                    if (await StartListTask(list, mod, data.SourceType,
+                        data.ProjectName, data.Name) is { } value)
+                    {
+                        res = value;
                     }
                     else
                     {
-                        if (await StartListTask(list, mod, data.SourceType, data.ProjectName, data.Name) is { } value)
-                        {
-                            res = value;
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
-                    res = false;
-                }
+
             }
             else
             {
-                try
+                res = data.SourceType switch
                 {
-                    res = data.SourceType switch
-                    {
-                        SourceType.CurseForge => await WebBinding.DownloadAsync(_now, _obj,
-                            data.Data as CurseForgeModObj.CurseForgeDataObj),
-                        SourceType.Modrinth => await WebBinding.DownloadAsync(_now, _obj,
-                            data.Data as ModrinthVersionObj),
-                        _ => false
-                    };
-                }
-                catch (Exception e)
-                {
-                    Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
-                    res = false;
-                }
+                    SourceType.CurseForge => await WebBinding.DownloadAsync(_now, _obj,
+                        data.Data as CurseForgeModObj.CurseForgeDataObj),
+                    SourceType.Modrinth => await WebBinding.DownloadAsync(_now, _obj,
+                        data.Data as ModrinthVersionObj),
+                    _ => false
+                };
             }
 
             //下载结束
@@ -287,6 +265,11 @@ public partial class AddResourceControlModel
             {
                 Window.Show(LanguageUtils.Get("AddResourceWindow.Text28"));
             }
+        }
+        catch (Exception e)
+        {
+            Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
+            res = false;
         }
         finally
         {

@@ -17,38 +17,49 @@
             Classes="t2"
             DockPanel.Dock="Top">
             <DockPanel>
-                <WrapPanel Margin="15,15,5,-10" DockPanel.Dock="Top">
-                    <DockPanel MinWidth="150" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding JavaTypeList}"
-                            SelectedIndex="{Binding TypeIndex}"
-                            SelectedItem="{Binding JavaType}" />
-                    </DockPanel>
-                    <DockPanel MinWidth="150" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text2}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding SystemList}"
-                            SelectedItem="{Binding System}" />
-                    </DockPanel>
-                    <DockPanel MinWidth="80" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab5.Text9}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding VersionList}"
-                            SelectedItem="{Binding Version}" />
-                    </DockPanel>
-                    <DockPanel MinWidth="150" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddJavaWindow.Text4}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            ItemsSource="{Binding ArchList}"
-                            SelectedIndex="{Binding ArchIndex}"
-                            SelectedItem="{Binding Arch}" />
-                    </DockPanel>
-                </WrapPanel>
+                <Grid
+                    Margin="15,15,15,5"
+                    ColumnDefinitions="auto,*,auto,*,auto,*,auto,*"
+                    DockPanel.Dock="Top">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
+                    <ComboBox
+                        Grid.Column="1"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding JavaTypeList}"
+                        SelectedIndex="{Binding TypeIndex}"
+                        SelectedItem="{Binding JavaType}" />
+                    <TextBlock
+                        Grid.Column="2"
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize AddJavaWindow.Text2}" />
+                    <ComboBox
+                        Grid.Column="3"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding SystemList}"
+                        SelectedItem="{Binding System}" />
+                    <TextBlock
+                        Grid.Column="4"
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize SettingWindow.Tab5.Text9}" />
+                    <ComboBox
+                        Grid.Column="5"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding VersionList}"
+                        SelectedItem="{Binding Version}" />
+                    <TextBlock
+                        Grid.Column="6"
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize AddJavaWindow.Text4}" />
+                    <ComboBox
+                        Grid.Column="7"
+                        HorizontalAlignment="Stretch"
+                        ItemsSource="{Binding ArchList}"
+                        SelectedIndex="{Binding ArchIndex}"
+                        SelectedItem="{Binding Arch}" />
+                </Grid>
                 <TextBlock
                     Margin="15,0,15,15"
                     DockPanel.Dock="Bottom"

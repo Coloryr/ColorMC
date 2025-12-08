@@ -66,49 +66,47 @@ public partial class AddGameModel : ControlModel
 
     public AddGameModel(WindowModel model) : base(model)
     {
-        GroupList.Clear();
-        GroupList.AddRange(InstancesPath.GroupKeys);
+        LoadGroup();
 
         GameVersionUpdate();
 
         CloudEnable = ColorMCCloudAPI.Connect;
     }
 
-    /// <summary>
-    /// 添加新的游戏分组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task AddGroup()
-    {
-        var dialog = new InputModel(Window.WindowId)
-        {
-            Watermark1 = LanguageUtils.Get("Text.Group")
-        };
-        var res = await Window.ShowDialogWait(dialog);
-        if (res is not true)
-        {
-            return;
-        }
+    ///// <summary>
+    ///// 添加新的游戏分组
+    ///// </summary>
+    ///// <returns></returns>
+    //[RelayCommand]
+    //public async Task AddGroup()
+    //{
+    //    var dialog = new InputModel(Window.WindowId)
+    //    {
+    //        Watermark1 = LanguageUtils.Get("Text.Group")
+    //    };
+    //    var res = await Window.ShowDialogWait(dialog);
+    //    if (res is not true)
+    //    {
+    //        return;
+    //    }
 
-        if (string.IsNullOrWhiteSpace(dialog.Text1))
-        {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
-            return;
-        }
+    //    if (string.IsNullOrWhiteSpace(dialog.Text1))
+    //    {
+    //        Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
+    //        return;
+    //    }
 
-        if (!GameBinding.AddGameGroup(dialog.Text1))
-        {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
-            return;
-        }
+    //    if (!GameBinding.AddGameGroup(dialog.Text1))
+    //    {
+    //        Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
+    //        return;
+    //    }
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
+    //    Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
 
-        GroupList.Clear();
-        GroupList.AddRange(InstancesPath.GroupKeys);
-        Group = dialog.Text1;
-    }
+        
+    //    Group = dialog.Text1;
+    //}
 
     /// <summary>
     /// 转到菜单
@@ -152,6 +150,12 @@ public partial class AddGameModel : ControlModel
         Main = false;
         Window.PushBack(BackMain);
         ServerPackDownload();
+    }
+
+    private void LoadGroup() 
+    {
+        GroupList.Clear();
+        GroupList.AddRange(InstancesPath.GroupKeys);
     }
 
     /// <summary>
@@ -206,6 +210,8 @@ public partial class AddGameModel : ControlModel
     {
         Name = "";
         Group = "";
+
+        LoadGroup();
 
         Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
