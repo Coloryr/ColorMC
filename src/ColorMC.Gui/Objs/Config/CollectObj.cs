@@ -52,6 +52,10 @@ public record CollectObj
     public Dictionary<string, List<string>> Groups { get; set; }
 
     /// <summary>
+    /// 显示整合包
+    /// </summary>
+    public bool ModPack { get; set; }
+    /// <summary>
     /// 显示模组
     /// </summary>
     public bool Mod { get; set; }

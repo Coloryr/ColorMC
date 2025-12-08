@@ -42,31 +42,36 @@
                             Path="/Resource/Icon/GameEdit/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
                     </StackPanel>
-                    <WrapPanel IsEnabled="{Binding !IsLoad}">
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding VersionTypeList}"
-                                SelectedIndex="{Binding VersionType}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GameVersionList}"
-                                SelectedItem="{Binding Version}" />
-                        </DockPanel>
+                    <Grid
+                        Margin="0,0,0,10"
+                        ColumnDefinitions="auto,*,auto,*,auto"
+                        IsEnabled="{Binding !IsLoad}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
+                        <ComboBox
+                            Grid.Column="1"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding VersionTypeList}"
+                            SelectedIndex="{Binding VersionType}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Margin="0,0,5,0"
+                            Text="{setting:Localize Text.Version}" />
+                        <ComboBox
+                            Grid.Column="3"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding GameVersionList}"
+                            SelectedItem="{Binding Version}" />
                         <Button
+                            Grid.Column="4"
                             Width="100"
                             Height="35"
-                            Margin="-2,-3,7,7"
-                            HorizontalAlignment="Right"
+                            Margin="7,-3,7,-3"
                             Classes="top"
                             Command="{Binding LoadVersion}"
                             Content="{setting:Localize Text.ReloadVersion}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
-                    </WrapPanel>
+                    </Grid>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
@@ -75,53 +80,50 @@
                             Path="/Resource/Icon/GameEdit/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <DockPanel
-                            MinWidth="230"
-                            Margin="0,0,10,10"
-                            IsEnabled="{Binding !IsLoad}">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                IsEnabled="{Binding EnableLoader}"
-                                ItemsSource="{Binding LoaderTypeList}"
-                                SelectedIndex="{Binding LoaderType}" />
-                        </DockPanel>
-                        <DockPanel
-                            MinWidth="230"
-                            Margin="0,0,10,10"
-                            IsEnabled="{Binding !IsLoad}">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Version}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                IsEnabled="{Binding EnableLoaderVersion}"
-                                ItemsSource="{Binding LoaderVersionList}"
-                                SelectedItem="{Binding LoaderVersion}" />
-                        </DockPanel>
-                        <StackPanel
+                    <Grid
+                        Margin="0,0,0,10"
+                        ColumnDefinitions="auto,*,auto,auto,*,auto"
+                        IsEnabled="{Binding !IsLoad}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
+                        <ComboBox
+                            Grid.Column="1"
                             Margin="0,0,10,0"
-                            HorizontalAlignment="Right"
-                            Orientation="Horizontal">
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,3,7"
-                                Classes="top"
-                                Command="{Binding VersionSelect}"
-                                Content="{setting:Localize AddGameWindow.Tab1.Text11}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text83}" />
-                            <Button
-                                Width="100"
-                                Height="35"
-                                Margin="-2,-3,-3,7"
-                                Classes="top"
-                                Command="{Binding GetLoader}"
-                                Content="{setting:Localize Text.ReloadVersion}"
-                                ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
-                        </StackPanel>
-                    </WrapPanel>
+                            HorizontalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
+                            IsEnabled="{Binding EnableLoader}"
+                            ItemsSource="{Binding LoaderTypeList}"
+                            SelectedIndex="{Binding LoaderType}" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="-3,-3,7,-3"
+                            Classes="top"
+                            Command="{Binding VersionSelect}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text11}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text83}" />
+                        <TextBlock
+                            Grid.Column="3"
+                            Margin="0,0,5,0"
+                            Text="{setting:Localize Text.Version}" />
+                        <ComboBox
+                            Grid.Column="4"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalContentAlignment="Center"
+                            IsEnabled="{Binding EnableLoaderVersion}"
+                            ItemsSource="{Binding LoaderVersionList}"
+                            SelectedItem="{Binding LoaderVersion}" />
+                        <Button
+                            Grid.Column="5"
+                            Width="100"
+                            Height="35"
+                            Margin="-3,-3,7,-3"
+                            Classes="top"
+                            Command="{Binding GetLoader}"
+                            Content="{setting:Localize Text.ReloadVersion}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
+                    </Grid>
                     <TextBox
                         Height="30"
                         Margin="0,0,10,10"
@@ -153,23 +155,12 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     </StackPanel>
                     <WrapPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GroupList}"
-                                SelectedItem="{Binding Group}" />
-                        </DockPanel>
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,7,7"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
+                        <ComboBox
+                            Width="230"
+                            IsEditable="True"
+                            ItemsSource="{Binding GroupList}"
+                            Text="{Binding Group}" />
                     </WrapPanel>
                 </StackPanel>
             </DockPanel>

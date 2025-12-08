@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ public partial class FileItemModel : SelectItemModel
     /// 下载
     /// </summary>
     public IAddControl Add { get; set; }
+    public WindowModel Window { get; set; }
 
     /// <summary>
     /// 图标
@@ -218,7 +220,7 @@ public partial class FileItemModel : SelectItemModel
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
         if (ShowStar)
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id.ToString());
@@ -309,7 +311,7 @@ public partial class FileItemModel : SelectItemModel
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
         if (ShowStar)
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.ProjectId);
@@ -336,7 +338,7 @@ public partial class FileItemModel : SelectItemModel
         HaveDownload = true;
         IsModPack = type == FileType.ModPack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
         if (ShowStar)
         {
             IsStar = CollectUtils.IsCollect(SourceType, data.Id);
@@ -386,11 +388,19 @@ public partial class FileItemModel : SelectItemModel
     /// 标星
     /// </summary>
     [RelayCommand]
-    public void DoStar()
+    public async Task DoStar()
     {
         if (!ShowStar)
         {
             return;
+        }
+        if (IsStar)
+        {
+            var res = await Window.ShowChoice(LanguageUtils.Get("App.Text116"));
+            if (!res)
+            {
+                return;
+            }
         }
         IsStar = BaseBinding.SetStart(this);
     }

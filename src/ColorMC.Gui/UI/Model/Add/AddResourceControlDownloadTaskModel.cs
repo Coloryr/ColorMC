@@ -77,32 +77,40 @@ public partial class AddResourceControlModel
             var list = task.DownloadModList.Where(item => item.Download && !item.IsDisable)
                                 .Select(item => item.Items[item.SelectVersion]);
 
+            var mod = task.DownloadModList.First();
             var info = new FileItemDownloadModel(Window)
             {
-                Name = task.Modsave.Item.Name,
+                Name = mod.Name,
                 Type = FileType.Mod,
                 Source = task.Source,
                 Pid = task.Modsave.Info.ModId,
                 SubPid = [.. list.Select(item1 => item1.Info.ModId)]
             };
+
             StartDownload(info);
             var pack = new ResourceGui(info);
-            var res = await WebBinding.DownloadModAsync(_obj, list, pack, info.Token);
+            var res = await WebBinding.DownloadModAsync(_obj, [task.Modsave, .. list], pack, info.Token);
             StopDownload(info, res);
 
             return res;
         }
     }
 
-    private async Task<bool?> StartListTask(ModDownloadListRes list, ModInfoObj? mod, SourceType source, string name, string version)
+    private async Task<bool?> StartListTask(ModDownloadListRes list, ModInfoObj? mod, 
+        SourceType source, string name, string version)
     {
-        //添加模组信息
-        var dialog = new ModDependModel(Window.WindowId, list.List, name, version, new DownloadModObj()
+        var self = new FileModVersionModel(name, [version], [new DownloadModObj()
         {
             Item = list.Item!,
             Info = list.Info!,
             Old = await _obj.ReadModAsync(mod)
-        }, source);
+        }], false)
+        {
+            IsDisable = true
+        };
+
+        //添加模组信息
+        var dialog = new ModDependModel(Window.WindowId, [self, .. list.List], source);
 
         var res = await Window.ShowDialogWait(dialog);
         if (res is true)

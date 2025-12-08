@@ -1,0 +1,40 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:generic="using:System.Collections.Generic"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI">
+    <Design.PreviewWith>
+        <Border
+            Width="300"
+            Height="300"
+            Padding="20">
+            <AutoCompleteBox Width="200">
+                <AutoCompleteBox.ItemsSource>
+                    <generic:List x:TypeArguments="x:String">
+                        Alabama
+                        Alaska
+                        Arizona
+                        Arkansas
+                        California
+                        Colorado
+                        Connecticut
+                        Delaware
+                    </generic:List>
+                </AutoCompleteBox.ItemsSource>
+            </AutoCompleteBox>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="AutoCompleteBox">
+        <Setter Property="MaxDropDownHeight" Value="300" />
+        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+
+        <Style Selector="^:pointerover /template/ Border#Background">
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
+        </Style>
+    </Style>
+</Styles>

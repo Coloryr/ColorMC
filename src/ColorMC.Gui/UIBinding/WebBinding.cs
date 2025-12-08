@@ -446,7 +446,7 @@ public static class WebBinding
             }
             var list1 = new List<FileItemModel>();
             var modlist = new List<string>();
-            list.Hits.ForEach(item =>
+            list.Hits.ForEach(async item =>
             {
                 modlist.Add(item.ProjectId);
             });

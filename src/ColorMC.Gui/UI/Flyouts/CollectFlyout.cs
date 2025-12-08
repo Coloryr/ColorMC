@@ -16,13 +16,13 @@ public static class CollectFlyout
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("CollectWindow.Text22"), model.Add.HaveSelect(), model.Add.Install),
+            new FlyoutMenuModel(LanguageUtils.Get("CollectWindow.Text22"), model.Add.CanDownload(), model.Add.Install),
             new FlyoutMenuModel(LanguageUtils.Get("NetFrpWindow.Tab1.Text14"), true, ()=>
             {
                 BaseBinding.OpenUrl(model.Obj.Url);
             }),
             new FlyoutMenuModel(LanguageUtils.Get("CollectWindow.Text23"), model.Add.HaveSelect(), model.Add.DeleteSelect),
-            new FlyoutMenuModel(LanguageUtils.Get("CollectWindow.Text24"), model.Add.HaveGroup(), model.Add.GroupSelect),
+            new FlyoutMenuModel(LanguageUtils.Get("CollectWindow.Text24"), true, model.Add.GroupSelect),
         ]).Show(con);
     }
 }

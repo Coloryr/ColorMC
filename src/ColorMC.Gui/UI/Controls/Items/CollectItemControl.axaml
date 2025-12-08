@@ -8,10 +8,12 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="150"
+    d:DesignWidth="350"
     x:DataType="model:CollectItemModel"
     mc:Ignorable="d">
     <Border
-        Width="{Binding Width}"
+        Width="350"
         Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"

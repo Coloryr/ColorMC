@@ -24,6 +24,6 @@ public interface ICollectControl
     bool HaveSelect();
     void DeleteSelect();
     void GroupSelect();
-    bool HaveGroup();
     void ChoiseChange();
+    bool CanDownload();
 }

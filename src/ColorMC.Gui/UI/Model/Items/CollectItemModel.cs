@@ -17,8 +17,6 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <param name="obj"></param>
 public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
 {
-    public const int DefaultWidth = 350;
-
     /// <summary>
     /// 上层回调
     /// </summary>
@@ -53,15 +51,15 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     [ObservableProperty]
     private bool _isCheck;
     /// <summary>
-    /// 宽度
+    /// 是否在下载中
     /// </summary>
     [ObservableProperty]
-    private double _width = DefaultWidth;
+    private bool _isDownload;
 
     /// <summary>
     /// 收藏
     /// </summary>
-    public readonly CollectItemObj Obj = obj;
+    public CollectItemObj Obj => obj;
 
     partial void OnIsCheckChanged(bool value)
     {
