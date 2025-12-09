@@ -68,7 +68,15 @@ public static class BaseBinding
             if (WindowManager.MainWindow != null)
             {
                 WindowManager.MainWindow.Window?.WindowActivate();
-                (WindowManager.MainWindow.DataContext as IMainTop)?.Launch(games);
+                var list = new List<Guid>();
+                foreach (var item in games)
+                {
+                    if (Guid.TryParse(item, out var uuid))
+                    {
+                        list.Add(uuid);
+                    }
+                }
+                (WindowManager.MainWindow.DataContext as IMainTop)?.Launch(list);
             }
         });
     }
@@ -287,14 +295,14 @@ public static class BaseBinding
     /// <returns></returns>
     public static bool SetStart(FileItemModel model)
     {
-        var obj = new CollectItemObj()
+        var obj = new CollectItemObj
         {
             Icon = model.Logo,
             Url = model.Url,
-            FileType = model.FileType,
-            Source = model.SourceType,
+            FileType = model.Obj.Type,
+            Source = model.Obj.Source,
             Name = model.Name,
-            Pid = model.Pid
+            Pid = model.Obj.Pid
         };
 
         if (model.IsStar)
@@ -514,7 +522,7 @@ public static class BaseBinding
     {
         try
         {
-            var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+            var file = Path.Combine(DownloadManager.DownloadDir, FunctionUtils.NewUUID());
             var stream = PathHelper.OpenWrite(file);
             var zip = new ZipWriter(stream, new ZipWriterOptions(CompressionType.Deflate));
             var conf = GuiConfigUtils.Config;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,7 +31,7 @@ public partial class SettingModel
     /// <summary>
     /// UUID列表
     /// </summary>
-    private readonly List<string> _uuids = [];
+    private readonly List<Guid> _uuids = [];
     /// <summary>
     /// 游戏列表
     /// </summary>
@@ -540,7 +541,7 @@ public partial class SettingModel
 
             MotdFontColor = ColorManager.MotdColor.ToColor();
             MotdBackColor = ColorManager.MotdBackColor.ToColor();
-            if (config.GameName == null)
+            if (config.GameName == Guid.Empty)
             {
                 Game = -1;
             }
@@ -626,7 +627,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? null : _uuids[Game]);
+        ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? Guid.Empty : _uuids[Game]);
     }
 
     private void SetAdmin()

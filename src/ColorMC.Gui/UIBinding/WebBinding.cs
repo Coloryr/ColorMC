@@ -52,10 +52,10 @@ public static class WebBinding
             var list2 = await ColorMCAPI.GetMcModFromCFAsync([id], 1);
             if (list2 != null && list2.TryGetValue(id, out var mcmod))
             {
-                return new FileItemModel(res.Data, FileType.ModPack, mcmod);
+                return new FileItemModel(res.Data, FileType.Modpack, mcmod);
             }
 
-            return new FileItemModel(res.Data, FileType.ModPack, null);
+            return new FileItemModel(res.Data, FileType.Modpack, null);
         }
         else
         {
@@ -67,10 +67,10 @@ public static class WebBinding
             var list2 = await ColorMCAPI.GetMcModFromMOAsync([id], 1);
             if (list2 != null && list2.TryGetValue(id, out var mcmod))
             {
-                return new FileItemModel(res, FileType.ModPack, mcmod);
+                return new FileItemModel(res, FileType.Modpack, mcmod);
             }
 
-            return new FileItemModel(res, FileType.ModPack, null);
+            return new FileItemModel(res, FileType.Modpack, null);
         }
     }
 
@@ -125,7 +125,7 @@ public static class WebBinding
                 list.Data.ForEach(item =>
                 {
                     var id = item.Id.ToString();
-                    list1.Add(new(item, FileType.ModPack, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
+                    list1.Add(new(item, FileType.Modpack, list2?.TryGetValue(id, out var data1) == true ? data1 : null));
                 });
 
                 return new ModPackListRes
@@ -154,7 +154,7 @@ public static class WebBinding
                 foreach (var item in list.Hits)
                 {
                     list1.Add(new FileItemModel(item,
-                        FileType.ModPack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
+                        FileType.Modpack, list2?.TryGetValue(item.ProjectId, out var data1) == true ? data1 : null));
                 }
 
                 return new ModPackListRes
@@ -214,7 +214,7 @@ public static class WebBinding
     /// <param name="type1"></param>
     /// <returns></returns>
     public static async Task<FileListRes> GetFileListAsync(SourceType type, string id,
-        int page, string? mc, Loaders loader, FileType type1 = FileType.ModPack)
+        int page, string? mc, Loaders loader, FileType type1 = FileType.Modpack)
     {
         if (type == SourceType.CurseForge)
         {
@@ -769,7 +769,7 @@ public static class WebBinding
     {
         return fileType switch
         {
-            FileType.ModPack => "https://modrinth.com/modpack/",
+            FileType.Modpack => "https://modrinth.com/Modpack/",
             FileType.Shaderpack => "https://modrinth.com/shaders/",
             FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
             FileType.DataPacks => "https://modrinth.com/datapacks/",
@@ -781,7 +781,7 @@ public static class WebBinding
     {
         return fileType switch
         {
-            FileType.ModPack => "https://modrinth.com/modpack/",
+            FileType.Modpack => "https://modrinth.com/Modpack/",
             FileType.Shaderpack => "https://modrinth.com/shaders/",
             FileType.Resourcepack => "https://modrinth.com/resourcepacks/",
             FileType.DataPacks => "https://modrinth.com/datapacks/",
@@ -796,7 +796,7 @@ public static class WebBinding
     /// <returns></returns>
     public static string? GetUrl(this McModSearchItemObj obj)
     {
-        return $"https://www.mcmod.cn/{(obj.McmodType == 0 ? "class" : "modpack")}/{obj.McmodId}.html";
+        return $"https://www.mcmod.cn/{(obj.McmodType == 0 ? "class" : "Modpack")}/{obj.McmodId}.html";
     }
 
     /// <summary>

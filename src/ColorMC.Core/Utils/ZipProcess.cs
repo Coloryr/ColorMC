@@ -129,7 +129,7 @@ public class ZipProcess(IZipGui? gui = null)
                 _now++;
                 gui?.ZipUpdate(e.Key ?? "", _now, _size);
 
-                if (!FuntionUtils.IsFile(e))
+                if (!FunctionUtils.IsFile(e))
                 {
                     continue;
                 }

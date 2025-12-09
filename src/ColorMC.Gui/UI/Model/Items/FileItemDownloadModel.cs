@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using ColorMC.Core.Objs;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,24 +10,11 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// <summary>
 /// 下载标记
 /// </summary>
-public partial class FileItemDownloadModel(WindowModel window) : ObservableObject
+public partial class FileItemDownloadModel : ObservableObject
 {
-    /// <summary>
-    /// 资源类型
-    /// </summary>
-    public required FileType Type;
-    /// <summary>
-    /// 下载源
-    /// </summary>
-    public required SourceType Source;
-    /// <summary>
-    /// 项目ID
-    /// </summary>
-    public required string Pid;
-    /// <summary>
-    /// 项目子ID
-    /// </summary>
-    public List<string>? SubPid;
+    public required SourceItemObj Obj;
+
+    public WindowModel? Window;
 
     public string Name { get; init; }
 
@@ -65,7 +51,11 @@ public partial class FileItemDownloadModel(WindowModel window) : ObservableObjec
     [RelayCommand]
     public async Task Cancel()
     {
-        if (await window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text43")))
+        if (Window == null)
+        {
+            return;
+        }
+        if (await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text43")))
         {
             _cancel.Cancel();
         }

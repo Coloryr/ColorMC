@@ -12,6 +12,7 @@ using ColorMC.Core.Objs.ColorMC;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -143,14 +144,6 @@ public partial class FileItemModel : SelectItemModel
     private bool _isMarkdown;
 
     /// <summary>
-    /// 文件类型
-    /// </summary>
-    public FileType FileType;
-    /// <summary>
-    /// 下载源
-    /// </summary>
-    public SourceType SourceType;
-    /// <summary>
     /// 网址
     /// </summary>
     public string Url;
@@ -162,29 +155,27 @@ public partial class FileItemModel : SelectItemModel
     /// 图标地址
     /// </summary>
     public string? Logo;
-    /// <summary>
-    /// 文件ID
-    /// </summary>
-    public string ID;
-
-    /// <summary>
-    /// 项目ID
-    /// </summary>
-    public string Pid;
 
     /// <summary>
     /// 是否已经关闭
     /// </summary>
     private bool _close;
 
+    public readonly SourceItemObj Obj;
+
     public FileItemModel(CurseForgeListObj.CurseForgeListDataObj data, FileType type, McModSearchItemObj? mcmod)
     {
         HaveMcmod = mcmod != null;
 
         McMod = mcmod;
-        Pid = data.Id.ToString();
 
-        ID = data.Id.ToString();
+        Obj = new SourceItemObj
+        { 
+            Pid = data.Id.ToString(),
+            Fid = data.Id.ToString(),
+            Type = type,
+            Source = SourceType.CurseForge
+        };
         Name = mcmod?.McmodName ?? data.Name;
         SummaryOld = Markdown.ToHtml(data.Summary, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         Summary = mcmod?.McmodText ?? data.Summary;
@@ -213,17 +204,17 @@ public partial class FileItemModel : SelectItemModel
         DownloadCount = UIUtils.MakeDownload(data.DownloadCount);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.Logo?.Url;
-        FileType = type;
-        SourceType = SourceType.CurseForge;
+        
+        
         Url = data.GetUrl();
 
         HaveDownload = true;
-        IsModPack = type == FileType.ModPack;
+        IsModPack = type == FileType.Modpack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.Modpack;
         if (ShowStar)
         {
-            IsStar = CollectUtils.IsCollect(SourceType, data.Id.ToString());
+            IsStar = CollectUtils.IsCollect(Obj);
         }
     }
 
@@ -281,9 +272,15 @@ public partial class FileItemModel : SelectItemModel
         HaveMcmod = mcmod != null;
 
         McMod = mcmod;
-        Pid = data.ProjectId;
 
-        ID = data.ProjectId;
+        Obj = new SourceItemObj
+        {
+            Fid = data.ProjectId,
+            Pid = data.ProjectId,
+            Type = type,
+            Source = SourceType.Modrinth
+        };
+
         Name = mcmod?.McmodName ?? data.Title;
         Summary = mcmod?.McmodText ?? data.Description;
         McModHtml = mcmod?.McmodHtml ?? Summary;
@@ -304,26 +301,31 @@ public partial class FileItemModel : SelectItemModel
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.IconUrl;
-        FileType = type;
-        SourceType = SourceType.Modrinth;
+        
         Url = data.GetUrl(type);
 
         HaveDownload = true;
-        IsModPack = type == FileType.ModPack;
+        IsModPack = type == FileType.Modpack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.Modpack;
         if (ShowStar)
         {
-            IsStar = CollectUtils.IsCollect(SourceType, data.ProjectId);
+            IsStar = CollectUtils.IsCollect(Obj);
         }
     }
 
     public FileItemModel(ModrinthProjectObj data, FileType type, McModSearchItemObj? mcmod)
     {
         McMod = mcmod;
-        Pid = data.Id;
 
-        ID = data.Id;
+        Obj = new SourceItemObj
+        {
+            Fid = data.Id,
+            Pid = data.Id,
+            Source = SourceType.Modrinth,
+            Type = type
+        };
+
         Name = data.Title;
         Summary = data.Description;
         McModHtml = mcmod?.McmodHtml ?? mcmod?.McmodText ?? data.Description;
@@ -331,17 +333,15 @@ public partial class FileItemModel : SelectItemModel
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.Updated);
         Logo = data.IconUrl;
-        FileType = type;
-        SourceType = SourceType.Modrinth;
         Url = data.GetUrl(type);
 
         HaveDownload = true;
-        IsModPack = type == FileType.ModPack;
+        IsModPack = type == FileType.Modpack;
 
-        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.ModPack;
+        ShowStar = type is FileType.Mod or FileType.Shaderpack or FileType.Resourcepack or FileType.Modpack;
         if (ShowStar)
         {
-            IsStar = CollectUtils.IsCollect(SourceType, data.Id);
+            IsStar = CollectUtils.IsCollect(Obj);
         }
     }
 
@@ -355,12 +355,19 @@ public partial class FileItemModel : SelectItemModel
         SummaryOld = data.McmodText;
         McModHtml = data.McmodHtml ?? data.McmodText ?? "";
         Authors.Add(new AuthorModel(data.McmodAuthor, null));
-        FileType = FileType.Mod;
-        SourceType = SourceType.McMod;
+
+        Obj = new SourceItemObj
+        {
+            Fid = data.McmodId.ToString(),
+            Pid = data.McmodId.ToString(),
+            Type = FileType.Mod,
+            Source = SourceType.McMod
+        };
+
         ModifiedDate = data.McmodUpdateTime;
 
         HaveDownload = data.CurseforgeId != null || data.ModrinthId != null;
-        IsModPack = type == FileType.ModPack;
+        IsModPack = type == FileType.Modpack;
     }
 
     partial void OnIsStarChanged(bool value)

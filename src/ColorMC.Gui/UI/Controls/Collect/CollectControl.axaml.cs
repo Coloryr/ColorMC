@@ -25,26 +25,6 @@ public partial class CollectControl : BaseUserControl
 
     protected override ControlModel GenModel(WindowModel model)
     {
-        var model1 = new CollectModel(model);
-        model1.PropertyChanged += Model1_PropertyChanged;
-        return model1;
-    }
-
-    private void Model1_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (sender is CollectModel model &&
-            e.PropertyName == nameof(CollectModel.IsDownload))
-        {
-            if (model.IsDownload == true)
-            {
-                ThemeManager.CrossFade.Start(null, DownloadDisplay);
-                ThemeManager.CrossFade.Start(ItemsView, null);
-            }
-            else
-            {
-                ThemeManager.CrossFade.Start(DownloadDisplay, null);
-                ThemeManager.CrossFade.Start(null, ItemsView);
-            }
-        }
+        return new CollectModel(model);
     }
 }

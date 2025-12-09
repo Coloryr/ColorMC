@@ -43,7 +43,7 @@ public static class ChunkMca
         //跳过文件头
         stream.Seek(8192, SeekOrigin.Begin);
         int now = 8192;
-        int time = FuntionUtils.GetTime();
+        int time = FunctionUtils.GetTime();
 
         //写数据
         foreach (var item in data.Nbt.Cast<ChunkNbt>())

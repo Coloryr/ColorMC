@@ -16,11 +16,8 @@
         BoxShadow="{Binding Border}"
         CornerRadius="5">
         <DockPanel Margin="15">
-            <CheckBox
-                Content="{setting:Localize AddResourceWindow.Text11}"
-                IsChecked="{Binding Download}"
-                IsEnabled="{Binding !IsDisable}" />
-            <DockPanel Margin="15,0,0,0">
+            <CheckBox IsChecked="{Binding Download}" IsEnabled="{Binding !IsDisable}" />
+            <DockPanel Margin="10,0,0,0">
                 <TextBlock
                     Margin="0,0,0,5"
                     DockPanel.Dock="Top"

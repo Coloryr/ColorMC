@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Objs.Config;
 
@@ -112,7 +115,8 @@ public record ServerCustomSetting
     /// <summary>
     /// 游戏实例
     /// </summary>
-    public string? GameName { get; set; }
+    [JsonConverter(typeof(JsonStringGuidConverter))]
+    public Guid GameName { get; set; }
 
     /// <summary>
     /// 是否启用自定义UI
@@ -407,7 +411,8 @@ public record GuiConfigObj
     /// <summary>
     /// 上一次启动的游戏实例
     /// </summary>
-    public string LastLaunch { get; set; }
+    [JsonConverter(typeof(JsonStringGuidConverter))]
+    public Guid LastLaunch { get; set; }
     /// <summary>
     /// 头像展示设置
     /// </summary>

@@ -129,31 +129,31 @@ public static class WindowManager
     /// <summary>
     /// 游戏实例编辑窗口
     /// </summary>
-    public static Dictionary<string, GameEditControl> GameEditWindows { get; } = [];
+    public static Dictionary<Guid, GameEditControl> GameEditWindows { get; } = [];
     /// <summary>
     /// 游戏实例配置修改窗口
     /// </summary>
-    public static Dictionary<string, GameConfigEditControl> GameConfigEditWindows { get; } = [];
+    public static Dictionary<GameKeyObj, GameConfigEditControl> GameConfigEditWindows { get; } = [];
     /// <summary>
     /// 游戏实例添加资源窗口
     /// </summary>
-    public static Dictionary<string, AddResourceControl> GameAddWindows { get; } = [];
+    public static Dictionary<Guid, AddResourceControl> GameAddWindows { get; } = [];
     /// <summary>
     /// 游戏实例生成服务器整合包窗口
     /// </summary>
-    public static Dictionary<string, ServerPackControl> ServerPackWindows { get; } = [];
+    public static Dictionary<Guid, ServerPackControl> ServerPackWindows { get; } = [];
     /// <summary>
     /// 游戏实例日志窗口
     /// </summary>
-    public static Dictionary<string, GameLogControl> GameLogWindows { get; } = [];
+    public static Dictionary<Guid, GameLogControl> GameLogWindows { get; } = [];
     /// <summary>
     /// 游戏实例导出窗口
     /// </summary>
-    public static Dictionary<string, GameExportControl> GameExportWindows { get; } = [];
+    public static Dictionary<Guid, GameExportControl> GameExportWindows { get; } = [];
     /// <summary>
     /// 游戏实例云存档窗口
     /// </summary>
-    public static Dictionary<string, GameCloudControl> GameCloudWindows { get; } = [];
+    public static Dictionary<Guid, GameCloudControl> GameCloudWindows { get; } = [];
 
     /// <summary>
     /// 窗口透明选项
@@ -688,7 +688,7 @@ public static class WindowManager
                     con.GoFile(SourceType.Modrinth, data.Id);
                 }
             }
-            else if (data?.ProjectType == "modpack")
+            else if (data?.ProjectType == "Modpack")
             {
                 if (AddModPackWindow != null)
                 {
@@ -839,14 +839,15 @@ public static class WindowManager
     /// <param name="obj">游戏实例</param>
     public static void ShowConfigEdit(GameSettingObj obj)
     {
-        if (GameConfigEditWindows.TryGetValue(obj.UUID, out var win1))
+        var key = new GameKeyObj(obj.UUID, null);
+        if (GameConfigEditWindows.TryGetValue(key, out var win1))
         {
             win1.Window?.WindowActivate();
         }
         else
         {
             var con = new GameConfigEditControl(obj);
-            GameConfigEditWindows.Add(obj.UUID, con);
+            GameConfigEditWindows.Add(key, con);
             AWindow(con);
         }
     }
@@ -857,7 +858,7 @@ public static class WindowManager
     /// <param name="obj">存档</param>
     public static void ShowConfigEdit(SaveObj obj)
     {
-        string key = obj.Game.UUID + ":" + obj.Local;
+        var key = new GameKeyObj(obj.Game.UUID, obj.Local);
         if (GameConfigEditWindows.TryGetValue(key, out var win1))
         {
             win1.Window?.WindowActivate();
@@ -877,8 +878,7 @@ public static class WindowManager
     /// <param name="world">是否为保存</param>
     public static void ShowGameCloud(GameSettingObj obj, bool world = false)
     {
-        string key = obj.UUID;
-        if (GameCloudWindows.TryGetValue(key, out var win1))
+        if (GameCloudWindows.TryGetValue(obj.UUID, out var win1))
         {
             win1.Window?.WindowActivate();
             if (world)
@@ -889,7 +889,7 @@ public static class WindowManager
         else
         {
             var con = new GameCloudControl(obj);
-            GameCloudWindows.Add(key, con);
+            GameCloudWindows.Add(obj.UUID, con);
             AWindow(con);
             if (world)
             {

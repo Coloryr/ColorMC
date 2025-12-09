@@ -55,7 +55,7 @@ public static class LaunchSocketUtils
     /// </summary>
     private static readonly List<IChannel> _channels = [];
 
-    private static readonly Dictionary<string, IChannel> _gameChannels = [];
+    private static readonly Dictionary<Guid, IChannel> _gameChannels = [];
 
     /// <summary>
     /// 获取所有正在使用的端口
@@ -354,9 +354,10 @@ public static class LaunchSocketUtils
                     //游戏内鼠标
                     if (type == TypeGameMouseState)
                     {
-                        string uuid = buffer.ReadString();
+                        var uuid = buffer.ReadString();
+                        var guid = Guid.Parse(uuid);
                         var value = buffer.ReadBoolean();
-                        GameJoystick.SetMouse(uuid, value);
+                        GameJoystick.SetMouse(guid, value);
                     }
                     //前台启动器
                     else if (type == TypeLaunchShow)
@@ -375,10 +376,11 @@ public static class LaunchSocketUtils
                     //游戏实例绑定
                     else if (type == TypeGameChannel)
                     {
-                        string uuid = buffer.ReadString();
-                        _gameChannels[uuid] = context.Channel;
+                        var uuid = buffer.ReadString();
+                        var guid = Guid.Parse(uuid);
+                        _gameChannels[guid] = context.Channel;
 
-                        GameManager.GameConnect(uuid);
+                        GameManager.GameConnect(guid);
                     }
                     else if (type == TypeGameWindowSize)
                     {

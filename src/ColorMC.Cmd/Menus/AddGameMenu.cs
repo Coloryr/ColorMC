@@ -123,7 +123,7 @@ public static class AddGameMenu
 
         Game.Loader = Loaders.Normal;
         Game.LoaderVersion = null;
-        Game.ModPack = false;
+        Game.Modpack = false;
 
         Game = await InstancesPath.CreateGame(Game);
 
@@ -182,7 +182,7 @@ public static class AddGameMenu
 
         Game.Loader = Loaders.Fabric;
         Game.LoaderVersion = fabric;
-        Game.ModPack = false;
+        Game.Modpack = false;
 
         if (Game == null)
         {
@@ -251,7 +251,7 @@ public static class AddGameMenu
 
         Game.Loader = Loaders.Forge;
         Game.LoaderVersion = forge;
-        Game.ModPack = false;
+        Game.Modpack = false;
 
         if (Game == null)
         {

@@ -45,22 +45,32 @@ public partial class AddResourceControlModel
             var list1 = new List<FileItemDownloadModel>();
             foreach (var item in list)
             {
-                var info = new FileItemDownloadModel(Window)
+                var info = new FileItemDownloadModel
                 {
+                    Window = Window,
                     Name = item.Item.Name,
-                    Type = FileType.Mod,
-                    Source = task.Source,
-                    Pid = item.Info.ModId
+                    Obj = new SourceItemObj
+                    { 
+                        Fid= item.Info.FileId,
+                        Pid = item.Info.ModId,
+                        Source = task.Source,
+                        Type = FileType.Mod
+                    }
                 };
                 StartDownload(info);
                 list1.Add(info);
             }
-            var info1 = new FileItemDownloadModel(Window)
+            var info1 = new FileItemDownloadModel
             {
+                Window = Window,
                 Name = LanguageUtils.Get("AddResourceWindow.Text37"),
-                Type = FileType.Mod,
-                Source = SourceType.ColorMC,
-                Pid = ""
+                Obj = new SourceItemObj
+                { 
+                    Fid = "",
+                    Pid = "",
+                    Type = FileType.Mod,
+                    Source = SourceType.ColorMC,
+                }
             };
             var pack = new ResourceGui(info1);
             var res = await WebBinding.DownloadModAsync(_obj, list, pack, info1.Token);
@@ -78,13 +88,18 @@ public partial class AddResourceControlModel
                                 .Select(item => item.Items[item.SelectVersion]);
 
             var mod = task.DownloadModList.First();
-            var info = new FileItemDownloadModel(Window)
+            var info = new FileItemDownloadModel
             {
+                Window = Window,
                 Name = mod.Name,
-                Type = FileType.Mod,
-                Source = task.Source,
-                Pid = task.Modsave.Info.ModId,
-                SubPid = [.. list.Select(item1 => item1.Info.ModId)]
+                Obj = new SourceItemObj
+                { 
+                    Fid = task.Modsave.Info.FileId,
+                    Pid = task.Modsave.Info.ModId,
+                    Source = task.Source,
+                    Type = FileType.Mod,
+                    SubPid = [.. list.Select(item1 => item1.Info.ModId)]
+                }
             };
 
             StartDownload(info);

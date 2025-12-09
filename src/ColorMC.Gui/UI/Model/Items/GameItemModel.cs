@@ -130,7 +130,7 @@ public partial class GameItemModel : GameModel
     /// <summary>
     /// UUID
     /// </summary>
-    public string UUID => Obj.UUID;
+    public Guid UUID => Obj.UUID;
 
     /// <summary>
     /// 图标
@@ -183,7 +183,7 @@ public partial class GameItemModel : GameModel
         EventManager.GameNameChange += EventManager_GameNameChange;
     }
 
-    private void EventManager_GameNameChange(object? sender, string uuid)
+    private void EventManager_GameNameChange(object? sender, Guid uuid)
     {
         if (uuid != Obj.UUID)
         {
@@ -399,7 +399,7 @@ public partial class GameItemModel : GameModel
             return;
         }
         var dragData = new DataTransfer();
-        dragData.Add(DataTransferItem.Create(BaseBinding.DrapType, Obj.UUID));
+        dragData.Add(DataTransferItem.Create(BaseBinding.DrapType, Obj.UUID.ToString()));
         IsDrop = true;
         var files = new List<IStorageFolder>();
         if (top == null)
@@ -553,7 +553,7 @@ public partial class GameItemModel : GameModel
         _top?.ExportCmd(Obj);
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
+    private void EventManager_GameIconChange(object? sender, Guid uuid)
     {
         if (uuid != UUID)
         {

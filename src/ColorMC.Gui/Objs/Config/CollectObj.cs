@@ -49,12 +49,12 @@ public record CollectObj
     /// <summary>
     /// 收藏分组列表
     /// </summary>
-    public Dictionary<string, List<string>> Groups { get; set; }
+    public Dictionary<string, HashSet<string>> Groups { get; set; }
 
     /// <summary>
     /// 显示整合包
     /// </summary>
-    public bool ModPack { get; set; }
+    public bool Modpack { get; set; }
     /// <summary>
     /// 显示模组
     /// </summary>

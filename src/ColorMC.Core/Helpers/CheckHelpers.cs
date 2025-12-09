@@ -377,7 +377,7 @@ public static partial class CheckHelpers
         }
 
         //检查整合包mod
-        if (obj.ModPack && ConfigLoad.Config.GameCheck?.CheckMod == true)
+        if (obj.Modpack && ConfigLoad.Config.GameCheck?.CheckMod == true)
         {
             list1.Add(Task.Run(() =>
             {

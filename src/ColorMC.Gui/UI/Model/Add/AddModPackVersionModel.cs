@@ -3,6 +3,8 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -19,8 +21,8 @@ public partial class AddModPackControlModel
     {
         SetSelect(item);
         var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
-        var res = await WebBinding.GetFileListAsync(item.SourceType,
-               item.Pid, 0, null, Loaders.Normal);
+        var res = await WebBinding.GetFileListAsync(item.Obj.Source,
+               item.Obj.Pid, 0, null, Loaders.Normal);
         Window.CloseDialog(dialog);
         if (res == null || res.List == null || res.List.Count == 0)
         {
@@ -56,14 +58,20 @@ public partial class AddModPackControlModel
         if (data.SourceType == SourceType.CurseForge)
         {
             var data1 = (data.Data as CurseForgeModObj.CurseForgeDataObj)!;
-            var info = new FileItemDownloadModel(Window)
+            var info = new FileItemDownloadModel
             {
+                Window = Window,
                 Name = data1.DisplayName,
-                Source = data.SourceType,
-                Pid = data1.Id.ToString(),
-                Type = FileType.ModPack
+                Obj = new SourceItemObj
+                {
+                    Source = data.SourceType,
+                    Pid = data1.ModId.ToString(),
+                    Fid = data1.Id.ToString(),
+                    Type = FileType.Modpack
+                }
             };
             StartDownload(info);
+            GameManager.StartDownload(info.Obj);
             var gui = new OverGameGui(Window);
             var pack = new ModPackGui(info);
             var res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack, info.Token);
@@ -86,12 +94,17 @@ public partial class AddModPackControlModel
         else if (data.SourceType == SourceType.Modrinth)
         {
             var data1 = (data.Data as ModrinthVersionObj)!;
-            var info = new FileItemDownloadModel(Window)
+            var info = new FileItemDownloadModel
             {
+                Window = Window,
                 Name = data1.Name,
-                Source = data.SourceType,
-                Pid = data1.Id,
-                Type = FileType.ModPack
+                Obj = new SourceItemObj
+                {
+                    Source = data.SourceType,
+                    Pid = data1.ProjectId,
+                    Fid = data1.Id,
+                    Type = FileType.Modpack
+                }
             };
             StartDownload(info);
             var pack = new ModPackGui(info);

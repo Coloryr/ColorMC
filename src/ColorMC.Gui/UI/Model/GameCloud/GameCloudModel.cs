@@ -74,7 +74,7 @@ public partial class GameCloudModel : MenuModel
     /// <summary>
     /// 游戏实例UUID
     /// </summary>
-    public string UUID => Obj.UUID;
+    public string UUID => Obj.UUID.ToString();
 
     private readonly string _useName;
 

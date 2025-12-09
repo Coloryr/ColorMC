@@ -39,7 +39,7 @@ public static class UserBinding
             var user = new LoginObj()
             {
                 UserName = input1!,
-                ClientToken = FuntionUtils.NewUUID(),
+                ClientToken = FunctionUtils.NewUUID(),
                 UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
                 AuthType = AuthType.Offline
             };

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -206,7 +207,7 @@ public partial class AddGameModel : ControlModel
     /// <summary>
     /// 添加完成
     /// </summary>
-    private async void Done(string? uuid)
+    private async void Done(Guid uuid)
     {
         Name = "";
         Group = "";
@@ -313,8 +314,11 @@ public partial class AddGameModel : ControlModel
             return;
         }
 
-        WindowManager.ShowGameCloud(InstancesPath.GetGame(obj.UUID!)!);
-        Done(res3.Data);
+        WindowManager.ShowGameCloud(InstancesPath.GetGame(obj.UUID)!);
+        if (Guid.TryParse(res3.Data!, out var guid))
+        {
+            Done(guid);
+        }
     }
 
     /// <summary>
@@ -355,7 +359,10 @@ public partial class AddGameModel : ControlModel
         }
         else
         {
-            Done(res1.Data!);
+            if (Guid.TryParse(res1.Data!, out var guid))
+            {
+                Done(guid);
+            }
         }
     }
 }

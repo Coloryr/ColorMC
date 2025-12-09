@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Core.Objs;
 
@@ -112,7 +113,8 @@ public record CustomLoader
 /// </summary>
 public partial record GameSettingObj
 {
-    public string UUID { get; set; }
+    [JsonConverter(typeof(JsonStringGuidConverter))]
+    public Guid UUID { get; set; }
     /// <summary>
     /// 游戏名
     /// </summary>
@@ -168,7 +170,7 @@ public partial record GameSettingObj
     /// <summary>
     /// 是否为整合包
     /// </summary>
-    public bool ModPack { get; set; }
+    public bool Modpack { get; set; }
     /// <summary>
     /// 整合包类型
     /// </summary>

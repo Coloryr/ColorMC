@@ -87,7 +87,7 @@ public static class ImageManager
     /// <summary>
     /// 游戏实例图标
     /// </summary>
-    private static readonly Dictionary<string, Bitmap> s_gameIcons = [];
+    private static readonly Dictionary<Guid, Bitmap> s_gameIcons = [];
     /// <summary>
     /// 角色皮肤
     /// </summary>
@@ -429,7 +429,7 @@ public static class ImageManager
 
         OnPicUpdate();
         ThemeManager.Init();
-        FuntionUtils.RunGC();
+        FunctionUtils.RunGC();
     }
 
     /// <summary>

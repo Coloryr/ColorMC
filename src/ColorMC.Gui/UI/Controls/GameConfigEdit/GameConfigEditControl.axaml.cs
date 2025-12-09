@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -76,7 +77,7 @@ public partial class GameConfigEditControl : BaseUserControl
         //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
     }
 
-    private void EventManager_GameDelete(object? sender, string uuid)
+    private void EventManager_GameDelete(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -86,7 +87,7 @@ public partial class GameConfigEditControl : BaseUserControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, string uuid)
+    private void EventManager_GameNameChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -105,7 +106,7 @@ public partial class GameConfigEditControl : BaseUserControl
         }
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
+    private void EventManager_GameIconChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -180,15 +181,15 @@ public partial class GameConfigEditControl : BaseUserControl
 
     public override void Closed()
     {
-        string key;
+        GameKeyObj key;
         var model = (DataContext as GameConfigEditModel)!;
         if (model.World != null)
         {
-            key = model.World.Game.UUID + ":" + model.World.Local;
+            key = new GameKeyObj(model.World.Game.UUID, model.World.Local);
         }
         else
         {
-            key = model.Obj.UUID;
+            key = new GameKeyObj(model.Obj.UUID, null);
         }
 
         EventManager.GameIconChange -= EventManager_GameIconChange;

@@ -20,9 +20,9 @@ public static class GameCountUtils
     private static bool s_isSave;
     private static bool s_isRun;
 
-    private static readonly object s_lock = new();
-    private static readonly Dictionary<string, DateTime> s_timeList = [];
-    private static readonly Dictionary<string, TimeSpan> s_spanTimeList = [];
+    private static readonly Lock s_lock = new();
+    private static readonly Dictionary<Guid, DateTime> s_timeList = [];
+    private static readonly Dictionary<Guid, TimeSpan> s_spanTimeList = [];
 
     /// <summary>
     /// 统计数据
@@ -86,6 +86,7 @@ public static class GameCountUtils
                 foreach (var item in list.Cast<NbtCompound>())
                 {
                     var key = item.TryGet<NbtString>("Key")!.Value;
+                    var uuid = Guid.Parse(key);
                     var list1 = item.TryGet<NbtList>("List");
                     var list2 = new List<CountObj.GameTime>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
@@ -98,13 +99,14 @@ public static class GameCountUtils
                             StopTime = new DateTime(stop)
                         });
                     }
-                    Count.GameRuns.Add(key, list2);
+                    Count.GameRuns.Add(uuid, list2);
                 }
 
                 list = nbt.TryGet<NbtList>("LaunchLogs")!;
                 foreach (var item in list.Cast<NbtCompound>())
                 {
                     var key = item.TryGet<NbtString>("Key")!.Value;
+                    var uuid = Guid.Parse(key);
                     var list1 = item.TryGet<NbtList>("List");
                     var list2 = new List<CountObj.LaunchLog>();
                     foreach (var item1 in list1!.Cast<NbtCompound>())
@@ -117,7 +119,7 @@ public static class GameCountUtils
                             Error = error == 1
                         });
                     }
-                    Count.LaunchLogs.Add(key, list2);
+                    Count.LaunchLogs.Add(uuid, list2);
                 }
             }
         }
@@ -146,7 +148,7 @@ public static class GameCountUtils
         {
             Thread.Sleep(100);
 
-            foreach (var item in new Dictionary<string, DateTime>(s_timeList))
+            foreach (var item in new Dictionary<Guid, DateTime>(s_timeList))
             {
                 var game = InstancesPath.GetGame(item.Key);
                 if (game == null)
@@ -216,7 +218,7 @@ public static class GameCountUtils
         {
             var com = new NbtCompound()
             {
-                { "Key", new NbtString() { Value = item.Key } },
+                { "Key", new NbtString() { Value = item.Key.ToString() } },
             };
             var list1 = new NbtList() { InNbtType = NbtType.NbtCompound };
             foreach (var item1 in item.Value)
@@ -237,7 +239,7 @@ public static class GameCountUtils
         {
             var com = new NbtCompound()
             {
-                { "Key", new NbtString(){ Value = item.Key } },
+                { "Key", new NbtString(){ Value = item.Key.ToString() } },
             };
             var list1 = new NbtList() { InNbtType = NbtType.NbtCompound };
             foreach (var item1 in item.Value)
@@ -330,7 +332,7 @@ public static class GameCountUtils
     /// 启动失败
     /// </summary>
     /// <param name="game">游戏实例</param>
-    public static void LaunchError(string uuid)
+    public static void LaunchError(Guid uuid)
     {
         if (Count == null)
         {

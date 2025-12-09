@@ -122,7 +122,7 @@ public partial class GameEditModel
     /// 是否为整合包
     /// </summary>
     [ObservableProperty]
-    private bool _modPack;
+    private bool _modpack;
     /// <summary>
     /// 游戏是否在运行中
     /// </summary>
@@ -360,14 +360,14 @@ public partial class GameEditModel
     /// 整合包修改
     /// </summary>
     /// <param name="value"></param>
-    partial void OnModPackChanged(bool value)
+    partial void OnModpackChanged(bool value)
     {
         if (_gameLoad)
         {
             return;
         }
 
-        _obj.ModPack = value;
+        _obj.Modpack = value;
         _obj.Save();
     }
     /// <summary>
@@ -1006,7 +1006,7 @@ public partial class GameEditModel
         {
             LoaderVersion = new(_obj.LoaderVersion);
         }
-        ModPack = _obj.ModPack;
+        Modpack = _obj.Modpack;
         GameVersion = _obj.Version;
 
         GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);

@@ -128,7 +128,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
             GroupName = group,
             Name = name,
             Version = GameVersion,
-            ModPack = true,
+            Modpack = true,
             Loader = Loader,
             ModPackType = SourceType.CurseForge,
             LoaderVersion = LoaderVersion
@@ -156,7 +156,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
             {
                 return false;
             }
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 Packgui?.SetNowSub(index, size);

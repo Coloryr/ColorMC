@@ -125,7 +125,7 @@ public static class Launch
             stopwatch.Reset();
             stopwatch.Start();
 
-            var ok = await DownloadManager.StartAsync([.. res]);
+            var ok = await DownloadManager.StartAsync([.. res], token: token);
             if (!ok)
             {
                 throw new LaunchException(LaunchError.DownloadFileError);
@@ -331,7 +331,7 @@ public static class Launch
     /// <param name="cancels">取消Token</param>
     /// <returns>启动结果</returns>
     public static async Task<Dictionary<GameSettingObj, GameLaunchRes>>
-        StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, Dictionary<string, CancellationToken> cancels)
+        StartGameAsync(this ICollection<GameSettingObj> objs, GameLaunchArg larg, Dictionary<Guid, CancellationToken> cancels)
     {
         //清理存在的实例日志
         foreach (var item in objs)

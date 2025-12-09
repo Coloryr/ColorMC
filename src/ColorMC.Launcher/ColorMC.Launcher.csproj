@@ -23,11 +23,11 @@
 
 	<ItemGroup>
 		<None Remove=".gitignore" />
-		<None Remove="Resources\MiSans-Regular.ttf" />
+		<None Remove="Resources\SourceHanSansSC-Regular.otf" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\MiSans-Regular.ttf" />
+	  <EmbeddedResource Include="Resources\SourceHanSansSC-Regular.otf" />
 	</ItemGroup>
 	
 	<ItemGroup>

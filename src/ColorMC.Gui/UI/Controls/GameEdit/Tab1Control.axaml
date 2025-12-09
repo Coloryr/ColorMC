@@ -281,7 +281,7 @@
                         <CheckBox
                             Margin="0,0,5,0"
                             Content="{setting:Localize GameEditWindow.Tab1.Text3}"
-                            IsChecked="{Binding ModPack}" />
+                            IsChecked="{Binding Modpack}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -290,7 +290,7 @@
                             Classes="top"
                             Command="{Binding CheckModPackUpdate}"
                             Content="{setting:Localize Text.CheckUpdate}"
-                            IsEnabled="{Binding ModPack}"
+                            IsEnabled="{Binding Modpack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}" />
                     </WrapPanel>
                     <WrapPanel>
@@ -298,7 +298,7 @@
                             <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />
                             <TextBox
                                 HorizontalAlignment="Stretch"
-                                IsEnabled="{Binding ModPack}"
+                                IsEnabled="{Binding Modpack}"
                                 Text="{Binding PID}"
                                 Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         </DockPanel>
@@ -308,7 +308,7 @@
                             <TextBlock Width="100" Text="{setting:Localize GameEditWindow.Tab1.Text9}" />
                             <TextBox
                                 HorizontalAlignment="Stretch"
-                                IsEnabled="{Binding ModPack}"
+                                IsEnabled="{Binding Modpack}"
                                 Text="{Binding FID}"
                                 Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
                         </DockPanel>

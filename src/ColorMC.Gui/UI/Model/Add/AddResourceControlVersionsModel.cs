@@ -64,13 +64,13 @@ public partial class AddResourceControlModel
         }
         else if (type == SourceType.CurseForge)
         {
-            loadid = item.Pid;
+            loadid = item.Obj.Pid;
             loadtype = SourceType.CurseForge;
 
         }
         else if (type == SourceType.Modrinth)
         {
-            loadid = item.Pid;
+            loadid = item.Obj.Pid;
             loadtype = SourceType.Modrinth;
         }
 
@@ -157,12 +157,17 @@ public partial class AddResourceControlModel
                 FileItemDownloadModel? info = null;
                 if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                 {
-                    info = new FileItemDownloadModel(Window)
+                    info = new FileItemDownloadModel
                     {
+                        Window = Window,
                         Name = data1.DisplayName,
-                        Type = FileType.DataPacks,
-                        Source = data.SourceType,
-                        Pid = data1.ModId.ToString()
+                        Obj = new SourceItemObj
+                        { 
+                            Fid = data1.Id.ToString(),
+                            Pid = data1.ModId.ToString(),
+                            Type = FileType.DataPacks,
+                            Source = data.SourceType
+                        }
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);
@@ -171,12 +176,17 @@ public partial class AddResourceControlModel
                 }
                 else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                 {
-                    info = new FileItemDownloadModel(Window)
+                    info = new FileItemDownloadModel
                     {
+                        Window = Window,
                         Name = data2.Name,
+                        Obj = new SourceItemObj
+                        { 
+                            Fid = data2.Id,
                         Type = FileType.DataPacks,
-                        Source = data.SourceType,
-                        Pid = data2.ProjectId
+                            Source = data.SourceType,
+                            Pid = data2.ProjectId
+                        }
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);
@@ -209,12 +219,17 @@ public partial class AddResourceControlModel
 
                 if (list.List!.Count == 0)
                 {
-                    var info = new FileItemDownloadModel(Window)
+                    var info = new FileItemDownloadModel
                     {
+                        Window = Window,
                         Name = list.Info.Name,
-                        Type = FileType.Mod,
-                        Source = data.SourceType,
-                        Pid = list.Info.ModId
+                        Obj = new SourceItemObj
+                        { 
+                            Fid = list.Info.FileId,
+                            Type = FileType.Mod,
+                            Source = data.SourceType,
+                            Pid = list.Info.ModId
+                        }
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);

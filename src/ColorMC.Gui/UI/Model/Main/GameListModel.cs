@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -30,7 +31,7 @@ public partial class MainModel
     /// <summary>
     /// 启动项目列表
     /// </summary>
-    private readonly Dictionary<string, GameItemModel> Launchs = [];
+    private readonly Dictionary<Guid, GameItemModel> Launchs = [];
 
     /// <summary>
     /// 用于
@@ -359,11 +360,11 @@ public partial class MainModel
 
         GameItemModel? last = null;
 
-        if (config?.LockGame == true)
+        if (config.LockGame)
         {
             GameGroups.Clear();
             IsFirst = true;
-            var game = InstancesPath.GetGame(config?.GameName);
+            var game = InstancesPath.GetGame(config.GameName);
             if (game == null)
             {
                 IsGameError = true;
@@ -495,9 +496,9 @@ public partial class MainModel
     /// 选择项目
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
-    public void Select(string? uuid)
+    public void Select(Guid? uuid)
     {
-        if (uuid == null)
+        if (uuid == null || uuid == Guid.Empty)
         {
             Select(obj: null);
         }
@@ -531,7 +532,7 @@ public partial class MainModel
     /// 游戏退出
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
-    public void GameClose(string uuid)
+    public void GameClose(Guid uuid)
     {
         if (Launchs.Remove(uuid, out var con))
         {
@@ -657,7 +658,7 @@ public partial class MainModel
     /// 启动游戏实例
     /// </summary>
     /// <param name="list">游戏实例列表</param>
-    public void Launch(ICollection<string> list)
+    public void Launch(ICollection<Guid> list)
     {
         var list1 = new List<GameItemModel>();
         foreach (var item in list)
@@ -678,9 +679,9 @@ public partial class MainModel
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
     /// <returns>游戏实例显示模型</returns>
-    public GameItemModel? GetGame(string? uuid)
+    public GameItemModel? GetGame(Guid uuid)
     {
-        if (uuid == null)
+        if (uuid == Guid.Empty)
         {
             return null;
         }

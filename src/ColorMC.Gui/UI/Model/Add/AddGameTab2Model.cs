@@ -83,7 +83,7 @@ public partial class AddGameModel
         {
             return;
         }
-        var file = await PathBinding.SelectFileAsync(top, FileType.ModPack);
+        var file = await PathBinding.SelectFileAsync(top, FileType.Modpack);
         if (file.Path != null)
         {
             ZipLocal = file.Path;

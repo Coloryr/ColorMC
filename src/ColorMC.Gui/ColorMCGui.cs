@@ -79,7 +79,7 @@ public static class ColorMCGui
     /// <summary>
     /// 默认字体
     /// </summary>
-    public const string Font = "resm:ColorMC.Launcher.Resources.MiSans-Regular.ttf?assembly=ColorMC.Launcher#MiSans";
+    public const string Font = "resm:ColorMC.Launcher.Resources.SourceHanSansSC-Regular.otf?assembly=ColorMC.Launcher#Source Han Sans SC";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -87,6 +87,7 @@ public static class ColorMCGui
     [STAThread]
     public static void Main(string[] args)
     {
+        //SDL运行库查找
         ((DefaultPathResolver)PathResolver.Default).Resolvers.Add(file =>
             AppContext.GetData("NATIVE_DLL_SEARCH_DIRECTORIES") is string nativeDllSearchDirectories
                 ? nativeDllSearchDirectories.Split(";").Select(directory => Path.Combine(directory, file))

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -43,7 +44,7 @@ public partial class GameEditControl : MenuControl
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, string uuid)
+    private void EventManager_GameDelete(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -53,7 +54,7 @@ public partial class GameEditControl : MenuControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, string uuid)
+    private void EventManager_GameNameChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -63,7 +64,7 @@ public partial class GameEditControl : MenuControl
         Title = string.Format(LanguageUtils.Get("GameEditWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
+    private void EventManager_GameIconChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

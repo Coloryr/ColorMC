@@ -256,7 +256,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", obj.UUID);
+            requ.Headers.Add("uuid", obj.UUID.ToString());
 
             using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -303,7 +303,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", obj.UUID);
+            requ.Headers.Add("uuid", obj.UUID.ToString());
             requ.Headers.Add("name", obj.Name);
 
             using var res = await ColorMCAPI.SendAsync(requ);
@@ -342,7 +342,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", obj.UUID);
+            requ.Headers.Add("uuid", obj.UUID.ToString());
 
             using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -380,7 +380,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", obj.UUID);
+            requ.Headers.Add("uuid", obj.UUID.ToString());
             using var stream = PathHelper.OpenRead(path)!;
             requ.Content = new StreamContent(stream);
 
@@ -420,7 +420,7 @@ public static class ColorMCCloudAPI
     /// <param name="uuid">游戏实例UUID</param>
     /// <param name="local">压缩包位置</param>
     /// <returns></returns>
-    public static async Task<int> DownloadConfigAsync(string uuid, string local)
+    public static async Task<int> DownloadConfigAsync(Guid uuid, string local)
     {
         try
         {
@@ -429,7 +429,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", uuid);
+            requ.Headers.Add("uuid", uuid.ToString());
 
             using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -564,7 +564,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("uuid", game.UUID.ToString());
 
             using var res = await ColorMCAPI.SendAsync(requ);
             if (res.IsSuccessStatusCode)
@@ -614,7 +614,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("uuid", game.UUID.ToString());
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
             using var stream = PathHelper.OpenRead(local)!;
             requ.Content = new StreamContent(stream);
@@ -658,7 +658,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("uuid", game.UUID.ToString());
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.LevelName));
 
             using var res = await ColorMCAPI.SendAsync(requ);
@@ -708,7 +708,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("uuid", game.UUID.ToString());
             requ.Headers.Add("name", UrlEncoder.Default.Encode(world.Name));
             requ.Content = new StringContent(JsonUtils.ToString(list, JsonGuiType.DictionaryStringString));
 
@@ -755,7 +755,7 @@ public static class ColorMCCloudAPI
             requ.Headers.Add("ColorMC", ColorMCCore.Version);
             requ.Headers.Add("serverkey", Serverkey);
             requ.Headers.Add("clientkey", Clientkey);
-            requ.Headers.Add("uuid", game.UUID);
+            requ.Headers.Add("uuid", game.UUID.ToString());
             requ.Headers.Add("name", UrlEncoder.Default.Encode(name));
 
             using var res = await ColorMCAPI.SendAsync(requ);

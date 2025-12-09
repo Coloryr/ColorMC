@@ -455,7 +455,7 @@ public static class TestItem
 
     public static void Item20()
     {
-        var game = InstancesPath.GetGame("test");
+        var game = InstancesPath.GetGameByName("test");
 
         var list = game!.GetSchematicsAsync();
     }

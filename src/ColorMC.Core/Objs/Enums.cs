@@ -114,7 +114,7 @@ public enum PathType
 /// </summary>
 public enum FileType
 {
-    ModPack, Mod, Save, Shaderpack, Resourcepack, DataPacks, Schematic,
+    Modpack, Mod, Save, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, Optifine, Skin, Music,
     Text, GameIcon, Head, JavaZip, Loader, InputConfig,
     User, Cmd, Icon, StartIcon, File

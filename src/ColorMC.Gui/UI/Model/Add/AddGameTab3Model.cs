@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -208,7 +209,7 @@ public partial class AddGameModel
 
         if (ok)
         {
-            Done(null);
+            Done(Guid.Empty);
         }
         else
         {

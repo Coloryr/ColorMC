@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using ColorMC.Core.Objs;
@@ -15,6 +16,42 @@ using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Objs.ServerPack;
 
 namespace ColorMC.Core.Utils;
+
+public class JsonStringGuidConverter : JsonConverter<Guid>
+{
+    public override Guid Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.String)
+        {
+            var stringValue = reader.GetString();
+            // 尝试解析标准格式
+            if (Guid.TryParse(stringValue, out Guid guid))
+            {
+                return guid;
+            }
+            // 处理无连字符的格式（32位十六进制）
+            if (stringValue != null && stringValue.Length == 32 &&
+                Guid.TryParseExact(stringValue, "N", out guid))
+            {
+                return guid;
+            }
+            // 处理带括号的格式
+            if (stringValue != null && stringValue.StartsWith('{')
+                && stringValue.EndsWith('}') &&
+                Guid.TryParseExact(stringValue, "B", out guid))
+            {
+                return guid;
+            }
+        }
+
+        return Guid.Empty;
+    }
+
+    public override void Write(Utf8JsonWriter writer, Guid value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value.ToString());
+    }
+}
 
 [JsonSourceGenerationOptions(WriteIndented = true)]
 [JsonSerializable(typeof(ConfigObj))]

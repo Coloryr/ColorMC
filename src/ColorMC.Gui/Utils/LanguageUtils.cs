@@ -381,7 +381,7 @@ public static class LanguageUtils
     {
         return type switch
         {
-            FileType.ModPack => Get("Type.FileType.ModPack"),
+            FileType.Modpack => Get("Type.FileType.Modpack"),
             FileType.Mod => Get("Type.FileType.Mod"),
             FileType.Save => Get("Type.FileType.World"),
             FileType.Shaderpack => Get("Type.FileType.Shaderpack"),

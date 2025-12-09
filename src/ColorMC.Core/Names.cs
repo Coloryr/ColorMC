@@ -32,7 +32,7 @@ public static class Names
 
     public const string NameModInfoFile = "modfileinfo.json";
     public const string NameGameFile = "game.json";
-    public const string NameModPackFile = "modpack.json";
+    public const string NameModPackFile = "Modpack.json";
     public const string NameConfigFile = "config.json";
     public const string NameShaFile = "sha1";
     public const string NameColorMcInfoFile = "colormc.info.json";

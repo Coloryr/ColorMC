@@ -31,7 +31,7 @@ public static class PathBinding
     private static readonly string[] EXE = ["*.exe"];
     private static readonly string[] ZIP = ["*.zip", "*.tar.xz", "*.tar.gz"];
     private static readonly string[] JSON = ["*.json"];
-    private static readonly string[] MODPACK = ["*.zip", "*.mrpack"];
+    private static readonly string[] Modpack = ["*.zip", "*.mrpack"];
     private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
     private static readonly string[] AUDIO = ["*.mp3", "*.wav", "*.flac"];
     private static readonly string[] HEADFILE = ["*.png"];
@@ -492,10 +492,10 @@ public static class PathBinding
                     JSON,
                     LanguageUtils.Get("App.Select.Text25"));
                 break;
-            case FileType.ModPack:
+            case FileType.Modpack:
                 res = await SelectFileAsync(top,
                     LanguageUtils.Get("AddGameWindow.Tab2.Text3"),
-                    MODPACK,
+                    Modpack,
                     LanguageUtils.Get("App.Select.Text4"));
                 break;
             case FileType.Pic:

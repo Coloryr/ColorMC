@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -34,7 +35,7 @@ public partial class GameCloudControl : MenuControl
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, string uuid)
+    private void EventManager_GameDelete(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -44,7 +45,7 @@ public partial class GameCloudControl : MenuControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, string uuid)
+    private void EventManager_GameNameChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -54,7 +55,7 @@ public partial class GameCloudControl : MenuControl
         Title = string.Format(LanguageUtils.Get("GameCloudWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
+    private void EventManager_GameIconChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

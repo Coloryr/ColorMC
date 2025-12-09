@@ -23,7 +23,7 @@ public static class GameCloudUtils
     /// <summary>
     /// 云同步储存
     /// </summary>
-    private static Dictionary<string, CloudDataObj> s_datas;
+    private static Dictionary<Guid, CloudDataObj> s_datas;
     /// <summary>
     /// 云同步配置文件
     /// </summary>
@@ -45,9 +45,13 @@ public static class GameCloudUtils
                 var obj = JsonUtils.ToObj(stream, JsonGuiType.DictionaryStringCloudDataObj);
                 if (obj != null)
                 {
-                    s_datas = obj;
+                    s_datas = [];
+                    foreach (var item in obj)
+                    {
+                        s_datas.Add(Guid.Parse(item.Key), item.Value);
+                    }
                     var games = InstancesPath.Games;
-                    foreach (var item in new List<string>(s_datas.Keys))
+                    foreach (var item in new List<Guid>(s_datas.Keys))
                     {
                         if (games.Any(a => a.UUID == item))
                         {
@@ -86,7 +90,13 @@ public static class GameCloudUtils
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGameCloudFile, s_file, s_datas, JsonGuiType.DictionaryStringCloudDataObj));
+        var list = new Dictionary<string, CloudDataObj>();
+        foreach (var item in s_datas)
+        {
+            list.Add(item.Key.ToString(), item.Value);
+        }
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGameCloudFile, 
+            s_file, list, JsonGuiType.DictionaryStringCloudDataObj));
     }
 
     /// <summary>

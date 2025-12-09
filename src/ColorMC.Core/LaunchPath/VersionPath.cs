@@ -23,7 +23,7 @@ public static class VersionPath
     private static readonly Dictionary<string, ForgeLaunchObj> s_neoForgeLaunchs = [];
     private static readonly Dictionary<string, FabricLoaderObj> s_fabricLoaders = [];
     private static readonly Dictionary<string, QuiltLoaderObj> s_quiltLoaders = [];
-    private static readonly Dictionary<string, CustomLoaderObj> s_customLoader = [];
+    private static readonly Dictionary<Guid, CustomLoaderObj> s_customLoader = [];
     private static readonly Dictionary<string, OptifineObj> s_optifineLoader = [];
 
     private static VersionObj? _version;
@@ -309,7 +309,7 @@ public static class VersionPath
     /// </summary>
     /// <param name="obj"></param>
     /// <param name="uuid"></param>
-    public static void AddGame(CustomLoaderObj obj, string uuid)
+    public static void AddGame(CustomLoaderObj obj, Guid uuid)
     {
         if (!s_customLoader.TryAdd(uuid, obj))
         {

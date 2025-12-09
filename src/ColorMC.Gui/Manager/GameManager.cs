@@ -10,7 +10,9 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
@@ -23,34 +25,110 @@ public static class GameManager
     /// <summary>
     /// 正在运行的游戏实例
     /// </summary>
-    public static readonly HashSet<string> RunGames = [];
+    public static readonly HashSet<Guid> RunGames = [];
 
     /// <summary>
     /// 正在下载资源的游戏实例
     /// </summary>
-    public static readonly HashSet<string> AddRunGames = [];
+    public static readonly HashSet<Guid> AddRunGames = [];
 
     /// <summary>
     /// 界面设置
     /// </summary>
-    private readonly static Dictionary<string, GameGuiSettingObj> s_datas = [];
+    private readonly static Dictionary<Guid, GameGuiSettingObj> s_datas = [];
 
     /// <summary>
     /// 游戏是否链接到ColorMC
     /// </summary>
-    private readonly static Dictionary<string, bool> s_gameConnect = [];
+    private readonly static Dictionary<Guid, bool> s_gameConnect = [];
 
     /// <summary>
     /// 游戏实例启动取消操作
     /// </summary>
-    private readonly static Dictionary<string, CancellationTokenSource> s_gameCancel = [];
+    private readonly static Dictionary<Guid, CancellationTokenSource> s_gameCancel = [];
+
+    /// <summary>
+    /// 正在安装的整合包
+    /// </summary>
+    private readonly static List<SourceItemObj> s_installModpack = [];
+    /// <summary>
+    /// 正在安装资源的游戏实例
+    /// </summary>
+    private readonly static Dictionary<Guid, List<FileItemDownloadModel>> s_gameDownload = [];
+
+    public static void StartDownload(Guid game, FileItemDownloadModel download)
+    {
+        if (s_gameDownload.TryGetValue(game, out var list))
+        {
+            list.Add(download);
+        }
+        else
+        {
+            s_gameDownload[game] = [download];
+        }
+    }
+
+    public static void StopDownload(Guid game, FileItemDownloadModel download) 
+    {
+        if (s_gameDownload.TryGetValue(game, out var list))
+        {
+            list.Remove(download);
+        }
+    }
+
+    /// <summary>
+    /// 开始下载整合包
+    /// </summary>
+    /// <param name="obj"></param>
+    public static void StartDownload(SourceItemObj obj)
+    {
+        foreach (var item in s_installModpack)
+        {
+            if (item.Type == obj.Type && item.Source == obj.Source)
+            {
+                if (item.Pid == obj.Pid)
+                {
+                    return;
+                }
+            }
+        }
+
+        s_installModpack.Add(obj);
+    }
+
+    /// <summary>
+    /// 检查整合包是否在下载
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool TestDowload(SourceItemObj obj) 
+    {
+        //foreach (var item in s_installModpack)
+        //{
+        //    if (item.FileType == info.Type && item.SourceType == info.Source)
+        //    {
+        //        if (item.ID == info.Pid)
+        //        {
+        //            item.NowDownload = false;
+        //            item.IsDownload = done;
+        //        }
+        //        else if (info.SubPid != null && info.SubPid.Contains(item.ID))
+        //        {
+        //            item.NowDownload = false;
+        //            item.NowDownload = done;
+        //        }
+        //    }
+        //}
+
+        return false;
+    }
 
     /// <summary>
     /// 设置ColorMCASM链接状态
     /// </summary>
     /// <param name="uuid">游戏实例</param>
     /// <param name="connect">是否链接</param>
-    public static void SetConnect(string uuid, bool connect)
+    public static void SetConnect(Guid uuid, bool connect)
     {
         s_gameConnect[uuid] = connect;
     }
@@ -60,7 +138,7 @@ public static class GameManager
     /// 锁定该游戏实例无法删除
     /// </summary>
     /// <param name="uuid">游戏实例</param>
-    public static void StartAdd(string uuid)
+    public static void StartAdd(Guid uuid)
     {
         AddRunGames.Add(uuid);
     }
@@ -69,7 +147,7 @@ public static class GameManager
     /// 游戏实例结束添加资源
     /// </summary>
     /// <param name="uuid">游戏实例</param>
-    public static void StopAdd(string uuid)
+    public static void StopAdd(Guid uuid)
     {
         AddRunGames.Remove(uuid);
     }
@@ -347,7 +425,7 @@ public static class GameManager
     /// 游戏进程已通过netty连接启动器
     /// </summary>
     /// <param name="uuid">游戏实例</param>
-    public static void GameConnect(string uuid)
+    public static void GameConnect(Guid uuid)
     {
         s_gameConnect[uuid] = true;
     }
@@ -357,7 +435,7 @@ public static class GameManager
     /// </summary>
     /// <param name="uuid">游戏实例</param>
     /// <returns></returns>
-    public static bool IsConnect(string uuid)
+    public static bool IsConnect(Guid uuid)
     {
         if (s_gameConnect.TryGetValue(uuid, out var value))
         {
