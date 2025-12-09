@@ -50,7 +50,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 上次游玩时间
     /// </summary>
-    public string Time => FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString();
+    public string Time => FunctionUtils.MillisecondsToDataTime(World.LastPlayed).ToString();
     /// <summary>
     /// 存档位置
     /// </summary>

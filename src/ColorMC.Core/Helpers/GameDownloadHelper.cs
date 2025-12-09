@@ -395,7 +395,7 @@ public static class GameDownloadHelper
             if (item1.Url != null)
             {
                 isadd = true;
-                string file = FuntionUtils.VersionNameToPath(item1.Name);
+                string file = FunctionUtils.VersionNameToPath(item1.Name);
                 string url = item1.Url + file;
                 list.Add(new()
                 {
@@ -448,7 +448,7 @@ public static class GameDownloadHelper
                 string file = item1.Downloads.Artifact.Path;
                 if (string.IsNullOrEmpty(item1.Downloads.Artifact.Path))
                 {
-                    file = FuntionUtils.VersionNameToPath(item1.Name);
+                    file = FunctionUtils.VersionNameToPath(item1.Name);
                 }
 
                 list.Add(new()
@@ -499,7 +499,7 @@ public static class GameDownloadHelper
                     string file = lib.Path;
                     if (string.IsNullOrEmpty(lib.Path))
                     {
-                        file = FuntionUtils.VersionNameToPath(item1.Name + "-native" + SystemInfo.Os);
+                        file = FunctionUtils.VersionNameToPath(item1.Name + "-native" + SystemInfo.Os);
                     }
 
                     var obj1 = new FileItemObj()
@@ -537,7 +537,7 @@ public static class GameDownloadHelper
                     var dir = game.GetGameLibPath();
                     if (Directory.Exists(dir))
                     {
-                        var file = Path.Combine(dir, FuntionUtils.VersionNameToFile(item1.Name));
+                        var file = Path.Combine(dir, FunctionUtils.VersionNameToFile(item1.Name));
                         list.Add(new()
                         {
                             Name = item1.Name,
@@ -748,7 +748,7 @@ public static class GameDownloadHelper
                 }
                 else if (!string.IsNullOrWhiteSpace(item2.Url))
                 {
-                    var path = FuntionUtils.VersionNameToPath(item2.Name);
+                    var path = FunctionUtils.VersionNameToPath(item2.Name);
                     info.Libraries.Add(new()
                     {
                         Name = item2.Name,
@@ -828,7 +828,7 @@ public static class GameDownloadHelper
 
         foreach (var item in data.Meta.Libraries)
         {
-            var name = FuntionUtils.VersionNameToPath(item.Name);
+            var name = FunctionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,
@@ -892,7 +892,7 @@ public static class GameDownloadHelper
 
         foreach (var item in res.Meta.Libraries)
         {
-            var name = FuntionUtils.VersionNameToPath(item.Name);
+            var name = FunctionUtils.VersionNameToPath(item.Name);
             list.Add(new()
             {
                 Url = UrlHelper.DownloadQuilt(item.Url, CoreHttpClient.Source) + name,

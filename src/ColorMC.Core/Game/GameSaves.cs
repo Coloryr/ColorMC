@@ -74,7 +74,7 @@ public static class GameSaves
                 var find = false;
                 foreach (var e in zFile.Entries)
                 {
-                    if (!FuntionUtils.IsFile(e))
+                    if (!FunctionUtils.IsFile(e))
                     {
                         continue;
                     }
@@ -93,7 +93,7 @@ public static class GameSaves
 
                 foreach (var e in zFile.Entries)
                 {
-                    if (!FuntionUtils.IsFile(e))
+                    if (!FunctionUtils.IsFile(e))
                     {
                         continue;
                     }

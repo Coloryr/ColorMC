@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Objs.ColorMC;
 
@@ -26,7 +28,8 @@ public record CloundListObj
     /// <summary>
     /// 游戏实例UUID
     /// </summary>
-    public string UUID { get; set; }
+    [JsonConverter(typeof(JsonStringGuidConverter))]
+    public Guid UUID { get; set; }
     /// <summary>
     /// 游戏实例名字
     /// </summary>

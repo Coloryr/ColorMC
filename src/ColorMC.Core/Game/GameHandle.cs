@@ -18,7 +18,7 @@ public class GameHandle
     /// <summary>
     /// 游戏实例UUID
     /// </summary>
-    public string UUID => _game.UUID;
+    public Guid UUID => _game.UUID;
     /// <summary>
     /// 进程是否已经退出
     /// </summary>

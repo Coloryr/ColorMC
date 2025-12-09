@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -23,7 +24,7 @@ public class GameJoystick
     /// <summary>
     /// 现有的游戏手柄操作储存
     /// </summary>
-    public static readonly Dictionary<string, GameJoystick> NowGameJoystick = [];
+    public static readonly Dictionary<Guid, GameJoystick> NowGameJoystick = [];
 
     /// <summary>
     /// 底层操作接口
@@ -71,7 +72,7 @@ public class GameJoystick
     /// </summary>
     /// <param name="uuid">游戏UUID</param>
     /// <param name="show">是否显示鼠标指针</param>
-    public static void SetMouse(string uuid, bool show)
+    public static void SetMouse(Guid uuid, bool show)
     {
         if (NowGameJoystick.TryGetValue(uuid, out var value))
         {

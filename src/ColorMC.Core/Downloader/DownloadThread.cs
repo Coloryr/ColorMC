@@ -370,7 +370,7 @@ internal class DownloadThread
             //是否正在断点续传
             bool isKeep = false;
             //创建临时文件
-            var file = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+            var file = Path.Combine(DownloadManager.DownloadDir, FunctionUtils.NewUUID());
             for (; ; )
             {
                 byte[]? buffer = null;

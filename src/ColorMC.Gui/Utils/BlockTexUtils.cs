@@ -268,7 +268,7 @@ public static class BlockTexUtils
         using var reader = ZipArchive.Open(stream);
         foreach (var item in reader.Entries)
         {
-            if (!FuntionUtils.IsFile(item))
+            if (!FunctionUtils.IsFile(item))
             {
                 continue;
             }

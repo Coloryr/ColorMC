@@ -11,7 +11,7 @@ namespace ColorMC.Core.Net.Apis;
 /// </summary>
 public static class ModrinthAPI
 {
-    public const string ClassModPack = "modpack";
+    public const string ClassModPack = "Modpack";
     public const string ClassMod = "mod";
     public const string ClassResourcepack = "resourcepack";
     public const string ClassShaderpack = "shader";

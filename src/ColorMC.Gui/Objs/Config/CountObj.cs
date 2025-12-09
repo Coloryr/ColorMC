@@ -47,13 +47,13 @@ public record CountObj
     /// 键为游戏UUID
     /// 值为所有游戏运行统计
     /// </summary>
-    public Dictionary<string, List<GameTime>> GameRuns { get; set; }
+    public Dictionary<Guid, List<GameTime>> GameRuns { get; set; }
     /// <summary>
     /// 游戏启动统计列表
     /// 键为游戏UUID
     /// 值为所有游戏启动统计
     /// </summary>
-    public Dictionary<string, List<LaunchLog>> LaunchLogs { get; set; }
+    public Dictionary<Guid, List<LaunchLog>> LaunchLogs { get; set; }
 
     /// <summary>
     /// 所有运行时间

@@ -49,7 +49,7 @@ public static class InstancesPath
     /// <summary>
     /// 游戏实例列表
     /// </summary>
-    private static readonly Dictionary<string, GameSettingObj> s_installGames = [];
+    private static readonly Dictionary<Guid, GameSettingObj> s_installGames = [];
     /// <summary>
     /// 游戏实例组
     /// </summary>
@@ -61,12 +61,13 @@ public static class InstancesPath
     /// <param name="obj">游戏实例</param>
     private static void AddToGroup(this GameSettingObj obj)
     {
-        while (string.IsNullOrWhiteSpace(obj.UUID)
+        while (obj.UUID == Guid.Empty
             || s_installGames.ContainsKey(obj.UUID))
         {
-            obj.UUID = FuntionUtils.NewUUID();
-            obj.Save();
+            obj.UUID = Guid.NewGuid();
         }
+
+        obj.Save();
         s_installGames.Add(obj.UUID, obj);
 
         if (string.IsNullOrWhiteSpace(obj.GroupName))
@@ -257,11 +258,12 @@ public static class InstancesPath
     /// </summary>
     /// <param name="uuid">实例UUID</param>
     /// <returns>游戏实例</returns>
-    public static GameSettingObj? GetGame(string? uuid)
+    public static GameSettingObj? GetGame(Guid uuid)
     {
-        if (string.IsNullOrWhiteSpace(uuid))
+        if (uuid == Guid.Empty)
+        {
             return null;
-
+        }
         if (s_installGames.TryGetValue(uuid, out var item))
         {
             return item;
@@ -742,7 +744,7 @@ public static class InstancesPath
             GroupName = obj.GroupName,
             DirName = obj.DirName,
             Version = obj.Version,
-            ModPack = obj.ModPack,
+            Modpack = obj.Modpack,
             Loader = obj.Loader,
             LoaderVersion = obj.LoaderVersion,
             JvmArg = obj.JvmArg?.Copy(),
@@ -892,7 +894,7 @@ public static class InstancesPath
             return;
         }
 
-        if (obj.ModPack || !delete)
+        if (obj.Modpack || !delete)
         {
             return;
         }

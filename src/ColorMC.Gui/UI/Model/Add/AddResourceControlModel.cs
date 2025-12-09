@@ -6,6 +6,7 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -259,7 +260,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             {
                 item.Add = this;
                 item.Window = Window;
-                TestFileItem(item);
+                item.NowDownload = GameManager.TestDowload(item.Obj);
                 DisplayList.Add(item);
             }
         }
@@ -289,11 +290,11 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 {
                     item.Add = this;
                     item.Window = Window;
-                    if (_obj.Mods.ContainsKey(item.ID))
+                    if (_obj.Mods.ContainsKey(item.Obj.Pid))
                     {
                         item.IsDownload = true;
                     }
-                    TestFileItem(item);
+                    item.NowDownload = GameManager.TestDowload(item.Obj);
                     DisplayList.Add(item);
                 }
             }
@@ -303,7 +304,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 {
                     item.Add = this;
                     item.Window = Window;
-                    TestFileItem(item);
+                    item.NowDownload = GameManager.TestDowload(item.Obj);
                     DisplayList.Add(item);
                 }
             }

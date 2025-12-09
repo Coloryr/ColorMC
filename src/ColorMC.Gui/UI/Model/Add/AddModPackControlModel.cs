@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -95,8 +96,8 @@ public partial class AddModPackControlModel : AddBaseModel
                     await CurseForgeHelper.GetGameVersionsAsync() :
                     await ModrinthHelper.GetGameVersionAsync();
                 var list1 = Source == 0 ?
-                    await CurseForgeHelper.GetCategoriesAsync(FileType.ModPack) :
-                    await ModrinthHelper.GetCategoriesAsync(FileType.ModPack);
+                    await CurseForgeHelper.GetCategoriesAsync(FileType.Modpack) :
+                    await ModrinthHelper.GetCategoriesAsync(FileType.Modpack);
                 Window.CloseDialog(dialog);
                 if (list == null || list1 == null)
                 {
@@ -137,7 +138,7 @@ public partial class AddModPackControlModel : AddBaseModel
     /// <summary>
     /// 添加完成
     /// </summary>
-    private async void Done(string? uuid)
+    private async void Done(Guid uuid)
     {
         Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
 
@@ -146,8 +147,7 @@ public partial class AddModPackControlModel : AddBaseModel
             return;
         }
 
-        var model = WindowManager.MainWindow?.DataContext as MainModel;
-        model?.Select(uuid);
+        (WindowManager.MainWindow?.DataContext as MainModel)?.Select(uuid);
 
         if (!HaveDownload)
         {
@@ -222,10 +222,10 @@ public partial class AddModPackControlModel : AddBaseModel
 
         foreach (var item in res.List)
         {
-            item.IsDownload = InstancesPath.Games.Any(item1 => item1.ModPack && item1.PID == item.Pid);
+            item.IsDownload = InstancesPath.Games.Any(item1 => item1.Modpack && item1.PID == item.Obj.Pid);
             item.Add = this;
             item.Window = Window;
-            TestFileItem(item);
+            item.NowDownload = GameManager.TestDowload(item.Obj);
             DisplayList.Add(item);
         }
 

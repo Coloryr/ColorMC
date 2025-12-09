@@ -191,7 +191,7 @@ public static class ModrinthHelper
                     {
                         FileType.Shaderpack => ModrinthAPI.ClassShaderpack,
                         FileType.Resourcepack => ModrinthAPI.ClassResourcepack,
-                        FileType.ModPack => ModrinthAPI.ClassModPack,
+                        FileType.Modpack => ModrinthAPI.ClassModPack,
                         _ => ModrinthAPI.ClassMod
                     }
                     && item2.Header == "categories"

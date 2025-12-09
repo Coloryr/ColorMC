@@ -171,7 +171,7 @@ public static class GameBinding
 
         //锁定账户
         UserManager.LockUser(user);
-        var cancels = new Dictionary<string, CancellationToken>();
+        var cancels = new Dictionary<Guid, CancellationToken>();
         foreach (var item in list)
         {
             GameManager.SetConnect(item.UUID, false);
@@ -207,7 +207,7 @@ public static class GameBinding
         });
 
         window.SubTitle = "";
-        FuntionUtils.RunGC();
+        FunctionUtils.RunGC();
 
         //if (s_launchCancel.IsCancellationRequested)
         //{
@@ -224,7 +224,7 @@ public static class GameBinding
             Media.PlayState = PlayState.Pause;
         }
 
-        var list1 = new Dictionary<string, GameLaunchOneRes>();
+        var list1 = new Dictionary<Guid, GameLaunchOneRes>();
         //逐一启动
         foreach (var item in res1)
         {
@@ -477,7 +477,7 @@ public static class GameBinding
         arg.Gui?.StateUpdate(obj, LaunchState.End);
 
         window.SubTitle = "";
-        FuntionUtils.RunGC();
+        FunctionUtils.RunGC();
 
         //是否取消启动
         if (cancel.IsCancellationRequested)
@@ -1499,12 +1499,12 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return new() { Data = LanguageUtils.Get("App.Text67") };
+                    return new StringRes { Data = LanguageUtils.Get("App.Text67") };
                 }
             }
         }
 
-        return new() { State = true, Data = game.UUID };
+        return new StringRes { State = true, Data = game.UUID.ToString() };
     }
 
     /// <summary>
@@ -1572,7 +1572,7 @@ public static class GameBinding
             {
                 game.GroupName = group;
             }
-            game.UUID = null!;
+            game.UUID = Guid.Empty;
             game.LaunchData = null!;
             game.ServerUrl = text;
             game.ModPackType = SourceType.ColorMC;
@@ -1599,7 +1599,7 @@ public static class GameBinding
 
             PathHelper.WriteText(game.GetServerPackFile(), data);
 
-            return new StringRes { State = true, Data = game.UUID };
+            return new StringRes { State = true, Data = game.UUID.ToString() };
         }
         catch (Exception e)
         {
@@ -1691,7 +1691,7 @@ public static class GameBinding
             info.AppendLine($"ColorMC:{ColorMCCore.Version}")
                 .AppendLine($"{LanguageUtils.Get("App.Text41")}:{obj.Name}")
                 .AppendLine($"{LanguageUtils.Get("Text.GameVersion")}:{obj.Version}");
-            if (obj.ModPack)
+            if (obj.Modpack)
             {
                 info.AppendLine(string.Format(LanguageUtils.Get("App.Text47"),
                     obj.ModPackType.GetName(), obj.PID, obj.FID));
@@ -2399,12 +2399,8 @@ public static class GameBinding
     /// 主页面选择游戏实例，并刷新实例图标
     /// </summary>
     /// <param name="uuid">游戏实例</param>
-    public static void SelectAndReloadGame(string? uuid)
+    public static void SelectAndReloadGame(Guid uuid)
     {
-        if (uuid == null)
-        {
-            return;
-        }
         if (WindowManager.MainWindow?.DataContext is MainModel model)
         {
             model.Select(uuid);

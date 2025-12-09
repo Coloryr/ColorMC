@@ -106,7 +106,7 @@ public static class GameAuth
     /// <returns>登录结果</returns>
     public static async Task<LoginObj> LoginNide8Async(string server, string user, string pass, CancellationToken token)
     {
-        var res1 = await Nide8.AuthenticateAsync(server, FuntionUtils.NewUUID(), user, pass, token);
+        var res1 = await Nide8.AuthenticateAsync(server, FunctionUtils.NewUUID(), user, pass, token);
 
         res1.Text2 = user;
         return res1;
@@ -132,7 +132,7 @@ public static class GameAuth
     /// <returns>登录结果</returns>
     public static async Task<LoginObj> LoginAuthlibInjectorAsync(string server, string user, string pass, ILoginGui select, CancellationToken token)
     {
-        var res1 = await AuthlibInjector.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server, select, token);
+        var res1 = await AuthlibInjector.AuthenticateAsync(FunctionUtils.NewUUID(), user, pass, server, select, token);
 
         res1.Auth!.Text2 = user;
         return res1.Auth;
@@ -160,7 +160,7 @@ public static class GameAuth
     /// <returns>登录结果</returns>
     public static async Task<LoginObj> LoginLittleSkinAsync(string user, string pass, ILoginGui select, CancellationToken token, string? server = null)
     {
-        var res1 = await LittleSkin.AuthenticateAsync(FuntionUtils.NewUUID(), user, pass, server, select, token);
+        var res1 = await LittleSkin.AuthenticateAsync(FunctionUtils.NewUUID(), user, pass, server, select, token);
 
         res1.Auth!.Text2 = user;
         return res1.Auth;

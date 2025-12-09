@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 
 namespace ColorMC.Gui.Objs.Config;
 
@@ -54,7 +57,8 @@ public record ServerOptConfigObj
 public record ServerLockConfigObj
 {
     public bool LockGame { get; set; }
-    public string? GameName { get; set; }
+    [JsonConverter(typeof(JsonStringGuidConverter))]
+    public Guid GameName { get; set; }
     public bool LockLogin { get; set; }
     public List<LockLoginSetting> LockLogins { get; set; }
 }

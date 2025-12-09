@@ -64,11 +64,11 @@ public static class ColorMCCore
     /// <summary>
     /// 游戏窗口句柄
     /// </summary>
-    private static readonly ConcurrentDictionary<string, GameHandle> s_games = [];
+    private static readonly ConcurrentDictionary<Guid, GameHandle> s_games = [];
     /// <summary>
     /// 游戏日志
     /// </summary>
-    private static readonly ConcurrentDictionary<string, GameRuntimeLog> s_gameLogs = [];
+    private static readonly ConcurrentDictionary<Guid, GameRuntimeLog> s_gameLogs = [];
 
     /// <summary>
     /// 初始化阶段1
@@ -114,7 +114,7 @@ public static class ColorMCCore
     /// 强制关闭游戏
     /// </summary>
     /// <param name="uuid"></param>
-    public static void KillGame(string uuid)
+    public static void KillGame(Guid uuid)
     {
         if (s_games.TryGetValue(uuid, out var handel))
         {
@@ -221,7 +221,7 @@ public static class ColorMCCore
     /// </summary>
     /// <param name="uuid"></param>
     /// <param name="handel"></param>
-    internal static void AddGameHandel(string uuid, GameHandle handel)
+    internal static void AddGameHandel(Guid uuid, GameHandle handel)
     {
         if (!s_games.TryAdd(uuid, handel))
         {

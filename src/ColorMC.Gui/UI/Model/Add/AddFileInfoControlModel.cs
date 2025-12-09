@@ -232,7 +232,7 @@ public partial class AddBaseModel : IAddFileControl
             item.Add = this;
             item.AddFile = this;
             var games = InstancesPath.Games;
-            if (games.Any(item1 => item1.ModPack && item1.ModPackType == type
+            if (games.Any(item1 => item1.Modpack && item1.ModPackType == type
             && item1.PID == item.ID && item1.FID == item.ID1))
             {
                 item.IsDownload = true;
@@ -266,6 +266,6 @@ public partial class AddBaseModel : IAddFileControl
 
     protected void LoadInfoVersion()
     {
-        LoadVersion(Last.SourceType, Last.ID);
+        LoadVersion(Last.Obj.Source, Last.Obj.Pid);
     }
 }

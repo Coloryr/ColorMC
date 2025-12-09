@@ -5,14 +5,14 @@ namespace ColorMC.Gui.Manager;
 
 public static class EventManager
 {
-    private static readonly List<EventHandler<string>> s_GameIconChange = [];
-    private static readonly List<EventHandler<string>> s_GameNameChange = [];
-    private static readonly List<EventHandler<string>> s_GameDelete = [];
+    private static readonly List<EventHandler<Guid>> s_GameIconChange = [];
+    private static readonly List<EventHandler<Guid>> s_GameNameChange = [];
+    private static readonly List<EventHandler<Guid>> s_GameDelete = [];
 
     /// <summary>
     /// 游戏实例图标修改
     /// </summary>
-    public static event EventHandler<string> GameIconChange
+    public static event EventHandler<Guid> GameIconChange
     {
         add
         {
@@ -27,7 +27,7 @@ public static class EventManager
     /// <summary>
     /// 游戏实例名字修改
     /// </summary>
-    public static event EventHandler<string> GameNameChange
+    public static event EventHandler<Guid> GameNameChange
     {
         add
         {
@@ -42,7 +42,7 @@ public static class EventManager
     /// <summary>
     /// 游戏实例删除
     /// </summary>
-    public static event EventHandler<string> GameDelete
+    public static event EventHandler<Guid> GameDelete
     {
         add
         {
@@ -54,7 +54,7 @@ public static class EventManager
         }
     }
 
-    public static void OnGameIconChange(string uuid)
+    public static void OnGameIconChange(Guid uuid)
     {
         foreach (var item in s_GameIconChange.ToArray())
         {
@@ -62,7 +62,7 @@ public static class EventManager
         }
     }
 
-    public static void OnGameNameChange(string uuid)
+    public static void OnGameNameChange(Guid uuid)
     {
         foreach (var item in s_GameNameChange.ToArray())
         {
@@ -70,7 +70,7 @@ public static class EventManager
         }
     }
 
-    public static void OnGameDelete(string uuid)
+    public static void OnGameDelete(Guid uuid)
     {
         foreach (var item in s_GameDelete.ToArray())
         {

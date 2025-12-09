@@ -66,8 +66,13 @@ public partial class MainModel
     public async Task Upgrade()
     {
 #if !DEBUG
-        var res = await Model.TextAsync(LanguageUtils.Get("App.Text35"), _updateStr);
-        if (res)
+        var dialog = new LongTextModel(Window.WindowId)
+        {
+            Text1 = LanguageUtils.Get("App.Text35"),
+            Text2 = _updateStr
+        };
+        var res = await Window.ShowDialogWait(dialog);
+        if (res is true)
         {
             if (_isNewUpdate)
             {
@@ -75,7 +80,7 @@ public partial class MainModel
             }
             else
             {
-                UpdateUtils.StartUpdate(Model);
+                UpdateUtils.StartUpdate(Window);
             }
         }
 #endif

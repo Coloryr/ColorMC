@@ -50,7 +50,7 @@ public partial class GameGroupModel : ControlModel
     /// <summary>
     /// 游戏项目列表
     /// </summary>
-    public readonly Dictionary<string, GameItemModel> Items = [];
+    public readonly Dictionary<Guid, GameItemModel> Items = [];
     /// <summary>
     /// 添加项目用
     /// </summary>
@@ -167,8 +167,12 @@ public partial class GameGroupModel : ControlModel
     /// <returns></returns>
     public bool DropIn(IDataTransfer data)
     {
-        return (data.TryGetValue(BaseBinding.DrapType)) is not { } c
-               || !Items.ContainsKey(c);
+        if (data.TryGetValue(BaseBinding.DrapType) is not { } c)
+        {
+            return false;
+        }
+        var uuid = Guid.Parse(c);
+        return !Items.ContainsKey(uuid);
     }
 
     /// <summary>
@@ -181,16 +185,14 @@ public partial class GameGroupModel : ControlModel
         {
             return;
         }
-
-        var game = Top.GetGame(c);
+        var uuid = Guid.Parse(c);
+        var game = Top.GetGame(uuid);
         if (game == null)
         {
             return;
         }
-
         game.IsDrop = false;
-
-        if (Items.ContainsKey(c))
+        if (Items.ContainsKey(uuid))
         {
             return;
         }
@@ -203,13 +205,13 @@ public partial class GameGroupModel : ControlModel
     /// </summary>
     /// <param name="uuid"></param>
     /// <returns></returns>
-    public GameItemModel? Find(string? uuid)
+    public GameItemModel? Find(Guid? uuid)
     {
-        if (string.IsNullOrWhiteSpace(uuid))
+        if (uuid is not { } guid)
         {
             return null;
         }
-        if (Items.TryGetValue(uuid, out var item))
+        if (Items.TryGetValue(guid, out var item))
         {
             Expander = true;
             return item;
@@ -224,7 +226,7 @@ public partial class GameGroupModel : ControlModel
     /// <param name="list"></param>
     public void SetItems(List<GameSettingObj> list)
     {
-        var remove = new List<string>();
+        var remove = new List<Guid>();
         var ins = new List<GameSettingObj>();
 
         foreach (var item in list)
@@ -326,7 +328,7 @@ public partial class GameGroupModel : ControlModel
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
     /// <returns></returns>
-    public bool Star(string uuid)
+    public bool Star(Guid uuid)
     {
         foreach (var item in GameList)
         {
@@ -347,7 +349,7 @@ public partial class GameGroupModel : ControlModel
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
     /// <returns></returns>
-    public bool UnStar(string uuid)
+    public bool UnStar(Guid uuid)
     {
         foreach (var item in GameList)
         {

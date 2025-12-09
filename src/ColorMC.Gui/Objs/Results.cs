@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ColorMC.Core.Objs;
@@ -58,7 +59,7 @@ public record GameLaunchListRes
     /// <summary>
     /// 错误列表
     /// </summary>
-    public Dictionary<string, GameLaunchOneRes> States;
+    public Dictionary<Guid, GameLaunchOneRes> States;
     /// <summary>
     /// 使用的账户
     /// </summary>

@@ -176,7 +176,7 @@ public static class LibrariesPath
         {
             if (item.Later == null)
             {
-                gameList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                gameList.AddOrUpdate(FunctionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }
         var output = new Dictionary<LibVersionObj, string>();
@@ -197,7 +197,7 @@ public static class LibrariesPath
         {
             if (item.Later == null)
             {
-                loaderList.AddOrUpdate(FuntionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
+                loaderList.AddOrUpdate(FunctionUtils.MakeVersionObj(item.Name), Path.GetFullPath(item.Local));
             }
         }
 

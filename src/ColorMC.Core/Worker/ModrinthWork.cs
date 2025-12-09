@@ -201,7 +201,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
             GroupName = group,
             Name = name,
             Version = GameVersion,
-            ModPack = true,
+            Modpack = true,
             ModPackType = SourceType.Modrinth,
             Loader = Loader,
             LoaderVersion = LoaderVersion
@@ -337,7 +337,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
             {
                 return false;
             }
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 Packgui?.SetNowSub(index, size);

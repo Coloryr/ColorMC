@@ -348,16 +348,10 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
 
         foreach (var item in DisplayList)
         {
-            if (item.FileType == info.Type && item.SourceType == info.Source)
+            if (info.Obj.CheckProject(item.Obj)
+                || info.Obj.CheckSubPid(item.Obj))
             {
-                if (item.ID == info.Pid)
-                {
-                    item.NowDownload = true;
-                }
-                else if (info.SubPid != null && info.SubPid.Contains(item.ID))
-                {
-                    item.NowDownload = true;
-                }
+                item.NowDownload = true;
             }
         }
 
@@ -375,18 +369,11 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
 
         foreach (var item in DisplayList)
         {
-            if (item.FileType == info.Type && item.SourceType == info.Source )
+            if (info.Obj.CheckProject(item.Obj)
+               || info.Obj.CheckSubPid(item.Obj))
             {
-                if (item.ID == info.Pid)
-                {
-                    item.NowDownload = false;
-                    item.IsDownload = done;
-                }
-                else if (info.SubPid != null && info.SubPid.Contains(item.ID))
-                {
-                    item.NowDownload = false;
-                    item.NowDownload = done;
-                }
+                item.NowDownload = false;
+                item.IsDownload = done;
             }
         }
 
@@ -401,8 +388,8 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     {
         foreach (var info in NowDownload)
         {
-            if (item.FileType == info.Type && item.SourceType == info.Source
-                && item.ID == info.Pid)
+            if (info.Obj.CheckProject(item.Obj)
+               || info.Obj.CheckSubPid(item.Obj))
             {
                 item.NowDownload = true;
             }

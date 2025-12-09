@@ -13,6 +13,7 @@
     <Style Selector="TextBlock">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
         <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Regular" />
     </Style>
 
 </Styles>

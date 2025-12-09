@@ -6,6 +6,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Collect;
 
@@ -182,7 +183,7 @@ public static class CollectUtils
         string uuid;
         do
         {
-            uuid = FuntionUtils.NewUUID();
+            uuid = FunctionUtils.NewUUID();
         } while (Collect.Items.Any(item => item.Key == uuid));
 
         return uuid;
@@ -203,7 +204,7 @@ public static class CollectUtils
         {
             Items = [],
             Groups = [],
-            ModPack = true,
+            Modpack = true,
             Mod = true,
             ResourcePack = true,
             Shaderpack = true
@@ -264,9 +265,9 @@ public static class CollectUtils
     /// <param name="mod"></param>
     /// <param name="resourcepack"></param>
     /// <param name="shaderpack"></param>
-    public static void Setting(bool modpack, bool mod, bool resourcepack, bool shaderpack)
+    public static void Setting(bool Modpack, bool mod, bool resourcepack, bool shaderpack)
     {
-        Collect.ModPack = modpack;
+        Collect.Modpack = Modpack;
         Collect.Mod = mod;
         Collect.ResourcePack = resourcepack;
         Collect.Shaderpack = shaderpack;
@@ -280,9 +281,11 @@ public static class CollectUtils
     /// <param name="type">下载源</param>
     /// <param name="pid">项目ID</param>
     /// <returns></returns>
-    public static bool IsCollect(SourceType type, string pid)
+    public static bool IsCollect(SourceItemObj obj)
     {
-        return Collect.Items.Values.Any(item => item.Source == type && item.Pid == pid);
+        return Collect.Items.Values.Any(item => item.Source == obj.Source 
+        && item.FileType == obj.Type 
+        && item.Pid == obj.Pid);
     }
 
     /// <summary>

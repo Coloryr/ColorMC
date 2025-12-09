@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
@@ -470,7 +471,7 @@ public static class ConfigBinding
     /// 设置上次启动的游戏实例
     /// </summary>
     /// <param name="uuid"></param>
-    public static void SetLastLaunch(string uuid)
+    public static void SetLastLaunch(Guid uuid)
     {
         GuiConfigUtils.Config.LastLaunch = uuid;
         GuiConfigUtils.Save();
@@ -480,7 +481,7 @@ public static class ConfigBinding
     /// 获取上次运行的游戏实例
     /// </summary>
     /// <returns></returns>
-    public static string? GetLastLaunch()
+    public static Guid GetLastLaunch()
     {
         return GuiConfigUtils.Config.LastLaunch;
     }
@@ -516,7 +517,7 @@ public static class ConfigBinding
     /// </summary>
     /// <param name="v1"></param>
     /// <param name="v2"></param>
-    public static void SetLockGame(bool v1, string? v2)
+    public static void SetLockGame(bool v1, Guid v2)
     {
         GuiConfigUtils.Config.ServerCustom ??= GuiConfigUtils.MakeServerCustomConfig();
         GuiConfigUtils.Config.ServerCustom.LockGame = v1;

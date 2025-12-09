@@ -280,9 +280,9 @@ public partial class MainControl : BaseUserControl
     /// 游戏实例退出
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
-    public void GameClose(string uuid)
+    public void GameClose(Guid uuid)
     {
-        (DataContext as MainModel)!.GameClose(uuid);
+        (DataContext as MainModel)?.GameClose(uuid);
     }
 
     /// <summary>

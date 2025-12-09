@@ -296,7 +296,7 @@ public static class GameHelper
         using var zFile = ZipArchive.Open(stream);
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 continue;
             }
@@ -917,7 +917,7 @@ public static class GameHelper
 
         foreach (var item in fabric.Libraries)
         {
-            var name = FuntionUtils.VersionNameToPath(item.Name);
+            var name = FunctionUtils.VersionNameToPath(item.Name);
             string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
             list.Add(new()
             {
@@ -947,7 +947,7 @@ public static class GameHelper
 
         foreach (var item in quilt.Libraries)
         {
-            var name = FuntionUtils.VersionNameToPath(item.Name);
+            var name = FunctionUtils.VersionNameToPath(item.Name);
             string file = Path.GetFullPath($"{LibrariesPath.BaseDir}/{name}");
 
             list.Add(new()

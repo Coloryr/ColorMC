@@ -157,6 +157,8 @@ public record StringRes : BaseRes
     public string? Data;
 }
 
+
+
 /// <summary>
 /// 二进制结果
 /// </summary>

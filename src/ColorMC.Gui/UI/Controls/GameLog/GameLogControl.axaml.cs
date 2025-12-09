@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -54,7 +55,7 @@ public partial class GameLogControl : BaseUserControl
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, string uuid)
+    private void EventManager_GameDelete(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -64,7 +65,7 @@ public partial class GameLogControl : BaseUserControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, string uuid)
+    private void EventManager_GameNameChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -74,7 +75,7 @@ public partial class GameLogControl : BaseUserControl
         Title = string.Format(LanguageUtils.Get("GameLogWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, string uuid)
+    private void EventManager_GameIconChange(object? sender, Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

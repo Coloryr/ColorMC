@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
@@ -23,7 +24,7 @@ public interface IMainTop
     /// 启动游戏实例
     /// </summary>
     /// <param name="list">游戏实例UUID列表</param>
-    void Launch(ICollection<string> list);
+    void Launch(ICollection<Guid> list);
     /// <summary>
     /// 选中一个游戏实例
     /// </summary>
@@ -48,7 +49,7 @@ public interface IMainTop
     /// </summary>
     /// <param name="uuid">游戏实例UUID</param>
     /// <returns>游戏实例</returns>
-    GameItemModel? GetGame(string uuid);
+    GameItemModel? GetGame(Guid uuid);
     /// <summary>
     /// 导出游戏实例启动参数
     /// </summary>

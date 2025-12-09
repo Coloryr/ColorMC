@@ -106,7 +106,7 @@ public static class JoystickConfig
     {
         return new()
         {
-            UUID = FuntionUtils.NewUUID(),
+            UUID = FunctionUtils.NewUUID(),
             Keys = new()
             {
                 { 0, new() { Key = Key.Q } },
@@ -153,7 +153,7 @@ public static class JoystickConfig
     /// <returns></returns>
     private static string GenUUID()
     {
-        return FuntionUtils.NewUUID()[..8];
+        return FunctionUtils.NewUUID()[..8];
     }
 
     /// <summary>

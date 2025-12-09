@@ -507,11 +507,8 @@ public static class GameArg
                 jvm.Add("-Dnide8auth.client=true");
                 break;
             case AuthType.AuthlibInjector:
-                var res = await CoreHttpClient.GetStringAsync(login.Text1);
-                if (res == null)
-                {
-                    throw new LaunchException(LaunchError.LoginCoreError);
-                }
+                var res = await CoreHttpClient.GetStringAsync(login.Text1) 
+                    ?? throw new LaunchException(LaunchError.LoginCoreError);
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res)}");
                 jvm.Add("-Dauthlibinjector.side=client");
@@ -633,7 +630,7 @@ public static class GameArg
             var dir2 = obj.GetBasePath();
             libraries.AddRange(list.Select(item1 => item1
                     .Replace(Names.NameArgGameName, obj.Name)
-                    .Replace(Names.NameArgGameUUID, obj.UUID)
+                    .Replace(Names.NameArgGameUUID, obj.UUID.ToString())
                     .Replace(Names.NameArgGameDir, dir1)
                     .Replace(Names.NameArgGameDir, dir2)
                     .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)
@@ -1005,7 +1002,7 @@ public static class GameArg
                         var file = lib.Downloads.Artifact.Path;
                         if (string.IsNullOrEmpty(file))
                         {
-                            file = FuntionUtils.VersionNameToPath(lib.Name);
+                            file = FunctionUtils.VersionNameToPath(lib.Name);
                         }
 
                         arg.GameJar = new FileItemObj
@@ -1082,7 +1079,7 @@ public static class GameArg
     public static string ReplaceArg(this GameSettingObj obj, string jvm, List<string> arg, string item)
     {
         return item.Replace(Names.NameArgGameName, obj.Name)
-            .Replace(Names.NameArgGameUUID, obj.UUID)
+            .Replace(Names.NameArgGameUUID, obj.UUID.ToString())
             .Replace(Names.NameArgGameDir, obj.GetGamePath())
             .Replace(Names.NameArgGameBaseDir, obj.GetBasePath())
             .Replace(Names.NameArgLauncherDir, ColorMCCore.BaseDir)

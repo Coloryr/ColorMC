@@ -232,7 +232,7 @@ public static class AddGameHelper
 
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 continue;
@@ -267,7 +267,7 @@ public static class AddGameHelper
         Dictionary<string, string>? mmc1 = null;
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 continue;
             }
@@ -329,7 +329,7 @@ public static class AddGameHelper
 
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 continue;
@@ -423,7 +423,7 @@ public static class AddGameHelper
 
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 continue;
@@ -482,7 +482,7 @@ public static class AddGameHelper
 
         foreach (var e in zFile.Entries)
         {
-            if (!FuntionUtils.IsFile(e))
+            if (!FunctionUtils.IsFile(e))
             {
                 index++;
                 continue;
@@ -557,7 +557,7 @@ public static class AddGameHelper
             //如果是http则下载
             if (file.StartsWith("http"))
             {
-                var file1 = Path.Combine(DownloadManager.DownloadDir, FuntionUtils.NewUUID());
+                var file1 = Path.Combine(DownloadManager.DownloadDir, FunctionUtils.NewUUID());
                 var res = await DownloadManager.StartAsync([new FileItemObj()
                 {
                     Url = file,
@@ -644,13 +644,22 @@ public static class AddGameHelper
     /// 下载并安装curseforge整合包
     /// </summary>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data,
+    public static Task<GameRes> InstallCurseForge(string? group, CurseForgeModObj.CurseForgeDataObj data,
+        string? icon, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
+    {
+        var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
+
+        return InstallCurseForge(group, item, data.ModId.ToString(), data.Id.ToString(), icon, gui, packgui, token);
+    }
+
+    /// <summary>
+    /// 下载并安装curseforge整合包
+    /// </summary>
+    /// <returns>导入结果</returns>
+    public static async Task<GameRes> InstallCurseForge(string? group, FileItemObj item, string modid, string fileid,
         string? icon, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
     {
         packgui?.SetState(AddState.DownloadPack);
-
-        var item = data.MakeDownloadObj(DownloadManager.DownloadDir);
-
         packgui?.SetSubText(item.Name);
         var res1 = await DownloadManager.StartAsync([item], packgui, token);
         packgui?.SetSubText(null);
@@ -662,8 +671,8 @@ public static class AddGameHelper
         var res2 = await InstallZip(null, group, item.Local, PackType.CurseForge, gui, packgui, token);
         if (res2.State && !token.IsCancellationRequested)
         {
-            res2.Game!.PID = data.ModId.ToString();
-            res2.Game.FID = data.Id.ToString();
+            res2.Game!.PID = modid;
+            res2.Game.FID = fileid;
             res2.Game.Save();
 
             if (icon != null)

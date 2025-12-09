@@ -22,7 +22,7 @@ public partial class WorldCloudModel : SelectItemModel
     /// <summary>
     /// 本地时间
     /// </summary>
-    public string Time => HaveLocal ? FuntionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
+    public string Time => HaveLocal ? FunctionUtils.MillisecondsToDataTime(World.LastPlayed).ToString()
         : LanguageUtils.Get("GameCloudWindow.Tab2.Text5");
     /// <summary>
     /// 云存档时间
