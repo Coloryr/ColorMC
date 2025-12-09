@@ -94,14 +94,23 @@ public static class GameManager
         }
 
         s_installModpack.Add(obj);
+
+        EventManager.OnModpackInstall(obj);
+    }
+
+    public static void StopDownload(SourceItemObj obj, bool res)
+    {
+        s_installModpack.Remove(obj);
+
+        EventManager.OnModpackStop(obj, res);
     }
 
     /// <summary>
-    /// 检查整合包是否在下载
+    /// 检查资源是否在下载
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool TestDowload(SourceItemObj obj) 
+    public static bool TestDowload(Guid game, SourceItemObj obj)
     {
         //foreach (var item in s_installModpack)
         //{
@@ -119,6 +128,24 @@ public static class GameManager
         //        }
         //    }
         //}
+
+        return false;
+    }
+
+    /// <summary>
+    /// 检查整合包是否在下载
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool TestDowload(SourceItemObj obj) 
+    {
+        foreach (var item in s_installModpack)
+        {
+            if (item.Source == obj.Source && item.Pid == obj.Pid)
+            {
+                return true;
+            }
+        }
 
         return false;
     }

@@ -65,7 +65,7 @@ public static class UserBinding
                 AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!, select, loginOAuth.Token),
                 AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token),
                 AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token, input3!),
-                _ => throw new Exception(LanguageUtils.Get("App.Text78"))
+                _ => throw new Exception(LangUtils.Get("App.Text78"))
             };
             if (loginOAuth.Token.IsCancellationRequested || res1 == null)
             {
@@ -74,7 +74,7 @@ public static class UserBinding
             if (string.IsNullOrWhiteSpace(res1.UUID))
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return new StringRes { Data = LanguageUtils.Get("App.Text79") };
+                return new StringRes { Data = LangUtils.Get("App.Text79") };
             }
             res1.Save();
             SetSelectUser(res1.UUID, res1.AuthType);
@@ -108,7 +108,7 @@ public static class UserBinding
             }
             else
             {
-                title = LanguageUtils.Get("App.Text104");
+                title = LangUtils.Get("App.Text104");
                 Logs.Error(title, e);
                 WindowManager.ShowError(title, e);
             }
@@ -159,7 +159,7 @@ public static class UserBinding
         var obj = AuthDatabase.Get(uuid, type);
         if (obj == null)
         {
-            return new StringRes() { Data = LanguageUtils.Get("App.Text105") };
+            return new StringRes() { Data = LangUtils.Get("App.Text105") };
         }
 
         try
@@ -194,7 +194,7 @@ public static class UserBinding
             }
             else
             {
-                title = LanguageUtils.Get("App.Text106");
+                title = LangUtils.Get("App.Text106");
                 Logs.Error(title, e);
                 WindowManager.ShowError(title, e);
             }
@@ -377,7 +377,7 @@ public static class UserBinding
             }
             else
             {
-                title = LanguageUtils.Get("App.Text104");
+                title = LangUtils.Get("App.Text104");
                 Logs.Error(title, e);
                 WindowManager.ShowError(title, e);
             }
@@ -404,7 +404,7 @@ public static class UserBinding
         var login = GetLastUser();
         if (login == null)
         {
-            return new GameLaunchUserRes { Message = LanguageUtils.Get("App.Text60") };
+            return new GameLaunchUserRes { Message = LangUtils.Get("App.Text60") };
         }
         if (login.AuthType == AuthType.Offline)
         {
@@ -412,19 +412,19 @@ public static class UserBinding
             if (!have)
             {
                 WebBinding.OpenWeb(WebType.Minecraft);
-                return new GameLaunchUserRes { Message = LanguageUtils.Get("App.Text61") };
+                return new GameLaunchUserRes { Message = LangUtils.Get("App.Text61") };
             }
         }
 
         if (UserManager.IsLock(login) && GuiConfigUtils.Config.LaunchCheck.CheckUser)
         {
-            var res = await model.ShowChoice(LanguageUtils.Get("App.Text58"));
+            var res = await model.ShowChoice(LangUtils.Get("App.Text58"));
             if (!res)
             {
-                return new GameLaunchUserRes { Message = LanguageUtils.Get("App.Text62") };
+                return new GameLaunchUserRes { Message = LangUtils.Get("App.Text62") };
             }
 
-            res = await model.ShowChoice(LanguageUtils.Get("App.Text52"));
+            res = await model.ShowChoice(LangUtils.Get("App.Text52"));
             if (res)
             {
                 GuiConfigUtils.Config.LaunchCheck.CheckUser = false;

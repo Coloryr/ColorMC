@@ -40,7 +40,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     public async void Load()
     {
         Blocks.Clear();
-        var dialog = Window.ShowProgress(LanguageUtils.Get("LuckBlockWindow.Text5"));
+        var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
         Window.CloseDialog(dialog);
         if (!res.State)
@@ -53,7 +53,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
         var list = await BaseBinding.BuildUnlockItems();
         if (list == null)
         {
-            await Window.ShowWait(LanguageUtils.Get("LuckBlockWindow.Text9"));
+            await Window.ShowWait(LangUtils.Get("LuckBlockWindow.Text9"));
             WindowClose();
             return;
         }
@@ -82,7 +82,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
         var names = list.Select(item => item.Name);
         var dialog = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("BlockBackpackWindow.Text1"),
+            Text = LangUtils.Get("BlockBackpackWindow.Text1"),
             Items = [.. names]
         };
         var res = await Window.ShowDialogWait(dialog);

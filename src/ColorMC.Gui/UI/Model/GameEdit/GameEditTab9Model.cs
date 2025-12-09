@@ -34,7 +34,7 @@ public partial class GameEditModel
     /// </summary>
     public void LoadScreenshot()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab9.Text6"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab9.Text6"));
         ScreenshotList.Clear();
 
         var res = _obj.GetScreenshots();
@@ -45,7 +45,7 @@ public partial class GameEditModel
         }
         ScreenshotEmptyDisplay = ScreenshotList.Count == 0;
 
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab9.Text7"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab9.Text7"));
     }
 
     /// <summary>
@@ -62,14 +62,14 @@ public partial class GameEditModel
     private async void ClearScreenshot()
     {
         var res = await Window.ShowChoice(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab9.Text5"), _obj.Name));
+            string.Format(LangUtils.Get("GameEditWindow.Tab9.Text5"), _obj.Name));
         if (!res)
         {
             return;
         }
 
         _obj.ClearScreenshots();
-        Window.Notify(LanguageUtils.Get("Text.DeleteDone"));
+        Window.Notify(LangUtils.Get("Text.DeleteDone"));
         LoadScreenshot();
     }
 
@@ -80,14 +80,14 @@ public partial class GameEditModel
     public async void DeleteScreenshot(ScreenshotModel obj)
     {
         var res = await Window.ShowChoice(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab9.Text4"), obj.Screenshot));
+            string.Format(LangUtils.Get("GameEditWindow.Tab9.Text4"), obj.Screenshot));
         if (!res)
         {
             return;
         }
 
         await obj.Obj.DeleteAsync();
-        Window.Notify(LanguageUtils.Get("Text.DeleteDone"));
+        Window.Notify(LangUtils.Get("Text.DeleteDone"));
         LoadScreenshot();
     }
 

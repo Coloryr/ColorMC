@@ -183,7 +183,7 @@ public partial class GameItemModel : GameModel
         EventManager.GameNameChange += EventManager_GameNameChange;
     }
 
-    private void EventManager_GameNameChange(object? sender, Guid uuid)
+    private void EventManager_GameNameChange(Guid uuid)
     {
         if (uuid != Obj.UUID)
         {
@@ -378,7 +378,7 @@ public partial class GameItemModel : GameModel
         var time2 = Obj.LaunchData.LastTime;
         var time3 = Obj.LaunchData.LastPlay;
         var time4 = Obj.LaunchData.GameTime;
-        Tips = string.Format(LanguageUtils.Get("ToolTip.Text125"),
+        Tips = string.Format(LangUtils.Get("ToolTip.Text125"),
             time1.Ticks == 0 ? "" : time1.ToString(),
             time2.Ticks == 0 ? "" : time2.ToString(),
             time3.Ticks == 0 ? "" :
@@ -443,7 +443,7 @@ public partial class GameItemModel : GameModel
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("MainWindow.Text69"),
+            Watermark1 = LangUtils.Get("MainWindow.Text69"),
             Text1 = Obj.Name
         };
         var res = await Window.ShowDialogWait(dialog);
@@ -453,7 +453,7 @@ public partial class GameItemModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Window.Show(LanguageUtils.Get("MainWindow.Text82"));
+            Window.Show(LangUtils.Get("MainWindow.Text82"));
             return;
         }
 
@@ -473,7 +473,7 @@ public partial class GameItemModel : GameModel
             if (res is true)
             {
                 value.ChangeConfig(dialog);
-                Window.Notify(LanguageUtils.Get("MainWindow.Text76"));
+                Window.Notify(LangUtils.Get("MainWindow.Text76"));
             }
         }
     }
@@ -485,8 +485,8 @@ public partial class GameItemModel : GameModel
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("MainWindow.Text69"),
-            Text1 = Obj.Name + LanguageUtils.Get("App.Text34")
+            Watermark1 = LangUtils.Get("MainWindow.Text69"),
+            Text1 = Obj.Name + LangUtils.Get("App.Text34")
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is not true)
@@ -495,19 +495,19 @@ public partial class GameItemModel : GameModel
         }
         if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Window.Show(LanguageUtils.Get("MainWindow.Text82"));
+            Window.Show(LangUtils.Get("MainWindow.Text82"));
             return;
         }
 
         var res1 = await GameBinding.CopyGameAsync(Obj, dialog.Text1, new OverGameGui(Window));
         if (!res1)
         {
-            Window.Show(LanguageUtils.Get("MainWindow.Text84"));
+            Window.Show(LangUtils.Get("MainWindow.Text84"));
             return;
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("MainWindow.Text70"));
+            Window.Notify(LangUtils.Get("MainWindow.Text70"));
         }
     }
 
@@ -518,22 +518,22 @@ public partial class GameItemModel : GameModel
     {
         if (GameManager.IsAdd(Obj))
         {
-            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
+            Window.Show(LangUtils.Get("GameEditWindow.Tab1.Text46"));
             return;
         }
 
-        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text67"), Obj.Name));
+        var res = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text67"), Obj.Name));
         if (!res)
         {
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab1.Text35"));
         res = await GameBinding.DeleteGameAsync(Obj);
         Window.CloseDialog(dialog);
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("MainWindow.Text75"));
+            Window.Show(LangUtils.Get("MainWindow.Text75"));
         }
     }
 
@@ -553,7 +553,7 @@ public partial class GameItemModel : GameModel
         _top?.ExportCmd(Obj);
     }
 
-    private void EventManager_GameIconChange(object? sender, Guid uuid)
+    private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != UUID)
         {

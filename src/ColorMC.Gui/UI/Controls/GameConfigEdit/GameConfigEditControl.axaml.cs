@@ -44,7 +44,7 @@ public partial class GameConfigEditControl : BaseUserControl
         _world = world;
         _obj = world.Game;
 
-        Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title1"),
+        Title = string.Format(LangUtils.Get("ConfigEditWindow.Title1"),
                 world.Game.Name, world.LevelName);
 
         Hook();
@@ -56,7 +56,7 @@ public partial class GameConfigEditControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title"), obj.Name);
+        Title = string.Format(LangUtils.Get("ConfigEditWindow.Title"), obj.Name);
 
         Hook();
     }
@@ -77,7 +77,7 @@ public partial class GameConfigEditControl : BaseUserControl
         //textMateInstallation = TextEditor1.InstallTextMate(registryOptions);
     }
 
-    private void EventManager_GameDelete(object? sender, Guid uuid)
+    private void EventManager_GameDelete(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -87,7 +87,7 @@ public partial class GameConfigEditControl : BaseUserControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, Guid uuid)
+    private void EventManager_GameNameChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -96,17 +96,17 @@ public partial class GameConfigEditControl : BaseUserControl
 
         if (_world == null)
         {
-            Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title"),
+            Title = string.Format(LangUtils.Get("ConfigEditWindow.Title"),
                     _obj.Name);
         }
         else
         {
-            Title = string.Format(LanguageUtils.Get("ConfigEditWindow.Title1"),
+            Title = string.Format(LangUtils.Get("ConfigEditWindow.Title1"),
                     _world.Game.Name, _world.LevelName);
         }
     }
 
-    private void EventManager_GameIconChange(object? sender, Guid uuid)
+    private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

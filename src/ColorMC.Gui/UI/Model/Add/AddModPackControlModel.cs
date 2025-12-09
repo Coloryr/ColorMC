@@ -9,6 +9,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -43,6 +44,32 @@ public partial class AddModPackControlModel : AddBaseModel
 
         SourceTypeList.AddRange([SourceType.CurseForge, SourceType.Modrinth]);
         SourceTypeList.ForEach(item => SourceList.Add(item.GetName()));
+
+        EventManager.ModpackInstall += EventManager_ModpackInstall;
+        EventManager.ModpackStop += EventManager_ModpackStop;
+    }
+
+    private void EventManager_ModpackStop(SourceItemObj obj, bool res)
+    {
+        foreach (var item in DisplayList)
+        {
+            if (obj.CheckProject(item.Obj))
+            {
+                item.NowDownload = false;
+                item.IsDownload = res;
+            }
+        }
+    }
+
+    private void EventManager_ModpackInstall(SourceItemObj obj)
+    {
+        foreach (var item in DisplayList)
+        {
+            if (obj.CheckProject(item.Obj))
+            {
+                item.NowDownload = true;
+            }
+        }
     }
 
     /// <summary>
@@ -53,7 +80,7 @@ public partial class AddModPackControlModel : AddBaseModel
     {
         if (_lastSelect == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text22"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text22"));
             return;
         }
 
@@ -88,10 +115,10 @@ public partial class AddModPackControlModel : AddBaseModel
             case 0:
             case 1:
                 SortTypeList.AddRange(Source == 0 ?
-                    LanguageUtils.GetCurseForgeSortTypes() :
-                    LanguageUtils.GetModrinthSortTypes());
+                    LangUtils.GetCurseForgeSortTypes() :
+                    LangUtils.GetModrinthSortTypes());
 
-                var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
+                var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text20"));
                 var list = Source == 0 ?
                     await CurseForgeHelper.GetGameVersionsAsync() :
                     await ModrinthHelper.GetGameVersionAsync();
@@ -140,7 +167,7 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     private async void Done(Guid uuid)
     {
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text29"));
 
         if (_keep)
         {
@@ -151,7 +178,7 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (!HaveDownload)
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
+            var res = await Window.ShowChoice(LangUtils.Get("AddGameWindow.Tab1.Text43"));
             if (!res)
             {
                 Dispatcher.UIThread.Post(WindowClose);
@@ -168,7 +195,7 @@ public partial class AddModPackControlModel : AddBaseModel
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text25"));
+        var res = await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -177,7 +204,7 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (Source < SourceList.Count)
         {
-            res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text21"));
+            res = await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 Source++;
@@ -195,11 +222,11 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (type == SourceType.Modrinth && Categorie == 4 && Text?.Length < 3)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text27"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text27"));
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text18"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text18"));
         var page = Page ?? 1;
         page -= 1;
         var res = await WebBinding.GetModPackListAsync(type,
@@ -213,7 +240,7 @@ public partial class AddModPackControlModel : AddBaseModel
 
         if (res.List == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text23"));
             Window.CloseDialog(dialog);
             return;
         }
@@ -236,7 +263,7 @@ public partial class AddModPackControlModel : AddBaseModel
         EmptyDisplay = DisplayList.Count == 0;
 
         Window.CloseDialog(dialog);
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LangUtils.Get("AddResourceWindow.Text24"));
     }
 
     public override void Close()
@@ -247,6 +274,9 @@ public partial class AddModPackControlModel : AddBaseModel
         Window.RemoveChoiseData(_useName);
 
         _lastSelect = null;
+
+        EventManager.ModpackInstall -= EventManager_ModpackInstall;
+        EventManager.ModpackStop -= EventManager_ModpackStop;
     }
 
     /// <summary>
@@ -270,7 +300,7 @@ public partial class AddModPackControlModel : AddBaseModel
         var res = await WebBinding.GetModpackAsync(type, pid);
         if (res == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text23"));
             _load = false;
             return;
         }

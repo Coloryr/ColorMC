@@ -381,22 +381,6 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     }
 
     /// <summary>
-    /// 测试是否正在下载
-    /// </summary>
-    /// <param name="item">项目显示</param>
-    public void TestFileItem(FileItemModel item)
-    {
-        foreach (var info in NowDownload)
-        {
-            if (info.Obj.CheckProject(item.Obj)
-               || info.Obj.CheckSubPid(item.Obj))
-            {
-                item.NowDownload = true;
-            }
-        }
-    }
-
-    /// <summary>
     /// F5重载版本列表
     /// </summary>
     public void ReloadF5()
@@ -447,11 +431,11 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
         if (HaveDownload)
         {
             StartDisplay();
-            DownloadText = string.Format(LanguageUtils.Get("AddModPackWindow.Text41"), NowDownload.Count);
+            DownloadText = string.Format(LangUtils.Get("AddModPackWindow.Text41"), NowDownload.Count);
         }
         else
         {
-            DownloadText = LanguageUtils.Get("AddModPackWindow.Text45");
+            DownloadText = LangUtils.Get("AddModPackWindow.Text45");
             _isDisplayRun = false;
         }
     }

@@ -46,7 +46,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 生存模式
     /// </summary>
-    public string Mode => LanguageUtils.GetNameWithGameType(World.GameType);
+    public string Mode => LangUtils.GetNameWithGameType(World.GameType);
     /// <summary>
     /// 上次游玩时间
     /// </summary>
@@ -58,7 +58,7 @@ public partial class WorldModel : SelectItemModel
     /// <summary>
     /// 难度
     /// </summary>
-    public string Difficulty => LanguageUtils.GetNameWithDifficulty(World.Difficulty);
+    public string Difficulty => LangUtils.GetNameWithDifficulty(World.Difficulty);
     /// <summary>
     /// 是否为极限模式
     /// </summary>
@@ -111,7 +111,7 @@ public partial class WorldModel : SelectItemModel
     /// </summary>
     private async void LoadList()
     {
-        var dialog = TopModel.Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab5.Text20"));
+        var dialog = TopModel.Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab5.Text20"));
         IsSelect = false;
         await Load();
         IsSelect = true;
@@ -170,7 +170,7 @@ public partial class WorldModel : SelectItemModel
     public async void Delete(DataPackModel item)
     {
         var res = await TopModel.Window.ShowChoice(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Text19"), item.Name));
+            string.Format(LangUtils.Get("GameEditWindow.Tab5.Text19"), item.Name));
         if (!res)
         {
             return;
@@ -190,7 +190,7 @@ public partial class WorldModel : SelectItemModel
     public async void Delete(IEnumerable<DataPackModel> items)
     {
         var res = await TopModel.Window.ShowChoice(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab5.Text18"), items.Count()));
+            string.Format(LangUtils.Get("GameEditWindow.Tab5.Text18"), items.Count()));
         if (!res)
         {
             return;

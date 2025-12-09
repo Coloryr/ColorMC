@@ -241,7 +241,7 @@ public static class WindowManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Error.Log18"), e);
+                Logs.Error(LangUtils.Get("App.Error.Log18"), e);
             }
         }
     }
@@ -412,7 +412,7 @@ public static class WindowManager
                 if (!File.Exists(path))
                 {
                     File.WriteAllText(path, "custom");
-                    CustomWindow?.Icon.Window?.Model.Show(LanguageUtils.Get("App.Text73"));
+                    CustomWindow?.Icon.Window?.Model.Show(LangUtils.Get("App.Text73"));
                 }
                 return true;
             }
@@ -423,7 +423,7 @@ public static class WindowManager
         }
         catch (Exception e)
         {
-            var data = LanguageUtils.Get("App.Text74");
+            var data = LangUtils.Get("App.Text74");
             Logs.Error(data, e);
             ShowError(data, e, !test);
         }
@@ -658,13 +658,13 @@ public static class WindowManager
                 {
                     window.Show();
                     window.WindowActivate();
-                    window.Model.Show(LanguageUtils.Get("App.Text102"));
+                    window.Model.Show(LangUtils.Get("App.Text102"));
                     return;
                 }
 
                 var dialog = new SelectModel(window.Model.WindowId)
                 {
-                    Text = LanguageUtils.Get("App.Text27"),
+                    Text = LangUtils.Get("App.Text27"),
                     Items = [.. list.Select(item => item.Name)]
                 };
 

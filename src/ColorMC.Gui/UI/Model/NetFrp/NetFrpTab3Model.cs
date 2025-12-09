@@ -137,7 +137,7 @@ public partial class NetFrpModel
         catch
         {
             IsRuning = false;
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab3.Text15"));
         }
 
         Text = new();
@@ -190,7 +190,7 @@ public partial class NetFrpModel
                 IsOk = true;
                 var dialog = new InputModel(Window.WindowId)
                 {
-                    Text1 = LanguageUtils.Get("NetFrpWindow.Tab3.Text8"),
+                    Text1 = LangUtils.Get("NetFrpWindow.Tab3.Text8"),
                     Text2 = _remoteIP,
                     TextReadonly = true
                 };
@@ -222,17 +222,17 @@ public partial class NetFrpModel
 
         if (model.Text?.Length > 80)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text16"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab3.Text16"));
             return;
         }
 
         if (IsRuning == false)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text15"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab3.Text15"));
             return;
         }
 
-        var res = await Window.ShowChoice(LanguageUtils.Get("NetFrpWindow.Tab3.Text10"));
+        var res = await Window.ShowChoice(LangUtils.Get("NetFrpWindow.Tab3.Text10"));
         if (!res)
         {
             return;
@@ -241,11 +241,11 @@ public partial class NetFrpModel
         var user = UserBinding.GetLastUser();
         if (user?.AuthType != AuthType.OAuth)
         {
-            await Window.ShowWait(LanguageUtils.Get("NetFrpWindow.Tab4.Text8"));
+            await Window.ShowWait(LangUtils.Get("NetFrpWindow.Tab4.Text8"));
             WindowClose();
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab4.Text6"));
+        var dialog = Window.ShowProgress(LangUtils.Get("NetFrpWindow.Tab4.Text6"));
         var res2 = await UserBinding.TestLogin(user, CancellationToken.None);
         Window.CloseDialog(dialog);
         if (!res)
@@ -255,16 +255,16 @@ public partial class NetFrpModel
             return;
         }
 
-        dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab3.Text12"));
+        dialog = Window.ShowProgress(LangUtils.Get("NetFrpWindow.Tab3.Text12"));
         res = await ColorMCCloudAPI.PutCloudServerAsync(user.AccessToken, _remoteIP, model);
         Window.CloseDialog(dialog);
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab3.Text14"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab3.Text14"));
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("NetFrpWindow.Tab3.Text11"));
+            Window.Notify(LangUtils.Get("NetFrpWindow.Tab3.Text11"));
         }
     }
 
@@ -288,7 +288,7 @@ public partial class NetFrpModel
 
         _now.IsStart = false;
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab3.Text13"));
+        var dialog = Window.ShowProgress(LangUtils.Get("NetFrpWindow.Tab3.Text13"));
         await Task.Run(() =>
         {
             _process.Kill(true);
@@ -321,7 +321,7 @@ public partial class NetFrpModel
     {
         if (_process != null)
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("NetFrpWindow.Tab3.Text9"));
+            var res = await Window.ShowChoice(LangUtils.Get("NetFrpWindow.Tab3.Text9"));
             if (res)
             {
                 Stop();
@@ -342,17 +342,17 @@ public partial class NetFrpModel
         if (IsOk && IsRuning)
         {
             Window.SetChoiseCall(_name, Share, Stop);
-            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"), LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
+            Window.SetChoiseContent(_name, LangUtils.Get("NetFrpWindow.Tab3.Text3"), LangUtils.Get("NetFrpWindow.Tab3.Text2"));
         }
         else if (IsOk)
         {
             Window.SetChoiseCall(_name, Share);
-            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text3"));
+            Window.SetChoiseContent(_name, LangUtils.Get("NetFrpWindow.Tab3.Text3"));
         }
         else if (IsRuning)
         {
             Window.SetChoiseCall(_name, Stop);
-            Window.SetChoiseContent(_name, LanguageUtils.Get("NetFrpWindow.Tab3.Text2"));
+            Window.SetChoiseContent(_name, LangUtils.Get("NetFrpWindow.Tab3.Text2"));
         }
         else
         {

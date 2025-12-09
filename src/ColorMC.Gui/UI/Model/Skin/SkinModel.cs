@@ -26,11 +26,11 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
     /// <summary>
     /// 皮肤类型
     /// </summary>
-    public string[] SkinTypeList { get; init; } = LanguageUtils.GetSkinType();
+    public string[] SkinTypeList { get; init; } = LangUtils.GetSkinType();
     /// <summary>
     /// 皮肤关节旋转类型
     /// </summary>
-    public string[] SkinRotateList { get; init; } = LanguageUtils.GetSkinRotateName();
+    public string[] SkinRotateList { get; init; } = LangUtils.GetSkinRotateName();
 
     /// <summary>
     /// 皮肤类型
@@ -390,7 +390,7 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
         var res = await PathBinding.SaveFileAsync(top, FileType.Skin, null);
         if (res == true)
         {
-            Window.Notify(LanguageUtils.Get("ConfigEditWindow.Text23"));
+            Window.Notify(LangUtils.Get("ConfigEditWindow.Text23"));
         }
     }
     /// <summary>

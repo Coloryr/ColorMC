@@ -31,7 +31,7 @@ public partial class ErrorControl : BaseUserControl
         _e = e;
         _close = close;
 
-        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
+        Title = title ?? LangUtils.Get("ErrorWindow.Title");
     }
 
     public ErrorControl(string title, string log, Exception? e, bool close) : this()
@@ -40,7 +40,7 @@ public partial class ErrorControl : BaseUserControl
         _e = e;
         _close = close;
 
-        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
+        Title = title ?? LangUtils.Get("ErrorWindow.Title");
     }
 
     public ErrorControl(string title, string log, bool close) : this()
@@ -48,7 +48,7 @@ public partial class ErrorControl : BaseUserControl
         _log = log;
         _close = close;
 
-        Title = title ?? LanguageUtils.Get("ErrorWindow.Title");
+        Title = title ?? LangUtils.Get("ErrorWindow.Title");
     }
 
     public override void Closed()

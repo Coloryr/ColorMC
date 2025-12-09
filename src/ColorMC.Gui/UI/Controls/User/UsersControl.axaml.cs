@@ -17,7 +17,7 @@ public partial class UsersControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("UserWindow.Title");
+        Title = LangUtils.Get("UserWindow.Title");
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);

@@ -15,7 +15,7 @@ public static class BuildPackFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("SettingWindow.Flyouts.Text2"), true, model.DeleteFile),
+            new FlyoutMenuModel(LangUtils.Get("SettingWindow.Flyouts.Text2"), true, model.DeleteFile),
         ]).Show(con);
     }
 }

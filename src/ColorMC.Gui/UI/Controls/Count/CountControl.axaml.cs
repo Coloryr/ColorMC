@@ -14,7 +14,7 @@ public partial class CountControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("CountWindow.Title");
+        Title = LangUtils.Get("CountWindow.Title");
     }
 
     public override void Closed()

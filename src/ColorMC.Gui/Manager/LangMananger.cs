@@ -31,7 +31,7 @@ public static class LangMananger
             list = [new(observer)];
             s_langList.Add(key, list);
         }
-        var value = LanguageUtils.Get(key);
+        var value = LangUtils.Get(key);
         observer.OnNext(value);
         return new Unsubscribe(list, observer);
     }
@@ -58,7 +58,7 @@ public static class LangMananger
     {
         foreach (var item in s_langList)
         {
-            var value = LanguageUtils.Get(item.Key);
+            var value = LangUtils.Get(item.Key);
             foreach (var item1 in item.Value)
             {
                 if (item1.TryGetTarget(out var target))

@@ -44,7 +44,7 @@ public static class SdlUtils
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log4"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log4"), e);
         }
     }
 #if DEBUG
@@ -63,7 +63,7 @@ public static class SdlUtils
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log4"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log4"), e);
         }
     }
 #endif

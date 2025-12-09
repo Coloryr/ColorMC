@@ -451,7 +451,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Language = type;
         GuiConfigUtils.Save();
 
-        LanguageUtils.Change(type);
+        LangUtils.Change(type);
     }
 
     /// <summary>

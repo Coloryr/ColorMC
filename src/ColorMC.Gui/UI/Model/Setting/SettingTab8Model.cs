@@ -47,7 +47,7 @@ public partial class SettingModel
     /// <summary>
     /// 摇杆类型
     /// </summary>
-    public string[] AxisType { get; init; } = LanguageUtils.GetAxisTypeName();
+    public string[] AxisType { get; init; } = LangUtils.GetAxisTypeName();
 
     /// <summary>
     /// 选中的按钮
@@ -375,7 +375,7 @@ public partial class SettingModel
             }
             if (_controlPtr == IntPtr.Zero)
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Text47"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab8.Text47"));
             }
             else
             {
@@ -428,11 +428,11 @@ public partial class SettingModel
         }
         else if (res != true)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Text49"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab8.Text49"));
             return;
         }
 
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text45"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text45"));
     }
     /// <summary>
     /// 导入手柄设置
@@ -455,7 +455,7 @@ public partial class SettingModel
         var obj = JoystickConfig.Load(file.Path);
         if (obj == null)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab8.Text48"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab8.Text48"));
             return;
         }
 
@@ -465,7 +465,7 @@ public partial class SettingModel
         Configs.Add(obj.Name);
         _controlUUIDs.Add(obj.UUID);
 
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text46"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text46"));
     }
     /// <summary>
     /// 删除手柄设置
@@ -479,7 +479,7 @@ public partial class SettingModel
             return;
         }
 
-        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("SettingWindow.Tab8.Text35"), _controlObj.Name));
+        var res = await Window.ShowChoice(string.Format(LangUtils.Get("SettingWindow.Tab8.Text35"), _controlObj.Name));
         if (!res)
         {
             return;
@@ -509,7 +509,7 @@ public partial class SettingModel
 
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("SettingWindow.Tab8.Text36"),
+            Watermark1 = LangUtils.Get("SettingWindow.Tab8.Text36"),
             Text1 = _controlObj.Name
         };
         var res = await Window.ShowDialogWait(dialog);
@@ -539,7 +539,7 @@ public partial class SettingModel
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("SettingWindow.Tab8.Text36")
+            Watermark1 = LangUtils.Get("SettingWindow.Tab8.Text36")
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is not true || string.IsNullOrWhiteSpace(dialog.Text1))
@@ -567,8 +567,8 @@ public partial class SettingModel
         using var cannel = new CancellationTokenSource();
         var dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text37"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text37"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -581,8 +581,8 @@ public partial class SettingModel
         }
         dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text38"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text38"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -603,7 +603,7 @@ public partial class SettingModel
         };
         InputAxisList.Add(item1);
         ConfigBinding.AddAxisInput(_controlObj, item1.UUID, item1.GenObj());
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text39"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text39"));
     }
     /// <summary>
     /// 添加按钮输入
@@ -620,8 +620,8 @@ public partial class SettingModel
         using var cannel = new CancellationTokenSource();
         var dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text40"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text40"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -635,8 +635,8 @@ public partial class SettingModel
         var key1 = (byte)key;
         dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text38"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text38"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -662,7 +662,7 @@ public partial class SettingModel
         };
         InputList.Add(item1);
         ConfigBinding.AddInput(_controlObj, item1.InputKey, item1.Obj);
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text41"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text41"));
     }
     /// <summary>
     /// 设置按钮
@@ -675,8 +675,8 @@ public partial class SettingModel
         using var cannel = new CancellationTokenSource();
         var dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text40"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text40"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -884,8 +884,8 @@ public partial class SettingModel
         using var cannel = new CancellationTokenSource();
         var dialog = new ChoiceModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab8.Text38"),
-            ChoiceText = LanguageUtils.Get("Button.Cancel"),
+            Text = LangUtils.Get("SettingWindow.Tab8.Text38"),
+            ChoiceText = LangUtils.Get("Button.Cancel"),
             ChoiceVisiable = true,
             ChoiceCall = cannel.Cancel
         };
@@ -907,7 +907,7 @@ public partial class SettingModel
         {
             ConfigBinding.AddInput(_controlObj, item.InputKey, item.Obj);
         }
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text43"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text43"));
     }
 
     /// <summary>
@@ -930,7 +930,7 @@ public partial class SettingModel
             InputList.Remove(item);
             ConfigBinding.DeleteInput(_controlObj, item.InputKey);
         }
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab8.Text44"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab8.Text44"));
     }
 
     /// <summary>

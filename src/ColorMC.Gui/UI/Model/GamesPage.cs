@@ -36,7 +36,7 @@ public class GamesPage
                     }),
                 new HierarchicalExpanderColumn<GameFileTreeNodeModel>(
                     new TemplateColumn<GameFileTreeNodeModel>(
-                        LanguageUtils.Get("Text.FileName"),
+                        LangUtils.Get("Text.FileName"),
                         "GameFileNameCell",
                         null,
                         new GridLength(1, GridUnitType.Star),
@@ -51,7 +51,7 @@ public class GamesPage
                     x => x.HasChildren,
                     x => x.IsExpanded),
                 new TextColumn<GameFileTreeNodeModel, long?>(
-                    LanguageUtils.Get("Text.Size"),
+                    LangUtils.Get("Text.Size"),
                     x => x.Size,
                     options: new TextColumnOptions<GameFileTreeNodeModel>
                     {
@@ -59,7 +59,7 @@ public class GamesPage
                         CompareDescending = GameFileTreeNodeModel.SortDescending(x => x.Size),
                     }),
                 new TextColumn<GameFileTreeNodeModel, string?>(
-                    LanguageUtils.Get("GameExportWindow.Text3"),
+                    LangUtils.Get("GameExportWindow.Text3"),
                     x => x.Modified,
                     options: new TextColumnOptions<GameFileTreeNodeModel>
                     {

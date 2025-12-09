@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Avalonia.Threading;
+using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DialogHostAvalonia;
@@ -56,12 +59,38 @@ public partial class SelectGameModel : ObservableObject
         _name = name;
         foreach (var item in InstancesPath.Groups)
         {
+            if (item.Value.Count == 0)
+            {
+                continue;
+            }
             var list = new ObservableCollection<SelectGameNode>();
             foreach (var item1 in item.Value)
             {
                 list.Add(new SelectGameNode(item1.Name, item1.UUID));
             }
-            Items.Add(new SelectGameNode(item.Key, Guid.Empty, list));
+            if (item.Key == Names.NameDefaultGroup)
+            {
+                Items.Add(new SelectGameNode(LangUtils.Get("CollectWindow.Text26"), Guid.Empty, list));
+            }
+            else
+            {
+                Items.Add(new SelectGameNode(item.Key, Guid.Empty, list));
+            }
+        }
+    }
+
+    partial void OnSelectChanged(SelectGameNode? value)
+    {
+        if (value == null)
+        {
+            return;
+        }
+        else if (value.UUID == Guid.Empty)
+        {
+            Dispatcher.UIThread.Post(() =>
+            {
+                Select = null;
+            });
         }
     }
 

@@ -32,7 +32,7 @@ public partial class SettingControl : MenuControl
 
     public SettingControl() : base(WindowManager.GetUseName<SettingControl>())
     {
-        Title = LanguageUtils.Get("SettingWindow.Title");
+        Title = LangUtils.Get("SettingWindow.Title");
     }
 
     public SettingControl(int mainversion) : this()

@@ -12,7 +12,7 @@ public partial class BlockBackpackControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("BlockBackpackWindow.Title");
+        Title = LangUtils.Get("BlockBackpackWindow.Title");
     }
 
     public override void Opened()

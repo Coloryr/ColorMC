@@ -16,8 +16,8 @@ public static class MainFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("MainWindow.Text60"), true, model.Top.StartMut),
-            new FlyoutMenuModel(LanguageUtils.Get("MainWindow.Text62"), model.GameList.Any(item=>!item.IsNew), ()=>
+            new FlyoutMenuModel(LangUtils.Get("MainWindow.Text60"), true, model.Top.StartMut),
+            new FlyoutMenuModel(LangUtils.Get("MainWindow.Text62"), model.GameList.Any(item=>!item.IsNew), ()=>
             {
                 model.Top.StartMut(model);
             })

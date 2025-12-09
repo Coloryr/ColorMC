@@ -31,11 +31,11 @@ public partial class SettingModel
     /// <summary>
     /// 下载源列表
     /// </summary>
-    public string[] SourceList { get; init; } = LanguageUtils.GetDownloadSources();
+    public string[] SourceList { get; init; } = LangUtils.GetDownloadSources();
     /// <summary>
     /// Dns类型列表
     /// </summary>
-    public string[] DnsList { get; init; } = LanguageUtils.GetDns();
+    public string[] DnsList { get; init; } = LangUtils.GetDns();
     /// <summary>
     /// Dns列表
     /// </summary>
@@ -180,7 +180,7 @@ public partial class SettingModel
 
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -209,7 +209,7 @@ public partial class SettingModel
 
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -227,11 +227,11 @@ public partial class SettingModel
         ServerInfo = ColorMCCloudAPI.Info;
         if (ColorMCCloudAPI.Connect)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text36"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text36"));
         }
         else
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text37"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab3.Text37"));
         }
     }
     /// <summary>
@@ -249,19 +249,19 @@ public partial class SettingModel
     [RelayCommand]
     public async Task StartCheck()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab3.Text33"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab3.Text33"));
         var res = await UpdateUtils.CheckNowVersion();
         Window.CloseDialog(dialog);
         if (res.Item1 == null)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text38"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab3.Text38"));
             return;
         }
         else if (res.Item1 == true)
         {
             var dialog1 = new LongTextModel(Window.WindowId)
             {
-                Text1 = LanguageUtils.Get("SettingWindow.Tab3.Text34"),
+                Text1 = LangUtils.Get("SettingWindow.Tab3.Text34"),
                 Text2 = res.Item2!
             };
             var res1 = await Window.ShowDialogWait(dialog1);
@@ -272,7 +272,7 @@ public partial class SettingModel
         }
         else
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text35"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab3.Text35"));
         }
     }
     /// <summary>
@@ -283,7 +283,7 @@ public partial class SettingModel
     {
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -298,7 +298,7 @@ public partial class SettingModel
     {
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -315,13 +315,13 @@ public partial class SettingModel
         {
             if (!IPAddress.TryParse(url, out _))
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text40"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text40"));
                 return;
             }
 
             if (Dns.Any(item => item.Dns == DnsType.DnsOver && item.Url == url))
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text41"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text41"));
                 return;
             }
 
@@ -332,13 +332,13 @@ public partial class SettingModel
         {
             if (!url.StartsWith("https://"))
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text40"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text40"));
                 return;
             }
 
             if (Dns.Any(item => item.Dns == DnsType.DnsOverHttps && item.Url == url))
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab3.Text41"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text41"));
                 return;
             }
 
@@ -346,7 +346,7 @@ public partial class SettingModel
             ConfigBinding.AddDns(url, DnsType.DnsOverHttps);
         }
 
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text32"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text32"));
     }
 
     /// <summary>
@@ -357,7 +357,7 @@ public partial class SettingModel
     {
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -374,7 +374,7 @@ public partial class SettingModel
         ServerInfo = ColorMCCloudAPI.Info;
         if (ColorMCCloudAPI.Connect)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text36"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text36"));
         }
     }
 
@@ -443,7 +443,7 @@ public partial class SettingModel
 
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -457,7 +457,7 @@ public partial class SettingModel
 
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 
@@ -471,7 +471,7 @@ public partial class SettingModel
 
         if (DownloadManager.State)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text39"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text39"));
             return;
         }
 

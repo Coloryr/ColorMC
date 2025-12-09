@@ -208,7 +208,7 @@ public static class Media
             catch (Exception e)
             {
                 PlayState = PlayState.Stop;
-                Logs.Error(LanguageUtils.Get("App.Text87"), e);
+                Logs.Error(LangUtils.Get("App.Text87"), e);
             }
         }
     }
@@ -247,7 +247,7 @@ public static class Media
         {
             return new MusicPlayRes()
             {
-                Message = LanguageUtils.Get("MediaPlayer.Error5")
+                Message = LangUtils.Get("MediaPlayer.Error5")
             };
         }
 
@@ -344,7 +344,7 @@ public static class Media
         {
             return new MusicPlayRes()
             {
-                Message = LanguageUtils.Get("App.Text89")
+                Message = LangUtils.Get("App.Text89")
             };
         }
 
@@ -372,7 +372,7 @@ public static class Media
         }
         catch (Exception e)
         {
-            string text = LanguageUtils.Get("App.Text88");
+            string text = LangUtils.Get("App.Text88");
             Logs.Error(text, e);
             res.Message = text;
         }

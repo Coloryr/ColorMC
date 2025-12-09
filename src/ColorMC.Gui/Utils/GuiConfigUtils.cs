@@ -37,7 +37,7 @@ public static class GuiConfigUtils
     /// <returns>是否加载成功</returns>
     public static bool Load(string local, bool quit = false)
     {
-        LanguageUtils.Load(LanguageType.zh_cn);
+        LangUtils.Load(LanguageType.zh_cn);
         if (File.Exists(local))
         {
             GuiConfigObj? conf = null;
@@ -48,7 +48,7 @@ public static class GuiConfigUtils
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Error.Log13"), e);
+                Logs.Error(LangUtils.Get("App.Error.Log13"), e);
             }
 
             if (conf == null)

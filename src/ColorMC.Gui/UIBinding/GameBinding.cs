@@ -109,12 +109,12 @@ public static class GameBinding
             {
                 var dialog1 = new ChoiceModel(model.WindowId)
                 {
-                    Text = LanguageUtils.Get("App.Text49"),
+                    Text = LangUtils.Get("App.Text49"),
                     CancelVisable = true,
                 };
                 bool resize = await model.ShowDialogWait(dialog1) is true;
 
-                var dialog = model.ShowProgress(LanguageUtils.Get("App.Text40"));
+                var dialog = model.ShowProgress(LangUtils.Get("App.Text40"));
                 using var info = SKBitmap.Decode(PathHelper.OpenRead(file.Path)!);
 
                 if (resize && (info.Width > 100 || info.Height > 100))
@@ -130,12 +130,12 @@ public static class GameBinding
                 }
 
                 model.CloseDialog(dialog);
-                model.Notify(LanguageUtils.Get("App.Text39"));
+                model.Notify(LangUtils.Get("App.Text39"));
             }
         }
         catch (Exception e)
         {
-            var text = LanguageUtils.Get("App.Text59");
+            var text = LangUtils.Get("App.Text59");
             Logs.Error(text, e);
             WindowManager.ShowError(text, e);
         }
@@ -157,7 +157,7 @@ public static class GameBinding
         {
             return new GameLaunchListRes
             {
-                Message = LanguageUtils.Get("App.Text63")
+                Message = LangUtils.Get("App.Text63")
             };
         }
 
@@ -245,7 +245,7 @@ public static class GameBinding
             }
             else
             {
-                string title = LanguageUtils.Get("App.Text111");
+                string title = LangUtils.Get("App.Text111");
                 bool login = false;
                 if (item.Value.Exception != null)
                 {
@@ -283,7 +283,7 @@ public static class GameBinding
     /// <param name="exception"></param>
     private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login, out string title, out bool loginfail)
     {
-        title = LanguageUtils.Get("App.Text111");
+        title = LangUtils.Get("App.Text111");
         loginfail = false;
         if (exception is LaunchException e1)
         {
@@ -311,7 +311,7 @@ public static class GameBinding
 
     private static void DisplayCreateCmdCrash(Exception exception, GameSettingObj obj, LoginObj login)
     {
-        string title = LanguageUtils.Get("App.Text107");
+        string title = LangUtils.Get("App.Text107");
         if (exception is LaunchException e1)
         {
             var log = e1.GetName(obj, login);
@@ -347,7 +347,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = LanguageUtils.Get("App.Text63")
+                Message = LangUtils.Get("App.Text63")
             };
         }
 
@@ -355,7 +355,7 @@ public static class GameBinding
         {
             return new()
             {
-                Message = LanguageUtils.Get("App.Text110")
+                Message = LangUtils.Get("App.Text110")
             };
         }
 
@@ -366,13 +366,13 @@ public static class GameBinding
             //检测加载器有没有启用
             if (GuiConfigUtils.Config.LaunchCheck.CheckLoader && obj.Loader == Loaders.Normal)
             {
-                var res2 = await window.ShowChoice(string.Format(LanguageUtils.Get("App.Text53"), obj.Name));
+                var res2 = await window.ShowChoice(string.Format(LangUtils.Get("App.Text53"), obj.Name));
                 if (!res2)
                 {
                     return new() { };
                 }
 
-                res2 = await window.ShowChoice(LanguageUtils.Get("App.Text57"));
+                res2 = await window.ShowChoice(LangUtils.Get("App.Text57"));
                 if (res2)
                 {
                     GuiConfigUtils.Config.LaunchCheck.CheckLoader = false;
@@ -389,8 +389,8 @@ public static class GameBinding
                 {
                     var dialog = new ChoiceModel(window.WindowId)
                     {
-                        Text = string.Format(LanguageUtils.Get("App.Text54"), count, mem),
-                        ChoiceText = LanguageUtils.Get("App.Text55"),
+                        Text = string.Format(LangUtils.Get("App.Text54"), count, mem),
+                        ChoiceText = LangUtils.Get("App.Text55"),
                         CancelVisable = true,
                         ChoiceVisiable = true
                     };
@@ -411,7 +411,7 @@ public static class GameBinding
                         return new GameLaunchOneRes();
                     }
 
-                    var res3 = await window.ShowChoice(LanguageUtils.Get("App.Text56"));
+                    var res3 = await window.ShowChoice(LangUtils.Get("App.Text56"));
                     if (res3)
                     {
                         GuiConfigUtils.Config.LaunchCheck.CheckMemory = false;
@@ -655,7 +655,7 @@ public static class GameBinding
         {
             if (!File.Exists(obj.Local))
             {
-                return new() { Data = LanguageUtils.Get("App.Text72") };
+                return new() { Data = LangUtils.Get("App.Text72") };
             }
 
             if (obj.Disable)
@@ -671,7 +671,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = string.Format(LanguageUtils.Get("App.Text71"), obj.Local);
+            string temp = string.Format(LangUtils.Get("App.Text71"), obj.Local);
             Logs.Error(temp, e);
             return new() { Data = temp };
         }
@@ -979,7 +979,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string text = LanguageUtils.Get("App.Text64");
+            string text = LangUtils.Get("App.Text64");
             Logs.Error(text, e);
             WindowManager.ShowError(text, e);
             return false;
@@ -1138,11 +1138,11 @@ public static class GameBinding
                 var str = new StringBuilder();
                 foreach (var item in lost)
                 {
-                    str.Append(string.Format(LanguageUtils.Get("App.Text37"), item.Item1,
+                    str.Append(string.Format(LangUtils.Get("App.Text37"), item.Item1,
                         GetString(item.Item2))).Append(Environment.NewLine);
                 }
 
-                WindowManager.ShowError(LanguageUtils.Get("App.Text38"), str.ToString());
+                WindowManager.ShowError(LangUtils.Get("App.Text38"), str.ToString());
                 return false;
             }
 
@@ -1429,7 +1429,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Text65"), e);
+                Logs.Error(LangUtils.Get("App.Text65"), e);
             }
             return false;
         });
@@ -1451,7 +1451,7 @@ public static class GameBinding
         }, gui);
         if (game == null)
         {
-            return new StringRes { Data = LanguageUtils.Get("App.Text66") };
+            return new StringRes { Data = LangUtils.Get("App.Text66") };
         }
 
         var cloud = new CloudDataObj()
@@ -1499,7 +1499,7 @@ public static class GameBinding
                 var res1 = await DownloadManager.StartAsync(list);
                 if (!res1)
                 {
-                    return new StringRes { Data = LanguageUtils.Get("App.Text67") };
+                    return new StringRes { Data = LangUtils.Get("App.Text67") };
                 }
             }
         }
@@ -1555,12 +1555,12 @@ public static class GameBinding
             var data = await CoreHttpClient.GetStringAsync(text + "server.json");
             if (data == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("App.Text68") };
+                return new StringRes { Data = LangUtils.Get("App.Text68") };
             }
             var obj = JsonUtils.ToObj(data, JsonType.ServerPackObj);
             if (obj == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("App.Text69") };
+                return new StringRes { Data = LangUtils.Get("App.Text69") };
             }
 
             var game = obj.Game;
@@ -1580,19 +1580,19 @@ public static class GameBinding
 
             if (game == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("App.Text66") };
+                return new StringRes { Data = LangUtils.Get("App.Text66") };
             }
 
-            var dialog = window.ShowProgress(LanguageUtils.Get("App.Text51"));
+            var dialog = window.ShowProgress(LangUtils.Get("App.Text51"));
 
             var res1 = await obj.UpdateAsync(new UpdateLaunchGui(progress), CancellationToken.None);
             if (!res1)
             {
                 window.CloseDialog(dialog);
-                dialog = window.ShowProgress(LanguageUtils.Get("App.Text67"));
+                dialog = window.ShowProgress(LangUtils.Get("App.Text67"));
                 await game.RemoveAsync();
                 window.CloseDialog(dialog);
-                window.Show(LanguageUtils.Get("App.Text67"));
+                window.Show(LangUtils.Get("App.Text67"));
 
                 return new StringRes();
             }
@@ -1603,7 +1603,7 @@ public static class GameBinding
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("App.Text69");
+            string temp = LangUtils.Get("App.Text69");
             Logs.Error(temp, e);
             return new() { Data = temp };
         }
@@ -1689,46 +1689,46 @@ public static class GameBinding
         await Task.Run(() =>
         {
             info.AppendLine($"ColorMC:{ColorMCCore.Version}")
-                .AppendLine($"{LanguageUtils.Get("App.Text41")}:{obj.Name}")
-                .AppendLine($"{LanguageUtils.Get("Text.GameVersion")}:{obj.Version}");
+                .AppendLine($"{LangUtils.Get("App.Text41")}:{obj.Name}")
+                .AppendLine($"{LangUtils.Get("Text.GameVersion")}:{obj.Version}");
             if (obj.Modpack)
             {
-                info.AppendLine(string.Format(LanguageUtils.Get("App.Text47"),
+                info.AppendLine(string.Format(LangUtils.Get("App.Text47"),
                     obj.ModPackType.GetName(), obj.PID, obj.FID));
             }
             if (obj.Loader != Loaders.Normal)
             {
                 if (obj.Loader == Loaders.Custom)
                 {
-                    info.AppendLine(string.Format(LanguageUtils.Get("App.Text43"),
+                    info.AppendLine(string.Format(LangUtils.Get("App.Text43"),
                         GetGameLoaderAsync(obj), obj.CustomLoader?.OffLib));
                 }
                 else
                 {
-                    info.AppendLine(string.Format(LanguageUtils.Get("App.Text42"),
+                    info.AppendLine(string.Format(LangUtils.Get("App.Text42"),
                         obj.Loader.GetName(), obj.LoaderVersion));
                 }
 
                 if (list.Count != 0)
                 {
-                    info.AppendLine(LanguageUtils.Get("App.Text44"));
+                    info.AppendLine(LangUtils.Get("App.Text44"));
 
                     foreach (var item in list)
                     {
-                        info.AppendLine(string.Format(LanguageUtils.Get("App.Text45"),
+                        info.AppendLine(string.Format(LangUtils.Get("App.Text45"),
                             item.Name, item.ModId, StringHelper.MakeString(item.Author),
                             Path.GetFileName(item.Local), item.Disable, item.CoreMod,
                             item.Sha1, StringHelper.MakeString(item.Loaders)));
                         if (obj.Mods.Values.FirstOrDefault(item => item.Sha1 == item.Sha1) is { } item1)
                         {
-                            info.AppendLine(string.Format(LanguageUtils.Get("App.Text46"),
+                            info.AppendLine(string.Format(LangUtils.Get("App.Text46"),
                                 GameDownloadHelper.TestSourceType(item1.ModId, item1.FileId), item1.ModId, item1.FileId));
                         }
                     }
                 }
             }
         });
-        WindowManager.ShowError(LanguageUtils.Get("App.Text48"), info.ToString());
+        WindowManager.ShowError(LangUtils.Get("App.Text48"), info.ToString());
     }
 
     /// <summary>
@@ -1745,7 +1745,7 @@ public static class GameBinding
         }
         else
         {
-            return LanguageUtils.Get("App.Text70");
+            return LangUtils.Get("App.Text70");
         }
     }
 
@@ -1831,13 +1831,13 @@ public static class GameBinding
         var top = TopLevel.GetTopLevel(WindowManager.MainWindow);
         if (top == null)
         {
-            window.Show(LanguageUtils.Get("App.Text101"));
+            window.Show(LangUtils.Get("App.Text101"));
             return;
         }
         var res = await UserBinding.GetLaunchUser(window);
         if (res.User is not { } user)
         {
-            window.Show(LanguageUtils.Get("App.Text60"));
+            window.Show(LangUtils.Get("App.Text60"));
             return;
         }
         var arg = new GameLaunchArg
@@ -1849,7 +1849,7 @@ public static class GameBinding
 
         try
         {
-            var dialog = window.ShowProgress(LanguageUtils.Get("App.Text25"));
+            var dialog = window.ShowProgress(LangUtils.Get("App.Text25"));
             var res1 = await obj.CreateGameCmdAsync(arg, token);
             if (!res1.Res)
             {
@@ -1902,7 +1902,7 @@ public static class GameBinding
             var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
             if (res2 == false)
             {
-                window.Show(LanguageUtils.Get("App.Text101"));
+                window.Show(LangUtils.Get("App.Text101"));
             }
         }
         catch (Exception e)
@@ -1922,7 +1922,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -1938,13 +1938,13 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -1959,7 +1959,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -1973,20 +1973,20 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text22")
+                Data = LangUtils.Get("GameCloudWindow.Text22")
             };
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -2003,11 +2003,11 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
-        progress.Text = LanguageUtils.Get("GameCloudWindow.Text8");
+        progress.Text = LangUtils.Get("GameCloudWindow.Text8");
 
         var data = GameCloudUtils.GetCloudData(obj);
         string dir = obj.GetBasePath();
@@ -2020,7 +2020,7 @@ public static class GameBinding
         string name = Path.Combine(dir, GuiNames.NameCloudConfigFile);
         files.Remove(name);
         await new ZipProcess().ZipFileAsync(name, files, dir);
-        progress.Text = LanguageUtils.Get("GameCloudWindow.Text9");
+        progress.Text = LangUtils.Get("GameCloudWindow.Text9");
         var res = await ColorMCCloudAPI.UploadConfigAsync(obj, name);
         PathHelper.Delete(name);
         if (res.Data1 == 100)
@@ -2036,20 +2036,20 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text23")
+                Data = LangUtils.Get("GameCloudWindow.Text23")
             };
         }
         else if (res.Data1 == 101)
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -2065,7 +2065,7 @@ public static class GameBinding
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -2076,24 +2076,24 @@ public static class GameBinding
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res != 100)
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text21")
+                Data = LangUtils.Get("GameCloudWindow.Text21")
             };
         }
 
-        progress.Text = LanguageUtils.Get("GameCloudWindow.Text33");
+        progress.Text = LangUtils.Get("GameCloudWindow.Text33");
         var res1 = await UnZipCloudConfigAsync(game, data, local);
         if (!res1)
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text24")
+                Data = LangUtils.Get("GameCloudWindow.Text24")
             };
         }
 
@@ -2111,7 +2111,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -2129,7 +2129,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -2149,7 +2149,7 @@ public static class GameBinding
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -2157,20 +2157,20 @@ public static class GameBinding
         string local = Path.Combine(world.World.Game.GetSavesPath(), $"{world.World.LevelName}{Names.NameZipExt}");
         if (!world.HaveCloud)
         {
-            model.Text = LanguageUtils.Get("GameCloudWindow.Text35");
+            model.Text = LangUtils.Get("GameCloudWindow.Text35");
             using var stream = PathHelper.OpenWrite(local);
             using var zip = await new ZipProcess().ZipFileAsync(dir, stream);
         }
         else
         {
-            model.Text = LanguageUtils.Get("GameCloudWindow.Text12");
+            model.Text = LangUtils.Get("GameCloudWindow.Text12");
             //云端文件
             var list = await ColorMCCloudAPI.GetWorldFilesAsync(game, world.World);
             if (list == null)
             {
                 return new StringRes
                 {
-                    Data = LanguageUtils.Get("GameCloudWindow.Text25")
+                    Data = LangUtils.Get("GameCloudWindow.Text25")
                 };
             }
             //本地文件
@@ -2209,10 +2209,10 @@ public static class GameBinding
             {
                 return new StringRes
                 {
-                    Data = LanguageUtils.Get("GameCloudWindow.Text13")
+                    Data = LangUtils.Get("GameCloudWindow.Text13")
                 };
             }
-            model.Text = LanguageUtils.Get("GameCloudWindow.Text35");
+            model.Text = LangUtils.Get("GameCloudWindow.Text35");
             await new ZipProcess().ZipFileAsync(local, pack, dir);
             if (have)
             {
@@ -2230,20 +2230,20 @@ public static class GameBinding
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res == 104)
         {
             return new StringRes
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text23")
+                Data = LangUtils.Get("GameCloudWindow.Text23")
             };
         }
 
         return new StringRes
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -2260,7 +2260,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
 
@@ -2283,7 +2283,7 @@ public static class GameBinding
         var res = await ColorMCCloudAPI.DownloadWorldAsync(game, world.Cloud, local, list);
         if (res == 100)
         {
-            model.Text = LanguageUtils.Get("GameCloudWindow.Text37");
+            model.Text = LangUtils.Get("GameCloudWindow.Text37");
             try
             {
                 using var file = PathHelper.OpenRead(local)!;
@@ -2292,7 +2292,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                string temp = LanguageUtils.Get("GameCloudWindow.Text27");
+                string temp = LangUtils.Get("GameCloudWindow.Text27");
                 Logs.Error(temp, e);
                 return new() { Data = temp };
             }
@@ -2305,27 +2305,27 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text26")
+                Data = LangUtils.Get("GameCloudWindow.Text26")
             };
         }
         else if (res == 103)
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text13")
+                Data = LangUtils.Get("GameCloudWindow.Text13")
             };
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -2341,7 +2341,7 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text29")
+                Data = LangUtils.Get("GameCloudWindow.Text29")
             };
         }
         var res = await ColorMCCloudAPI.DeleteWorldAsync(game, name);
@@ -2354,20 +2354,20 @@ public static class GameBinding
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text20")
+                Data = LangUtils.Get("GameCloudWindow.Text20")
             };
         }
         else if (res == 102)
         {
             return new()
             {
-                Data = LanguageUtils.Get("GameCloudWindow.Text26")
+                Data = LangUtils.Get("GameCloudWindow.Text26")
             };
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 

@@ -206,7 +206,7 @@ public static class BaseBinding
         }
         catch (Exception ex)
         {
-            var data = LanguageUtils.Get("App.Text112");
+            var data = LangUtils.Get("App.Text112");
             Logs.Error(data, ex);
             WindowManager.ShowError(data, ex);
 
@@ -531,7 +531,7 @@ public static class BaseBinding
 
             var obj = new JsonObject();
 
-            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text3");
+            dialog.Text = LangUtils.Get("BuildPackWindow.Text3");
 
             //打包配置
             if (model.UiBg && File.Exists(conf.BackImage))
@@ -685,7 +685,7 @@ public static class BaseBinding
             //打包java
             if (model.Java)
             {
-                dialog.Text = LanguageUtils.Get("BuildPackWindow.Text4");
+                dialog.Text = LangUtils.Get("BuildPackWindow.Text4");
 
                 var list = new List<JvmConfigObj>();
                 foreach (var item in model.Javas)
@@ -722,7 +722,7 @@ public static class BaseBinding
                 }
             }
 
-            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text5");
+            dialog.Text = LangUtils.Get("BuildPackWindow.Text5");
 
             //打包游戏实例
             foreach (var item in model.GetSelectItems())
@@ -733,7 +733,7 @@ public static class BaseBinding
                 await PutFileAsync(zip, tempfile, item);
             }
 
-            dialog.Text = LanguageUtils.Get("BuildPackWindow.Text6");
+            dialog.Text = LangUtils.Get("BuildPackWindow.Text6");
 
             foreach (var item in model.Files)
             {
@@ -751,7 +751,7 @@ public static class BaseBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("BuildPackWindow.Text8"), e);
+            WindowManager.ShowError(LangUtils.Get("BuildPackWindow.Text8"), e);
         }
 
         return false;
@@ -800,7 +800,7 @@ public static class BaseBinding
         }
 
         using var temp = PathHelper.OpenRead(file)!;
-        var dialog = model.ShowProgress(LanguageUtils.Get("App.Text26"));
+        var dialog = model.ShowProgress(LangUtils.Get("App.Text26"));
         await new ZipProcess().UnzipAsync(ColorMCGui.BaseDir, file, temp);
         model.CloseDialog(dialog);
 

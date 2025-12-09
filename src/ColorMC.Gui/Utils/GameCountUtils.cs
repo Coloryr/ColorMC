@@ -125,7 +125,7 @@ public static class GameCountUtils
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log17"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log17"), e);
         }
 
         if (Count == null)

@@ -16,11 +16,11 @@ public static class GameEditFlyout5
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), true, ()=>
+            new FlyoutMenuModel(LangUtils.Get("Button.Delete"), true, ()=>
             {
                 model.DeleteServer(model.ServerItem!);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text13"), true, ()=>
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text13"), true, ()=>
             {
                 var top =TopLevel.GetTopLevel(con);
                 if (top == null || model.ServerItem == null)

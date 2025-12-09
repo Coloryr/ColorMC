@@ -14,7 +14,7 @@ namespace ColorMC.Gui.Utils;
 /// <summary>
 /// 语言文件
 /// </summary>
-public static class LanguageUtils
+public static class LangUtils
 {
     private static readonly Dictionary<string, string> s_languageList = [];
 

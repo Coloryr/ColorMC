@@ -25,7 +25,7 @@ public partial class SkinControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("SkinWindow.Title");
+        Title = LangUtils.Get("SkinWindow.Title");
 
         ImageManager.SkinChange += SkinChange;
     }

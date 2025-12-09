@@ -33,7 +33,7 @@ public static class GameEditFlyout1
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
             {
                 if (single)
                 {
@@ -47,7 +47,7 @@ public static class GameEditFlyout1
                     }
                 }
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text2"), true, () =>
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text2"), true, () =>
             {
                 if(single)
                 {
@@ -58,11 +58,11 @@ public static class GameEditFlyout1
                     model.DeleteMod(mods);
                 }
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), single, () =>
+            new FlyoutMenuModel(LangUtils.Get("Button.OpFile"), single, () =>
             {
                 PathBinding.OpenFileWithExplorer(obj.Local);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text6"), true, async() =>
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text6"), true, async() =>
             {
                 var list = new List <IStorageFile>();
                 if(TopLevel.GetTopLevel(con) is { } top)
@@ -77,16 +77,16 @@ public static class GameEditFlyout1
                     await BaseBinding.CopyFileClipboardAsync(top, list);
                 }
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text3"), single, () =>
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text3"), single, () =>
             {
                 WebBinding.OpenMcmod(obj);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text4"), single
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text4"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {
                     BaseBinding.OpenUrl(obj !.Url);
                 }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text5"), single
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text5"), single
                 && ! string.IsNullOrWhiteSpace(obj ?.PID) && ! string.IsNullOrWhiteSpace(obj ?.FID), () =>
                 {
                     WindowManager.ShowAdd(obj!.Obj.Game, obj);

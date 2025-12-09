@@ -83,11 +83,11 @@ public static class ConfigFlyout1
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("Button.Add"), add, () =>
+            new FlyoutMenuModel(LangUtils.Get("Button.Add"), add, () =>
             {
                 model.AddItem(item);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), delete, ()=>
+            new FlyoutMenuModel(LangUtils.Get("Button.Delete"), delete, ()=>
             {
                 if (item == null)
                 {
@@ -98,15 +98,15 @@ public static class ConfigFlyout1
                     model.Delete(item!);
                 }
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
+            new FlyoutMenuModel(LangUtils.Get("ConfigEditWindow.Flyouts.Text3"), editKey, () =>
             {
                 model.SetKey(item);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
+            new FlyoutMenuModel(LangUtils.Get("ConfigEditWindow.Flyouts.Text4"), editValue, () =>
             {
                 model.SetValue(item);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("ConfigEditWindow.Flyouts.Text5"), true, model.Find),
+            new FlyoutMenuModel(LangUtils.Get("ConfigEditWindow.Flyouts.Text5"), true, model.Find),
         ]).Show(con);
     }
 }

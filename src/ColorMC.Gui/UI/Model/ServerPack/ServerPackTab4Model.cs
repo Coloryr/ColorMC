@@ -25,7 +25,7 @@ public partial class ServerPackModel
     /// <summary>
     /// 打包方式
     /// </summary>
-    public string[] FuntionList { get; init; } = LanguageUtils.GetFuntionList();
+    public string[] FuntionList { get; init; } = LangUtils.GetFuntionList();
 
     /// <summary>
     /// 选中的文件

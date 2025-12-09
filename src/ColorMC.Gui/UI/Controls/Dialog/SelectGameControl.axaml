@@ -41,6 +41,7 @@
         </StackPanel>
         <ScrollViewer>
             <TreeView
+                Margin="10,0,10,0"
                 ItemsSource="{Binding Items}"
                 SelectedItem="{Binding Select}"
                 SelectionMode="Single">

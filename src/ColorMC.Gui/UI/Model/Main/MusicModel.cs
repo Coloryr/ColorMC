@@ -84,7 +84,7 @@ public partial class MainModel
                 BaseBinding.MusicPlay();
             }
             AudioIcon = ImageManager.MusicIcons[1];
-            Window.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
+            Window.Title = "ColorMC " + LangUtils.Get("MainWindow.Text73");
         }
 
         _isplay = !_isplay;
@@ -119,7 +119,7 @@ public partial class MainModel
         var config = GuiConfigUtils.Config.ServerCustom;
         if (config?.PlayMusic == true && !string.IsNullOrWhiteSpace(config.Music))
         {
-            Window.Title = "ColorMC " + LanguageUtils.Get("MainWindow.Text73");
+            Window.Title = "ColorMC " + LangUtils.Get("MainWindow.Text73");
             MusicDisplay = true;
 
             MusicLoopStart();

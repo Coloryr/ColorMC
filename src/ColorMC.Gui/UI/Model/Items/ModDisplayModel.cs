@@ -40,7 +40,7 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 版本号
     /// </summary>
-    public string Version => Obj.Version + (IsNew ? " " + LanguageUtils.Get("GameEditWindow.Tab4.Text18") : "");
+    public string Version => Obj.Version + (IsNew ? " " + LangUtils.Get("GameEditWindow.Tab4.Text18") : "");
     /// <summary>
     /// 文件位置
     /// </summary>
@@ -93,7 +93,7 @@ public partial class ModDisplayModel : ObservableObject
         Obj = obj;
         Obj1 = obj1;
 
-        Name = obj.ReadFail ? LanguageUtils.Get("App.Text50") : obj.Name ?? "";
+        Name = obj.ReadFail ? LangUtils.Get("App.Text50") : obj.Name ?? "";
         Enable = !obj.Disable;
         if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
         {

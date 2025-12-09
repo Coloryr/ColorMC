@@ -67,13 +67,13 @@ public partial class NetFrpModel
     /// </summary>
     public async void LoadCloud()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("NetFrpWindow.Tab4.Text5"));
+        var dialog = Window.ShowProgress(LangUtils.Get("NetFrpWindow.Tab4.Text5"));
         CloudServers.Clear();
         var list = await WebBinding.GetFrpServerAsync(Version);
         Window.CloseDialog(dialog);
         if (list == null)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab4.Text9"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab4.Text9"));
             return;
         }
         foreach (var item in list)
@@ -113,7 +113,7 @@ public partial class NetFrpModel
         //选择一个游戏实例
         var dialog = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("NetFrpWindow.Tab4.Text7"),
+            Text = LangUtils.Get("NetFrpWindow.Tab4.Text7"),
             Items = [.. list1]
         };
         var select = await Window.ShowDialogWait(dialog);
@@ -142,7 +142,7 @@ public partial class NetFrpModel
         }
         catch (Exception e)
         {
-            var temp1 = LanguageUtils.Get("NetFrpWindow.Tab4.Text10");
+            var temp1 = LangUtils.Get("NetFrpWindow.Tab4.Text10");
             Logs.Error(temp1, e);
             Window.Show(temp1);
         }

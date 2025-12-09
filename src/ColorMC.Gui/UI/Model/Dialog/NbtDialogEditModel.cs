@@ -106,7 +106,7 @@ public partial class NbtDialogEditModel(WindowModel model, string usename) : Obs
         }
         catch
         {
-            model.Show(LanguageUtils.Get("ConfigEditWindow.Text29"));
+            model.Show(LangUtils.Get("ConfigEditWindow.Text29"));
             DataItem.Value = 0;
             return;
         }

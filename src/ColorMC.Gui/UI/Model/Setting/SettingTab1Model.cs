@@ -55,7 +55,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeBackRunDir()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text32"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text32"));
         if (!res)
         {
             return;
@@ -74,7 +74,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ChangeRunDir()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text30"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text30"));
         if (!res)
         {
             return;
@@ -183,25 +183,25 @@ public partial class SettingModel
         var local = Local1;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadConfig(local);
             if (!res)
             {
-                Window.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LangUtils.Get("Text.ConfigError"));
                 return;
             }
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -218,24 +218,24 @@ public partial class SettingModel
         var local = Local2;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text28"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab1.Text28"));
 
         try
         {
             var res = AuthDatabase.LoadData(local);
             if (!res)
             {
-                Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text40"));
+                Window.Show(LangUtils.Get("SettingWindow.Tab1.Text40"));
                 return;
             }
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text29"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text29"));
         }
         catch (Exception)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text41"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text41"));
         }
         finally
         {
@@ -252,25 +252,25 @@ public partial class SettingModel
         var local = Local3;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = ConfigBinding.LoadGuiConfig(local);
             if (!res)
             {
-                Window.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LangUtils.Get("Text.ConfigError"));
                 return;
             }
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -287,25 +287,25 @@ public partial class SettingModel
         var local = Local4;
         if (string.IsNullOrWhiteSpace(local))
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text37"));
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text37"));
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab1.Text26"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab1.Text26"));
 
         try
         {
             var res = FrpConfigUtils.Load(local, true);
             if (!res)
             {
-                Window.Show(LanguageUtils.Get("Text.ConfigError"));
+                Window.Show(LangUtils.Get("Text.ConfigError"));
                 return;
             }
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text27"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text27"));
         }
         catch (Exception e1)
         {
-            Window.Show(LanguageUtils.Get("SettingWindow.Tab1.Text39"));
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab1.Text39"), e1);
+            Window.Show(LangUtils.Get("SettingWindow.Tab1.Text39"));
+            WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab1.Text39"), e1);
         }
         finally
         {
@@ -320,7 +320,7 @@ public partial class SettingModel
     [RelayCommand]
     public async Task ClearTemp()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text21"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text21"));
         if (res)
         {
             BaseBinding.DeleteTemp();
@@ -335,7 +335,7 @@ public partial class SettingModel
     {
         var temp = DownloadManager.DownloadDir;
 
-        TempSize = string.Format(LanguageUtils.Get("SettingWindow.Tab1.Text36"), PathBinding.GetFolderSize(temp));
+        TempSize = string.Format(LangUtils.Get("SettingWindow.Tab1.Text36"), PathBinding.GetFolderSize(temp));
     }
 
     /// <summary>
@@ -343,12 +343,12 @@ public partial class SettingModel
     /// </summary>
     private async void Reset()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text22"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text22"));
         if (!res)
             return;
 
         ConfigBinding.ResetConfig();
-        Window.Notify(LanguageUtils.Get("Text.Reset"));
+        Window.Notify(LangUtils.Get("Text.Reset"));
     }
 
     /// <summary>
@@ -356,12 +356,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearUser()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text24"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text24"));
         if (!res)
             return;
 
         UserBinding.ClearAllUser();
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text25"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text25"));
     }
 
     /// <summary>
@@ -369,12 +369,12 @@ public partial class SettingModel
     /// </summary>
     private async void ClearWindow()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("SettingWindow.Tab1.Text34"));
+        var res = await Window.ShowChoice(LangUtils.Get("SettingWindow.Tab1.Text34"));
         if (!res)
             return;
 
         WindowManager.Reset();
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text35"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text35"));
     }
 
     /// <summary>
@@ -390,7 +390,7 @@ public partial class SettingModel
         var res = await PathBinding.SaveFileAsync(top, FileType.User, null);
         if (res == true)
         {
-            Window.Notify(LanguageUtils.Get("SettingWindow.Tab1.Text33"));
+            Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text33"));
         }
     }
 

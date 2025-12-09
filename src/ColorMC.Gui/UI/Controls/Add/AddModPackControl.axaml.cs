@@ -20,7 +20,7 @@ public partial class AddModPackControl : BaseUserControl
 
         ItemInfo.PointerPressed += ItemInfo_PointerPressed;
 
-        Title = LanguageUtils.Get("AddModPackWindow.Title");
+        Title = LangUtils.Get("AddModPackWindow.Title");
     }
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)

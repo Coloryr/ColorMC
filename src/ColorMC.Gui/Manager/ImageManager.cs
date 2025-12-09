@@ -352,7 +352,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageUtils.Get("App.Text92"), file), e);
+                Logs.Error(string.Format(LangUtils.Get("App.Text92"), file), e);
             }
         }
         if (file1 != null && File.Exists(file1))
@@ -363,7 +363,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(string.Format(LanguageUtils.Get("App.Text93"), file), e);
+                Logs.Error(string.Format(LangUtils.Get("App.Text93"), file), e);
             }
         }
 
@@ -602,7 +602,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Text91"), e);
+                Logs.Error(LangUtils.Get("App.Text91"), e);
                 return null;
             }
         }
@@ -693,7 +693,7 @@ public static class ImageManager
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Text90"), e);
+                Logs.Error(LangUtils.Get("App.Text90"), e);
                 return null;
             }
             finally

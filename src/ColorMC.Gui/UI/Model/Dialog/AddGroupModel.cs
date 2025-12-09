@@ -36,7 +36,7 @@ public partial class AddGroupModel(WindowModel window, string? group) : Observab
     {
         var dialog = new InputModel(window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("Text.Group")
+            Watermark1 = LangUtils.Get("Text.Group")
         };
         var res = await window.ShowDialogWait(dialog);
         if (res is not true)
@@ -46,13 +46,13 @@ public partial class AddGroupModel(WindowModel window, string? group) : Observab
 
         if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            window.Show(LanguageUtils.Get("MainWindow.Text82"));
+            window.Show(LangUtils.Get("MainWindow.Text82"));
             return;
         }
 
         if (!GameBinding.AddGameGroup(dialog.Text1))
         {
-            window.Show(LanguageUtils.Get("MainWindow.Text83"));
+            window.Show(LangUtils.Get("MainWindow.Text83"));
             return;
         }
 

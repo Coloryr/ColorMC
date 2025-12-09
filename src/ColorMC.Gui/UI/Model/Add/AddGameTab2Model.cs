@@ -18,7 +18,7 @@ public partial class AddGameModel
     /// <summary>
     /// 压缩包类型列表
     /// </summary>
-    public string[] PackTypeList { get; init; } = LanguageUtils.GetPackType();
+    public string[] PackTypeList { get; init; } = LangUtils.GetPackType();
 
     /// <summary>
     /// 压缩包位置
@@ -41,17 +41,17 @@ public partial class AddGameModel
         if (value != null && Type == null)
         {
             //测试获取压缩包类型
-            var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab2.Text11"));
+            var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text11"));
             var res = await GameBinding.CheckTypeAsync(value);
             Window.CloseDialog(dialog);
             if (res == null)
             {
-                Window.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text15"));
+                Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text15"));
             }
             else
             {
                 Type = res;
-                Window.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab2.Text10"), res.ToString()));
+                Window.Notify(string.Format(LangUtils.Get("AddGameWindow.Tab2.Text10"), res.ToString()));
             }
         }
     }
@@ -64,7 +64,7 @@ public partial class AddGameModel
     {
         if (Type == null)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text14"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text14"));
             return;
         }
 
@@ -98,10 +98,10 @@ public partial class AddGameModel
     {
         if (string.IsNullOrWhiteSpace(ZipLocal))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text13"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text13"));
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab2.Text9"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
         var pack = new TopModPackGui(dialog);
         var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new OverGameGui(Window), pack);
@@ -109,11 +109,11 @@ public partial class AddGameModel
         Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab2.Text12"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text12"));
             return;
         }
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab2.Text8"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab2.Text8"));
 
         if (Type == PackType.ZipPack)
         {

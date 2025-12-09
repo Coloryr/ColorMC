@@ -97,8 +97,8 @@ public partial class DownloadModel : ControlModel, IDownloadGui
             _downloadList.Add(a, item11);
         }
 
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("DownloadWindow.Text2"),
-            LanguageUtils.Get("DownloadWindow.Text1"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("DownloadWindow.Text2"),
+            LangUtils.Get("DownloadWindow.Text1"));
         Window.SetChoiseCall(_useName, () => _ = Stop(), Pause);
         Window.HeadBackEnable = false;
     }
@@ -113,15 +113,15 @@ public partial class DownloadModel : ControlModel, IDownloadGui
         {
             DownloadManager.Resume();
             Window.SetChoiseContent(_useName,
-                LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text1"));
-            Window.Notify(LanguageUtils.Get("DownloadWindow.Text11"));
+                LangUtils.Get("DownloadWindow.Text2"), LangUtils.Get("DownloadWindow.Text1"));
+            Window.Notify(LangUtils.Get("DownloadWindow.Text11"));
         }
         else
         {
             DownloadManager.Pause();
             Window.SetChoiseContent(_useName,
-                LanguageUtils.Get("DownloadWindow.Text2"), LanguageUtils.Get("DownloadWindow.Text4"));
-            Window.Notify(LanguageUtils.Get("DownloadWindow.Text10"));
+                LangUtils.Get("DownloadWindow.Text2"), LangUtils.Get("DownloadWindow.Text4"));
+            Window.Notify(LangUtils.Get("DownloadWindow.Text10"));
         }
     }
 
@@ -147,13 +147,13 @@ public partial class DownloadModel : ControlModel, IDownloadGui
         Window.HeadChoise1Display = false;
         Window.HeadChoiseDisplay = false;
 
-        var res = await Window.ShowChoice(LanguageUtils.Get("DownloadWindow.Text9"));
+        var res = await Window.ShowChoice(LangUtils.Get("DownloadWindow.Text9"));
         if (res)
         {
             DisplayList.Clear();
             _downloadList.Clear();
             DownloadManager.Stop();
-            Window.Notify(LanguageUtils.Get("DownloadWindow.Text13"));
+            Window.Notify(LangUtils.Get("DownloadWindow.Text13"));
             return true;
         }
         else

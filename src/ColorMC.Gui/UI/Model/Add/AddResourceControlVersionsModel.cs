@@ -41,7 +41,7 @@ public partial class AddResourceControlModel
             {
                 var dialog = new SelectModel(Window.WindowId)
                 {
-                    Text = LanguageUtils.Get("AddResourceWindow.Text22"),
+                    Text = LangUtils.Get("AddResourceWindow.Text22"),
                     Items = [.. _sourceTypeNameList]
                 };
                 if (await Window.ShowDialogWait(dialog) is not true)
@@ -76,24 +76,24 @@ public partial class AddResourceControlModel
 
         if (loadtype == SourceType.McMod || loadid == null)
         {
-            Window.Show(LanguageUtils.Get("AddResourceWindow.Text34"));
+            Window.Show(LangUtils.Get("AddResourceWindow.Text34"));
             return;
         }
 
-        var dialog1 = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text18"));
+        var dialog1 = Window.ShowProgress(LangUtils.Get("AddResourceWindow.Text18"));
         var res = await WebBinding.GetFileListAsync(loadtype, loadid, 0,
                 GameVersionDownload, _now == FileType.Mod ? _obj.Loader : Loaders.Normal, _now);
         Window.CloseDialog(dialog1);
         if (res == null || res.List == null || res.List.Count == 0)
         {
-            Window.Show(LanguageUtils.Get("AddResourceWindow.Text27"));
+            Window.Show(LangUtils.Get("AddResourceWindow.Text27"));
             return;
         }
 
         var item1 = res.List.First();
         if (item1.IsDownload)
         {
-            var res1 = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text40"));
+            var res1 = await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text40"));
             if (!res1)
             {
                 return;
@@ -115,9 +115,9 @@ public partial class AddResourceControlModel
         }
 
         ModInfoObj? mod = null;
-        if (_now == FileType.Mod && _obj.Mods.TryGetValue(data.ID, out mod))
+        if (_now == FileType.Mod && _obj.Mods.TryGetValue(data.Obj.Pid, out mod))
         {
-            var res1 = await Window.ShowChoice(LanguageUtils.Get("AddResourceWindow.Text23"));
+            var res1 = await Window.ShowChoice(LangUtils.Get("AddResourceWindow.Text23"));
             if (!res1)
             {
                 return;
@@ -136,7 +136,7 @@ public partial class AddResourceControlModel
                 var list = await _obj.GetSavesAsync();
                 if (list.Count == 0)
                 {
-                    Window.Show(LanguageUtils.Get("AddResourceWindow.Text29"));
+                    Window.Show(LangUtils.Get("AddResourceWindow.Text29"));
                     return;
                 }
 
@@ -144,7 +144,7 @@ public partial class AddResourceControlModel
                 list.ForEach(item => world.Add(item.LevelName));
                 var dialog1 = new SelectModel(Window.WindowId)
                 {
-                    Text = LanguageUtils.Get("AddResourceWindow.Text19"),
+                    Text = LangUtils.Get("AddResourceWindow.Text19"),
                     Items = [.. world]
                 };
                 var res1 = await Window.ShowDialogWait(dialog1);
@@ -155,38 +155,26 @@ public partial class AddResourceControlModel
                 var item = list[dialog1.Index];
 
                 FileItemDownloadModel? info = null;
-                if (data.SourceType == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
+                if (data.Obj.Source == SourceType.CurseForge && data.Data is CurseForgeModObj.CurseForgeDataObj data1)
                 {
                     info = new FileItemDownloadModel
                     {
                         Window = Window,
                         Name = data1.DisplayName,
-                        Obj = new SourceItemObj
-                        { 
-                            Fid = data1.Id.ToString(),
-                            Pid = data1.ModId.ToString(),
-                            Type = FileType.DataPacks,
-                            Source = data.SourceType
-                        }
+                        Obj = data.Obj
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadResourceAsync(item, data1, pack, info.Token);
                     pack.Stop();
                 }
-                else if (data.SourceType == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
+                else if (data.Obj.Source == SourceType.Modrinth && data.Data is ModrinthVersionObj data2)
                 {
                     info = new FileItemDownloadModel
                     {
                         Window = Window,
                         Name = data2.Name,
-                        Obj = new SourceItemObj
-                        { 
-                            Fid = data2.Id,
-                        Type = FileType.DataPacks,
-                            Source = data.SourceType,
-                            Pid = data2.ProjectId
-                        }
+                        Obj = data.Obj
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);
@@ -201,8 +189,8 @@ public partial class AddResourceControlModel
             //模组
             else if (_now == FileType.Mod)
             {
-                var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text40"));
-                var list = data.SourceType switch
+                var dialog = Window.ShowProgress(LangUtils.Get("AddResourceWindow.Text40"));
+                var list = data.Obj.Source switch
                 {
                     SourceType.CurseForge => await WebBinding.GetDownloadModListAsync(_obj,
                     data.Data as CurseForgeModObj.CurseForgeDataObj),
@@ -213,7 +201,7 @@ public partial class AddResourceControlModel
                 Window.CloseDialog(dialog);
                 if (list == null)
                 {
-                    Window.Show(LanguageUtils.Get("AddResourceWindow.Text32"));
+                    Window.Show(LangUtils.Get("AddResourceWindow.Text32"));
                     return;
                 }
 
@@ -223,13 +211,7 @@ public partial class AddResourceControlModel
                     {
                         Window = Window,
                         Name = list.Info.Name,
-                        Obj = new SourceItemObj
-                        { 
-                            Fid = list.Info.FileId,
-                            Type = FileType.Mod,
-                            Source = data.SourceType,
-                            Pid = list.Info.ModId
-                        }
+                        Obj = data.Obj
                     };
                     StartDownload(info);
                     var pack = new ResourceGui(info);
@@ -247,8 +229,7 @@ public partial class AddResourceControlModel
                 }
                 else
                 {
-                    if (await StartListTask(list, mod, data.SourceType,
-                        data.ProjectName, data.Name) is { } value)
+                    if (await StartListTask(list, mod, data.Obj.Source, data.ProjectName, data.Name) is { } value)
                     {
                         res = value;
                     }
@@ -261,7 +242,7 @@ public partial class AddResourceControlModel
             }
             else
             {
-                res = data.SourceType switch
+                res = data.Obj.Source switch
                 {
                     SourceType.CurseForge => await WebBinding.DownloadAsync(_now, _obj,
                         data.Data as CurseForgeModObj.CurseForgeDataObj),
@@ -274,16 +255,16 @@ public partial class AddResourceControlModel
             //下载结束
             if (res)
             {
-                Window.Notify(LanguageUtils.Get("Text.Downloaded"));
+                Window.Notify(LangUtils.Get("Text.Downloaded"));
             }
             else
             {
-                Window.Show(LanguageUtils.Get("AddResourceWindow.Text28"));
+                Window.Show(LangUtils.Get("AddResourceWindow.Text28"));
             }
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
+            Logs.Error(LangUtils.Get("AddResourceWindow.Text31"), e);
             res = false;
         }
         finally

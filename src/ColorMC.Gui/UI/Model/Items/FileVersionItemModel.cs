@@ -3,6 +3,7 @@ using System.Linq;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.Utils;
 
@@ -40,23 +41,7 @@ public partial class FileVersionItemModel : SelectItemModel
     /// </summary>
     public bool IsDownload { get; set; }
 
-    /// <summary>
-    /// 文件类型
-    /// </summary>
-    public FileType FileType;
-    /// <summary>
-    /// 下载源
-    /// </summary>
-    public SourceType SourceType;
-
-    /// <summary>
-    /// Mod用
-    /// </summary>
-    public string ID;
-    /// <summary>
-    /// Mod用
-    /// </summary>
-    public string ID1;
+    public readonly SourceItemObj Obj;
 
     /// <summary>
     /// 数据
@@ -70,29 +55,39 @@ public partial class FileVersionItemModel : SelectItemModel
         Data = data;
 
         ProjectName = project;
-        ID = data.ModId.ToString();
-        ID1 = data.Id.ToString();
+
+        Obj = new SourceItemObj
+        { 
+            Fid = data.Id.ToString(),
+            Pid = data.ModId.ToString(),
+            Source = SourceType.CurseForge,
+            Type = type
+        };
+
         Name = data.DisplayName;
         Size = UIUtils.MakeFileSize1(data.FileLength);
         Download = data.DownloadCount;
         Time = DateTime.Parse(data.FileDate);
-        FileType = type;
-        SourceType = SourceType.CurseForge;
     }
 
     public FileVersionItemModel(ModrinthVersionObj data, FileType type, string project)
     {
         Data = data;
 
-        ID = data.ProjectId;
-        ID1 = data.Id;
+        Obj = new SourceItemObj
+        {
+            Fid = data.Id,
+            Pid = data.ProjectId,
+            Source = SourceType.CurseForge,
+            Type = type
+        };
+
         Name = data.Name;
         var file = data.Files.FirstOrDefault(a => a.Primary) ?? data.Files[0];
         Size = UIUtils.MakeFileSize1(file.Size);
         Download = data.Downloads;
         Time = DateTime.Parse(data.DatePublished);
-        FileType = type;
-        SourceType = SourceType.Modrinth;
+        ProjectName = project;
     }
 
     /// <summary>

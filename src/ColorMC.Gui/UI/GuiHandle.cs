@@ -28,7 +28,7 @@ public class LoginGui(WindowModel window) : ILoginGui
     {
         var dialog = new SelectModel(window.WindowId)
         {
-            Text = LanguageUtils.Get("UserWindow.Text36"),
+            Text = LangUtils.Get("UserWindow.Text36"),
             Items = [.. items]
         };
         var res = await window.ShowDialogWait(dialog);
@@ -48,11 +48,11 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
     {
         var dialog = new InputModel(model.Window.WindowId)
         {
-            Text1 = string.Format(LanguageUtils.Get("UserWindow.Text15"), url),
-            Text2 = string.Format(LanguageUtils.Get("UserWindow.Text16"), code),
+            Text1 = string.Format(LangUtils.Get("UserWindow.Text15"), url),
+            Text2 = string.Format(LangUtils.Get("UserWindow.Text16"), code),
             TextReadonly = true,
             ChoiseCall = model.SetCancel,
-            ChoiseText = LanguageUtils.Get("Button.Cancel"),
+            ChoiseText = LangUtils.Get("Button.Cancel"),
             ChoiseVisible = true
         };
         model.Window.ShowDialog(dialog);
@@ -67,7 +67,7 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
 
     public void LoginOAuthState(AuthState state)
     {
-        progress?.Text = string.Format(LanguageUtils.Get("UserWindow.Text22"), state.GetName());
+        progress?.Text = string.Format(LangUtils.Get("UserWindow.Text22"), state.GetName());
     }
 }
 
@@ -142,7 +142,7 @@ public class TopModPackGui : IAddGui
 
 public class ZipGui : IZipGui
 {
-    private readonly string _text = LanguageUtils.Get("AddJavaWindow.Text11");
+    private readonly string _text = LangUtils.Get("AddJavaWindow.Text11");
 
     private readonly WindowModel _model;
     private readonly ProgressModel _progress;
@@ -171,7 +171,7 @@ public class ZipGui : IZipGui
 
     public Task<bool> FileRename(string? text)
     {
-        return _model.ShowChoice(string.Format(LanguageUtils.Get("App.Text33"), text));
+        return _model.ShowChoice(string.Format(LangUtils.Get("App.Text33"), text));
     }
 
     public void ZipUpdate(string text, int size, int all)
@@ -210,12 +210,12 @@ public class OverGameGui(WindowModel model) : IOverGameGui
 {
     public Task<bool> GameOverwirte(GameSettingObj obj)
     {
-        return model.ShowChoice(string.Format(LanguageUtils.Get("AddGameWindow.Text3"), obj.Name));
+        return model.ShowChoice(string.Format(LangUtils.Get("AddGameWindow.Text3"), obj.Name));
     }
 
     public Task<bool> InstanceNameReplace()
     {
-        return model.ShowChoice(LanguageUtils.Get("AddGameWindow.Text4"));
+        return model.ShowChoice(LangUtils.Get("AddGameWindow.Text4"));
     }
 }
 
@@ -225,15 +225,15 @@ public class UpdateLaunchGui(ProgressModel progress) : IUpdateGui
     {
         if (state == LaunchState.CheckServerPack)
         {
-            progress.Text = LanguageUtils.Get("App.Text28");
+            progress.Text = LangUtils.Get("App.Text28");
         }
         else if (state == LaunchState.DownloadServerPack)
         {
-            progress.Text = LanguageUtils.Get("App.Text29");
+            progress.Text = LangUtils.Get("App.Text29");
         }
         else if (state == LaunchState.DownloadServerPackDone)
         {
-            progress.Text = LanguageUtils.Get("App.Text30");
+            progress.Text = LangUtils.Get("App.Text30");
         }
     }
 }
@@ -244,7 +244,7 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.ShowChoice(pre ? LanguageUtils.Get("App.Text17") : LanguageUtils.Get("App.Text18"));
+            return model.ShowChoice(pre ? LangUtils.Get("App.Text17") : LangUtils.Get("App.Text18"));
         });
     }
 
@@ -252,7 +252,7 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
     {
         Dispatcher.UIThread.Post(() =>
         {
-            string text = LanguageUtils.Get(state switch
+            string text = LangUtils.Get(state switch
             {
                 LaunchState.Loging => "App.Text6",
                 LaunchState.Checking => "App.Text7",
@@ -282,7 +282,7 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
             return model.ShowChoice(string.Format(
-                LanguageUtils.Get("App.Text16"), obj.UserName));
+                LangUtils.Get("App.Text16"), obj.UserName));
         });
     }
 
@@ -298,7 +298,7 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
     {
         return Dispatcher.UIThread.InvokeAsync(() =>
         {
-            return model.ShowChoice(LanguageUtils.Get("App.Text36"));
+            return model.ShowChoice(LangUtils.Get("App.Text36"));
         });
     }
 
@@ -306,7 +306,7 @@ public class LauncherGui(WindowModel model, ProgressModel? progress) : ILaunchGu
     {
         var dialog = new LongTextModel(model.WindowId)
         {
-            Text1 = LanguageUtils.Get("App.Text36"),
+            Text1 = LangUtils.Get("App.Text36"),
             Text2 = text ?? "",
             CancelEnable = true
         };
@@ -333,7 +333,7 @@ public class ResourceGui : IAddGui
         _isRun = true;
         DispatcherTimer.Run(Run, TimeSpan.FromMilliseconds(100));
 
-        _info.Info = LanguageUtils.Get("AddResourceWindow.Text36");
+        _info.Info = LangUtils.Get("AddResourceWindow.Text36");
     }
 
     public void SetNow(int value, int all)
@@ -440,12 +440,12 @@ public class ModPackGui : IAddGui
 
         if (state == AddState.GetInfo)
         {
-            _info.SubInfo = LanguageUtils.Get("App.Text115");
+            _info.SubInfo = LangUtils.Get("App.Text115");
             _haveUpdate = false;
         }
         else if (state == AddState.DownloadFile)
         {
-            _info.SubInfo = LanguageUtils.Get("AddGameWindow.Tab2.Text7");
+            _info.SubInfo = LangUtils.Get("AddGameWindow.Tab2.Text7");
             _haveUpdate = false;
         }
     }

@@ -1,0 +1,24 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel Height="400">
+                <TreeView Width="500">
+                    <TreeViewItem Header="123" IsExpanded="True">
+                        <TreeViewItem Header="456" IsSelected="True" />
+                    </TreeViewItem>
+                </TreeView>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="TreeViewItem">
+        <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+            <Setter Property="Background" Value="{setting:Theme MainColor}" />
+            <Setter Property="BorderBrush" Value="#00000000" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </Style>
+</Styles>

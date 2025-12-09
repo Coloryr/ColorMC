@@ -37,7 +37,7 @@ public partial class GameExportModel : MenuModel
     /// <summary>
     /// 导出类型列表
     /// </summary>
-    public string[] ExportTypes { get; init; } = LanguageUtils.GetExportName();
+    public string[] ExportTypes { get; init; } = LangUtils.GetExportName();
 
     /// <summary>
     /// 在线下载的Mod列表
@@ -141,22 +141,22 @@ public partial class GameExportModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text1")
+                Text = LangUtils.Get("GameExportWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text2")
+                Text = LangUtils.Get("GameExportWindow.Tabs.Text2")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text3")
+                Text = LangUtils.Get("GameExportWindow.Tabs.Text3")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item4.svg",
-                Text = LanguageUtils.Get("GameExportWindow.Tabs.Text4")
+                Text = LangUtils.Get("GameExportWindow.Tabs.Text4")
             },
         ]);
     }
@@ -167,7 +167,7 @@ public partial class GameExportModel : MenuModel
     /// <param name="value"></param>
     async partial void OnTypeChanged(PackType value)
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameExportWindow.Text4"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameExportWindow.Text4"));
 
         CfEx = value == PackType.CurseForge;
         MoEx = value == PackType.Modrinth;
@@ -264,7 +264,7 @@ public partial class GameExportModel : MenuModel
             }
         });
 
-        Window.Notify(LanguageUtils.Get("GameExportWindow.Text6"));
+        Window.Notify(LangUtils.Get("GameExportWindow.Text6"));
 
         LoadMods();
     }
@@ -280,12 +280,12 @@ public partial class GameExportModel : MenuModel
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Version))
             {
-                Window.Show(LanguageUtils.Get("GameExportWindow.Text8"));
+                Window.Show(LangUtils.Get("GameExportWindow.Text8"));
                 return;
             }
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameExportWindow.Text1"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameExportWindow.Text1"));
         var top = Window.GetTopLevel();
         if (top == null)
         {
@@ -300,11 +300,11 @@ public partial class GameExportModel : MenuModel
 
         if (file == false)
         {
-            Window.Show(LanguageUtils.Get("GameExportWindow.Text7"));
+            Window.Show(LangUtils.Get("GameExportWindow.Text7"));
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("GameExportWindow.Text2"));
+            Window.Notify(LangUtils.Get("GameExportWindow.Text2"));
         }
     }
 
@@ -433,7 +433,7 @@ public partial class GameExportModel : MenuModel
     public void SetTab3Choise()
     {
         Window.SetChoiseCall(_useName, SelectAllFile, UnSelectAllFile);
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("Button.SelectAll"), LangUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>
@@ -442,7 +442,7 @@ public partial class GameExportModel : MenuModel
     public void SetTab2Choise()
     {
         Window.SetChoiseCall(_useName, SelectAllMod, UnSelectAllMod);
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.SelectAll"), LanguageUtils.Get("Button.UnSelectAll"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("Button.SelectAll"), LangUtils.Get("Button.UnSelectAll"));
     }
 
     /// <summary>

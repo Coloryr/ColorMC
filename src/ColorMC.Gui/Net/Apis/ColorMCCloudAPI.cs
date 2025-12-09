@@ -41,7 +41,7 @@ public static class ColorMCCloudAPI
     /// <summary>
     /// 云同步信息
     /// </summary>
-    public static string Info { get; private set; } = LanguageUtils.Get("App.Text96");
+    public static string Info { get; private set; } = LangUtils.Get("App.Text96");
     /// <summary>
     /// 是否已连接云同步服务器
     /// </summary>
@@ -66,7 +66,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -85,7 +85,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -103,7 +103,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log1"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log1"), e);
             return null;
         }
     }
@@ -156,7 +156,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log3"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log3"), e);
             return null;
         }
     }
@@ -203,7 +203,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Error.Log2"), e);
+            Logs.Error(LangUtils.Get("App.Error.Log2"), e);
         }
         return false;
     }
@@ -230,12 +230,12 @@ public static class ColorMCCloudAPI
                 var value = res1.GetInt32();
                 if (value == 300)
                 {
-                    Info = LanguageUtils.Get("App.Text98");
+                    Info = LangUtils.Get("App.Text98");
                     return;
                 }
                 else if (value != 100)
                 {
-                    Info = LanguageUtils.Get("App.Text99");
+                    Info = LangUtils.Get("App.Text99");
                     return;
                 }
             }
@@ -281,13 +281,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -321,7 +321,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -358,7 +358,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -407,7 +407,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -451,7 +451,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
@@ -488,13 +488,13 @@ public static class ColorMCCloudAPI
                     var value = res1.GetInt32();
                     if (value == 100)
                     {
-                        Info = string.Format(LanguageUtils.Get("App.Text94"),
+                        Info = string.Format(LangUtils.Get("App.Text94"),
                             json.GetProperty("use").GetInt64(),
                             json.GetProperty("size").GetInt64());
                     }
                     else
                     {
-                        Info = LanguageUtils.Get("App.Text99");
+                        Info = LangUtils.Get("App.Text99");
                     }
                 }
 
@@ -502,7 +502,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
     }
@@ -544,7 +544,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return null;
@@ -588,13 +588,13 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
         return new()
         {
-            Data = LanguageUtils.Get("GameCloudWindow.Text21")
+            Data = LangUtils.Get("GameCloudWindow.Text21")
         };
     }
 
@@ -633,7 +633,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return -1;
@@ -679,7 +679,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
         return null;
@@ -734,7 +734,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
             return -1;
         }
@@ -772,7 +772,7 @@ public static class ColorMCCloudAPI
         }
         catch (Exception e)
         {
-            string temp = LanguageUtils.Get("GameCloudWindow.Text21");
+            string temp = LangUtils.Get("GameCloudWindow.Text21");
             Logs.Error(temp, e);
         }
 
