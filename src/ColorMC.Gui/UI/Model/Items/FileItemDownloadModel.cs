@@ -55,7 +55,7 @@ public partial class FileItemDownloadModel : ObservableObject
         {
             return;
         }
-        if (await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text43")))
+        if (await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text43")))
         {
             _cancel.Cancel();
         }

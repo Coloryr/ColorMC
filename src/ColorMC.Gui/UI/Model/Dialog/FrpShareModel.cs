@@ -59,7 +59,7 @@ public partial class FrpShareModel : ObservableObject
             Version = version;
         }
 
-        Loaders.AddRange(LanguageUtils.GetLoader());
+        Loaders.AddRange(LangUtils.GetLoader());
         Loader = 0;
     }
 

@@ -43,11 +43,11 @@ public partial class SettingModel
     /// <summary>
     /// 登录类型列表
     /// </summary>
-    public string[] LoginList { get; init; } = LanguageUtils.GetLockLoginType();
+    public string[] LoginList { get; init; } = LangUtils.GetLockLoginType();
     /// <summary>
     /// 自定义主界面动画类型
     /// </summary>
-    public string[] DisplayList { get; init; } = LanguageUtils.GetDisplayList();
+    public string[] DisplayList { get; init; } = LangUtils.GetDisplayList();
 
     /// <summary>
     /// 选中的锁定类型
@@ -375,7 +375,7 @@ public partial class SettingModel
         var res = BaseBinding.TestCustomWindow();
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("App.Text112"));
+            Window.Show(LangUtils.Get("App.Text112"));
         }
     }
     /// <summary>
@@ -460,7 +460,7 @@ public partial class SettingModel
                 {
                     if (item.AuthType == AuthType.OAuth)
                     {
-                        Window.Show(LanguageUtils.Get("SettingWindow.Tab6.Text51"));
+                        Window.Show(LangUtils.Get("SettingWindow.Tab6.Text51"));
                         return;
                     }
                 }
@@ -470,14 +470,14 @@ public partial class SettingModel
                 if (string.IsNullOrWhiteSpace(model.InputText)
                     || string.IsNullOrWhiteSpace(model.InputText1))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab6.Text52"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab6.Text52"));
                     return;
                 }
                 foreach (var item in Locks)
                 {
                     if (item.Name == model.InputText)
                     {
-                        Window.Show(LanguageUtils.Get("SettingWindow.Tab6.Text53"));
+                        Window.Show(LangUtils.Get("SettingWindow.Tab6.Text53"));
                         return;
                     }
                 }

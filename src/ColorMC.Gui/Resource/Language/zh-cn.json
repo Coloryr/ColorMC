@@ -1055,6 +1055,8 @@
 	"CollectWindow.Text27": "过滤器：",
 	"CollectWindow.Text28": "是否删除该分组勾选的收藏",
 	"CollectWindow.Text29": "无法找到游戏实例",
+	"CollectWindow.Text30": "数据获取失败，安装已取消",
+	"CollectWindow.Text31": "整合包安装失败，是否继续安装",
 	"BuildPackWindow.Title": "导出客户端",
 	"BuildPackWindow.Text1": "正在生成客户端包",
 	"BuildPackWindow.Text2": "生成的位置",

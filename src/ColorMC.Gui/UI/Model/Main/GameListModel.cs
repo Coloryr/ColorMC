@@ -256,18 +256,18 @@ public partial class MainModel
             return;
         }
 
-        var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text78"), list.Count));
+        var res = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text78"), list.Count));
         if (!res)
         {
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab1.Text35"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab1.Text35"));
         InstancesPath.DisableWatcher = true;
         await Parallel.ForEachAsync(list, async (item, cancel) =>
         {
             if (GameManager.IsAdd(item.Obj))
             {
-                Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text46"));
+                Window.Show(LangUtils.Get("GameEditWindow.Tab1.Text46"));
                 return;
             }
             await GameBinding.DeleteGameAsync(item.Obj);
@@ -398,7 +398,7 @@ public partial class MainModel
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Window, this, " ", LanguageUtils.Get("MainWindow.Text68"), item.Value);
+                        DefaultGroup = new(Window, this, " ", LangUtils.Get("MainWindow.Text68"), item.Value);
                         if (list.Count > 0)
                         {
                             DefaultGroup.Expander = false;
@@ -464,7 +464,7 @@ public partial class MainModel
                 {
                     HaveLast = true;
                 }
-                LastGameName = string.Format(LanguageUtils.Get("MainWindow.Text26"), last.Name);
+                LastGameName = string.Format(LangUtils.Get("MainWindow.Text26"), last.Name);
                 var file = last.Obj.GetIconFile();
                 if (File.Exists(file))
                 {
@@ -552,13 +552,13 @@ public partial class MainModel
         ProgressModel? progress = null;
         if (GuiConfigUtils.Config.CloseBeforeLaunch)
         {
-            progress = Window.ShowProgress(LanguageUtils.Get("MainWindow.Text66"));
+            progress = Window.ShowProgress(LangUtils.Get("MainWindow.Text66"));
         }
         var item = Game!;
         var game = item.Obj;
         item.IsLaunch = false;
         item.IsLoad = true;
-        Window.Notify(LanguageUtils.Get(string.Format(LanguageUtils.Get("MainWindow.Text72"), game.Name)));
+        Window.Notify(LangUtils.Get(string.Format(LangUtils.Get("MainWindow.Text72"), game.Name)));
         var res = await GameBinding.LaunchAsync(game, Window, progress, hide: GuiConfigUtils.Config.CloseBeforeLaunch);
         item.IsLoad = false;
         if (progress != null)
@@ -569,7 +569,7 @@ public partial class MainModel
         {
             if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
             {
-                var res1 = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text86"), res.Message!));
+                var res1 = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text86"), res.Message!));
                 if (res1)
                 {
                     WindowManager.ShowUser(relogin: true);
@@ -582,7 +582,7 @@ public partial class MainModel
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("MainWindow.Text65"));
+            Window.Notify(LangUtils.Get("MainWindow.Text65"));
 
             item.IsLaunch = true;
             Launchs.Add(game.UUID, item);
@@ -616,7 +616,7 @@ public partial class MainModel
             item.IsLoad = true;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("MainWindow.Text66"));
+        var dialog = Window.ShowProgress(LangUtils.Get("MainWindow.Text66"));
         var res1 = await GameBinding.LaunchAsync(list1, Window, dialog);
         Window.CloseDialog(dialog);
         if (res1.Message != null)
@@ -643,7 +643,7 @@ public partial class MainModel
         {
             if (item.Value.LoginFail && res1.User!.AuthType != AuthType.OAuth)
             {
-                var res2 = await Window.ShowChoice(string.Format(LanguageUtils.Get("MainWindow.Text86"), item.Value.Message!));
+                var res2 = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text86"), item.Value.Message!));
                 if (res2)
                 {
                     WindowManager.ShowUser(relogin: true);

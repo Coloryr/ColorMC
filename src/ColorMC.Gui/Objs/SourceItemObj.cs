@@ -3,6 +3,9 @@ using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
 
+/// <summary>
+/// 下载源项目信息
+/// </summary>
 public record SourceItemObj
 {
     /// <summary>

@@ -14,7 +14,7 @@ public partial class AddLockLoginModel : ObservableObject
     /// <summary>
     /// 模型列表
     /// </summary>
-    public string[] Items { get; init; } = LanguageUtils.GetLockLoginType();
+    public string[] Items { get; init; } = LangUtils.GetLockLoginType();
 
     /// <summary>
     /// 选中项目

@@ -214,7 +214,7 @@ public partial class AddGameModel : ControlModel
 
         LoadGroup();
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text29"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text29"));
 
         if (_keep)
         {
@@ -223,7 +223,7 @@ public partial class AddGameModel : ControlModel
 
         GameBinding.SelectAndReloadGame(uuid);
 
-        var res = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab1.Text43"));
+        var res = await Window.ShowChoice(LangUtils.Get("AddGameWindow.Tab1.Text43"));
         if (res != true)
         {
             WindowClose();
@@ -240,12 +240,12 @@ public partial class AddGameModel : ControlModel
     /// <returns></returns>
     public async void GameCloudDownload()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab1.Text31"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab1.Text31"));
         var list = await ColorMCCloudAPI.GetListAsync();
         Window.CloseDialog(dialog);
         if (list == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text24"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text24"));
             return;
         }
         var list1 = new List<string>();
@@ -258,7 +258,7 @@ public partial class AddGameModel : ControlModel
         });
         var dialog1 = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("AddGameWindow.Tab1.Text32"),
+            Text = LangUtils.Get("AddGameWindow.Tab1.Text32"),
             Items = [.. list1]
         };
         var res = await Window.ShowDialogWait(dialog1);
@@ -267,7 +267,7 @@ public partial class AddGameModel : ControlModel
             return;
         }
 
-        dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab1.Text33"));
+        dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab1.Text33"));
         var obj = list[dialog1.Index];
         while (true)
         {
@@ -276,7 +276,7 @@ public partial class AddGameModel : ControlModel
             {
                 var dialog2 = new ChoiceModel(Window.WindowId)
                 {
-                    Text = LanguageUtils.Get("AddGameWindow.Tab1.Text34"),
+                    Text = LangUtils.Get("AddGameWindow.Tab1.Text34"),
                     CancelVisable = true
                 };
                 var res1 = await Window.ShowDialogWait(dialog2);
@@ -287,7 +287,7 @@ public partial class AddGameModel : ControlModel
                 }
                 var dialog3 = new InputModel(Window.WindowId)
                 {
-                    Watermark1 = LanguageUtils.Get("AddGameWindow.Tab1.Text2"),
+                    Watermark1 = LangUtils.Get("AddGameWindow.Tab1.Text2"),
                     Text1 = obj.Name
                 };
                 var res2 = await Window.ShowDialogWait(dialog3);
@@ -310,7 +310,7 @@ public partial class AddGameModel : ControlModel
         Window.CloseDialog(dialog);
         if (!res3.State)
         {
-            Window.Show(res3.Data ?? LanguageUtils.Get("AddGameWindow.Tab1.Text56"));
+            Window.Show(res3.Data ?? LangUtils.Get("AddGameWindow.Tab1.Text56"));
             return;
         }
 
@@ -328,7 +328,7 @@ public partial class AddGameModel : ControlModel
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("AddGameWindow.Tab1.Text35")
+            Watermark1 = LangUtils.Get("AddGameWindow.Tab1.Text35")
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is not true)
@@ -338,7 +338,7 @@ public partial class AddGameModel : ControlModel
 
         if (string.IsNullOrWhiteSpace(dialog.Text1))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text53"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text53"));
             return;
         }
 
@@ -349,13 +349,13 @@ public partial class AddGameModel : ControlModel
             url += '/';
         }
         //下载服务器包
-        var dialog1 = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab1.Text36"));
+        var dialog1 = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab1.Text36"));
         var res1 = await GameBinding.DownloadServerPackAsync(Window, dialog1, Name, Group, url,
             new OverGameGui(Window));
         Window.CloseDialog(dialog1);
         if (!res1.State)
         {
-            Window.Show(res1.Data ?? LanguageUtils.Get("AddGameWindow.Tab1.Text56"));
+            Window.Show(res1.Data ?? LangUtils.Get("AddGameWindow.Tab1.Text56"));
         }
         else
         {

@@ -50,8 +50,8 @@ public partial class GameEditModel
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("GameEditWindow.Tab10.Text4"),
-            Watermark2 = LanguageUtils.Get("Text.ServerAddress"),
+            Watermark1 = LangUtils.Get("GameEditWindow.Tab10.Text4"),
+            Watermark2 = LangUtils.Get("Text.ServerAddress"),
             Text2Visable = true
         };
         var res = await Window.ShowDialogWait(dialog);
@@ -62,21 +62,21 @@ public partial class GameEditModel
 
         if (string.IsNullOrWhiteSpace(dialog.Text1) || string.IsNullOrWhiteSpace(dialog.Text2))
         {
-            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text11"));
+            Window.Show(LangUtils.Get("GameEditWindow.Tab10.Text11"));
             return;
         }
 
-        var dialog1 = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
+        var dialog1 = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab10.Text7"));
         var res1 = await _obj.AddServerAsync(dialog.Text1, dialog.Text2);
         Window.CloseDialog(dialog1);
         if (res1)
         {
-            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text10"));
+            Window.Notify(LangUtils.Get("GameEditWindow.Tab10.Text10"));
             LoadServer();
         }
         else
         {
-            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text12"));
+            Window.Show(LangUtils.Get("GameEditWindow.Tab10.Text12"));
         }
     }
 
@@ -85,12 +85,12 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadServer()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text5"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab10.Text5"));
         ServerList.Clear();
         ServerList.AddRange(await _obj.GetServerInfosAsync());
         Window.CloseDialog(dialog);
         ServerEmptyDisplay = ServerList.Count == 0;
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text8"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab10.Text8"));
     }
 
     /// <summary>
@@ -104,17 +104,17 @@ public partial class GameEditModel
         {
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab10.Text7"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab10.Text7"));
         res = await obj.DeleteAsync();
         Window.CloseDialog(dialog);
         if (res)
         {
-            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
+            Window.Notify(LangUtils.Get("GameEditWindow.Tab10.Text6"));
             LoadServer();
         }
         else
         {
-            Window.Show(LanguageUtils.Get("GameEditWindow.Tab10.Text13"));
+            Window.Show(LangUtils.Get("GameEditWindow.Tab10.Text13"));
         }
     }
 }

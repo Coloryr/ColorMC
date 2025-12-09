@@ -22,40 +22,40 @@ public partial class NetFrpModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item4.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text4")
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text4")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item1.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text1")
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item5.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text5")
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text5")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item6.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text6")
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text6")
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item2.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text2"),
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text2"),
                 SubMenu =
                 [
                     new SubMenuItemModel()
                     {
                         Func = CleanLocal,
-                        Name = LanguageUtils.Get("NetFrpWindow.Tab2.Text2")
+                        Name = LangUtils.Get("NetFrpWindow.Tab2.Text2")
                     }
                 ]
             },
             new()
             {
                 Icon = "/Resource/Icon/NetFrp/item3.svg",
-                Text = LanguageUtils.Get("NetFrpWindow.Tabs.Text3")
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text3")
             }
         ]);
     }

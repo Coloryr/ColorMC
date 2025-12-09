@@ -28,14 +28,14 @@ public partial class GameCloudControl : MenuControl
     {
         _obj = obj;
 
-        Title = string.Format(LanguageUtils.Get("GameCloudWindow.Title"), obj.Name);
+        Title = string.Format(LangUtils.Get("GameCloudWindow.Title"), obj.Name);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, Guid uuid)
+    private void EventManager_GameDelete(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -45,17 +45,17 @@ public partial class GameCloudControl : MenuControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, Guid uuid)
+    private void EventManager_GameNameChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
             return;
         }
 
-        Title = string.Format(LanguageUtils.Get("GameCloudWindow.Title"), _obj.Name);
+        Title = string.Format(LangUtils.Get("GameCloudWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, Guid uuid)
+    private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

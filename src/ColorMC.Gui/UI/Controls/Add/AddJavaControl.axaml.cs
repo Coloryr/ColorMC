@@ -22,7 +22,7 @@ public partial class AddJavaControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("AddJavaWindow.Title");
+        Title = LangUtils.Get("AddJavaWindow.Title");
 
         JavaFiles.DoubleTapped += JavaFiles_DoubleTapped;
     }

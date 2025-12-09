@@ -57,7 +57,7 @@ public partial class GameEditModel
     [RelayCommand]
     public async Task LoadResource()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab8.Text5"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab8.Text5"));
         _resourceItems.Clear();
 
         var res = await _obj.GetResourcepacksAsync(false);
@@ -68,7 +68,7 @@ public partial class GameEditModel
         }
 
         LoadResourceDisplay();
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text7"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab8.Text7"));
     }
 
     /// <summary>
@@ -113,11 +113,11 @@ public partial class GameEditModel
 
         if (file == false)
         {
-            Window.Notify(LanguageUtils.Get("GameEditWindow.Tab8.Text8"));
+            Window.Notify(LangUtils.Get("GameEditWindow.Tab8.Text8"));
             return;
         }
 
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab4.Text20"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab4.Text20"));
         await LoadResource();
     }
 
@@ -136,14 +136,14 @@ public partial class GameEditModel
     public async void DeleteResource(ResourcepackObj obj)
     {
         var res = await Window.ShowChoice(
-            string.Format(LanguageUtils.Get("GameEditWindow.Tab8.Text4"), obj.Local));
+            string.Format(LangUtils.Get("GameEditWindow.Tab8.Text4"), obj.Local));
         if (!res)
         {
             return;
         }
 
         await obj.Delete();
-        Window.Notify(LanguageUtils.Get("Text.DeleteDone"));
+        Window.Notify(LangUtils.Get("Text.DeleteDone"));
         await LoadResource();
     }
 

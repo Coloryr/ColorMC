@@ -67,8 +67,8 @@ public partial class ModDependModel : ObservableObject
         Source = source;
         var item1 = list.First();
         Modsave = item1.Items.First();
-        Name = string.Format(LanguageUtils.Get("AddResourceWindow.Text38"), item1.Name);
-        ModDownloadText = LanguageUtils.Get("AddResourceWindow.Text7");
+        Name = string.Format(LangUtils.Get("AddResourceWindow.Text38"), item1.Name);
+        ModDownloadText = LangUtils.Get("AddResourceWindow.Text7");
 
         foreach (var item in list)
         {
@@ -92,8 +92,8 @@ public partial class ModDependModel : ObservableObject
     {
         IsUpgrade = true;
         _window = window;
-        Name = LanguageUtils.Get("AddResourceWindow.Text39");
-        ModDownloadText = LanguageUtils.Get("AddResourceWindow.Text15");
+        Name = LangUtils.Get("AddResourceWindow.Text39");
+        ModDownloadText = LangUtils.Get("AddResourceWindow.Text15");
         foreach (var item in list)
         {
             item.Download = true;

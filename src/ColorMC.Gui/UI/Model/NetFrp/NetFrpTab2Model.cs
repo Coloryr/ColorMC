@@ -59,7 +59,7 @@ public partial class NetFrpModel
     {
         if (RemotesSakura.Count == 0 && RemotesOpenFrp.Count == 0)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text9"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab2.Text9"));
             return;
         }
         var list = new List<string>();
@@ -67,24 +67,24 @@ public partial class NetFrpModel
         foreach (var item in RemotesSakura)
         {
             list1.Add(item);
-            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
+            list.Add($"{LangUtils.Get("NetFrpWindow.Tabs.Text1")} {item.Name} {item.ID}");
         }
 
         foreach (var item in RemotesOpenFrp)
         {
             list1.Add(item);
-            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
+            list.Add($"{LangUtils.Get("NetFrpWindow.Tabs.Text5")} {item.Name} {item.ID}");
         }
 
         foreach (var item in RemoteSelfFrp)
         {
             list1.Add(item);
-            list.Add($"{LanguageUtils.Get("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
+            list.Add($"{LangUtils.Get("NetFrpWindow.Tabs.Text6")} {item.Name} {item.IP}");
         }
 
         var dialog = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("NetFrpWindow.Tab2.Text6"),
+            Text = LangUtils.Get("NetFrpWindow.Tab2.Text6"),
             Items = [.. list]
         };
         var res = await Window.ShowDialogWait(dialog);
@@ -98,13 +98,13 @@ public partial class NetFrpModel
         var res1 = await BaseBinding.StartFrpAsync(item1, local);
         if (!res1.Res)
         {
-            Window.Show(LanguageUtils.Get("NetFrpWindow.Tab2.Text8"));
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab2.Text8"));
         }
         else
         {
             local.IsStart = true;
             SetProcess(res1.Process!, local, res1.IP!);
-            Window.Notify(LanguageUtils.Get("NetFrpWindow.Tab2.Text7"));
+            Window.Notify(LangUtils.Get("NetFrpWindow.Tab2.Text7"));
             NowView = 5;
         }
     }

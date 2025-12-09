@@ -36,7 +36,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// <summary>
     /// 显示的下载类型列表
     /// </summary>
-    public string[] TypeList { get; init; } = LanguageUtils.GetAddType();
+    public string[] TypeList { get; init; } = LangUtils.GetAddType();
 
     /// <summary>
     /// 下载类型
@@ -138,10 +138,10 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         if (type is SourceType.CurseForge or SourceType.Modrinth)
         {
             SortTypeList.AddRange(type is SourceType.CurseForge
-                ? LanguageUtils.GetCurseForgeSortTypes()
-                : LanguageUtils.GetModrinthSortTypes());
+                ? LangUtils.GetCurseForgeSortTypes()
+                : LangUtils.GetModrinthSortTypes());
             //获取支持的游戏版本和分类
-            var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
+            var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text20"));
             var list = type is SourceType.CurseForge
                 ? await CurseForgeHelper.GetGameVersionsAsync()
                 : await ModrinthHelper.GetGameVersionAsync();
@@ -189,7 +189,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         //McMod搜索源
         else if (type == SourceType.McMod)
         {
-            var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text20"));
+            var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text20"));
             //获取分类
             var list = await ColorMCAPI.GetMcModGroupAsync();
             Window.CloseDialog(dialog);
@@ -241,7 +241,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         var page = Page ?? 1;
         page--;
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text17"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddResourceWindow.Text17"));
         if (type == SourceType.McMod)
         {
             //McMod搜索源
@@ -250,7 +250,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             if (data == null)
             {
                 Window.CloseDialog(dialog);
-                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                Window.Show(LangUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -277,7 +277,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             if (res.List == null)
             {
                 Window.CloseDialog(dialog);
-                Window.Show(LanguageUtils.Get("AddResourceWindow.Text26"));
+                Window.Show(LangUtils.Get("AddResourceWindow.Text26"));
                 return;
             }
 
@@ -317,7 +317,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         EmptyDisplay = DisplayList.Count == 0;
 
         Window.CloseDialog(dialog);
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LangUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -325,7 +325,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// </summary>
     private async void LoadFail()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text25"));
+        var res = await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text25"));
         if (res)
         {
             LoadSourceData();
@@ -334,7 +334,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
 
         if (Source < SourceTypeList.Count)
         {
-            res = await Window.ShowChoice(LanguageUtils.Get("AddModPackWindow.Text21"));
+            res = await Window.ShowChoice(LangUtils.Get("AddModPackWindow.Text21"));
             if (res)
             {
                 Source++;
@@ -382,7 +382,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         var res = await WebBinding.GetFileItemAsync(type, pid, FileType.Mod);
         if (res == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text23"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text23"));
             _load = false;
             return;
         }

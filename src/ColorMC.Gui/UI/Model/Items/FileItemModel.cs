@@ -85,7 +85,7 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     public bool IsModPack { get; init; }
     /// <summary>
-    /// 是否已经下载
+    /// 能否下载
     /// </summary>
     public bool HaveDownload { get; init; }
     /// <summary>
@@ -184,7 +184,7 @@ public partial class FileItemModel : SelectItemModel
         {
             if (Authors.Count > 5)
             {
-                Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), data.Authors.Count - 5), null));
+                Authors.Add(new AuthorModel(string.Format(LangUtils.Get("App.Text114"), data.Authors.Count - 5), null));
                 break;
             }
             Authors.Add(new AuthorModel(item.Name, item.AvatarUrl));
@@ -260,7 +260,7 @@ public partial class FileItemModel : SelectItemModel
                     {
                         if (Authors.Count >= 5)
                         {
-                            Authors.Add(new AuthorModel(string.Format(LanguageUtils.Get("App.Text114"), team.Count - 5), null));
+                            Authors.Add(new AuthorModel(string.Format(LangUtils.Get("App.Text114"), team.Count - 5), null));
                             break;
                         }
                         Authors.Add(new AuthorModel(item.User.Username, item.User.AvatarUrl));
@@ -403,7 +403,7 @@ public partial class FileItemModel : SelectItemModel
         }
         if (IsStar)
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("App.Text116"));
+            var res = await Window.ShowChoice(LangUtils.Get("App.Text116"));
             if (!res)
             {
                 return;
@@ -458,7 +458,7 @@ public partial class FileItemModel : SelectItemModel
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddModPackWindow.Text26"), e);
+            Logs.Error(LangUtils.Get("AddModPackWindow.Text26"), e);
         }
 
         return null;

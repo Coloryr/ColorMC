@@ -29,7 +29,7 @@ public partial class BuildPackModel
     /// </summary>
     private async void LoadGames()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
+        var dialog = Window.ShowProgress(LangUtils.Get("Text.Loading"));
         await Task.Run(() =>
         {
             _gamesPage = new();

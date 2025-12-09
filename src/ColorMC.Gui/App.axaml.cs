@@ -25,9 +25,9 @@ public partial class App : Application
 
         AppDomain.CurrentDomain.UnhandledException += (a, e) =>
         {
-            string temp = LanguageUtils.Get("App.Error.Log16");
+            string temp = LangUtils.Get("App.Error.Log16");
             Logs.Error(temp, e.ExceptionObject as Exception);
-            WindowManager.ShowError(LanguageUtils.Get("App.Text103"), temp, e.ExceptionObject as Exception);
+            WindowManager.ShowError(LangUtils.Get("App.Text103"), temp, e.ExceptionObject as Exception);
         };
         ColorMCGui.StartLock();
     }

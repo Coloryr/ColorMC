@@ -35,7 +35,7 @@ public partial class GameLogControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(LanguageUtils.Get("GameLogWindow.Title"), obj.Name);
+        Title = string.Format(LangUtils.Get("GameLogWindow.Title"), obj.Name);
 
         TextEditor1.TextArea.Background = Brushes.Transparent;
 
@@ -55,7 +55,7 @@ public partial class GameLogControl : BaseUserControl
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, Guid uuid)
+    private void EventManager_GameDelete(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -65,17 +65,17 @@ public partial class GameLogControl : BaseUserControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, Guid uuid)
+    private void EventManager_GameNameChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
             return;
         }
 
-        Title = string.Format(LanguageUtils.Get("GameLogWindow.Title"), _obj.Name);
+        Title = string.Format(LangUtils.Get("GameLogWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, Guid uuid)
+    private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

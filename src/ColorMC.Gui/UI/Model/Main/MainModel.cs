@@ -141,10 +141,10 @@ public partial class MainModel : ControlModel, IMutTop
     [RelayCommand]
     public async Task OpenGuide()
     {
-        var list = LanguageUtils.GetGuide();
+        var list = LangUtils.GetGuide();
         var dialog = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("SettingWindow.Tab7.Text18"),
+            Text = LangUtils.Get("SettingWindow.Tab7.Text18"),
             Items = [.. list]
         };
         var res = await Window.ShowDialogWait(dialog);
@@ -166,7 +166,7 @@ public partial class MainModel : ControlModel, IMutTop
         }
         else
         {
-            Window.Show(LanguageUtils.Get("MainWindow.Text85"));
+            Window.Show(LangUtils.Get("MainWindow.Text85"));
         }
     }
     /// <summary>

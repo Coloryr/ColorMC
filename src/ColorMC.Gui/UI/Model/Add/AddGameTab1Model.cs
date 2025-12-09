@@ -30,7 +30,7 @@ public partial class AddGameModel
     /// <summary>
     /// 游戏版本类型
     /// </summary>
-    public string[] VersionTypeList { get; init; } = LanguageUtils.GetVersionType();
+    public string[] VersionTypeList { get; init; } = LangUtils.GetVersionType();
     /// <summary>
     /// 加载器版本类型
     /// </summary>
@@ -197,23 +197,23 @@ public partial class AddGameModel
         switch (loader)
         {
             case Loaders.Forge:
-                Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text24");
+                Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text24");
                 list = await WebBinding.GetForgeVersionAsync(Version);
                 break;
             case Loaders.NeoForge:
-                Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text38");
+                Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text38");
                 list = await WebBinding.GetNeoForgeVersionAsync(Version);
                 break;
             case Loaders.Fabric:
-                Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text25");
+                Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text25");
                 list = await WebBinding.GetFabricVersionAsync(Version);
                 break;
             case Loaders.Quilt:
-                Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text26");
+                Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text26");
                 list = await WebBinding.GetQuiltVersionAsync(Version);
                 break;
             case Loaders.OptiFine:
-                Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text37");
+                Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text37");
                 list = await WebBinding.GetOptifineVersionAsync(Version);
                 break;
         }
@@ -222,7 +222,7 @@ public partial class AddGameModel
         Window.SubTitle = "";
         if (list == null)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text44"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text44"));
             return;
         }
 
@@ -231,7 +231,7 @@ public partial class AddGameModel
         LoaderVersionList.Clear();
         LoaderVersionList.AddRange(list);
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text40"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text40"));
     }
 
     /// <summary>
@@ -245,20 +245,20 @@ public partial class AddGameModel
         var name = Name;
         if (string.IsNullOrWhiteSpace(name))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text48"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text48"));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(name))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text52"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text52"));
             return;
         }
 
         string? version = Version;
         if (string.IsNullOrWhiteSpace(version))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text49"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text49"));
             return;
         }
 
@@ -280,7 +280,7 @@ public partial class AddGameModel
         var res = await GameBinding.AddGameAsync(game, new OverGameGui(Window));
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text47"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text47"));
         }
         else
         {
@@ -290,7 +290,7 @@ public partial class AddGameModel
                 var res1 = await game.SetGameLoaderAsync(LoaderLocal);
                 if (!res1.State)
                 {
-                    await Window.ShowWait(LanguageUtils.Get("AddGameWindow.Tab1.Text54"));
+                    await Window.ShowWait(LangUtils.Get("AddGameWindow.Tab1.Text54"));
                     Done(game.UUID);
                     return;
                 }
@@ -329,7 +329,7 @@ public partial class AddGameModel
         }
 
         IsLoad = true;
-        Window.SubTitle = LanguageUtils.Get("AddGameWindow.Tab1.Text27");
+        Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text27");
 
         var res = await GameHelper.GetSupportLoaderAsync(Version);
         foreach (var item in res.Done)
@@ -339,7 +339,7 @@ public partial class AddGameModel
         }
         foreach (var item in res.Fail)
         {
-            Window.Notify(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Text55"), item.GetName()));
+            Window.Notify(string.Format(LangUtils.Get("AddGameWindow.Tab1.Text55"), item.GetName()));
         }
         _loaderTypeList.Add(Loaders.Custom);
         LoaderTypeList.Add(Loaders.Custom.GetName());
@@ -351,7 +351,7 @@ public partial class AddGameModel
         _load = false;
         EnableLoader = true;
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text42"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text42"));
     }
 
     /// <summary>
@@ -367,19 +367,19 @@ public partial class AddGameModel
         EnableLoaderVersion = false;
         LoaderVersion = null;
         IsLoad = true;
-        Window.SubTitle = LanguageUtils.Get("GameEditWindow.Tab1.Text36");
+        Window.SubTitle = LangUtils.Get("GameEditWindow.Tab1.Text36");
         var res = await GameBinding.ReloadVersionAsync();
         IsLoad = false;
         Window.SubTitle = "";
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("GameEditWindow.Tab1.Text45"));
+            Window.Show(LangUtils.Get("GameEditWindow.Tab1.Text45"));
             return;
         }
 
         GameVersionUpdate();
 
-        Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text41"));
+        Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text41"));
     }
 
     /// <summary>

@@ -56,7 +56,7 @@ public partial class MainModel
         if (data == null)
         {
             IsHaveNews = false;
-            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LangUtils.Get("MainWindow.Text87"));
             return;
         }
 
@@ -101,7 +101,7 @@ public partial class MainModel
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddModPackWindow.Text26"), e);
+            Logs.Error(LangUtils.Get("AddModPackWindow.Text26"), e);
         }
 
         return null;

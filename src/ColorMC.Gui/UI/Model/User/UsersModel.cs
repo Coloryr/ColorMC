@@ -135,7 +135,7 @@ public partial class UsersModel : ControlModel
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(name))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
                 var res = await UserBinding.AddUserAsync(AuthType.Offline, new LoginOAuthGui(this, null), gui, name);
@@ -144,12 +144,12 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.OAuth:
                 _cancel = false;
                 _isOAuth = true;
-                var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
+                var dialog = Window.ShowProgress(LangUtils.Get("Text.Loading"));
                 res = await UserBinding.AddUserAsync(AuthType.OAuth, new LoginOAuthGui(this, dialog), gui);
                 Window.CloseDialog(dialog);
                 if (_cancel)
@@ -161,7 +161,7 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 _isOAuth = false;
                 break;
             case AuthType.Nide8:
@@ -169,16 +169,16 @@ public partial class UsersModel : ControlModel
                 _isOAuth = false;
                 if (server?.Length != 32)
                 {
-                    Window.Show(LanguageUtils.Get("UserWindow.Text23"));
+                    Window.Show(LangUtils.Get("UserWindow.Text23"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                     string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.Nide8, new LoginOAuthGui(this, dialog), gui,
                     server, model.User, model.Password);
                 Window.CloseDialog(dialog);
@@ -187,23 +187,23 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.AuthlibInjector:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Window.Show(LanguageUtils.Get("UserWindow.Text24"));
+                    Window.Show(LangUtils.Get("UserWindow.Text24"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, new LoginOAuthGui(this, dialog),
                     gui, server, model.User, model.Password);
                 Window.CloseDialog(dialog);
@@ -212,17 +212,17 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.LittleSkin:
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.LittleSkin, new LoginOAuthGui(this, dialog),
                     gui, model.User, model.Password);
                 Window.CloseDialog(dialog);
@@ -231,23 +231,23 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 break;
             case AuthType.SelfLittleSkin:
                 server = model.Name;
                 _isOAuth = false;
                 if (string.IsNullOrWhiteSpace(server))
                 {
-                    Window.Show(LanguageUtils.Get("UserWindow.Text24"));
+                    Window.Show(LangUtils.Get("UserWindow.Text24"));
                     break;
                 }
                 if (string.IsNullOrWhiteSpace(model.User) ||
                    string.IsNullOrWhiteSpace(model.Password))
                 {
-                    Window.Show(LanguageUtils.Get("SettingWindow.Tab5.Text21"));
+                    Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text11"));
+                dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, new LoginOAuthGui(this, dialog),
                     gui, model.User, model.Password, server);
                 Window.CloseDialog(dialog);
@@ -256,10 +256,10 @@ public partial class UsersModel : ControlModel
                     Window.Show(res.Data!);
                     break;
                 }
-                Window.Notify(LanguageUtils.Get("UserWindow.Text20"));
+                Window.Notify(LangUtils.Get("UserWindow.Text20"));
                 break;
             default:
-                Window.Show(LanguageUtils.Get("UserWindow.Text25"));
+                Window.Show(LangUtils.Get("UserWindow.Text25"));
                 break;
         }
         Load();
@@ -285,7 +285,7 @@ public partial class UsersModel : ControlModel
     {
         UserBinding.SetSelectUser(item.UUID, item.AuthType);
 
-        Window.Notify(LanguageUtils.Get("UserWindow.Text14"));
+        Window.Notify(LangUtils.Get("UserWindow.Text14"));
         foreach (var item1 in UserList)
         {
             if (item1.AuthType == item.AuthType && item1.UUID == item.UUID)
@@ -341,19 +341,19 @@ public partial class UsersModel : ControlModel
     /// <param name="obj"></param>
     public async void Refresh(UserDisplayModel obj)
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("UserWindow.Text12"));
+        var dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text12"));
         var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType, Token);
         Window.CloseDialog(dialog);
         if (!res.State)
         {
-            Window.Show(string.Format(LanguageUtils.Get("UserWindow.Text26"), res.Data));
+            Window.Show(string.Format(LangUtils.Get("UserWindow.Text26"), res.Data));
             AuthType type;
             if (LockLogin)
             {
                 var index = FindLockLogin(obj.AuthType, obj.Text1);
                 if (index == -1)
                 {
-                    Window.Show(LanguageUtils.Get("UserWindow.Text29"));
+                    Window.Show(LangUtils.Get("UserWindow.Text29"));
                     return;
                 }
                 var login = _locks[index];
@@ -387,7 +387,7 @@ public partial class UsersModel : ControlModel
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("UserWindow.Text13"));
+            Window.Notify(LangUtils.Get("UserWindow.Text13"));
         }
     }
 
@@ -429,7 +429,7 @@ public partial class UsersModel : ControlModel
             var index = FindLockLogin(obj.AuthType, obj.Text1);
             if (index == -1)
             {
-                Window.Show(LanguageUtils.Get("UserWindow.Text29"));
+                Window.Show(LangUtils.Get("UserWindow.Text29"));
                 return;
             }
             type = index;
@@ -479,8 +479,8 @@ public partial class UsersModel : ControlModel
         }
         else
         {
-            _userTypeList.AddRange(LanguageUtils.GetLoginUserType());
-            DisplayUserTypeList.AddRange(LanguageUtils.GetDisplayUserTypes());
+            _userTypeList.AddRange(LangUtils.GetLoginUserType());
+            DisplayUserTypeList.AddRange(LangUtils.GetDisplayUserTypes());
         }
 
         Load();
@@ -606,8 +606,8 @@ public partial class UsersModel : ControlModel
         {
             Text1 = obj.Name,
             Text2 = obj.UUID,
-            Watermark1 = LanguageUtils.Get("UserWindow.Text10"),
-            Watermark2 = LanguageUtils.Get("UserWindow.Text21")
+            Watermark1 = LangUtils.Get("UserWindow.Text10"),
+            Watermark2 = LangUtils.Get("UserWindow.Text21")
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is not true)
@@ -616,12 +616,12 @@ public partial class UsersModel : ControlModel
         }
         else if (string.IsNullOrWhiteSpace(dialog.Text1) || string.IsNullOrWhiteSpace(dialog.Text2))
         {
-            Window.Show(LanguageUtils.Get("UserWindow.Text27"));
+            Window.Show(LangUtils.Get("UserWindow.Text27"));
             return;
         }
         else if (dialog.Text2.Length != 32 || !CheckHelpers.CheckIs(dialog.Text2))
         {
-            Window.Show(LanguageUtils.Get("UserWindow.Text28"));
+            Window.Show(LangUtils.Get("UserWindow.Text28"));
             return;
         }
 

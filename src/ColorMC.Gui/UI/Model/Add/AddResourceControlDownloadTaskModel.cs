@@ -63,7 +63,7 @@ public partial class AddResourceControlModel
             var info1 = new FileItemDownloadModel
             {
                 Window = Window,
-                Name = LanguageUtils.Get("AddResourceWindow.Text37"),
+                Name = LangUtils.Get("AddResourceWindow.Text37"),
                 Obj = new SourceItemObj
                 { 
                     Fid = "",

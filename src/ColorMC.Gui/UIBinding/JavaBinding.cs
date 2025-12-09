@@ -35,8 +35,8 @@ public static class JavaBinding
         }
         catch (Exception e)
         {
-            var log = string.Format(LanguageUtils.Get("Core.Error.Log9"), file, name);
-            string title = LanguageUtils.Get("AddJavaWindow.Text14");
+            var log = string.Format(LangUtils.Get("Core.Error.Log9"), file, name);
+            string title = LangUtils.Get("AddJavaWindow.Text14");
             Logs.Error(log, e);
             WindowManager.ShowError(title, log, e);
 
@@ -77,7 +77,7 @@ public static class JavaBinding
             var info = JvmPath.GetInfo(res.Data);
             if (info == null)
             {
-                return new StringRes { Data = LanguageUtils.Get("App.Text80") };
+                return new StringRes { Data = LangUtils.Get("App.Text80") };
             }
             return new StringRes { State = true };
         }

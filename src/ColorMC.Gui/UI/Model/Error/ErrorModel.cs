@@ -31,8 +31,8 @@ public partial class ErrorModel : ControlModel
     private ErrorModel(WindowModel model) : base(model)
     {
         _useName = ToString() ?? "ErrorModel";
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("ErrorWindow.Text1"),
-            LanguageUtils.Get("ErrorWindow.Text2"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("ErrorWindow.Text1"),
+            LangUtils.Get("ErrorWindow.Text2"));
         Window.SetChoiseCall(_useName, Save, Push);
     }
 
@@ -72,7 +72,7 @@ public partial class ErrorModel : ControlModel
         var res = await PathBinding.SaveFileAsync(top, FileType.Text, [Text.Text]);
         if (res == true)
         {
-            Window.Notify(LanguageUtils.Get("ErrorWindow.Text3"));
+            Window.Notify(LangUtils.Get("ErrorWindow.Text3"));
         }
     }
 
@@ -83,21 +83,21 @@ public partial class ErrorModel : ControlModel
     {
         if (string.IsNullOrWhiteSpace(Text.Text))
         {
-            Window.Show(LanguageUtils.Get("GameLogWindow.Text26"));
+            Window.Show(LangUtils.Get("GameLogWindow.Text26"));
             return;
         }
-        var res = await Window.ShowChoice(LanguageUtils.Get("GameLogWindow.Text19"));
+        var res = await Window.ShowChoice(LangUtils.Get("GameLogWindow.Text19"));
         if (!res)
         {
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameLogWindow.Text21"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameLogWindow.Text21"));
         var url = await McloAPI.PushAsync(Text.Text);
         Window.CloseDialog(dialog);
         if (url == null)
         {
-            Window.Show(LanguageUtils.Get("GameLogWindow.Text25"));
+            Window.Show(LangUtils.Get("GameLogWindow.Text25"));
             return;
         }
         else
@@ -109,18 +109,18 @@ public partial class ErrorModel : ControlModel
             }
             var dialog1 = new InputModel(Window.WindowId)
             {
-                Text1 = string.Format(LanguageUtils.Get("GameLogWindow.Text20"), url),
-                ChoiseText = LanguageUtils.Get("GameLogWindow.Text23"),
+                Text1 = string.Format(LangUtils.Get("GameLogWindow.Text20"), url),
+                ChoiseText = LangUtils.Get("GameLogWindow.Text23"),
                 TextReadonly = true,
                 ChoiseCall = () =>
                 {
                     BaseBinding.CopyTextClipboard(top, url);
-                    Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+                    Window.Notify(LangUtils.Get("GameLogWindow.Text22"));
                 }
             };
             Window.ShowDialog(dialog1);
             BaseBinding.CopyTextClipboard(top, url);
-            Window.Notify(LanguageUtils.Get("GameLogWindow.Text22"));
+            Window.Notify(LangUtils.Get("GameLogWindow.Text22"));
         }
     }
 

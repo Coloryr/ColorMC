@@ -164,7 +164,7 @@ public partial class AddBaseModel : IAddFileControl
             return;
 
         var res = await Window.ShowChoice(
-            string.Format(LanguageUtils.Get("AddModPackWindow.Text17"), Item.Name));
+            string.Format(LangUtils.Get("AddModPackWindow.Text17"), Item.Name));
         if (res)
         {
             Install(Item);
@@ -186,7 +186,7 @@ public partial class AddBaseModel : IAddFileControl
     {
         _load = true;
         FileList.Clear();
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddModPackWindow.Text19"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text19"));
         List<FileVersionItemModel>? list = null;
         var page = 1;
         PageVersion ??= 1;
@@ -214,7 +214,7 @@ public partial class AddBaseModel : IAddFileControl
 
         if (list == null)
         {
-            Window.Show(LanguageUtils.Get("AddModPackWindow.Text24"));
+            Window.Show(LangUtils.Get("AddModPackWindow.Text24"));
             Window.CloseDialog(dialog);
             _load = false;
             return;
@@ -233,7 +233,7 @@ public partial class AddBaseModel : IAddFileControl
             item.AddFile = this;
             var games = InstancesPath.Games;
             if (games.Any(item1 => item1.Modpack && item1.ModPackType == type
-            && item1.PID == item.ID && item1.FID == item.ID1))
+                && item1.PID == item.Obj.Pid && item1.FID == item.Obj.Fid))
             {
                 item.IsDownload = true;
             }
@@ -243,7 +243,7 @@ public partial class AddBaseModel : IAddFileControl
         EmptyVersionDisplay = FileList.Count == 0;
 
         Window.CloseDialog(dialog);
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LangUtils.Get("AddResourceWindow.Text24"));
         _load = false;
     }
 

@@ -107,7 +107,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
 
     public async void LoadBlocks()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("LuckBlockWindow.Text5"));
+        var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
         Window.CloseDialog(dialog);
         if (!res.State)
@@ -120,7 +120,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
         var list = await BaseBinding.BuildLotteryItems();
         if (list == null)
         {
-            await Window.ShowWait(LanguageUtils.Get("LuckBlockWindow.Text9"));
+            await Window.ShowWait(LangUtils.Get("LuckBlockWindow.Text9"));
             WindowClose();
             return;
         }

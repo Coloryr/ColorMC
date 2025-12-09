@@ -19,7 +19,7 @@ public partial class GameEditModel
     /// <summary>
     /// GC类型列表
     /// </summary>
-    public string[] GCTypeList { get; init; } = LanguageUtils.GetGCTypes();
+    public string[] GCTypeList { get; init; } = LangUtils.GetGCTypes();
     /// <summary>
     /// Java列表
     /// </summary>
@@ -625,7 +625,7 @@ public partial class GameEditModel
     /// </summary>
     private async void DeleteConfig()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("GameEditWindow.Tab2.Text44"));
+        var res = await Window.ShowChoice(LangUtils.Get("GameEditWindow.Tab2.Text44"));
         if (res)
         {
             GameBinding.DeleteConfig(_obj);

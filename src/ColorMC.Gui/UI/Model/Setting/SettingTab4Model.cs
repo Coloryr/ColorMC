@@ -14,7 +14,7 @@ public partial class SettingModel
     /// <summary>
     /// GC类型
     /// </summary>
-    public string[] GCTypeList { get; init; } = LanguageUtils.GetGCTypes();
+    public string[] GCTypeList { get; init; } = LangUtils.GetGCTypes();
 
     /// <summary>
     /// 启动前命令

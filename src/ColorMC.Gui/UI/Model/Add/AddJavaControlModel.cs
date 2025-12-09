@@ -42,7 +42,7 @@ public partial class AddJavaControlModel : ControlModel
     /// <summary>
     /// Java类型
     /// </summary>
-    public string[] JavaTypeList { get; init; } = LanguageUtils.GetPCJavaType();
+    public string[] JavaTypeList { get; init; } = LangUtils.GetPCJavaType();
 
     /// <summary>
     /// 选中的Java类型
@@ -94,7 +94,7 @@ public partial class AddJavaControlModel : ControlModel
     {
         _useName = ToString() ?? "AddJavaControlModel";
         _needJava = version;
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("Button.Refash"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("Button.Refash"));
         Window.SetChoiseCall(_useName, Load);
     }
 
@@ -172,7 +172,7 @@ public partial class AddJavaControlModel : ControlModel
     {
         _load = true;
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddJavaWindow.Text10"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddJavaWindow.Text10"));
         Window.ChoiseEnable = false;
 
         _javaList.Clear();
@@ -286,13 +286,13 @@ public partial class AddJavaControlModel : ControlModel
 
             Window.ChoiseEnable = true;
             Window.CloseDialog(dialog);
-            Window.Notify(LanguageUtils.Get("AddJavaWindow.Text12"));
+            Window.Notify(LangUtils.Get("AddJavaWindow.Text12"));
         }
         else
         {
             Window.ChoiseEnable = true;
             Window.CloseDialog(dialog);
-            Window.Show(LanguageUtils.Get("AddJavaWindow.Text13"));
+            Window.Show(LangUtils.Get("AddJavaWindow.Text13"));
         }
 
         _load = false;
@@ -305,13 +305,13 @@ public partial class AddJavaControlModel : ControlModel
     public async void Install(JavaDownloadModel obj)
     {
         var res = await Window.ShowChoice(string.Format(
-            LanguageUtils.Get("AddJavaWindow.Text7"), obj.Name));
+            LangUtils.Get("AddJavaWindow.Text7"), obj.Name));
         if (!res)
         {
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddJavaWindow.Text8"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddJavaWindow.Text8"));
         //开始下载Java
         var zip = new ZipGui(Window, dialog);
         var res1 = await JavaBinding.DownloadJavaAsync(obj, zip);
@@ -323,7 +323,7 @@ public partial class AddJavaControlModel : ControlModel
             return;
         }
 
-        Window.Notify(LanguageUtils.Get("AddJavaWindow.Text9"));
+        Window.Notify(LangUtils.Get("AddJavaWindow.Text9"));
         (WindowManager.SettingWindow?.DataContext as SettingModel)?.LoadJava();
     }
 

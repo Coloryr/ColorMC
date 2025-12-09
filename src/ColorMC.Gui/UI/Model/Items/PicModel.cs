@@ -46,7 +46,7 @@ public partial class PicModel(string? name, string? logo, int min) : SelectItemM
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddModPackWindow.Text26"), e);
+            Logs.Error(LangUtils.Get("AddModPackWindow.Text26"), e);
         }
 
         return null;

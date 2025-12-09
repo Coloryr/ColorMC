@@ -16,15 +16,15 @@ public static class GameCloudFlyout1
     {
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("Button.OpFile"), model.HaveLocal, () =>
+            new FlyoutMenuModel(LangUtils.Get("Button.OpFile"), model.HaveLocal, () =>
             {
                 PathBinding.OpenPath(model.World);
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("GameCloudWindow.Flyouts.Text1"),
+            new FlyoutMenuModel(LangUtils.Get("GameCloudWindow.Flyouts.Text1"),
                 model.HaveLocal, model.Upload),
-            new FlyoutMenuModel(LanguageUtils.Get("GameCloudWindow.Flyouts.Text2"),
+            new FlyoutMenuModel(LangUtils.Get("GameCloudWindow.Flyouts.Text2"),
                 model.HaveCloud, model.Download),
-            new FlyoutMenuModel(LanguageUtils.Get("GameCloudWindow.Flyouts.Text3"),
+            new FlyoutMenuModel(LangUtils.Get("GameCloudWindow.Flyouts.Text3"),
                 model.HaveCloud,model.DeleteCloud),
         ]).Show(con);
     }

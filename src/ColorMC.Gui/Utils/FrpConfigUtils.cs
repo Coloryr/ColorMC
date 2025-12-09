@@ -56,7 +56,7 @@ public static class FrpConfigUtils
                 {
                     return false;
                 }
-                Logs.Error(LanguageUtils.Get("App.Error.Log12"), e);
+                Logs.Error(LangUtils.Get("App.Error.Log12"), e);
             }
 
             if (conf == null)

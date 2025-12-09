@@ -7,7 +7,11 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.CurseForge;
+using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -99,7 +103,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         _resourcepack = conf.ResourcePack;
         _shaderpack = conf.Shaderpack;
 
-        Groups.Add(LanguageUtils.Get("CollectWindow.Text26"));
+        Groups.Add(LangUtils.Get("CollectWindow.Text26"));
 
         foreach (var item in conf.Groups)
         {
@@ -186,7 +190,7 @@ public partial class CollectModel : ControlModel, ICollectControl
     {
         var dialog = new InputModel(Window.WindowId)
         {
-            Watermark1 = LanguageUtils.Get("CollectWindow.Text7")
+            Watermark1 = LangUtils.Get("CollectWindow.Text7")
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is not true || string.IsNullOrWhiteSpace(dialog.Text1))
@@ -195,7 +199,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         }
         if (CollectUtils.Collect.Groups.ContainsKey(dialog.Text1))
         {
-            Window.Show(LanguageUtils.Get("CollectWindow.Text19"));
+            Window.Show(LangUtils.Get("CollectWindow.Text19"));
             return;
         }
         CollectUtils.AddGroup(dialog.Text1);
@@ -214,7 +218,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         {
             return;
         }
-        var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text10"));
+        var res = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text10"));
         if (!res)
         {
             return;
@@ -232,7 +236,7 @@ public partial class CollectModel : ControlModel, ICollectControl
     {
         if (Index == 0)
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text8"));
+            var res = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text8"));
             if (res)
             {
                 CollectUtils.Clear();
@@ -243,7 +247,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         }
         else
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text9"));
+            var res = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text9"));
             if (res)
             {
                 CollectUtils.Clear(Group);
@@ -264,7 +268,7 @@ public partial class CollectModel : ControlModel, ICollectControl
 
         if (Modpack && other)
         {
-            Window.Show(LanguageUtils.Get("CollectWindow.Text25"));
+            Window.Show(LangUtils.Get("CollectWindow.Text25"));
             return;
         }
 
@@ -273,7 +277,7 @@ public partial class CollectModel : ControlModel, ICollectControl
             //选择一个游戏实例
             var dialog = new SelectGameModel(Window.WindowId)
             {
-                Text = LanguageUtils.Get("CollectWindow.Text12")
+                Text = LangUtils.Get("CollectWindow.Text12")
             };
             var res = await Window.ShowDialogWait(dialog);
             if (res is not true || dialog.Select == null)
@@ -285,33 +289,44 @@ public partial class CollectModel : ControlModel, ICollectControl
 
             if (game == null)
             {
-                Window.Show(LanguageUtils.Get("CollectWindow.Text29"));
+                Window.Show(LangUtils.Get("CollectWindow.Text29"));
                 return;
             }
 
-            var dialog1 = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text14"));
+            var dialog1 = Window.ShowProgress(LangUtils.Get("CollectWindow.Text14"));
 
             var list = new ConcurrentBag<FileModVersionModel>();
 
+            bool error = false;
+
             await Parallel.ForEachAsync(CollectList, async (item, cancel) =>
             {
-                if (item.IsCheck)
+                if (!item.IsCheck || error)
                 {
-                    var item1 = await WebBinding.GetFileListAsync(item.Obj.Source, 
-                        item.Obj.Pid, 0, game.Version, game.Loader, item.Obj.FileType);
-                    if (item1.Count == 0)
-                    {
-                        return;
-                    }
-                    var model1 = new FileModVersionModel(item.Name, item1.List!)
-                    {
-                        Download = true
-                    };
-                    list.Add(model1);
+                    return;
                 }
+
+                var item1 = await WebBinding.GetFileListAsync(item.Obj.Source,
+                        item.Obj.Pid, 0, game.Version, game.Loader, item.Obj.FileType);
+                if (item1.Count == 0)
+                {
+                    error = true;
+                    return;
+                }
+                var model1 = new FileModVersionModel(item.Name, item1.List!)
+                {
+                    Download = true
+                };
+                list.Add(model1);
             });
 
             Window.CloseDialog(dialog1);
+
+            if (error)
+            {
+                Window.Show(LangUtils.Get("CollectWindow.Text30"));
+                return;
+            }
 
             var dialog2 = new CollectDownloadModel(Window.WindowId);
 
@@ -325,16 +340,17 @@ public partial class CollectModel : ControlModel, ICollectControl
 
             if (InstancesPath.GetGame(game.UUID) == null)
             {
-                Window.Show(LanguageUtils.Get("CollectWindow.Text20"));
+                Window.Show(LangUtils.Get("CollectWindow.Text20"));
                 return;
             }
 
             var list1 = new ConcurrentBag<FileItemObj>();
 
+            error = false;
             //获取下载项目
             await Parallel.ForEachAsync(dialog2.DownloadList, async (item, cancel) =>
             {
-                if (item.Download == false)
+                if (!item.Download || error)
                 {
                     return;
                 }
@@ -343,49 +359,76 @@ public partial class CollectModel : ControlModel, ICollectControl
                 var item2 = await WebBinding.MakeDownloadAsync(game, download, Window);
                 if (item2 == null)
                 {
+                    error = true;
                     return;
                 }
                 list1.Add(item2);
             });
 
+            if (error)
+            {
+                Window.Show(LangUtils.Get("CollectWindow.Text30"));
+                return;
+            }
+
             //开始下载
-            dialog1 = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text15"));
+            dialog1 = Window.ShowProgress(LangUtils.Get("CollectWindow.Text15"));
             var res2 = await DownloadManager.StartAsync([.. list1]);
             Window.CloseDialog(dialog1);
             if (!res2)
             {
-                Window.Show(LanguageUtils.Get("CollectWindow.Text21"));
+                Window.Show(LangUtils.Get("CollectWindow.Text21"));
             }
             else
             {
-                Window.Notify(LanguageUtils.Get("CollectWindow.Text16"));
+                Window.Notify(LangUtils.Get("CollectWindow.Text16"));
             }
         }
         else if (Modpack)
         {
-            var dialog1 = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text14"));
+            var dialog1 = Window.ShowProgress(LangUtils.Get("CollectWindow.Text14"));
 
             var list = new ConcurrentBag<FileModVersionModel>();
+            var dir = new Dictionary<string, FileItemModel>();
+
+            bool error = false;
 
             await Parallel.ForEachAsync(CollectList, async (item, cancel) =>
             {
-                if (item.IsCheck)
+                if (!item.IsCheck || error)
                 {
-                    var item1 = await WebBinding.GetFileListAsync(item.Obj.Source, item.Obj.Pid, 0, null, Loaders.Normal, item.Obj.FileType);
-                    if (item1.Count == 0)
-                    {
-                        return;
-                    }
-                    var model1 = new FileModVersionModel(item.Name, item1.List!)
-                    { 
-                        Download = true
-                    };
-
-                    list.Add(model1);
+                    return;
                 }
+
+                var project = await WebBinding.GetModpackAsync(item.Obj.Source, item.Obj.Pid);
+                if (project == null)
+                {
+                    error = true;
+                    return;
+                }
+                dir[item.Obj.Pid] = project;
+                var item1 = await WebBinding.GetFileListAsync(item.Obj.Source, item.Obj.Pid,
+                    0, null, Loaders.Normal, item.Obj.FileType);
+                if (item1.Count == 0)
+                {
+                    error = true;
+                    return;
+                }
+                var model1 = new FileModVersionModel(item.Name, item1.List!)
+                {
+                    Download = true
+                };
+
+                list.Add(model1);
             });
 
             Window.CloseDialog(dialog1);
+
+            if (error)
+            {
+                Window.Show(LangUtils.Get("CollectWindow.Text30"));
+                return;
+            }
 
             var dialog2 = new CollectDownloadModel(Window.WindowId);
 
@@ -397,7 +440,12 @@ public partial class CollectModel : ControlModel, ICollectControl
                 return;
             }
 
-            var dialog = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text15"));
+            var dialog = Window.ShowProgress(LangUtils.Get("CollectWindow.Text15"));
+
+            var gui = new OverGameGui(Window);
+            var pack = new TopModPackGui(dialog);
+
+            var count = dialog2.DownloadList.Where(item => item.Download).Count();
 
             foreach (var item in dialog2.DownloadList)
             {
@@ -407,11 +455,36 @@ public partial class CollectModel : ControlModel, ICollectControl
                 }
 
                 var download = item.FileItems[item.SelectVersion];
-                var gui = new OverGameGui(Window);
-                var pack = new TopModPackGui(dialog);
-                //var res = await AddGameHelper.InstallCurseForge(null, data1, select?.Logo, gui, pack, info.Token);
-                pack.Stop();
+
+                GameManager.StartDownload(download.Obj);
+
+                var res = new GameRes();
+                if (download.Obj.Source == SourceType.CurseForge)
+                {
+                    var data1 = (download.Data as CurseForgeModObj.CurseForgeDataObj)!;
+                    res = await AddGameHelper.InstallCurseForge(null, data1, dir[download.Obj.Pid].Logo, gui, pack);
+                }
+                else if (download.Obj.Source == SourceType.Modrinth)
+                {
+                    var data1 = (download.Data as ModrinthVersionObj)!;
+                    res = await AddGameHelper.InstallModrinth(null, data1, dir[download.Obj.Pid].Logo, gui, pack);
+                }
+
+                GameManager.StopDownload(download.Obj, res.State);
+
+                if (!res.State && count > 0)
+                {
+                    var res2 = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text31"));
+                    if (!res2)
+                    {
+                        break;
+                    }
+                }
+
+                count--;
             }
+
+            pack.Stop();
 
             //var list = new ConcurrentBag<FileItemObj>();
 
@@ -665,11 +738,11 @@ public partial class CollectModel : ControlModel, ICollectControl
             return;
         }
 
-        var list = CollectList.Where(item => item.IsCheck).Select(item => item.Obj.UUID); 
+        var list = CollectList.Where(item => item.IsCheck).Select(item => item.Obj.UUID);
 
         if (Index == 0)
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text17"));
+            var res = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text17"));
             if (!res)
             {
                 return;
@@ -682,7 +755,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         }
         else
         {
-            var res = await Window.ShowChoice(LanguageUtils.Get("CollectWindow.Text28"));
+            var res = await Window.ShowChoice(LangUtils.Get("CollectWindow.Text28"));
             if (!res)
             {
                 return;
@@ -713,7 +786,7 @@ public partial class CollectModel : ControlModel, ICollectControl
 
         var dialog = new SelectModel(Window.WindowId)
         {
-            Text = LanguageUtils.Get("CollectWindow.Text18"),
+            Text = LangUtils.Get("CollectWindow.Text18"),
             Items = [.. list]
         };
         var res = await Window.ShowDialogWait(dialog);

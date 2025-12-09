@@ -32,7 +32,7 @@ public static class GameEditFlyout8
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("GameEditWindow.Flyouts.Text1"),
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"),
                 !run, ()=>
                 {
                     if (single)
@@ -44,7 +44,7 @@ public static class GameEditFlyout8
                         model.DisE(mods);
                     }
                 }),
-            new FlyoutMenuModel(LanguageUtils.Get("Button.Delete"), !run, ()=>
+            new FlyoutMenuModel(LangUtils.Get("Button.Delete"), !run, ()=>
             {
                 if (single)
                 {

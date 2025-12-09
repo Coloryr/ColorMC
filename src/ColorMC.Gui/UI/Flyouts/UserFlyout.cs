@@ -19,24 +19,24 @@ public class UserFlyout
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("UserWindow.Text31"), true, ()=>
+            new FlyoutMenuModel(LangUtils.Get("UserWindow.Text31"), true, ()=>
             {
                  _obj.Select();
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("UserWindow.Text32"), _obj.AuthType is not AuthType.Offline, ()=>
+            new FlyoutMenuModel(LangUtils.Get("UserWindow.Text32"), _obj.AuthType is not AuthType.Offline, ()=>
             {
                 _obj.Refresh();
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("UserWindow.Text33"), _obj.AuthType is not AuthType.Offline
+            new FlyoutMenuModel(LangUtils.Get("UserWindow.Text33"), _obj.AuthType is not AuthType.Offline
                 or AuthType.OAuth, ()=>
                 {
                     _obj.Relogin();
                 }),
-            new FlyoutMenuModel(LanguageUtils.Get("UserWindow.Text34"), true, ()=>
+            new FlyoutMenuModel(LangUtils.Get("UserWindow.Text34"), true, ()=>
             {
                 _obj.Remove();
             }),
-            new FlyoutMenuModel(LanguageUtils.Get("UserWindow.Text35"), _obj.AuthType == AuthType.Offline, ()=>
+            new FlyoutMenuModel(LangUtils.Get("UserWindow.Text35"), _obj.AuthType == AuthType.Offline, ()=>
             {
                 _obj.Edit();
             })

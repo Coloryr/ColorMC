@@ -34,7 +34,7 @@ public partial class AddResourceControl : BaseUserControl
 
         _obj = obj;
 
-        Title = string.Format(LanguageUtils.Get("AddResourceWindow.Title"), obj.Name);
+        Title = string.Format(LangUtils.Get("AddResourceWindow.Title"), obj.Name);
 
         ItemInfo.PointerPressed += ItemInfo_PointerPressed;
         OptifineDisplay.PointerPressed += OptifineDisplay_PointerPressed;
@@ -44,7 +44,7 @@ public partial class AddResourceControl : BaseUserControl
         EventManager.GameDelete += EventManager_GameDelete;
     }
 
-    private void EventManager_GameDelete(object? sender, Guid uuid)
+    private void EventManager_GameDelete(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
@@ -54,17 +54,17 @@ public partial class AddResourceControl : BaseUserControl
         Window?.Close();
     }
 
-    private void EventManager_GameNameChange(object? sender, Guid uuid)
+    private void EventManager_GameNameChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {
             return;
         }
 
-        Title = string.Format(LanguageUtils.Get("AddResourceWindow.Title"), _obj.Name);
+        Title = string.Format(LangUtils.Get("AddResourceWindow.Title"), _obj.Name);
     }
 
-    private void EventManager_GameIconChange(object? sender, Guid uuid)
+    private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != _obj.UUID)
         {

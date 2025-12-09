@@ -20,22 +20,22 @@ public partial class BuildPackModel : MenuModel
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item1.svg",
-                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text1")
+                Text = LangUtils.Get("BuildPackWindow.Tabs.Text1")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item2.svg",
-                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text2")
+                Text = LangUtils.Get("BuildPackWindow.Tabs.Text2")
             },
             new()
             {
                 Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = LanguageUtils.Get("BuildPackWindow.Tabs.Text3")
+                Text = LangUtils.Get("BuildPackWindow.Tabs.Text3")
             }
         ]);
 
         Window.SetChoiseCall(_useName, Build);
-        Window.SetChoiseContent(_useName, LanguageUtils.Get("ServerPackWindow.Tab1.Text10"));
+        Window.SetChoiseContent(_useName, LangUtils.Get("ServerPackWindow.Tab1.Text10"));
     }
 
     public override void Close()
@@ -66,22 +66,22 @@ public partial class BuildPackModel : MenuModel
         }
 
         string ext = PackLaunch ? Names.NameZipExt : GuiNames.NameColorMCExt;
-        var local = await PathBinding.SaveFileAsync(top, LanguageUtils.Get("BuildPackWindow.Text2"), ext, GuiNames.NameClientFile + ext);
+        var local = await PathBinding.SaveFileAsync(top, LangUtils.Get("BuildPackWindow.Text2"), ext, GuiNames.NameClientFile + ext);
         if (local == null)
         {
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("BuildPackWindow.Text1"));
+        var dialog = Window.ShowProgress(LangUtils.Get("BuildPackWindow.Text1"));
         var res = await BaseBinding.BuildPackAsync(this, dialog, local.GetPath()!);
         Window.CloseDialog(dialog);
         if (!res)
         {
-            Window.Show(LanguageUtils.Get("BuildPackWindow.Text8"));
+            Window.Show(LangUtils.Get("BuildPackWindow.Text8"));
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("BuildPackWindow.Text7"));
+            Window.Notify(LangUtils.Get("BuildPackWindow.Text7"));
         }
     }
 }

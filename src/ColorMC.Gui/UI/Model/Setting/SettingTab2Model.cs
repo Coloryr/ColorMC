@@ -23,15 +23,15 @@ public partial class SettingModel
     /// <summary>
     /// 透明类型列表
     /// </summary>
-    public string[] TranTypeList { get; init; } = LanguageUtils.GetWindowTranTypes();
+    public string[] TranTypeList { get; init; } = LangUtils.GetWindowTranTypes();
     /// <summary>
     /// 语言列表
     /// </summary>
-    public string[] LanguageList { get; init; } = LanguageUtils.GetLanguages();
+    public string[] LanguageList { get; init; } = LangUtils.GetLanguages();
     /// <summary>
     /// 位置列表
     /// </summary>
-    public string[] PosList { get; init; } = LanguageUtils.GetPos();
+    public string[] PosList { get; init; } = LangUtils.GetPos();
 
     /// <summary>
     /// 字体
@@ -380,7 +380,7 @@ public partial class SettingModel
 
         if (value)
         {
-            var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+            var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab2.Text70"));
             await ConfigBinding.SetBackLimit(value, PicResize);
             Window.CloseDialog(dialog);
         }
@@ -432,7 +432,7 @@ public partial class SettingModel
         ConfigBinding.ResetColor();
         MainColor = Color.Parse(ThemeManager.MainColorStr);
         _load = false;
-        Window.Notify(LanguageUtils.Get("Text.Reset"));
+        Window.Notify(LangUtils.Get("Text.Reset"));
     }
     /// <summary>
     /// 设置背景图片大小
@@ -441,10 +441,10 @@ public partial class SettingModel
     [RelayCommand]
     public async Task SetPicSize()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab2.Text70"));
         await ConfigBinding.SetBackLimit(EnablePicResize, PicResize);
         Window.CloseDialog(dialog);
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 设置背景图片透明
@@ -453,7 +453,7 @@ public partial class SettingModel
     public void SetPicTran()
     {
         ConfigBinding.SetBackTran(PicTran);
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 删除背景图
@@ -502,11 +502,11 @@ public partial class SettingModel
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("SettingWindow.Tab2.Text70"));
+        var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab2.Text70"));
         await ConfigBinding.SetBackPic(EnableBG, Pic, PicEffect);
         Window.CloseDialog(dialog);
 
-        Window.Notify(LanguageUtils.Get("SettingWindow.Tab2.Text71"));
+        Window.Notify(LangUtils.Get("SettingWindow.Tab2.Text71"));
     }
     /// <summary>
     /// 加载UI设置

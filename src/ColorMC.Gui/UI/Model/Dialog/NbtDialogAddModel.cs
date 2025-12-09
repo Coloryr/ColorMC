@@ -15,7 +15,7 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     /// <summary>
     /// Nbt类型
     /// </summary>
-    public string[] TypeSource { get; init; } = LanguageUtils.GetNbtName();
+    public string[] TypeSource { get; init; } = LangUtils.GetNbtName();
 
     /// <summary>
     /// 标题1

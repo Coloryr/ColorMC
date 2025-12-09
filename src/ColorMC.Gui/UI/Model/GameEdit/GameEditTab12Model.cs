@@ -46,7 +46,7 @@ public partial class GameEditModel
     /// </summary>
     public async void LoadSchematic()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("GameEditWindow.Tab12.Text9"));
+        var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab12.Text9"));
         SchematicList.Clear();
         foreach (var item in await _obj.GetSchematicsAsync())
         {
@@ -54,7 +54,7 @@ public partial class GameEditModel
             {
                 SchematicList.Add(new SchematicObj()
                 {
-                    Name = LanguageUtils.Get("GameEditWindow.Tab12.Text10"),
+                    Name = LangUtils.Get("GameEditWindow.Tab12.Text10"),
                     Local = item.Local,
                 });
             }
@@ -65,7 +65,7 @@ public partial class GameEditModel
         }
         Window.CloseDialog(dialog);
         SchematicEmptyDisplay = SchematicList.Count == 0;
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab12.Text7"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab12.Text7"));
     }
 
     /// <summary>
@@ -85,10 +85,10 @@ public partial class GameEditModel
             case null:
                 return;
             case false:
-                Window.Show(LanguageUtils.Get("GameEditWindow.Tab11.Text7"));
+                Window.Show(LangUtils.Get("GameEditWindow.Tab11.Text7"));
                 return;
             default:
-                Window.Notify(LanguageUtils.Get("GameEditWindow.Tab11.Text3"));
+                Window.Notify(LangUtils.Get("GameEditWindow.Tab11.Text3"));
                 LoadSchematic();
                 break;
         }
@@ -113,13 +113,13 @@ public partial class GameEditModel
     /// <param name="obj">结构文件</param>
     public async void DeleteSchematic(SchematicObj obj)
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("GameEditWindow.Tab12.Text8"));
+        var res = await Window.ShowChoice(LangUtils.Get("GameEditWindow.Tab12.Text8"));
         if (!res)
         {
             return;
         }
         await obj.DeleteAsync();
-        Window.Notify(LanguageUtils.Get("GameEditWindow.Tab10.Text6"));
+        Window.Notify(LangUtils.Get("GameEditWindow.Tab10.Text6"));
         LoadSchematic();
     }
 

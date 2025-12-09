@@ -152,7 +152,7 @@ public partial class GameGroupModel : ControlModel
     [RelayCommand]
     public async Task LaunchAll()
     {
-        var res = await Window.ShowChoice(LanguageUtils.Get("MainWindow.Text77"));
+        var res = await Window.ShowChoice(LangUtils.Get("MainWindow.Text77"));
         if (!res)
         {
             return;

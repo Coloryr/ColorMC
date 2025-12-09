@@ -88,7 +88,7 @@ public static class UpdateUtils
         catch (Exception e)
         {
             UpdateCheckFail();
-            Logs.Error(LanguageUtils.Get("SettingWindow.Tab3.Text38"), e);
+            Logs.Error(LangUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
         return (false, false, null);
@@ -203,7 +203,7 @@ public static class UpdateUtils
         if (ColorMCGui.BaseSha1 == null)
             return;
 
-        var dialog = window.ShowProgress(LanguageUtils.Get("App.Text82"));
+        var dialog = window.ShowProgress(LangUtils.Get("App.Text82"));
         var list = new List<FileItemObj>()
         {
             new()
@@ -232,7 +232,7 @@ public static class UpdateUtils
         }
         else
         {
-            window.Show(LanguageUtils.Get("App.Text84"));
+            window.Show(LangUtils.Get("App.Text84"));
         }
     }
 
@@ -252,7 +252,7 @@ public static class UpdateUtils
             var obj = await ColorMCCloudAPI.GetUpdateIndexAsync();
             if (obj == null)
             {
-                WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Text38"), "Json Error");
+                WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab3.Text38"), "Json Error");
                 return (false, null);
             }
             var json = obj.RootElement;
@@ -273,7 +273,7 @@ public static class UpdateUtils
                 if (WebSha1s[a] != LocalSha1s[a])
                 {
                     index.TryGetProperty("info", out var data1);
-                    return (true, data1.GetString() ?? LanguageUtils.Get("App.Text81"));
+                    return (true, data1.GetString() ?? LangUtils.Get("App.Text81"));
                 }
             }
 
@@ -281,7 +281,7 @@ public static class UpdateUtils
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("SettingWindow.Tab3.Text38"), e);
+            WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
         return (null, null);
@@ -297,7 +297,7 @@ public static class UpdateUtils
         {
             return;
         }
-        window.Model.Notify(LanguageUtils.Get("SettingWindow.Tab3.Text38"));
+        window.Model.Notify(LangUtils.Get("SettingWindow.Tab3.Text38"));
     }
 
     //private static async Task<bool> StartPatch(string file, List<string> files)

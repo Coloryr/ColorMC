@@ -18,7 +18,7 @@ public partial class DownloadControl : BaseUserControl
     {
         InitializeComponent();
 
-        Title = LanguageUtils.Get("DownloadWindow.Title");
+        Title = LangUtils.Get("DownloadWindow.Title");
     }
 
     public DownloadControl(int thread) : this()

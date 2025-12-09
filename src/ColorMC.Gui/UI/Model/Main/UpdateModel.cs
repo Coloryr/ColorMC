@@ -43,13 +43,13 @@ public partial class MainModel
         var data = await ColorMCCloudAPI.GetNewLogAsync();
         if (data == null)
         {
-            Window.Show(LanguageUtils.Get("App.Text113"));
+            Window.Show(LangUtils.Get("App.Text113"));
         }
         else
         {
             var dialog = new LongTextModel(Window.WindowId)
             {
-                Text1 = LanguageUtils.Get("App.Text24"),
+                Text1 = LangUtils.Get("App.Text24"),
                 Text2 = data
             };
             Window.ShowDialog(dialog);

@@ -21,7 +21,7 @@ public static class SettingFlyout1
 
         new FlyoutsControl(
         [
-            new FlyoutMenuModel(LanguageUtils.Get("SettingWindow.Flyouts.Text1"), true, ()=>
+            new FlyoutMenuModel(LangUtils.Get("SettingWindow.Flyouts.Text1"), true, ()=>
             {
                 foreach (var item in java)
                 {

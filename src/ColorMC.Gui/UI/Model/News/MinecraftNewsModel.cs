@@ -39,11 +39,11 @@ public partial class MinecraftNewsModel : ControlModel
     {
         News.Clear();
         _newsPage = 0;
-        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
+        var dialog = Window.ShowProgress(LangUtils.Get("Text.Loading"));
         var data = await WebBinding.LoadNewsAsync(_newsPage);
         if (data == null)
         {
-            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LangUtils.Get("MainWindow.Text87"));
             return;
         }
 
@@ -61,12 +61,12 @@ public partial class MinecraftNewsModel : ControlModel
     [RelayCommand]
     public async Task NewsNextPage()
     {
-        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Loading"));
+        var dialog = Window.ShowProgress(LangUtils.Get("Text.Loading"));
         var data = await WebBinding.LoadNewsAsync(++_newsPage);
         Window.CloseDialog(dialog);
         if (data == null)
         {
-            Window.Notify(LanguageUtils.Get("MainWindow.Text87"));
+            Window.Notify(LangUtils.Get("MainWindow.Text87"));
             return;
         }
 
@@ -81,7 +81,7 @@ public partial class MinecraftNewsModel : ControlModel
     /// </summary>
     public async void LoadNews()
     {
-        Window.SetChoiseContent(_use, LanguageUtils.Get("Button.Refash"));
+        Window.SetChoiseContent(_use, LangUtils.Get("Button.Refash"));
         Window.SetChoiseCall(_use, Reload);
         await ReloadNews();
     }

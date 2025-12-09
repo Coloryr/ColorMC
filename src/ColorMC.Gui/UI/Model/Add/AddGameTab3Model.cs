@@ -51,18 +51,18 @@ public partial class AddGameModel
     {
         if (Directory.Exists(SelectPath))
         {
-            var res = await Window.ShowChoice(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Text6"), SelectPath));
+            var res = await Window.ShowChoice(string.Format(LangUtils.Get("AddGameWindow.Tab3.Text6"), SelectPath));
             if (!res)
             {
                 return;
             }
-            var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab3.Text5"));
+            var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab3.Text5"));
 
             //测试是否是其他启动器的游戏版本
             var list = GameHelper.ScanVersions(SelectPath);
             if (list.Count > 0)
             {
-                res = await Window.ShowChoice(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Text7"), list.Count));
+                res = await Window.ShowChoice(string.Format(LangUtils.Get("AddGameWindow.Tab3.Text7"), list.Count));
                 if (!res)
                 {
                     await ImportAsync(list);
@@ -80,14 +80,14 @@ public partial class AddGameModel
 
             CanInput = true;
 
-            Window.Notify(LanguageUtils.Get("AddGameWindow.Tab3.Text8"));
+            Window.Notify(LangUtils.Get("AddGameWindow.Tab3.Text8"));
         }
         else
         {
             CanInput = false;
             Files = null!;
             _fileModel = null!;
-            Window.Show(string.Format(LanguageUtils.Get("AddGameWindow.Tab1.Text45"), SelectPath));
+            Window.Show(string.Format(LangUtils.Get("AddGameWindow.Tab1.Text45"), SelectPath));
         }
     }
 
@@ -100,29 +100,29 @@ public partial class AddGameModel
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text45"));
             return;
         }
 
         if (PathHelper.FileHasInvalidChars(Name))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text52"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab1.Text52"));
             return;
         }
 
         if (string.IsNullOrWhiteSpace(SelectPath))
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab3.Text11"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab3.Text11"));
             return;
         }
 
         if (_fileModel == null)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab3.Text12"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab3.Text12"));
             return;
         }
 
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab3.Text4"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab3.Text4"));
         var zip = new ZipGui(Window, dialog);
         var res = await GameBinding.AddGameAsync(Name, SelectPath, _fileModel.GetUnSelectItems(), Group, true, new OverGameGui(Window), zip);
         zip.Stop();
@@ -130,7 +130,7 @@ public partial class AddGameModel
 
         if (!res.State)
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab3.Text9"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab3.Text9"));
             return;
         }
 
@@ -163,7 +163,7 @@ public partial class AddGameModel
         }
         else
         {
-            Window.Show(string.Format(LanguageUtils.Get("AddGameWindow.Tab3.Text10"), res));
+            Window.Show(string.Format(LangUtils.Get("AddGameWindow.Tab3.Text10"), res));
         }
     }
 
@@ -188,7 +188,7 @@ public partial class AddGameModel
         bool ok = false;
         foreach (var item in list)
         {
-            var dialog = Window.ShowProgress(LanguageUtils.Get("AddGameWindow.Tab3.Text4"));
+            var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab3.Text4"));
             var zip = new ZipGui(Window, dialog);
             var res = await GameBinding.AddGameAsync(null, item, null, Group, false, new OverGameGui(Window), zip);
             zip.Stop();
@@ -196,7 +196,7 @@ public partial class AddGameModel
 
             if (!res.State)
             {
-                var res1 = await Window.ShowChoice(LanguageUtils.Get("AddGameWindow.Tab3.Text13"));
+                var res1 = await Window.ShowChoice(LangUtils.Get("AddGameWindow.Tab3.Text13"));
                 if (!res1)
                 {
                     return;
@@ -213,7 +213,7 @@ public partial class AddGameModel
         }
         else
         {
-            Window.Show(LanguageUtils.Get("AddGameWindow.Tab3.Text14"));
+            Window.Show(LangUtils.Get("AddGameWindow.Tab3.Text14"));
         }
     }
 }

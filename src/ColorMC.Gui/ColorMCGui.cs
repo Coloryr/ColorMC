@@ -102,7 +102,7 @@ public static class ColorMCGui
             {
                 return;
             }
-            Logs.Error(LanguageUtils.Get("App.Error.Log16"), e.Exception);
+            Logs.Error(LangUtils.Get("App.Error.Log16"), e.Exception);
         };
 
         RunType = RunType.Program;
@@ -159,13 +159,13 @@ public static class ColorMCGui
 
             s_arg.Local = BaseDir;
 
-            LanguageUtils.Load(LanguageType.zh_cn);
+            LangUtils.Load(LanguageType.zh_cn);
 
             ColorMCCore.Init(s_arg);
 
             BaseBinding.ReadBuildConfig();
 
-            LanguageUtils.Load(GuiConfigUtils.Config.Language);
+            LangUtils.Load(GuiConfigUtils.Config.Language);
 
             IsInit = true;
 

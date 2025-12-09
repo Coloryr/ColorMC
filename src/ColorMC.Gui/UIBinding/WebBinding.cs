@@ -825,7 +825,7 @@ public static class WebBinding
                 var list1 = res.List;
 
                 if (list1 == null || list1.Count == 0
-                || list1[0].ID1 == item.FID)
+                || list1[0].Obj.Fid == item.FID)
                 {
                     return;
                 }
@@ -836,7 +836,7 @@ public static class WebBinding
                 List<DownloadModObj> items = [];
                 foreach (var item1 in list1)
                 {
-                    if (item1.ID1 == item.FID)
+                    if (item1.Obj.Fid == item.FID)
                     {
                         continue;
                     }
@@ -865,7 +865,7 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("App.Text75"), e);
+                Logs.Error(LangUtils.Get("App.Text75"), e);
             }
         });
 
@@ -1154,7 +1154,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
+            WindowManager.ShowError(LangUtils.Get("App.Text76"), e);
             return new();
         }
     }
@@ -1289,7 +1289,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
+            WindowManager.ShowError(LangUtils.Get("App.Text76"), e);
             return new GetJavaAdoptiumListRes();
         }
     }
@@ -1515,7 +1515,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
+            WindowManager.ShowError(LangUtils.Get("App.Text76"), e);
             return null;
         }
     }
@@ -1582,7 +1582,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            WindowManager.ShowError(LanguageUtils.Get("App.Text76"), e);
+            WindowManager.ShowError(LangUtils.Get("App.Text76"), e);
             return new GetJavaListRes();
         }
     }
@@ -1620,7 +1620,7 @@ public static class WebBinding
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("App.Text77"), e);
+            Logs.Error(LangUtils.Get("App.Text77"), e);
             return null;
         }
     }
@@ -1634,23 +1634,23 @@ public static class WebBinding
     /// <returns></returns>
     public static async Task<FileItemObj?> MakeDownloadAsync(GameSettingObj obj, FileVersionItemModel model, WindowModel model1)
     {
-        Core.Objs.ModInfoObj? mod = null;
-        if (model.FileType == FileType.Mod && obj.Mods.TryGetValue(model.ID, out mod))
+        ModInfoObj? mod = null;
+        if (model.Obj.Type == FileType.Mod && obj.Mods.TryGetValue(model.Obj.Pid, out mod))
         {
-            var res1 = await model1.ShowChoice(LanguageUtils.Get("AddResourceWindow.Text23"));
+            var res1 = await model1.ShowChoice(LangUtils.Get("AddResourceWindow.Text23"));
             if (!res1)
             {
                 return null;
             }
         }
         //分文件类型处理
-        if (model.FileType == FileType.Mod)
+        if (model.Obj.Type == FileType.Mod)
         {
             try
             {
                 var setting = GameManager.ReadConfig(obj);
                 DownloadModObj? arg = null;
-                if (model.SourceType == SourceType.CurseForge)
+                if (model.Obj.Source == SourceType.CurseForge)
                 {
                     var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                     arg = new DownloadModObj()
@@ -1701,12 +1701,12 @@ public static class WebBinding
             }
             catch (Exception e)
             {
-                Logs.Error(LanguageUtils.Get("AddResourceWindow.Text31"), e);
+                Logs.Error(LangUtils.Get("AddResourceWindow.Text31"), e);
             }
         }
-        else if (model.FileType == FileType.Shaderpack)
+        else if (model.Obj.Type == FileType.Shaderpack)
         {
-            if (model.SourceType == SourceType.CurseForge)
+            if (model.Obj.Source == SourceType.CurseForge)
             {
                 var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                 return new()
@@ -1733,9 +1733,9 @@ public static class WebBinding
                 };
             }
         }
-        else if (model.FileType == FileType.Resourcepack)
+        else if (model.Obj.Type == FileType.Resourcepack)
         {
-            if (model.SourceType == SourceType.CurseForge)
+            if (model.Obj.Source == SourceType.CurseForge)
             {
                 var data = (model.Data as CurseForgeModObj.CurseForgeDataObj)!;
                 return new()

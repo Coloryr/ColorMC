@@ -67,7 +67,7 @@ public partial class NewsItemModel(MinecraftNewObj.ArticleGridObj item) : Observ
         }
         catch (Exception e)
         {
-            Logs.Error(LanguageUtils.Get("AddModPackWindow.Text26"), e);
+            Logs.Error(LangUtils.Get("AddModPackWindow.Text26"), e);
         }
 
         return null;

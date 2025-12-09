@@ -16,7 +16,7 @@ public partial class BuildPackControl : MenuControl
 
     public BuildPackControl() : base(WindowManager.GetUseName<DownloadControl>())
     {
-        Title = LanguageUtils.Get("BuildPackWindow.Title");
+        Title = LangUtils.Get("BuildPackWindow.Title");
     }
 
     public override void Opened()

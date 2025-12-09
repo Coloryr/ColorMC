@@ -92,13 +92,13 @@ public partial class AddResourceControlModel : IAddOptifineControl
         GameVersionList.Clear();
         _optifineList.Clear();
         DownloadOptifineList.Clear();
-        var dialog = Window.ShowProgress(LanguageUtils.Get("AddResourceWindow.Text21"));
+        var dialog = Window.ShowProgress(LangUtils.Get("AddResourceWindow.Text21"));
         var list = await OptifineAPI.GetOptifineVersionAsync();
         Window.CloseDialog(dialog);
         _load = false;
         if (list == null)
         {
-            Window.Show(LanguageUtils.Get("AddResourceWindow.Text33"));
+            Window.Show(LangUtils.Get("AddResourceWindow.Text33"));
             return;
         }
 
@@ -116,7 +116,7 @@ public partial class AddResourceControlModel : IAddOptifineControl
                                  select newgroup.Key);
 
         LoadOptifineVersion();
-        Window.Notify(LanguageUtils.Get("AddResourceWindow.Text24"));
+        Window.Notify(LangUtils.Get("AddResourceWindow.Text24"));
     }
 
     /// <summary>
@@ -172,21 +172,21 @@ public partial class AddResourceControlModel : IAddOptifineControl
     public async void Install(OptifineVersionItemModel item)
     {
         var res = await Window.ShowChoice(string.Format(
-            LanguageUtils.Get("AddResourceWindow.Text20"), item.Version));
+            LangUtils.Get("AddResourceWindow.Text20"), item.Version));
         if (!res)
         {
             return;
         }
-        var dialog = Window.ShowProgress(LanguageUtils.Get("Text.Downloading"));
+        var dialog = Window.ShowProgress(LangUtils.Get("Text.Downloading"));
         var res1 = await OptifineAPI.DownloadOptifineAsync(_obj, item.Obj);
         Window.CloseDialog(dialog);
         if (res1 == false)
         {
-            Window.Show(LanguageUtils.Get("AddResourceWindow.Text35"));
+            Window.Show(LangUtils.Get("AddResourceWindow.Text35"));
         }
         else
         {
-            Window.Notify(LanguageUtils.Get("Text.Downloaded"));
+            Window.Notify(LangUtils.Get("Text.Downloaded"));
             OptifineDisplay = false;
         }
     }
