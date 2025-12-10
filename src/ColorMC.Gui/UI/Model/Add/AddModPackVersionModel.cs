@@ -5,7 +5,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
-using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -55,10 +54,10 @@ public partial class AddModPackControlModel
             return;
         }
 
-        GameManager.StartDownload(data.Obj);
-
         GameRes res;
         FileItemDownloadModel info;
+
+        var gui = new OverGameGui(Window);
 
         var select = _lastSelect;
         if (data.Obj.Source == SourceType.CurseForge)
@@ -71,11 +70,12 @@ public partial class AddModPackControlModel
                 Obj = data.Obj
             };
             StartDownload(info);
-            var gui = new OverGameGui(Window);
+            GameManager.StartDownload(info);
             var pack = new ModPackGui(info);
             res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack, info.Token);
             pack.Stop();
-            StopDownload(info, res.State);
+            StopDownload(info);
+            GameManager.StopDownload(info, res.State);
         }
         else if (data.Obj.Source == SourceType.Modrinth)
         {
@@ -87,13 +87,14 @@ public partial class AddModPackControlModel
                 Obj = data.Obj
             };
             StartDownload(info);
+            GameManager.StartDownload(info);
             var pack = new ModPackGui(info);
-            var gui = new OverGameGui(Window);
             res = await AddGameHelper.InstallModrinth(_group, data1, select?.Logo, gui, pack);
             pack.Stop();
-            StopDownload(info, res.State);
+            StopDownload(info);
+            GameManager.StopDownload(info, res.State);
         }
-        else 
+        else
         {
             throw new InvalidOperationException();
         }
@@ -109,7 +110,5 @@ public partial class AddModPackControlModel
                 Done(res.Game!.UUID);
             }
         }
-
-        GameManager.StopDownload(data.Obj, res.State);
     }
 }

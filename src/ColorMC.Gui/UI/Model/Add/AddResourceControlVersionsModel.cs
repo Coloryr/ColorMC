@@ -126,7 +126,6 @@ public partial class AddResourceControlModel
 
         bool res = false;
 
-        GameManager.StartAdd(_obj.UUID);
         try
         {
             //数据包
@@ -177,13 +176,15 @@ public partial class AddResourceControlModel
                         Obj = data.Obj
                     };
                     StartDownload(info);
+                    GameManager.StartDownload(info);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadResourceAsync(item, data2, pack, info.Token);
                     pack.Stop();
                 }
                 if (info != null)
                 {
-                    StopDownload(info, res);
+                    StopDownload(info);
+                    GameManager.StopDownload(info, res);
                 }
             }
             //模组
@@ -214,6 +215,7 @@ public partial class AddResourceControlModel
                         Obj = data.Obj
                     };
                     StartDownload(info);
+                    GameManager.StartDownload(info);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadModAsync(_obj,
                     [
@@ -225,7 +227,8 @@ public partial class AddResourceControlModel
                             }
                     ], pack, info.Token);
 
-                    StopDownload(info, res);
+                    StopDownload(info);
+                    GameManager.StopDownload(info, res);
                 }
                 else
                 {
@@ -266,10 +269,6 @@ public partial class AddResourceControlModel
         {
             Logs.Error(LangUtils.Get("AddResourceWindow.Text31"), e);
             res = false;
-        }
-        finally
-        {
-            GameManager.StopAdd(_obj.UUID);
         }
     }
 }

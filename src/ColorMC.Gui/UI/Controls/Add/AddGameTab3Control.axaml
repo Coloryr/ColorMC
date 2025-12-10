@@ -20,6 +20,7 @@
                         Width="100"
                         Height="35"
                         Margin="-2,-3,-3,7"
+                        VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding AddFiles}"
                         Content="{setting:Localize Button.Input}"
@@ -27,7 +28,6 @@
                         IsEnabled="{Binding CanInput}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text89}" />
                     <TextBox
-                        Height="30"
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         Text="{Binding Name}"
@@ -35,7 +35,6 @@
                 </DockPanel>
                 <panel:WrapPanelWithStretch LeftMax="True">
                     <TextBox
-                        Height="30"
                         MinWidth="230"
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
@@ -49,6 +48,7 @@
                             Width="100"
                             Height="35"
                             Margin="-2,-2,-3,-2"
+                            VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SelectLocal}"
                             Content="{setting:Localize AddGameWindow.Tab3.Text2}"
@@ -57,6 +57,7 @@
                             Width="100"
                             Height="35"
                             Margin="7,-2,-3,-2"
+                            VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding RefashFiles}"
                             Content="{setting:Localize AddGameWindow.Tab3.Text3}"
@@ -70,7 +71,7 @@
                         Margin="0,0,5,0"
                         Path="/Resource/Icon/GameEdit/svg3.svg" />
                     <TextBlock
-                        Margin="0,0,0,0"
+                        HorizontalAlignment="Center"
                         FontSize="{setting:Style FontTitle}"
                         Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 </StackPanel>

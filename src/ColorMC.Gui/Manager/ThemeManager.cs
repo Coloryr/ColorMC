@@ -34,7 +34,7 @@ public static class ThemeManager
 
     private static readonly Random s_random = new();
 
-    private static readonly double s_fontTitleSize = 17;
+    private static readonly double s_fontTitleSize = 18;
 
     /// <summary>
     /// 当前主题

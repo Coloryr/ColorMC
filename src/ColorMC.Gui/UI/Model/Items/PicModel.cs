@@ -41,7 +41,7 @@ public partial class PicModel(string? name, string? logo, int min) : SelectItemM
         }
         try
         {
-            _img = await ImageManager.Load(Logo, min);
+            _img = await ImageManager.LoadAsync(Logo, min);
             return _img;
         }
         catch (Exception e)

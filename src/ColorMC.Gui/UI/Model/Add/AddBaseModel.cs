@@ -18,7 +18,7 @@ namespace ColorMC.Gui.UI.Model.Add;
 /// </summary>
 public abstract partial class AddBaseModel(WindowModel model) : ControlModel(model), IAddControl
 {
-    private readonly string[] _displayStage = [".    ", "..   ", "...  ", ".... ", "....."];
+    private static readonly string[] s_displayStage = [".    ", "..   ", "...  ", ".... ", "....."];
 
     /// <summary>
     /// 下载源
@@ -88,7 +88,9 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// </summary>
     [ObservableProperty]
     private string? _downloadText;
-
+    /// <summary>
+    /// 是否显示下载文本
+    /// </summary>
     [ObservableProperty]
     private string? _displayText;
 
@@ -346,15 +348,6 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     {
         NowDownload.Add(info);
 
-        foreach (var item in DisplayList)
-        {
-            if (info.Obj.CheckProject(item.Obj)
-                || info.Obj.CheckSubPid(item.Obj))
-            {
-                item.NowDownload = true;
-            }
-        }
-
         DownloadReload();
     }
 
@@ -363,19 +356,9 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// </summary>
     /// <param name="info">下载项目</param>
     /// <param name="done">是否下载完成</param>
-    public void StopDownload(FileItemDownloadModel info, bool done)
+    public void StopDownload(FileItemDownloadModel info)
     {
         NowDownload.Remove(info);
-
-        foreach (var item in DisplayList)
-        {
-            if (info.Obj.CheckProject(item.Obj)
-               || info.Obj.CheckSubPid(item.Obj))
-            {
-                item.NowDownload = false;
-                item.IsDownload = done;
-            }
-        }
 
         DownloadReload();
     }
@@ -404,8 +387,13 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     public override void Close()
     {
         ClearList();
-
         FileList.Clear();
+
+        foreach (var item in NowDownload)
+        {
+            item.Window = null;
+        }
+        NowDownload.Clear();
 
         _isDisplayRun = false;
     }
@@ -418,12 +406,11 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
 
     private bool Run()
     {
-        DisplayText = _displayStage[_displayRunStage];
+        DisplayText = s_displayStage[_displayRunStage];
         _displayRunStage++;
-        _displayRunStage %= _displayStage.Length;
+        _displayRunStage %= s_displayStage.Length;
         return _isDisplayRun;
     }
-
 
     private void DownloadReload()
     {

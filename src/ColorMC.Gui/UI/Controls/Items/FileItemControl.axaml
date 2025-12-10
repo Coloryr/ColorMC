@@ -13,7 +13,6 @@
     d:DesignWidth="600"
     x:DataType="model:FileItemModel"
     Focusable="True"
-    ToolTip.Tip="{setting:Localize ToolTip.Text49}"
     mc:Ignorable="d">
     <Border
         Margin="10,5,10,5"

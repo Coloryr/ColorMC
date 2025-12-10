@@ -61,6 +61,16 @@
                     <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
                 </Button>
             </StackPanel>
+            <Border Classes="t4" IsVisible="{Binding IsDownload, FallbackValue=false}">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center" Text="{setting:Localize AddModPackWindow.Text30}" />
+                    <ProgressBar
+                        Height="10"
+                        Margin="10"
+                        CornerRadius="20"
+                        IsIndeterminate="{Binding IsDownload}" />
+                </StackPanel>
+            </Border>
         </Panel>
     </Border>
 </UserControl>

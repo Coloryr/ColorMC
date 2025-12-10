@@ -95,7 +95,7 @@ public partial class MainModel
         {
             await Task.Run(() =>
             {
-                _img = ImageManager.Load(url, 0).Result;
+                _img = ImageManager.LoadAsync(url, 0).Result;
             });
             return _img;
         }

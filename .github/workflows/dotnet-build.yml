@@ -21,7 +21,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.300
+        dotnet-version: 10.0.101
 
     - name: Read version number
       id: version
@@ -187,7 +187,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.300
+        dotnet-version: 10.0.101
 
     - name: Read version number
       id: version
@@ -250,7 +250,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0.300
+        dotnet-version: 10.0.101
 
     # - name: 更新源码
     #   shell: cmd

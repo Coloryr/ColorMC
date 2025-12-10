@@ -28,7 +28,6 @@
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}" />
                 <StackPanel>
                     <TextBox
-                        Height="30"
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         Text="{Binding Name}"
@@ -125,7 +124,6 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                     </Grid>
                     <TextBox
-                        Height="30"
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         IsEnabled="{Binding CustomLoader}"

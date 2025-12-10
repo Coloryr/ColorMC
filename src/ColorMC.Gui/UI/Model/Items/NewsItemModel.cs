@@ -61,7 +61,7 @@ public partial class NewsItemModel(MinecraftNewObj.ArticleGridObj item) : Observ
         {
             await Task.Run(() =>
             {
-                _img = ImageManager.Load("https://www.minecraft.net" + item.DefaultTile.Image.ImageURL, 0).Result;
+                _img = ImageManager.LoadAsync("https://www.minecraft.net" + item.DefaultTile.Image.ImageURL, 0).Result;
             });
             return _img;
         }

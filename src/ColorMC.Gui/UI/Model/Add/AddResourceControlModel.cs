@@ -7,6 +7,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -36,7 +37,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// <summary>
     /// 显示的下载类型列表
     /// </summary>
-    public string[] TypeList { get; init; } = LangUtils.GetAddType();
+    public string[] TypeList { get; init; } = [.. s_types.Select(item => item.GetName())];
 
     /// <summary>
     /// 下载类型
@@ -73,6 +74,32 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     {
         _obj = obj;
         _useName = ToString() ?? "AddControlModel";
+
+        EventManager.ModpackInstall += EventManager_ModpackInstall;
+        EventManager.ModpackStop += EventManager_ModpackStop;
+    }
+
+    private void EventManager_ModpackStop(SourceItemObj obj, bool res)
+    {
+        foreach (var item in DisplayList)
+        {
+            if (obj.CheckProject(item.Obj) || obj.CheckSubPid(item.Obj))
+            {
+                item.NowDownload = false;
+                item.IsDownload = res;
+            }
+        }
+    }
+
+    private void EventManager_ModpackInstall(SourceItemObj obj)
+    {
+        foreach (var item in DisplayList)
+        {
+            if (obj.CheckProject(item.Obj) || obj.CheckSubPid(item.Obj))
+            {
+                item.NowDownload = true;
+            }
+        }
     }
 
     /// <summary>
@@ -399,6 +426,9 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         {
             Window.PopBack();
         }
+
+        EventManager.ModpackInstall -= EventManager_ModpackInstall;
+        EventManager.ModpackStop -= EventManager_ModpackStop;
 
         _close = true;
         _load = true;

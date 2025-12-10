@@ -32,7 +32,6 @@
                             <ComboBox
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Height="30"
                                 Margin="0,0,10,0"
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding SourceList}"
@@ -46,7 +45,6 @@
                             <ComboBox
                                 Grid.Row="0"
                                 Grid.Column="3"
-                                Height="30"
                                 Margin="0,0,10,0"
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding GameVersionList}"
@@ -60,7 +58,6 @@
                             <ComboBox
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Height="30"
                                 Margin="0,10,10,0"
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding SortTypeList}"
@@ -74,7 +71,6 @@
                             <ComboBox
                                 Grid.Row="1"
                                 Grid.Column="3"
-                                Height="30"
                                 Margin="0,10,10,0"
                                 HorizontalAlignment="Stretch"
                                 ItemsSource="{Binding CategorieList}"
@@ -86,7 +82,6 @@
                             IsEnabled="{Binding SourceLoad}">
                             <TextBox
                                 Grid.Column="0"
-                                Height="30"
                                 Margin="0,0,7,0"
                                 HorizontalAlignment="Stretch"
                                 Text="{Binding Text}"
@@ -111,14 +106,13 @@
                                 <Button
                                     Width="35"
                                     Height="35"
-                                    Margin="-5"
+                                    Margin="-5,-3,-5,-3"
                                     Classes="top"
                                     Command="{Binding LastListPage}"
                                     Content="-"
                                     IsEnabled="{Binding LastPage}" />
                                 <NumericUpDown
                                     Width="60"
-                                    Height="30"
                                     Margin="5,0,5,0"
                                     Maximum="{Binding MaxPage}"
                                     Minimum="1"
@@ -127,7 +121,7 @@
                                 <Button
                                     Width="35"
                                     Height="35"
-                                    Margin="-5"
+                                    Margin="-5,-3,-5,-3"
                                     Classes="top"
                                     Command="{Binding NextListPage}"
                                     Content="+"
