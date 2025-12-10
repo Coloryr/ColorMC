@@ -96,7 +96,7 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
         }
         try
         {
-            _img = await ImageManager.Load(Obj.Icon, 100);
+            _img = await ImageManager.LoadAsync(Obj.Icon, 100);
             return _img;
         }
         catch (Exception e)

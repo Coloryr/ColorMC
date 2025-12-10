@@ -453,7 +453,11 @@ public partial class FileItemModel : SelectItemModel
         }
         try
         {
-            _img = await ImageManager.Load(Logo, 100);
+            await Task.Run(async () =>
+            {
+                _img = await ImageManager.LoadAsync(Logo, 100);
+            });
+           
             return _img;
         }
         catch (Exception e)

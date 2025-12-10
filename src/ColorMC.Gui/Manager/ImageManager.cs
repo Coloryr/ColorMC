@@ -573,7 +573,7 @@ public static class ImageManager
     /// </summary>
     /// <param name="url">网址</param>
     /// <returns>位图</returns>
-    public static async Task<Bitmap?> Load(string url, int zoom)
+    public static async Task<Bitmap?> LoadAsync(string url, int zoom)
     {
         if (!Directory.Exists(s_local))
         {

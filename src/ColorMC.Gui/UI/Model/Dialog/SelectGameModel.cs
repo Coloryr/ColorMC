@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -54,7 +55,7 @@ public partial class SelectGameModel : ObservableObject
 
     private readonly string _name;
 
-    public SelectGameModel(string name)
+    public SelectGameModel(string name, bool skipadd)
     {
         _name = name;
         foreach (var item in InstancesPath.Groups)
@@ -66,6 +67,10 @@ public partial class SelectGameModel : ObservableObject
             var list = new ObservableCollection<SelectGameNode>();
             foreach (var item1 in item.Value)
             {
+                if (skipadd && GameManager.IsAdd(item1))
+                {
+                    continue;
+                }
                 list.Add(new SelectGameNode(item1.Name, item1.UUID));
             }
             if (item.Key == Names.NameDefaultGroup)

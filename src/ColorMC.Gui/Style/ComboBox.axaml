@@ -26,6 +26,13 @@
         <Style Selector="^:pointerover /template/ Border#Background">
             <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
+
+        <Style Selector="^:dropdownopen /template/ Border#PopupBorder">
+            <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
     </Style>
 
     <Style Selector="ComboBoxItem:selected /template/ ContentPresenter">

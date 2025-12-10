@@ -25,36 +25,31 @@ public static class GameManager
     /// <summary>
     /// 正在运行的游戏实例
     /// </summary>
-    public static readonly HashSet<Guid> RunGames = [];
-
-    /// <summary>
-    /// 正在下载资源的游戏实例
-    /// </summary>
-    public static readonly HashSet<Guid> AddRunGames = [];
+    private static readonly HashSet<Guid> s_runGames = [];
 
     /// <summary>
     /// 界面设置
     /// </summary>
-    private readonly static Dictionary<Guid, GameGuiSettingObj> s_datas = [];
+    private static readonly Dictionary<Guid, GameGuiSettingObj> s_datas = [];
 
     /// <summary>
     /// 游戏是否链接到ColorMC
     /// </summary>
-    private readonly static Dictionary<Guid, bool> s_gameConnect = [];
+    private static readonly Dictionary<Guid, bool> s_gameConnect = [];
 
     /// <summary>
     /// 游戏实例启动取消操作
     /// </summary>
-    private readonly static Dictionary<Guid, CancellationTokenSource> s_gameCancel = [];
+    private static readonly Dictionary<Guid, CancellationTokenSource> s_gameCancel = [];
 
     /// <summary>
     /// 正在安装的整合包
     /// </summary>
-    private readonly static List<SourceItemObj> s_installModpack = [];
+    private static readonly List<FileItemDownloadModel> s_installModpack = [];
     /// <summary>
     /// 正在安装资源的游戏实例
     /// </summary>
-    private readonly static Dictionary<Guid, List<FileItemDownloadModel>> s_gameDownload = [];
+    private static readonly Dictionary<Guid, List<FileItemDownloadModel>> s_gameDownload = [];
 
     public static void StartDownload(Guid game, FileItemDownloadModel download)
     {
@@ -68,7 +63,7 @@ public static class GameManager
         }
     }
 
-    public static void StopDownload(Guid game, FileItemDownloadModel download) 
+    public static void StopDownload(Guid game, FileItemDownloadModel download)
     {
         if (s_gameDownload.TryGetValue(game, out var list))
         {
@@ -80,29 +75,26 @@ public static class GameManager
     /// 开始下载整合包
     /// </summary>
     /// <param name="obj"></param>
-    public static void StartDownload(SourceItemObj obj)
+    public static void StartDownload(FileItemDownloadModel obj)
     {
         foreach (var item in s_installModpack)
         {
-            if (item.Type == obj.Type && item.Source == obj.Source)
+            if (item.Obj.Source == obj.Obj.Source && item.Obj.Pid == obj.Obj.Pid)
             {
-                if (item.Pid == obj.Pid)
-                {
-                    return;
-                }
+                return;
             }
         }
 
         s_installModpack.Add(obj);
 
-        EventManager.OnModpackInstall(obj);
+        EventManager.OnModpackInstall(obj.Obj);
     }
 
-    public static void StopDownload(SourceItemObj obj, bool res)
+    public static void StopDownload(FileItemDownloadModel obj, bool res)
     {
         s_installModpack.Remove(obj);
 
-        EventManager.OnModpackStop(obj, res);
+        EventManager.OnModpackStop(obj.Obj, res);
     }
 
     /// <summary>
@@ -137,11 +129,11 @@ public static class GameManager
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool TestDowload(SourceItemObj obj) 
+    public static bool TestDowload(SourceItemObj obj)
     {
         foreach (var item in s_installModpack)
         {
-            if (item.Source == obj.Source && item.Pid == obj.Pid)
+            if (item.Obj.Source == obj.Source && item.Obj.Pid == obj.Pid)
             {
                 return true;
             }
@@ -161,31 +153,16 @@ public static class GameManager
     }
 
     /// <summary>
-    /// 游戏实例开始添加资源<br/>
-    /// 锁定该游戏实例无法删除
-    /// </summary>
-    /// <param name="uuid">游戏实例</param>
-    public static void StartAdd(Guid uuid)
-    {
-        AddRunGames.Add(uuid);
-    }
-
-    /// <summary>
-    /// 游戏实例结束添加资源
-    /// </summary>
-    /// <param name="uuid">游戏实例</param>
-    public static void StopAdd(Guid uuid)
-    {
-        AddRunGames.Remove(uuid);
-    }
-
-    /// <summary>
     /// 游戏实例是否正在添加资源
     /// </summary>
     /// <param name="game">游戏实例</param>
     public static bool IsAdd(GameSettingObj game)
     {
-        return AddRunGames.Contains(game.UUID);
+        if (s_gameDownload.TryGetValue(game.UUID, out var list))
+        {
+            return list.Count > 0;
+        }
+        return false;
     }
 
     /// <summary>
@@ -321,7 +298,7 @@ public static class GameManager
     /// <param name="obj">游戏实例</param>
     public static bool IsGameRun(GameSettingObj obj)
     {
-        return RunGames.Contains(obj.UUID);
+        return s_runGames.Contains(obj.UUID);
     }
 
     /// <summary>
@@ -329,7 +306,7 @@ public static class GameManager
     /// </summary>
     public static bool IsGameRuning()
     {
-        return RunGames.Count > 0;
+        return s_runGames.Count > 0;
     }
 
     /// <summary>
@@ -351,7 +328,7 @@ public static class GameManager
     /// <param name="uuid">游戏实例</param>
     public static void GameExit(GameSettingObj obj)
     {
-        RunGames.Remove(obj.UUID);
+        s_runGames.Remove(obj.UUID);
     }
 
     /// <summary>
@@ -369,7 +346,7 @@ public static class GameManager
     /// <param name="obj">游戏实例</param>
     public static CancellationToken StartGame(GameSettingObj obj)
     {
-        RunGames.Add(obj.UUID);
+        s_runGames.Add(obj.UUID);
         if (s_gameCancel.TryGetValue(obj.UUID, out var temp))
         {
             temp.Cancel();

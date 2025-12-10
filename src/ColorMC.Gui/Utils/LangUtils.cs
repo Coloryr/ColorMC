@@ -633,18 +633,18 @@ public static class LangUtils
         ];
     }
 
-    public static string[] GetAddType()
-    {
-        return
-        [
-            FileType.Mod.GetName(),
-            FileType.Save.GetName(),
-            FileType.Shaderpack.GetName(),
-            FileType.Resourcepack.GetName(),
-            FileType.DataPacks.GetName(),
-            FileType.Optifine.GetName()
-        ];
-    }
+    //public static string[] GetAddResourceType()
+    //{
+    //    return
+    //    [
+    //        FileType.Mod.GetName(),
+    //        FileType.Save.GetName(),
+    //        FileType.Shaderpack.GetName(),
+    //        FileType.Resourcepack.GetName(),
+    //        FileType.DataPacks.GetName(),
+    //        FileType.Optifine.GetName()
+    //    ];
+    //}
 
     public static string[] GetNbtName()
     {

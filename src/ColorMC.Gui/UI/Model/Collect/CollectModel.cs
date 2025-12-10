@@ -1,17 +1,19 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Downloader;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -41,6 +43,11 @@ public partial class CollectModel : ControlModel, ICollectControl
     /// 收藏列表
     /// </summary>
     private readonly Dictionary<string, CollectItemModel> _list = [];
+
+    /// <summary>
+    /// 正在下载的项目
+    /// </summary>
+    public ObservableCollection<FileItemDownloadModel> NowDownload { get; init; } = [];
 
     /// <summary>
     /// 是否显示模组
@@ -85,14 +92,43 @@ public partial class CollectModel : ControlModel, ICollectControl
     /// </summary>
     [ObservableProperty]
     private string _group;
-
+    /// <summary>
+    /// 选中的分组序号
+    /// </summary>
     [ObservableProperty]
     private int _index;
+
+    /// <summary>
+    /// 下载文本
+    /// </summary>
+    [ObservableProperty]
+    private string? _downloadText;
+    /// <summary>
+    /// 是否显示下载文本
+    /// </summary>
+    [ObservableProperty]
+    private string? _displayText;
+
+    /// <summary>
+    /// 是否显示下载列表
+    /// </summary>
+    [ObservableProperty]
+    private bool _displayDownload = false;
+    /// <summary>
+    /// 是否有下载项目
+    /// </summary>
+    [ObservableProperty]
+    private bool _haveDownload = false;
 
     /// <summary>
     /// 选中的收藏
     /// </summary>
     private CollectItemModel? _select;
+
+    private bool _isDisplayRun;
+    private int _displayRunStage;
+
+    private static readonly string[] s_displayStage = [".    ", "..   ", "...  ", ".... ", "....."];
 
     public CollectModel(WindowModel model) : base(model)
     {
@@ -102,6 +138,9 @@ public partial class CollectModel : ControlModel, ICollectControl
         _modpack = conf.Modpack;
         _resourcepack = conf.ResourcePack;
         _shaderpack = conf.Shaderpack;
+
+        EventManager.ModpackInstall += EventManager_ModpackInstall;
+        EventManager.ModpackStop += EventManager_ModpackStop;
 
         Groups.Add(LangUtils.Get("CollectWindow.Text26"));
 
@@ -275,7 +314,7 @@ public partial class CollectModel : ControlModel, ICollectControl
         if (other)
         {
             //选择一个游戏实例
-            var dialog = new SelectGameModel(Window.WindowId)
+            var dialog = new SelectGameModel(Window.WindowId, true)
             {
                 Text = LangUtils.Get("CollectWindow.Text12")
             };
@@ -454,23 +493,41 @@ public partial class CollectModel : ControlModel, ICollectControl
                     continue;
                 }
 
-                var download = item.FileItems[item.SelectVersion];
+                var data = item.FileItems[item.SelectVersion];
 
-                GameManager.StartDownload(download.Obj);
+                FileItemDownloadModel info;
 
                 var res = new GameRes();
-                if (download.Obj.Source == SourceType.CurseForge)
+                if (data.Obj.Source == SourceType.CurseForge)
                 {
-                    var data1 = (download.Data as CurseForgeModObj.CurseForgeDataObj)!;
-                    res = await AddGameHelper.InstallCurseForge(null, data1, dir[download.Obj.Pid].Logo, gui, pack);
+                    var data1 = (data.Data as CurseForgeModObj.CurseForgeDataObj)!;
+                    info = new FileItemDownloadModel
+                    {
+                        Window = Window,
+                        Name = data1.DisplayName,
+                        Obj = data.Obj
+                    };
+                    StartDownload(info);
+                    GameManager.StartDownload(info);
+                    res = await AddGameHelper.InstallCurseForge(null, data1, dir[data.Obj.Pid].Logo, gui, pack);
+                    StopDownload(info);
+                    GameManager.StopDownload(info, res.State);
                 }
-                else if (download.Obj.Source == SourceType.Modrinth)
+                else if (data.Obj.Source == SourceType.Modrinth)
                 {
-                    var data1 = (download.Data as ModrinthVersionObj)!;
-                    res = await AddGameHelper.InstallModrinth(null, data1, dir[download.Obj.Pid].Logo, gui, pack);
+                    var data1 = (data.Data as ModrinthVersionObj)!;
+                    info = new FileItemDownloadModel
+                    {
+                        Window = Window,
+                        Name = data1.Name,
+                        Obj = data.Obj
+                    };
+                    StartDownload(info);
+                    GameManager.StartDownload(info);
+                    res = await AddGameHelper.InstallModrinth(null, data1, dir[data.Obj.Pid].Logo, gui, pack);
+                    StopDownload(info);
+                    GameManager.StopDownload(info, res.State);
                 }
-
-                GameManager.StopDownload(download.Obj, res.State);
 
                 if (!res.State && count > 0)
                 {
@@ -485,38 +542,6 @@ public partial class CollectModel : ControlModel, ICollectControl
             }
 
             pack.Stop();
-
-            //var list = new ConcurrentBag<FileItemObj>();
-
-            ////获取下载项目
-            //await Parallel.ForEachAsync(DownloadList, async (item, cancel) =>
-            //{
-            //    if (item.Download == false)
-            //    {
-            //        return;
-            //    }
-
-            //    var download = item.FileItems[item.SelectVersion];
-            //    var item2 = await WebBinding.MakeDownloadAsync(_choise, download, Window);
-            //    if (item2 == null)
-            //    {
-            //        return;
-            //    }
-            //    list.Add(item2);
-            //});
-
-            ////开始下载
-            //var dialog = Window.ShowProgress(LanguageUtils.Get("CollectWindow.Text15"));
-            //var res = await DownloadManager.StartAsync([.. list]);
-            //Window.CloseDialog(dialog);
-            //if (!res)
-            //{
-            //    Window.Show(LanguageUtils.Get("CollectWindow.Text21"));
-            //}
-            //else
-            //{
-            //    Window.Notify(LanguageUtils.Get("CollectWindow.Text16"));
-            //}
         }
     }
 
@@ -827,5 +852,79 @@ public partial class CollectModel : ControlModel, ICollectControl
     public bool CanDownload()
     {
         return HaveChoise;
+    }
+
+    /// <summary>
+    /// 开始下载项目
+    /// </summary>
+    /// <param name="info">下载项目</param>
+    public void StartDownload(FileItemDownloadModel info)
+    {
+        NowDownload.Add(info);
+
+        DownloadReload();
+    }
+
+    /// <summary>
+    /// 下载项目结束
+    /// </summary>
+    /// <param name="info">下载项目</param>
+    /// <param name="done">是否下载完成</param>
+    public void StopDownload(FileItemDownloadModel info)
+    {
+        NowDownload.Remove(info);
+
+        DownloadReload();
+    }
+
+    private void DownloadReload()
+    {
+        HaveDownload = NowDownload.Any();
+        if (HaveDownload)
+        {
+            StartDisplay();
+            DownloadText = string.Format(LangUtils.Get("AddModPackWindow.Text41"), NowDownload.Count);
+        }
+        else
+        {
+            DownloadText = LangUtils.Get("AddModPackWindow.Text45");
+            _isDisplayRun = false;
+        }
+    }
+
+    private void StartDisplay()
+    {
+        _isDisplayRun = true;
+        DispatcherTimer.Run(Run, TimeSpan.FromSeconds(0.5));
+    }
+
+    private bool Run()
+    {
+        DisplayText = s_displayStage[_displayRunStage];
+        _displayRunStage++;
+        _displayRunStage %= s_displayStage.Length;
+        return _isDisplayRun;
+    }
+
+    private void EventManager_ModpackStop(SourceItemObj obj, bool res)
+    {
+        foreach (var item in _list.Values)
+        {
+            if (obj.CheckProject(item.Obj.Source, item.Obj.FileType, item.Obj.Pid))
+            {
+                item.IsDownload = false;
+            }
+        }
+    }
+
+    private void EventManager_ModpackInstall(SourceItemObj obj)
+    {
+        foreach (var item in _list.Values)
+        {
+            if (obj.CheckProject(item.Obj.Source, item.Obj.FileType, item.Obj.Pid))
+            {
+                item.IsDownload = true;
+            }
+        }
     }
 }

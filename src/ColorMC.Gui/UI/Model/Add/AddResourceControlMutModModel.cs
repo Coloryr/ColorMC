@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
@@ -58,6 +59,7 @@ public partial class AddResourceControlModel
                     }
                 };
                 StartDownload(info);
+                GameManager.StartDownload(info);
                 list1.Add(info);
             }
             var info1 = new FileItemDownloadModel
@@ -77,7 +79,8 @@ public partial class AddResourceControlModel
             pack.Stop();
             foreach (var item in list1)
             {
-                StopDownload(item, res);
+                StopDownload(item);
+                GameManager.StopDownload(item, res);
             }
 
             return res;
@@ -103,9 +106,11 @@ public partial class AddResourceControlModel
             };
 
             StartDownload(info);
+            GameManager.StartDownload(info);
             var pack = new ResourceGui(info);
             var res = await WebBinding.DownloadModAsync(_obj, [task.Modsave, .. list], pack, info.Token);
-            StopDownload(info, res);
+            StopDownload(info);
+            GameManager.StopDownload(info, res);
 
             return res;
         }

@@ -34,6 +34,11 @@ public record SourceItemObj
         return Type == other.Type && Source == other.Source && Pid == other.Pid;
     }
 
+    public bool CheckProject(SourceType source, FileType type, string pid)
+    {
+        return Type == type && Source == source && Pid == pid;
+    }
+
     public bool CheckSubPid(SourceItemObj other)
     {
         if (SubPid == null)

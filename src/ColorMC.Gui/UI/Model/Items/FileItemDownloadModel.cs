@@ -44,9 +44,9 @@ public partial class FileItemDownloadModel : ObservableObject
     [ObservableProperty]
     private bool _showSub;
 
-    private readonly CancellationTokenSource _cancel = new();
-
     public CancellationToken Token => _cancel.Token;
+
+    private readonly CancellationTokenSource _cancel = new();
 
     [RelayCommand]
     public async Task Cancel()
