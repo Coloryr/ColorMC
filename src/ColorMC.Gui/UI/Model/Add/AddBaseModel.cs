@@ -341,10 +341,10 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     }
 
     /// <summary>
-    /// 开始下载项目
+    /// 添加下载项目
     /// </summary>
     /// <param name="info">下载项目</param>
-    public void StartDownload(FileItemDownloadModel info)
+    public void AddDownload(FileItemDownloadModel info)
     {
         NowDownload.Add(info);
 
@@ -352,11 +352,10 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     }
 
     /// <summary>
-    /// 下载项目结束
+    /// 删除下载项目
     /// </summary>
     /// <param name="info">下载项目</param>
-    /// <param name="done">是否下载完成</param>
-    public void StopDownload(FileItemDownloadModel info)
+    public void RemoveDownload(FileItemDownloadModel info)
     {
         NowDownload.Remove(info);
 

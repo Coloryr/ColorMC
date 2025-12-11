@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ColorMC.Core.Objs;
 
 namespace ColorMC.Gui.Objs;
@@ -24,10 +25,6 @@ public record SourceItemObj
     /// 文件ID
     /// </summary>
     public required string Fid;
-    /// <summary>
-    /// 项目子ID
-    /// </summary>
-    public List<string>? SubPid;
 
     public bool CheckProject(SourceItemObj other)
     {
@@ -37,14 +34,5 @@ public record SourceItemObj
     public bool CheckProject(SourceType source, FileType type, string pid)
     {
         return Type == type && Source == source && Pid == pid;
-    }
-
-    public bool CheckSubPid(SourceItemObj other)
-    {
-        if (SubPid == null)
-        {
-            return false;
-        }
-        return Type == other.Type && Source == other.Source && SubPid.Contains(other.Pid);
     }
 }

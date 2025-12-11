@@ -10,12 +10,33 @@
     d:DesignWidth="800"
     x:DataType="model:AddBaseModel"
     mc:Ignorable="d">
+    <UserControl.Styles>
+        <!--  定义显示/隐藏的动画效果  -->
+        <Style Selector="ScrollViewer.DownloadCard">
+            <Setter Property="Opacity" Value="0" />
+            <Setter Property="RenderTransform" Value="translateY(20px)" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.2" />
+                    <TransformOperationsTransition
+                        Easing="CubicEaseOut"
+                        Property="RenderTransform"
+                        Duration="0:0:0.2" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="ScrollViewer.DownloadCard[IsVisible=True]">
+            <Setter Property="Opacity" Value="1" />
+            <Setter Property="RenderTransform" Value="translateY(0px)" />
+        </Style>
+    </UserControl.Styles>
     <Panel>
         <ScrollViewer
             Name="DownloadInfo"
             Margin="0,0,0,50"
+            Classes="DownloadCard"
             HorizontalScrollBarVisibility="Disabled"
-            IsVisible="False"
+            IsVisible="{Binding DisplayDownload}"
             VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding NowDownload}">
                 <ItemsControl.ItemTemplate>
@@ -26,12 +47,13 @@
             </ItemsControl>
         </ScrollViewer>
         <Button
-            Height="30"
+            Height="40"
             Margin="10"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
+            Classes="top"
             Command="{Binding ShowDownload}"
-            CornerRadius="20"
+            CornerRadius="30"
             IsVisible="{Binding HaveDownload}">
             <StackPanel Margin="10,0,10,0" Orientation="Horizontal">
                 <TextBlock Text="{Binding DownloadText}" />

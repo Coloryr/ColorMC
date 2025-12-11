@@ -43,44 +43,32 @@ public partial class AddResourceControlModel
                     Old = (item as ModUpgradeModel)!.Obj
                 });
 
-            var list1 = new List<FileItemDownloadModel>();
+            var list1 = new List<SourceItemObj>();
             foreach (var item in list)
             {
-                var info = new FileItemDownloadModel
+                var obj = new SourceItemObj
                 {
-                    Window = Window,
-                    Name = item.Item.Name,
-                    Obj = new SourceItemObj
-                    { 
-                        Fid= item.Info.FileId,
-                        Pid = item.Info.ModId,
-                        Source = task.Source,
-                        Type = FileType.Mod
-                    }
+                    Pid = item.Info.ModId,
+                    Fid = item.Info.FileId,
+                    Source = task.Source,
+                    Type = FileType.Mod
                 };
-                StartDownload(info);
-                GameManager.StartDownload(info);
-                list1.Add(info);
+                list1.Add(obj);
+                GameManager.StartDownload(_obj.UUID, obj);
             }
             var info1 = new FileItemDownloadModel
             {
                 Window = Window,
-                Name = LangUtils.Get("AddResourceWindow.Text37"),
-                Obj = new SourceItemObj
-                { 
-                    Fid = "",
-                    Pid = "",
-                    Type = FileType.Mod,
-                    Source = SourceType.ColorMC,
-                }
+                Name = LangUtils.Get("AddResourceWindow.Text37")
             };
             var pack = new ResourceGui(info1);
+            AddDownload(info1);
             var res = await WebBinding.DownloadModAsync(_obj, list, pack, info1.Token);
             pack.Stop();
+            RemoveDownload(info1);
             foreach (var item in list1)
             {
-                StopDownload(item);
-                GameManager.StopDownload(item, res);
+                GameManager.StopDownload(_obj.UUID, item, res);
             }
 
             return res;
@@ -91,26 +79,40 @@ public partial class AddResourceControlModel
                                 .Select(item => item.Items[item.SelectVersion]);
 
             var mod = task.DownloadModList.First();
+
+            SourceItemObj[] list1 = [new SourceItemObj
+            {
+                Fid = task.Modsave.Info.FileId,
+                Pid = task.Modsave.Info.ModId,
+                Source = task.Source,
+                Type = FileType.Mod,
+            }, ..list.Select(item1 => new SourceItemObj
+            {
+                Pid = item1.Info.ModId,
+                Fid = item1.Info.FileId,
+                Source = task.Source,
+                Type = FileType.Mod
+            })];
+
+            foreach (var item in list1)
+            {
+                GameManager.StartDownload(_obj.UUID, item);
+            }
+
             var info = new FileItemDownloadModel
             {
                 Window = Window,
-                Name = mod.Name,
-                Obj = new SourceItemObj
-                { 
-                    Fid = task.Modsave.Info.FileId,
-                    Pid = task.Modsave.Info.ModId,
-                    Source = task.Source,
-                    Type = FileType.Mod,
-                    SubPid = [.. list.Select(item1 => item1.Info.ModId)]
-                }
+                Name = mod.Name
             };
-
-            StartDownload(info);
-            GameManager.StartDownload(info);
+            AddDownload(info);
             var pack = new ResourceGui(info);
             var res = await WebBinding.DownloadModAsync(_obj, [task.Modsave, .. list], pack, info.Token);
-            StopDownload(info);
-            GameManager.StopDownload(info, res);
+            RemoveDownload(info);
+            pack.Stop();
+            foreach (var item in list1)
+            {
+                GameManager.StopDownload(_obj.UUID, item, res);
+            }
 
             return res;
         }

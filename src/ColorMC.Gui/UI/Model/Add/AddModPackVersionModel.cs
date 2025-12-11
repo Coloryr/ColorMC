@@ -54,11 +54,18 @@ public partial class AddModPackControlModel
             return;
         }
 
+        if (GameManager.IsDownload(data.Obj))
+        {
+            Window.Show(LangUtils.Get("AddModPackWindow.Text46"));
+            return;
+        }
+
         GameRes res;
         FileItemDownloadModel info;
 
         var gui = new OverGameGui(Window);
 
+        GameManager.StartDownload(data.Obj);
         var select = _lastSelect;
         if (data.Obj.Source == SourceType.CurseForge)
         {
@@ -66,16 +73,13 @@ public partial class AddModPackControlModel
             info = new FileItemDownloadModel
             {
                 Window = Window,
-                Name = data1.DisplayName,
-                Obj = data.Obj
+                Name = data1.DisplayName
             };
-            StartDownload(info);
-            GameManager.StartDownload(info);
+            AddDownload(info);
             var pack = new ModPackGui(info);
             res = await AddGameHelper.InstallCurseForge(_group, data1, select?.Logo, gui, pack, info.Token);
             pack.Stop();
-            StopDownload(info);
-            GameManager.StopDownload(info, res.State);
+            RemoveDownload(info);
         }
         else if (data.Obj.Source == SourceType.Modrinth)
         {
@@ -83,21 +87,20 @@ public partial class AddModPackControlModel
             info = new FileItemDownloadModel
             {
                 Window = Window,
-                Name = data1.Name,
-                Obj = data.Obj
+                Name = data1.Name
             };
-            StartDownload(info);
-            GameManager.StartDownload(info);
+            AddDownload(info);
             var pack = new ModPackGui(info);
             res = await AddGameHelper.InstallModrinth(_group, data1, select?.Logo, gui, pack);
             pack.Stop();
-            StopDownload(info);
-            GameManager.StopDownload(info, res.State);
+            RemoveDownload(info);
         }
         else
         {
             throw new InvalidOperationException();
         }
+
+        GameManager.StopDownload(data.Obj, res.State);
 
         if (!info.Token.IsCancellationRequested)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -75,15 +76,20 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         _obj = obj;
         _useName = ToString() ?? "AddControlModel";
 
-        EventManager.ModpackInstall += EventManager_ModpackInstall;
-        EventManager.ModpackStop += EventManager_ModpackStop;
+        EventManager.ResourceInstall += EventManager_ResourceInstall;
+        EventManager.ResourceStop += EventManager_ResourceStop;
     }
 
-    private void EventManager_ModpackStop(SourceItemObj obj, bool res)
+    private void EventManager_ResourceStop(Guid game, SourceItemObj obj, bool res)
     {
+        if (_obj.UUID != game)
+        {
+            return;
+        }
+
         foreach (var item in DisplayList)
         {
-            if (obj.CheckProject(item.Obj) || obj.CheckSubPid(item.Obj))
+            if (obj.CheckProject(item.Obj))
             {
                 item.NowDownload = false;
                 item.IsDownload = res;
@@ -91,11 +97,16 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         }
     }
 
-    private void EventManager_ModpackInstall(SourceItemObj obj)
+    private void EventManager_ResourceInstall(Guid game, SourceItemObj obj)
     {
+        if (_obj.UUID != game)
+        {
+            return;
+        }
+
         foreach (var item in DisplayList)
         {
-            if (obj.CheckProject(item.Obj) || obj.CheckSubPid(item.Obj))
+            if (obj.CheckProject(item.Obj))
             {
                 item.NowDownload = true;
             }
@@ -287,7 +298,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             {
                 item.Add = this;
                 item.Window = Window;
-                item.NowDownload = GameManager.TestDowload(item.Obj);
+                item.NowDownload = GameManager.IsDownload(item.Obj);
                 DisplayList.Add(item);
             }
         }
@@ -321,7 +332,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                     {
                         item.IsDownload = true;
                     }
-                    item.NowDownload = GameManager.TestDowload(item.Obj);
+                    item.NowDownload = GameManager.IsDownload(item.Obj);
                     DisplayList.Add(item);
                 }
             }
@@ -331,7 +342,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
                 {
                     item.Add = this;
                     item.Window = Window;
-                    item.NowDownload = GameManager.TestDowload(item.Obj);
+                    item.NowDownload = GameManager.IsDownload(item.Obj);
                     DisplayList.Add(item);
                 }
             }
@@ -427,8 +438,8 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
             Window.PopBack();
         }
 
-        EventManager.ModpackInstall -= EventManager_ModpackInstall;
-        EventManager.ModpackStop -= EventManager_ModpackStop;
+        EventManager.ResourceInstall -= EventManager_ResourceInstall;
+        EventManager.ResourceStop -= EventManager_ResourceStop;
 
         _close = true;
         _load = true;
