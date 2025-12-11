@@ -12,8 +12,6 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class FileItemDownloadModel : ObservableObject
 {
-    public required SourceItemObj Obj;
-
     public WindowModel? Window;
 
     public string Name { get; init; }

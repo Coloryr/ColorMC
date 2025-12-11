@@ -25,16 +25,16 @@ public partial class AddDownloadListControl : UserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(AddBaseModel.DisplayDownload))
-        {
-            if ((DataContext as AddBaseModel)!.DisplayDownload)
-            {
-                ThemeManager.CrossFade.Start(null, DownloadInfo);
-            }
-            else
-            {
-                ThemeManager.CrossFade.Start(DownloadInfo, null);
-            }
-        }
+        //if (e.PropertyName == nameof(AddBaseModel.DisplayDownload))
+        //{
+        //    if ((DataContext as AddBaseModel)!.DisplayDownload)
+        //    {
+        //        ThemeManager.CrossFade.Start(null, DownloadInfo);
+        //    }
+        //    else
+        //    {
+        //        ThemeManager.CrossFade.Start(DownloadInfo, null);
+        //    }
+        //}
     }
 }

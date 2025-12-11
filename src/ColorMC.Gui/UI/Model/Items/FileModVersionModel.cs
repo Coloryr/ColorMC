@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Items;
 public partial class FileModVersionModel : SelectItemModel
 {
     /// <summary>
-    /// 是否在下载
+    /// 是否下载
     /// </summary>
     [ObservableProperty]
     private bool _download;

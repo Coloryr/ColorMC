@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Config;
@@ -45,41 +46,45 @@ public static class GameManager
     /// <summary>
     /// 正在安装的整合包
     /// </summary>
-    private static readonly List<FileItemDownloadModel> s_installModpack = [];
+    private static readonly List<SourceItemObj> s_installModpack = [];
     /// <summary>
     /// 正在安装资源的游戏实例
     /// </summary>
-    private static readonly Dictionary<Guid, List<FileItemDownloadModel>> s_gameDownload = [];
+    private static readonly Dictionary<Guid, List<SourceItemObj>> s_gameDownload = [];
 
-    public static void StartDownload(Guid game, FileItemDownloadModel download)
+    public static void StartDownload(Guid game, SourceItemObj obj)
     {
         if (s_gameDownload.TryGetValue(game, out var list))
         {
-            list.Add(download);
+            list.Add(obj);
         }
         else
         {
-            s_gameDownload[game] = [download];
+            s_gameDownload[game] = [obj];
         }
+
+        EventManager.OnResourceInstall(game, obj);
     }
 
-    public static void StopDownload(Guid game, FileItemDownloadModel download)
+    public static void StopDownload(Guid game, SourceItemObj obj, bool res)
     {
         if (s_gameDownload.TryGetValue(game, out var list))
         {
-            list.Remove(download);
+            list.Remove(obj);
         }
+
+        EventManager.OnResourceStop(game, obj, res);
     }
 
     /// <summary>
     /// 开始下载整合包
     /// </summary>
     /// <param name="obj"></param>
-    public static void StartDownload(FileItemDownloadModel obj)
+    public static void StartDownload(SourceItemObj obj)
     {
         foreach (var item in s_installModpack)
         {
-            if (item.Obj.Source == obj.Obj.Source && item.Obj.Pid == obj.Obj.Pid)
+            if (item.CheckProject(obj))
             {
                 return;
             }
@@ -87,14 +92,14 @@ public static class GameManager
 
         s_installModpack.Add(obj);
 
-        EventManager.OnModpackInstall(obj.Obj);
+        EventManager.OnModpackInstall(obj);
     }
 
-    public static void StopDownload(FileItemDownloadModel obj, bool res)
+    public static void StopDownload(SourceItemObj obj, bool res)
     {
         s_installModpack.Remove(obj);
 
-        EventManager.OnModpackStop(obj.Obj, res);
+        EventManager.OnModpackStop(obj, res);
     }
 
     /// <summary>
@@ -102,24 +107,39 @@ public static class GameManager
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool TestDowload(Guid game, SourceItemObj obj)
+    public static bool IsDownload(Guid game, SourceItemObj obj)
     {
-        //foreach (var item in s_installModpack)
-        //{
-        //    if (item.FileType == info.Type && item.SourceType == info.Source)
-        //    {
-        //        if (item.ID == info.Pid)
-        //        {
-        //            item.NowDownload = false;
-        //            item.IsDownload = done;
-        //        }
-        //        else if (info.SubPid != null && info.SubPid.Contains(item.ID))
-        //        {
-        //            item.NowDownload = false;
-        //            item.NowDownload = done;
-        //        }
-        //    }
-        //}
+        if (s_gameDownload.TryGetValue(game, out var list))
+        {
+            foreach (var item in list)
+            {
+                if (item.CheckProject(obj))
+                {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// 检查游戏资源是否在下载
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool IsDownload(Guid game, SourceType source, FileType type, string pid)
+    {
+        if (s_gameDownload.TryGetValue(game, out var list))
+        {
+            foreach (var item in list)
+            {
+                if (item.Source == source && item.Pid == pid && item.Type == type)
+                {
+                    return true;
+                }
+            }
+        }
 
         return false;
     }
@@ -129,11 +149,29 @@ public static class GameManager
     /// </summary>
     /// <param name="obj"></param>
     /// <returns></returns>
-    public static bool TestDowload(SourceItemObj obj)
+    public static bool IsDownload(SourceItemObj obj)
     {
         foreach (var item in s_installModpack)
         {
-            if (item.Obj.Source == obj.Source && item.Obj.Pid == obj.Pid)
+            if (item.Source == obj.Source && item.Pid == obj.Pid)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// 检查整合包是否在下载
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    public static bool IsDownload(SourceType source, string pid)
+    {
+        foreach (var item in s_installModpack)
+        {
+            if (item.Source == source && item.Pid == pid)
             {
                 return true;
             }

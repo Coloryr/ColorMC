@@ -159,10 +159,10 @@ public partial class AddResourceControlModel
                     info = new FileItemDownloadModel
                     {
                         Window = Window,
-                        Name = data1.DisplayName,
-                        Obj = data.Obj
+                        Name = data1.DisplayName
                     };
-                    StartDownload(info);
+                    AddDownload(info);
+                    GameManager.StartDownload(_obj.UUID, data.Obj);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadResourceAsync(item, data1, pack, info.Token);
                     pack.Stop();
@@ -172,20 +172,21 @@ public partial class AddResourceControlModel
                     info = new FileItemDownloadModel
                     {
                         Window = Window,
-                        Name = data2.Name,
-                        Obj = data.Obj
+                        Name = data2.Name
                     };
-                    StartDownload(info);
-                    GameManager.StartDownload(info);
+                    AddDownload(info);
+                    GameManager.StartDownload(_obj.UUID, data.Obj);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadResourceAsync(item, data2, pack, info.Token);
                     pack.Stop();
                 }
-                if (info != null)
+                else
                 {
-                    StopDownload(info);
-                    GameManager.StopDownload(info, res);
+                    throw new NotSupportedException();
                 }
+
+                RemoveDownload(info);
+                GameManager.StopDownload(_obj.UUID, data.Obj, res);
             }
             //模组
             else if (_now == FileType.Mod)
@@ -211,24 +212,23 @@ public partial class AddResourceControlModel
                     var info = new FileItemDownloadModel
                     {
                         Window = Window,
-                        Name = list.Info.Name,
-                        Obj = data.Obj
+                        Name = list.Info.Name
                     };
-                    StartDownload(info);
-                    GameManager.StartDownload(info);
+                    AddDownload(info);
+                    GameManager.StartDownload(_obj.UUID, data.Obj);
                     var pack = new ResourceGui(info);
                     res = await WebBinding.DownloadModAsync(_obj,
                     [
                         new DownloadModObj()
-                            {
-                                Item = list.Item!,
-                                Info = list.Info!,
-                                Old = await _obj.ReadModAsync(mod)
-                            }
+                        {
+                            Item = list.Item!,
+                            Info = list.Info!,
+                            Old = await _obj.ReadModAsync(mod)
+                        }
                     ], pack, info.Token);
 
-                    StopDownload(info);
-                    GameManager.StopDownload(info, res);
+                    RemoveDownload(info);
+                    GameManager.StopDownload(_obj.UUID, data.Obj, res);
                 }
                 else
                 {

@@ -13,7 +13,6 @@ public static class EventManager
     private static readonly List<Action<SourceItemObj, bool>> s_modpackStop = [];
     private static readonly List<Action<Guid, SourceItemObj>> s_resourceInstall = [];
     private static readonly List<Action<Guid, SourceItemObj, bool>> s_resourceStop = [];
-    private static readonly List<Action<Guid>> s_throwResourceDownload = [];
 
     /// <summary>
     /// 游戏实例图标修改
@@ -120,21 +119,6 @@ public static class EventManager
         }
     }
 
-    /// <summary>
-    /// 其他窗口关闭资源下载
-    /// </summary>
-    public static event Action<Guid> ThrowResourceDownload
-    {
-        add
-        {
-            s_throwResourceDownload.Add(value);
-        }
-        remove
-        {
-            s_throwResourceDownload.Remove(value);
-        }
-    }
-
     public static void OnGameIconChange(Guid uuid)
     {
         foreach (var item in s_gameIconChange.ToArray())
@@ -188,14 +172,6 @@ public static class EventManager
         foreach (var item in s_resourceStop.ToArray())
         {
             item.Invoke(game, obj, res);
-        }
-    }
-
-    public static void OnThrowResourceDownload(Guid game)
-    {
-        foreach (var item in s_throwResourceDownload.ToArray())
-        {
-            item.Invoke(game);
         }
     }
 }
