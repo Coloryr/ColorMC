@@ -14,21 +14,26 @@
     mc:Ignorable="d">
     <Panel>
         <Panel
+            Name="MainMenuGrid"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding Main}">
+            VerticalAlignment="Center">
             <UniformGrid
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Columns="3"
                 Rows="2">
+                <UniformGrid.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Width" Value="130" />
+                        <Setter Property="Height" Value="150" />
+                        <Setter Property="Margin" Value="10" />
+                        <Setter Property="Padding" Value="20" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style>
+                </UniformGrid.Styles>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoTab}"
                     CommandParameter=":1"
@@ -39,12 +44,6 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoTab}"
                     CommandParameter=":2"
@@ -55,12 +54,6 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoTab}"
                     CommandParameter=":3"
@@ -71,12 +64,6 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoModPack}"
                     CornerRadius="5">
@@ -86,12 +73,6 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoCloud}"
                     CornerRadius="5"
@@ -102,12 +83,6 @@
                     </StackPanel>
                 </Button>
                 <Button
-                    Width="100"
-                    Height="130"
-                    Margin="20"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
                     Classes="top"
                     Command="{Binding GoServer}"
                     CornerRadius="5">

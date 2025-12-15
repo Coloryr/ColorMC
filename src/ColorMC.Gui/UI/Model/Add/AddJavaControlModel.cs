@@ -90,12 +90,16 @@ public partial class AddJavaControlModel : ControlModel
     /// </summary>
     private readonly int _needJava;
 
+    public bool IsMacArm { get; init; }
+
     public AddJavaControlModel(WindowModel model, int version) : base(model)
     {
         _useName = ToString() ?? "AddJavaControlModel";
         _needJava = version;
         Window.SetChoiseContent(_useName, LangUtils.Get("Button.Refash"));
         Window.SetChoiseCall(_useName, Load);
+
+        IsMacArm = SystemInfo.Os is OsType.MacOS && SystemInfo.IsArm;
     }
 
     /// <summary>

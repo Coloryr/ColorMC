@@ -345,6 +345,7 @@ public static class ColorMCGui
             {
                 DefaultFamilyName = Font,
             })
+            .With(new SkiaOptions { UseOpacitySaveLayer = true })
 #if DEBUG
             .LogToTrace(LogEventLevel.Information)
 #else

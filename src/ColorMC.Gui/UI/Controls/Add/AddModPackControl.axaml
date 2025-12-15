@@ -146,14 +146,26 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button
-                            Height="35"
-                            Margin="6,0,6,5"
-                            HorizontalAlignment="Stretch"
-                            Classes="top"
-                            Command="{Binding NextListPage}"
-                            Content="{setting:Localize AddModPackWindow.Text14}"
-                            IsVisible="{Binding NextPage}" />
+                        <Panel>
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="6,0,6,5"
+                                HorizontalAlignment="Right"
+                                Classes="top"
+                                Command="{Binding NextListPage}"
+                                Content="{setting:Localize AddModPackWindow.Text14}"
+                                IsVisible="{Binding NextPage}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="6,0,6,5"
+                                HorizontalAlignment="Left"
+                                Classes="top"
+                                Command="{Binding LastListPage}"
+                                Content="{setting:Localize AddModPackWindow.Text47}"
+                                IsVisible="{Binding LastPage}" />
+                        </Panel>
                     </StackPanel>
                     <Border
                         Margin="10,5,10,10"
