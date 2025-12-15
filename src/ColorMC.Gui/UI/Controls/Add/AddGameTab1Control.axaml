@@ -27,11 +27,20 @@
                     IsEnabled="{Binding !IsLoad}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}" />
                 <StackPanel>
-                    <TextBox
-                        Margin="0,0,10,10"
-                        HorizontalAlignment="Stretch"
-                        Text="{Binding Name}"
-                        Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                    <DockPanel Margin="0,0,0,10">
+                        <ToggleSwitch
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            DockPanel.Dock="Right"
+                            IsChecked="{Binding IsAutoRename}"
+                            OffContent="{setting:Localize AddGameWindow.Tab1.Text57}"
+                            OnContent="{setting:Localize AddGameWindow.Tab1.Text57}" />
+                        <TextBox
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            Text="{Binding Name}"
+                            Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                    </DockPanel>
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <svg:SvgControl
                             Name="test"
@@ -100,6 +109,7 @@
                             Classes="top"
                             Command="{Binding VersionSelect}"
                             Content="{setting:Localize AddGameWindow.Tab1.Text11}"
+                            IsEnabled="{Binding EnableLoader}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text83}" />
                         <TextBlock
                             Grid.Column="3"
@@ -121,15 +131,20 @@
                             Classes="top"
                             Command="{Binding GetLoader}"
                             Content="{setting:Localize Text.ReloadVersion}"
+                            IsEnabled="{Binding EnableLoaderVersion}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text82}" />
                     </Grid>
                     <TextBox
-                        Margin="0,0,10,10"
+                        Margin="0,0,10,5"
                         HorizontalAlignment="Stretch"
                         IsEnabled="{Binding CustomLoader}"
+                        IsVisible="{Binding CustomLoader}"
                         Text="{Binding LoaderLocal}"
                         Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
-                    <Panel Margin="0,0,0,5" IsEnabled="{Binding CustomLoader}">
+                    <Panel
+                        Margin="0,0,0,5"
+                        IsEnabled="{Binding CustomLoader}"
+                        IsVisible="{Binding CustomLoader}">
                         <ToggleSwitch
                             IsChecked="{Binding OffLib}"
                             OffContent="{setting:Localize AddGameWindow.Tab1.Text16}"

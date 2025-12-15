@@ -63,6 +63,7 @@
                 <TextBlock
                     Margin="15,0,15,15"
                     DockPanel.Dock="Bottom"
+                    IsVisible="{Binding IsMacArm}"
                     Text="{setting:Localize AddJavaWindow.Text5}"
                     TextWrapping="Wrap" />
                 <Panel Margin="5">

@@ -41,7 +41,7 @@ public partial class AddJavaControl : BaseUserControl
 
     public override void Opened()
     {
-        (DataContext as AddJavaControlModel)!.TypeIndex = 0;
+        (DataContext as AddJavaControlModel)?.TypeIndex = 0;
     }
 
     public override void Closed()

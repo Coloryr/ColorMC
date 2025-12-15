@@ -77,6 +77,11 @@ public partial class AddGameModel
     /// </summary>
     [ObservableProperty]
     private bool _isLoad;
+    /// <summary>
+    /// 是否自动修改实例名字
+    /// </summary>
+    [ObservableProperty]
+    private bool _isAutoRename = true;
 
     /// <summary>
     /// 版本类型
@@ -129,7 +134,9 @@ public partial class AddGameModel
     async partial void OnLoaderTypeChanged(int value)
     {
         if (_load)
+        {
             return;
+        }
 
         await GetLoader();
     }
@@ -141,6 +148,27 @@ public partial class AddGameModel
     partial void OnVersionTypeChanged(int value)
     {
         GameVersionUpdate();
+    }
+
+    /// <summary>
+    /// 加载器版本修改
+    /// </summary>
+    /// <param name="value"></param>
+    partial void OnLoaderVersionChanged(string? value)
+    {
+        if (!IsAutoRename || string.IsNullOrWhiteSpace(Version) 
+            || _loaderTypeList.Count == 0 
+            || string.IsNullOrWhiteSpace(value))
+        {
+            return;
+        }
+
+        var loader = _loaderTypeList[LoaderType];
+
+        if (Name?.StartsWith(Version) == true)
+        {
+            Name = $"{Version}-{loader.GetName()}-{value}";
+        }
     }
 
     /// <summary>
@@ -191,6 +219,12 @@ public partial class AddGameModel
             CustomLoader = true;
             return;
         }
+
+        if (IsAutoRename && Name?.StartsWith(Version) == true)
+        {
+            Name = Version + "-" + loader.GetName();
+        }
+
         //根据加载器类型获取版本信息
         List<string>? list = null;
         IsLoad = true;
@@ -323,7 +357,7 @@ public partial class AddGameModel
             return;
         }
 
-        if (string.IsNullOrWhiteSpace(Name))
+        if (IsAutoRename && string.IsNullOrWhiteSpace(Name))
         {
             Name = Version;
         }
