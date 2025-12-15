@@ -498,8 +498,6 @@ public static class GameManager
         {
             try
             {
-                var conf = obj.Window;
-
                 do
                 {
                     if (handle.IsExit || IsConnect(obj.UUID))
@@ -523,8 +521,14 @@ public static class GameManager
                     GameJoystick.Start(obj, handle);
                 }
 
+                var conf = obj.Window;
+                if (conf == null)
+                {
+                    return;
+                }
+
                 //修改窗口标题
-                if (string.IsNullOrWhiteSpace(conf?.GameTitle))
+                if (!conf.EditTitle || string.IsNullOrWhiteSpace(conf.GameTitle))
                 {
                     return;
                 }

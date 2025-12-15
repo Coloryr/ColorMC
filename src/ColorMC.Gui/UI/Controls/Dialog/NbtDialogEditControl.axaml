@@ -6,8 +6,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     x:DataType="vm:NbtDialogEditModel"
-    Design.Width="300"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel
@@ -24,8 +25,7 @@
                 Command="{Binding DataEditDone}"
                 Content="{setting:Localize ConfigEditWindow.Text2}"
                 DockPanel.Dock="Right"
-                ToolTip.Tip="{setting:Localize ToolTip.Text40}"
-                 />
+                ToolTip.Tip="{setting:Localize ToolTip.Text40}" />
             <StackPanel>
                 <StackPanel
                     Margin="5,0,0,0"

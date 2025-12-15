@@ -26,8 +26,6 @@ namespace ColorMC.Gui.UI.Model.Setting;
 /// </summary>
 public partial class SettingModel
 {
-    public const string NameLockLogin = "AddLockLogin";
-
     /// <summary>
     /// UUID列表
     /// </summary>
@@ -450,8 +448,8 @@ public partial class SettingModel
     [RelayCommand]
     public async Task AddLockLogin()
     {
-        var model = new AddLockLoginModel();
-        var res = await DialogHost.Show(model, NameLockLogin);
+        var model = new AddLockLoginModel(Window.WindowId);
+        var res = await Window.ShowDialogWait(model);
         if (res is true)
         {
             if (model.Index == 0)

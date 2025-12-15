@@ -435,7 +435,6 @@ public static class GameArg
             {
                 JvmArgs = obj.JvmArg.JvmArgs ?? ConfigLoad.Config.DefaultJvmArg.JvmArgs,
                 GC = obj.JvmArg.GC ?? ConfigLoad.Config.DefaultJvmArg.GC,
-                JavaAgent = obj.JvmArg.JavaAgent ?? ConfigLoad.Config.DefaultJvmArg.JavaAgent,
                 MaxMemory = obj.JvmArg.MaxMemory ?? ConfigLoad.Config.DefaultJvmArg.MaxMemory,
                 MinMemory = obj.JvmArg.MinMemory ?? ConfigLoad.Config.DefaultJvmArg.MinMemory,
                 ColorASM = obj.JvmArg.ColorASM
@@ -444,11 +443,6 @@ public static class GameArg
 
         var jvm = new List<string>();
         bool useasm = false;
-        //javaagent
-        if (!string.IsNullOrWhiteSpace(args.JavaAgent))
-        {
-            jvm.Add($"-javaagent:{args.JavaAgent.Trim()}");
-        }
 
         //colorasm
         if (args.ColorASM && mixinport > 0)

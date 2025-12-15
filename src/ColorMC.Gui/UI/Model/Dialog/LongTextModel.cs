@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 文本显示
 /// </summary>
 /// <param name="name">窗口Id</param>
-public partial class LongTextModel(string? name) : ObservableObject
+public partial class LongTextModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 文本1
@@ -26,22 +26,4 @@ public partial class LongTextModel(string? name) : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _cancelEnable;
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(name, false, this);
-    }
-
-    /// <summary>
-    /// 同意
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(name, true, this);
-    }
 }

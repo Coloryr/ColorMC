@@ -54,11 +54,6 @@ public partial class GameEditModel
     /// Java启动参数
     /// </summary>
     [ObservableProperty]
-    private string? _javaAgent;
-    /// <summary>
-    /// Java启动参数
-    /// </summary>
-    [ObservableProperty]
     private string? _jvmArg;
     /// <summary>
     /// 游戏启动参数
@@ -197,6 +192,11 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private bool _colorASM;
+    /// <summary>
+    /// 是否使用自定义标题
+    /// </summary>
+    [ObservableProperty]
+    private bool _editTitle;
 
     /// <summary>
     /// 当前内存大小
@@ -208,6 +208,18 @@ public partial class GameEditModel
     /// 是否在加载配置文件
     /// </summary>
     private bool _configLoad;
+
+    partial void OnEditTitleChanged(bool value)
+    {
+        if (_configLoad)
+        {
+            return;
+        }
+
+        _obj.Window ??= new();
+        _obj.Window.EditTitle = value;
+        _obj.Save();
+    }
 
     partial void OnColorASMChanged(bool value)
     {
@@ -461,18 +473,6 @@ public partial class GameEditModel
         _obj.Save();
     }
 
-    partial void OnJavaAgentChanged(string? value)
-    {
-        if (_configLoad)
-        {
-            return;
-        }
-
-        _obj.JvmArg ??= new();
-        _obj.JvmArg.JavaAgent = value;
-        _obj.Save();
-    }
-
     partial void OnMinMemChanged(uint? value)
     {
         if (_configLoad)
@@ -669,7 +669,6 @@ public partial class GameEditModel
             MinMem = config.MinMemory == null ? null : config.MinMemory;
             MaxMem = config.MaxMemory == null ? null : config.MaxMemory;
 
-            JavaAgent = config.JavaAgent;
             JvmArg = config.JvmArgs;
             GameArg = config.GameArgs;
             JvmEnv = config.JvmEnv;
@@ -688,7 +687,6 @@ public partial class GameEditModel
             Gc = 0;
             MinMem = null;
             MaxMem = null;
-            JavaAgent = null;
             JvmArg = null;
             GameArg = null;
             JvmEnv = null;
@@ -707,6 +705,7 @@ public partial class GameEditModel
             GameTitle = config1.GameTitle;
             RandomTitle = config1.RandomTitle;
             CycTitle = config1.CycTitle;
+            EditTitle = config1.EditTitle;
             TitleDelay = config1.TitleDelay;
         }
         else

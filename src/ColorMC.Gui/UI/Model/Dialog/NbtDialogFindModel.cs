@@ -1,14 +1,12 @@
 using ColorMC.Core.Chunk;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
 /// <summary>
 /// Nbt查找
 /// </summary>
-public partial class NbtDialogFindModel : ObservableObject
+public partial class NbtDialogFindModel : BaseDialogModel
 {
     /// <summary>
     /// 查找名字
@@ -56,12 +54,8 @@ public partial class NbtDialogFindModel : ObservableObject
     /// </summary>
     public bool IsEntity;
 
-    private readonly string _useName;
-
-    public NbtDialogFindModel(string usename)
+    public NbtDialogFindModel(string name) : base(name)
     {
-        _useName = usename;
-
         PosClear();
         PosChange();
     }
@@ -79,23 +73,6 @@ public partial class NbtDialogFindModel : ObservableObject
     partial void OnPosZChanged(int? value)
     {
         PosChange();
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void FindCancel()
-    {
-        DialogHost.Close(_useName, false);
-    }
-    /// <summary>
-    /// 同意
-    /// </summary>
-    [RelayCommand]
-    public void FindStart()
-    {
-        DialogHost.Close(_useName, true);
     }
 
     /// <summary>

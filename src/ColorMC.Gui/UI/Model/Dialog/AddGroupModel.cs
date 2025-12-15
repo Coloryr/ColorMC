@@ -14,7 +14,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// </summary>
 /// <param name="window"></param>
 /// <param name="group"></param>
-public partial class AddGroupModel(WindowModel window, string? group) : ObservableObject
+public partial class GroupEditModel(WindowModel window, string? group) : BaseDialogModel(window.WindowId)
 {
     /// <summary>
     /// 游戏分组列表
@@ -26,54 +26,4 @@ public partial class AddGroupModel(WindowModel window, string? group) : Observab
     /// </summary>
     [ObservableProperty]
     private string? _groupItem = group;
-
-    /// <summary>
-    /// 添加群组
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task AddGroup()
-    {
-        var dialog = new InputModel(window.WindowId)
-        {
-            Watermark1 = LangUtils.Get("Text.Group")
-        };
-        var res = await window.ShowDialogWait(dialog);
-        if (res is not true)
-        {
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(dialog.Text1))
-        {
-            window.Show(LangUtils.Get("MainWindow.Text82"));
-            return;
-        }
-
-        if (!GameBinding.AddGameGroup(dialog.Text1))
-        {
-            window.Show(LangUtils.Get("MainWindow.Text83"));
-            return;
-        }
-
-        GroupList.Add(dialog.Text1);
-    }
-
-    /// <summary>
-    /// 确认
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(window.WindowId, true, this);
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(window.WindowId, false, this);
-    }
 }

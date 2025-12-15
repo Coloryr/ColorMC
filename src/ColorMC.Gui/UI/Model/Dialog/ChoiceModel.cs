@@ -1,7 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
@@ -9,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 确认框
 /// </summary>
 /// <param name="name">窗口ID</param>
-public partial class ChoiceModel(string? name) : ObservableObject
+public partial class ChoiceModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 选择执行
@@ -52,19 +51,5 @@ public partial class ChoiceModel(string? name) : ObservableObject
     public void Choice()
     {
         ChoiceCall?.Invoke();
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        EnableButton = false;
-        DialogHost.Close(name, false, this);
-    }
-
-    [RelayCommand]
-    public void Confirm()
-    {
-        EnableButton = false;
-        DialogHost.Close(name, true, this);
     }
 }

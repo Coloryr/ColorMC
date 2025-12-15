@@ -126,6 +126,10 @@ public record WindowSettingObj
     /// 循环游戏标题延迟
     /// </summary>
     public int TitleDelay { get; set; }
+    /// <summary>
+    /// 是否使用自定义标题
+    /// </summary>
+    public bool EditTitle { get; set; }
 }
 
 public enum GCType
@@ -177,10 +181,6 @@ public record RunArgObj
     /// GC模式
     /// </summary>
     public GCType? GC { get; set; }
-    /// <summary>
-    /// 自定义JavaAgent
-    /// </summary>
-    public string? JavaAgent { get; set; }
     /// <summary>
     /// 最大内存
     /// </summary>

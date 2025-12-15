@@ -1,15 +1,12 @@
-﻿using ColorMC.Gui.UI.Model.Setting;
-using ColorMC.Gui.Utils;
+﻿using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
 /// <summary>
 /// 添加自定义登录模型锁定
 /// </summary>
-public partial class AddLockLoginModel : ObservableObject
+public partial class AddLockLoginModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 模型列表
@@ -50,23 +47,5 @@ public partial class AddLockLoginModel : ObservableObject
             EnableInput = true;
             InputText1 = "";
         }
-    }
-
-    /// <summary>
-    /// 确认
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(SettingModel.NameLockLogin, true);
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(SettingModel.NameLockLogin, false);
     }
 }

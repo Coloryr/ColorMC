@@ -2,19 +2,17 @@ using System;
 using System.Collections.ObjectModel;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Objs.Config;
-using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
 /// <summary>
 /// 添加账户
 /// </summary>
-public partial class AddUserModel : ObservableObject
+public partial class AddUserModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 账户类型列表
@@ -203,7 +201,7 @@ public partial class AddUserModel : ObservableObject
         if (value?.EndsWith(Environment.NewLine) == true)
         {
             Password = value.TrimEnd();
-            Add();
+            Confirm();
         }
     }
 
@@ -212,7 +210,7 @@ public partial class AddUserModel : ObservableObject
         if (value?.EndsWith(Environment.NewLine) == true)
         {
             User = value.TrimEnd();
-            Add();
+            Confirm();
         }
     }
 
@@ -221,7 +219,7 @@ public partial class AddUserModel : ObservableObject
         if (value?.EndsWith(Environment.NewLine) == true)
         {
             Name = value.TrimEnd();
-            Add();
+            Confirm();
         }
     }
 
@@ -245,17 +243,5 @@ public partial class AddUserModel : ObservableObject
                 WebBinding.OpenRegister(type, Name);
                 break;
         }
-    }
-
-    [RelayCommand]
-    public void Add()
-    {
-        DialogHost.Close(UsersControl.DialogName, true);
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(UsersControl.DialogName, false);
     }
 }

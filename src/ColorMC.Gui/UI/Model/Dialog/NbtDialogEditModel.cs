@@ -10,9 +10,9 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// Nbt标签修改
 /// </summary>
-/// <param name="model">窗口</param>
+/// <param name="window">窗口</param>
 /// <param name="usename">窗口Id</param>
-public partial class NbtDialogEditModel(WindowModel model, string usename) : ObservableObject
+public partial class NbtDialogEditModel(WindowModel window) : ObservableObject
 {
     /// <summary>
     /// 是否显示修改
@@ -58,7 +58,7 @@ public partial class NbtDialogEditModel(WindowModel model, string usename) : Obs
     [RelayCommand]
     public void DataEditDone()
     {
-        DialogHost.Close(usename);
+        DialogHost.Close(window.WindowId, null, this);
     }
 
     /// <summary>
@@ -106,7 +106,7 @@ public partial class NbtDialogEditModel(WindowModel model, string usename) : Obs
         }
         catch
         {
-            model.Show(LangUtils.Get("ConfigEditWindow.Text29"));
+            window.Show(LangUtils.Get("ConfigEditWindow.Text29"));
             DataItem.Value = 0;
             return;
         }

@@ -6,14 +6,11 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
 public partial class NetFrpModel
 {
-    public const string NameCon1 = "ShareCon1";
-
     /// <summary>
     /// 是否没有自定义映射
     /// </summary>
@@ -51,8 +48,8 @@ public partial class NetFrpModel
     [RelayCommand]
     public async Task AddSelfFrp()
     {
-        var model = new NetFrpAddModel();
-        var res = await DialogHost.Show(model, NameCon1);
+        var model = new NetFrpAddModel(Window.WindowId);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true || string.IsNullOrWhiteSpace(model.Name))
         {
             return;
@@ -75,10 +72,10 @@ public partial class NetFrpModel
     /// 编辑自定义映射
     /// </summary>
     /// <param name="model">自定义映射</param>
-    public async static void Edit(NetFrpSelfItemModel model)
+    public async void Edit(NetFrpSelfItemModel model)
     {
-        var model1 = new NetFrpAddModel(model);
-        var res = await DialogHost.Show(model1, NameCon1);
+        var model1 = new NetFrpAddModel(Window.WindowId);
+        var res = await Window.ShowDialogWait(model1);
         if (res is not true || string.IsNullOrWhiteSpace(model1.Name))
         {
             return;
@@ -119,11 +116,7 @@ public partial class NetFrpModel
     /// <param name="model">自定义映射</param>
     public void Select(NetFrpSelfItemModel model)
     {
-        if (_frpSelfItem != null)
-        {
-            _frpSelfItem.IsSelect = false;
-        }
-
+        _frpSelfItem?.IsSelect = false;
         model.IsSelect = true;
         _frpSelfItem = model;
     }

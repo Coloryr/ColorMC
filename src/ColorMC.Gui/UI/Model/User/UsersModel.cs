@@ -106,7 +106,7 @@ public partial class UsersModel : ControlModel
     [RelayCommand]
     public void SetAdd()
     {
-        ShowAdd(new());
+        ShowAdd(new AddUserModel(Window.WindowId));
     }
 
     /// <summary>
@@ -328,7 +328,7 @@ public partial class UsersModel : ControlModel
             return;
         }
 
-        ShowAdd(new()
+        ShowAdd(new AddUserModel(Window.WindowId)
         {
             Type = (int)AuthType.AuthlibInjector,
             Name = HttpUtility.UrlDecode(url.Replace("authlib-injector:yggdrasil-server:", ""))
@@ -369,7 +369,7 @@ public partial class UsersModel : ControlModel
                 case AuthType.Nide8:
                 case AuthType.AuthlibInjector:
                 case AuthType.SelfLittleSkin:
-                    ShowAdd(new()
+                    ShowAdd(new AddUserModel(Window.WindowId)
                     {
                         Type = (int)type,
                         User = obj.Text2,
@@ -377,7 +377,7 @@ public partial class UsersModel : ControlModel
                     });
                     break;
                 case AuthType.LittleSkin:
-                    ShowAdd(new()
+                    ShowAdd(new AddUserModel(Window.WindowId)
                     {
                         Type = (int)type,
                         User = obj.Text2
@@ -439,7 +439,7 @@ public partial class UsersModel : ControlModel
             type = (int)obj.AuthType;
         }
 
-        ShowAdd(new()
+        ShowAdd(new AddUserModel(Window.WindowId)
         {
             Type = type,
             EnableName = false,

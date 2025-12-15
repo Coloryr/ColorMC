@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     x:DataType="vm:NbtDialogFindModel"
     mc:Ignorable="d">
     <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -37,10 +39,10 @@
                 Margin="0,5,0,0"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
-                <TextBlock Margin="0,0,0,0" Text="{setting:Localize ConfigEditWindow.Text8}" />
-                <TextBlock Margin="0,0,0,0" Text="{Binding Chunk}" />
-                <TextBlock Margin="0,0,0,0" Text="{setting:Localize ConfigEditWindow.Text9}" />
-                <TextBlock Margin="0,0,0,0" Text="{Binding ChunkFile}" />
+                <TextBlock Text="{setting:Localize ConfigEditWindow.Text8}" />
+                <TextBlock Text="{Binding Chunk}" />
+                <TextBlock Text="{setting:Localize ConfigEditWindow.Text9}" />
+                <TextBlock Text="{Binding ChunkFile}" />
             </StackPanel>
 
             <StackPanel
@@ -53,14 +55,14 @@
                     Height="35"
                     Margin="10,0,10,0"
                     Classes="top"
-                    Command="{Binding FindStart}"
+                    Command="{Binding Confirm}"
                     Content="{setting:Localize ConfigEditWindow.Text10}" />
                 <Button
                     Width="100"
                     Height="35"
                     Margin="10,0,10,0"
                     Classes="top"
-                    Command="{Binding FindCancel}"
+                    Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
         </StackPanel>

@@ -24,7 +24,7 @@
                     Height="35"
                     Margin="-2,-3,3,-3"
                     Classes="top"
-                    Command="{Binding DownloadAll}"
+                    Command="{Binding Confirm}"
                     Content="{setting:Localize AddModPackWindow.Text12}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text80}" />
             </StackPanel>
@@ -49,7 +49,7 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Classes="top"
-            Command="{Binding CloseView}"
+            Command="{Binding Cancel}"
             CornerRadius="5">
             <svg:SvgControl Path="/Resource/Icon/close.svg" />
         </Button>

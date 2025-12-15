@@ -10,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// 添加自定义映射
 /// </summary>
-public partial class NetFrpAddModel : ObservableObject
+public partial class NetFrpAddModel : BaseDialogModel
 {
     /// <summary>
     /// 锁定名字
@@ -55,12 +55,12 @@ public partial class NetFrpAddModel : ObservableObject
     [ObservableProperty]
     private int? _port = 7000;
 
-    public NetFrpAddModel()
+    public NetFrpAddModel(string name) : base(name)
     {
 
     }
 
-    public NetFrpAddModel(NetFrpSelfItemModel model)
+    public NetFrpAddModel(string name, NetFrpSelfItemModel model) : base(name)
     {
         _lockName = false;
         Ip = model.Obj.IP;
@@ -70,18 +70,6 @@ public partial class NetFrpAddModel : ObservableObject
         NetPort = model.Obj.NetPort;
         Port = model.Obj.Port;
         RName = model.Obj.RName;
-    }
-
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(NetFrpModel.NameCon1, true);
-    }
-
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(NetFrpModel.NameCon1, false);
     }
 
     public FrpSelfObj Build()

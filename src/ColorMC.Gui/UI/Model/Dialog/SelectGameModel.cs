@@ -6,8 +6,6 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
@@ -35,7 +33,7 @@ public class SelectGameNode
 /// 选择游戏实例
 /// </summary>
 /// <param name="name">窗口Id</param>
-public partial class SelectGameModel : ObservableObject
+public partial class SelectGameModel : BaseDialogModel
 {
     /// <summary>
     /// 显示文本
@@ -53,11 +51,8 @@ public partial class SelectGameModel : ObservableObject
     /// </summary>
     public ObservableCollection<SelectGameNode> Items { get; init; } = [];
 
-    private readonly string _name;
-
-    public SelectGameModel(string name, bool skipadd)
+    public SelectGameModel(string name, bool skipadd) : base(name)
     {
-        _name = name;
         foreach (var item in InstancesPath.Groups)
         {
             if (item.Value.Count == 0)
@@ -97,23 +92,5 @@ public partial class SelectGameModel : ObservableObject
                 Select = null;
             });
         }
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(_name, false, this);
-    }
-
-    /// <summary>
-    /// 同意
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(_name, true, this);
     }
 }

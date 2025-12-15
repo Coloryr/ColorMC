@@ -27,11 +27,6 @@ public partial class SettingModel
     [ObservableProperty]
     private string? _postCmd;
     /// <summary>
-    /// JavaAgent参数
-    /// </summary>
-    [ObservableProperty]
-    private string? _javaAgent;
-    /// <summary>
     /// Java参数
     /// </summary>
     [ObservableProperty]
@@ -196,11 +191,6 @@ public partial class SettingModel
         SetArg();
     }
 
-    partial void OnJavaAgentChanged(string? value)
-    {
-        SetArg();
-    }
-
     partial void OnPreRunSameChanged(bool value)
     {
         SetCommand();
@@ -287,7 +277,6 @@ public partial class SettingModel
             Width = con.Window.Width;
             Height = con.Window.Height;
 
-            JavaAgent = con.DefaultJvmArg.JavaAgent;
             JvmArg = con.DefaultJvmArg.JvmArgs;
             GameArg = con.DefaultJvmArg.GameArgs;
             PostCmd = con.DefaultJvmArg.LaunchPostData;
@@ -351,7 +340,7 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetRunArg(JavaAgent, JvmArg, GameArg, JvmEnv, ColorASM);
+        ConfigBinding.SetRunArg(JvmArg, GameArg, JvmEnv, ColorASM);
     }
 
     private void SetCommand()
