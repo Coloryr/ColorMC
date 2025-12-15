@@ -9,7 +9,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 下拉框
 /// </summary>
 /// <param name="name">窗口Id</param>
-public partial class SelectModel(string? name) : ObservableObject
+public partial class SelectModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 显示文本
@@ -31,22 +31,4 @@ public partial class SelectModel(string? name) : ObservableObject
     /// 项目列表
     /// </summary>
     public ObservableCollection<string> Items { get; init; } = [];
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(name, false, this);
-    }
-
-    /// <summary>
-    /// 同意
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(name, true, this);
-    }
 }

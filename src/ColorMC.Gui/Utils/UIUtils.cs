@@ -24,11 +24,17 @@ public class TemplateSelector : IDataTemplate
         _templates.Add(typeof(ChoiceModel), typeof(ChoiceControl));
         _templates.Add(typeof(SelectModel), typeof(SelectControl));
         _templates.Add(typeof(LongTextModel), typeof(LongTextControl));
-        _templates.Add(typeof(AddGroupModel), typeof(GroupEditControl));
+        _templates.Add(typeof(GroupEditModel), typeof(GroupEditControl));
         _templates.Add(typeof(JoystickSettingModel), typeof(JoystickSettingControl));
         _templates.Add(typeof(ModDependModel), typeof(ModDependControl));
         _templates.Add(typeof(CollectDownloadModel), typeof(CollectDownloadControl));
         _templates.Add(typeof(SelectGameModel), typeof(SelectGameControl));
+        _templates.Add(typeof(NbtDialogAddModel), typeof(NbtDialogAddControl));
+        _templates.Add(typeof(NbtDialogEditModel), typeof(NbtDialogEditControl));
+        _templates.Add(typeof(NbtDialogFindModel), typeof(NbtDialogFindControl));
+        _templates.Add(typeof(NetFrpAddModel), typeof(NetFrpAddControl));
+        _templates.Add(typeof(FrpShareModel), typeof(FrpShareControl));
+        _templates.Add(typeof(AddLockLoginModel), typeof(AddLockLoginControl));
     }
 
     public Control? Build(object? param)

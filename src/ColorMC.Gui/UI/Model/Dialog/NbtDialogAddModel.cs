@@ -1,8 +1,6 @@
 using ColorMC.Core.Nbt;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
@@ -10,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// Nbt添加
 /// </summary>
 /// <param name="usename">窗口Id</param>
-public partial class NbtDialogAddModel(string usename) : ObservableObject
+public partial class NbtDialogAddModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// Nbt类型
@@ -42,22 +40,4 @@ public partial class NbtDialogAddModel(string usename) : ObservableObject
     /// </summary>
     [ObservableProperty]
     private NbtType _type = NbtType.NbtString;
-
-    /// <summary>
-    /// 确认
-    /// </summary>
-    [RelayCommand]
-    public void AddConfirm()
-    {
-        DialogHost.Close(usename, true);
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void AddCancel()
-    {
-        DialogHost.Close(usename, false);
-    }
 }

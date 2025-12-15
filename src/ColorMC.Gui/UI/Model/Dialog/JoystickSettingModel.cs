@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ColorMC.Gui.Joystick;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 using Event = Silk.NET.SDL.Event;
 using EventType = Silk.NET.SDL.EventType;
 
@@ -12,7 +10,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// 手柄与配置选择
 /// </summary>
-public partial class JoystickSettingModel : ObservableObject
+public partial class JoystickSettingModel : BaseDialogModel
 {
     /// <summary>
     /// 手柄列表
@@ -37,12 +35,9 @@ public partial class JoystickSettingModel : ObservableObject
     /// 配置列表
     /// </summary>
     private readonly List<string> UUIDs = [];
-    private readonly string _id;
 
-    public JoystickSettingModel(string id, int now, string? config)
+    public JoystickSettingModel(string name, int now, string? config) : base(name)
     {
-        _id = id;
-
         Load();
         Load1();
 
@@ -57,24 +52,6 @@ public partial class JoystickSettingModel : ObservableObject
         }
 
         JoystickInput.OnEvent += Event;
-    }
-
-    /// <summary>
-    /// 确认
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(_id, true, this);
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(_id, false, this);
     }
 
     /// <summary>

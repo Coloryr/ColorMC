@@ -309,11 +309,10 @@ public static class ConfigBinding
     /// <param name="v2"></param>
     /// <param name="v3"></param>
     /// <param name="v4"></param>
-    public static void SetRunArg(string? v1, string? v2, string? v3, string? v4, bool colorasm)
+    public static void SetRunArg(string? v2, string? v3, string? v4, bool colorasm)
     {
         ConfigLoad.Config.DefaultJvmArg ??= ConfigLoad.MakeJvmArgConfig();
         var jvm = ConfigLoad.Config.DefaultJvmArg;
-        jvm.JavaAgent = v1;
         jvm.JvmArgs = v2;
         jvm.GameArgs = v3;
         jvm.JvmEnv = v4;

@@ -7,128 +7,209 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Count"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="600"
     d:DesignWidth="800"
     x:DataType="model:CountModel"
     mc:Ignorable="d">
+
+    <!--  定义一些复用样式资源，方便统一修改  -->
+    <UserControl.Styles>
+        <!--  数据数值样式  -->
+        <Style Selector="TextBlock.ValueText">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="0,0,0,5" />
+        </Style>
+        <!--  数据标签样式  -->
+        <Style Selector="TextBlock.LabelText">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.8" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <!--  统计卡片容器样式  -->
+        <Style Selector="StackPanel.StatItem">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+    </UserControl.Styles>
+
     <ScrollViewer>
-        <StackPanel Margin="10,0,10,10">
-            <Border Margin="10,10,10,5" Classes="t2">
+        <StackPanel Margin="10">
+
+            <!--  第一部分：启动统计 (使用 Grid 均分列)  -->
+            <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                    <!--  标题栏  -->
+                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
-                            Margin="0,0,5,0"
+                            Margin="0,0,10,0"
                             Path="/Resource/Icon/GameCount/svg3.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize CountWindow.Text1}" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text1}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,10">
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize CountWindow.Text2}" />
-                            <TextBlock Text="{Binding Count}" />
+
+                    <!--  核心数据展示区：三列布局  -->
+                    <Grid Margin="0,0,0,15" ColumnDefinitions="*,*,*">
+                        <!--  总启动  -->
+                        <StackPanel Grid.Column="0" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding Count, FallbackValue=10}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text2}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize CountWindow.Text5}" />
-                            <TextBlock Text="{Binding CountToday}" />
+                        <!--  成功  -->
+                        <StackPanel Grid.Column="1" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding CountDone, FallbackValue=10}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text3}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize CountWindow.Text3}" />
-                            <TextBlock Text="{Binding CountDone}" />
+                        <!--  失败  -->
+                        <StackPanel Grid.Column="2" Classes="StatItem">
+                            <TextBlock
+                                Classes="ValueText"
+                                Foreground="#FF5555"
+                                Text="{Binding CountError, FallbackValue=10}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text4}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize CountWindow.Text4}" />
-                            <TextBlock Text="{Binding CountError}" />
+                    </Grid>
+
+                    <Separator Margin="0,0,0,15" Opacity="0.2" />
+
+                    <!--  日期查询行  -->
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize CountWindow.Text6}" />
+                            <CalendarDatePicker
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                BorderBrush="{setting:Theme AllBorder}"
+                                SelectedDate="{Binding Date}" />
                         </StackPanel>
-                    </WrapPanel>
-                    <WrapPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Text="{setting:Localize CountWindow.Text6}" />
-                            <CalendarDatePicker BorderBrush="{setting:Theme AllBorder}" SelectedDate="{Binding Date}" />
+
+                        <!--  查询结果靠右显示  -->
+                        <StackPanel
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock Margin="0,0,10,0" Text="{setting:Localize CountWindow.Text7}" />
+                            <TextBlock FontWeight="Bold" Text="{Binding DateCount}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text7}" />
-                            <TextBlock Text="{Binding DateCount}" />
-                        </StackPanel>
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
-            <Border Margin="10,5,10,5" Classes="t2">
+
+            <!--  第二部分：时间统计  -->
+            <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
                         <svg:SvgControl
                             Width="24"
                             Height="24"
-                            Margin="0,0,5,0"
+                            Margin="0,0,10,0"
                             Path="/Resource/Icon/GameCount/svg1.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize CountWindow.Text8}" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text8}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,10">
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text9}" />
-                            <TextBlock Text="{Binding Time}" />
+
+                    <!--  两列布局  -->
+                    <Grid Margin="0,0,0,15" ColumnDefinitions="*,*">
+                        <StackPanel Grid.Column="0" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding Time}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text9}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text10}" />
-                            <TextBlock Text="{Binding TimeToday}" />
+                        <StackPanel Grid.Column="1" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding TimeToday}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text10}" />
                         </StackPanel>
-                    </WrapPanel>
-                    <WrapPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text6}" />
-                            <CalendarDatePicker BorderBrush="{setting:Theme AllBorder}" SelectedDate="{Binding Date1}" />
+                    </Grid>
+
+                    <Separator Margin="0,0,0,15" Opacity="0.2" />
+
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="{setting:Localize CountWindow.Text6}" />
+                            <CalendarDatePicker
+                                Margin="10,0,0,0"
+                                VerticalAlignment="Center"
+                                BorderBrush="{setting:Theme AllBorder}"
+                                SelectedDate="{Binding Date1}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="3,0,0,0" Text="{setting:Localize CountWindow.Text11}" />
-                            <TextBlock Margin="0,0,5,0" Text="{Binding TimeDate}" />
+                        <StackPanel
+                            Grid.Column="2"
+                            VerticalAlignment="Center"
+                            Orientation="Horizontal">
+                            <TextBlock Margin="0,0,10,0" Text="{setting:Localize CountWindow.Text11}" />
+                            <TextBlock FontWeight="Bold" Text="{Binding TimeDate}" />
                         </StackPanel>
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
-            <Border Margin="10,5,10,10" Classes="t2">
+
+            <!--  第三部分：游戏详情  -->
+            <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameCount/svg2.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize CountWindow.Text12}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text13}" />
+                    <Grid Margin="0,0,0,15" ColumnDefinitions="Auto,*">
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Margin="0,0,10,0"
+                                Path="/Resource/Icon/GameCount/svg2.svg" />
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="{setting:Style FontTitle}"
+                                Text="{setting:Localize CountWindow.Text12}" />
+                        </StackPanel>
+
+                        <!--  下拉框放在标题右侧或者单独一行皆可，这里优化为右侧对齐  -->
                         <ComboBox
-                            Width="150"
+                            Grid.Column="1"
+                            Width="200"
+                            HorizontalAlignment="Right"
                             ItemsSource="{Binding Game}"
+                            PlaceholderText="{setting:Localize CountWindow.Text13}"
                             SelectedIndex="{Binding GameIndex}" />
-                    </WrapPanel>
-                    <WrapPanel Margin="0,0,0,10">
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text2}" />
-                            <TextBlock Text="{Binding GameCount}" />
+                    </Grid>
+
+                    <!--  游戏数据：使用 Grid 规整排列  -->
+                    <!--  第一行：计数类  -->
+                    <Grid Margin="0,0,0,15" ColumnDefinitions="*,*,*,*">
+                        <StackPanel Grid.Column="0" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding GameCount}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text2}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text5}" />
-                            <TextBlock Text="{Binding GameCountToday}" />
+                        <StackPanel Grid.Column="1" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding GameCountToday}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text5}" />
                         </StackPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text3}" />
-                            <TextBlock Text="{Binding GameCountDone}" />
+                        <StackPanel Grid.Column="2" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding GameCountDone}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text3}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text4}" />
-                            <TextBlock Text="{Binding GameCountError}" />
+                        <StackPanel Grid.Column="3" Classes="StatItem">
+                            <TextBlock
+                                Classes="ValueText"
+                                Foreground="#FF5555"
+                                Text="{Binding GameCountError}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text4}" />
                         </StackPanel>
-                    </WrapPanel>
-                    <WrapPanel>
-                        <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text9}" />
-                            <TextBlock Text="{Binding GameTime}" />
+                    </Grid>
+
+                    <!--  第二行：时间类  -->
+                    <Grid ColumnDefinitions="*,*">
+                        <StackPanel Grid.Column="0" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding GameTime}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text9}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize CountWindow.Text10}" />
-                            <TextBlock Text="{Binding GameTime1}" />
+                        <StackPanel Grid.Column="1" Classes="StatItem">
+                            <TextBlock Classes="ValueText" Text="{Binding GameTime1}" />
+                            <TextBlock Classes="LabelText" Text="{setting:Localize CountWindow.Text10}" />
                         </StackPanel>
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
         </StackPanel>

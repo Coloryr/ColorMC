@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     x:DataType="model:AddUserModel"
     mc:Ignorable="d">
     <StackPanel Margin="5">
@@ -51,7 +53,7 @@
                 Height="35"
                 Margin="1,-2,3,-2"
                 Classes="top"
-                Command="{Binding Add}"
+                Command="{Binding Confirm}"
                 Content="{setting:Localize Button.Add}" />
             <Button
                 Width="100"

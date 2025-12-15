@@ -30,11 +30,6 @@ public partial class CountModel : ControlModel
     [ObservableProperty]
     private long _countError;
     /// <summary>
-    /// 今日统计
-    /// </summary>
-    [ObservableProperty]
-    private int _countToday;
-    /// <summary>
     /// 选中的时间
     /// </summary>
     [ObservableProperty]
@@ -121,7 +116,6 @@ public partial class CountModel : ControlModel
             _count = 0;
             _countDone = 0;
             _countError = 0;
-            _countToday = 0;
             _time = "";
             _timeToday = "";
         }
@@ -131,7 +125,7 @@ public partial class CountModel : ControlModel
             _count = data.LaunchCount;
             _countDone = data.LaunchDoneCount;
             _countError = data.LaunchErrorCount;
-            _dateCount = _countToday = (from item in data.LaunchLogs.Values
+            _dateCount = (from item in data.LaunchLogs.Values
                                         from item1 in item
                                         where item1.Time.Year == _date.Year &&
                                         item1.Time.Month == _date.Month &&

@@ -204,7 +204,7 @@ public partial class NetFrpModel
     /// </summary>
     private async void Share()
     {
-        var model = new FrpShareModel();
+        var model = new FrpShareModel(Window.WindowId);
         _ = ushort.TryParse(_localIP, out var port);
 
         var info = await ServerMotd.GetServerInfoAsync("localhost", port);

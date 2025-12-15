@@ -2,18 +2,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
-using ColorMC.Gui.UI.Model.NetFrp;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
 /// <summary>
 /// 映射联机大厅选择
 /// </summary>
-public partial class FrpShareModel : ObservableObject
+public partial class FrpShareModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 游戏版本
@@ -61,23 +58,5 @@ public partial class FrpShareModel : ObservableObject
 
         Loaders.AddRange(LangUtils.GetLoader());
         Loader = 0;
-    }
-
-    /// <summary>
-    /// 确认
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        DialogHost.Close(NetFrpModel.NameCon, true);
-    }
-
-    /// <summary>
-    /// 取消
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        DialogHost.Close(NetFrpModel.NameCon, false);
     }
 }

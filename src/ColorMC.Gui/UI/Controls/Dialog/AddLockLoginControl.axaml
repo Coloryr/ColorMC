@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     x:DataType="model:AddLockLoginModel"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

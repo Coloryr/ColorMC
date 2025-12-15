@@ -49,7 +49,7 @@ public partial class NetFrpSelfItemModel(NetFrpModel model, FrpSelfObj obj) : Se
     [RelayCommand]
     public void Edit()
     {
-        NetFrpModel.Edit(this);
+        model.Edit(this);
     }
 
     /// <summary>

@@ -1,7 +1,6 @@
 using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
@@ -9,7 +8,7 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// 输入框信息
 /// </summary>
 /// <param name="name">窗口ID</param>
-public partial class InputModel(string? name) : ObservableObject
+public partial class InputModel(string name) : BaseDialogModel(name)
 {
     /// <summary>
     /// 选择执行
@@ -89,25 +88,5 @@ public partial class InputModel(string? name) : ObservableObject
     public void Choise()
     {
         ChoiseCall?.Invoke();
-    }
-
-    /// <summary>
-    /// 取消按钮
-    /// </summary>
-    [RelayCommand]
-    public void Cancel()
-    {
-        CancelEnable = false;
-        DialogHost.Close(name, false, this);
-    }
-
-    /// <summary>
-    /// 同意按钮
-    /// </summary>
-    [RelayCommand]
-    public void Confirm()
-    {
-        ConfirmEnable = false;
-        DialogHost.Close(name, true, this);
     }
 }

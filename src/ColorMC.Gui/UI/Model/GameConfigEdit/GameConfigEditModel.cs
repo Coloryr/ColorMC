@@ -99,10 +99,6 @@ public partial class GameConfigEditModel : GameModel
     private string _lastName;
 
     /// <summary>
-    /// 窗口Id
-    /// </summary>
-    public string UseName { get; private set; }
-    /// <summary>
     /// 跳转到第几行
     /// </summary>
     public int TurnTo { get; private set; }
@@ -112,16 +108,22 @@ public partial class GameConfigEditModel : GameModel
     /// </summary>
     public ChunkDataObj? ChunkData;
 
+    private readonly string _useName;
+
     public GameConfigEditModel(WindowModel model, GameSettingObj obj, SaveObj? world)
         : base(model, obj)
     {
-        UseName = (ToString() ?? "GameConfigEditModel") + ":"
-            + obj?.UUID + ":" + world?.LevelName;
+        _useName = HashHelper.GenSha1((ToString() ?? "GameConfigEditModel") + ":"
+            + obj?.UUID + ":" + world?.LevelName);
         World = world;
 
         _isWorld = World != null;
 
         _text = new();
+
+        Window.SetChoiseCall(_useName, Save);
+        Window.SetChoiseContent(_useName, LangUtils.Get("ConfigEditWindow.Text2"));
+        Window.ChoiseEnable = IsEdit;
     }
 
     /// <summary>
@@ -132,6 +134,12 @@ public partial class GameConfigEditModel : GameModel
     {
         Load1();
     }
+
+    partial void OnIsEditChanged(bool value)
+    {
+        Window.ChoiseEnable = value;
+    }
+
     /// <summary>
     /// 文件名修改
     /// </summary>
@@ -239,13 +247,13 @@ public partial class GameConfigEditModel : GameModel
     [RelayCommand]
     public async Task FindEntity()
     {
-        var model = new NbtDialogFindModel(UseName)
+        var model = new NbtDialogFindModel(Window.WindowId)
         {
             IsEntity = true,
             FindText1 = LangUtils.Get("ConfigEditWindow.Text6"),
             FindText2 = LangUtils.Get("ConfigEditWindow.Text11")
         };
-        var res = await DialogHost.Show(model, UseName);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;
@@ -260,13 +268,13 @@ public partial class GameConfigEditModel : GameModel
     [RelayCommand]
     public async Task FindBlock()
     {
-        var model = new NbtDialogFindModel(UseName)
+        var model = new NbtDialogFindModel(Window.WindowId)
         {
             IsEntity = false,
             FindText1 = LangUtils.Get("ConfigEditWindow.Text5"),
             FindText2 = LangUtils.Get("ConfigEditWindow.Text7")
         };
-        var res = await DialogHost.Show(model, UseName);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;
@@ -287,8 +295,7 @@ public partial class GameConfigEditModel : GameModel
     /// <summary>
     /// 保存文件
     /// </summary>
-    [RelayCommand]
-    public async Task Save()
+    public async void Save()
     {
         var dialog = Window.ShowProgress(LangUtils.Get("ConfigEditWindow.Text26"));
         var info = new FileInfo(File);
@@ -457,14 +464,14 @@ public partial class GameConfigEditModel : GameModel
         {
             var list = (nbt.Nbt as NbtCompound)!;
 
-            var model1 = new NbtDialogAddModel(UseName)
+            var model1 = new NbtDialogAddModel(Window.WindowId)
             {
                 Type = 0,
                 DisplayType = true,
                 Title = LangUtils.Get("ConfigEditWindow.Text17"),
                 Title1 = LangUtils.Get("ConfigEditWindow.Text18"),
             };
-            var res = await DialogHost.Show(model1, UseName);
+            var res = await Window.ShowDialogWait(model1);
             if (res is not true)
             {
                 return;
@@ -546,14 +553,14 @@ public partial class GameConfigEditModel : GameModel
         }
 
         var list = (nbt.Parent.Nbt as NbtCompound)!;
-        var model1 = new NbtDialogAddModel(UseName)
+        var model1 = new NbtDialogAddModel(Window.WindowId)
         {
             Key = nbt.Key!,
             DisplayType = false,
             Title = LangUtils.Get("ConfigEditWindow.Text19"),
             Title1 = LangUtils.Get("ConfigEditWindow.Text18")
         };
-        var res = await DialogHost.Show(model1, UseName);
+        var res = await Window.ShowDialogWait(model1);
         if (res is not true)
         {
             return;
@@ -591,7 +598,7 @@ public partial class GameConfigEditModel : GameModel
         //根据类型设置值
         if (nbt.NbtType == NbtType.NbtByteArray)
         {
-            var model1 = new NbtDialogEditModel(Window, UseName)
+            var model1 = new NbtDialogEditModel(Window)
             {
                 DataType = GuiNames.NameTypeByte
             };
@@ -601,7 +608,7 @@ public partial class GameConfigEditModel : GameModel
                 model1.DataList.Add(new(a + 1, list.ValueByteArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, (byte)0, model1.HexEdit));
-            await DialogHost.Show(model1, UseName);
+            await Window.ShowDialogWait(model1);
 
             list.ValueByteArray.Clear();
             foreach (var item in model1.DataList)
@@ -616,7 +623,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (nbt.NbtType == NbtType.NbtIntArray)
         {
-            var model1 = new NbtDialogEditModel(Window, UseName)
+            var model1 = new NbtDialogEditModel(Window)
             {
                 DataType = GuiNames.NameTypeInt
             };
@@ -626,7 +633,7 @@ public partial class GameConfigEditModel : GameModel
                 model1.DataList.Add(new(a + 1, list.ValueIntArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, 0, model1.HexEdit));
-            await DialogHost.Show(model1, UseName);
+            await Window.ShowDialogWait(model1);
 
             list.ValueIntArray.Clear();
             foreach (var item in model1.DataList)
@@ -641,7 +648,7 @@ public partial class GameConfigEditModel : GameModel
         }
         else if (nbt.NbtType == NbtType.NbtLongArray)
         {
-            var model1 = new NbtDialogEditModel(Window, UseName)
+            var model1 = new NbtDialogEditModel(Window)
             {
                 DataType = GuiNames.NameTypeLong
             };
@@ -651,7 +658,7 @@ public partial class GameConfigEditModel : GameModel
                 model1.DataList.Add(new(a + 1, list.ValueLongArray[a], model1.HexEdit));
             }
             model1.DataList.Add(new(0, (long)0, model1.HexEdit));
-            await DialogHost.Show(model1, UseName);
+            await Window.ShowDialogWait(model1);
 
             list.ValueLongArray.Clear();
             foreach (var item in model1.DataList)
@@ -666,14 +673,14 @@ public partial class GameConfigEditModel : GameModel
         }
         else
         {
-            var model1 = new NbtDialogAddModel(UseName)
+            var model1 = new NbtDialogAddModel(Window.WindowId)
             {
                 Key = nbt.Nbt.Value,
                 DisplayType = false,
                 Title = LangUtils.Get("ConfigEditWindow.Text20"),
                 Title1 = LangUtils.Get("ConfigEditWindow.Text15"),
             };
-            var res = await DialogHost.Show(model1, UseName);
+            var res = await Window.ShowDialogWait(model1);
             if (res is not true)
             {
                 return;

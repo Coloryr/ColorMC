@@ -302,7 +302,7 @@ public partial class MainModel
             return;
         }
 
-        var model = new AddGroupModel(Window, null);
+        var model = new GroupEditModel(Window, null);
         var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
@@ -339,7 +339,7 @@ public partial class MainModel
     /// <param name="obj"></param>
     public async void EditGroup(GameItemModel obj)
     {
-        var model = new AddGroupModel(Window, obj.Obj.GroupName);
+        var model = new GroupEditModel(Window, obj.Obj.GroupName);
         var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {

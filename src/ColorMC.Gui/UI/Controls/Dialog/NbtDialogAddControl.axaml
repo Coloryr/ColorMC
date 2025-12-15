@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:vm="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     x:DataType="vm:NbtDialogAddModel"
     mc:Ignorable="d">
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -34,7 +36,7 @@
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
-                    Command="{Binding AddConfirm}"
+                    Command="{Binding Confirm}"
                     Content="{setting:Localize Button.Confirm}" />
                 <Button
                     Width="100"
@@ -42,7 +44,7 @@
                     Margin="10,0,10,0"
                     HorizontalAlignment="Center"
                     Classes="top"
-                    Command="{Binding AddCancel}"
+                    Command="{Binding Cancel}"
                     Content="{setting:Localize Button.Cancel}" />
             </StackPanel>
         </StackPanel>

@@ -20,7 +20,6 @@ public static class ConfigHelper
             GameArgs = arg.GameArgs,
             JvmEnv = arg.JvmEnv,
             GC = arg.GC,
-            JavaAgent = arg.JavaAgent,
             MaxMemory = arg.MaxMemory,
             MinMemory = arg.MinMemory,
             LaunchPre = arg.LaunchPre,
