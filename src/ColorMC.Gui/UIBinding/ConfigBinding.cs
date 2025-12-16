@@ -983,18 +983,6 @@ public static class ConfigBinding
     }
 
     /// <summary>
-    /// 设置主页面模式
-    /// </summary>
-    /// <param name="value"></param>
-    public static void SetWindowSimple(bool value)
-    {
-        GuiConfigUtils.Config.Simple = value;
-
-        GuiConfigUtils.Save();
-        WindowManager.MainWindow?.LoadDone();
-    }
-
-    /// <summary>
     /// 设置启动器功能
     /// </summary>
     /// <param name="value"></param>

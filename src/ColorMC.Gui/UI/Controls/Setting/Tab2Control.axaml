@@ -11,7 +11,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    d:DesignHeight="800"
+    d:DesignHeight="1500"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -20,18 +20,6 @@
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="0,0,10,15">
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Name="PhoneSetting" Margin="15">
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg22.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text43}" />
-                    </StackPanel>
-                </StackPanel>
-            </Border>
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15,15,5,15">
                     <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
@@ -42,7 +30,7 @@
                             Path="/Resource/Icon/Setting/svg1.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
+                    <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,10"
                             VerticalAlignment="Center"
@@ -57,19 +45,13 @@
                             OffContent="{setting:Localize SettingWindow.Tab2.Text9}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text9}" />
                         <ComboBox
-                            MinWidth="150"
+                            Width="230"
                             Margin="0,0,10,10"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding EnableWindowTran}"
                             ItemsSource="{Binding TranTypeList}"
                             SelectedIndex="{Binding WindowTranType}" />
-                    </WrapPanel>
-                    <ToggleSwitch
-                        Margin="0,0,10,10"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding Simple}"
-                        OffContent="{setting:Localize SettingWindow.Tab2.Text68}"
-                        OnContent="{setting:Localize SettingWindow.Tab2.Text68}" />
+                    </StackPanel>
                     <TextBlock
                         Margin="0,0,10,0"
                         Text="{setting:Localize SettingWindow.Tab2.Text6}"
@@ -87,22 +69,22 @@
                             Path="/Resource/Icon/Setting/svg2.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-5">
-                        <DockPanel MinWidth="180" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding LanguageList}"
-                                SelectedIndex="{Binding Language}" />
-                        </DockPanel>
+                    <Grid Margin="0,0,10,5" ColumnDefinitions="auto,*,auto,*">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text1}" />
+                        <ComboBox
+                            Grid.Column="1"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding LanguageList}"
+                            SelectedIndex="{Binding Language}" />
                         <ToggleSwitch
-                            Margin="0,0,10,10"
+                            Grid.Column="2"
+                            Margin="0,0,5,0"
                             IsChecked="{Binding IsCutsomFont}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text20}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text20}" />
                         <ComboBox
-                            MinWidth="180"
-                            Margin="0,0,10,10"
+                            Grid.Column="3"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding IsCutsomFont}"
                             ItemsSource="{Binding FontList}"
@@ -115,11 +97,8 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                    </WrapPanel>
-                    <TextBlock
-                        Margin="0,0,10,0"
-                        Text="{setting:Localize SettingWindow.Tab2.Text21}"
-                        TextWrapping="Wrap" />
+                    </Grid>
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text21}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -137,33 +116,32 @@
                         IsChecked="{Binding EnableAm}"
                         OffContent="{setting:Localize SettingWindow.Tab2.Text63}"
                         OnContent="{setting:Localize SettingWindow.Tab2.Text63}" />
-                    <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding EnableAm}">
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding AmTime, StringFormat='{}{0}'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="2000"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding AmTime}" />
-                        </DockPanel>
+                    <StackPanel IsEnabled="{Binding EnableAm}" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text41}" />
+                        <Slider
+                            Width="230"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="2000"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding AmTime}" />
+                        <TextBlock
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding AmTime, StringFormat='{}{0}'}" />
                         <ToggleSwitch
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             IsChecked="{Binding AmFade}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text42}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text42}" />
-                    </WrapPanel>
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -192,128 +170,138 @@
                         HorizontalAlignment="Right"
                         IsEnabled="{Binding EnableBG}">
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
-                            Margin="-2,-2,2,-2"
+                            Margin="-3"
                             Classes="top"
                             Command="{Binding DeletePic}"
                             Content="{setting:Localize Button.Delete}" />
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
-                            Margin="-2,-2,2,-2"
+                            Margin="7,-3,-3,-3"
                             Classes="top"
                             Command="{Binding OpenPic}"
                             Content="{setting:Localize Button.Select}"
                             DockPanel.Dock="Right" />
                         <Button
-                            Width="90"
+                            Width="100"
                             Height="35"
-                            Margin="-2,-2,-3,-2"
+                            Margin="7,-3,-3,-3"
                             Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize SettingWindow.Tab2.Text61}"
                             DockPanel.Dock="Right" />
                     </WrapPanel>
-                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableBG}">
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding PicEffect, StringFormat='{}{0}%'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding PicEffect}" />
-                        </DockPanel>
+                    <Grid
+                        Margin="0,0,10,10"
+                        ColumnDefinitions="auto,*,auto,auto,auto,*,auto,auto"
+                        IsEnabled="{Binding EnableBG}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
+                        <Slider
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding PicEffect}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding PicEffect, StringFormat='{}{0}%', FallbackValue=100%}" />
                         <Button
+                            Grid.Column="3"
                             Width="100"
                             Height="35"
-                            Margin="-3,-3,7,7"
+                            Margin="-3"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize Text.Set}" />
-                    </WrapPanel>
-                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableBG}">
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding PicTran, StringFormat='{}{0}%'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding PicTran}" />
-                        </DockPanel>
+                        <TextBlock
+                            Grid.Column="4"
+                            Margin="10,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab2.Text5}" />
+                        <Slider
+                            Grid.Column="5"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding PicTran}" />
+                        <TextBlock
+                            Grid.Column="6"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding PicTran, StringFormat='{}{0}%', FallbackValue=100%}" />
                         <Button
+                            Grid.Column="7"
                             Width="100"
                             Height="35"
-                            Margin="-3,-3,7,7"
+                            Margin="-3"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicTran}"
                             Content="{setting:Localize Text.Set}" />
-                    </WrapPanel>
-                    <WrapPanel IsEnabled="{Binding EnableBG}">
+                    </Grid>
+                    <Grid
+                        Margin="0,0,10,10"
+                        ColumnDefinitions="auto,*,auto,auto,*"
+                        IsEnabled="{Binding EnableBG}">
                         <ToggleSwitch
-                            Margin="0,0,10,10"
+                            Margin="0,0,10,0"
                             VerticalAlignment="Center"
                             IsChecked="{Binding EnablePicResize}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text24}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text24}" />
-                        <DockPanel MinWidth="200" Margin="0,0,10,10">
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding PicResize, StringFormat='{}{0}%'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsEnabled="{Binding EnablePicResize}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding PicResize}" />
-                        </DockPanel>
+                        <Slider
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsEnabled="{Binding EnablePicResize}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding PicResize}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding PicResize, StringFormat='{}{0}%', FallbackValue=100%}" />
                         <Button
+                            Grid.Column="3"
                             Width="100"
                             Height="35"
-                            Margin="-3,-3,7,7"
+                            Margin="-3"
                             VerticalAlignment="Center"
                             Classes="top"
                             Command="{Binding SetPicSize}"
                             Content="{setting:Localize Text.Set}"
                             IsEnabled="{Binding EnablePicResize}" />
-                    </WrapPanel>
+                    </Grid>
                     <TextBlock Text="{setting:Localize SettingWindow.Tab2.Text18}" />
                 </StackPanel>
             </Border>
@@ -329,26 +317,32 @@
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab2.Text26}"
-                            GroupName="Group1"
-                            IsChecked="{Binding IsAutoColor}" />
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab2.Text27}"
-                            GroupName="Group1"
-                            IsChecked="{Binding IsLightColor}" />
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            VerticalAlignment="Center"
-                            Content="{setting:Localize SettingWindow.Tab2.Text28}"
-                            GroupName="Group1"
-                            IsChecked="{Binding IsDarkColor}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <Border
+                            Margin="0,0,10,0"
+                            BorderBrush="{setting:Theme AllBorder}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton
+                                    VerticalAlignment="Center"
+                                    Classes="t1"
+                                    Content="{setting:Localize SettingWindow.Tab2.Text26}"
+                                    GroupName="Group1"
+                                    IsChecked="{Binding IsAutoColor, FallbackValue=true}" />
+                                <RadioButton
+                                    VerticalAlignment="Center"
+                                    Classes="t1"
+                                    Content="{setting:Localize SettingWindow.Tab2.Text27}"
+                                    GroupName="Group1"
+                                    IsChecked="{Binding IsLightColor}" />
+                                <RadioButton
+                                    VerticalAlignment="Center"
+                                    Classes="t1"
+                                    Content="{setting:Localize SettingWindow.Tab2.Text28}"
+                                    GroupName="Group1"
+                                    IsChecked="{Binding IsDarkColor}" />
+                            </StackPanel>
+                        </Border>
                         <TextBlock Margin="5,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text8}" />
                         <ColorPicker Margin="0,0,5,0" Color="{Binding MainColor}" />
                         <Button
@@ -360,69 +354,66 @@
                             Command="{Binding ColorReset}"
                             Content="{setting:Localize SettingWindow.Tab2.Text12}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text124}" />
+                        <ToggleSwitch
+                            Margin="20,0,0,0"
+                            IsChecked="{Binding EnableRGB}"
+                            OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
+                            OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     </StackPanel>
-                    <!--  RGB模式  -->
-                    <ToggleSwitch
-                        IsChecked="{Binding EnableRGB}"
-                        OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
-                        OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
-                    <WrapPanel Margin="0,0,0,0" IsEnabled="{Binding EnableRGB}">
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding RgbV1, StringFormat='{}{0}%'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding RgbV1}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text15}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding RgbV2, StringFormat='{}{0}%'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="100"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding RgbV2}" />
-                        </DockPanel>
-                    </WrapPanel>
-                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab2.Text62}" />
-                    <WrapPanel Margin="0,0,0,-5">
-                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text11}" />
-                            <ColorPicker Color="{Binding WarnColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text12}" />
-                            <ColorPicker Color="{Binding ErrorColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,5" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text13}" />
-                            <ColorPicker Color="{Binding DebugColor}" />
-                        </StackPanel>
-                    </WrapPanel>
+                    <Grid ColumnDefinitions="auto,*,auto,auto,*,auto,*" IsEnabled="{Binding EnableRGB}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
+                        <Slider
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding RgbV1}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding RgbV1, StringFormat='{}{0}%'}" />
+                        <TextBlock
+                            Grid.Column="3"
+                            Margin="0,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab2.Text15}" />
+                        <Slider
+                            Grid.Column="4"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="100"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding RgbV2}" />
+                        <TextBlock
+                            Grid.Column="5"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding RgbV2, StringFormat='{}{0}%'}" />
+                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize SettingWindow.Tab2.Text62}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text11}" />
+                        <ColorPicker Margin="0,0,10,0" Color="{Binding WarnColor}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text12}" />
+                        <ColorPicker Margin="0,0,10,0" Color="{Binding ErrorColor}" />
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameLogWindow.Text13}" />
+                        <ColorPicker Color="{Binding DebugColor}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -436,7 +427,7 @@
                             Path="{Binding IconHead}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text54}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,10,0">
+                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                         <RadioButton
                             Margin="0,0,20,0"
                             Content="{setting:Localize SettingWindow.Tab2.Text55}"
@@ -456,7 +447,7 @@
                             Content="{setting:Localize SettingWindow.Tab2.Text57}"
                             GroupName="Group2"
                             IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}" />
-                    </WrapPanel>
+                    </StackPanel>
                     <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}">
                         <DockPanel MinWidth="260" Margin="0,0,10,10">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />

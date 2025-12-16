@@ -22,12 +22,12 @@
                     <Button
                         Width="120"
                         Height="35"
-                        Margin="-2,-2,3,-2"
+                        Margin="-3"
                         Classes="top"
                         Command="{Binding GetCloud}"
                         Content="{setting:Localize Text.RefashList}"
                         DockPanel.Dock="Right" />
-                    <TextBlock Text="{setting:Localize Text.GameVersion}" />
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.GameVersion}" />
                     <ComboBox
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"

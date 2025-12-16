@@ -22,12 +22,7 @@ public record GameLogSettingObj
 
 public record GameModSettingObj
 {
-    public bool EnableModId { get; set; }
-    public bool EnableName { get; set; }
-    public bool EnableVersion { get; set; }
-    public bool EnableLoader { get; set; }
-    public bool EnableSide { get; set; }
-    public bool EnableText { get; set; }
+
 }
 
 public record GameGuiSettingObj

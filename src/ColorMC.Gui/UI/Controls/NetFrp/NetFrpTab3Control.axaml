@@ -12,19 +12,15 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <Decorator Margin="0,0,10,15">
-        <Border Margin="10,5,10,3" Classes="t2">
-            <ae:TextEditor
-                Margin="5"
-                Document="{Binding Text}"
-                FontSize="14"
-                FontWeight="Normal"
-                Foreground="{setting:Theme FontColor}"
-                HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                ShowLineNumbers="True"
-                VerticalScrollBarVisibility="Visible"
-                WordWrap="true" />
-        </Border>
-    </Decorator>
+    <ae:TextEditor
+        Margin="5,5,15,20"
+        Document="{Binding Text}"
+        FontSize="14"
+        FontWeight="Normal"
+        Foreground="{setting:Theme FontColor}"
+        HorizontalScrollBarVisibility="Auto"
+        IsReadOnly="True"
+        ShowLineNumbers="True"
+        VerticalScrollBarVisibility="Visible"
+        WordWrap="true" />
 </UserControl>

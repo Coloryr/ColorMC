@@ -8,125 +8,126 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.GameLog"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    d:DesignHeight="450"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     x:DataType="model:GameLogModel"
     mc:Ignorable="d">
     <DockPanel Margin="10">
         <Border
-            Margin="10,0,10,10"
+            Margin="10,10,10,5"
+            Padding="15"
             Classes="t2"
             DockPanel.Dock="Top">
-            <WrapPanel Margin="15,15,15,5">
-                <WrapPanel Margin="0,0,0,5" HorizontalAlignment="Left">
-                    <ToggleSwitch
-                        Margin="0,0,10,0"
-                        VerticalAlignment="Center"
-                        IsChecked="{Binding IsWordWrap}"
-                        OffContent="{setting:Localize GameLogWindow.Text1}"
-                        OnContent="{setting:Localize GameLogWindow.Text1}" />
-                    <ToggleSwitch
-                        Margin="0,0,10,0"
-                        IsChecked="{Binding IsAuto}"
-                        OffContent="{setting:Localize GameLogWindow.Text2}"
-                        OnContent="{setting:Localize GameLogWindow.Text2}" />
+            <StackPanel>
+                <!--  第一行：主要操作区 (文件选择 + 核心按钮)  -->
+                <Grid ColumnDefinitions="*, Auto, Auto, Auto, Auto">
                     <ComboBox
-                        MinWidth="200"
+                        Grid.Column="0"
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding FileList}"
-                        SelectedItem="{Binding File}" />
-                </WrapPanel>
-                <WrapPanel Margin="0,0,0,-5">
+                        SelectedItem="{Binding File}"
+                        ToolTip.Tip="{setting:Localize GameLogWindow.Text17}" />
                     <Button
+                        Grid.Column="1"
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,3,7"
-                        VerticalAlignment="Center"
-                        Classes="top"
-                        Command="{Binding Launch}"
-                        Content="{setting:Localize Text.TestLaunch}"
-                        IsEnabled="{Binding !IsGameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-3,3,7"
-                        VerticalAlignment="Center"
-                        Classes="top"
-                        Command="{Binding Stop}"
-                        Content="{setting:Localize GameLogWindow.Text3}"
-                        IsEnabled="{Binding IsGameRun}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-3,3,7"
-                        VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding LoadFileList}"
-                        Content="{setting:Localize Text.RefashList}" />
+                        Content="{setting:Localize Text.RefashList}"
+                        ToolTip.Tip="刷新文件列表" />
                     <Button
+                        Grid.Column="2"
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,3,7"
-                        VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Search}"
                         Content="{setting:Localize Text.Search}" />
                     <Button
+                        Grid.Column="3"
                         Width="100"
                         Height="35"
-                        Margin="-2,-3,3,7"
-                        VerticalAlignment="Center"
                         Classes="top"
                         Command="{Binding Push}"
                         Content="{setting:Localize GameLogWindow.Text8}" />
-                </WrapPanel>
-                <WrapPanel Margin="0,0,0,5">
-                    <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text9}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameLogWindow.Text10}"
-                        IsChecked="{Binding EnableInfo}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameLogWindow.Text11}"
-                        IsChecked="{Binding EnableWarn}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameLogWindow.Text12}"
-                        IsChecked="{Binding EnableError}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameLogWindow.Text13}"
-                        IsChecked="{Binding EnableDebug}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameLogWindow.Text14}"
-                        IsChecked="{Binding EnableNone}" />
-                </WrapPanel>
-                <WrapPanel>
-                    <DockPanel MinWidth="230" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text15}" />
+                    <Button
+                        Grid.Column="4"
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding Launch}"
+                        Content="{setting:Localize Text.TestLaunch}"
+                        IsEnabled="{Binding !IsGameRun}"
+                        IsVisible="{Binding !IsGameRun}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
+                    <Button
+                        Grid.Column="4"
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding Stop}"
+                        Content="{setting:Localize GameLogWindow.Text3}"
+                        IsEnabled="{Binding IsGameRun}"
+                        IsVisible="{Binding IsGameRun}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text44}" />
+                </Grid>
+                <Separator Height="1" />
+                <WrapPanel VerticalAlignment="Center" Orientation="Horizontal">
+                    <StackPanel
+                        Margin="0,0,15,0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="10">
+                        <ToggleSwitch
+                            IsChecked="{Binding IsWordWrap}"
+                            OffContent="{setting:Localize GameLogWindow.Text1}"
+                            OnContent="{setting:Localize GameLogWindow.Text1}" />
+                        <ToggleSwitch
+                            IsChecked="{Binding IsAuto}"
+                            OffContent="{setting:Localize GameLogWindow.Text2}"
+                            OnContent="{setting:Localize GameLogWindow.Text2}" />
+                    </StackPanel>
+                    <StackPanel
+                        Margin="0,0,15,0"
+                        VerticalAlignment="Center"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <TextBlock VerticalAlignment="Center" Text="{setting:Localize GameLogWindow.Text9}" />
+                        <CheckBox Content="{setting:Localize GameLogWindow.Text10}" IsChecked="{Binding EnableInfo}" />
+                        <CheckBox Content="{setting:Localize GameLogWindow.Text11}" IsChecked="{Binding EnableWarn}" />
+                        <CheckBox Content="{setting:Localize GameLogWindow.Text12}" IsChecked="{Binding EnableError}" />
+                        <CheckBox Content="{setting:Localize GameLogWindow.Text13}" IsChecked="{Binding EnableDebug}" />
+                        <CheckBox Content="{setting:Localize GameLogWindow.Text14}" IsChecked="{Binding EnableNone}" />
+                    </StackPanel>
+                    <!--  高级过滤 (线程/分类)  -->
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="{setting:Localize GameLogWindow.Text15}" />
                         <ComboBox
-                            HorizontalAlignment="Stretch"
+                            Width="230"
+                            Margin="0,0,10,0"
                             ItemsSource="{Binding Threads}"
                             SelectedItem="{Binding SelectThread}" />
-                    </DockPanel>
-                    <DockPanel MinWidth="230" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,10,0" Text="{setting:Localize GameLogWindow.Text16}" />
+                        <TextBlock
+                            Margin="0,0,5,0"
+                            VerticalAlignment="Center"
+                            Text="{setting:Localize GameLogWindow.Text16}" />
                         <ComboBox
-                            HorizontalAlignment="Stretch"
+                            Width="230"
                             ItemsSource="{Binding Categorys}"
                             SelectedItem="{Binding SelectCategory}" />
-                    </DockPanel>
+                    </StackPanel>
                 </WrapPanel>
-            </WrapPanel>
+            </StackPanel>
         </Border>
+
+        <!--  日志内容显示区  -->
         <ae:TextEditor
             Name="TextEditor1"
-            Margin="5,0,5,10"
+            Grid.Row="1"
+            Margin="0,10,0,10"
             Document="{Binding Text}"
             FontSize="14"
             FontWeight="Normal"

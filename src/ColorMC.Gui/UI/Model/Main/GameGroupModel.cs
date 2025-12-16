@@ -81,10 +81,10 @@ public partial class GameGroupModel : ControlModel
                     res = true;
                 }
             }
-            if (GuiConfigUtils.Config.Simple)
-            {
-                res = false;
-            }
+            //if (GuiConfigUtils.Config.Simple)
+            //{
+            //    res = false;
+            //}
 
             var list1 = new List<GameItemModel>();
 

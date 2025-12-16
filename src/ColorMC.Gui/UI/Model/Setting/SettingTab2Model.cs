@@ -130,11 +130,6 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _cardOnline;
-    /// <summary>
-    /// 简易主界面
-    /// </summary>
-    [ObservableProperty]
-    private bool _simple;
 
     /// <summary>
     /// 头像旋转
@@ -220,17 +215,6 @@ public partial class SettingModel
 
             return "/Resource/Icon/Setting/svg27.svg";
         }
-    }
-
-    //配置修改
-    partial void OnSimpleChanged(bool value)
-    {
-        if (_load)
-        {
-            return;
-        }
-
-        ConfigBinding.SetWindowSimple(value);
     }
 
     partial void OnCardLastChanged(bool value)
@@ -537,7 +521,6 @@ public partial class SettingModel
             RgbV2 = con.RGBV;
             PicResize = con.BackLimitValue;
             WindowTranType = con.WindowTranType;
-            Simple = con.Simple;
 
             FontItem = FontList.FirstOrDefault(a => a.FontName == con.FontName);
 

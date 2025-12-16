@@ -85,10 +85,10 @@ public partial class GameEditControl : MenuControl
                     model.LoadMods();
                     break;
                 case 3:
-                    await model.LoadWorld();
+                    model.LoadWorld();
                     break;
                 case 4:
-                    await model.LoadResource();
+                    model.LoadResource();
                     break;
                 case 5:
                     model.LoadScreenshot();
@@ -146,10 +146,10 @@ public partial class GameEditControl : MenuControl
                 model.LoadMod();
                 return _tab4 ??= new();
             case 3:
-                _ = model.LoadWorld();
+                model.LoadWorld();
                 return _tab5 ??= new();
             case 4:
-                _ = model.LoadResource();
+                model.LoadResource();
                 return _tab8 ??= new();
             case 5:
                 model.LoadScreenshot();

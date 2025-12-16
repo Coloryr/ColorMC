@@ -55,41 +55,6 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private ModFilterType _modFilter;
-    /// <summary>
-    /// 是否显示modid列
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModId = true;
-    /// <summary>
-    /// 是否显示模组名列
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModName = true;
-    /// <summary>
-    /// 是否显示模组版本列
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModVersion = true;
-    /// <summary>
-    /// 是否显示模组加载器列
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModLoader = true;
-    /// <summary>
-    /// 是否显示模组支持侧
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModSide = true;
-    /// <summary>
-    /// 是否显示模组备注
-    /// </summary>
-    [ObservableProperty]
-    private bool _displayModText = true;
-    /// <summary>
-    /// 是否显示模组筛选
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableModText = true;
 
     /// <summary>
     /// 是否在模组标记模式中
@@ -106,50 +71,8 @@ public partial class GameEditModel
         LoadModDisplay();
     }
 
-    partial void OnDisplayModTextChanged(bool value)
-    {
-        _setting.Mod.EnableText = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
-    partial void OnDisplayModIdChanged(bool value)
-    {
-        _setting.Mod.EnableModId = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
-    partial void OnDisplayModNameChanged(bool value)
-    {
-        _setting.Mod.EnableName = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
-    partial void OnDisplayModVersionChanged(bool value)
-    {
-        _setting.Mod.EnableVersion = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
-    partial void OnDisplayModLoaderChanged(bool value)
-    {
-        _setting.Mod.EnableLoader = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
-    partial void OnDisplayModSideChanged(bool value)
-    {
-        _setting.Mod.EnableSide = value;
-        GameManager.WriteConfig(_obj, _setting);
-    }
-
     partial void OnModFilterChanged(ModFilterType value)
     {
-        EnableModText = value switch
-        {
-            <= ModFilterType.Modid => true,
-            _ => false
-        };
-
         LoadModDisplay();
     }
 

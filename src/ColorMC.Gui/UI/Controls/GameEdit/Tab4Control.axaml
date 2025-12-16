@@ -15,62 +15,36 @@
     <Panel Margin="0,0,10,15">
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel>
-                <panel:WrapPanelWithStretch
-                    Margin="15,15,5,-10"
-                    RightMax="True"
+                <Grid
+                    Margin="15,15,10,0"
+                    ColumnDefinitions="auto,0.5*,*,auto"
                     DockPanel.Dock="Top">
-                    <DockPanel MinWidth="180" Margin="0,0,10,10">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
-                        <ComboBox
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding ModFilterList}"
-                            SelectedIndex="{Binding ModFilter}" />
-                    </DockPanel>
-                    <DockPanel MinWidth="230" Margin="0,0,10,10">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-3"
-                            Classes="top"
-                            Command="{Binding LoadMod}"
-                            Content="{setting:Localize Button.Refash}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text55}"
-                             />
-                        <TextBox
-                            Margin="0,0,5,0"
-                            IsEnabled="{Binding EnableModText}"
-                            Text="{Binding ModText}"
-                            Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
-                    </DockPanel>
-                </panel:WrapPanelWithStretch>
-                <WrapPanel Margin="10,0,10,0" DockPanel.Dock="Top">
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text15}"
-                        IsChecked="{Binding DisplayModText}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="modid"
-                        IsChecked="{Binding DisplayModId}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize Text.Name}"
-                        IsChecked="{Binding DisplayModName}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize Text.Version}"
-                        IsChecked="{Binding DisplayModVersion}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text11}"
-                        IsChecked="{Binding DisplayModLoader}" />
-                    <CheckBox
-                        Margin="0,0,10,0"
-                        Content="{setting:Localize GameEditWindow.Tab4.Text14}"
-                        IsChecked="{Binding DisplayModSide}" />
-                </WrapPanel>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="0,0,5,0"
+                        Text="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                    <ComboBox
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding ModFilterList}"
+                        SelectedIndex="{Binding ModFilter}" />
+                    <TextBox
+                        Grid.Column="2"
+                        Margin="10,0,10,0"
+                        Text="{Binding ModText}"
+                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                    <Button
+                        Grid.Column="3"
+                        Width="100"
+                        Height="35"
+                        Margin="-3"
+                        Classes="top"
+                        Command="{Binding LoadMod}"
+                        Content="{setting:Localize Button.Refash}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text55}" />
+                </Grid>
                 <DataGrid
                     Name="DataGrid1"
                     Margin="5"
@@ -85,35 +59,27 @@
                             Binding="{Binding Enable}"
                             Header="{setting:Localize Text.Enable}"
                             IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Text}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text15}"
-                            IsVisible="{Binding DisplayModText}" />
+                        <DataGridTextColumn Binding="{Binding Text}" Header="{setting:Localize GameEditWindow.Tab4.Text15}" />
                         <DataGridTextColumn
                             Binding="{Binding Modid}"
                             Header="modid"
-                            IsReadOnly="True"
-                            IsVisible="{Binding DisplayModId}" />
+                            IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Name}"
                             Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True"
-                            IsVisible="{Binding DisplayModName}" />
+                            IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Version}"
                             Header="{setting:Localize Text.Version}"
-                            IsReadOnly="True"
-                            IsVisible="{Binding DisplayModVersion}" />
+                            IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Loader}"
                             Header="{setting:Localize GameEditWindow.Tab4.Text11}"
-                            IsReadOnly="True"
-                            IsVisible="{Binding DisplayModLoader}" />
+                            IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Side}"
                             Header="{setting:Localize GameEditWindow.Tab4.Text14}"
-                            IsReadOnly="True"
-                            IsVisible="{Binding DisplayModSide}" />
+                            IsReadOnly="True" />
                         <DataGridTextColumn
                             Binding="{Binding Source}"
                             Header="{setting:Localize Text.DownloadSource}"
@@ -142,7 +108,6 @@
                 </DataGrid>
             </DockPanel>
         </Border>
-
         <Panel
             Name="Grid2"
             Background="{setting:Theme TopGridColor}"

@@ -439,10 +439,6 @@ public record GuiConfigObj
     /// </summary>
     public bool CheckUpdate { get; set; }
     /// <summary>
-    /// 简易主界面
-    /// </summary>
-    public bool Simple { get; set; }
-    /// <summary>
     /// 启动器功能
     /// </summary>
     public LauncherSetting LauncherFunction { get; set; }
