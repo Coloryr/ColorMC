@@ -22,4 +22,48 @@
             <Setter Property="Stroke" Value="{setting:Theme MainColor}" />
         </Style>
     </Style>
+
+    <Style Selector="RadioButton.t1">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="RadioButton">
+                <ContentPresenter
+                    Name="PART_ContentPresenter"
+                    Margin="{TemplateBinding Margin}"
+                    Padding="{TemplateBinding Padding}"
+                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    CornerRadius="{TemplateBinding CornerRadius}"
+                    UseLayoutRounding="False" />
+            </ControlTemplate>
+        </Setter>
+        <Style Selector="^ /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="RecognizesAccessKey" Value="True" />
+        </Style>
+        <Style Selector="^:unchecked">
+            <Setter Property="Background" Value="Transparent" />
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#55FFFFFF" />
+            </Style>
+            <Style Selector="^:disabled">
+                <Setter Property="Foreground" Value="#FF222222" />
+            </Style>
+        </Style>
+        <Style Selector="^:checked">
+            <Setter Property="Background" Value="{setting:Theme MainColor}" />
+            <Setter Property="Foreground" Value="{setting:Theme ButtonBG}" />
+            <Style Selector="^:disabled">
+                <Setter Property="Foreground" Value="#FF222222" />
+            </Style>
+        </Style>
+    </Style>
 </Styles>

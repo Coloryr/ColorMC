@@ -263,7 +263,7 @@ public static class GameManager
     //创建基础配置
     private static GameGuiSettingObj Make()
     {
-        return new()
+        return new GameGuiSettingObj
         {
             Log = MakeLog(),
             Mod = MakeMod(),
@@ -273,7 +273,7 @@ public static class GameManager
 
     private static GameLogSettingObj MakeLog()
     {
-        return new()
+        return new GameLogSettingObj
         {
             Auto = true,
             EnableDebug = true,
@@ -287,13 +287,9 @@ public static class GameManager
 
     private static GameModSettingObj MakeMod()
     {
-        return new()
+        return new GameModSettingObj
         {
-            EnableModId = true,
-            EnableLoader = true,
-            EnableSide = true,
-            EnableVersion = true,
-            EnableName = true
+            
         };
     }
 

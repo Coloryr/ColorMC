@@ -203,7 +203,7 @@ public partial class MainModel : ControlModel, IMutTop
     public void LoadDone()
     {
         var config = GuiConfigUtils.Config;
-        IsSimple = config.Simple;
+        //IsSimple = config.Simple;
         if (config?.CheckUpdate == true)
         {
             CheckUpdate();

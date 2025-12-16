@@ -15,7 +15,8 @@
         <view:ServerMotdControl
             Margin="10,5,10,3"
             DockPanel.Dock="Top"
-            IPPort="{Binding IPPort}" />
+            IPPort="{Binding IPPort}"
+            IsVisible="{Binding !ServerEmptyDisplay}" />
         <Panel Margin="10,5,10,3">
             <DataGrid
                 Name="DataGrid1"

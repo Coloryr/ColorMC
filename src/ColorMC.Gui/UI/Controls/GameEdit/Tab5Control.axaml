@@ -18,48 +18,35 @@
             <DockPanel Margin="0,0,10,15">
                 <Border
                     Margin="10,5,10,3"
+                    Padding="15"
                     Classes="t2"
                     DockPanel.Dock="Top">
-                    <DockPanel Margin="15">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-3,-3,-3"
-                            Classes="top"
-                            Command="{Binding LoadWorld}"
-                            Content="{setting:Localize Button.Refash}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text102}"
-                             />
-                        <TextBox
-                            Margin="0,0,10,0"
-                            Text="{Binding WorldText}"
-                            Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
-                    </DockPanel>
+                    <TextBox
+                        Margin="0,0,10,0"
+                        Text="{Binding WorldText}"
+                        Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
                 </Border>
-                <Panel>
-                    <ItemsControl
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        ItemsSource="{Binding WorldList}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <item:WorldControl DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                    <Border
-                        Margin="10,5,10,3"
-                        Classes="t1"
-                        IsVisible="{Binding WorldEmptyDisplay}">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            FontSize="30"
-                            Text="{setting:Localize GameEditWindow.Tab5.Text5}" />
-                    </Border>
-                </Panel>
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding WorldList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <item:WorldControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </DockPanel>
         </ScrollViewer>
+        <Border
+            Margin="10,5,10,3"
+            Classes="t1"
+            IsVisible="{Binding WorldEmptyDisplay, FallbackValue=false}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize GameEditWindow.Tab5.Text5}" />
+        </Border>
         <Panel
             Name="Grid2"
             Margin="0,0,10,15"

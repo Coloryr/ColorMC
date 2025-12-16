@@ -58,8 +58,7 @@ public partial class GameEditModel
     /// 加载存档列表
     /// </summary>
     /// <returns></returns>
-    [RelayCommand]
-    public async Task LoadWorld()
+    public async void LoadWorld()
     {
         var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab5.Text10"));
         _worldItems.Clear();
@@ -138,7 +137,7 @@ public partial class GameEditModel
         else
         {
             Window.Notify(LangUtils.Get("GameEditWindow.Tab5.Text16"));
-            await LoadWorld();
+            LoadWorld();
         }
     }
 
@@ -196,7 +195,7 @@ public partial class GameEditModel
         }
 
         Window.Notify(LangUtils.Get("GameEditWindow.Tab4.Text20"));
-        await LoadWorld();
+        LoadWorld();
     }
 
     /// <summary>
@@ -226,7 +225,7 @@ public partial class GameEditModel
         var res = await GameBinding.AddFileAsync(_obj, data, FileType.Save);
         if (res)
         {
-            await LoadWorld();
+            LoadWorld();
         }
     }
 
@@ -236,10 +235,7 @@ public partial class GameEditModel
     /// <param name="item"></param>
     public void SetSelectWorld(WorldModel item)
     {
-        if (_selectWorld != null)
-        {
-            _selectWorld.IsSelect = false;
-        }
+        _selectWorld?.IsSelect = false;
         _selectWorld = item;
         _selectWorld.IsSelect = true;
     }
@@ -259,7 +255,7 @@ public partial class GameEditModel
 
         await obj.World.DeleteAsync();
         Window.Notify(LangUtils.Get("Text.DeleteDone"));
-        await LoadWorld();
+        LoadWorld();
     }
 
     /// <summary>

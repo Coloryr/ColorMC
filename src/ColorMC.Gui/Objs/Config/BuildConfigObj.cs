@@ -24,7 +24,6 @@ public record UiColorConfigObj
     public int RGBS { get; set; }
     public int RGBV { get; set; }
     public bool WindowMode { get; set; }
-    public bool Simple { get; set; }
     public StyleSetting Style { get; set; }
     public LogColorSetting LogColor { get; set; }
 }

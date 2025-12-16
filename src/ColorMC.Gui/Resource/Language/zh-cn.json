@@ -484,7 +484,7 @@
 	"GameEditWindow.Tab2.Text32": "附加的classpath",
 	"GameEditWindow.Tab2.Text33": "自定义执行",
 	"GameEditWindow.Tab2.Text34": "附加的环境变量",
-	"GameEditWindow.Tab2.Text35": "注意：附加环境变量会用 \\n(换行符) 进行分割",
+	"GameEditWindow.Tab2.Text35": "注意：所有附加内容会用 \\n(换行符) 进行分割",
 	"GameEditWindow.Tab2.Text36": "删除原有的Jvm参数",
 	"GameEditWindow.Tab2.Text37": "删除原有的游戏参数",
 	"GameEditWindow.Tab2.Text38": "多个标题可以用 \\n(换行符) 进行分割",

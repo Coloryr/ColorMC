@@ -54,8 +54,7 @@ public partial class GameEditModel
     /// 加载资源列表
     /// </summary>
     /// <returns></returns>
-    [RelayCommand]
-    public async Task LoadResource()
+    public async void LoadResource()
     {
         var dialog = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab8.Text5"));
         _resourceItems.Clear();
@@ -118,7 +117,7 @@ public partial class GameEditModel
         }
 
         Window.Notify(LangUtils.Get("GameEditWindow.Tab4.Text20"));
-        await LoadResource();
+        LoadResource();
     }
 
     /// <summary>
@@ -144,7 +143,7 @@ public partial class GameEditModel
 
         await obj.Delete();
         Window.Notify(LangUtils.Get("Text.DeleteDone"));
-        await LoadResource();
+        LoadResource();
     }
 
     /// <summary>
@@ -156,7 +155,7 @@ public partial class GameEditModel
         var res = await GameBinding.AddFileAsync(_obj, data, FileType.Resourcepack);
         if (res)
         {
-            await LoadResource();
+            LoadResource();
         }
     }
 
@@ -166,10 +165,7 @@ public partial class GameEditModel
     /// <param name="item">资源包</param>
     public void SetSelectResource(ResourcePackModel item)
     {
-        if (_lastResource != null)
-        {
-            _lastResource.IsSelect = false;
-        }
+        _lastResource?.IsSelect = false;
         _lastResource = item;
         _lastResource.IsSelect = true;
     }

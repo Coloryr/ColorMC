@@ -415,7 +415,6 @@ public static class BaseBinding
             conf.RGBS = config.RGBS;
             conf.RGBV = config.RGBV;
             conf.WindowMode = config.WindowMode;
-            conf.Simple = config.Simple;
             conf.Style = config.Style;
             conf.LogColor = config.LogColor;
         }
@@ -559,7 +558,6 @@ public static class BaseBinding
                     RGBS = conf.RGBS,
                     RGBV = conf.RGBV,
                     WindowMode = conf.WindowMode,
-                    Simple = conf.Simple,
                     Style = conf.Style,
                     LogColor = conf.LogColor
                 }, JsonGuiType.UiColorConfigObj));

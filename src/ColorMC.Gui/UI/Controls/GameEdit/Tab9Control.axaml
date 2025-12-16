@@ -11,8 +11,8 @@
     d:DesignWidth="800"
     x:DataType="model:GameEditModel"
     mc:Ignorable="d">
-    <ScrollViewer>
-        <Panel Margin="0,0,10,15">
+    <Panel>
+        <ScrollViewer Margin="0,0,10,15">
             <ItemsControl ItemsSource="{Binding ScreenshotList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -25,15 +25,16 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t1"
-                IsVisible="{Binding ScreenshotEmptyDisplay}">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="30"
-                    Text="{setting:Localize GameEditWindow.Tab9.Text2}" />
-            </Border>
-        </Panel>
-    </ScrollViewer>
+
+        </ScrollViewer>
+        <Border
+            Margin="10,5,10,3"
+            Classes="t1"
+            IsVisible="{Binding ScreenshotEmptyDisplay}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize GameEditWindow.Tab9.Text2}" />
+        </Border>
+    </Panel>
 </UserControl>

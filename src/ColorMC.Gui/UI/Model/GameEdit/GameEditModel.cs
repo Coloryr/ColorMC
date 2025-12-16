@@ -33,12 +33,6 @@ public partial class GameEditModel : MenuModel
 
         //加载设置
         _setting = GameManager.ReadConfig(_obj);
-        _displayModText = _setting.Mod.EnableText;
-        _displayModId = _setting.Mod.EnableModId;
-        _displayModName = _setting.Mod.EnableName;
-        _displayModVersion = _setting.Mod.EnableVersion;
-        _displayModLoader = _setting.Mod.EnableLoader;
-        _displayModSide = _setting.Mod.EnableSide;
 
         _titleText = string.Format(LangUtils.Get("GameEditWindow.Tab2.Text13"), _obj.Name);
 
@@ -161,6 +155,11 @@ public partial class GameEditModel : MenuModel
                 [
                     new SubMenuItemModel()
                     {
+                        Name = LangUtils.Get("Button.Refash"),
+                        Func = LoadWorld
+                    },
+                    new SubMenuItemModel()
+                    {
                         Name = LangUtils.Get("GameEditWindow.Tab5.Text4"),
                         Func = ImportWorld
                     },
@@ -197,6 +196,11 @@ public partial class GameEditModel : MenuModel
                 Text = LangUtils.Get("Type.FileType.Resourcepack"),
                 SubMenu =
                 [
+                    new SubMenuItemModel()
+                    {
+                        Name = LangUtils.Get("Button.Refash"),
+                        Func = LoadResource
+                    },
                     new SubMenuItemModel()
                     {
                         Name = LangUtils.Get("GameEditWindow.Tab8.Text1"),
