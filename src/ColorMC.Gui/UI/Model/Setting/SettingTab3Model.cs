@@ -21,7 +21,10 @@ namespace ColorMC.Gui.UI.Model.Setting;
 /// </summary>
 public partial class SettingModel
 {
-    public const string NameNetSetting = "NetworkSetting";
+    /// <summary>
+    /// Dns列表
+    /// </summary>
+    public ObservableCollection<DnsItemModel> Dns { get; init; } = [];
 
     /// <summary>
     /// 是否在加载中
@@ -33,15 +36,6 @@ public partial class SettingModel
     /// </summary>
     public string[] SourceList { get; init; } = LangUtils.GetDownloadSources();
     /// <summary>
-    /// Dns类型列表
-    /// </summary>
-    public string[] DnsList { get; init; } = LangUtils.GetDns();
-    /// <summary>
-    /// Dns列表
-    /// </summary>
-    public ObservableCollection<DnsItemModel> Dns { get; init; } = [];
-
-    /// <summary>
     /// 下载源
     /// </summary>
     [ObservableProperty]
@@ -51,11 +45,6 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private int? _thread = 5;
-    /// <summary>
-    /// Dns类型
-    /// </summary>
-    [ObservableProperty]
-    private DnsType _dnsType;
     /// <summary>
     /// 选中的Dns项目
     /// </summary>
@@ -197,11 +186,6 @@ public partial class SettingModel
         SetDns();
     }
 
-    partial void OnDnsTypeChanged(DnsType value)
-    {
-        SetDns();
-    }
-
     partial void OnSourceChanged(SourceLocal value)
     {
         if (_httpLoad)
@@ -302,49 +286,32 @@ public partial class SettingModel
             return;
         }
 
-        var model = new AddDnsModel();
-        var res = await DialogHost.Show(model, NameNetSetting);
+        var model = new InputModel(Window.WindowId)
+        { 
+            Watermark1 = LangUtils.Get("SettingWindow.Tab3.Text30")
+        };
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;
         }
 
-        var url = model.Url;
+        var url = model.Text1;
 
-        if (model.IsDns)
+        if (!url.StartsWith("https://"))
         {
-            if (!IPAddress.TryParse(url, out _))
-            {
-                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text40"));
-                return;
-            }
-
-            if (Dns.Any(item => item.Dns == DnsType.DnsOver && item.Url == url))
-            {
-                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text41"));
-                return;
-            }
-
-            Dns.Add(new(url, DnsType.DnsOver));
-            ConfigBinding.AddDns(url, DnsType.DnsOver);
+            Window.Show(LangUtils.Get("SettingWindow.Tab3.Text40"));
+            return;
         }
-        else if (model.IsHttps)
+
+        if (Dns.Any(item => item.Url == url))
         {
-            if (!url.StartsWith("https://"))
-            {
-                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text40"));
-                return;
-            }
-
-            if (Dns.Any(item => item.Dns == DnsType.DnsOverHttps && item.Url == url))
-            {
-                Window.Show(LangUtils.Get("SettingWindow.Tab3.Text41"));
-                return;
-            }
-
-            Dns.Add(new(url, DnsType.DnsOverHttps));
-            ConfigBinding.AddDns(url, DnsType.DnsOverHttps);
+            Window.Show(LangUtils.Get("SettingWindow.Tab3.Text41"));
+            return;
         }
+
+        Dns.Add(new DnsItemModel(url));
+        ConfigBinding.AddDns(url);
 
         Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text32"));
     }
@@ -362,7 +329,7 @@ public partial class SettingModel
         }
 
         Dns.Remove(model);
-        ConfigBinding.RemoveDns(model.Url, model.Dns);
+        ConfigBinding.RemoveDns(model.Url);
     }
 
     /// <summary>
@@ -404,17 +371,12 @@ public partial class SettingModel
             AutoDownload = con.Http.AutoDownload;
             DnsEnable = con.Dns.Enable;
             DnsProxy = con.Dns.HttpProxy;
-            DnsType = con.Dns.DnsType;
 
             Dns.Clear();
 
-            foreach (var item in con.Dns.Dns)
-            {
-                Dns.Add(new(item, DnsType.DnsOver));
-            }
             foreach (var item in con.Dns.Https)
             {
-                Dns.Add(new(item, DnsType.DnsOverHttps));
+                Dns.Add(new DnsItemModel(item));
             }
         }
         var config1 = GuiConfigUtils.Config;
@@ -475,6 +437,6 @@ public partial class SettingModel
             return;
         }
 
-        ConfigBinding.SetDns(DnsEnable, DnsType, DnsProxy);
+        ConfigBinding.SetDns(DnsEnable, DnsProxy);
     }
 }

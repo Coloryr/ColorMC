@@ -80,7 +80,6 @@ public static class ConfigLoad
             obj.Window ??= MakeWindowSettingConfig();
             obj.GameCheck ??= MakeGameCheckConfig();
             obj.Dns ??= MakeDnsConfig();
-            obj.Dns.Dns ??= [];
             obj.Dns.Https ??= [];
 
             Config = obj;
@@ -139,7 +138,6 @@ public static class ConfigLoad
     {
         return new DnsObj
         {
-            Dns = ["1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"],
             Https = ["https://223.5.5.5/dns-query"]
         };
     }

@@ -853,7 +853,7 @@ public static class ConfigBinding
     /// </summary>
     /// <param name="dnsEnable"></param>
     /// <param name="dnsType"></param>
-    public static void SetDns(bool dnsEnable, DnsType dnsType, bool v2)
+    public static void SetDns(bool dnsEnable, bool v2)
     {
         if (DownloadManager.State)
         {
@@ -862,7 +862,6 @@ public static class ConfigBinding
 
         ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
         ConfigLoad.Config.Dns.Enable = dnsEnable;
-        ConfigLoad.Config.Dns.DnsType = dnsType;
         ConfigLoad.Config.Dns.HttpProxy = v2;
         ConfigLoad.Save();
 
@@ -872,21 +871,14 @@ public static class ConfigBinding
     /// <summary>
     /// 设置DNS
     /// </summary>
-    public static void AddDns(string url, DnsType dnsOver)
+    public static void AddDns(string url)
     {
         if (DownloadManager.State)
         {
             return;
         }
         ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
-        if (dnsOver == DnsType.DnsOver)
-        {
-            ConfigLoad.Config.Dns.Dns?.Add(url);
-        }
-        else
-        {
-            ConfigLoad.Config.Dns.Https?.Add(url);
-        }
+        ConfigLoad.Config.Dns.Https?.Add(url);
         ConfigLoad.Save();
 
         CoreHttpClient.Init();
@@ -897,21 +889,14 @@ public static class ConfigBinding
     /// </summary>
     /// <param name="url"></param>
     /// <param name="dns"></param>
-    public static void RemoveDns(string url, DnsType dns)
+    public static void RemoveDns(string url)
     {
         if (DownloadManager.State)
         {
             return;
         }
         ConfigLoad.Config.Dns ??= ConfigLoad.MakeDnsConfig();
-        if (dns == DnsType.DnsOver)
-        {
-            ConfigLoad.Config.Dns.Dns?.Remove(url);
-        }
-        else
-        {
-            ConfigLoad.Config.Dns.Https?.Remove(url);
-        }
+        ConfigLoad.Config.Dns.Https?.Remove(url);
         ConfigLoad.Save();
 
         CoreHttpClient.Init();

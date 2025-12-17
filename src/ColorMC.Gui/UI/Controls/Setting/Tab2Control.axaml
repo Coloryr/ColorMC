@@ -11,7 +11,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    d:DesignHeight="1500"
+    d:DesignHeight="1100"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -427,69 +427,83 @@
                             Path="{Binding IconHead}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text54}" />
                     </StackPanel>
-                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            Content="{setting:Localize SettingWindow.Tab2.Text55}"
-                            GroupName="Group2"
-                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_A}}" />
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            Content="{setting:Localize SettingWindow.Tab2.Text69}"
-                            GroupName="Group2"
-                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_B}}" />
-                        <RadioButton
-                            Margin="0,0,20,0"
-                            Content="{setting:Localize SettingWindow.Tab2.Text56}"
-                            GroupName="Group2"
-                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_A}}" />
-                        <RadioButton
-                            Content="{setting:Localize SettingWindow.Tab2.Text57}"
-                            GroupName="Group2"
-                            IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}">
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding HeadX, StringFormat='{}{0}°'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="90"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding HeadX}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="260" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text59}" />
-                            <TextBlock
-                                Width="40"
-                                Margin="0,0,5,0"
-                                DockPanel.Dock="Right"
-                                Text="{Binding HeadY, StringFormat='{}{0}°'}" />
-                            <Slider
-                                Height="40"
-                                Margin="5,-10,5,0"
-                                HorizontalAlignment="Stretch"
-                                Foreground="{setting:Theme MainColor}"
-                                IsSnapToTickEnabled="True"
-                                LargeChange="1"
-                                Maximum="90"
-                                Minimum="0"
-                                SmallChange="1"
-                                TickFrequency="1"
-                                Value="{Binding HeadY}" />
-                        </DockPanel>
-                    </WrapPanel>
+                    <Border
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Left"
+                        BorderBrush="{setting:Theme AllBorder}"
+                        BorderThickness="1"
+                        CornerRadius="5">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton
+                                Classes="t1"
+                                Content="{setting:Localize SettingWindow.Tab2.Text55}"
+                                GroupName="Group2"
+                                IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_A}, FallbackValue=true}" />
+                            <RadioButton
+                                Classes="t1"
+                                Content="{setting:Localize SettingWindow.Tab2.Text69}"
+                                GroupName="Group2"
+                                IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head2D_B}}" />
+                            <RadioButton
+                                Classes="t1"
+                                Content="{setting:Localize SettingWindow.Tab2.Text56}"
+                                GroupName="Group2"
+                                IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_A}}" />
+                            <RadioButton
+                                Classes="t1"
+                                Content="{setting:Localize SettingWindow.Tab2.Text57}"
+                                GroupName="Group2"
+                                IsChecked="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}" />
+                        </StackPanel>
+                    </Border>
+                    <Grid
+                        Margin="0,0,0,-10"
+                        ColumnDefinitions="auto,*,auto,auto,*,auto,*"
+                        IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />
+                        <Slider
+                            Grid.Column="1"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="90"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding HeadX}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding HeadX, StringFormat='{}{0}°'}" />
+                        <TextBlock
+                            Grid.Column="3"
+                            Margin="0,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab2.Text59}" />
+                        <Slider
+                            Grid.Column="4"
+                            Height="40"
+                            Margin="5,-10,5,0"
+                            HorizontalAlignment="Stretch"
+                            Foreground="{setting:Theme MainColor}"
+                            IsSnapToTickEnabled="True"
+                            LargeChange="1"
+                            Maximum="90"
+                            Minimum="0"
+                            SmallChange="1"
+                            TickFrequency="1"
+                            Value="{Binding HeadY}" />
+                        <TextBlock
+                            Grid.Column="5"
+                            Width="40"
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Right"
+                            Text="{Binding HeadY, StringFormat='{}{0}°'}" />
+                    </Grid>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

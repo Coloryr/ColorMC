@@ -11,8 +11,6 @@ namespace ColorMC.Gui.UI.Controls.User;
 /// </summary>
 public partial class UsersControl : BaseUserControl
 {
-    public const string DialogName = "UsersControl";
-
     public UsersControl() : base(WindowManager.GetUseName<UsersControl>())
     {
         InitializeComponent();

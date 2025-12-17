@@ -127,7 +127,7 @@ public enum WebType
     SakuraFrp,
     Apache2_0,
     MIT,
-    MiSans,
+    SourceHanSanc,
     BSD,
     OpenFrp,
     OpenFrpApi,

@@ -107,16 +107,6 @@ public static class LangUtils
         };
     }
 
-    public static string GetName(this DnsType type)
-    {
-        return type switch
-        {
-            DnsType.DnsOver => Get("Type.Dns.DnsOver"),
-            DnsType.DnsOverHttps => Get("Type.Dns.DnsOverHttps"),
-            _ => "Unkown"
-        };
-    }
-
     public static string GetName(this AuthState state)
     {
         return state switch
@@ -537,16 +527,6 @@ public static class LangUtils
         [
             SourceLocal.Offical.GetName(),
             SourceLocal.BMCLAPI.GetName()
-        ];
-    }
-
-    public static string[] GetDns()
-    {
-        return
-        [
-            Get("Type.Dns.Item1"),
-            Get("Type.Dns.Item2"),
-            Get("Type.Dns.Item3")
         ];
     }
 

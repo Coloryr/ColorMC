@@ -8,7 +8,7 @@
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    d:DesignHeight="1600"
+    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -27,88 +27,91 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text24}" />
                     </StackPanel>
-                    <WrapPanel>
-                        <StackPanel>
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text14}"
-                                IsChecked="{Binding CheckCore}" />
-                            <Panel Margin="0,-5,0,0">
-                                <svg:SvgControl
-                                    Width="24"
-                                    Height="24"
-                                    Margin="3,-9,0,0"
-                                    HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Theme FontColor}" />
-                                <CheckBox
-                                    Margin="25,0,5,0"
-                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                    IsChecked="{Binding CheckCoreSha1}"
-                                    IsEnabled="{Binding CheckCore}" />
-                            </Panel>
-                        </StackPanel>
-                        <StackPanel Margin="5,0,0,0">
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text15}"
-                                IsChecked="{Binding CheckAssets}" />
-                            <Panel Margin="0,-5,0,0">
-                                <svg:SvgControl
-                                    Width="24"
-                                    Height="24"
-                                    Margin="3,-9,0,0"
-                                    HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Theme FontColor}" />
-                                <CheckBox
-                                    Margin="25,0,5,0"
-                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                    IsChecked="{Binding CheckAssetsSha1}"
-                                    IsEnabled="{Binding CheckAssets}" />
-                            </Panel>
-                        </StackPanel>
-                        <StackPanel Margin="5,0,0,0">
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text16}"
-                                IsChecked="{Binding CheckLib}" />
-                            <Panel Margin="0,-5,0,0">
-                                <svg:SvgControl
-                                    Width="24"
-                                    Height="24"
-                                    Margin="3,-9,0,0"
-                                    HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Theme FontColor}" />
-                                <CheckBox
-                                    Margin="25,0,5,0"
-                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                    IsChecked="{Binding CheckLibSha1}"
-                                    IsEnabled="{Binding CheckLib}" />
-                            </Panel>
-                        </StackPanel>
-                        <StackPanel Margin="5,0,0,0">
-                            <CheckBox
-                                Margin="0,0,5,0"
-                                Content="{setting:Localize SettingWindow.Tab4.Text31}"
-                                IsChecked="{Binding CheckMod}" />
-                            <Panel Margin="0,-5,0,0">
-                                <svg:SvgControl
-                                    Width="24"
-                                    Height="24"
-                                    Margin="3,-9,0,0"
-                                    HorizontalAlignment="Left"
-                                    Path="/Resource/Icon/down.svg"
-                                    Stroke="{setting:Theme FontColor}" />
-                                <CheckBox
-                                    Margin="25,0,5,0"
-                                    Content="{setting:Localize SettingWindow.Tab4.Text22}"
-                                    IsChecked="{Binding CheckModSha1}"
-                                    IsEnabled="{Binding CheckMod}" />
-                            </Panel>
-                        </StackPanel>
-                    </WrapPanel>
+                    <Grid ColumnDefinitions="auto,*,auto,*,auto,*,auto,*" RowDefinitions="*,*">
+                        <CheckBox
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Content="{setting:Localize SettingWindow.Tab4.Text14}"
+                            IsChecked="{Binding CheckCore}" />
+                        <svg:SvgControl
+                            Grid.Row="1"
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                            IsChecked="{Binding CheckCoreSha1}"
+                            IsEnabled="{Binding CheckCore}" />
+                        <CheckBox
+                            Grid.Column="2"
+                            Grid.ColumnSpan="2"
+                            Content="{setting:Localize SettingWindow.Tab4.Text15}"
+                            IsChecked="{Binding CheckAssets}" />
+                        <svg:SvgControl
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="3"
+                            Margin="5,0,0,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                            IsChecked="{Binding CheckAssetsSha1}"
+                            IsEnabled="{Binding CheckAssets}" />
+                        <CheckBox
+                            Grid.Column="4"
+                            Grid.ColumnSpan="2"
+                            Content="{setting:Localize SettingWindow.Tab4.Text16}"
+                            IsChecked="{Binding CheckLib}" />
+                        <svg:SvgControl
+                            Grid.Row="1"
+                            Grid.Column="4"
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="5"
+                            Margin="5,0,0,0"
+                            Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                            IsChecked="{Binding CheckLibSha1}"
+                            IsEnabled="{Binding CheckLib}" />
+                        <CheckBox
+                            Grid.Column="6"
+                            Grid.ColumnSpan="2"
+                            Content="{setting:Localize SettingWindow.Tab4.Text31}"
+                            IsChecked="{Binding CheckMod}" />
+                        <svg:SvgControl
+                            Grid.Row="1"
+                            Grid.Column="6"
+                            Width="24"
+                            Height="24"
+                            Margin="3,-9,0,0"
+                            HorizontalAlignment="Left"
+                            Path="/Resource/Icon/down.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <CheckBox
+                            Grid.Row="1"
+                            Grid.Column="7"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            Content="{setting:Localize SettingWindow.Tab4.Text22}"
+                            IsChecked="{Binding CheckModSha1}"
+                            IsEnabled="{Binding CheckMod}" />
+                    </Grid>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -124,33 +127,33 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,-10">
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
-                            <NumericUpDown
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Width}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
-                            <NumericUpDown
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                FormatString="N0"
-                                IsEnabled="{Binding !FullScreen}"
-                                Minimum="1"
-                                Value="{Binding Height}" />
-                        </DockPanel>
+                    <Grid ColumnDefinitions="auto,*,auto,*,*">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
+                        <NumericUpDown
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            FormatString="N0"
+                            IsEnabled="{Binding !FullScreen}"
+                            Minimum="1"
+                            Value="{Binding Width}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Margin="10,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab4.Text11}" />
+                        <NumericUpDown
+                            Grid.Column="3"
+                            HorizontalAlignment="Stretch"
+                            FormatString="N0"
+                            IsEnabled="{Binding !FullScreen}"
+                            Minimum="1"
+                            Value="{Binding Height}" />
                         <ToggleSwitch
-                            Margin="0,0,10,10"
+                            Grid.Column="4"
+                            Margin="10,0,0,0"
                             IsChecked="{Binding FullScreen}"
                             OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
                             OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-                    </WrapPanel>
+                    </Grid>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -166,35 +169,40 @@
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
+                    <ToggleSwitch
+                        Margin="0,0,0,0"
+                        IsChecked="{Binding ColorASM}"
+                        OffContent="{setting:Localize SettingWindow.Tab4.Text30}"
+                        OnContent="{setting:Localize SettingWindow.Tab4.Text30}" />
                     <TextBlock Margin="0,0,0,5" Text="{Binding Memory}" />
-                    <WrapPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
-                            <NumericUpDown
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MinMemory}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
-                            <NumericUpDown
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                FormatString="N0"
-                                Minimum="1"
-                                Value="{Binding MaxMemory}" />
-                        </DockPanel>
-                        <DockPanel MinWidth="230" Margin="0,0,10,10">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text2}" />
-                            <ComboBox
-                                Height="30"
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding GCTypeList}"
-                                SelectedIndex="{Binding GC}" />
-                        </DockPanel>
-                    </WrapPanel>
+                    <Grid Margin="0,0,10,10" ColumnDefinitions="auto,*,auto,*,auto,*">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
+                        <NumericUpDown
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch"
+                            FormatString="N0"
+                            Minimum="1"
+                            Value="{Binding MinMemory}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            Margin="10,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab4.Text5}" />
+                        <NumericUpDown
+                            Grid.Column="3"
+                            HorizontalAlignment="Stretch"
+                            FormatString="N0"
+                            Minimum="1"
+                            Value="{Binding MaxMemory}" />
+                        <TextBlock
+                            Grid.Column="4"
+                            Margin="10,0,5,0"
+                            Text="{setting:Localize SettingWindow.Tab4.Text2}" />
+                        <ComboBox
+                            Grid.Column="5"
+                            HorizontalAlignment="Stretch"
+                            ItemsSource="{Binding GCTypeList}"
+                            SelectedIndex="{Binding GC}" />
+                    </Grid>
                     <!--  Jvm附加参数  -->
                     <TextBox
                         Height="100"
@@ -205,18 +213,14 @@
                         Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,10,0"
+                        Margin="0,0,10,10"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding GameArg}"
                         Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
-                    <TextBlock
-                        Margin="0,0,10,10"
-                        Text="{setting:Localize GameEditWindow.Tab2.Text25}"
-                        TextWrapping="Wrap" />
                     <TextBox
                         Height="100"
-                        Margin="0,5,10,0"
+                        Margin="0,0,10,10"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmEnv}"
@@ -226,11 +230,7 @@
                         Margin="0,0,10,0"
                         Text="{setting:Localize GameEditWindow.Tab2.Text35}"
                         TextWrapping="Wrap" />
-                    <ToggleSwitch
-                        Margin="0,0,0,-10"
-                        IsChecked="{Binding ColorASM}"
-                        OffContent="{setting:Localize SettingWindow.Tab4.Text30}"
-                        OnContent="{setting:Localize SettingWindow.Tab4.Text30}" />
+
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
