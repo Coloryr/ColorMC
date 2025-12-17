@@ -68,7 +68,7 @@ public partial class MainModel
 #if !DEBUG
         var dialog = new LongTextModel(Window.WindowId)
         {
-            Text1 = LanguageUtils.Get("App.Text35"),
+            Text1 = LangUtils.Get("App.Text35"),
             Text2 = _updateStr
         };
         var res = await Window.ShowDialogWait(dialog);
