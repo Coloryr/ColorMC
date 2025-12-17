@@ -4,8 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dialog="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
-    xmlns:dialogmodel="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
@@ -20,59 +18,47 @@
         <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
     </UserControl.Resources>
     <Panel>
-        <dialog:DialogHost
-            Background="{setting:Theme ButtonBG}"
-            DisableOpeningAnimation="True"
-            Identifier="UsersControl"
-            OverlayBackground="Transparent">
-            <dialog:DialogHost.DataTemplates>
-                <DataTemplate DataType="dialogmodel:AddUserModel">
-                    <view:AddUserControl />
-                </DataTemplate>
-            </dialog:DialogHost.DataTemplates>
-            <DockPanel Margin="10,0,10,10">
-                <Border
-                    Margin="10"
-                    Classes="t2"
-                    DockPanel.Dock="Top">
-                    <DockPanel Margin="15">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize UserWindow.Text3}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-2"
-                            Classes="top"
-                            Command="{Binding SetAdd}"
-                            Content="{setting:Localize UserWindow.Text5}"
-                            DockPanel.Dock="Right"
-                            IsEnabled="{Binding HaveLogin}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text26}" />
-                        <ComboBox
-                            Height="35"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Center"
-                            ItemsSource="{Binding DisplayUserTypeList}"
-                            SelectedIndex="{Binding DisplayType}" />
-                    </DockPanel>
-                </Border>
-                <ScrollViewer VerticalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding UserList}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <items:UserItemControl DataContext="{Binding}" />
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
-        </dialog:DialogHost>
-
+        <DockPanel Margin="10,0,10,10">
+            <Border
+                Margin="10"
+                Classes="t2"
+                DockPanel.Dock="Top">
+                <DockPanel Margin="15">
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize UserWindow.Text3}" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
+                        Classes="top"
+                        Command="{Binding SetAdd}"
+                        Content="{setting:Localize UserWindow.Text5}"
+                        DockPanel.Dock="Right"
+                        IsEnabled="{Binding HaveLogin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text26}" />
+                    <ComboBox
+                        Height="35"
+                        Margin="0,0,10,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        ItemsSource="{Binding DisplayUserTypeList}"
+                        SelectedIndex="{Binding DisplayType}" />
+                </DockPanel>
+            </Border>
+            <ScrollViewer VerticalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding UserList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <items:UserItemControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
         <Panel
             Name="Grid2"
             Margin="20,10,20,20"

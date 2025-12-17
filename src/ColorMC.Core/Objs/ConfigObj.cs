@@ -74,17 +74,9 @@ public record DnsObj
     /// </summary>
     public bool Enable { get; set; }
     /// <summary>
-    /// DNS IP地址
-    /// </summary>
-    public List<string> Dns { get; set; }
-    /// <summary>
     /// DNS over HTTPS地址
     /// </summary>
     public List<string> Https { get; set; }
-    /// <summary>
-    /// 启用的DNS类型
-    /// </summary>
-    public DnsType DnsType { get; set; }
     /// <summary>
     /// 是否对代理也启用
     /// </summary>

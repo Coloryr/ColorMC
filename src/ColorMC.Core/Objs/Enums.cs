@@ -427,14 +427,6 @@ public enum CoreRunState
 }
 
 /// <summary>
-/// Dns类型
-/// </summary>
-public enum DnsType
-{
-    DnsOver, DnsOverHttps, DnsOverHttpsWithUdp
-}
-
-/// <summary>
 /// 日志等级
 /// </summary>
 [Flags]

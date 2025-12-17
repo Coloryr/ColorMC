@@ -51,7 +51,7 @@
                                 OffContent="{setting:Localize Button.Disable}"
                                 OnContent="{setting:Localize Button.Enable}" />
                         </StackPanel>
-                        <TextBlock Text="{setting:Localize SettingWindow.Tab9.Text4}" />
+                        <TextBlock Text="{setting:Localize SettingWindow.Tab9.Text4}" TextWrapping="Wrap" />
                     </StackPanel>
                 </DockPanel>
             </Border>

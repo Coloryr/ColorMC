@@ -27,7 +27,28 @@
                             Path="/Resource/Icon/Setting/svg16.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab5.Text1}" />
                     </StackPanel>
-                    <DockPanel Margin="0,5,0,5">
+                    <DockPanel Margin="0,5,0,0">
+                        <StackPanel
+                            Margin="10,0,0,0"
+                            DockPanel.Dock="Right"
+                            Orientation="Horizontal">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-3"
+                                Classes="top"
+                                Command="{Binding SelectJava}"
+                                Content="{setting:Localize Button.Select}"
+                                DockPanel.Dock="Right" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="7,-3,-3,-3"
+                                Classes="top"
+                                Command="{Binding AddJava}"
+                                Content="{setting:Localize Button.Add}"
+                                DockPanel.Dock="Right" />
+                        </StackPanel>
                         <TextBox
                             Width="130"
                             Margin="0,0,10,0"
@@ -35,24 +56,6 @@
                             Watermark="{setting:Localize SettingWindow.Tab5.Text2}" />
                         <TextBox Text="{Binding JavaLocal}" Watermark="{setting:Localize SettingWindow.Tabs.Text5}" />
                     </DockPanel>
-                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,3,-2"
-                            Classes="top"
-                            Command="{Binding AddJava}"
-                            Content="{setting:Localize Button.Add}"
-                            DockPanel.Dock="Right" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-2"
-                            Classes="top"
-                            Command="{Binding SelectJava}"
-                            Content="{setting:Localize Button.Select}"
-                            DockPanel.Dock="Right" />
-                    </StackPanel>
                 </StackPanel>
                 <DataGrid
                     Name="DataGrid1"

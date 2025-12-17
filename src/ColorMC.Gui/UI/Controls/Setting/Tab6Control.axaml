@@ -10,7 +10,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
-    d:DesignHeight="800"
+    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -29,7 +29,7 @@
                             Path="/Resource/Icon/Setting/svg17.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text1}" />
                     </StackPanel>
-                    <WrapPanel>
+                    <StackPanel Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,20,0"
                             IsChecked="{Binding EnableMotd}"
@@ -39,7 +39,7 @@
                             IsChecked="{Binding EnableJoin}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text4}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text4}" />
-                    </WrapPanel>
+                    </StackPanel>
                     <Grid Margin="0,0,0,10" ColumnDefinitions="2*,*">
                         <TextBox
                             Grid.Column="0"
@@ -54,16 +54,12 @@
                             Text="{Binding ServerPort, Converter={StaticResource NumberConverter}}"
                             Watermark="{setting:Localize Text.ServerPort}" />
                     </Grid>
-                    <WrapPanel Margin="0,0,0,-10">
-                        <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
-                            <ColorPicker Color="{Binding MotdFontColor}" />
-                        </StackPanel>
-                        <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text5}" />
-                            <ColorPicker Color="{Binding MotdBackColor}" />
-                        </StackPanel>
-                    </WrapPanel>
+                    <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
+                        <ColorPicker Color="{Binding MotdFontColor}" />
+                        <TextBlock Margin="10,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text5}" />
+                        <ColorPicker Color="{Binding MotdBackColor}" />
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">
@@ -76,20 +72,20 @@
                             Path="/Resource/Icon/Setting/svg18.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text27}" />
                     </StackPanel>
-                    <WrapPanel Margin="0,0,0,0">
+                    <StackPanel Orientation="Horizontal">
                         <ToggleSwitch
                             Margin="0,0,10,5"
                             IsChecked="{Binding EnableOneGame}"
                             OffContent="{setting:Localize SettingWindow.Tab6.Text7}"
                             OnContent="{setting:Localize SettingWindow.Tab6.Text7}" />
                         <ComboBox
-                            MinWidth="200"
+                            Width="230"
                             Margin="0,0,10,5"
                             HorizontalAlignment="Stretch"
                             IsEnabled="{Binding EnableOneGame}"
                             ItemsSource="{Binding GameList}"
                             SelectedIndex="{Binding Game}" />
-                    </WrapPanel>
+                    </StackPanel>
                     <DockPanel>
                         <Button
                             Width="100"
@@ -282,45 +278,47 @@
                         IsEnabled="{Binding EnableMusic}"
                         Text="{Binding Music}"
                         Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,7"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding SelectMusic}"
-                        Content="{setting:Localize Button.Select}"
-                        IsEnabled="{Binding EnableMusic}" />
-                    <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding EnableMusic}">
+                    <Panel>
                         <Button
                             Width="100"
                             Height="35"
-                            Margin="-3,-6,3,7"
+                            Margin="-3"
+                            HorizontalAlignment="Right"
                             Classes="top"
-                            Command="{Binding MusicStart}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text19}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3,-6,3,7"
-                            Classes="top"
-                            Command="{Binding MusicPause}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text21}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3,-6,3,7"
-                            Classes="top"
-                            Command="{Binding MusicPlay}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text23}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3,-6,3,7"
-                            Classes="top"
-                            Command="{Binding MusicStop}"
-                            Content="{setting:Localize SettingWindow.Tab6.Text20}" />
-                    </WrapPanel>
+                            Command="{Binding SelectMusic}"
+                            Content="{setting:Localize Button.Select}"
+                            IsEnabled="{Binding EnableMusic}" />
+                        <WrapPanel Margin="0,0,0,-10" IsEnabled="{Binding EnableMusic}">
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="-3"
+                                Classes="top"
+                                Command="{Binding MusicStart}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text19}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="7,-3,-3,-3"
+                                Classes="top"
+                                Command="{Binding MusicPause}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text21}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="7,-3,-3,-3"
+                                Classes="top"
+                                Command="{Binding MusicPlay}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text23}" />
+                            <Button
+                                Width="100"
+                                Height="35"
+                                Margin="7,-3,-3,-3"
+                                Classes="top"
+                                Command="{Binding MusicStop}"
+                                Content="{setting:Localize SettingWindow.Tab6.Text20}" />
+                        </WrapPanel>
+                    </Panel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

@@ -646,12 +646,7 @@ public partial class UsersModel : ControlModel
             model.Type = DisplayType - 1;
         }
 
-        if (DialogHost.IsDialogOpen(UsersControl.DialogName))
-        {
-            DialogHost.Close(UsersControl.DialogName, false);
-        }
-
-        var res = await DialogHost.Show(model, UsersControl.DialogName);
+        var res = await Window.ShowDialogWait(model);
         if (res is not true)
         {
             return;

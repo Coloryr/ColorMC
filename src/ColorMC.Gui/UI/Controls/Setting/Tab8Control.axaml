@@ -40,35 +40,36 @@
                                 IsChecked="{Binding InputEnable}"
                                 OffContent="{setting:Localize SettingWindow.Tab8.Text2}"
                                 OnContent="{setting:Localize SettingWindow.Tab8.Text2}" />
-                            <DockPanel MinWidth="230" Margin="0,0,10,10">
+                            <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
                                 <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text3}" />
                                 <TextBlock Text="{Binding InputNum}" />
-                            </DockPanel>
-                            <WrapPanel Margin="0,0,10,10">
-                                <DockPanel MinWidth="230">
-                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
-                                    <ComboBox
-                                        HorizontalAlignment="Stretch"
-                                        ItemsSource="{Binding InputNames}"
-                                        SelectedIndex="{Binding InputIndex}" />
-                                </DockPanel>
-                            </WrapPanel>
-                            <WrapPanel>
-                                <DockPanel MinWidth="230" Margin="0,0,10,10">
-                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text5}" />
-                                    <ComboBox
-                                        HorizontalAlignment="Stretch"
-                                        ItemsSource="{Binding Configs}"
-                                        SelectedIndex="{Binding SelectConfig}" />
-                                </DockPanel>
-                                <DockPanel MinWidth="230" Margin="0,0,10,10">
-                                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text6}" />
-                                    <ComboBox
-                                        HorizontalAlignment="Stretch"
-                                        ItemsSource="{Binding Configs}"
-                                        SelectedIndex="{Binding NowConfig}" />
-                                </DockPanel>
-                            </WrapPanel>
+                            </StackPanel>
+                            <Grid Margin="0,0,10,10" ColumnDefinitions="auto,*,auto,*,auto,*">
+                                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab8.Text4}" />
+                                <ComboBox
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding InputNames}"
+                                    SelectedIndex="{Binding InputIndex}" />
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Margin="10,0,5,0"
+                                    Text="{setting:Localize SettingWindow.Tab8.Text5}" />
+                                <ComboBox
+                                    Grid.Column="3"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding SelectConfig}" />
+                                <TextBlock
+                                    Grid.Column="4"
+                                    Margin="10,0,5,0"
+                                    Text="{setting:Localize SettingWindow.Tab8.Text6}" />
+                                <ComboBox
+                                    Grid.Column="5"
+                                    HorizontalAlignment="Stretch"
+                                    ItemsSource="{Binding Configs}"
+                                    SelectedIndex="{Binding NowConfig}" />
+                            </Grid>
                             <WrapPanel Margin="0,0,10,-5">
                                 <Button
                                     Width="100"

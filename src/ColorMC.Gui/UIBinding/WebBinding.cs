@@ -924,7 +924,7 @@ public static class WebBinding
             WebType.SakuraFrp => "https://www.natfrp.com/user/",
             WebType.Apache2_0 => "https://www.apache.org/licenses/LICENSE-2.0.html",
             WebType.MIT => "https://mit-license.org/",
-            WebType.MiSans => "https://hyperos.mi.com/font/",
+            WebType.SourceHanSanc => "https://github.com/adobe-fonts/source-han-sans",
             WebType.BSD => "https://licenses.nuget.org/BSD-2-Clause",
             WebType.OpenFrp => "https://console.openfrp.net/home/",
             WebType.OpenFrpApi => "https://github.com/ZGIT-Network/OPENFRP-APIDOC",

@@ -64,28 +64,17 @@ public static class CoreHttpClient
             proxy = new WebProxy(http.ProxyIP, http.ProxyPort);
         }
         //Dns
-        if (dns != null && dns.Enable)
+        if (dns?.Https != null && dns.Enable)
         {
-            //有GC问题
-            //if (dns.DnsType is DnsType.DnsOver or DnsType.DnsOverHttpsWithUdp)
-            //{
-            //foreach (var item in dns.Dns)
-            //{
-            //    _dnsClients.Add(new DnsUdpClient(IPAddress.Parse(item)));
-            //}
-            //}
-            if (dns.DnsType is DnsType.DnsOverHttps or DnsType.DnsOverHttpsWithUdp && dns.Https != null)
+            foreach (var item in dns.Https)
             {
-                foreach (var item in dns.Https)
+                if (dns.HttpProxy)
                 {
-                    if (dns.HttpProxy)
-                    {
-                        _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
-                    }
-                    else
-                    {
-                        _dnsClients.Add(new SelfHttpDnsClient(item));
-                    }
+                    _dnsClients.Add(new SelfHttpDnsClient(item, proxy));
+                }
+                else
+                {
+                    _dnsClients.Add(new SelfHttpDnsClient(item));
                 }
             }
             if (_dnsClients.Count > 1)
@@ -93,7 +82,7 @@ public static class CoreHttpClient
                 dnsClient = new DnsRacerClient([.. _dnsClients]);
                 _dnsClients.Add(dnsClient);
             }
-            else if (_dnsClients.Count > 0)
+            else if (_dnsClients.Count == 1)
             {
                 dnsClient = _dnsClients[0];
             }
