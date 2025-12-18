@@ -246,16 +246,16 @@ public static class GameBinding
             else
             {
                 string title = LangUtils.Get("App.Text111");
-                bool login = false;
+                var state = LaunchError.None;
                 if (item.Value.Exception != null)
                 {
-                    DisplayLaunchCrash(item.Value.Exception, item.Key, user, out title, out login);
+                    DisplayLaunchCrash(item.Value.Exception, item.Key, user, out state);
                 }
 
                 list1.Add(item.Key.UUID, new GameLaunchOneRes
                 {
                     Message = title,
-                    LoginFail = login,
+                    State = state,
                     User = user
                 });
 
@@ -281,10 +281,11 @@ public static class GameBinding
     /// 显示错误信息
     /// </summary>
     /// <param name="exception"></param>
-    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, LoginObj login, out string title, out bool loginfail)
+    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, 
+        LoginObj login, out LaunchError state)
     {
-        title = LangUtils.Get("App.Text111");
-        loginfail = false;
+        var title = LangUtils.Get("App.Text111");
+        state = LaunchError.None;
         if (exception is LaunchException e1)
         {
             var log = e1.GetName(obj, login);
@@ -297,10 +298,7 @@ public static class GameBinding
             {
                 Logs.Error(log);
             }
-            if (e1.State == LaunchError.AuthLoginFail)
-            {
-                loginfail = true;
-            }
+            state = e1.State;
         }
         else
         {
@@ -460,7 +458,7 @@ public static class GameBinding
                 Port = server.ServerPort
             };
         }
-        bool login = false;
+        var state = LaunchError.None;
         var res1 = await Task.Run(async () =>
         {
             try
@@ -469,7 +467,7 @@ public static class GameBinding
             }
             catch (Exception e)
             {
-                DisplayLaunchCrash(e, obj, user, out temp, out login);
+                DisplayLaunchCrash(e, obj, user, out state);
             }
             return null;
         });
@@ -529,7 +527,7 @@ public static class GameBinding
             Res = res1 != null,
             Message = temp,
             User = user,
-            LoginFail = login
+            State = state
         };
     }
 

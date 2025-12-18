@@ -15,58 +15,31 @@ public static class ItemAnimation
 {
     public static Animation Make()
     {
-        //从下到上滑动进入动画
         return new Animation
         {
+            Easing = new BackEaseOut(), // 弹性效果
             FillMode = FillMode.Forward,
-            Easing = new CircularEaseInOut(),
             Children =
             {
                 new KeyFrame
                 {
+                    Cue = new Cue(0.0),
                     Setters =
                     {
-                        new Setter
-                        {
-                            Property = Visual.OpacityProperty,
-                            Value = GuiConfigUtils.Config.Style.AmFade ? 0.0d : 1.0d
-                        },
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = 20d
-                        }
-                    },
-                    Cue = new Cue(0d)
+                        new Setter(ScaleTransform.ScaleXProperty, 0.5),
+                        new Setter(ScaleTransform.ScaleYProperty, 0.5),
+                        new Setter(Visual.OpacityProperty, 0.3)
+                    }
                 },
                 new KeyFrame
                 {
+                    Cue = new Cue(1.0),
                     Setters =
                     {
-                        new Setter
-                        {
-                            Property = Visual.OpacityProperty,
-                            Value = GuiConfigUtils.Config.Style.AmFade ? 1.0d : 1.0d
-                        },
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = -10d
-                        }
-                    },
-                    Cue = new Cue(0.6d)
-                },
-                new KeyFrame
-                {
-                    Setters =
-                    {
-                        new Setter
-                        {
-                            Property = TranslateTransform.YProperty,
-                            Value = 0d
-                        }
-                    },
-                    Cue = new Cue(1d)
+                        new Setter(ScaleTransform.ScaleXProperty, 1.0),
+                        new Setter(ScaleTransform.ScaleYProperty, 1.0),
+                        new Setter(Visual.OpacityProperty, 1.0)
+                    }
                 }
             },
             Duration = TimeSpan.FromMilliseconds(GuiConfigUtils.Config.Style.AmTime)

@@ -249,6 +249,10 @@ public enum LaunchState
 public enum LaunchError
 {
     /// <summary>
+    /// 没有错误
+    /// </summary>
+    None,
+    /// <summary>
     /// 检查服务器包错误
     /// </summary>
     CheckServerPackError,

@@ -51,7 +51,7 @@ public static class FabricAPI
             var mem = new MemoryStream();
             await stream.CopyToAsync(mem);
             mem.Seek(0, SeekOrigin.Begin);
-            var meta = JsonUtils.ToObj(stream, JsonType.FabricLoaderObj);
+            var meta = JsonUtils.ToObj(mem, JsonType.FabricLoaderObj);
             mem.Seek(0, SeekOrigin.Begin);
             return new GetFabricLoaderRes
             {
@@ -116,7 +116,9 @@ public static class FabricAPI
             using var stream = await CoreHttpClient.GetStreamAsync(url);
             var list = JsonUtils.ToObj(stream, JsonType.ListGameObj);
             if (list == null)
+            {
                 return null;
+            }
 
             var list1 = new List<string>();
             foreach (var item in list)

@@ -47,7 +47,7 @@ public record GameLaunchOneRes
     /// <summary>
     /// 是否登录失败
     /// </summary>
-    public bool LoginFail;
+    public LaunchError State;
 }
 
 /// <summary>

@@ -568,6 +568,7 @@ public static class WindowManager
     {
         if (SettingWindow != null)
         {
+            SettingWindow.Java(value);
             SettingWindow.Window?.WindowActivate();
         }
         else
