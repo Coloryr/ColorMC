@@ -611,14 +611,13 @@ public partial class GameLogModel : GameModel
         DispatcherTimer.RunOnce(() =>
         {
             //弹出日志上传选项
-            var dialog = new InputModel(Window.WindowId)
+            var dialog = new ChoiceModel(Window.WindowId)
             {
-                Text1 = string.Format(LangUtils.Get("GameLogWindow.Text24"), code),
-                ChoiseText = LangUtils.Get("GameLogWindow.Text8"),
-                TextReadonly = true
+                Text = string.Format(LangUtils.Get("GameLogWindow.Text24"), code),
+                ChoiceText = LangUtils.Get("GameLogWindow.Text8")
             };
 
-            dialog.ChoiseCall = async () =>
+            dialog.ChoiceCall = async () =>
             {
                 Window.CloseDialog(dialog);
                 var dialog1 = Window.ShowProgress(LangUtils.Get("GameLogWindow.Text21"));
