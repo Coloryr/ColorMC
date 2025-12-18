@@ -567,7 +567,7 @@ public partial class MainModel
         }
         if (res.Res == false)
         {
-            if (res.LoginFail && res.User!.AuthType != AuthType.OAuth)
+            if (res.State == LaunchError.AuthLoginFail && res.User!.AuthType != AuthType.OAuth)
             {
                 var res1 = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text86"), res.Message!));
                 if (res1)
@@ -641,7 +641,7 @@ public partial class MainModel
 
         foreach (var item in res1.States)
         {
-            if (item.Value.LoginFail && res1.User!.AuthType != AuthType.OAuth)
+            if (item.Value.State == LaunchError.AuthLoginFail && res1.User!.AuthType != AuthType.OAuth)
             {
                 var res2 = await Window.ShowChoice(string.Format(LangUtils.Get("MainWindow.Text86"), item.Value.Message!));
                 if (res2)

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -28,7 +29,7 @@ public partial class SettingControl : MenuControl
     /// <summary>
     /// 需要的Java主版本
     /// </summary>
-    private readonly int _needJava;
+    private int _needJava;
 
     public SettingControl() : base(WindowManager.GetUseName<SettingControl>())
     {
@@ -134,5 +135,10 @@ public partial class SettingControl : MenuControl
             default:
                 throw new InvalidEnumArgumentException();
         }
+    }
+
+    public void Java(int value)
+    {
+        _needJava = value;
     }
 }

@@ -252,5 +252,10 @@ public partial class SettingModel
             _javaLoaded = true;
             FindJava();
         }
+
+        if (mainversion != 0)
+        {
+            Window.Show(string.Format(LangUtils.Get("SettingWindow.Tab5.Text22"), mainversion));
+        }
     }
 }

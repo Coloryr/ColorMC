@@ -128,7 +128,8 @@ public static class Names
         "-XX:G1MaxNewSizePercent=40",
         "-XX:InitiatingHeapOccupancyPercent=35",
         "-XX:ConcGCThreads=4",
-        "-XX:ParallelGCThreads=8"
+        "-XX:ParallelGCThreads=8",
+        "-XX:+UnlockExperimentalVMOptions"
     ];
     public static readonly string[] NameGCZGC =
     [

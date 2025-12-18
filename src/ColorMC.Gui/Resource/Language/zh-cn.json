@@ -291,6 +291,7 @@
 	"SettingWindow.Tab5.Text19": "Java存放路径",
 	"SettingWindow.Tab5.Text20": "无法检测Java",
 	"SettingWindow.Tab5.Text21": "请输入必要信息",
+	"SettingWindow.Tab5.Text22": "需要安装Java{0}才能启动游戏",
 	"SettingWindow.Tab6.Text1": "服务器信息与自动进服设置",
 	"SettingWindow.Tab6.Text4": "自动加入服务器",
 	"SettingWindow.Tab6.Text5": "背景颜色",
