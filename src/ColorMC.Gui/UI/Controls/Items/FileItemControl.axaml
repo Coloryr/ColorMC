@@ -37,7 +37,10 @@
                         FontSize="16"
                         Foreground="{setting:Theme MainColor}"
                         Text="{Binding Name, FallbackValue=1234}" />
-                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
+                    <ItemsControl
+                        Margin="0,0,0,-5"
+                        DockPanel.Dock="Top"
+                        ItemsSource="{Binding Authors}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />

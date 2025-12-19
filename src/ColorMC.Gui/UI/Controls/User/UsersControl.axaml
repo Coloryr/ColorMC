@@ -4,10 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enums="clr-namespace:ColorMC.Gui.Objs"
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.User"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Dialog"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -15,7 +17,8 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
+        <cov:EnumToBooleanConverter x:Key="EnumToBool" />
+        <cov:PanelTemplateConverter x:Key="PanelTemplateConverter" />
     </UserControl.Resources>
     <Panel>
         <DockPanel Margin="10,0,10,10">
@@ -44,20 +47,94 @@
                         SelectedIndex="{Binding DisplayType}" />
                 </DockPanel>
             </Border>
-            <ScrollViewer VerticalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding UserList}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <items:UserItemControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock
+                    Margin="10,0,0,0"
+                    FontSize="16"
+                    Text="{setting:Localize UserWindow.Text37}" />
+                <Border
+                    Margin="0,0,10,0"
+                    HorizontalAlignment="Right"
+                    BorderBrush="{setting:Theme AllBorder}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton
+                            Classes="t1"
+                            GroupName="Group2"
+                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}, FallbackValue=true}">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
+                        </RadioButton>
+                        <RadioButton
+                            Classes="t1"
+                            GroupName="Group2"
+                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}}">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
+                        </RadioButton>
+                        <RadioButton
+                            Classes="t1"
+                            GroupName="Group2"
+                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}}">
+                            <svg:SvgControl
+                                Width="24"
+                                Height="24"
+                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                Path="/Resource/Icon/ListGrid/ListGrid1.svg" />
+                        </RadioButton>
+                    </StackPanel>
+                </Border>
+            </DockPanel>
+            <Panel>
+                <ScrollViewer IsVisible="{Binding IsGrid}" VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding UserList}">
+                        <ItemsControl.ItemsPanel>
+                            <Binding Converter="{StaticResource PanelTemplateConverter}" Path="IsStack" />
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <items:UserItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="True"
+                    IsVisible="{Binding !IsGrid}"
+                    ItemsSource="{Binding UserList}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Name}"
+                            Header="{setting:Localize UserWindow.Text10}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Type}"
+                            Header="{setting:Localize UserWindow.Text3}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding UUID}"
+                            Header="{setting:Localize UserWindow.Text21}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Text1}"
+                            Header="{setting:Localize SettingWindow.Tab6.Text36}"
+                            IsReadOnly="True" />
+                        <DataGridTextColumn
+                            Binding="{Binding Text2}"
+                            Header="{setting:Localize SettingWindow.Tab6.Text36}"
+                            IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Panel>
         </DockPanel>
         <Panel
             Name="Grid2"

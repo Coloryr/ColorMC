@@ -141,7 +141,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.BackTran = data;
         GuiConfigUtils.Save();
 
-        ImageManager.OnPicUpdate();
+        EventManager.OnBGChange();
     }
 
     /// <summary>
@@ -156,7 +156,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         ThemeManager.Init();
-        ImageManager.OnPicUpdate();
+        EventManager.OnBGChange();
     }
 
     /// <summary>
@@ -463,7 +463,7 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         ThemeManager.Init();
-        ImageManager.OnPicUpdate();
+        EventManager.OnBGChange();
     }
 
     /// <summary>
@@ -580,8 +580,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.ServerCustom.LockLogins = list;
         GuiConfigUtils.Save();
 
-        UserBinding.OnUserEdit();
-        WindowManager.UserWindow?.LoadUsers();
+        EventManager.OnLockUserChange();
     }
 
     /// <summary>
@@ -977,15 +976,6 @@ public static class ConfigBinding
         GuiConfigUtils.Config.LauncherFunction.FastLaunch = value;
         GuiConfigUtils.Config.LauncherFunction.FastModrinth = value1;
 
-        GuiConfigUtils.Save();
-    }
-
-    /// <summary>
-    /// 删除选中账户
-    /// </summary>
-    public static void ClearLastUser()
-    {
-        GuiConfigUtils.Config.LastUser = null;
         GuiConfigUtils.Save();
     }
 }

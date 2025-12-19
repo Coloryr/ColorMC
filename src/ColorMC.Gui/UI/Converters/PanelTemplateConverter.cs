@@ -10,13 +10,13 @@ namespace ColorMC.Gui.UI.Converters;
 /// <summary>
 /// WrapPanel样板跟随窗口大小切换
 /// </summary>
-public class MinModeToPanelTemplateConverter : IValueConverter
+public class PanelTemplateConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is bool minMode)
+        if (value is bool stack)
         {
-            if (minMode)
+            if (stack)
             {
                 return new FuncTemplate<Panel>(() => new StackPanel());
             }

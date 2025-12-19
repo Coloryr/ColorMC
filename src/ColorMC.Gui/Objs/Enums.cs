@@ -216,3 +216,14 @@ public enum LanguageType
 {
     zh_cn, en_us
 }
+
+/// <summary>
+/// 项目表格展示方式
+/// </summary>
+public enum ItemsGridType
+{
+    List, 
+    ListInfo, 
+    Grid, 
+    GridInfo
+}

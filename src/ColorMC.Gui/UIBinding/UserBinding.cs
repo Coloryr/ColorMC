@@ -44,8 +44,8 @@ public static class UserBinding
                 AuthType = AuthType.Offline
             };
             user.Save();
-            SetSelectUser(user.UUID, user.AuthType);
-            return new() { State = true };
+            UserManager.SetSelect(user);
+            return new StringRes { State = true };
         }
         string uuid = type switch
         {
@@ -77,7 +77,7 @@ public static class UserBinding
                 return new StringRes { Data = LangUtils.Get("App.Text79") };
             }
             res1.Save();
-            SetSelectUser(res1.UUID, res1.AuthType);
+            UserManager.SetSelect(res1);
             return new StringRes { State = true };
         }
         catch (Exception e)
@@ -115,37 +115,6 @@ public static class UserBinding
 
             return new StringRes { Data = title };
         }
-    }
-
-    /// <summary>
-    /// 删除账户
-    /// </summary>
-    /// <param name="uuid">UUID</param>
-    /// <param name="type">账户类型</param>
-    public static void Remove(string uuid, AuthType type)
-    {
-        if (GuiConfigUtils.Config.LastUser is { } last
-            && type == last.Type && uuid == last.UUID)
-        {
-            ConfigBinding.ClearLastUser();
-        }
-        AuthDatabase.Get(uuid, type)?.Delete();
-
-        OnUserEdit();
-    }
-
-    /// <summary>
-    /// 获取所有账户
-    /// </summary>
-    /// <returns></returns>
-    public static LoginObj? GetLastUser()
-    {
-        var obj = GuiConfigUtils.Config?.LastUser;
-        if (obj == null)
-        {
-            return null;
-        }
-        return AuthDatabase.Get(obj.UUID, obj.Type);
     }
 
     /// <summary>
@@ -206,30 +175,12 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// 设置选中账户
-    /// </summary>
-    /// <param name="uuid">UUID</param>
-    /// <param name="type">账户类型</param>
-    public static void SetSelectUser(string uuid, AuthType type)
-    {
-        GuiConfigUtils.Config.LastUser = new()
-        {
-            Type = type,
-            UUID = uuid
-        };
-
-        GuiConfigUtils.Save();
-
-        OnUserEdit();
-    }
-
-    /// <summary>
     /// 加载账户皮肤
     /// </summary>
     /// <returns></returns>
     public static async Task LoadSkin()
     {
-        var obj = GetLastUser();
+        var obj = UserManager.GetLastUser();
 
         if (obj == null)
         {
@@ -245,7 +196,7 @@ public static class UserBinding
     /// </summary>
     public static void ReloadSkin()
     {
-        var obj = GetLastUser();
+        var obj = UserManager.GetLastUser();
 
         if (obj == null)
         {
@@ -261,7 +212,7 @@ public static class UserBinding
     /// <param name="top">窗口</param>
     public static async void EditSkin(TopLevel top)
     {
-        var obj = GetLastUser();
+        var obj = UserManager.GetLastUser();
         if (obj == null)
         {
             return;
@@ -291,39 +242,6 @@ public static class UserBinding
             case AuthType.SelfLittleSkin:
                 BaseBinding.OpenUrl($"{obj.Text1}/user/closet");
                 break;
-        }
-    }
-
-    /// <summary>
-    /// 清空所有账户
-    /// </summary>
-    public static void ClearAllUser()
-    {
-        AuthDatabase.ClearAuths();
-
-        GuiConfigUtils.Config.LastUser = null;
-        GuiConfigUtils.Save();
-
-        OnUserEdit();
-    }
-
-    /// <summary>
-    /// 编辑账户
-    /// </summary>
-    /// <param name="obj">原来的账户</param>
-    /// <param name="text1">新的名字</param>
-    /// <param name="text2">新的UUID</param>
-    public static void EditUser(LoginObj obj, string text1, string text2)
-    {
-        foreach (var item in AuthDatabase.Auths.Values)
-        {
-            if (item.UserName == obj.UserName && item.UUID == obj.UUID && item.AuthType == AuthType.Offline)
-            {
-                item.UserName = text1;
-                item.UUID = text2;
-                AuthDatabase.Save();
-                break;
-            }
         }
     }
 
@@ -387,21 +305,13 @@ public static class UserBinding
     }
 
     /// <summary>
-    /// 当账户编辑后
-    /// </summary>
-    public static void OnUserEdit()
-    {
-        WindowManager.UserWindow?.LoadUsers();
-    }
-
-    /// <summary>
     /// 获取选中的账户
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
     public static async Task<GameLaunchUserRes> GetLaunchUser(WindowModel model)
     {
-        var login = GetLastUser();
+        var login = UserManager.GetLastUser();
         if (login == null)
         {
             return new GameLaunchUserRes { Message = LangUtils.Get("App.Text60") };

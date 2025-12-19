@@ -7,7 +7,6 @@
     xmlns:html="clr-namespace:Avalonia.HtmlRenderer;assembly=Avalonia.HtmlRenderer"
     xmlns:item="clr-namespace:ColorMC.Gui.UI.Controls.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:md="https://github.com/AIDotNet/Markdown.AIRender"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Add"
     xmlns:panel="clr-namespace:ColorMC.Gui.UI.Views"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
@@ -51,6 +50,12 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                        <WrapPanel Margin="0,20,10,0">
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
+                            <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
+                            <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
+                            <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
+                        </WrapPanel>
                     </StackPanel>
                     <StackPanel
                         Margin="0,0,-3,-3"
@@ -75,14 +80,12 @@
                     </StackPanel>
                 </Panel>
                 <Button
-                    Width="35"
-                    Height="35"
-                    Margin="-3"
+                    Width="30"
+                    Height="30"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Classes="top"
-                    Command="{Binding CloseView}"
-                    CornerRadius="5">
+                    Classes="none2"
+                    Command="{Binding CloseView}">
                     <svg:SvgControl Path="/Resource/Icon/close.svg" />
                 </Button>
             </Panel>
@@ -102,13 +105,11 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <WrapPanel Margin="10,20,10,20">
-                                <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
-                                <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
-                                <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
-                                <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
-                            </WrapPanel>
-                            <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text33}" />
+
+                            <TextBlock
+                                Margin="0,20,0,0"
+                                IsVisible="{Binding HaveMcmod}"
+                                Text="{setting:Localize AddModPackWindow.Text33}" />
                             <html:HtmlPanel
                                 Margin="10,20,10,20"
                                 IsVisible="{Binding HaveMcmod}"
@@ -169,24 +170,15 @@
                                     <TextBlock VerticalAlignment="Center" Text="{Binding MaxPageVersion}" />
                                     <TextBlock VerticalAlignment="Center" Text="{setting:Localize AddModPackWindow.Text42}" />
                                 </StackPanel>
-                                <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                    <Button
-                                        Width="100"
-                                        Height="35"
-                                        Margin="-2,-3,3,-3"
-                                        Classes="top"
-                                        Command="{Binding Search}"
-                                        Content="{setting:Localize AddModPackWindow.Text10}"
-                                        ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
-                                    <Button
-                                        Width="100"
-                                        Height="35"
-                                        Margin="-2,-3,-3,-3"
-                                        Classes="top"
-                                        Command="{Binding Download}"
-                                        Content="{setting:Localize AddModPackWindow.Text12}"
-                                        ToolTip.Tip="{setting:Localize ToolTip.Text91}" />
-                                </StackPanel>
+                                <Button
+                                    Grid.Column="3"
+                                    Width="100"
+                                    Height="35"
+                                    Margin="-3"
+                                    Classes="top"
+                                    Command="{Binding Search}"
+                                    Content="{setting:Localize AddModPackWindow.Text10}"
+                                    ToolTip.Tip="{setting:Localize ToolTip.Text77}" />
                             </Grid>
                             <Panel>
                                 <StackPanel IsVisible="{Binding !EmptyVersionDisplay, FallbackValue=true}">

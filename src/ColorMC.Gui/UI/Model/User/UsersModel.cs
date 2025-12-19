@@ -8,15 +8,15 @@ using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
-using ColorMC.Gui.UI.Controls.User;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.User;
 
@@ -62,12 +62,28 @@ public partial class UsersModel : ControlModel
     /// </summary>
     [ObservableProperty]
     private UserDisplayModel? _item;
+    /// <summary>
+    /// 用户展示类型
+    /// </summary>
+    [ObservableProperty]
+    private ItemsGridType _gridType = ItemsGridType.Grid;
 
     /// <summary>
     /// 账户类型
     /// </summary>
     [ObservableProperty]
     private int _displayType;
+    
+    /// <summary>
+    /// 是否为堆叠模式
+    /// </summary>
+    [ObservableProperty]
+    private bool _isStack;
+    /// <summary>
+    /// 是否为网格模式
+    /// </summary>
+    [ObservableProperty]
+    private bool _isGrid;
 
     /// <summary>
     /// 账户类型列表
@@ -93,6 +109,14 @@ public partial class UsersModel : ControlModel
     public UsersModel(WindowModel model) : base(model)
     {
         LoadUsers();
+        LoadGrid();
+
+        EventManager.LockUserChange += EventManager_LockUserChange;
+    }
+
+    partial void OnGridTypeChanged(ItemsGridType value)
+    {
+        LoadGrid();
     }
 
     partial void OnDisplayTypeChanged(int value)
@@ -107,6 +131,22 @@ public partial class UsersModel : ControlModel
     public void SetAdd()
     {
         ShowAdd(new AddUserModel(Window.WindowId));
+    }
+
+    private void LoadGrid()
+    {
+        IsGrid = GridType != ItemsGridType.ListInfo;
+        IsStack = GridType == ItemsGridType.GridInfo;
+
+        foreach (var item in UserList)
+        {
+            item.DisplayUUID = IsStack;
+        }
+    }
+
+    private void EventManager_LockUserChange()
+    {
+        LoadUsers();
     }
 
     /// <summary>
@@ -265,15 +305,13 @@ public partial class UsersModel : ControlModel
         Load();
     }
 
-
-
     /// <summary>
     /// 删除账户
     /// </summary>
     /// <param name="item"></param>
     public void Remove(UserDisplayModel item)
     {
-        UserBinding.Remove(item.UUID, item.AuthType);
+        UserManager.Remove(item.UUID, item.AuthType);
         Load();
     }
 
@@ -283,7 +321,7 @@ public partial class UsersModel : ControlModel
     /// <param name="item"></param>
     public void Select(UserDisplayModel item)
     {
-        UserBinding.SetSelectUser(item.UUID, item.AuthType);
+        UserManager.SetSelect(item.Obj);
 
         Window.Notify(LangUtils.Get("UserWindow.Text14"));
         foreach (var item1 in UserList)
@@ -492,7 +530,7 @@ public partial class UsersModel : ControlModel
     /// </summary>
     public void Load()
     {
-        var item1 = UserBinding.GetLastUser();
+        var item1 = UserManager.GetLastUser();
         foreach (var item in UserList)
         {
             item.Close();
@@ -561,6 +599,8 @@ public partial class UsersModel : ControlModel
 
     public override void Close()
     {
+        EventManager.LockUserChange -= EventManager_LockUserChange;
+
         foreach (var item in UserList)
         {
             item.Close();
@@ -569,6 +609,7 @@ public partial class UsersModel : ControlModel
         if (_isOAuth)
         {
             _tokenSource.Cancel();
+            _tokenSource.Dispose();
         }
     }
 
@@ -577,7 +618,7 @@ public partial class UsersModel : ControlModel
     /// </summary>
     public void ReLogin()
     {
-        var user = UserBinding.GetLastUser();
+        var user = UserManager.GetLastUser();
         if (user == null)
         {
             return;
@@ -625,7 +666,7 @@ public partial class UsersModel : ControlModel
             return;
         }
 
-        UserBinding.EditUser(obj.Obj, dialog.Text1, dialog.Text2);
+        UserManager.EditUser(obj.Obj, dialog.Text1, dialog.Text2);
     }
 
     /// <summary>

@@ -193,13 +193,7 @@ public partial class MainControl : BaseUserControl
     private void SwitchView()
     {
         var model = (DataContext as MainModel)!;
-        if (model.IsSimple)
-        {
-            _simple ??= new();
-            Content1.Child = _simple;
-            model.LoadSimpleGames();
-        }
-        else if (model.IsOneGame || model.IsGameError)
+        if (model.IsOneGame || model.IsGameError)
         {
             _oneGame ??= new();
             Content1.Child = _oneGame;

@@ -27,7 +27,7 @@ public partial class SkinControl : BaseUserControl
 
         Title = LangUtils.Get("SkinWindow.Title");
 
-        ImageManager.SkinChange += SkinChange;
+        EventManager.SkinChange += SkinChange;
     }
 
     protected override void OnDataContextChanged(EventArgs e)
@@ -85,7 +85,7 @@ public partial class SkinControl : BaseUserControl
 
     public override void Closed()
     {
-        ImageManager.SkinChange -= SkinChange;
+        EventManager.SkinChange -= SkinChange;
 
         _renderTimer.Close();
 

@@ -53,16 +53,6 @@ public partial class MainModel : ControlModel, IMutTop
     [ObservableProperty]
     private bool _backDisplay;
     /// <summary>
-    /// 是否显示玩家
-    /// </summary>
-    [ObservableProperty]
-    private bool _playerDisplay = true;
-    /// <summary>
-    /// 是否显示项目列表
-    /// </summary>
-    [ObservableProperty]
-    private bool _menuDisplay = true;
-    /// <summary>
     /// 是否渲染
     /// </summary>
     [ObservableProperty]
@@ -89,7 +79,8 @@ public partial class MainModel : ControlModel, IMutTop
 
     public MainModel(WindowModel model) : base(model)
     {
-        ImageManager.SkinChange += SkinChange;
+        EventManager.SkinChange += SkinChange;
+        EventManager.LastUserChange += EventManager_UserChange;
 
         MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
     }
@@ -203,7 +194,6 @@ public partial class MainModel : ControlModel, IMutTop
     public void LoadDone()
     {
         var config = GuiConfigUtils.Config;
-        //IsSimple = config.Simple;
         if (config?.CheckUpdate == true)
         {
             CheckUpdate();

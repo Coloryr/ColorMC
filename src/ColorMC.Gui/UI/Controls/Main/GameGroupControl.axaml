@@ -14,7 +14,7 @@
     x:DataType="model:GameGroupModel"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <cov:MinModeToPanelTemplateConverter x:Key="MinModeToPanelTemplateConverter" />
+        <cov:PanelTemplateConverter x:Key="PanelTemplateConverter" />
     </UserControl.Resources>
     <Border Classes="t2">
         <Panel>

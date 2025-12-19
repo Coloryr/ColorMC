@@ -85,33 +85,6 @@ public static class ImageManager
     public static SKBitmap? CapeBitmap { get; private set; }
 
     /// <summary>
-    /// 游戏实例图标
-    /// </summary>
-    private static readonly Dictionary<Guid, Bitmap> s_gameIcons = [];
-    /// <summary>
-    /// 角色皮肤
-    /// </summary>
-    private static readonly Dictionary<UserKeyObj, StringRes> s_userSkins = [];
-    /// <summary>
-    /// 角色披风
-    /// </summary>
-    private static readonly Dictionary<UserKeyObj, string?> s_userCapes = [];
-    /// <summary>
-    /// 角色皮肤获取锁
-    /// </summary>
-    private static readonly Dictionary<UserKeyObj, TaskCompletionSource> s_userGets = [];
-    private static readonly Dictionary<string, Bitmap> s_blocks = [];
-
-    /// <summary>
-    /// 背景图片更新
-    /// </summary>
-    public static event Action? BGUpdate;
-    /// <summary>
-    /// 皮肤更新
-    /// </summary>
-    public static event Action? SkinChange;
-
-    /// <summary>
     /// 星标图标
     /// </summary>
     public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
@@ -134,7 +107,25 @@ public static class ImageManager
     private static WindowIcon _customWindowIcon;
     private static WindowIcon _windowIcon;
 
-    public static string GetImagePath() => s_local;
+    public static string ImagePath => s_local;
+
+    /// <summary>
+    /// 游戏实例图标
+    /// </summary>
+    private static readonly Dictionary<Guid, Bitmap> s_gameIcons = [];
+    /// <summary>
+    /// 角色皮肤
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, StringRes> s_userSkins = [];
+    /// <summary>
+    /// 角色披风
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, string?> s_userCapes = [];
+    /// <summary>
+    /// 角色皮肤获取锁
+    /// </summary>
+    private static readonly Dictionary<UserKeyObj, TaskCompletionSource> s_userGets = [];
+    private static readonly Dictionary<string, Bitmap> s_blocks = [];
 
     /// <summary>
     /// 初始化图片缓存
@@ -367,7 +358,7 @@ public static class ImageManager
             }
         }
 
-        OnSkinLoad();
+        EventManager.OnSkinChange();
     }
 
     /// <summary>
@@ -382,7 +373,7 @@ public static class ImageManager
         var old = HeadBitmap;
         HeadBitmap = GenHeadImage(SkinBitmap);
         old?.Dispose();
-        OnSkinLoad();
+        EventManager.OnSkinChange();
     }
 
     /// <summary>
@@ -392,7 +383,7 @@ public static class ImageManager
     {
         RemoveSkin();
         HeadBitmap = null;
-        OnSkinLoad();
+        EventManager.OnSkinChange();
     }
 
     /// <summary>
@@ -402,7 +393,7 @@ public static class ImageManager
     {
         var image = BackBitmap;
         BackBitmap = null;
-        OnPicUpdate();
+        EventManager.OnBGChange();
         image?.Dispose();
     }
 
@@ -427,7 +418,7 @@ public static class ImageManager
                 config.BackLimit ? config.BackLimitValue : 100);
         }
 
-        OnPicUpdate();
+        EventManager.OnBGChange();
         ThemeManager.Init();
         FunctionUtils.RunGC();
     }
@@ -550,22 +541,6 @@ public static class ImageManager
         }
 
         return null;
-    }
-
-    /// <summary>
-    /// 通知背景图修改
-    /// </summary>
-    public static void OnPicUpdate()
-    {
-        BGUpdate?.Invoke();
-    }
-
-    /// <summary>
-    /// 通知皮肤修改
-    /// </summary>
-    public static void OnSkinLoad()
-    {
-        SkinChange?.Invoke();
     }
 
     /// <summary>

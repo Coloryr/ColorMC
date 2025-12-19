@@ -13,6 +13,10 @@ public static class EventManager
     private static readonly List<Action<SourceItemObj, bool>> s_modpackStop = [];
     private static readonly List<Action<Guid, SourceItemObj>> s_resourceInstall = [];
     private static readonly List<Action<Guid, SourceItemObj, bool>> s_resourceStop = [];
+    private static readonly List<Action> s_skinChange = [];
+    private static readonly List<Action> s_bgChange = [];
+    private static readonly List<Action<bool>> s_lastUserChange = [];
+    private static readonly List<Action> s_lockUserChange = [];
 
     /// <summary>
     /// 游戏实例图标修改
@@ -119,6 +123,66 @@ public static class EventManager
         }
     }
 
+    /// <summary>
+    /// 皮肤修改
+    /// </summary>
+    public static event Action SkinChange
+    {
+        add
+        {
+            s_skinChange.Add(value);
+        }
+        remove
+        {
+            s_skinChange.Remove(value);
+        }
+    }
+
+    /// <summary>
+    /// 背景图修改
+    /// </summary>
+    public static event Action BGChange
+    {
+        add
+        {
+            s_bgChange.Add(value);
+        }
+        remove
+        {
+            s_bgChange.Remove(value);
+        }
+    }
+
+    /// <summary>
+    /// 选中的账户修改
+    /// </summary>
+    public static event Action<bool> LastUserChange
+    {
+        add
+        {
+            s_lastUserChange.Add(value);
+        }
+        remove
+        {
+            s_lastUserChange.Remove(value);
+        }
+    }
+
+    /// <summary>
+    /// 锁定账户类型修改
+    /// </summary>
+    public static event Action LockUserChange
+    {
+        add
+        {
+            s_lockUserChange.Add(value);
+        }
+        remove
+        {
+            s_lockUserChange.Remove(value);
+        }
+    }
+
     public static void OnGameIconChange(Guid uuid)
     {
         foreach (var item in s_gameIconChange.ToArray())
@@ -172,6 +236,38 @@ public static class EventManager
         foreach (var item in s_resourceStop.ToArray())
         {
             item.Invoke(game, obj, res);
+        }
+    }
+
+    public static void OnSkinChange()
+    {
+        foreach (var item in s_skinChange.ToArray())
+        {
+            item.Invoke();
+        }
+    }
+
+    public static void OnBGChange()
+    {
+        foreach (var item in s_bgChange.ToArray())
+        {
+            item.Invoke();
+        }
+    }
+
+    public static void OnLastUserChange(bool user)
+    {
+        foreach (var item in s_lastUserChange.ToArray())
+        {
+            item.Invoke(user);
+        }
+    }
+
+    public static void OnLockUserChange()
+    {
+        foreach (var item in s_lockUserChange.ToArray())
+        {
+            item.Invoke();
         }
     }
 }

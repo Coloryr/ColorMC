@@ -43,11 +43,6 @@ public partial class MainModel
     [ObservableProperty]
     private bool _haveGame;
 
-    /// <summary>
-    /// 是否为简易模式
-    /// </summary>
-    public bool IsSimple { get; private set; }
-
     partial void OnMaxWindowChanged(bool value)
     {
         if (Game?.Obj is not { } obj)

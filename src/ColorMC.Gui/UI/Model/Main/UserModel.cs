@@ -39,15 +39,20 @@ public partial class MainModel
     /// </summary>
     [ObservableProperty]
     private bool _isOnlineMode;
+    /// <summary>
+    /// 是否有玩家
+    /// </summary>
+    [ObservableProperty]
+    private bool _isHavePlayer;
 
     /// <summary>
     /// 加载用户信息
     /// </summary>
-    public async void LoadUser()
+    private async void LoadUser()
     {
         IsHeadLoad = true;
 
-        var user = UserBinding.GetLastUser();
+        var user = UserManager.GetLastUser();
 
         if (user == null)
         {
@@ -101,5 +106,11 @@ public partial class MainModel
         Head = ImageManager.HeadBitmap!;
 
         IsHeadLoad = false;
+    }
+
+    private void EventManager_UserChange(bool user)
+    {
+        IsHavePlayer = user;
+        LoadUser();
     }
 }

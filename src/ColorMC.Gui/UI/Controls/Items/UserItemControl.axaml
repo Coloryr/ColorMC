@@ -35,7 +35,6 @@
         </Panel>
     </ToolTip.Tip>
     <Border
-        Width="{Binding Width}"
         Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
         BoxShadow="{Binding Border}"
@@ -63,7 +62,10 @@
                         DockPanel.Dock="Top"
                         Foreground="#FF9A9A9A"
                         Text="{Binding Type, FallbackValue=Type}" />
-                    <TextBlock Text="{Binding UUID, FallbackValue=UUID}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock
+                        IsVisible="{Binding DisplayUUID}"
+                        Text="{Binding UUID, FallbackValue=UUID}"
+                        TextTrimming="CharacterEllipsis" />
                 </DockPanel>
             </Panel>
         </Panel>
