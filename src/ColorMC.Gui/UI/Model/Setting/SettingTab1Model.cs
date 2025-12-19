@@ -360,7 +360,7 @@ public partial class SettingModel
         if (!res)
             return;
 
-        UserBinding.ClearAllUser();
+        UserManager.ClearAllUser();
         Window.Notify(LangUtils.Get("SettingWindow.Tab1.Text25"));
     }
 

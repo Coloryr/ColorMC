@@ -129,11 +129,6 @@ public partial class MainModel
         newValue?.Select();
 
         HaveGame = newValue != null;
-
-        if (IsSimple)
-        {
-            LoadSimple();
-        }
     }
 
     /// <summary>
@@ -482,14 +477,6 @@ public partial class MainModel
         }
 
         OnPropertyChanged(SwitchView);
-        if (IsSimple)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                Game = null;
-                Game = last;
-            });
-        }
     }
 
     /// <summary>

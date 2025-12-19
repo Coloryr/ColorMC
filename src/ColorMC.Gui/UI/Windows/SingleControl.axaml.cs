@@ -66,7 +66,7 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
         PointerPressed += AllControl_PointerPressed;
         PointerReleased += AllControl_PointerReleased;
 
-        ImageManager.BGUpdate += PicUpdate;
+        EventManager.BGChange += PicUpdate;
 
         PicUpdate();
     }

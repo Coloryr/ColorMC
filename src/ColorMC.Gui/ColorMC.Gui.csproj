@@ -21,6 +21,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DebugType>embedded</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <AvaloniaXaml Remove="Resource\Icon\ItemsGrid\**" />
+    <Compile Remove="Resource\Icon\ItemsGrid\**" />
+    <EmbeddedResource Remove="Resource\Icon\ItemsGrid\**" />
+    <None Remove="Resource\Icon\ItemsGrid\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove=".gitignore" />
@@ -101,6 +107,9 @@
     <None Remove="Resource\Icon\launch.svg" />
     <None Remove="Resource\Icon\left.svg" />
     <None Remove="Resource\Icon\left1.svg" />
+    <None Remove="Resource\Icon\ListGrid\ListGrid1.svg" />
+    <None Remove="Resource\Icon\ListGrid\ListGrid2.svg" />
+    <None Remove="Resource\Icon\ListGrid\ListGrid3.svg" />
     <None Remove="Resource\Icon\LuckBlock\down.svg" />
     <None Remove="Resource\Icon\LuckBlock\up.svg" />
     <None Remove="Resource\Icon\Main\svg1.svg" />
@@ -254,6 +263,9 @@
     <AvaloniaResource Include="Resource\Icon\launch.svg" />
     <AvaloniaResource Include="Resource\Icon\left.svg" />
     <AvaloniaResource Include="Resource\Icon\left1.svg" />
+    <AvaloniaResource Include="Resource\Icon\ListGrid\ListGrid1.svg" />
+    <AvaloniaResource Include="Resource\Icon\ListGrid\ListGrid2.svg" />
+    <AvaloniaResource Include="Resource\Icon\ListGrid\ListGrid3.svg" />
     <AvaloniaResource Include="Resource\Icon\LuckBlock\down.svg" />
     <AvaloniaResource Include="Resource\Icon\LuckBlock\up.svg" />
     <AvaloniaResource Include="Resource\Icon\Main\svg1.svg" />

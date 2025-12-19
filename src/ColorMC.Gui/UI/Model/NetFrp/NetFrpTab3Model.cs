@@ -9,6 +9,7 @@ using AvaloniaEdit.Document;
 using ColorMC.Core.Net.Motd;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
+using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
@@ -238,7 +239,7 @@ public partial class NetFrpModel
             return;
         }
 
-        var user = UserBinding.GetLastUser();
+        var user = UserManager.GetLastUser();
         if (user?.AuthType != AuthType.OAuth)
         {
             await Window.ShowWait(LangUtils.Get("NetFrpWindow.Tab4.Text8"));

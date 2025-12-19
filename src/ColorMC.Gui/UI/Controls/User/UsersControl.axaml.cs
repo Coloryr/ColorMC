@@ -87,14 +87,6 @@ public partial class UsersControl : BaseUserControl
     }
 
     /// <summary>
-    /// 刷新账户列表
-    /// </summary>
-    public void LoadUsers()
-    {
-        (DataContext as UsersModel)?.LoadUsers();
-    }
-
-    /// <summary>
     /// 重载头像
     /// </summary>
     public void ReloadHead()

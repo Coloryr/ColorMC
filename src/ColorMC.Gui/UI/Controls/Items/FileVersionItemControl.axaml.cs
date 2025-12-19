@@ -24,18 +24,6 @@ public partial class FileVersionItemControl : UserControl
         PointerExited += FileItemControl_PointerExited;
     }
 
-    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
-    {
-        base.OnApplyTemplate(e);
-        if (GuiConfigUtils.Config.Style.EnableAm)
-        {
-            Dispatcher.UIThread.Post(() =>
-            {
-                ItemAnimation.Make().RunAsync(this);
-            });
-        }
-    }
-
     private void FileItemControl_PointerExited(object? sender, PointerEventArgs e)
     {
         if (DataContext is FileVersionItemModel model)

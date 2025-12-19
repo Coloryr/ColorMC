@@ -106,7 +106,7 @@ public partial class App : Application
             Task.Run(() =>
             {
                 ColorMCCore.Init1();
-
+                UserManager.Init();
                 BaseBinding.Init1();
             });
         }

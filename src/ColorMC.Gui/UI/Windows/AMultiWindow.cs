@@ -75,7 +75,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         PointerReleased += AMultiWindow_PointerReleased;
         PointerPressed += AMultiWindow_PointerPressed;
 
-        ImageManager.BGUpdate += AMultiWindow_PicUpdate;
+        EventManager.BGChange += AMultiWindow_PicUpdate;
 
         if (con is ErrorControl)
         {
@@ -240,7 +240,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         WindowManager.ClosedWindow(this);
 
-        ImageManager.BGUpdate -= AMultiWindow_PicUpdate;
+        EventManager.BGChange -= AMultiWindow_PicUpdate;
 
         ((ICon as UserControl)?.DataContext as ControlModel)?.Close();
         DataContext = null;

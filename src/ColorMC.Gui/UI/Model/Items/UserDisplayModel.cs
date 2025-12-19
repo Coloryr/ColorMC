@@ -19,8 +19,6 @@ public partial class UserDisplayModel : SelectItemModel
 {
     public const string NameReload = "Reload";
 
-    public const double DefaultWidth = 350;
-
     public LoginObj Obj => _obj;
 
     /// <summary>
@@ -45,12 +43,6 @@ public partial class UserDisplayModel : SelectItemModel
     public string Text2 => _obj.Text2;
 
     /// <summary>
-    /// 宽度
-    /// </summary>
-    [ObservableProperty]
-    private double _width = DefaultWidth;
-
-    /// <summary>
     /// 是否有皮肤文件
     /// </summary>
     [ObservableProperty]
@@ -60,6 +52,11 @@ public partial class UserDisplayModel : SelectItemModel
     /// </summary>
     [ObservableProperty]
     private bool _haveCape;
+    /// <summary>
+    /// 是否显示UUID
+    /// </summary>
+    [ObservableProperty]
+    private bool _displayUUID = false;
 
     /// <summary>
     /// 账户类型

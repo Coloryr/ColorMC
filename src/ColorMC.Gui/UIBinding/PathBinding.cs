@@ -149,7 +149,7 @@ public static class PathBinding
                 OpenPathWithExplorer(JvmPath.JavaDir);
                 break;
             case PathType.PicPath:
-                OpenPathWithExplorer(ImageManager.GetImagePath());
+                OpenPathWithExplorer(ImageManager.ImagePath);
                 break;
         }
     }
