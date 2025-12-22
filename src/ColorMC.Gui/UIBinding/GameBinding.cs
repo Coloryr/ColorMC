@@ -281,7 +281,7 @@ public static class GameBinding
     /// 显示错误信息
     /// </summary>
     /// <param name="exception"></param>
-    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj, 
+    private static void DisplayLaunchCrash(Exception exception, GameSettingObj obj,
         LoginObj login, out LaunchError state)
     {
         var title = LangUtils.Get("App.Text111");

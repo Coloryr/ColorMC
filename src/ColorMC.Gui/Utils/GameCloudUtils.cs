@@ -95,7 +95,7 @@ public static class GameCloudUtils
         {
             list.Add(item.Key.ToString(), item.Value);
         }
-        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGameCloudFile, 
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameGameCloudFile,
             s_file, list, JsonGuiType.DictionaryStringCloudDataObj));
     }
 

@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Collect;

@@ -1,9 +1,6 @@
 using ColorMC.Gui.Objs.Config;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UI.Model.NetFrp;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 

@@ -25,6 +25,7 @@ public static class UserManager
         if (GuiConfigUtils.Config.LastUser is { } last)
         {
             s_select = AuthDatabase.Get(last.UUID, last.Type);
+            EventManager.OnLastUserChange(s_select != null);
         }
     }
 

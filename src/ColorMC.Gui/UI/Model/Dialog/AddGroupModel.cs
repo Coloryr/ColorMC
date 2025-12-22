@@ -1,11 +1,6 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Gui.UIBinding;
-using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
