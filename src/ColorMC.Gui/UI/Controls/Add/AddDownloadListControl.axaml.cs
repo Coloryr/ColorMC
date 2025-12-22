@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel;
 using Avalonia.Controls;
-using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Add;
 
 namespace ColorMC.Gui.UI.Controls.Add;

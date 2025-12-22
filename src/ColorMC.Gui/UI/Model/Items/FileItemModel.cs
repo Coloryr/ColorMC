@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -170,7 +169,7 @@ public partial class FileItemModel : SelectItemModel
         McMod = mcmod;
 
         Obj = new SourceItemObj
-        { 
+        {
             Pid = data.Id.ToString(),
             Fid = data.Id.ToString(),
             Type = type,
@@ -204,8 +203,8 @@ public partial class FileItemModel : SelectItemModel
         DownloadCount = UIUtils.MakeDownload(data.DownloadCount);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.Logo?.Url;
-        
-        
+
+
         Url = data.GetUrl();
 
         HaveDownload = true;
@@ -301,7 +300,7 @@ public partial class FileItemModel : SelectItemModel
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.DateModified);
         Logo = data.IconUrl;
-        
+
         Url = data.GetUrl(type);
 
         HaveDownload = true;
@@ -457,7 +456,7 @@ public partial class FileItemModel : SelectItemModel
             {
                 _img = await ImageManager.LoadAsync(Logo, 100);
             });
-           
+
             return _img;
         }
         catch (Exception e)

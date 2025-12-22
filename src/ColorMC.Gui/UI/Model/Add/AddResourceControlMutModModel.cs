@@ -118,7 +118,7 @@ public partial class AddResourceControlModel
         }
     }
 
-    private async Task<bool?> StartListTask(ModDownloadListRes list, ModInfoObj? mod, 
+    private async Task<bool?> StartListTask(ModDownloadListRes list, ModInfoObj? mod,
         SourceType source, string name, string version)
     {
         var self = new FileModVersionModel(name, [version], [new DownloadModObj()

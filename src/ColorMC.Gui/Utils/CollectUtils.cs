@@ -283,8 +283,8 @@ public static class CollectUtils
     /// <returns></returns>
     public static bool IsCollect(SourceItemObj obj)
     {
-        return Collect.Items.Values.Any(item => item.Source == obj.Source 
-        && item.FileType == obj.Type 
+        return Collect.Items.Values.Any(item => item.Source == obj.Source
+        && item.FileType == obj.Type
         && item.Pid == obj.Pid);
     }
 

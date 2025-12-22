@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Config;
@@ -13,7 +12,6 @@ using ColorMC.Core.Utils;
 using ColorMC.Gui.Joystick;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.Objs.Config;
-using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.Manager;
@@ -119,7 +117,7 @@ public static class GameManager
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -289,7 +287,7 @@ public static class GameManager
     {
         return new GameModSettingObj
         {
-            
+
         };
     }
 

@@ -156,8 +156,8 @@ public partial class AddGameModel
     /// <param name="value"></param>
     partial void OnLoaderVersionChanged(string? value)
     {
-        if (!IsAutoRename || string.IsNullOrWhiteSpace(Version) 
-            || _loaderTypeList.Count == 0 
+        if (!IsAutoRename || string.IsNullOrWhiteSpace(Version)
+            || _loaderTypeList.Count == 0
             || string.IsNullOrWhiteSpace(value))
         {
             return;

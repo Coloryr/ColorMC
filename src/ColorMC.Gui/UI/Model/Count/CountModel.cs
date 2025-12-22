@@ -126,11 +126,11 @@ public partial class CountModel : ControlModel
             _countDone = data.LaunchDoneCount;
             _countError = data.LaunchErrorCount;
             _dateCount = (from item in data.LaunchLogs.Values
-                                        from item1 in item
-                                        where item1.Time.Year == _date.Year &&
-                                        item1.Time.Month == _date.Month &&
-                                        item1.Time.Day == _date.Day
-                                        select item).Count();
+                          from item1 in item
+                          where item1.Time.Year == _date.Year &&
+                          item1.Time.Month == _date.Month &&
+                          item1.Time.Day == _date.Day
+                          select item).Count();
             _time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
             //累计统计时间

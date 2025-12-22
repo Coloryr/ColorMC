@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using ColorMC.Core.Config;
 using ColorMC.Core.Downloader;
@@ -12,7 +11,6 @@ using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Setting;
 
@@ -287,7 +285,7 @@ public partial class SettingModel
         }
 
         var model = new InputModel(Window.WindowId)
-        { 
+        {
             Watermark1 = LangUtils.Get("SettingWindow.Tab3.Text30")
         };
         var res = await Window.ShowDialogWait(model);

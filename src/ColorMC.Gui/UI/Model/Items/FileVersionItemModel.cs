@@ -57,7 +57,7 @@ public partial class FileVersionItemModel : SelectItemModel
         ProjectName = project;
 
         Obj = new SourceItemObj
-        { 
+        {
             Fid = data.Id.ToString(),
             Pid = data.ModId.ToString(),
             Source = SourceType.CurseForge,

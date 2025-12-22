@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
@@ -105,7 +104,7 @@ public partial class AddGameModel : ControlModel
 
     //    Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
 
-        
+
     //    Group = dialog.Text1;
     //}
 
@@ -153,7 +152,7 @@ public partial class AddGameModel : ControlModel
         ServerPackDownload();
     }
 
-    private void LoadGroup() 
+    private void LoadGroup()
     {
         GroupList.Clear();
         GroupList.AddRange(InstancesPath.GroupKeys);

@@ -338,7 +338,7 @@ public class ResourceGui : IAddGui
 
     public void SetNow(int value, int all)
     {
-        
+
     }
 
     public void SetNowProcess(int value, int all)
@@ -350,17 +350,17 @@ public class ResourceGui : IAddGui
 
     public void SetNowSub(int value, int all)
     {
-        
+
     }
 
     public void SetState(AddState state)
     {
-        
+
     }
 
     public void SetSubText(string? text)
     {
-        
+
     }
 
     private bool Run()

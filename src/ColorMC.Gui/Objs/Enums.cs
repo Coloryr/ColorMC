@@ -222,8 +222,8 @@ public enum LanguageType
 /// </summary>
 public enum ItemsGridType
 {
-    List, 
-    ListInfo, 
-    Grid, 
+    List,
+    ListInfo,
+    Grid,
     GridInfo
 }

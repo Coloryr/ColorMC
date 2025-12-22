@@ -73,7 +73,7 @@ public partial class UsersModel : ControlModel
     /// </summary>
     [ObservableProperty]
     private int _displayType;
-    
+
     /// <summary>
     /// 是否为堆叠模式
     /// </summary>

@@ -46,7 +46,7 @@ public partial class AddGameControl : BaseUserControl
         _animationCts?.Dispose();
         _animationCts = new CancellationTokenSource();
         var token = _animationCts.Token;
-        
+
         Content1.IsVisible = true;
 
         try
@@ -55,7 +55,7 @@ public partial class AddGameControl : BaseUserControl
         }
         catch (OperationCanceledException)
         {
-            
+
         }
     }
 
@@ -80,7 +80,7 @@ public partial class AddGameControl : BaseUserControl
         }
         catch (OperationCanceledException)
         {
-            
+
         }
     }
 
@@ -97,13 +97,13 @@ public partial class AddGameControl : BaseUserControl
         // 确保可见
         MainMenuGrid.IsVisible = true;
 
-        try 
-        { 
-            await MainMenuIn.Start(MainMenuGrid, token); 
-        } 
-        catch (OperationCanceledException) 
-        { 
-        
+        try
+        {
+            await MainMenuIn.Start(MainMenuGrid, token);
+        }
+        catch (OperationCanceledException)
+        {
+
         }
     }
 
@@ -130,9 +130,9 @@ public partial class AddGameControl : BaseUserControl
                 MainMenuGrid.IsVisible = false;
             }
         }
-        catch (OperationCanceledException) 
-        { 
-        
+        catch (OperationCanceledException)
+        {
+
         }
     }
 
