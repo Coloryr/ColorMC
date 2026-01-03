@@ -43,8 +43,9 @@ public static class ThemeManager
 
     //阴影
     private static BoxShadows s_buttonShadow;
-    public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 0 3 1 #1A000000"), [BoxShadow.Parse("0 0 5 -1 #1A000000")]);
-    public static BoxShadows BorderSelecrShadows { get; private set; }
+    public static readonly BoxShadows BorderShadows = new(BoxShadow.Parse("0 1 2 0 #0d000000"));
+    public static readonly BoxShadows BorderTopShadows = new(BoxShadow.Parse("0 4 8 -1 #1a000000"), [BoxShadow.Parse("0 2 4 -2 #1a000000")]);
+    public static BoxShadows BorderSelectShadows { get; private set; }
 
     private static readonly IBrush[] s_colors = [Brush.Parse("#3b82f6"), Brush.Parse("#22c55e"),
         Brush.Parse("#eab308"), Brush.Parse("#ef4444"), Brush.Parse("#a855f7"),
@@ -124,14 +125,14 @@ public static class ThemeManager
 
         s_buttonShadow = new(new BoxShadow
         {
-            Blur = 3,
+            Blur = 2,
             Spread = 1,
             Color = color1
         });
 
-        BorderSelecrShadows = new(new BoxShadow
+        BorderSelectShadows = new(new BoxShadow
         {
-            Blur = 3,
+            Blur = 2,
             Spread = 1,
             Color = color1
         });
@@ -294,6 +295,10 @@ public static class ThemeManager
         {
             return s_colors[s_random.Next(s_colors.Length)];
         }
+        else if (key == nameof(ThemeObj.BorderColor))
+        {
+            return NowThemeColor.BorderColor;
+        }
 
         return Brushes.Transparent;
     }
@@ -312,6 +317,10 @@ public static class ThemeManager
         else if (key == "ButtonTopBoxShadow")
         {
             return s_buttonShadow;
+        }
+        else if (key == "BorderSelectShadows")
+        {
+            return BorderSelectShadows;
         }
         return null;
     }
@@ -546,6 +555,7 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
             MenuBG = Brush.Parse("#FFF4F4F5"),
+            BorderColor = Brush.Parse("#e5e7eb")
         };
 
         s_dark = new()
@@ -571,6 +581,7 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
             MenuBG = Brush.Parse("#FF2c2c2c"),
+            BorderColor = Brush.Parse("#e5e7eb")
         };
     }
 }

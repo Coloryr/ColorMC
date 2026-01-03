@@ -39,7 +39,6 @@ public static class Nide8
             return obj;
         }
 
-        var res = await LegacyLogin.RefreshAsync(server, obj, false, token);
-        return res.Auth!;
+        return await LegacyLogin.RefreshAsync(server, obj, false, token);
     }
 }

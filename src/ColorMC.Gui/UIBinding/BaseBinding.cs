@@ -253,25 +253,6 @@ public static class BaseBinding
     }
 
     /// <summary>
-    /// 获取当前音乐信息
-    /// </summary>
-    /// <returns></returns>
-    public static (PlayState, string) GetMusicNow()
-    {
-        return (Media.PlayState, $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
-            $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}");
-    }
-
-    /// <summary>
-    /// 获取当前音乐播放状态
-    /// </summary>
-    /// <returns></returns>
-    public static PlayState GetPlayState()
-    {
-        return Media.PlayState;
-    }
-
-    /// <summary>
     /// 获取支持的编码
     /// </summary>
     /// <returns></returns>
@@ -293,7 +274,7 @@ public static class BaseBinding
     /// </summary>
     /// <param name="model">资源</param>
     /// <returns></returns>
-    public static bool SetStart(FileItemModel model)
+    public static bool SetStar(FileItemModel model)
     {
         var obj = new CollectItemObj
         {

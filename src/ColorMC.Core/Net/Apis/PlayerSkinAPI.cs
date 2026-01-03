@@ -44,12 +44,18 @@ public static class PlayerSkinAPI
             {
                 isslim = url.Textures.Skin.Metadata?.Model == "slim";
                 var file = AssetsPath.GetSkinFile(url.Textures.Skin.Url);
-                var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Skin.Url);
-
-                if (data2.State)
+                if (File.Exists(file))
                 {
-                    PathHelper.WriteBytes(file, data2.Data!);
                     skin = file;
+                }
+                else
+                {
+                    var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Skin.Url);
+                    if (data2.State)
+                    {
+                        PathHelper.WriteBytes(file, data2.Data!);
+                        skin = file;
+                    }
                 }
             }
             catch (Exception e)
@@ -63,11 +69,18 @@ public static class PlayerSkinAPI
             try
             {
                 var file = AssetsPath.GetSkinFile(url.Textures.Cape.Url);
-                var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Cape.Url);
-                if (data2.State)
+                if (File.Exists(file))
                 {
-                    PathHelper.WriteBytes(file, data2.Data!);
                     cape = file;
+                }
+                else
+                {
+                    var data2 = await CoreHttpClient.GetBytesAsync(url.Textures.Cape.Url);
+                    if (data2.State)
+                    {
+                        PathHelper.WriteBytes(file, data2.Data!);
+                        cape = file;
+                    }
                 }
             }
             catch (Exception e)

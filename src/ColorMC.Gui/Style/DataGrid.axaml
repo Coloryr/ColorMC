@@ -4,17 +4,29 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI">
     <Design.PreviewWith>
         <Border Padding="20">
-            <DataGrid
-                Name="DataGrid1"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="True"
-                CanUserSortColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="123" IsReadOnly="True" />
-                    <DataGridTextColumn Header="456" IsReadOnly="True" />
-                    <DataGridTextColumn Header="789" IsReadOnly="True" />
-                </DataGrid.Columns>
-            </DataGrid>
+            <StackPanel>
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="123" IsReadOnly="True" />
+                        <DataGridTextColumn Header="456" IsReadOnly="True" />
+                        <DataGridTextColumn Header="789" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    CanUserResizeColumns="True"
+                    CanUserSortColumns="False"
+                    Classes="t1">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="123" IsReadOnly="True" />
+                        <DataGridTextColumn Header="456" IsReadOnly="True" />
+                        <DataGridTextColumn Header="789" IsReadOnly="True" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
 
         </Border>
     </Design.PreviewWith>
@@ -28,6 +40,24 @@
 
         <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
             <Setter Property="Fill" Value="Transparent" />
+        </Style>
+    </Style>
+
+    <Style Selector="DataGrid.t1">
+        <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+
+        <Style Selector="^:disabled">
+            <Setter Property="Background" Value="{DynamicResource ComboBoxBackgroundDisabled}" />
+        </Style>
+
+        <Style Selector="^ /template/ Rectangle#PART_ColumnHeadersAndRowsSeparator">
+            <Setter Property="Fill" Value="#f3f4f6" />
+        </Style>
+
+        <Style Selector="^ DataGridColumnHeader">
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Foreground" Value="#9ca3af" />
+            <Setter Property="Background" Value="#00000000" />
         </Style>
     </Style>
 

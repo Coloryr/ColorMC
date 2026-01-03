@@ -4,6 +4,7 @@ using Avalonia.Animation;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.MusicPlayer;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -75,7 +76,7 @@ public partial class MainModel
         }
         else
         {
-            if (BaseBinding.GetPlayState() == PlayState.Stop)
+            if (Media.PlayState == PlayState.Stop)
             {
                 LoadMusic();
             }
@@ -98,9 +99,9 @@ public partial class MainModel
         _musicLoop = true;
         DispatcherTimer.Run(() =>
         {
-            var temp = BaseBinding.GetMusicNow();
-            MusicNow = temp.Item2;
-            if (temp.Item1 == PlayState.Stop)
+            MusicNow = $"{(int)Media.NowTime.TotalMinutes:00}:{Media.NowTime.Seconds:00}" +
+            $"/{(int)Media.MusicTime.TotalMinutes:00}:{Media.MusicTime.Seconds:00}";
+            if (Media.PlayState == PlayState.Stop)
             {
                 _musicLoop = false;
                 AudioIcon = ImageManager.MusicIcons[0];

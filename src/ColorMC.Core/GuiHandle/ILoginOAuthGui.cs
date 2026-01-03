@@ -4,7 +4,6 @@ namespace ColorMC.Core.GuiHandle;
 
 public interface ILoginOAuthGui
 {
-    public CancellationToken Token { get; }
     /// <summary>
     /// OAuth登录
     /// </summary>

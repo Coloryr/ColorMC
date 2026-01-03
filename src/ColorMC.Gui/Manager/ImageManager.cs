@@ -364,7 +364,7 @@ public static class ImageManager
     /// <summary>
     /// 重新获取皮肤头像
     /// </summary>
-    public static void ReloadSkinHead()
+    public static void ReloadHead()
     {
         if (SkinBitmap == null)
         {

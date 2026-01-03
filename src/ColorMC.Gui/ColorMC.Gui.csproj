@@ -127,6 +127,7 @@
     <None Remove="Resource\Icon\pause.svg" />
     <None Remove="Resource\Icon\play.svg" />
     <None Remove="Resource\Icon\reload.svg" />
+    <None Remove="Resource\Icon\relogin.svg" />
     <None Remove="Resource\Icon\setting.svg" />
     <None Remove="Resource\Icon\Setting\item1.svg" />
     <None Remove="Resource\Icon\Setting\item2.svg" />
@@ -281,6 +282,7 @@
     <AvaloniaResource Include="Resource\Icon\NetFrp\item6.svg" />
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\reload.svg" />
+    <AvaloniaResource Include="Resource\Icon\relogin.svg" />
     <AvaloniaResource Include="Resource\Icon\setting.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
@@ -397,6 +399,9 @@
     </Compile>
     <Compile Update="UI\Controls\Dialog\ProgressControl.axaml.cs">
       <DependentUpon>ProgressControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="UI\Controls\Items\UserItemGridControl.axaml.cs">
+      <DependentUpon>UserItemGridControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

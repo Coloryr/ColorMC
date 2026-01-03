@@ -67,7 +67,7 @@ public static class LegacyLogin
         {
             return new LegacyLoginRes
             {
-                Auth = new()
+                Auth = new LoginObj
                 {
                     UserName = obj2.SelectedProfile.Name,
                     UUID = obj2.SelectedProfile.Id,
@@ -84,7 +84,7 @@ public static class LegacyLogin
 
                 return new LegacyLoginRes
                 {
-                    Auth = new()
+                    Auth = new LoginObj
                     {
                         UserName = obj2.SelectedProfile.Name,
                         UUID = obj2.SelectedProfile.Id,
@@ -107,7 +107,7 @@ public static class LegacyLogin
                 {
                     return new LegacyLoginRes
                     {
-                        Auth = new()
+                        Auth = new LoginObj
                         {
                             UserName = obj2.SelectedProfile.Name,
                             UUID = obj2.SelectedProfile.Id,
@@ -120,7 +120,7 @@ public static class LegacyLogin
                 var list = new List<LoginObj>();
                 foreach (var item in obj2.AvailableProfiles)
                 {
-                    list.Add(new()
+                    list.Add(new LoginObj
                     {
                         UserName = item.Name,
                         UUID = item.Id
@@ -129,7 +129,7 @@ public static class LegacyLogin
                 return new LegacyLoginRes
                 {
                     Logins = list,
-                    Auth = new()
+                    Auth = new LoginObj
                     {
                         AccessToken = obj2.AccessToken,
                         ClientToken = obj2.ClientToken
@@ -149,7 +149,7 @@ public static class LegacyLogin
     /// </summary>
     /// <param name="server">服务器地址</param>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(string server, LoginObj obj, bool select, CancellationToken token)
+    public static async Task<LoginObj> RefreshAsync(string server, LoginObj obj, bool select, CancellationToken token)
     {
         var message = new HttpRequestMessage()
         {
@@ -163,7 +163,7 @@ public static class LegacyLogin
             {
                 AccessToken = obj.AccessToken,
                 ClientToken = obj.ClientToken,
-                SelectedProfile = new()
+                SelectedProfile = new RefreshObj.RefreshSelectedProfileObj
                 {
                     Name = obj.UserName,
                     Id = obj.UUID
@@ -206,10 +206,7 @@ public static class LegacyLogin
         obj.AccessToken = obj2.AccessToken;
         obj.ClientToken = obj2.ClientToken;
 
-        return new LegacyLoginRes
-        {
-            Auth = obj
-        };
+        return obj;
     }
 
     /// <summary>

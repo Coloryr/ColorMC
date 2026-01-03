@@ -82,7 +82,7 @@ public record LegacyLoginRes
     /// <summary>
     /// 选中的账户
     /// </summary>
-    public LoginObj? Auth;
+    public LoginObj Auth;
     /// <summary>
     /// 可选的账户列表
     /// </summary>

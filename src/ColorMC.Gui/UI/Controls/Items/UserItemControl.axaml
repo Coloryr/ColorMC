@@ -8,66 +8,84 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="100"
+    d:DesignWidth="600"
     x:DataType="model:UserDisplayModel"
     mc:Ignorable="d">
-    <ToolTip.Tip>
-        <Panel>
-            <TextBlock
-                Margin="5"
-                IsVisible="{Binding !HaveSkin}"
-                Text="{setting:Localize UserWindow.Text30}" />
-            <StackPanel Orientation="Horizontal">
-                <Image
-                    Width="100"
-                    Margin="0,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    IsVisible="{Binding HaveSkin}"
-                    Source="{Binding Skin}" />
-                <Image
-                    Width="80"
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    IsVisible="{Binding HaveCape}"
-                    Source="{Binding Cape}" />
-            </StackPanel>
-        </Panel>
-    </ToolTip.Tip>
     <Border
-        Margin="10,5,10,5"
+        Margin="5"
         Background="{setting:Theme ItemBG}"
+        BorderBrush="{Binding BorderBrush}"
+        BorderThickness="1"
         BoxShadow="{Binding Border}"
         CornerRadius="5">
-        <Panel Margin="15">
-            <Panel>
-                <Border
-                    Name="Border1"
-                    Width="50"
-                    Height="50"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center">
-                    <Border.Background>
-                        <ImageBrush Source="{Binding Image}" Stretch="UniformToFill" />
-                    </Border.Background>
-                </Border>
-                <DockPanel Margin="60,0,0,0">
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        FontSize="16"
-                        Foreground="{setting:Theme MainColor}"
-                        Text="{Binding Name, FallbackValue=1234}"
-                        TextTrimming="CharacterEllipsis" />
-                    <TextBlock
-                        DockPanel.Dock="Top"
-                        Foreground="#FF9A9A9A"
-                        Text="{Binding Type, FallbackValue=Type}" />
-                    <TextBlock
-                        IsVisible="{Binding DisplayUUID}"
-                        Text="{Binding UUID, FallbackValue=UUID}"
-                        TextTrimming="CharacterEllipsis" />
-                </DockPanel>
-            </Panel>
-        </Panel>
+        <DockPanel Margin="10">
+            <Border
+                Name="Border1"
+                Width="60"
+                Height="60"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                DockPanel.Dock="Left">
+                <Border.Background>
+                    <ImageBrush Source="{Binding Image}" Stretch="UniformToFill" />
+                </Border.Background>
+            </Border>
+            <StackPanel
+                HorizontalAlignment="Right"
+                DockPanel.Dock="Right"
+                Orientation="Horizontal">
+                <Button
+                    Width="24"
+                    HorizontalAlignment="Right"
+                    Classes="none"
+                    Command="{Binding Refresh}"
+                    IsVisible="{Binding CanRefresh}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text134}">
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/reload.svg" />
+                </Button>
+                <Button
+                    Width="24"
+                    HorizontalAlignment="Right"
+                    Classes="none"
+                    Command="{Binding Relogin}"
+                    IsVisible="{Binding CanRelogin}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text135}">
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/relogin.svg" />
+                </Button>
+                <Button
+                    Width="24"
+                    HorizontalAlignment="Right"
+                    Classes="none"
+                    Command="{Binding Edit}"
+                    IsVisible="{Binding CanEdit}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text136}">
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/edit.svg" />
+                </Button>
+                <Button
+                    Width="24"
+                    HorizontalAlignment="Right"
+                    Classes="none"
+                    Command="{Binding Remove}"
+                    ToolTip.Tip="{setting:Localize ToolTip.Text137}">
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/delete.svg" />
+                </Button>
+            </StackPanel>
+            <StackPanel Margin="10,0,0,0">
+                <TextBlock
+                    FontSize="16"
+                    Text="{Binding Name, FallbackValue=1234}"
+                    TextTrimming="CharacterEllipsis" />
+                <TextBlock
+                    FontSize="14"
+                    Foreground="{Binding AuthColor}"
+                    Text="{Binding Type, FallbackValue=Type}" />
+                <TextBlock
+                    Classes="t1"
+                    FontSize="12"
+                    Text="{Binding UUID, FallbackValue=UUID}"
+                    TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </DockPanel>
     </Border>
 </UserControl>

@@ -13,4 +13,14 @@
         <Setter Property="Fill" Value="{setting:Theme FontColor}" />
         <Setter Property="Stroke" Value="{setting:Theme FontColor}" />
     </Style>
+
+    <Style Selector="svg|SvgControl.t1">
+        <Setter Property="Fill" Value="#9ca3af" />
+        <Setter Property="Stroke" Value="#9ca3af" />
+
+        <Style Selector="^:pointerover">
+            <Setter Property="Fill" Value="{setting:Theme MainColor}" />
+            <Setter Property="Stroke" Value="{setting:Theme MainColor}" />
+        </Style>
+    </Style>
 </Styles>

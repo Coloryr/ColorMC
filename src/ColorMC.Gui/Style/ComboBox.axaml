@@ -19,7 +19,7 @@
         <Setter Property="MaxDropDownHeight" Value="300" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
-        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
 
@@ -29,9 +29,37 @@
 
         <Style Selector="^:dropdownopen /template/ Border#PopupBorder">
             <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </Style>
+
+    <Style Selector="ComboBox.t1">
+        <Setter Property="MaxDropDownHeight" Value="300" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Background" Value="#f9fafb" />
+        <Setter Property="BorderBrush" Value="#e5e7eb" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="5" />
+
+        <Style Selector="^:pointerover /template/ Border#Background">
+            <Setter Property="BoxShadow" Value="{setting:Style BorderSelectShadows}" />
+        </Style>
+
+        <Style Selector="^:dropdownopen /template/ Border#Background">
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
+        </Style>
+
+        <Style Selector="^:dropdownopen /template/ Border#PopupBorder">
+            <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
             <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="CornerRadius" Value="5" />
+        </Style>
+
+        <Style Selector="^ DataValidationErrors">
+            <Setter Property="ClipToBounds" Value="False" />
         </Style>
     </Style>
 

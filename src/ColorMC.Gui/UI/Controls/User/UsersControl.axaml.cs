@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Avalonia.Input;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model;
@@ -20,6 +21,16 @@ public partial class UsersControl : BaseUserControl
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DropEvent, Drop);
+
+        GridPanel.SizeChanged += GridPanel_SizeChanged;
+    }
+
+    private void GridPanel_SizeChanged(object? sender, SizeChangedEventArgs e)
+    {
+        if (DataContext is UsersModel model)
+        {
+            model.GridCount = (int)(GridPanel.Bounds.Width / 200);
+        }
     }
 
     public override void Closed()
@@ -84,13 +95,5 @@ public partial class UsersControl : BaseUserControl
     public void Relogin()
     {
         (DataContext as UsersModel)?.ReLogin();
-    }
-
-    /// <summary>
-    /// 重载头像
-    /// </summary>
-    public void ReloadHead()
-    {
-        (DataContext as UsersModel)?.ReloadHead();
     }
 }

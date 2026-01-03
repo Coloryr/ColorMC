@@ -135,6 +135,18 @@ public static class ColorManager
         };
     }
 
+    public static IBrush GetColor(AuthType type)
+    {
+        return type switch
+        {
+            AuthType.OAuth => Brush.Parse("#2563eb"),
+            AuthType.Nide8 => Brush.Parse("#25c6eb"),
+            AuthType.AuthlibInjector => Brush.Parse("#c0de5c"),
+            AuthType.LittleSkin or AuthType.SelfLittleSkin => Brush.Parse("#58d3a6"),
+            _ => Brush.Parse("#9ca3af")
+        };
+    }
+
     /// <summary>
     /// 获取颜色
     /// </summary>

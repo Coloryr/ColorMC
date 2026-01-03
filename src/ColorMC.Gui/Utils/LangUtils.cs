@@ -652,7 +652,6 @@ public static class LangUtils
         [
             "Adoptium",
             "Zulu",
-            "Dragonwell",
             "OpenJ9",
         ];
     }

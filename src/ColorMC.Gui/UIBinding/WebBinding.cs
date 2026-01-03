@@ -1057,24 +1057,7 @@ public static class WebBinding
             case 1:
                 return await GetZuluListAsync();
             case 2:
-                var res1 = await GetDragonwellListAsync();
-                if (res1 != null)
-                {
-                    return new GetJavaListRes
-                    {
-                        Res = true,
-                        Download = res1
-                    };
-                }
-                break;
-            case 3:
                 return await GetOpenJ9ListAsync();
-                //case 4:
-                //    return new GetJavaListRes
-                //    {
-                //        Res = true,
-                //        Download = GetGraalvmList()
-                //    };
         }
         return new();
     }
@@ -1489,34 +1472,6 @@ public static class WebBinding
                 Url = item.Wurl17,
                 File = file
             });
-        }
-    }
-
-    /// <summary>
-    /// 获取Dragonwell
-    /// </summary>
-    /// <returns></returns>
-    private static async Task<List<JavaDownloadModel>?> GetDragonwellListAsync()
-    {
-        try
-        {
-            var list = await Dragonwell.GetJavaListAsync();
-            if (list == null)
-            {
-                return null;
-            }
-
-            var list1 = new List<JavaDownloadModel>();
-
-            AddDragonwell(list1, list.Extended);
-            AddDragonwell(list1, list.Standard);
-
-            return list1;
-        }
-        catch (Exception e)
-        {
-            WindowManager.ShowError(LangUtils.Get("App.Text76"), e);
-            return null;
         }
     }
 

@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
@@ -15,7 +14,7 @@ public static class AuthDatabase
     /// <summary>
     /// 保存的账户
     /// </summary>
-    private static readonly ConcurrentDictionary<UserKeyObj, LoginObj> s_auths = new();
+    private static readonly Dictionary<UserKeyObj, LoginObj> s_auths = [];
 
     /// <summary>
     /// 获取账户列表
@@ -74,7 +73,8 @@ public static class AuthDatabase
     /// </summary>
     public static void Save()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameAuthFile, s_local, [.. s_auths.Values], JsonType.ListLoginObj));
+        ConfigSave.AddItem(ConfigSaveObj.Build(Names.NameAuthFile, s_local,
+            [.. s_auths.Values], JsonType.ListLoginObj));
     }
 
     /// <summary>
@@ -89,17 +89,18 @@ public static class AuthDatabase
         }
 
         var key = obj.GetKey();
-
-        if (s_auths.ContainsKey(key))
+        lock (s_auths)
         {
-            s_auths[key] = obj;
+            if (s_auths.ContainsKey(key))
+            {
+                s_auths[key] = obj;
+            }
+            else
+            {
+                s_auths.TryAdd(key, obj);
+            }
+            Save();
         }
-        else
-        {
-            s_auths.TryAdd(key, obj);
-        }
-
-        Save();
     }
 
     /// <summary>
@@ -115,8 +116,11 @@ public static class AuthDatabase
     /// </summary>
     public static void Delete(this LoginObj obj)
     {
-        s_auths.TryRemove(obj.GetKey(), out _);
-        Save();
+        lock (s_auths)
+        {
+            s_auths.Remove(obj.GetKey());
+            Save();
+        }
     }
 
     /// <summary>
@@ -131,17 +135,20 @@ public static class AuthDatabase
             return false;
         }
 
-        foreach (var item in list)
+        lock (s_auths)
         {
-            var key = item.GetKey();
+            foreach (var item in list)
+            {
+                var key = item.GetKey();
 
-            if (s_auths.ContainsKey(key))
-            {
-                s_auths[key] = item;
-            }
-            else
-            {
-                s_auths.TryAdd(key, item);
+                if (s_auths.ContainsKey(key))
+                {
+                    s_auths[key] = item;
+                }
+                else
+                {
+                    s_auths.TryAdd(key, item);
+                }
             }
         }
 
@@ -153,7 +160,10 @@ public static class AuthDatabase
     /// </summary>
     public static void ClearAuths()
     {
-        s_auths.Clear();
-        Save();
+        lock (s_auths)
+        {
+            s_auths.Clear();
+            Save();
+        }
     }
 }

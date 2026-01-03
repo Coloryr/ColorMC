@@ -31,6 +31,7 @@ public static class Launch
         try
         {
             var res1 = await larg.Auth.RefreshTokenAsync(token);
+            res1.LastLogin = DateTime.Now;
             larg.Auth = res1;
             larg.Auth.Save();
         }

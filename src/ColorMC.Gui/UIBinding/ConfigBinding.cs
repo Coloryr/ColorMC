@@ -830,7 +830,6 @@ public static class ConfigBinding
         if (GuiConfigUtils.Config.Head.Type == HeadType.Head3D_B)
         {
             UserBinding.ReloadSkin();
-            WindowManager.UserWindow?.ReloadHead();
         }
     }
 
@@ -844,7 +843,6 @@ public static class ConfigBinding
         GuiConfigUtils.Save();
 
         UserBinding.ReloadSkin();
-        WindowManager.UserWindow?.ReloadHead();
     }
 
     /// <summary>

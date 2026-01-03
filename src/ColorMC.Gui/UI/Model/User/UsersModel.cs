@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Web;
 using Avalonia.Input;
+using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
+using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -73,17 +75,19 @@ public partial class UsersModel : ControlModel
     /// </summary>
     [ObservableProperty]
     private int _displayType;
+    /// <summary>
+    /// 所有账户数量
+    /// </summary>
+    [ObservableProperty]
+    private int _userCount;
+    /// <summary>
+    /// 当前分类账户数量
+    /// </summary>
+    [ObservableProperty]
+    private int _listUserCount;
 
-    /// <summary>
-    /// 是否为堆叠模式
-    /// </summary>
     [ObservableProperty]
-    private bool _isStack;
-    /// <summary>
-    /// 是否为网格模式
-    /// </summary>
-    [ObservableProperty]
-    private bool _isGrid;
+    private int _gridCount;
 
     /// <summary>
     /// 账户类型列表
@@ -109,14 +113,20 @@ public partial class UsersModel : ControlModel
     public UsersModel(WindowModel model) : base(model)
     {
         LoadUsers();
-        LoadGrid();
 
         EventManager.LockUserChange += EventManager_LockUserChange;
+        EventManager.SkinChange += EventManager_SkinChange;
     }
 
-    partial void OnGridTypeChanged(ItemsGridType value)
+    private void EventManager_SkinChange()
     {
-        LoadGrid();
+        Dispatcher.UIThread.Post(() =>
+        {
+            foreach (var item in UserList)
+            {
+                item.ReloadHead();
+            }
+        });
     }
 
     partial void OnDisplayTypeChanged(int value)
@@ -131,17 +141,6 @@ public partial class UsersModel : ControlModel
     public void SetAdd()
     {
         ShowAdd(new AddUserModel(Window.WindowId));
-    }
-
-    private void LoadGrid()
-    {
-        IsGrid = GridType != ItemsGridType.ListInfo;
-        IsStack = GridType == ItemsGridType.GridInfo;
-
-        foreach (var item in UserList)
-        {
-            item.DisplayUUID = IsStack;
-        }
     }
 
     private void EventManager_LockUserChange()
@@ -164,9 +163,10 @@ public partial class UsersModel : ControlModel
         {
             type = (AuthType)model.Type;
         }
-        _tokenSource = new();
-
+        
         var gui = new LoginGui(Window);
+
+        ReadyCancel();
 
         switch (type)
         {
@@ -178,7 +178,7 @@ public partial class UsersModel : ControlModel
                     Window.Show(LangUtils.Get("SettingWindow.Tab5.Text21"));
                     break;
                 }
-                var res = await UserBinding.AddUserAsync(AuthType.Offline, new LoginOAuthGui(this, null), gui, name);
+                var res = await UserBinding.AddUserAsync(AuthType.Offline, new LoginOAuthGui(this, null), gui, Token, name);
                 if (!res.State)
                 {
                     Window.Show(res.Data!);
@@ -190,7 +190,7 @@ public partial class UsersModel : ControlModel
                 _cancel = false;
                 _isOAuth = true;
                 var dialog = Window.ShowProgress(LangUtils.Get("Text.Loading"));
-                res = await UserBinding.AddUserAsync(AuthType.OAuth, new LoginOAuthGui(this, dialog), gui);
+                res = await UserBinding.AddUserAsync(AuthType.OAuth, new LoginOAuthGui(this, dialog), gui, Token);
                 Window.CloseDialog(dialog);
                 if (_cancel)
                 {
@@ -219,8 +219,8 @@ public partial class UsersModel : ControlModel
                     break;
                 }
                 dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
-                res = await UserBinding.AddUserAsync(AuthType.Nide8, new LoginOAuthGui(this, dialog), gui,
-                    server, model.User, model.Password);
+                res = await UserBinding.AddUserAsync(AuthType.Nide8, new LoginOAuthGui(this, dialog), gui, Token,
+                     model.User, model.Password, server);
                 Window.CloseDialog(dialog);
                 if (!res.State)
                 {
@@ -245,7 +245,7 @@ public partial class UsersModel : ControlModel
                 }
                 dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.AuthlibInjector, new LoginOAuthGui(this, dialog),
-                    gui, server, model.User, model.Password);
+                    gui, Token, model.User, model.Password, server);
                 Window.CloseDialog(dialog);
                 if (!res.State)
                 {
@@ -264,7 +264,7 @@ public partial class UsersModel : ControlModel
                 }
                 dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.LittleSkin, new LoginOAuthGui(this, dialog),
-                    gui, model.User, model.Password);
+                    gui, Token, model.User, model.Password);
                 Window.CloseDialog(dialog);
                 if (!res.State)
                 {
@@ -289,7 +289,7 @@ public partial class UsersModel : ControlModel
                 }
                 dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text11"));
                 res = await UserBinding.AddUserAsync(AuthType.SelfLittleSkin, new LoginOAuthGui(this, dialog),
-                    gui, model.User, model.Password, server);
+                    gui, Token, model.User, model.Password, server);
                 Window.CloseDialog(dialog);
                 if (!res.State)
                 {
@@ -380,6 +380,7 @@ public partial class UsersModel : ControlModel
     public async void Refresh(UserDisplayModel obj)
     {
         var dialog = Window.ShowProgress(LangUtils.Get("UserWindow.Text12"));
+        ReadyCancel();
         var res = await UserBinding.ReLoginAsync(obj.UUID, obj.AuthType, Token);
         Window.CloseDialog(dialog);
         if (!res.State)
@@ -530,62 +531,90 @@ public partial class UsersModel : ControlModel
     /// </summary>
     public void Load()
     {
-        var item1 = UserManager.GetLastUser();
+        var select = UserManager.GetLastUser();
         foreach (var item in UserList)
         {
             item.Close();
         }
         UserList.Clear();
+
+        var list = new List<LoginObj>();
+
         foreach (var item in AuthDatabase.Auths)
         {
             //是否为锁定账户模式
             if (LockLogin)
             {
-                if (DisplayType <= 0)
+                foreach (var item2 in _locks)
                 {
-                    foreach (var item2 in _locks)
+                    if (item2.Type == item.Value.AuthType && (item2.Type == AuthType.OAuth
+                        || item2.Data == item.Value.Text1))
                     {
-                        if (item2.Type == item.Value.AuthType && (item2.Type == AuthType.OAuth
-                            || item2.Data == item.Value.Text1))
-                        {
-                            UserList.Add(new(this, item.Value)
-                            {
-                                IsSelect = item1 == item.Value
-                            });
-                        }
+                        list.Add(item.Value);
                     }
-                }
-                else
-                {
-                    var login = _locks[DisplayType - 1];
-                    if (login.Type == item.Value.AuthType && (login.Type == AuthType.OAuth
-                            || login.Data == item.Value.Text1))
-                    {
-                        UserList.Add(new(this, item.Value)
-                        {
-                            IsSelect = item1 == item.Value
-                        });
-                    }
+
+                    UserCount = UserList.Count;
                 }
             }
             else
             {
-                if (DisplayType <= 0)
+                list.Add(item.Value);
+            }
+        }
+
+        UserCount = list.Count;
+
+        if (LockLogin)
+        {
+            //选中了分类
+            if (DisplayType <= 0)
+            {
+                foreach (var item in list)
                 {
-                    UserList.Add(new(this, item.Value)
+                    UserList.Add(new UserDisplayModel(this, item)
                     {
-                        IsSelect = item1 == item.Value
+                        IsSelect = select == item
                     });
                 }
-                else if ((DisplayType - 1) == (int)item.Value.AuthType)
+            }
+            else
+            {
+                var login = _locks[DisplayType - 1];
+                foreach (var item in list)
                 {
-                    UserList.Add(new(this, item.Value)
+                    if (login.Type == item.AuthType && (login.Type == AuthType.OAuth
+                        || login.Data == item.Text1))
                     {
-                        IsSelect = item1 == item.Value
+                        UserList.Add(new UserDisplayModel(this, item)
+                        {
+                            IsSelect = select == item
+                        });
+                    }
+                }
+            }
+        }
+        else
+        {
+            foreach (var item in list)
+            {
+                if (DisplayType <= 0)
+                {
+                    UserList.Add(new UserDisplayModel(this, item)
+                    {
+                        IsSelect = select == item
+                    });
+                }
+                else if ((DisplayType - 1) == (int)item.AuthType)
+                {
+                    UserList.Add(new UserDisplayModel(this, item)
+                    {
+                        IsSelect = select == item
                     });
                 }
             }
         }
+
+        ListUserCount = UserList.Count;
     }
 
     /// <summary>
@@ -600,6 +629,7 @@ public partial class UsersModel : ControlModel
     public override void Close()
     {
         EventManager.LockUserChange -= EventManager_LockUserChange;
+        EventManager.SkinChange -= EventManager_SkinChange;
 
         foreach (var item in UserList)
         {
@@ -695,11 +725,10 @@ public partial class UsersModel : ControlModel
         Add(model);
     }
 
-    public void ReloadHead()
+    private void ReadyCancel()
     {
-        foreach (var item in UserList)
-        {
-            item.ReloadHead();
-        }
+        _tokenSource?.Cancel();
+        _tokenSource?.Dispose();
+        _tokenSource = new();
     }
 }

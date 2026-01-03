@@ -15,43 +15,43 @@ public static class GameAuth
     /// <summary>
     /// 从OAuth登录
     /// </summary>
-    /// <param name="loginOAuth">登录参数</param>
+    /// <param name="gui">登录参数</param>
     /// <returns>登录状态</returns>
-    public static async Task<LoginObj?> LoginOAuthAsync(ILoginOAuthGui loginOAuth)
+    public static async Task<LoginObj?> LoginOAuthAsync(ILoginOAuthGui gui, CancellationToken token)
     {
         //获取登录码
-        var res1 = await OAuthApi.GetCodeAsync(loginOAuth.Token);
-        loginOAuth.LoginOAuthCode(res1.Url, res1.Code);
+        var res1 = await OAuthApi.GetCodeAsync(token);
+        gui.LoginOAuthCode(res1.Url, res1.Code);
         //获取用户登录
-        var res2 = await OAuthApi.RunGetCodeAsync(res1, loginOAuth.Token);
+        var res2 = await OAuthApi.RunGetCodeAsync(res1, token);
         if (res2 == null)
         {
             return null;
         }
         //Xbox登录
-        loginOAuth.LoginOAuthState(AuthState.XBox);
-        var res3 = await OAuthApi.GetXBoxAsync(res2.AccessToken, loginOAuth.Token);
+        gui.LoginOAuthState(AuthState.XBox);
+        var res3 = await OAuthApi.GetXBoxAsync(res2.AccessToken, token);
         if (res3 == null)
         {
             return null;
         }
         //XSTS登录
-        loginOAuth.LoginOAuthState(AuthState.XSTS);
-        var res4 = await OAuthApi.GetXSTSAsync(res3.XBLToken, loginOAuth.Token);
+        gui.LoginOAuthState(AuthState.XSTS);
+        var res4 = await OAuthApi.GetXSTSAsync(res3.XBLToken, token);
         if (res4 == null)
         {
             return null;
         }
         //获取mojang token
-        loginOAuth.LoginOAuthState(AuthState.Token);
-        var res5 = await MinecraftAPI.GetMinecraftAsync(res4.XSTSUhs, res4.XSTSToken, loginOAuth.Token);
+        gui.LoginOAuthState(AuthState.Token);
+        var res5 = await MinecraftAPI.GetMinecraftAsync(res4.XSTSUhs, res4.XSTSToken, token);
         if (res5 == null)
         {
             return null;
         }
         //获取minecraft账户
-        loginOAuth.LoginOAuthState(AuthState.Profile);
-        var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken, loginOAuth.Token);
+        gui.LoginOAuthState(AuthState.Profile);
+        var profile = await MinecraftAPI.GetMinecraftProfileAsync(res5.AccessToken, token);
         if (profile == null || string.IsNullOrWhiteSpace(profile.Id))
         {
             throw new LoginException(LoginFailState.GetDataFail, AuthState.Profile);
@@ -63,7 +63,8 @@ public static class GameAuth
             AuthType = AuthType.OAuth,
             AccessToken = res5.AccessToken!,
             UserName = profile.Name,
-            UUID = profile.Id
+            UUID = profile.Id,
+            LastLogin = DateTime.Now
         };
     }
 
@@ -93,6 +94,7 @@ public static class GameAuth
         obj.UUID = profile.Id;
         obj.Text1 = res1.RefreshToken;
         obj.AccessToken = res4.AccessToken!;
+        obj.LastLogin = DateTime.Now;
 
         return obj;
     }
@@ -109,17 +111,8 @@ public static class GameAuth
         var res1 = await Nide8.AuthenticateAsync(server, FunctionUtils.NewUUID(), user, pass, token);
 
         res1.Text2 = user;
+        res1.LastLogin = DateTime.Now;
         return res1;
-    }
-
-    /// <summary>
-    /// 从统一通行证刷新登录
-    /// </summary>
-    /// <param name="obj">保存的账户</param>
-    /// <returns>登录结果</returns>
-    private static async Task<LoginObj> RefreshNide8Async(LoginObj obj, CancellationToken token)
-    {
-        return await Nide8.RefreshAsync(obj, token);
     }
 
     /// <summary>
@@ -134,20 +127,9 @@ public static class GameAuth
     {
         var res1 = await AuthlibInjector.AuthenticateAsync(FunctionUtils.NewUUID(), user, pass, server, select, token);
 
-        res1.Auth!.Text2 = user;
-        return res1.Auth;
-    }
-
-    /// <summary>
-    /// 从外置登录刷新登录
-    /// </summary>
-    /// <param name="obj">保存的账户</param>
-    /// <returns>登录结果</returns>
-    private static async Task<LoginObj> RefreshAuthlibInjectorAsync(LoginObj obj, CancellationToken token)
-    {
-        var res1 = await AuthlibInjector.RefreshAsync(obj, token);
-
-        return res1.Auth!;
+        res1.Text2 = user;
+        res1.LastLogin = DateTime.Now;
+        return res1;
     }
 
     /// <summary>
@@ -162,19 +144,9 @@ public static class GameAuth
     {
         var res1 = await LittleSkin.AuthenticateAsync(FunctionUtils.NewUUID(), user, pass, server, select, token);
 
-        res1.Auth!.Text2 = user;
-        return res1.Auth;
-    }
-
-    /// <summary>
-    /// 从皮肤站刷新登录
-    /// </summary>
-    /// <param name="obj">保存的账户</param>
-    /// <returns>登录结果</returns>
-    private static async Task<LoginObj> RefreshLittleSkinAsync(LoginObj obj, CancellationToken token)
-    {
-        var res1 = await LittleSkin.RefreshAsync(obj, token);
-        return res1.Auth!;
+        res1.Text2 = user;
+        res1.LastLogin = DateTime.Now;
+        return res1;
     }
 
     /// <summary>
@@ -184,13 +156,17 @@ public static class GameAuth
     /// <returns>登录结果</returns>
     public static async Task<LoginObj> RefreshTokenAsync(this LoginObj obj, CancellationToken token)
     {
-        return obj.AuthType switch
+        var login = obj.AuthType switch
         {
             AuthType.OAuth => await RefreshOAuthAsync(obj, token),
-            AuthType.Nide8 => await RefreshNide8Async(obj, token),
-            AuthType.AuthlibInjector => await RefreshAuthlibInjectorAsync(obj, token),
-            AuthType.LittleSkin or AuthType.SelfLittleSkin => await RefreshLittleSkinAsync(obj, token),
+            AuthType.Nide8 => await Nide8.RefreshAsync(obj, token),
+            AuthType.AuthlibInjector => await AuthlibInjector.RefreshAsync(obj, token),
+            AuthType.LittleSkin or AuthType.SelfLittleSkin => await LittleSkin.RefreshAsync(obj, token),
             _ => obj,
         };
+
+        login.LastLogin = DateTime.Now;
+
+        return login;
     }
 }

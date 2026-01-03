@@ -18,7 +18,7 @@ public static class LittleSkin
     /// <param name="user">用户名</param>
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string? server, ILoginGui select, CancellationToken token)
+    public static async Task<LoginObj> AuthenticateAsync(string clientToken, string user, string pass, string? server, ILoginGui select, CancellationToken token)
     {
         var type = AuthType.LittleSkin;
         string server1;
@@ -80,7 +80,7 @@ public static class LittleSkin
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj, CancellationToken token)
+    public static async Task<LoginObj> RefreshAsync(LoginObj obj, CancellationToken token)
     {
         string server;
         if (obj.AuthType == AuthType.LittleSkin)

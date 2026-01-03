@@ -33,4 +33,8 @@ public record LoginObj
     /// 数据2
     /// </summary>
     public string Text2 { get; set; }
+    /// <summary>
+    /// 上次刷新
+    /// </summary>
+    public DateTime LastLogin { get; set; }
 }

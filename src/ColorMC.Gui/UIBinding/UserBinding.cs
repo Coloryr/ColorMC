@@ -24,50 +24,43 @@ public static class UserBinding
     /// 添加账户
     /// </summary>
     /// <param name="type">账户类型</param>
-    /// <param name="loginOAuth">UI相关</param>
+    /// <param name="gui">UI相关</param>
     /// <param name="select">UI相关</param>
-    /// <param name="input1">附加信息</param>
-    /// <param name="input2">附加信息</param>
-    /// <param name="input3">附加信息</param>
+    /// <param name="name">附加信息</param>
+    /// <param name="password">附加信息</param>
+    /// <param name="server">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuthGui loginOAuth, ILoginGui select,
-        string? input1 = null, string? input2 = null, string? input3 = null)
+    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuthGui gui, ILoginGui select, 
+        CancellationToken token,
+        string? name = null, string? password = null, string? server = null)
     {
         if (type == AuthType.Offline)
         {
             var user = new LoginObj()
             {
-                UserName = input1!,
+                UserName = name!,
                 ClientToken = FunctionUtils.NewUUID(),
-                UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(input1!.ToLower())),
+                UUID = HashHelper.GenMd5(Encoding.UTF8.GetBytes(name!.ToLower())),
                 AuthType = AuthType.Offline
             };
             user.Save();
             UserManager.SetSelect(user);
             return new StringRes { State = true };
         }
-        string uuid = type switch
-        {
-            AuthType.Nide8 => input2!,
-            AuthType.AuthlibInjector => input2!,
-            AuthType.LittleSkin => input1!,
-            AuthType.SelfLittleSkin => input1!,
-            _ => ""
-        };
 
         try
         {
             var res1 = type switch
             {
-                AuthType.OAuth => await GameAuth.LoginOAuthAsync(loginOAuth),
-                AuthType.Nide8 => await GameAuth.LoginNide8Async(input1!, input2!, input3!, loginOAuth.Token),
-                AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(input1!, input2!, input3!, select, loginOAuth.Token),
-                AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token),
-                AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(input1!, input2!, select, loginOAuth.Token, input3!),
+                AuthType.OAuth => await GameAuth.LoginOAuthAsync(gui, token),
+                AuthType.Nide8 => await GameAuth.LoginNide8Async(server!, name!, password!, token),
+                AuthType.AuthlibInjector => await GameAuth.LoginAuthlibInjectorAsync(server!, name!, password!, select, token),
+                AuthType.LittleSkin => await GameAuth.LoginLittleSkinAsync(name!, password!, select, token),
+                AuthType.SelfLittleSkin => await GameAuth.LoginLittleSkinAsync(name!, password!, select, token, server!),
                 _ => throw new Exception(LangUtils.Get("App.Text78"))
             };
-            if (loginOAuth.Token.IsCancellationRequested || res1 == null)
+            if (token.IsCancellationRequested || res1 == null)
             {
                 return new StringRes();
             }
@@ -76,6 +69,7 @@ public static class UserBinding
                 WebBinding.OpenWeb(WebType.Minecraft);
                 return new StringRes { Data = LangUtils.Get("App.Text79") };
             }
+            res1.LastLogin = DateTime.Now;
             res1.Save();
             UserManager.SetSelect(res1);
             return new StringRes { State = true };
@@ -86,7 +80,7 @@ public static class UserBinding
             if (e is LoginException e1)
             {
                 title = e1.State.GetNameFail();
-                string data = e1.Fail.GetName(type, uuid);
+                string data = e1.Fail.GetName(type, name ?? server ?? "");
                 string text = "";
                 if (e1.Fail == LoginFailState.GetDataFail)
                 {
@@ -94,7 +88,12 @@ public static class UserBinding
                 }
                 else if (e1.Fail == LoginFailState.GetDataError)
                 {
-                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                    text = title + Environment.NewLine + string.Format(data, e1.ServerMessage);
+                }
+                if (e1.ServerMessage != null)
+                {
+                    text += Environment.NewLine + e1.ServerMessage;
+                    title += " " + e1.ServerMessage;
                 }
                 if (e1.Inner != null)
                 {
@@ -133,7 +132,9 @@ public static class UserBinding
 
         try
         {
-            await obj.RefreshTokenAsync(token);
+            var login = await obj.RefreshTokenAsync(token);
+            login.LastLogin = DateTime.Now;
+            login.Save();
         }
         catch (Exception e)
         {
@@ -149,7 +150,7 @@ public static class UserBinding
                 }
                 else if (e1.Fail == LoginFailState.GetDataError)
                 {
-                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                    text = title + Environment.NewLine + string.Format(data, e1.ServerMessage);
                 }
                 if (e1.Inner != null)
                 {
@@ -203,7 +204,7 @@ public static class UserBinding
             return;
         }
 
-        ImageManager.ReloadSkinHead();
+        ImageManager.ReloadHead();
     }
 
     /// <summary>
@@ -263,8 +264,9 @@ public static class UserBinding
     {
         try
         {
-            await user.RefreshTokenAsync(token);
-
+            var login = await user.RefreshTokenAsync(token);
+            login.LastLogin = DateTime.Now;
+            login.Save();
             return new StringRes();
         }
         catch (Exception e)
@@ -281,7 +283,7 @@ public static class UserBinding
                 }
                 else if (e1.Fail == LoginFailState.GetDataError)
                 {
-                    text = title + Environment.NewLine + string.Format(data, e1.Json);
+                    text = title + Environment.NewLine + string.Format(data, e1.ServerMessage);
                 }
                 if (e1.Inner != null)
                 {

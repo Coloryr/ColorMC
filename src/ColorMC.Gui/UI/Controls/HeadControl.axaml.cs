@@ -73,7 +73,6 @@ public partial class HeadControl : UserControl
         if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
         {
             StackPanel2.HorizontalAlignment = HorizontalAlignment.Center;
-            Icons.IsVisible = false;
             var img1 = new HeadImg() { IsVisible = false, Path = "/Resource/Icon/Head/min.svg" };
             _buttonMin = new Button()
             {
@@ -232,6 +231,8 @@ public partial class HeadControl : UserControl
             StackPanel1.Children.Add(_buttonMin);
             StackPanel1.Children.Add(_buttonMax);
             StackPanel1.Children.Add(_buttonClose);
+
+            StackPanel2.Margin = new Thickness(10, 0, 0, 0);
 
             Win32Properties.SetNonClientHitTestResult(_buttonMax, Win32Properties.Win32HitTestValue.MaxButton);
             Win32Properties.SetNonClientHitTestResult(_buttonMin, Win32Properties.Win32HitTestValue.MinButton);

@@ -21,15 +21,14 @@
         <Panel Name="MainView">
             <DockPanel Margin="10,10,0,0">
                 <Panel Margin="10,0,20,0" DockPanel.Dock="Top">
-                    <views2:MainUserControl Height="40" HorizontalAlignment="Left" />
+                    <views2:MainUserControl HorizontalAlignment="Left" />
                     <StackPanel
                         HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
+                        VerticalAlignment="Bottom"
                         Orientation="Horizontal">
                         <Button
-                            Height="30"
+                            Height="35"
                             Margin="0,0,5,0"
-                            Classes="none2"
                             Command="{Binding ShowSkin}"
                             IsVisible="{Binding IsHavePlayer}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text9}">
@@ -43,10 +42,9 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Height="30"
+                            Height="35"
                             Margin="0,0,5,0"
                             VerticalAlignment="Top"
-                            Classes="none2"
                             Command="{Binding OpenCollect}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                             <StackPanel Orientation="Horizontal">
@@ -58,10 +56,9 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Height="30"
+                            Height="35"
                             Margin="0,0,5,0"
                             VerticalAlignment="Top"
-                            Classes="none2"
                             Command="{Binding OpenGuide}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                             <StackPanel Orientation="Horizontal">
@@ -73,9 +70,8 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Height="30"
+                            Height="35"
                             Margin="0,0,5,0"
-                            Classes="none2"
                             Command="{Binding ShowCount}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                             <StackPanel Orientation="Horizontal">
@@ -87,8 +83,7 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Height="30"
-                            Classes="none2"
+                            Height="35"
                             Command="{Binding ShowSetting}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                             <StackPanel Orientation="Horizontal">

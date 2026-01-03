@@ -131,6 +131,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         {
             model.SetTopLevel(GetTopLevel(this));
         }
+        else if (e.PropertyName == nameof(WindowModel.Icon)
+            && DataContext is WindowModel model1)
+        {
+            Icon = new WindowIcon(model1.Icon);
+        }
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

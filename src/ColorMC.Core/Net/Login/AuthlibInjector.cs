@@ -18,11 +18,11 @@ public static class AuthlibInjector
     /// <param name="pass">密码</param>
     /// <param name="server">服务器地址</param>
     /// <returns></returns>
-    public static async Task<LegacyLoginRes> AuthenticateAsync(string clientToken, string user, string pass, string server, ILoginGui select, CancellationToken token)
+    public static async Task<LoginObj> AuthenticateAsync(string clientToken, string user, string pass, string server, ILoginGui select, CancellationToken token)
     {
         var obj = await LegacyLogin.AuthenticateAsync(server, clientToken, user, pass, true, token);
 
-        obj.Auth!.AuthType = AuthType.AuthlibInjector;
+        obj.Auth.AuthType = AuthType.AuthlibInjector;
         obj.Auth.Text1 = server;
 
         bool needselect = false;
@@ -36,13 +36,13 @@ public static class AuthlibInjector
                     throw new LoginException(LoginFailState.LoginAuthListEmpty, AuthState.Profile);
                 }
                 var item = obj.Logins[index];
-                obj.Auth!.UUID = item.UUID;
+                obj.Auth.UUID = item.UUID;
                 obj.Auth.UserName = item.UserName;
             }
             else
             {
                 var item = obj.Logins[0];
-                obj.Auth!.UUID = item.UUID;
+                obj.Auth.UUID = item.UUID;
                 obj.Auth.UserName = item.UserName;
             }
             needselect = true;
@@ -55,7 +55,7 @@ public static class AuthlibInjector
     /// 刷新登录
     /// </summary>
     /// <param name="obj">保存的账户</param>
-    public static async Task<LegacyLoginRes> RefreshAsync(LoginObj obj, CancellationToken token)
+    public static async Task<LoginObj> RefreshAsync(LoginObj obj, CancellationToken token)
     {
         if (await LegacyLogin.ValidateAsync(obj.Text1, obj, token))
         {

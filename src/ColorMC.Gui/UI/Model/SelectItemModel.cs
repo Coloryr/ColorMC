@@ -13,7 +13,12 @@ public partial class SelectItemModel : ObservableObject
     /// 选中框颜色
     /// </summary>
     [ObservableProperty]
-    private BoxShadows _border = ThemeManager.BorderShadows;
+    private BoxShadows? _border = ThemeManager.BorderShadows;
+
+    [ObservableProperty]
+    private BoxShadows? _border1;
+    [ObservableProperty]
+    private IBrush _borderBrush;
 
     /// <summary>
     /// 是否选中
@@ -33,16 +38,16 @@ public partial class SelectItemModel : ObservableObject
 
     partial void OnIsSelectChanged(bool value)
     {
-        if (IsSelect)
-        {
-            Border = ThemeManager.BorderSelecrShadows;
-        }
-        else
-        {
-            Border = ThemeManager.BorderShadows;
-        }
-
         IsSelectChanged(value);
+
+        ChangeBorder();
+    }
+
+    partial void OnTopChanged(bool value)
+    {
+        EnableButton = Top || IsSelect;
+
+        ChangeBorder();
     }
 
     protected virtual void IsSelectChanged(bool value)
@@ -50,8 +55,24 @@ public partial class SelectItemModel : ObservableObject
         EnableButton = Top || IsSelect;
     }
 
-    partial void OnTopChanged(bool value)
+    private void ChangeBorder()
     {
-        EnableButton = Top || IsSelect;
+        if (IsSelect)
+        {
+            BorderBrush = ThemeManager.NowThemeColor.MainColor;
+        }
+        else
+        {
+            BorderBrush = ThemeManager.NowThemeColor.BorderColor;
+        }
+
+        if (Top)
+        {
+            Border1 = ThemeManager.BorderTopShadows;
+        }
+        else
+        {
+            Border1 = null;
+        }
     }
 }

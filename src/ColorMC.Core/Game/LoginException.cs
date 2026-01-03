@@ -26,5 +26,5 @@ public class LoginException(LoginFailState fail, AuthState state, Exception? ex 
     /// <summary>
     /// 原始服务器数据
     /// </summary>
-    public string? Json => data;
+    public string? ServerMessage => data;
 }

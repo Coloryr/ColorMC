@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using ColorMC.Core.Objs;
@@ -8,6 +9,7 @@ using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.User;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -41,6 +43,10 @@ public partial class UserDisplayModel : SelectItemModel
     /// 附加信息
     /// </summary>
     public string Text2 => _obj.Text2;
+    /// <summary>
+    /// 上次登录
+    /// </summary>
+    public string Time => _obj.LastLogin.ToString("D");
 
     /// <summary>
     /// 是否有皮肤文件
@@ -52,11 +58,9 @@ public partial class UserDisplayModel : SelectItemModel
     /// </summary>
     [ObservableProperty]
     private bool _haveCape;
-    /// <summary>
-    /// 是否显示UUID
-    /// </summary>
+
     [ObservableProperty]
-    private bool _displayUUID = false;
+    private bool _emptyTex;
 
     /// <summary>
     /// 账户类型
@@ -64,17 +68,24 @@ public partial class UserDisplayModel : SelectItemModel
     public AuthType AuthType => _obj.AuthType;
 
     /// <summary>
+    /// 账户类型颜色
+    /// </summary>
+    public IBrush AuthColor => ColorManager.GetColor(_obj.AuthType);
+
+    public bool CanRefresh => _obj.AuthType is not AuthType.Offline;
+    public bool CanRelogin => _obj.AuthType is not AuthType.Offline or AuthType.OAuth;
+    public bool CanEdit => _obj.AuthType == AuthType.Offline;
+
+    /// <summary>
     /// 头像
     /// </summary>
     [ObservableProperty]
     public Bitmap? image = ImageManager.LoadBitmap;
-
     /// <summary>
     /// 皮肤
     /// </summary>
     [ObservableProperty]
     public Bitmap? _skin = ImageManager.LoadBitmap;
-
     /// <summary>
     /// 披风
     /// </summary>
@@ -118,6 +129,8 @@ public partial class UserDisplayModel : SelectItemModel
                     Image = _img;
                     Skin = _img1;
                     Cape = _img2;
+
+                    EmptyTex = _img == null && _img1 == null && _img2 == null;
                 });
             });
         }
@@ -138,6 +151,7 @@ public partial class UserDisplayModel : SelectItemModel
     /// <summary>
     /// 刷新
     /// </summary>
+    [RelayCommand]
     public void Refresh()
     {
         _top.Refresh(this);
@@ -146,6 +160,7 @@ public partial class UserDisplayModel : SelectItemModel
     /// <summary>
     /// 重新登录
     /// </summary>
+    [RelayCommand]
     public void Relogin()
     {
         _top.Relogin(this);
@@ -154,6 +169,7 @@ public partial class UserDisplayModel : SelectItemModel
     /// <summary>
     /// 删除
     /// </summary>
+    [RelayCommand]
     public void Remove()
     {
         _top.Remove(this);
@@ -162,6 +178,7 @@ public partial class UserDisplayModel : SelectItemModel
     /// <summary>
     /// 编辑
     /// </summary>
+    [RelayCommand]
     public void Edit()
     {
         _top.Edit(this);

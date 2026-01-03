@@ -122,14 +122,14 @@ public static class Names
 
     public static readonly string[] NameGCArgG1GC =
     [
+        "-XX:+UnlockExperimentalVMOptions",
         "-XX:+UseG1GC",
         "-XX:MaxGCPauseMillis=200",
         "-XX:G1NewSizePercent=30",
         "-XX:G1MaxNewSizePercent=40",
         "-XX:InitiatingHeapOccupancyPercent=35",
         "-XX:ConcGCThreads=4",
-        "-XX:ParallelGCThreads=8",
-        "-XX:+UnlockExperimentalVMOptions"
+        "-XX:ParallelGCThreads=8"
     ];
     public static readonly string[] NameGCZGC =
     [

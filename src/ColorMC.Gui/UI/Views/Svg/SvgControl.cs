@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Metadata;
 using Avalonia.Svg.Skia;
@@ -121,6 +122,20 @@ public class SvgControl : Control
     public SvgControl(IServiceProvider serviceProvider)
     {
         _baseUri = serviceProvider.GetContextBaseUri();
+    }
+
+    protected override void OnPointerEntered(PointerEventArgs e)
+    {
+        base.OnPointerEntered(e);
+
+        //Classes.Add("pointerover");
+    }
+
+    protected override void OnPointerExited(PointerEventArgs e)
+    {
+        base.OnPointerExited(e);
+
+        //Classes.Remove("pointerover");
     }
 
     protected override Size MeasureOverride(Size availableSize)

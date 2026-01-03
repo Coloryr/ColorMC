@@ -21,83 +21,103 @@
         <cov:PanelTemplateConverter x:Key="PanelTemplateConverter" />
     </UserControl.Resources>
     <Panel>
-        <DockPanel Margin="10,0,10,10">
+        <DockPanel>
             <Border
-                Margin="10"
-                Classes="t2"
+                Background="#FFFFFF"
+                BorderBrush="#e5e7eb"
+                BorderThickness="0,1,0,1"
                 DockPanel.Dock="Top">
-                <DockPanel Margin="15">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize UserWindow.Text3}" />
+                <DockPanel Margin="20,15,20,15">
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        Classes="t1"
+                        Text="{setting:Localize UserWindow.Text3}" />
                     <Button
                         Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
+                        Margin="-3"
+                        VerticalAlignment="Stretch"
                         Classes="top"
                         Command="{Binding SetAdd}"
-                        Content="{setting:Localize UserWindow.Text5}"
                         DockPanel.Dock="Right"
                         IsEnabled="{Binding HaveLogin}"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text26}" />
+                        ToolTip.Tip="{setting:Localize ToolTip.Text26}">
+                        <StackPanel Orientation="Horizontal">
+                            <svg:SvgControl
+                                Width="24"
+                                Path="/Resource/Icon/add1.svg"
+                                Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
+                            <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Text="{setting:Localize UserWindow.Text5}" />
+                        </StackPanel>
+                    </Button>
+                    <Border
+                        Margin="0,0,10,0"
+                        Padding="3"
+                        Background="#f3f4f6"
+                        CornerRadius="8"
+                        DockPanel.Dock="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton
+                                Classes="t1"
+                                GroupName="Group2"
+                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}, FallbackValue=true}">
+                                <svg:SvgControl
+                                    Width="16"
+                                    Height="16"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                    Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
+                            </RadioButton>
+                            <RadioButton
+                                Classes="t1"
+                                GroupName="Group2"
+                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}}">
+                                <svg:SvgControl
+                                    Width="16"
+                                    Height="16"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                    Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
+                            </RadioButton>
+                            <RadioButton
+                                Classes="t1"
+                                GroupName="Group2"
+                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}}">
+                                <svg:SvgControl
+                                    Width="16"
+                                    Height="16"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                    Path="/Resource/Icon/ListGrid/ListGrid1.svg" />
+                            </RadioButton>
+                        </StackPanel>
+                    </Border>
                     <ComboBox
-                        Height="35"
                         Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
+                        Classes="t1"
+                        ClipToBounds="False"
                         ItemsSource="{Binding DisplayUserTypeList}"
                         SelectedIndex="{Binding DisplayType}" />
                 </DockPanel>
             </Border>
-            <DockPanel DockPanel.Dock="Top">
-                <TextBlock
-                    Margin="10,0,0,0"
-                    FontSize="16"
-                    Text="{setting:Localize UserWindow.Text37}" />
-                <Border
-                    Margin="0,0,10,0"
-                    HorizontalAlignment="Right"
-                    BorderBrush="{setting:Theme AllBorder}"
-                    BorderThickness="1"
-                    CornerRadius="5">
-                    <StackPanel Orientation="Horizontal">
-                        <RadioButton
+            <Border
+                Background="#FFFFFF"
+                BorderBrush="#e5e7eb"
+                BorderThickness="0,1,0,0"
+                DockPanel.Dock="Bottom">
+                <Panel>
+                    <StackPanel Margin="20,5,10,5" Orientation="Horizontal">
+                        <TextBlock Classes="t1" Text="{setting:Localize UserWindow.Text39}" />
+                        <TextBlock
+                            Margin="0,0,10,0"
                             Classes="t1"
-                            GroupName="Group2"
-                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}, FallbackValue=true}">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
-                        </RadioButton>
-                        <RadioButton
-                            Classes="t1"
-                            GroupName="Group2"
-                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}}">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
-                        </RadioButton>
-                        <RadioButton
-                            Classes="t1"
-                            GroupName="Group2"
-                            IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}}">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                Path="/Resource/Icon/ListGrid/ListGrid1.svg" />
-                        </RadioButton>
+                            Text="{Binding UserCount}" />
+                        <TextBlock Classes="t1" Text="{setting:Localize UserWindow.Text40}" />
+                        <TextBlock Classes="t1" Text="{Binding ListUserCount}" />
                     </StackPanel>
-                </Border>
-            </DockPanel>
-            <Panel>
-                <ScrollViewer IsVisible="{Binding IsGrid}" VerticalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding UserList}">
-                        <ItemsControl.ItemsPanel>
-                            <Binding Converter="{StaticResource PanelTemplateConverter}" Path="IsStack" />
-                        </ItemsControl.ItemsPanel>
+                </Panel>
+            </Border>
+            <Panel Background="#f9fafb">
+                <ScrollViewer IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}, FallbackValue=true}" VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl Margin="20" ItemsSource="{Binding UserList}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <items:UserItemControl DataContext="{Binding}" />
@@ -105,35 +125,108 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </ScrollViewer>
-                <DataGrid
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="True"
-                    IsVisible="{Binding !IsGrid}"
-                    ItemsSource="{Binding UserList}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize UserWindow.Text10}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Type}"
-                            Header="{setting:Localize UserWindow.Text3}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding UUID}"
-                            Header="{setting:Localize UserWindow.Text21}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Text1}"
-                            Header="{setting:Localize SettingWindow.Tab6.Text36}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Text2}"
-                            Header="{setting:Localize SettingWindow.Tab6.Text36}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                <ScrollViewer IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}, FallbackValue=true}" VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl
+                        Name="GridPanel"
+                        Margin="20"
+                        ItemsSource="{Binding UserList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding GridCount}" Rows="0" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <items:UserItemGridControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Border
+                    Margin="20"
+                    BorderBrush="#e5e7eb"
+                    BorderThickness="1"
+                    BoxShadow="0 1 2 0 #0D000000, 0 1 2 0 #0D000000"
+                    ClipToBounds="False"
+                    CornerRadius="12"
+                    IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}, FallbackValue=true}">
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        Background="#FFFFFF"
+                        CanUserResizeColumns="True"
+                        CanUserSortColumns="True"
+                        Classes="t1"
+                        CornerRadius="12"
+                        ItemsSource="{Binding UserList}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn IsReadOnly="True">
+                                <DataTemplate>
+                                    <StackPanel Margin="5,0,5,0" Orientation="Horizontal">
+                                        <Button
+                                            Width="20"
+                                            HorizontalAlignment="Right"
+                                            Classes="none"
+                                            Command="{Binding Refresh}"
+                                            IsVisible="{Binding CanRefresh}"
+                                            ToolTip.Tip="{setting:Localize ToolTip.Text134}">
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/reload.svg" />
+                                        </Button>
+                                        <Button
+                                            Width="20"
+                                            HorizontalAlignment="Right"
+                                            Classes="none"
+                                            Command="{Binding Relogin}"
+                                            IsVisible="{Binding CanRelogin}"
+                                            ToolTip.Tip="{setting:Localize ToolTip.Text135}">
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/relogin.svg" />
+                                        </Button>
+                                        <Button
+                                            Width="20"
+                                            HorizontalAlignment="Right"
+                                            Classes="none"
+                                            Command="{Binding Edit}"
+                                            IsVisible="{Binding CanEdit}"
+                                            ToolTip.Tip="{setting:Localize ToolTip.Text136}">
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/edit.svg" />
+                                        </Button>
+                                        <Button
+                                            Width="20"
+                                            HorizontalAlignment="Right"
+                                            Classes="none"
+                                            Command="{Binding Remove}"
+                                            ToolTip.Tip="{setting:Localize ToolTip.Text137}">
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/delete.svg" />
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn
+                                Binding="{Binding Name}"
+                                Header="{setting:Localize UserWindow.Text10}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Type}"
+                                Header="{setting:Localize UserWindow.Text3}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding UUID}"
+                                Header="{setting:Localize UserWindow.Text21}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Time}"
+                                Header="{setting:Localize UserWindow.Text38}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Text1}"
+                                Header="{setting:Localize SettingWindow.Tab6.Text36}"
+                                IsReadOnly="True" />
+                            <DataGridTextColumn
+                                Binding="{Binding Text2}"
+                                Header="{setting:Localize SettingWindow.Tab6.Text36}"
+                                IsReadOnly="True" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
             </Panel>
         </DockPanel>
         <Panel

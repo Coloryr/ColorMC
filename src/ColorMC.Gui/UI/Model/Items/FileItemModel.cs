@@ -408,7 +408,7 @@ public partial class FileItemModel : SelectItemModel
                 return;
             }
         }
-        IsStar = BaseBinding.SetStart(this);
+        IsStar = BaseBinding.SetStar(this);
     }
 
     /// <summary>
