@@ -156,7 +156,7 @@
                         <DataGrid
                             Name="DataGrid1"
                             Height="200"
-                            Margin="-10,-10,-10,5"
+                            Margin="-10,0,-10,5"
                             AutoGenerateColumns="False"
                             CanUserResizeColumns="True"
                             CanUserSortColumns="False"

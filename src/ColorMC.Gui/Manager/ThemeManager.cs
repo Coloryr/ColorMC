@@ -299,6 +299,10 @@ public static class ThemeManager
         {
             return NowThemeColor.BorderColor;
         }
+        else if (key == nameof(ThemeObj.RadioGroupBG))
+        {
+            return NowThemeColor.RadioGroupBG;
+        }
 
         return Brushes.Transparent;
     }
@@ -555,7 +559,8 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
             MenuBG = Brush.Parse("#FFF4F4F5"),
-            BorderColor = Brush.Parse("#e5e7eb")
+            BorderColor = Brush.Parse("#e5e7eb"),
+            RadioGroupBG = Brush.Parse("#f3f4f6")
         };
 
         s_dark = new()
@@ -581,7 +586,8 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
             MenuBG = Brush.Parse("#FF2c2c2c"),
-            BorderColor = Brush.Parse("#e5e7eb")
+            BorderColor = Brush.Parse("#e5e7eb"),
+            RadioGroupBG = Brush.Parse("#f3f4f6")
         };
     }
 }
