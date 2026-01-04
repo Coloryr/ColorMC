@@ -175,7 +175,7 @@
                         OffContent="{setting:Localize SettingWindow.Tab4.Text30}"
                         OnContent="{setting:Localize SettingWindow.Tab4.Text30}" />
                     <TextBlock Margin="0,0,0,5" Text="{Binding Memory}" />
-                    <Grid Margin="0,0,10,10" ColumnDefinitions="auto,*,auto,*,auto,*">
+                    <Grid Margin="0,0,10,10" ColumnDefinitions="auto,*,auto,*">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
                         <NumericUpDown
                             Grid.Column="1"
@@ -193,12 +193,14 @@
                             FormatString="N0"
                             Minimum="1"
                             Value="{Binding MaxMemory}" />
+                    </Grid>
+                    <Grid Margin="0,0,10,10" ColumnDefinitions="auto,*,*">
                         <TextBlock
-                            Grid.Column="4"
-                            Margin="10,0,5,0"
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
                             Text="{setting:Localize SettingWindow.Tab4.Text2}" />
                         <ComboBox
-                            Grid.Column="5"
+                            Grid.Column="1"
                             HorizontalAlignment="Stretch"
                             ItemsSource="{Binding GCTypeList}"
                             SelectedIndex="{Binding GC}" />
