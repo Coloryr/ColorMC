@@ -2,97 +2,138 @@
     x:Class="ColorMC.Gui.UI.Controls.Skin.SkinSideControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cov="clr-namespace:ColorMC.Gui.UI.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enums="clr-namespace:ColorMC.Gui.Objs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Skin"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
-    d:DesignHeight="450"
+    Width="340"
+    d:DesignHeight="850"
     d:DesignWidth="800"
     x:DataType="model:SkinModel"
     mc:Ignorable="d">
-    <ScrollViewer Margin="15">
-        <StackPanel>
-            <UniformGrid>
-                <Button
-                    Height="35"
-                    Margin="-2,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="top"
-                    Command="{Binding Load}"
-                    Content="{setting:Localize Button.Refash}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text14}" />
-                <Button
-                    Height="35"
-                    Margin="0,0,-2,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="top"
-                    Command="{Binding ResetPos}"
-                    Content="{setting:Localize SkinWindow.Text1}"
-                    IsEnabled="{Binding HaveSkin}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text15}" />
-                <Button
-                    Height="35"
-                    Margin="-2,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="top"
-                    Command="{Binding Edit}"
-                    Content="{setting:Localize SkinWindow.Text3}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text16}" />
-                <Button
-                    Height="35"
-                    Margin="0,0,-2,0"
-                    HorizontalAlignment="Stretch"
-                    Classes="top"
-                    Command="{Binding Save}"
-                    Content="{setting:Localize SkinWindow.Text4}"
-                    IsEnabled="{Binding HaveSkin}"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text17}" />
-            </UniformGrid>
-            <StackPanel IsEnabled="{Binding HaveSkin}">
+    <UserControl.Resources>
+        <cov:EnumToBooleanConverter x:Key="EnumToBool" />
+    </UserControl.Resources>
+    <Border
+        Background="#FFFFFF"
+        BorderBrush="{setting:Theme BorderColor}"
+        BorderThickness="1,0,0,0">
+        <ScrollViewer>
+            <StackPanel Margin="20" IsEnabled="{Binding HaveSkin}">
+                <TextBlock
+                    Margin="0,0,0,15"
+                    FontSize="18"
+                    Text="{setting:Localize SkinWindow.Text12}" />
+                <TextBlock
+                    Classes="t1"
+                    FontSize="14"
+                    Text="{setting:Localize SkinWindow.Text13}" />
                 <ComboBox
-                    Margin="0,5,0,0"
+                    Margin="0,5,0,15"
                     HorizontalAlignment="Stretch"
+                    Classes="t1"
                     ItemsSource="{Binding SkinTypeList}"
                     SelectedIndex="{Binding Type}" />
-                <ToggleSwitch
-                    Margin="0,0,0,-5"
-                    IsChecked="{Binding EnableTop}"
-                    OffContent="{setting:Localize SkinWindow.Text5}"
-                    OnContent="{setting:Localize SkinWindow.Text5}" />
-                <ToggleSwitch
-                    Margin="0,0,0,-5"
-                    IsChecked="{Binding EnableCape}"
-                    OffContent="{setting:Localize SkinWindow.Text6}"
-                    OnContent="{setting:Localize SkinWindow.Text6}" />
-                <ToggleSwitch
-                    Margin="0,0,0,-5"
-                    IsChecked="{Binding EnableAnimation}"
-                    OffContent="{setting:Localize SkinWindow.Text7}"
-                    OnContent="{setting:Localize SkinWindow.Text7}" />
-                <ToggleSwitch
-                    Margin="0,0,0,-5"
-                    IsChecked="{Binding EnableFXAA}"
-                    OffContent="{setting:Localize SkinWindow.Text9}"
-                    OnContent="{setting:Localize SkinWindow.Text9}" />
-                <StackPanel IsEnabled="{Binding !EnableAnimation}">
+                <TextBlock
+                    Classes="t1"
+                    FontSize="14"
+                    Text="{setting:Localize SkinWindow.Text14}" />
+                <ComboBox
+                    Margin="0,5,0,20"
+                    HorizontalAlignment="Stretch"
+                    Classes="t1"
+                    ItemsSource="{Binding SkinAnimationList}"
+                    SelectedIndex="{Binding SkinAnimation}" />
+                <Border
+                    Margin="0,0,0,20"
+                    Padding="15"
+                    Background="{setting:Theme BorderBG}"
+                    CornerRadius="12">
+                    <Grid ColumnDefinitions="*,auto" RowDefinitions="*,*,*">
+                        <TextBlock Text="{setting:Localize SkinWindow.Text5}" />
+                        <TextBlock Grid.Row="1" Text="{setting:Localize SkinWindow.Text6}" />
+                        <TextBlock Grid.Row="2" Text="{setting:Localize SkinWindow.Text9}" />
+                        <ToggleSwitch
+                            Grid.Column="1"
+                            Margin="0,0,-10,0"
+                            IsChecked="{Binding EnableTop}"
+                            OffContent=""
+                            OnContent="" />
+                        <ToggleSwitch
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="0,0,-10,0"
+                            IsChecked="{Binding EnableCape}"
+                            OffContent=""
+                            OnContent="" />
+                        <ToggleSwitch
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="0,0,-10,0"
+                            IsChecked="{Binding EnableFXAA}"
+                            OffContent=""
+                            OnContent="" />
+                    </Grid>
+                </Border>
+                <StackPanel Margin="0,0,0,20" IsVisible="{Binding SkinAnimation, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:SkinAnimationType.Custom}, FallbackValue=true}">
+                    <TextBlock
+                        Classes="t1"
+                        FontSize="14"
+                        Text="{setting:Localize SkinWindow.Text18}" />
                     <ComboBox
-                        Margin="0,5,0,0"
+                        Margin="0,5,0,10"
                         HorizontalAlignment="Stretch"
                         ItemsSource="{Binding SkinRotateList}"
                         SelectedIndex="{Binding RotateType}" />
+                    <Panel>
+                        <TextBlock
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{setting:Localize SkinWindow.Text19}" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{Binding RotateX, StringFormat={}{0}°, FallbackValue=0°}" />
+                    </Panel>
                     <Slider
                         Margin="0,-10,0,-10"
                         Maximum="360"
                         Minimum="{Binding MinX}"
                         Value="{Binding RotateX}" />
+                    <Panel>
+                        <TextBlock
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{setting:Localize SkinWindow.Text20}" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{Binding RotateY, StringFormat={}{0}°, FallbackValue=0°}" />
+                    </Panel>
                     <Slider
                         Margin="0,-10,0,-10"
                         Maximum="360"
                         Minimum="{Binding MinY}"
                         Value="{Binding RotateY}" />
+                    <Panel IsVisible="{Binding EnableZ}">
+                        <TextBlock
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{setting:Localize SkinWindow.Text21}" />
+                        <TextBlock
+                            HorizontalAlignment="Right"
+                            Classes="t1"
+                            FontSize="14"
+                            Text="{Binding RotateZ, StringFormat={}{0}°, FallbackValue=0°}" />
+                    </Panel>
                     <Slider
-                        Margin="0,-10,0,-10"
+                        Margin="0,-10,0,0"
                         IsEnabled="{Binding EnableZ}"
+                        IsVisible="{Binding EnableZ}"
                         Maximum="360"
                         Minimum="{Binding MinZ}"
                         Value="{Binding RotateZ}" />
@@ -105,7 +146,43 @@
                         Content="{setting:Localize SkinWindow.Text8}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text18}" />
                 </StackPanel>
+                <UniformGrid>
+                    <Button
+                        Height="35"
+                        Margin="-2,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding Load}"
+                        Content="{setting:Localize Button.Refash}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text14}" />
+                    <Button
+                        Height="35"
+                        Margin="0,0,-2,0"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding ResetPos}"
+                        Content="{setting:Localize SkinWindow.Text1}"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text15}" />
+                    <Button
+                        Height="35"
+                        Margin="-2,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding Edit}"
+                        Content="{setting:Localize SkinWindow.Text3}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text16}" />
+                    <Button
+                        Height="35"
+                        Margin="0,0,-2,0"
+                        HorizontalAlignment="Stretch"
+                        Classes="top"
+                        Command="{Binding Save}"
+                        Content="{setting:Localize SkinWindow.Text4}"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text17}" />
+                </UniformGrid>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        </ScrollViewer>
+    </Border>
 </UserControl>

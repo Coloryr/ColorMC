@@ -503,6 +503,17 @@ public static class LangUtils
             Get("Type.SkinType.New_Slim")
         ];
     }
+
+    public static string[] GetSkinAnimationType()
+    {
+        return
+        [
+            Get("SkinWindow.Text15"),
+            Get("SkinWindow.Text7"),
+            Get("SkinWindow.Text17")
+        ];
+    }
+
     /// <summary>
     /// 获取旋转选项
     /// </summary>

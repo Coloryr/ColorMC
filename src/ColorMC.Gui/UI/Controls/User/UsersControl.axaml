@@ -103,17 +103,25 @@
                 BorderBrush="#e5e7eb"
                 BorderThickness="0,1,0,0"
                 DockPanel.Dock="Bottom">
-                <Panel>
-                    <StackPanel Margin="20,5,10,5" Orientation="Horizontal">
-                        <TextBlock Classes="t1" Text="{setting:Localize UserWindow.Text39}" />
-                        <TextBlock
-                            Margin="0,0,10,0"
-                            Classes="t1"
-                            Text="{Binding UserCount}" />
-                        <TextBlock Classes="t1" Text="{setting:Localize UserWindow.Text40}" />
-                        <TextBlock Classes="t1" Text="{Binding ListUserCount}" />
-                    </StackPanel>
-                </Panel>
+                <StackPanel Margin="20,5,10,5" Orientation="Horizontal">
+                    <TextBlock
+                        Classes="t1"
+                        FontSize="12"
+                        Text="{setting:Localize UserWindow.Text39}" />
+                    <TextBlock
+                        Margin="0,0,10,0"
+                        Classes="t1"
+                        FontSize="12"
+                        Text="{Binding UserCount}" />
+                    <TextBlock
+                        Classes="t1"
+                        FontSize="12"
+                        Text="{setting:Localize UserWindow.Text40}" />
+                    <TextBlock
+                        Classes="t1"
+                        FontSize="12"
+                        Text="{Binding ListUserCount}" />
+                </StackPanel>
             </Border>
             <Panel Background="#f9fafb">
                 <ScrollViewer IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}, FallbackValue=true}" VerticalScrollBarVisibility="Disabled">

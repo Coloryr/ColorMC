@@ -38,8 +38,8 @@
     <Style Selector="ComboBox.t1">
         <Setter Property="MaxDropDownHeight" Value="300" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Background" Value="#f9fafb" />
-        <Setter Property="BorderBrush" Value="#e5e7eb" />
+        <Setter Property="Background" Value="{setting:Theme BorderBG}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
 

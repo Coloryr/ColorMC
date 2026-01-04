@@ -7,6 +7,7 @@ using Avalonia.OpenGL;
 using Avalonia.OpenGL.Controls;
 using Avalonia.Rendering;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Skin;
 using MinecraftSkinRender;
 using MinecraftSkinRender.OpenGL;
@@ -43,9 +44,9 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
         {
             skin.SkinType = model.SteveModelType;
         }
-        else if (e.PropertyName == nameof(SkinModel.EnableAnimation))
+        else if (e.PropertyName == nameof(SkinModel.SkinAnimation))
         {
-            skin.Animation = model.EnableAnimation;
+            skin.Animation = model.SkinAnimation == SkinAnimationType.Walk;
         }
         else if (e.PropertyName == nameof(SkinModel.EnableCape))
         {
@@ -201,7 +202,7 @@ public class SkinRender : OpenGlControlBase, ICustomHitTest
             BackColor = new(0, 0, 0, 0),
             EnableCape = model.EnableCape,
             EnableTop = model.EnableTop,
-            Animation = model.EnableAnimation
+            Animation = model.SkinAnimation == SkinAnimationType.Walk
         };
         skin.SetSkinTex(ImageManager.SkinBitmap);
         skin.SetCapeTex(ImageManager.CapeBitmap);

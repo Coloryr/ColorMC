@@ -48,5 +48,5 @@ public record ThemeObj
     public IBrush MenuBG;
     public IBrush BorderColor;
     public IBrush RadioGroupBG;
-
+    public IBrush BorderBG;
 }

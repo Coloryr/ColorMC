@@ -227,3 +227,13 @@ public enum ItemsGridType
     Grid,
     GridInfo
 }
+
+/// <summary>
+/// 皮肤动画
+/// </summary>
+public enum SkinAnimationType
+{ 
+    None,
+    Walk,
+    Custom
+}

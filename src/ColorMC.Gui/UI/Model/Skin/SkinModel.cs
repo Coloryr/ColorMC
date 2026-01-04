@@ -31,6 +31,10 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
     /// 皮肤关节旋转类型
     /// </summary>
     public string[] SkinRotateList { get; init; } = LangUtils.GetSkinRotateName();
+    /// <summary>
+    /// 动画类型
+    /// </summary>
+    public string[] SkinAnimationList { get; init; } = LangUtils.GetSkinAnimationType();
 
     /// <summary>
     /// 皮肤类型
@@ -60,11 +64,6 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
     [ObservableProperty]
     private bool _haveSkin;
     /// <summary>
-    /// 是否启用动画效果
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableAnimation = true;
-    /// <summary>
     /// 是否启用披风
     /// </summary>
     [ObservableProperty]
@@ -90,6 +89,11 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
     /// </summary>
     [ObservableProperty]
     private SkinType _steveModelType;
+    /// <summary>
+    /// 角色动画
+    /// </summary>
+    [ObservableProperty]
+    private SkinAnimationType _skinAnimation;
 
     /// <summary>
     /// X轴旋转
