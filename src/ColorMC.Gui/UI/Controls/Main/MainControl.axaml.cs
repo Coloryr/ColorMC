@@ -33,6 +33,10 @@ public partial class MainControl : BaseUserControl
     /// </summary>
     private MainEmptyControl? _emptyGame;
     /// <summary>
+    /// 游戏实例分组列表
+    /// </summary>
+    private MainGameGroupControl? _gameGroups;
+    /// <summary>
     /// 游戏实例列表
     /// </summary>
     private MainGamesControl? _games;
@@ -56,7 +60,7 @@ public partial class MainControl : BaseUserControl
     {
         if (e.Key != Key.F || e.KeyModifiers != KeyModifiers.Control
                            || DataContext is not MainModel model
-                           || Content1.Child is not MainGamesControl con)
+                           || Content1.Child is not MainGameGroupControl con)
         {
             return Task.FromResult(false);
         }
@@ -206,8 +210,21 @@ public partial class MainControl : BaseUserControl
         }
         else
         {
-            _games ??= new();
-            Content1.Child = _games;
+            if (model.GridType == ItemsGridType.GridInfo)
+            {
+                _gameGroups ??= new();
+                Content1.Child = _gameGroups;
+            }
+            else if (model.GridType == ItemsGridType.Grid)
+            {
+                _games ??= new();
+                Content1.Child = _games;
+            }
+            else if (model.GridType == ItemsGridType.ListInfo)
+            {
+                _simple ??= new();
+                Content1.Child = _simple;
+            }
         }
     }
 

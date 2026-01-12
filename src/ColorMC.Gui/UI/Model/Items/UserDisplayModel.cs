@@ -72,8 +72,17 @@ public partial class UserDisplayModel : SelectItemModel
     /// </summary>
     public IBrush AuthColor => ColorManager.GetColor(_obj.AuthType);
 
+    /// <summary>
+    /// 能否刷新
+    /// </summary>
     public bool CanRefresh => _obj.AuthType is not AuthType.Offline;
+    /// <summary>
+    /// 能否重新登录
+    /// </summary>
     public bool CanRelogin => _obj.AuthType is not AuthType.Offline or AuthType.OAuth;
+    /// <summary>
+    /// 能否编辑
+    /// </summary>
     public bool CanEdit => _obj.AuthType == AuthType.Offline;
 
     /// <summary>

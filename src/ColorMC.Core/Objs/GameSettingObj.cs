@@ -203,10 +203,6 @@ public partial record GameSettingObj
     /// 日志编码
     /// </summary>
     public LogEncoding Encoding { get; set; }
-    /// <summary>
-    /// 自动打开日志窗口
-    /// </summary>
-    public bool LogAutoShow { get; set; }
 
     /// <summary>
     /// Mod信息

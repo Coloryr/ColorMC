@@ -420,6 +420,52 @@ public static class GameManager
     }
 
     /// <summary>
+    /// 设置自动日志窗口
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="auto">自动日志窗口</param>
+    public static void SetLogAuto(GameSettingObj game, bool auto)
+    {
+        var config = ReadConfig(game);
+        config.LogAutoShow = auto;
+        WriteConfig(game, config);
+    }
+
+    /// <summary>
+    /// 获取自动日志窗口
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>方块ID</returns>
+    public static bool GetLogAuto(GameSettingObj game)
+    {
+        var config = ReadConfig(game);
+        return config.LogAutoShow;
+    }
+
+    /// <summary>
+    /// 设置实例顺序
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <param name="value">实例顺序</param>
+    public static void SetOrder(GameSettingObj game, int value)
+    {
+        var config = ReadConfig(game);
+        config.Order = value;
+        WriteConfig(game, config);
+    }
+
+    /// <summary>
+    /// 获取实例顺序
+    /// </summary>
+    /// <param name="game">游戏实例</param>
+    /// <returns>实例顺序</returns>
+    public static int GetOrder(GameSettingObj game)
+    {
+        var config = ReadConfig(game);
+        return config.Order;
+    }
+
+    /// <summary>
     /// 设置方块
     /// </summary>
     /// <param name="game">游戏实例</param>

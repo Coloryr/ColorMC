@@ -59,22 +59,22 @@
                             <RadioButton
                                 Classes="t1"
                                 GroupName="Group2"
-                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}, FallbackValue=true}">
-                                <svg:SvgControl
-                                    Width="16"
-                                    Height="16"
-                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                    Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
-                            </RadioButton>
-                            <RadioButton
-                                Classes="t1"
-                                GroupName="Group2"
-                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}}">
+                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}, FallbackValue=true}">
                                 <svg:SvgControl
                                     Width="16"
                                     Height="16"
                                     Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
                                     Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
+                            </RadioButton>
+                            <RadioButton
+                                Classes="t1"
+                                GroupName="Group2"
+                                IsChecked="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.Grid}}">
+                                <svg:SvgControl
+                                    Width="16"
+                                    Height="16"
+                                    Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
+                                    Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
                             </RadioButton>
                             <RadioButton
                                 Classes="t1"

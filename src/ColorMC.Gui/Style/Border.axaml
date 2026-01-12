@@ -19,7 +19,7 @@
 
     <Style Selector="Border.t2">
         <Setter Property="Background" Value="{setting:Theme ItemBG}" />
-        <Setter Property="BorderBrush" Value="{setting:Theme OverBrushColor}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>

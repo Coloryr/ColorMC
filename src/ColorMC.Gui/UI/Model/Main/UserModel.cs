@@ -1,3 +1,4 @@
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -28,6 +29,12 @@ public partial class MainModel
     /// </summary>
     [ObservableProperty]
     private Bitmap _head = ImageManager.LoadBitmap;
+
+    /// <summary>
+    /// 账户类型颜色
+    /// </summary>
+    [ObservableProperty]
+    private IBrush _authColor = Brushes.Black;
 
     /// <summary>
     /// 是否有头像
@@ -93,6 +100,8 @@ public partial class MainModel
             {
                 UserType = user.AuthType.GetName();
             }
+
+            AuthColor = ColorManager.GetColor(user.AuthType);
         }
 
         await UserBinding.LoadSkin();

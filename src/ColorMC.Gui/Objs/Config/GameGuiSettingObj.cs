@@ -47,4 +47,12 @@ public record GameGuiSettingObj
     /// 显示方块
     /// </summary>
     public string Block { get; set; }
+    /// <summary>
+    /// 自动打开日志窗口
+    /// </summary>
+    public bool LogAutoShow { get; set; }
+    /// <summary>
+    /// 排列顺序
+    /// </summary>
+    public int Order { get; set; }
 }

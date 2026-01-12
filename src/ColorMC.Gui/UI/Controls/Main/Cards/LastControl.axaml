@@ -16,10 +16,6 @@
                     <ImageBrush Source="{Binding GameImage}" Stretch="UniformToFill" />
                 </Border.Background>
             </Border>
-            <Border
-                Background="#77000000"
-                CornerRadius="5"
-                IsVisible="{Binding HaveGameImage}" />
             <StackPanel Margin="15">
                 <TextBlock
                     Margin="0,0,0,5"

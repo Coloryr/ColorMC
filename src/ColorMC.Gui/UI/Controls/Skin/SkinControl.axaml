@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Skin"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view1="clr-namespace:ColorMC.Gui.UI.Controls.Skin"
     xmlns:view2="clr-namespace:ColorMC.Gui.UI.Controls.Skin.OpenGL"
     d:DesignHeight="450"
@@ -38,7 +39,7 @@
                     FontSize="12"
                     Text="{setting:Localize SkinWindow.Text23}" />
                 <TextBlock
-                    Width="400"
+                    Width="500"
                     Classes="t1"
                     FontSize="12"
                     MaxLines="1"
@@ -55,241 +56,239 @@
             </StackPanel>
         </Border>
         <view1:SkinSideControl DockPanel.Dock="Right" />
+
         <Panel>
             <view2:SkinRender Name="Skin" IsVisible="{Binding HaveSkin}" />
-            <Grid
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                ColumnDefinitions="*,*,*"
-                IsVisible="{Binding HaveSkin}"
-                RowDefinitions="*,*,*">
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.LeftUp}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↖" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.Up}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↑" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.RightUp}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↗" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.Left}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="←" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.Right}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="→" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.LeftDown}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↙" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.Down}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↓" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Move}"
-                    CommandParameter="{x:Static arg:MoveType.RightDown}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↘" />
-                </RepeatButton>
-            </Grid>
-            <Grid
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                ColumnDefinitions="*,*,*"
-                IsVisible="{Binding HaveSkin}"
-                RowDefinitions="*,*,*">
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.LeftUp}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↖" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.Up}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↑" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="0"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.RightUp}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↗" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.Left}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="←" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.Right}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="→" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="0"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.LeftDown}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↙" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="1"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.Down}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↓" />
-                </RepeatButton>
-                <RepeatButton
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Width="40"
-                    Height="40"
-                    Background="Transparent"
-                    Command="{Binding Rot}"
-                    CommandParameter="{x:Static arg:MoveType.RightDown}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↘" />
-                </RepeatButton>
-            </Grid>
-            <StackPanel
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                IsVisible="{Binding HaveSkin}">
-                <RepeatButton
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    Command="{Binding Scoll}"
-                    CommandParameter="{x:Static arg:MoveType.Up}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↑" />
-                </RepeatButton>
-                <RepeatButton
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    Command="{Binding Scoll}"
-                    CommandParameter="{x:Static arg:MoveType.Down}"
-                    Delay="100"
-                    Interval="20">
-                    <TextBlock Text="↓" />
-                </RepeatButton>
-            </StackPanel>
+
+            <Border
+                Margin="0,0,0,20"
+                Padding="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                Background="{setting:Theme OverBGColor}"
+                BoxShadow="0 20 25 -5 #1a000000, 0 8 10 -6 #1a000000"
+                CornerRadius="16">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Styles>
+                        <Style Selector="FlyoutPresenter">
+                            <Setter Property="Background" Value="#FFFFFF" />
+                            <Setter Property="Padding" Value="5" />
+                            <Setter Property="Opacity" Value="0.9" />
+                        </Style>
+                        <Style Selector="RepeatButton">
+                            <Setter Property="Width" Value="40" />
+                            <Setter Property="Margin" Value="2" />
+                            <Setter Property="Height" Value="40" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Delay" Value="100" />
+                            <Setter Property="Interval" Value="20" />
+                        </Style>
+                        <Style Selector="RepeatButton > TextBlock">
+                            <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
+                        </Style>
+                        <Style Selector="Button">
+                            <Setter Property="Width" Value="40" />
+                            <Setter Property="Height" Value="40" />
+                            <Setter Property="BorderThickness" Value="1" />
+                        </Style>
+                    </StackPanel.Styles>
+                    <Button
+                        Margin="0,0,15,0"
+                        Classes="icon"
+                        Command="{Binding Load}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text138}">
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/reload.svg" />
+                    </Button>
+                    <Button
+                        Margin="0,0,15,0"
+                        Classes="icon"
+                        Command="{Binding ResetPos}"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text139}">
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/reset.svg" />
+                    </Button>
+                    <Rectangle
+                        Width="1"
+                        Height="24"
+                        Margin="0,0,15,0"
+                        Fill="{setting:Theme BorderColor}" />
+                    <Button
+                        Margin="0,0,15,0"
+                        Classes="icon"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text140}">
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/rotate.svg" />
+                        <Button.Flyout>
+                            <Flyout
+                                Placement="Top"
+                                ShowMode="TransientWithDismissOnPointerMoveAway"
+                                VerticalOffset="-20">
+                                <Grid
+                                    Background="#FFFFFF"
+                                    ColumnDefinitions="*,*,*"
+                                    RowDefinitions="*,*,*">
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.LeftUp}">
+                                        <TextBlock Text="↖" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.Up}">
+                                        <TextBlock Text="↑" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.RightUp}">
+                                        <TextBlock Text="↗" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.Left}">
+                                        <TextBlock Text="←" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.Right}">
+                                        <TextBlock Text="→" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.LeftDown}">
+                                        <TextBlock Text="↙" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.Down}"
+                                        Delay="100"
+                                        Interval="20">
+                                        <TextBlock Text="↓" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        Command="{Binding Rot}"
+                                        CommandParameter="{x:Static arg:MoveType.RightDown}">
+                                        <TextBlock Text="↘" />
+                                    </RepeatButton>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button
+                        Margin="0,0,15,0"
+                        Classes="icon"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text141}">
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/move.svg" />
+                        <Button.Flyout>
+                            <Flyout
+                                Placement="Top"
+                                ShowMode="TransientWithDismissOnPointerMoveAway"
+                                VerticalOffset="-20">
+                                <Grid
+                                    Background="#FFFFFF"
+                                    ColumnDefinitions="*,*,*"
+                                    RowDefinitions="*,*,*">
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.LeftUp}">
+                                        <TextBlock Text="↖" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.Up}">
+                                        <TextBlock Text="↑" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.RightUp}">
+                                        <TextBlock Text="↗" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="1"
+                                        Grid.Column="0"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.Left}">
+                                        <TextBlock Text="←" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.Right}">
+                                        <TextBlock Text="→" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="0"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.LeftDown}">
+                                        <TextBlock Text="↙" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.Down}">
+                                        <TextBlock Text="↓" />
+                                    </RepeatButton>
+                                    <RepeatButton
+                                        Grid.Row="3"
+                                        Grid.Column="2"
+                                        Command="{Binding Move}"
+                                        CommandParameter="{x:Static arg:MoveType.RightDown}">
+                                        <TextBlock Text="↘" />
+                                    </RepeatButton>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                    <Button
+                        Classes="icon"
+                        IsEnabled="{Binding HaveSkin}"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text142}">
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/zoom.svg" />
+                        <Button.Flyout>
+                            <Flyout
+                                Placement="Top"
+                                ShowMode="TransientWithDismissOnPointerMoveAway"
+                                VerticalOffset="-20">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <RepeatButton Command="{Binding Scoll}" CommandParameter="{x:Static arg:MoveType.Up}">
+                                        <TextBlock Text="+" />
+                                    </RepeatButton>
+                                    <RepeatButton Command="{Binding Scoll}" CommandParameter="{x:Static arg:MoveType.Down}">
+                                        <TextBlock Text="-" />
+                                    </RepeatButton>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
+            </Border>
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

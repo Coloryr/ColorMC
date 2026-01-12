@@ -6,9 +6,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Media.Imaging;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
@@ -24,9 +26,13 @@ namespace ColorMC.Gui.UI.Model.Main;
 public partial class MainModel
 {
     /// <summary>
-    /// 游戏实例列表
+    /// 游戏实例分组列表
     /// </summary>
     public ObservableCollection<GameGroupModel> GameGroups { get; init; } = [];
+    /// <summary>
+    /// 游戏实例列表
+    /// </summary>
+    public ObservableCollection<GameItemModel> Games { get; init; } = [];
     /// <summary>
     /// 启动项目列表
     /// </summary>
@@ -92,9 +98,20 @@ public partial class MainModel
     private Bitmap? _gameImage;
 
     /// <summary>
+    /// 分组方式
+    /// </summary>
+    [ObservableProperty]
+    private ItemsGridType _gridType = ItemsGridType.GridInfo;
+
+    /// <summary>
     /// 是否多选
     /// </summary>
     public bool IsMut { get; private set; }
+
+    partial void OnGridTypeChanged(ItemsGridType value)
+    {
+        OnPropertyChanged(SwitchView);
+    }
 
     /// <summary>
     /// 实例搜索
@@ -388,6 +405,7 @@ public partial class MainModel
                 IsFirst = false;
                 GameGroupModel? DefaultGroup = null;
 
+                Games.Clear();
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
@@ -415,6 +433,10 @@ public partial class MainModel
                 {
                     GameGroups.Add(DefaultGroup);
                 }
+                foreach (var item1 in GameGroups)
+                {
+                    Games.AddRange(item1.Items.Values);
+                }
                 Select(last);
             }
             else
@@ -431,6 +453,10 @@ public partial class MainModel
                     else
                     {
                         GameGroups.Remove(item);
+                        foreach (var item1 in item.Items.Values)
+                        {
+                            Games.Remove(item1);
+                        }
                     }
                 }
                 foreach (var item in list)
@@ -442,6 +468,10 @@ public partial class MainModel
                         group.Expander = false;
                     }
                     last ??= group.Find(uuid);
+                    foreach (var item1 in group.Items.Values)
+                    {
+                        Games.Add(item1);
+                    }
                 }
 
                 foreach (var item in list1)

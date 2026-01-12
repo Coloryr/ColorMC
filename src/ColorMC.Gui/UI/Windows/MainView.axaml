@@ -22,7 +22,7 @@
         Opacity="{Binding BgOpacity}"
         Source="{Binding BackImage}"
         Stretch="UniformToFill" />
-    <DockPanel Background="{setting:Theme WindowBG}">
+    <DockPanel Background="{setting:Theme BorderBG}">
         <view:HeadControl
             Name="HeadControl"
             DockPanel.Dock="Top"

@@ -563,7 +563,7 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
             MenuBG = Brush.Parse("#FFF4F4F5"),
-            BorderColor = Brush.Parse("#e5e7eb"),
+            BorderColor = Brush.Parse("#e2e8f0"),
             RadioGroupBG = Brush.Parse("#f3f4f6"),
             BorderBG = Brush.Parse("#f8fafc")
         };
@@ -591,7 +591,7 @@ public static class ThemeManager
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
             MenuBG = Brush.Parse("#FF2c2c2c"),
-            BorderColor = Brush.Parse("#e5e7eb"),
+            BorderColor = Brush.Parse("#e2e8f0"),
             RadioGroupBG = Brush.Parse("#f3f4f6"),
             BorderBG = Brush.Parse("#f8fafc")
         };

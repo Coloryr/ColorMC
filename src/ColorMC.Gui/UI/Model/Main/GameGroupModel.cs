@@ -63,12 +63,13 @@ public partial class GameGroupModel : ControlModel
         Key = key;
         GameList.Clear();
         Items.Clear();
-        foreach (var item in list)
+        foreach (var item in list.OrderBy(GameManager.GetOrder))
         {
             var model1 = new GameItemModel(Window, Top, item);
             Items.Add(item.UUID, model1);
         }
         _addItem = new(Window, Key == Names.NameDefaultGroup ? null : Key);
+
         Task.Run(() =>
         {
             bool res = false;
@@ -81,10 +82,6 @@ public partial class GameGroupModel : ControlModel
                     res = true;
                 }
             }
-            //if (GuiConfigUtils.Config.Simple)
-            //{
-            //    res = false;
-            //}
 
             var list1 = new List<GameItemModel>();
 

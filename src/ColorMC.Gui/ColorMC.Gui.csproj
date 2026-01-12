@@ -43,10 +43,11 @@
     <None Remove="Resource\Icon\AddMenu\item6.svg" />
     <None Remove="Resource\Icon\AddMenu\item7.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
-    <None Remove="Resource\Icon\book.svg" />
     <None Remove="Resource\Icon\close.svg" />
+    <None Remove="Resource\Icon\cog.svg" />
     <None Remove="Resource\Icon\collection.svg" />
     <None Remove="Resource\Icon\count.svg" />
+    <None Remove="Resource\Icon\counter.svg" />
     <None Remove="Resource\Icon\delete.svg" />
     <None Remove="Resource\Icon\down.svg" />
     <None Remove="Resource\Icon\edit.svg" />
@@ -74,6 +75,7 @@
     <None Remove="Resource\Icon\GameExport\item2.svg" />
     <None Remove="Resource\Icon\GameExport\item3.svg" />
     <None Remove="Resource\Icon\GameExport\item4.svg" />
+    <None Remove="Resource\Icon\guide.svg" />
     <None Remove="Resource\Icon\Head\close.svg" />
     <None Remove="Resource\Icon\Head\max.svg" />
     <None Remove="Resource\Icon\Head\max1.svg" />
@@ -115,6 +117,7 @@
     <None Remove="Resource\Icon\Main\svg1.svg" />
     <None Remove="Resource\Icon\Main\svg2.svg" />
     <None Remove="Resource\Icon\menu.svg" />
+    <None Remove="Resource\Icon\move.svg" />
     <None Remove="Resource\Icon\net.svg" />
     <None Remove="Resource\Icon\NetFrp\item1.svg" />
     <None Remove="Resource\Icon\NetFrp\item2.svg" />
@@ -128,7 +131,8 @@
     <None Remove="Resource\Icon\play.svg" />
     <None Remove="Resource\Icon\reload.svg" />
     <None Remove="Resource\Icon\relogin.svg" />
-    <None Remove="Resource\Icon\setting.svg" />
+    <None Remove="Resource\Icon\reset.svg" />
+    <None Remove="Resource\Icon\rotate.svg" />
     <None Remove="Resource\Icon\Setting\item1.svg" />
     <None Remove="Resource\Icon\Setting\item2.svg" />
     <None Remove="Resource\Icon\Setting\item3.svg" />
@@ -175,8 +179,11 @@
     <None Remove="Resource\Icon\Setting\svg9.svg" />
     <None Remove="Resource\Icon\size.svg" />
     <None Remove="Resource\Icon\skin.svg" />
+    <None Remove="Resource\Icon\starnone.svg" />
+    <None Remove="Resource\Icon\texture.svg" />
     <None Remove="Resource\Icon\upgrade.svg" />
     <None Remove="Resource\Icon\user.svg" />
+    <None Remove="Resource\Icon\zoom.svg" />
     <None Remove="Resource\Pic\1.png" />
     <None Remove="Resource\Pic\2.png" />
     <None Remove="Resource\Pic\3.png" />
@@ -200,9 +207,9 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item5.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item6.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item7.svg" />
-    <AvaloniaResource Include="Resource\Icon\book.svg" />
     <AvaloniaResource Include="Resource\Icon\close.svg" />
-    <AvaloniaResource Include="Resource\Icon\count.svg" />
+    <AvaloniaResource Include="Resource\Icon\cog.svg" />
+    <AvaloniaResource Include="Resource\Icon\counter.svg" />
     <AvaloniaResource Include="Resource\Icon\delete.svg" />
     <AvaloniaResource Include="Resource\Icon\down.svg" />
     <AvaloniaResource Include="Resource\Icon\edit.svg" />
@@ -231,6 +238,7 @@
     <AvaloniaResource Include="Resource\Icon\GameExport\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item4.svg" />
+    <AvaloniaResource Include="Resource\Icon\guide.svg" />
     <AvaloniaResource Include="Resource\Icon\Head\close.svg" />
     <AvaloniaResource Include="Resource\Icon\Head\max.svg" />
     <AvaloniaResource Include="Resource\Icon\Head\max1.svg" />
@@ -272,6 +280,7 @@
     <AvaloniaResource Include="Resource\Icon\Main\svg1.svg" />
     <AvaloniaResource Include="Resource\Icon\Main\svg2.svg" />
     <AvaloniaResource Include="Resource\Icon\menu.svg" />
+    <AvaloniaResource Include="Resource\Icon\move.svg" />
     <AvaloniaResource Include="Resource\Icon\net.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\NetFrp\item2.svg" />
@@ -283,7 +292,8 @@
     <AvaloniaResource Include="Resource\Icon\play.svg" />
     <AvaloniaResource Include="Resource\Icon\reload.svg" />
     <AvaloniaResource Include="Resource\Icon\relogin.svg" />
-    <AvaloniaResource Include="Resource\Icon\setting.svg" />
+    <AvaloniaResource Include="Resource\Icon\reset.svg" />
+    <AvaloniaResource Include="Resource\Icon\rotate.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item1.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item2.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\item3.svg" />
@@ -328,9 +338,10 @@
     <AvaloniaResource Include="Resource\Icon\Setting\svg7.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg8.svg" />
     <AvaloniaResource Include="Resource\Icon\Setting\svg9.svg" />
-    <AvaloniaResource Include="Resource\Icon\skin.svg" />
     <AvaloniaResource Include="Resource\Icon\pause.svg" />
-    <AvaloniaResource Include="Resource\Icon\collection.svg" />
+    <AvaloniaResource Include="Resource\Icon\starnone.svg" />
+    <AvaloniaResource Include="Resource\Icon\texture.svg" />
+    <AvaloniaResource Include="Resource\Icon\zoom.svg" />
     <EmbeddedResource Include="Resource\Pic\update.png" />
     <EmbeddedResource Include="Resource\Pic\1.png" />
     <EmbeddedResource Include="Resource\Pic\2.png" />
@@ -382,26 +393,8 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="UI\Controls\Add\AddDownloadListControl.axaml.cs">
-      <DependentUpon>AddDownloadListControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\ChoiceControl.axaml.cs">
-      <DependentUpon>ChoiceControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\LongTextControl.axaml.cs">
-      <DependentUpon>LongTextControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\InputControl.axaml.cs">
-      <DependentUpon>InputControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\SelectControl.axaml.cs">
-      <DependentUpon>SelectControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Dialog\ProgressControl.axaml.cs">
-      <DependentUpon>ProgressControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="UI\Controls\Items\UserItemGridControl.axaml.cs">
-      <DependentUpon>UserItemGridControl.axaml</DependentUpon>
+    <Compile Update="UI\Controls\Main\MainGameGroupControl.axaml.cs">
+      <DependentUpon>MainGameGroupControl.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

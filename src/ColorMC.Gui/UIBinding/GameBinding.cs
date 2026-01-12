@@ -510,7 +510,7 @@ public static class GameBinding
             }
 
             ConfigBinding.SetLastLaunch(obj.UUID);
-            if (obj.LogAutoShow)
+            if (GameManager.GetLogAuto(obj))
             {
                 WindowManager.ShowGameLog(obj);
             }

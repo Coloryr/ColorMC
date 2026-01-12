@@ -197,8 +197,7 @@ public partial class GameEditModel
             return;
         }
 
-        _obj.LogAutoShow = value;
-        _obj.Save();
+        GameManager.SetLogAuto(_obj, value);
     }
     /// <summary>
     /// 编码类型修改
@@ -1011,7 +1010,6 @@ public partial class GameEditModel
 
         GameVersionEmpty = string.IsNullOrWhiteSpace(GameVersion);
 
-        LogAutoShow = _obj.LogAutoShow;
         Encoding = (int)_obj.Encoding;
         Group = _obj.GroupName;
         FID = _obj.FID;
@@ -1069,6 +1067,8 @@ public partial class GameEditModel
                 }
             }
         }
+
+        LogAutoShow = GameManager.GetLogAuto(_obj);
 
         if (!CustomJson)
         {
