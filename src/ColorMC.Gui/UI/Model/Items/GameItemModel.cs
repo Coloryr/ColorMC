@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -392,7 +394,7 @@ public partial class GameItemModel : GameModel
     /// </summary>
     /// <param name="top"></param>
     /// <param name="e"></param>
-    public async void Move(TopLevel? top, PointerEventArgs e)
+    public async void Move(TopLevel top, PointerEventArgs e, Bitmap icon)
     {
         if (ShowCheck)
         {
@@ -402,19 +404,19 @@ public partial class GameItemModel : GameModel
         dragData.Add(DataTransferItem.Create(BaseBinding.DrapType, Obj.UUID.ToString()));
         IsDrop = true;
         var files = new List<IStorageFolder>();
-        if (top == null)
-        {
-            return;
-        }
         var item = await top.StorageProvider.TryGetFolderFromPathAsync(Obj.GetBasePath());
-        files.Add(item!);
-        foreach (var file in files)
+        if (item != null)
         {
-            dragData.Add(DataTransferItem.CreateFile(file));
+            files.Add(item);
+            foreach (var file in files)
+            {
+                dragData.Add(DataTransferItem.CreateFile(file));
+            }
         }
 
         Dispatcher.UIThread.Post(() =>
         {
+            _top?.Drag(this);
             DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
         });
     }

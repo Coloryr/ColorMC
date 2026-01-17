@@ -258,6 +258,21 @@ public static class InstancesPath
     /// </summary>
     /// <param name="uuid">实例UUID</param>
     /// <returns>游戏实例</returns>
+    public static GameSettingObj? GetGame(string? uuid)
+    {
+        if (Guid.TryParse(uuid, out var guid))
+        {
+            return GetGame(guid);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// 获取游戏实例
+    /// </summary>
+    /// <param name="uuid">实例UUID</param>
+    /// <returns>游戏实例</returns>
     public static GameSettingObj? GetGame(Guid uuid)
     {
         if (uuid == Guid.Empty)

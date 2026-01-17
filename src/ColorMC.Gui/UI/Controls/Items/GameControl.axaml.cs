@@ -106,7 +106,12 @@ public partial class GameControl : UserControl
             var pos = pro.Position;
             if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
             {
-                model.Move(TopLevel.GetTopLevel(this), e);
+                var top = TopLevel.GetTopLevel(this);
+                if (top != null)
+                {
+                    model.Move(top, e, model.Pic);
+                }
+                
                 e.Handled = true;
             }
         }

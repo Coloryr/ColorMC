@@ -1,8 +1,12 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media.Imaging;
+using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.Main;
+using ColorMC.Gui.UIBinding;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
@@ -79,6 +83,14 @@ public partial class GameGroupControl : UserControl
     {
         if (e.Source is Control && DataContext is GameGroupModel model)
         {
+            var icon = e.DataTransfer.TryGetBitmap();
+            if (icon != null)
+            {
+                var customCursor = new Cursor(icon, new PixelPoint(0, 0));
+                var top = TopLevel.GetTopLevel(this);
+                top?.Cursor = customCursor;
+            }
+
             Grid1.IsVisible = model.DropIn(e.DataTransfer);
         }
     }

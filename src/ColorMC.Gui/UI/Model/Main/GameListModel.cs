@@ -108,6 +108,8 @@ public partial class MainModel
     /// </summary>
     public bool IsMut { get; private set; }
 
+    private GameItemModel? _dragItem;
+
     partial void OnGridTypeChanged(ItemsGridType value)
     {
         OnPropertyChanged(SwitchView);
@@ -750,5 +752,64 @@ public partial class MainModel
     public void ExportCmd(GameSettingObj obj)
     {
         GameBinding.ExportCmd(obj, Window, CancellationToken.None);
+    }
+
+    public void Drag(GameItemModel item)
+    {
+        _dragItem = item;
+        Games.Remove(item);
+    }
+
+    public void PutDrap()
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        if (Games.Count > 0)
+        {
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(Games.Last().Obj) + 1);
+        }
+
+        Games.Add(_dragItem);
+
+        _dragItem = null;
+    }
+
+    public void PutDrap(GameItemModel target, bool isleft)
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        int index = Games.IndexOf(target);
+        if (isleft)
+        {
+            if (index < 0)
+            {
+                index = 0;
+            }
+
+            Games.Insert(index, _dragItem);
+
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) - 1);
+        }
+        else
+        {
+            if (index >= Games.Count)
+            {
+                Games.Add(_dragItem);
+            }
+            else
+            {
+                Games.Insert(index + 1, _dragItem);
+            }
+
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) + 1);
+        }
+
+        _dragItem = null;
     }
 }

@@ -55,4 +55,9 @@ public interface IMainTop
     /// </summary>
     /// <param name="obj">游戏实例</param>
     void ExportCmd(GameSettingObj obj);
+    /// <summary>
+    /// 开始拖拽
+    /// </summary>
+    /// <param name="item">游戏实例</param>
+    void Drag(GameItemModel item);
 }
