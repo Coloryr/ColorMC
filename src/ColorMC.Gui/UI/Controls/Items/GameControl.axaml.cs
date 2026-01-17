@@ -44,6 +44,15 @@ public partial class GameControl : UserControl
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
+
+        if (DataContext is GameItemModel model)
+        {
+            if (model.Opa != 1.0)
+            {
+                return;
+            }
+        }
+
         if (GuiConfigUtils.Config.Style.EnableAm)
         {
             Dispatcher.UIThread.Post(() =>
@@ -104,12 +113,12 @@ public partial class GameControl : UserControl
         if (pro.Properties.IsLeftButtonPressed && DataContext is GameItemModel model && !model.IsNew)
         {
             var pos = pro.Position;
-            if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 30)
+            if (Math.Sqrt(Math.Pow(Math.Abs(pos.X - point.X), 2) + Math.Pow(Math.Abs(pos.Y - point.Y), 2)) > 40)
             {
                 var top = TopLevel.GetTopLevel(this);
                 if (top != null)
                 {
-                    model.Move(top, e, model.Pic);
+                    model.Move(top, e);
                 }
                 
                 e.Handled = true;

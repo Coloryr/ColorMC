@@ -132,6 +132,10 @@ public partial class MainControl : BaseUserControl
     {
         if (e.DataTransfer.Contains(BaseBinding.DrapType))
         {
+            if (Content1.Child is MainGamesControl games)
+            {
+                games.OnDrop(sender, e);
+            }
             return;
         }
         Grid2.IsVisible = false;

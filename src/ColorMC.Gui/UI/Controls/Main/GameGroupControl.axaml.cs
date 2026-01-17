@@ -2,9 +2,12 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media.Imaging;
+using Avalonia.VisualTree;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Controls.Items;
 using ColorMC.Gui.UI.Flyouts;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 
@@ -27,7 +30,41 @@ public partial class GameGroupControl : UserControl
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
+        AddHandler(DragDrop.DragOverEvent, OnDragOver);
         AddHandler(DragDrop.DropEvent, Drop);
+    }
+
+    public void OnDragOver(object? sender, DragEventArgs e)
+    {
+        var draggedItem = e.DataTransfer.TryGetValue(BaseBinding.DrapType);
+
+        if (draggedItem == null)
+        {
+            return;
+        }
+
+        var vm = DataContext as GameGroupModel;
+
+        var visualTarget = e.Source as Visual;
+        var targetBorder = visualTarget?.FindAncestorOfType<GameControl>();
+
+        if (targetBorder != null && targetBorder?.DataContext is GameItemModel targetItem)
+        {
+            var pos = e.GetPosition(targetBorder);
+
+            if (pos.X > targetBorder.Bounds.Width / 2)
+            {
+                vm?.PutPla(targetItem, false);
+            }
+            else
+            {
+                vm?.PutPla(targetItem, true);
+            }
+        }
+        else
+        {
+            vm?.PutPla();
+        }
     }
 
     private void GameGroupControl_PointerPressed(object? sender, PointerPressedEventArgs e)
@@ -106,6 +143,36 @@ public partial class GameGroupControl : UserControl
         if (e.Source is Control && DataContext is GameGroupModel model)
         {
             model.Drop(e.DataTransfer);
+        }
+
+        var draggedItem = e.DataTransfer.TryGetValue(BaseBinding.DrapType);
+
+        if (draggedItem == null)
+        {
+            return;
+        }
+
+        var vm = DataContext as GameGroupModel;
+
+        var visualTarget = e.Source as Visual;
+        var targetBorder = visualTarget?.FindAncestorOfType<GameControl>();
+
+        if (targetBorder != null && targetBorder?.DataContext is GameItemModel targetItem)
+        {
+            var pos = e.GetPosition(targetBorder);
+
+            if (pos.X > targetBorder.Bounds.Width / 2)
+            {
+                vm?.PutDrap(targetItem, false);
+            }
+            else
+            {
+                vm?.PutDrap(targetItem, true);
+            }
+        }
+        else
+        {
+            vm?.PutDrap();
         }
     }
 }

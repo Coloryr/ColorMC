@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -19,12 +21,40 @@ public partial class MainGamesControl : UserControl
         AddHandler(DragDrop.DragOverEvent, OnDragOver);
     }
 
-    private void OnDragOver(object? sender, DragEventArgs e)
+    public void OnDragOver(object? sender, DragEventArgs e)
     {
+        var draggedItem = e.DataTransfer.TryGetValue(BaseBinding.DrapType);
 
+        if (draggedItem == null)
+        {
+            return;
+        }
+
+        var vm = DataContext as MainModel;
+
+        var visualTarget = e.Source as Visual;
+        var targetBorder = visualTarget?.FindAncestorOfType<GameControl>();
+
+        if (targetBorder != null && targetBorder?.DataContext is GameItemModel targetItem)
+        {
+            var pos = e.GetPosition(targetBorder);
+
+            if (pos.X > targetBorder.Bounds.Width / 2)
+            {
+                vm?.PutPla(targetItem, false);
+            }
+            else
+            {
+                vm?.PutPla(targetItem, true);
+            }
+        }
+        else
+        {
+            vm?.PutPla();
+        }
     }
 
-    private void OnDrop(object? sender, DragEventArgs e)
+    public void OnDrop(object? sender, DragEventArgs e)
     {
         var draggedItem = e.DataTransfer.TryGetValue(BaseBinding.DrapType);
 

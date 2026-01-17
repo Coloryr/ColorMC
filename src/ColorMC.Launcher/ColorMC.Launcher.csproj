@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
 		<TargetFramework>$(DotnetVersion)</TargetFramework>
 		<Nullable>enable</Nullable>
 		<TrimMode>link</TrimMode>
@@ -12,9 +11,11 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DebugType>portable</DebugType>
+		<OutputType>Exe</OutputType>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<DebugType>embedded</DebugType>
+		<OutputType>WinExe</OutputType>
 	</PropertyGroup>
 
 	<PropertyGroup>

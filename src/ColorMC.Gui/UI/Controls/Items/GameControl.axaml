@@ -12,6 +12,7 @@
     d:DesignWidth="80"
     x:DataType="model:GameItemModel"
     IsVisible="{Binding IsDisplay}"
+    Opacity="{Binding Opa}"
     ToolTip.Tip="{Binding Tips}"
     mc:Ignorable="d">
     <Panel Background="Transparent">

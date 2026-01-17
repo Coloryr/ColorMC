@@ -20,7 +20,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// <summary>
 /// 游戏分组
 /// </summary>
-public partial class GameGroupModel : ControlModel
+public partial class GameGroupModel : ControlModel, IDragTop
 {
     /// <summary>
     /// 游戏列表
@@ -56,6 +56,8 @@ public partial class GameGroupModel : ControlModel
     /// </summary>
     private readonly GameItemModel _addItem;
 
+    private GameItemModel? _dragItem;
+
     public GameGroupModel(WindowModel model, IMutTop top, string key, string name, List<GameSettingObj> list) : base(model)
     {
         Top = top;
@@ -65,7 +67,10 @@ public partial class GameGroupModel : ControlModel
         Items.Clear();
         foreach (var item in list.OrderBy(GameManager.GetOrder))
         {
-            var model1 = new GameItemModel(Window, Top, item);
+            var model1 = new GameItemModel(Window, Top, item)
+            {
+                Drag = this
+            };
             Items.Add(item.UUID, model1);
         }
         _addItem = new(Window, Key == Names.NameDefaultGroup ? null : Key);
@@ -370,6 +375,105 @@ public partial class GameGroupModel : ControlModel
         foreach (var item in GameList)
         {
             item.IsCheck = true;
+        }
+    }
+
+    public void Drag(GameItemModel item)
+    {
+        _dragItem = item;
+    }
+
+    public void PutPla()
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        int index1 = GameList.IndexOf(_dragItem);
+        if (index1 != GameList.Count - 2)
+        {
+            GameList.Move(index1, GameList.Count - 2);
+        }
+    }
+
+    public void PutPla(GameItemModel target, bool isleft)
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        int index = GameList.IndexOf(target);
+        if (index == GameList.Count - 1)
+        {
+            index--;
+        }
+        if (index <= 0)
+        {
+            index = 0;
+        }
+        int index1 = GameList.IndexOf(_dragItem);
+        if (isleft)
+        {
+            if (index1 == -1 || index1 != index - 1)
+            {
+                GameList.Move(index1, index);
+            }
+        }
+        else
+        {
+            if (index1 == -1 || index1 != index + 1)
+            {
+                GameList.Move(index1, index);
+            }
+        }
+    }
+
+    public void PutDrap()
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        if (GameList.Count > 1)
+        {
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(GameList[^2].Obj) + 1);
+        }
+
+        _dragItem = null;
+    }
+
+    public void PutDrap(GameItemModel target, bool isleft)
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        if (target.IsNew)
+        {
+            target = GameList[^2];
+        }
+
+        if (isleft)
+        {
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) - 1);
+        }
+        else
+        {
+            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) + 1);
+        }
+
+        _dragItem = null;
+    }
+
+    public void SetDrag()
+    {
+        foreach (var item in Items.Values)
+        {
+            item.Drag = this;
         }
     }
 }

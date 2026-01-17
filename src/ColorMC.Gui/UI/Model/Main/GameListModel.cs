@@ -23,7 +23,7 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// <summary>
 /// 主界面
 /// </summary>
-public partial class MainModel
+public partial class MainModel : IDragTop
 {
     /// <summary>
     /// 游戏实例分组列表
@@ -113,6 +113,21 @@ public partial class MainModel
     partial void OnGridTypeChanged(ItemsGridType value)
     {
         OnPropertyChanged(SwitchView);
+
+        if (value == ItemsGridType.Grid)
+        {
+            foreach (var item in Games)
+            {
+                item.Drag = this;
+            }
+        }
+        else if (value == ItemsGridType.GridInfo)
+        {
+            foreach (var item in GameGroups)
+            {
+                item.SetDrag();
+            }
+        }
     }
 
     /// <summary>
@@ -757,7 +772,49 @@ public partial class MainModel
     public void Drag(GameItemModel item)
     {
         _dragItem = item;
-        Games.Remove(item);
+    }
+
+    public void PutPla()
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        int index1 = Games.IndexOf(_dragItem);
+        if (index1 != Games.Count - 1)
+        {
+            Games.Move(index1, Games.Count - 1);
+        }
+    }
+
+    public void PutPla(GameItemModel target, bool isleft)
+    {
+        if (_dragItem == null)
+        {
+            return;
+        }
+
+        int index = Games.IndexOf(target);
+        int index1 = Games.IndexOf(_dragItem);
+        if (isleft)
+        {
+            if (index < 0)
+            {
+                index = 0;
+            }
+            if (index1 == -1 || index1 != index - 1)
+            {
+                Games.Move(index1, index);
+            }
+        }
+        else
+        {
+            if (index1 == -1 || index1 != index + 1)
+            {
+                Games.Move(index1, index);
+            }
+        }
     }
 
     public void PutDrap()
@@ -772,8 +829,6 @@ public partial class MainModel
             GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(Games.Last().Obj) + 1);
         }
 
-        Games.Add(_dragItem);
-
         _dragItem = null;
     }
 
@@ -784,29 +839,12 @@ public partial class MainModel
             return;
         }
 
-        int index = Games.IndexOf(target);
         if (isleft)
         {
-            if (index < 0)
-            {
-                index = 0;
-            }
-
-            Games.Insert(index, _dragItem);
-
             GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) - 1);
         }
         else
         {
-            if (index >= Games.Count)
-            {
-                Games.Add(_dragItem);
-            }
-            else
-            {
-                Games.Insert(index + 1, _dragItem);
-            }
-
             GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) + 1);
         }
 

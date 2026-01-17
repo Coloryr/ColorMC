@@ -110,6 +110,12 @@ public partial class GameItemModel : GameModel
     private string _star = ImageManager.Stars[1];
 
     /// <summary>
+    /// 透明度
+    /// </summary>
+    [ObservableProperty]
+    private double _opa = 1.0;
+
+    /// <summary>
     /// 字体换行
     /// </summary>
     [ObservableProperty]
@@ -167,6 +173,8 @@ public partial class GameItemModel : GameModel
             }
         }
     }
+
+    public IDragTop? Drag;
 
     public GameItemModel(WindowModel model, string? group) : base(model, new() { })
     {
@@ -394,7 +402,7 @@ public partial class GameItemModel : GameModel
     /// </summary>
     /// <param name="top"></param>
     /// <param name="e"></param>
-    public async void Move(TopLevel top, PointerEventArgs e, Bitmap icon)
+    public async void Move(TopLevel top, PointerEventArgs e)
     {
         if (ShowCheck)
         {
@@ -416,8 +424,10 @@ public partial class GameItemModel : GameModel
 
         Dispatcher.UIThread.Post(() =>
         {
-            _top?.Drag(this);
+            Opa = 0.5;
+            Drag?.Drag(this);
             DragDrop.DoDragDropAsync(e, dragData, DragDropEffects.Move | DragDropEffects.Link | DragDropEffects.Copy);
+            Opa = 1.0;
         });
     }
 

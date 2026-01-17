@@ -60,7 +60,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <views1:GameControl Margin="0,0,1,1" DataContext="{Binding}" />
+                                <views1:GameControl DataContext="{Binding}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

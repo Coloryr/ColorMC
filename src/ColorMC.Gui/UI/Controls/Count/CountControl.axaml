@@ -35,7 +35,7 @@
     </UserControl.Styles>
 
     <ScrollViewer>
-        <StackPanel Margin="10">
+        <StackPanel Margin="30">
 
             <!--  第一部分：启动统计 (使用 Grid 均分列)  -->
             <Border Margin="0,0,0,10" Classes="t2">
