@@ -7,8 +7,8 @@ namespace ColorMC.Gui.UI.Model.Dialog;
 /// <summary>
 /// 输入框信息
 /// </summary>
-/// <param name="name">窗口ID</param>
-public partial class InputModel(string name) : BaseDialogModel(name)
+/// <param name="window">窗口ID</param>
+public partial class InputModel(string window) : BaseDialogModel(window)
 {
     /// <summary>
     /// 选择执行

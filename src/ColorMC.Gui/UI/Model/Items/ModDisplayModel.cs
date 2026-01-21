@@ -58,7 +58,8 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 下载源
     /// </summary>
-    public string Source { get; init; }
+    [ObservableProperty]
+    private string _source;
     /// <summary>
     /// 项目ID
     /// </summary>
@@ -101,6 +102,19 @@ public partial class ModDisplayModel : ObservableObject
 
         Name = obj.ReadFail ? LangUtils.Get("App.Text50") : obj.Name ?? "";
         Enable = !obj.Disable;
+        Update();
+    }
+
+    partial void OnTextChanged(string? value)
+    {
+        _top?.EditModText(this);
+    }
+
+    /// <summary>
+    /// 更新模组在线信息
+    /// </summary>
+    public void Update()
+    {
         if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))
         {
             Source = "";
@@ -109,11 +123,9 @@ public partial class ModDisplayModel : ObservableObject
         {
             Source = GameDownloadHelper.TestSourceType(PID, FID).GetName();
         }
-    }
 
-    partial void OnTextChanged(string? value)
-    {
-        _top?.EditModText(this);
+        OnPropertyChanged(nameof(PID));
+        OnPropertyChanged(nameof(FID));
     }
 
     /// <summary>

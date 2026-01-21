@@ -182,7 +182,7 @@ public static class CurseForgeHelper
         {
             return s_supportVersion;
         }
-        var list = await CurseForgeAPI.GetCurseForgeVersionType();
+        var list = await CurseForgeAPI.GetVersionType();
         if (list == null)
         {
             return null;
@@ -203,7 +203,7 @@ public static class CurseForgeHelper
                          orderby item.Id ascending
                          select item);
 
-        var list2 = await CurseForgeAPI.GetCurseForgeVersionAsync();
+        var list2 = await CurseForgeAPI.GetVersionAsync();
         if (list2 == null)
         {
             return null;
@@ -409,7 +409,7 @@ public static class CurseForgeHelper
             }
 
             var opt = item.RelationType != 2;
-            var res1 = await CurseForgeAPI.GetCurseForgeFilesAsync(item.ModId.ToString(), mc, loader: loader);
+            var res1 = await CurseForgeAPI.GetFilesAsync(item.ModId.ToString(), mc, loader: loader);
             if (res1 == null || res1.Data.Count == 0)
             {
                 return;

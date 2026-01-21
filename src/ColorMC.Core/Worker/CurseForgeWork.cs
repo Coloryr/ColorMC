@@ -204,7 +204,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
         }
 
         Game.Mods.Clear();
-        foreach (var item in Game.Mods)
+        foreach (var item in list.Mods)
         {
             Game.Mods.Add(item.Key, item.Value);
         }

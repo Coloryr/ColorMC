@@ -1180,9 +1180,9 @@ public static class GameBinding
     /// <param name="item">模组</param>
     /// <param name="items">依赖的模组</param>
     /// <returns></returns>
-    public static List<ModDisplayModel> ModDisable(ModDisplayModel item, IEnumerable<ModNodeModel> items)
+    public static List<ModNodeModel> ModDisable(ModDisplayModel item, IEnumerable<ModNodeModel> items)
     {
-        var list = new List<ModDisplayModel>();
+        var list = new List<ModNodeModel>();
         foreach (var item1 in items)
         {
             if (item1.Enable != true || item1.Obj.ModId == item.Obj.ModId)
@@ -1769,7 +1769,7 @@ public static class GameBinding
 
             for (; ; )
             {
-                var list = await CurseForgeAPI.GetCurseForgeFilesAsync(pid, null, page);
+                var list = await CurseForgeAPI.GetFilesAsync(pid, null, page);
                 if (list == null)
                 {
                     return false;
@@ -2407,5 +2407,71 @@ public static class GameBinding
                 ImageManager.ReloadImage(model.Game.Obj);
             }
         }
+    }
+
+    /// <summary>
+    /// 根据编号获取模组在线信息
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="pid"></param>
+    /// <param name="fid"></param>
+    /// <returns></returns>
+    public static async Task<ModInfoObj?> TestProject(GameSettingObj obj, string pid, string fid)
+    {
+        var source = GameDownloadHelper.TestSourceType(pid, fid);
+        if (source == SourceType.CurseForge)
+        {
+            var data = await CurseForgeAPI.GetModInfoAsync(pid);
+            if (data == null || data.Data == null)
+            {
+                return null;
+            }
+
+            int page = 0;
+            int pages = 0;
+
+            do
+            {
+                var data1 = await CurseForgeAPI.GetFilesAsync(pid, null, page);
+                if (data1 == null || data1.Pagination.TotalCount == 0)
+                {
+                    return null;
+                }
+
+                pages = data1.Pagination.TotalCount / 50;
+
+                if (data1.Data.FirstOrDefault(item => item.Id.ToString() == fid) is { } mod)
+                {
+                    return mod.MakeModInfo(obj.GetModsPath());
+                }
+
+                page++;
+                if (page == pages)
+                {
+                    return null;
+                }
+            }
+            while (true);
+        }
+        else
+        {
+            var data = await ModrinthAPI.GetProjectAsync(pid);
+            if (data == null)
+            {
+                return null;
+            }
+
+            var data1 = await ModrinthAPI.GetFileVersionsAsync(pid, null, Loaders.Normal);
+            if (data1 == null || data1.Count == 0)
+            {
+                return null;
+            }
+            if (data1.FirstOrDefault(item => item.Id == fid) is { } mod)
+            {
+                return mod.MakeModInfo(obj.GetModsPath());
+            }
+        }
+
+        return null;
     }
 }

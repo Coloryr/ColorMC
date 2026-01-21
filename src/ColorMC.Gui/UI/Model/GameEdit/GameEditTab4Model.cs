@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
 using ColorMC.Core.Helpers;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -99,12 +101,6 @@ public partial class GameEditModel
     /// 显示模组列表
     /// </summary>
     private readonly List<ModNodeModel> _displayModList = [];
-
-    /// <summary>
-    /// 选中的模组
-    /// </summary>
-    [ObservableProperty]
-    private ModNodeModel _modItem;
 
     /// <summary>
     /// 模组筛选
@@ -340,12 +336,14 @@ public partial class GameEditModel
 
         bool error = false;
 
+        var deletelist = new List<ModNodeModel>();
+
         items.ToList().ForEach(item =>
         {
             try
             {
                 GameBinding.DeleteMod(item.Obj);
-                _displayModList.Remove(item);
+                deletelist.Add(item);
             }
             catch
             {
@@ -357,6 +355,15 @@ public partial class GameEditModel
         {
             Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text44"));
             return;
+        }
+
+        foreach (var item in deletelist)
+        {
+            _displayModList.Remove(item);
+            foreach (var item1 in _root)
+            {
+                item1.Children.Remove(item);
+            }
         }
 
         Window.Notify(LangUtils.Get("Text.DeleteDone"));
@@ -385,6 +392,10 @@ public partial class GameEditModel
             return;
         }
         _displayModList.Remove(item);
+        foreach (var item1 in _root)
+        {
+            item1.Children.Remove(item);
+        }
 
         Window.Notify(LangUtils.Get("Text.DeleteDone"));
     }
@@ -392,16 +403,8 @@ public partial class GameEditModel
     /// <summary>
     /// 禁用/启用模组
     /// </summary>
-    public void DisEMod()
-    {
-        DisEMod(ModItem);
-    }
-
-    /// <summary>
-    /// 禁用/启用模组
-    /// </summary>
     /// <param name="item">模组</param>
-    public async void DisEMod(ModDisplayModel item)
+    public async void DisableEnableMod(ModNodeModel item)
     {
         if (item == null)
         {
@@ -426,6 +429,11 @@ public partial class GameEditModel
                 return;
             }
 
+            var dislist = new List<ModNodeModel>
+            {
+                item
+            };
+
             var list = GameBinding.ModDisable(item, _modItems);
 
             //自动禁用依赖的模组
@@ -437,24 +445,71 @@ public partial class GameEditModel
                 }
             }
 
-            if (list.Count == 0)
+            if (list.Count != 0)
             {
-                return;
+                if (await Window.ShowChoice(
+                string.Format(LangUtils.Get("GameEditWindow.Tab4.Text29"), list.Count)))
+                {
+                    foreach (var item1 in list)
+                    {
+                        if (item1.Enable != true)
+                        {
+                            continue;
+                        }
+                        GameBinding.ModEnableDisable(item1.Obj);
+                        item1.LocalChange();
+                        item1.Enable = !item1.Obj.Disable;
+                        dislist.Add(item1);
+                    }
+                }
             }
 
-            if (await Window.ShowChoice(
-                string.Format(LangUtils.Get("GameEditWindow.Tab4.Text29"), list.Count)))
+            foreach (var item1 in dislist)
             {
-                foreach (var item1 in list)
+                _displayModList.Remove(item1);
+                foreach (var item2 in _root)
                 {
-                    if (item1.Enable != true)
-                    {
-                        continue;
-                    }
-                    GameBinding.ModEnableDisable(item1.Obj);
-                    item1.LocalChange();
-                    item1.Enable = !item1.Obj.Disable;
+                    item2.Children.Remove(item1);
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 禁用/启用模组
+    /// </summary>
+    /// <param name="item">模组</param>
+    public async void DisableEnableMod(IEnumerable<ModNodeModel> items)
+    {
+        if (!items.Any())
+        {
+            return;
+        }
+        if (GameManager.IsGameRun(_obj))
+        {
+            Window.Notify(LangUtils.Get("GameEditWindow.Tab4.Text43"));
+            return;
+        }
+        var dislist = new List<ModNodeModel>();
+        foreach (var item in items)
+        {
+            var res = GameBinding.ModEnableDisable(item.Obj);
+            if (!res.State)
+            {
+                Window.Show(res.Data!);
+                break;
+            }
+            item.LocalChange();
+            item.Enable = !item.Obj.Disable;
+            dislist.Add(item);
+        }
+
+        foreach (var item1 in dislist)
+        {
+            _displayModList.Remove(item1);
+            foreach (var item2 in _root)
+            {
+                item2.Children.Remove(item1);
             }
         }
     }
@@ -524,7 +579,7 @@ public partial class GameEditModel
 
         foreach (var item in _modItems)
         {
-            if (_setting.ModName.TryGetValue(item.Obj.Sha1, out var temp))
+            if (_setting.Mod.ModName.TryGetValue(item.Obj.Sha1, out var temp))
             {
                 item.Text = temp;
             }
@@ -541,9 +596,9 @@ public partial class GameEditModel
     /// <param name="item"></param>
     public void EditModText(ModDisplayModel item)
     {
-        if (!_setting.ModName.TryAdd(item.Obj.Sha1, item.Text))
+        if (!_setting.Mod.ModName.TryAdd(item.Obj.Sha1, item.Text))
         {
-            _setting.ModName[item.Obj.Sha1] = item.Text;
+            _setting.Mod.ModName[item.Obj.Sha1] = item.Text;
         }
 
         GameManager.WriteConfig(_obj, _setting);
@@ -640,13 +695,27 @@ public partial class GameEditModel
         LoadTree();
     }
 
+    /// <summary>
+    /// 模组树重载
+    /// </summary>
+    public void ModTreeUpdate()
+    {
+        foreach (var item in _root)
+        {
+            item.UpdateGroup();
+        }
+    }
+
+    /// <summary>
+    /// 加载树
+    /// </summary>
     private void LoadTree()
     {
         var fail = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text47"));
         var enable = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text48"));
         var disable = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text49"));
 
-        var group = GameManager.GetModGroup(_obj);
+        var group = _setting.Mod.Groups;
 
         var map = new Dictionary<string, string>();
         var map1 = new Dictionary<string, ModNodeModel>();
@@ -696,11 +765,90 @@ public partial class GameEditModel
 
         foreach (var item in _root)
         {
-            item.Update();
+            item.UpdateGroup();
         }
 
         ModSource.Items = _root;
 
         ModSource.RowSelection?.SingleSelect = false;
+    }
+
+    /// <summary>
+    /// 设置备注
+    /// </summary>
+    /// <param name="mods">模组列表</param>
+    /// <returns></returns>
+    public async void SetText(IEnumerable<ModNodeModel> mods)
+    {
+        string text = "";
+        if (mods.Count() == 1)
+        {
+            text = mods.First().Text ?? "";
+        }
+
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Text1 = text,
+            Watermark1 = LangUtils.Get("GameEditWindow.Tab4.Text50")
+        };
+        if (await Window.ShowDialogWait(dialog) is not true)
+        {
+            return;
+        }
+
+        foreach (var item in mods)
+        {
+            if (!_setting.Mod.ModName.TryAdd(item.Obj.Sha1, text))
+            {
+                _setting.Mod.ModName[item.Obj.Sha1] = text;
+            }
+        }
+
+        GameManager.WriteConfig(_obj, _setting);
+    }
+
+    /// <summary>
+    /// 设置模组在线信息
+    /// </summary>
+    /// <param name="mod"></param>
+    public async void SetProjectId(ModNodeModel mod)
+    {
+        var dialog = new InputModel(Window.WindowId)
+        {
+            Text1 = mod.PID ?? "",
+            Text2 = mod.FID ?? "",
+            Watermark1 = LangUtils.Get("GameEditWindow.Tab4.Text12"),
+            Watermark2 = LangUtils.Get("GameEditWindow.Tab4.Text13"),
+            Text2Visable = true
+        };
+        if (await Window.ShowDialogWait(dialog) is not true)
+        {
+            return;
+        }
+
+        var pid = string.IsNullOrWhiteSpace(dialog.Text1);
+        var fid = string.IsNullOrWhiteSpace(dialog.Text2);
+        if (pid && fid)
+        {
+            return;
+        }
+        else if (!pid || !fid)
+        {
+            Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text51"));
+            return;
+        }
+
+        var dialog1 = Window.ShowProgress(LangUtils.Get("GameEditWindow.Tab4.Text52"));
+        var info = await GameBinding.TestProject(_obj, dialog.Text1, dialog.Text2);
+        if (info == null)
+        {
+            Window.CloseDialog(dialog1);
+            Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text51"));
+        }
+        else
+        { 
+            mod.Obj1 = info;
+            mod.Update();
+        }
     }
 }

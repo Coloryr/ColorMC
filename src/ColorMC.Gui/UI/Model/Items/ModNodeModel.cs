@@ -43,7 +43,7 @@ public partial class ModNodeModel : ModDisplayModel
         _group = group;
     }
 
-    public void Update()
+    public void UpdateGroup()
     {
         if (IsGroup)
         {

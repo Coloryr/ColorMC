@@ -539,7 +539,7 @@ public partial class GameEditModel
         }
         else
         {
-            var list = await CurseForgeAPI.GetCurseForgeFilesAsync(PID, _obj.Version);
+            var list = await CurseForgeAPI.GetFilesAsync(PID, _obj.Version);
             Window.CloseDialog(dialog);
             if (list == null)
             {

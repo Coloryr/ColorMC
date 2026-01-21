@@ -219,7 +219,7 @@ public static class WebBinding
         if (type == SourceType.CurseForge)
         {
             var data = await CurseForgeAPI.GetModInfoAsync(id);
-            var list = await CurseForgeAPI.GetCurseForgeFilesAsync(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
+            var list = await CurseForgeAPI.GetFilesAsync(id, mc, page, type1 == FileType.Mod ? loader : Loaders.Normal);
             if (data == null || list == null)
             {
                 return new FileListRes();
@@ -591,10 +591,10 @@ public static class WebBinding
 
             if (item.Old is { } old && item.Item.Sha1 != null)
             {
-                if (setting.ModName.TryGetValue(old.Sha1, out var value))
+                if (setting.Mod.ModName.TryGetValue(old.Sha1, out var value))
                 {
-                    setting.ModName[item.Item.Sha1] = value;
-                    setting.ModName.Remove(old.Sha1);
+                    setting.Mod.ModName[item.Item.Sha1] = value;
+                    setting.Mod.ModName.Remove(old.Sha1);
                 }
 
                 if (item.Old.Disable)
@@ -1637,10 +1637,10 @@ public static class WebBinding
                 //添加模组信息
                 if (arg.Old is { } old && arg.Item.Sha1 != null)
                 {
-                    if (setting.ModName.TryGetValue(old.Sha1, out var value))
+                    if (setting.Mod.ModName.TryGetValue(old.Sha1, out var value))
                     {
-                        setting.ModName[arg.Item.Sha1] = value;
-                        setting.ModName.Remove(old.Sha1);
+                        setting.Mod.ModName[arg.Item.Sha1] = value;
+                        setting.Mod.ModName.Remove(old.Sha1);
                     }
 
                     if (arg.Old.Disable)

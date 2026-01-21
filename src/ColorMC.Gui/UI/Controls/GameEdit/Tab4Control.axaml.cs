@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
+using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Controls.GameEdit;
 
@@ -53,15 +54,18 @@ public partial class Tab4Control : UserControl
 
     private void DataGrid1_DoubleTapped(object? sender, RoutedEventArgs e)
     {
-        if (sender is not DataGrid data || data.CurrentColumn == null)
+        if (sender is not TreeDataGrid data || data.RowSelection?.SelectedItem is not ModNodeModel node)
         {
             return;
         }
-        if (data.CurrentColumn.DisplayIndex == 1)
+        if (node.IsGroup)
         {
-            return;
+            (DataContext as GameEditModel)?.DisableEnableMod(node.Children);
         }
-        (DataContext as GameEditModel)!.DisEMod();
+        else
+        {
+            (DataContext as GameEditModel)?.DisableEnableMod(node);
+        }
     }
 
     private void Flyout(Control control)

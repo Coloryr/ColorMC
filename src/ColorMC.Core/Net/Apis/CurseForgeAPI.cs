@@ -229,7 +229,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取版本信息
     /// </summary>
-    public static async Task<CurseForgeVersionObj?> GetCurseForgeVersionAsync()
+    public static async Task<CurseForgeVersionObj?> GetVersionAsync()
     {
         string temp = $"{UrlHelper.CurseForge}games/{GameID}/versions";
         try
@@ -251,7 +251,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取版本类型
     /// </summary>
-    public static async Task<CurseForgeVersionTypeObj?> GetCurseForgeVersionType()
+    public static async Task<CurseForgeVersionTypeObj?> GetVersionType()
     {
         string temp = $"{UrlHelper.CurseForge}games/{GameID}/version-types";
         try
@@ -332,7 +332,7 @@ public static class CurseForgeAPI
     /// <summary>
     /// 获取文件列表
     /// </summary>
-    public static async Task<CurseForgeFileObj?> GetCurseForgeFilesAsync(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
+    public static async Task<CurseForgeFileObj?> GetFilesAsync(string id, string? mc, int page = 0, Loaders loader = Loaders.Normal)
     {
         mc ??= "";
         string temp = $"{UrlHelper.CurseForge}mods/{id}/files?index={page * 50}&pageSize=50&gameVersion={mc}";

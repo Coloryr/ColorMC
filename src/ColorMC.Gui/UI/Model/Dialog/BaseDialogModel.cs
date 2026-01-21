@@ -4,7 +4,7 @@ using DialogHostAvalonia;
 
 namespace ColorMC.Gui.UI.Model.Dialog;
 
-public abstract partial class BaseDialogModel(string name) : ObservableObject
+public abstract partial class BaseDialogModel(string window) : ObservableObject
 {
     /// <summary>
     /// 取消
@@ -12,7 +12,7 @@ public abstract partial class BaseDialogModel(string name) : ObservableObject
     [RelayCommand]
     public void Cancel()
     {
-        DialogHost.Close(name, false, this);
+        DialogHost.Close(window, false, this);
     }
     /// <summary>
     /// 同意
@@ -20,6 +20,6 @@ public abstract partial class BaseDialogModel(string name) : ObservableObject
     [RelayCommand]
     public void Confirm()
     {
-        DialogHost.Close(name, true, this);
+        DialogHost.Close(window, true, this);
     }
 }

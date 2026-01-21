@@ -26,6 +26,10 @@ public record GameModSettingObj
     /// 模组分组列表
     /// </summary>
     public Dictionary<string, List<string>> Groups { get; set; }
+    /// <summary>
+    /// 备注
+    /// </summary>
+    public Dictionary<string, string?> ModName { get; set; }
 }
 
 public record GameGuiSettingObj
@@ -38,10 +42,6 @@ public record GameGuiSettingObj
     /// 模组显示设置
     /// </summary>
     public GameModSettingObj Mod { get; set; }
-    /// <summary>
-    /// 备注
-    /// </summary>
-    public Dictionary<string, string?> ModName { get; set; }
     /// <summary>
     /// 是否标星
     /// </summary>

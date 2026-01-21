@@ -74,20 +74,19 @@ public static class GameEditFlyout1
         }
 
         new FlyoutsControl(
-            [
-                new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
+        [
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
             {
                 if (single)
                 {
-                    model.DisEMod(obj);
+                    model.DisableEnableMod(obj);
                 }
                 else
                 {
-                    foreach (var item in mods)
-                    {
-                        model.DisEMod(item);
-                    }
+                    model.DisableEnableMod(mods);
                 }
+
+                model.ModTreeUpdate();
             }),
             new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text2"), true, () =>
             {
@@ -109,11 +108,25 @@ public static class GameEditFlyout1
                 var list = new List <IStorageFile>();
                 if(TopLevel.GetTopLevel(con) is { } top)
                 {
-                    foreach(var item in mods)
+                    if (single)
                     {
-                        var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
-                        if(data == null)
+                        var data = await top.StorageProvider.TryGetFileFromPathAsync(obj.Local);
+                        if (data != null)
+                        {
+                            list.Add(data);
+                        }
+                    }
+                    foreach (var item in mods)
+                    {
+                        if (item.IsGroup)
+                        {
                             continue;
+                        }
+                        var data = await top.StorageProvider.TryGetFileFromPathAsync(item.Local);
+                        if (data == null)
+                        {
+                            continue;
+                        }
                         list.Add(data);
                     }
                     await BaseBinding.CopyFileClipboardAsync(top, list);
@@ -123,13 +136,21 @@ public static class GameEditFlyout1
             {
                 WebBinding.OpenMcmod(obj);
             }),
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text15"), true, () =>
+            {
+                model.SetText(mods);
+            }),
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text16"), single, () =>
+            {
+                model.SetProjectId(obj);
+            }),
             new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text4"), single
-                && ! string.IsNullOrWhiteSpace(obj ?.Url), () =>
+                && !string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {
                     BaseBinding.OpenUrl(obj !.Url);
                 }),
             new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text5"), single
-                && ! string.IsNullOrWhiteSpace(obj ?.PID) && ! string.IsNullOrWhiteSpace(obj ?.FID), () =>
+                && !string.IsNullOrWhiteSpace(obj?.PID) && ! string.IsNullOrWhiteSpace(obj?.FID), () =>
                 {
                     WindowManager.ShowAdd(obj!.Obj.Game, obj);
                 }),

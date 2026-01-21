@@ -226,7 +226,7 @@ public static class GameManager
                 {
                     obj1.Log ??= MakeLog();
                     obj1.Mod ??= MakeMod();
-                    obj1.ModName ??= [];
+                    obj1.Mod.ModName ??= [];
                     obj1.Mod.Groups ??= [];
                     s_datas.Add(obj.UUID, obj1);
                     return obj1;
@@ -265,8 +265,7 @@ public static class GameManager
         return new GameGuiSettingObj
         {
             Log = MakeLog(),
-            Mod = MakeMod(),
-            ModName = []
+            Mod = MakeMod()
         };
     }
 
@@ -288,7 +287,8 @@ public static class GameManager
     {
         return new GameModSettingObj
         {
-             Groups = []
+             Groups = [],
+             ModName = []
         };
     }
 
@@ -634,28 +634,5 @@ public static class GameManager
             Name = "ColorMC Game " + handle.UUID + " Handle",
             IsBackground = true
         }.Start();
-    }
-
-    /// <summary>
-    /// 获取模组分组
-    /// </summary>
-    /// <param name="game">游戏实例</param>
-    /// <returns>模组分组</returns>
-    public static Dictionary<string, List<string>> GetModGroup(GameSettingObj game)
-    {
-        var config = ReadConfig(game);
-        return config.Mod.Groups;
-    }
-
-    /// <summary>
-    /// 保存模组分组
-    /// </summary>
-    /// <param name="game">游戏实例</param>
-    /// <param name="group">模组分组</param>
-    public static void SetModGroup(GameSettingObj game, Dictionary<string, List<string>> group)
-    {
-        var config = ReadConfig(game);
-        config.Mod.Groups = group;
-        WriteConfig(game, config);
     }
 }
