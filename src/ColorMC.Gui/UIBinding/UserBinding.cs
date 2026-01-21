@@ -31,7 +31,7 @@ public static class UserBinding
     /// <param name="server">附加信息</param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuthGui gui, ILoginGui select, 
+    public static async Task<StringRes> AddUserAsync(AuthType type, ILoginOAuthGui gui, ILoginGui select,
         CancellationToken token,
         string? name = null, string? password = null, string? server = null)
     {

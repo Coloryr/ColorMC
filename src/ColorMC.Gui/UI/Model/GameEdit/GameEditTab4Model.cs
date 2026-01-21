@@ -4,12 +4,10 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
 using ColorMC.Core.Helpers;
-using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
@@ -889,7 +887,7 @@ public partial class GameEditModel
             }
 
             if (item1.Value.Count == 0)
-            { 
+            {
                 _setting.Mod.Groups.Remove(item1.Key);
             }
         }

@@ -501,7 +501,7 @@ public static class GameArg
                 jvm.Add("-Dnide8auth.client=true");
                 break;
             case AuthType.AuthlibInjector:
-                var res = await CoreHttpClient.GetStringAsync(login.Text1) 
+                var res = await CoreHttpClient.GetStringAsync(login.Text1)
                     ?? throw new LaunchException(LaunchError.LoginCoreError);
                 jvm.Add($"-javaagent:{AuthlibHelper.NowAuthlibInjector}={login.Text1}");
                 jvm.Add($"-Dauthlibinjector.yggdrasil.prefetched={HashHelper.GenBase64(res)}");

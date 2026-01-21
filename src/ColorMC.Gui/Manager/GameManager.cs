@@ -287,8 +287,8 @@ public static class GameManager
     {
         return new GameModSettingObj
         {
-             Groups = [],
-             ModName = []
+            Groups = [],
+            ModName = []
         };
     }
 

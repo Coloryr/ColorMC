@@ -224,7 +224,7 @@ public enum ItemsGridType
 /// 皮肤动画
 /// </summary>
 public enum SkinAnimationType
-{ 
+{
     None,
     Walk,
     Custom

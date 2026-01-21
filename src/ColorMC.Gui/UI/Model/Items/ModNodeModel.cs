@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Linq;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.UI.Model.GameEdit;
@@ -51,7 +50,7 @@ public partial class ModNodeModel : ModDisplayModel
         if (IsGroup)
         {
             bool havedis = false;
-            bool haveena =false;
+            bool haveena = false;
             foreach (var item in Children)
             {
                 if (item.Enable == true)

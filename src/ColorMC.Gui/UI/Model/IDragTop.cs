@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ColorMC.Gui.UI.Model.Items;
+﻿using ColorMC.Gui.UI.Model.Items;
 
 namespace ColorMC.Gui.UI.Model;
 

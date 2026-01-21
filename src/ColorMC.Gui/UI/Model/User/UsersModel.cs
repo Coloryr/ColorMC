@@ -163,7 +163,7 @@ public partial class UsersModel : ControlModel
         {
             type = (AuthType)model.Type;
         }
-        
+
         var gui = new LoginGui(Window);
 
         ReadyCancel();

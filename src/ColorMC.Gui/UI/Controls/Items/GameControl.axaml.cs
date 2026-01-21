@@ -120,7 +120,7 @@ public partial class GameControl : UserControl
                 {
                     model.Move(top, e);
                 }
-                
+
                 e.Handled = true;
             }
         }

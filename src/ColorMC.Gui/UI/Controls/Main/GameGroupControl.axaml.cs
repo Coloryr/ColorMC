@@ -1,9 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls.Items;
 using ColorMC.Gui.UI.Flyouts;
