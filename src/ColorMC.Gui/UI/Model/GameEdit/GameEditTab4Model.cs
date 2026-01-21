@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,7 +31,7 @@ public partial class GameEditModel
     /// <summary>
     /// 根路径
     /// </summary>
-    private readonly List<ModNodeModel> _root = [];
+    private readonly ObservableCollection<ModNodeModel> _root = [];
     /// <summary>
     /// 显示内容
     /// </summary>
@@ -50,36 +51,36 @@ public partial class GameEditModel
                 {
                     CanUserResizeColumn = false
                 }),
-            new TextColumn<ModNodeModel, string?>(
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("GameEditWindow.Tab4.Text15"),
-                x => x.Text),
+                cellTemplateResourceKey: "ModCell8"),
             new TextColumn<ModNodeModel, string>(
                 "modid",
                 x => x.Modid),
             new TextColumn<ModNodeModel, string?>(
                 LangUtils.Get("Text.Name"),
                 x => x.Name),
-            new TextColumn<ModNodeModel, string?>(
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("Text.Version"),
-                x => x.Version),
+                cellTemplateResourceKey: "ModCell3"),
             new TextColumn<ModNodeModel, string?>(
                 LangUtils.Get("GameEditWindow.Tab4.Text11"),
                 x => x.Loader),
             new TextColumn<ModNodeModel, string?>(
                 LangUtils.Get("GameEditWindow.Tab4.Text14"),
                 x => x.Side),
-            new TextColumn<ModNodeModel, string?>(
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("Text.DownloadSource"),
-                x => x.Source),
-            new TextColumn<ModNodeModel, string?>(
+                cellTemplateResourceKey: "ModCell4"),
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("GameEditWindow.Tab4.Text12"),
-                x => x.PID),
-            new TextColumn<ModNodeModel, string?>(
+                cellTemplateResourceKey: "ModCell5"),
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("GameEditWindow.Tab4.Text13"),
-                x => x.FID),
-            new TextColumn<ModNodeModel, string?>(
+                cellTemplateResourceKey: "ModCell6"),
+            new TemplateColumn<ModNodeModel>(
                 LangUtils.Get("Text.Path"),
-                x => x.Local),
+                cellTemplateResourceKey: "ModCell7"),
             new TextColumn<ModNodeModel, string?>(
                 LangUtils.Get("Text.Author"),
                 x => x.Author),
@@ -448,8 +449,7 @@ public partial class GameEditModel
 
             if (list.Count != 0)
             {
-                if (await Window.ShowChoice(
-                string.Format(LangUtils.Get("GameEditWindow.Tab4.Text29"), list.Count)))
+                if (await Window.ShowChoice(string.Format(LangUtils.Get("GameEditWindow.Tab4.Text29"), list.Count)))
                 {
                     foreach (var item1 in list)
                     {
@@ -462,15 +462,6 @@ public partial class GameEditModel
                         item1.Enable = !item1.Obj.Disable;
                         dislist.Add(item1);
                     }
-                }
-            }
-
-            foreach (var item1 in dislist)
-            {
-                _displayModList.Remove(item1);
-                foreach (var item2 in _root)
-                {
-                    item2.Children.Remove(item1);
                 }
             }
         }
@@ -503,15 +494,6 @@ public partial class GameEditModel
             item.LocalChange();
             item.Enable = !item.Obj.Disable;
             dislist.Add(item);
-        }
-
-        foreach (var item1 in dislist)
-        {
-            _displayModList.Remove(item1);
-            foreach (var item2 in _root)
-            {
-                item2.Children.Remove(item1);
-            }
         }
     }
 
@@ -731,11 +713,7 @@ public partial class GameEditModel
 
         foreach (var item in _displayModList)
         {
-            if (item.Obj.ReadFail)
-            {
-                fail.Children.Add(item);
-            }
-            else if (map.TryGetValue(item.Obj.Sha1, out var group1))
+            if (map.TryGetValue(item.Obj.Sha1, out var group1))
             {
                 if (map1.TryGetValue(group1, out var group2))
                 {
@@ -747,6 +725,10 @@ public partial class GameEditModel
                     group3.Children.Add(item);
                     map1.Add(group1, group3);
                 }
+            }
+            else if (item.Obj.ReadFail)
+            {
+                fail.Children.Add(item);
             }
             else if (item.Enable == true)
             {
@@ -760,7 +742,10 @@ public partial class GameEditModel
 
         _root.Clear();
         _root.Add(fail);
-        _root.AddRange(map1.Values);
+        foreach (var item in map1.Values)
+        {
+            _root.Add(item);
+        }
         _root.Add(enable);
         _root.Add(disable);
 
@@ -796,9 +781,11 @@ public partial class GameEditModel
         {
             return;
         }
+        text = dialog.Text1;
 
         foreach (var item in mods)
         {
+            item.Text = text;
             if (!_setting.Mod.ModName.TryAdd(item.Obj.Sha1, text))
             {
                 _setting.Mod.ModName[item.Obj.Sha1] = text;
@@ -856,5 +843,71 @@ public partial class GameEditModel
             }
             mod.Update();
         }
+    }
+
+    /// <summary>
+    /// 设置分组
+    /// </summary>
+    /// <param name="mods"></param>
+    public async void SetGroup(IEnumerable<ModNodeModel> mods)
+    {
+        string text = "";
+        if (mods.Count() == 1)
+        {
+            var mod = mods.First();
+            foreach (var item in _setting.Mod.Groups)
+            {
+                if (item.Value.Contains(mod.Obj.Sha1))
+                {
+                    text = item.Key;
+                    break;
+                }
+            }
+        }
+
+        var dialog = new SelectModel(Window.WindowId)
+        {
+            Text = LangUtils.Get("GameEditWindow.Tab4.Text53"),
+            SelectText = text,
+            IsEdit = true,
+        };
+        foreach (var item in _setting.Mod.Groups)
+        {
+            dialog.Items.Add(item.Key);
+        }
+
+        if (await Window.ShowDialogWait(dialog) is not true)
+        {
+            return;
+        }
+
+        foreach (var item1 in _setting.Mod.Groups.ToArray())
+        {
+            foreach (var item in mods)
+            {
+                item1.Value.Remove(item.Obj.Sha1);
+            }
+
+            if (item1.Value.Count == 0)
+            { 
+                _setting.Mod.Groups.Remove(item1.Key);
+            }
+        }
+
+        if (_setting.Mod.Groups.TryGetValue(dialog.SelectText, out var list))
+        {
+            foreach (var item in mods)
+            {
+                list.Add(item.Obj.Sha1);
+            }
+        }
+        else
+        {
+            _setting.Mod.Groups.Add(dialog.SelectText, [.. mods.Select(item => item.Obj.Sha1)]);
+        }
+
+        GameManager.WriteConfig(_obj, _setting);
+
+        LoadTree();
     }
 }

@@ -25,6 +25,12 @@ public partial class SelectModel(string name) : BaseDialogModel(name)
     [ObservableProperty]
     private int _index;
 
+    [ObservableProperty]
+    private string? _selectText;
+
+    [ObservableProperty]
+    private bool _isEdit;
+
     /// <summary>
     /// 项目列表
     /// </summary>

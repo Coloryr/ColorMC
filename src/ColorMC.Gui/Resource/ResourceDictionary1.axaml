@@ -53,4 +53,22 @@
     <DataTemplate x:Key="ModCell2" DataType="vm:ModNodeModel">
         <TextBlock Text="{Binding Text, Mode=TwoWay}" />
     </DataTemplate>
+    <DataTemplate x:Key="ModCell3" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding Version, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell4" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding Source, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell5" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding PID, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell6" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding FID, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell7" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding Local, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell8" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding Text, Mode=TwoWay}" />
+    </DataTemplate>
 </ResourceDictionary>

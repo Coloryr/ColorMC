@@ -25,7 +25,7 @@ public record GameModSettingObj
     /// <summary>
     /// 模组分组列表
     /// </summary>
-    public Dictionary<string, List<string>> Groups { get; set; }
+    public Dictionary<string, HashSet<string>> Groups { get; set; }
     /// <summary>
     /// 备注
     /// </summary>

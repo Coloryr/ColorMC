@@ -144,6 +144,10 @@ public static class GameEditFlyout1
             {
                 model.SetProjectId(obj);
             }),
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text17"), true, () =>
+            {
+                model.SetGroup(mods);
+            }),
             new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text4"), single
                 && !string.IsNullOrWhiteSpace(obj ?.Url), () =>
                 {

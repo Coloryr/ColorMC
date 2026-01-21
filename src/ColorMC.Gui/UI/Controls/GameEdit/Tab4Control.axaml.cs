@@ -58,13 +58,18 @@ public partial class Tab4Control : UserControl
         {
             return;
         }
-        if (node.IsGroup)
+        if (DataContext is GameEditModel model)
         {
-            (DataContext as GameEditModel)?.DisableEnableMod(node.Children);
-        }
-        else
-        {
-            (DataContext as GameEditModel)?.DisableEnableMod(node);
+            if (node.IsGroup)
+            {
+                model.DisableEnableMod(node.Children);
+            }
+            else
+            {
+                model.DisableEnableMod(node);
+            }
+
+            model.ModTreeUpdate();
         }
     }
 

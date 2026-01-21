@@ -19,9 +19,11 @@
         <ComboBox
             Margin="0,10,0,0"
             HorizontalAlignment="Stretch"
+            IsEditable="{Binding IsEdit}"
             ItemsSource="{Binding Items}"
             SelectedIndex="{Binding Index}"
-            SelectedItem="{Binding Select}" />
+            SelectedItem="{Binding Select}"
+            Text="{Binding SelectText}" />
         <StackPanel
             Margin="0,10,0,0"
             HorizontalAlignment="Center"

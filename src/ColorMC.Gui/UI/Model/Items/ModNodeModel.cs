@@ -43,11 +43,39 @@ public partial class ModNodeModel : ModDisplayModel
         _group = group;
     }
 
+    /// <summary>
+    /// 更新分组信息
+    /// </summary>
     public void UpdateGroup()
     {
         if (IsGroup)
         {
-            Enable = !Children.Any(x => x.Enable != true);
+            bool havedis = false;
+            bool haveena =false;
+            foreach (var item in Children)
+            {
+                if (item.Enable == true)
+                {
+                    haveena = true;
+                }
+                else if (item.Enable == false)
+                {
+                    havedis = true;
+                }
+            }
+
+            if (havedis && haveena)
+            {
+                Enable = null;
+            }
+            else if (haveena)
+            {
+                Enable = true;
+            }
+            else
+            {
+                Enable = false;
+            }
         }
     }
 }
