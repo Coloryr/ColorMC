@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -832,7 +833,7 @@ public partial class GameEditModel
         {
             return;
         }
-        else if (!pid || !fid)
+        else if (pid || fid)
         {
             Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text51"));
             return;
@@ -846,8 +847,13 @@ public partial class GameEditModel
             Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text51"));
         }
         else
-        { 
+        {
+            info.File = Path.GetFileName(mod.Local);
             mod.Obj1 = info;
+            if (!_obj.Mods.TryAdd(info.ModId, info))
+            {
+                _obj.Mods[info.ModId] = info;
+            }
             mod.Update();
         }
     }
