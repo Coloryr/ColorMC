@@ -805,7 +805,7 @@ public static class WebBinding
     /// <param name="game"></param>
     /// <param name="mods"></param>
     /// <returns></returns>
-    public static async Task<List<ModUpgradeModel>> CheckModUpdateAsync(GameSettingObj game, List<ModDisplayModel> mods)
+    public static async Task<List<ModUpgradeModel>> CheckModUpdateAsync(GameSettingObj game, IEnumerable<ModNodeModel> mods)
     {
         string path = game.GetModsPath();
         var list = new ConcurrentBag<ModUpgradeModel>();

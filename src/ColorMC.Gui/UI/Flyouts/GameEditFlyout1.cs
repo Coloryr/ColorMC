@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
@@ -19,21 +18,64 @@ namespace ColorMC.Gui.UI.Flyouts;
 /// </summary>
 public static class GameEditFlyout1
 {
-    public static void Show(Control con, IList list, GameEditModel model)
+    public static void Show(Control con, IReadOnlyList<object?> list, GameEditModel model)
     {
-        ModDisplayModel obj = null!;
+        ModNodeModel obj = null!;
         bool single = false;
-        IEnumerable<ModDisplayModel> mods;
-        mods = list.Cast<ModDisplayModel>();
+        var mods = list.Cast<ModNodeModel>();
         if (mods.Count() == 1)
         {
-            single = true;
-            obj = mods.ToList()[0];
+            var item = mods.First();
+            if (item.IsGroup)
+            {
+                if (item.Children.Count == 0)
+                {
+                    return;
+                }
+                else if (item.Children.Count == 1)
+                {
+                    single = true;
+                    obj = item.Children.First();
+                }
+                else
+                {
+                    mods = item.Children;
+                }
+            }
+            else
+            {
+                single = true;
+                obj = item;
+            }
+        }
+        else
+        {
+            bool group = false;
+            bool isitem = false;
+            foreach (var item in mods)
+            {
+                if (item.IsGroup)
+                {
+                    group = true;
+                    continue;
+                }
+                else
+                {
+                    isitem = true;
+                }
+
+                if (group && isitem)
+                {
+                    break;
+                }
+            }
+
+            mods = [.. mods.Where(item => !item.IsGroup)];
         }
 
         new FlyoutsControl(
-        [
-            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
+            [
+                new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Flyouts.Text1"), true, () =>
             {
                 if (single)
                 {

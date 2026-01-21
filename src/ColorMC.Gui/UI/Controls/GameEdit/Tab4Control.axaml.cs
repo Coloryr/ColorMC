@@ -16,8 +16,8 @@ public partial class Tab4Control : UserControl
     {
         InitializeComponent();
 
-        DataGrid1.DoubleTapped += DataGrid1_DoubleTapped;
-        DataGrid1.CellPointerPressed += DataGrid1_CellPointerPressed;
+        TreeView1.DoubleTapped += DataGrid1_DoubleTapped;
+        TreeView1.PointerPressed += DataGrid1_CellPointerPressed;
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -43,9 +43,9 @@ public partial class Tab4Control : UserControl
         (DataContext as GameEditModel)!.DropMod(e.DataTransfer);
     }
 
-    private void DataGrid1_CellPointerPressed(object? sender, DataGridCellPointerPressedEventArgs e)
+    private void DataGrid1_CellPointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (e.PointerPressedEventArgs.GetCurrentPoint(this).Properties.IsRightButtonPressed)
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed)
         {
             Flyout((sender as Control)!);
         }
@@ -73,7 +73,11 @@ public partial class Tab4Control : UserControl
 
         Dispatcher.UIThread.Post(() =>
         {
-            var items = DataGrid1.SelectedItems;
+            var items = TreeView1.RowSelection?.SelectedItems;
+            if (items == null)
+            {
+                return;
+            }
             GameEditFlyout1.Show(control, items, model);
         });
     }

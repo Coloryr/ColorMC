@@ -478,8 +478,6 @@ public static class LangUtils
             Get("Text.FileName"),
             Get("Text.Author"),
             "modid",
-            Get("GameEditWindow.Tab4.Text16"),
-            Get("GameEditWindow.Tab4.Text17"),
             Get("GameEditWindow.Tab4.Text18"),
         ];
     }

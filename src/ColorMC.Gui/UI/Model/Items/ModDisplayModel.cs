@@ -12,13 +12,11 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 public partial class ModDisplayModel : ObservableObject
 {
-    public const string NameModText = "ModText";
-
     /// <summary>
     /// 是否启用
     /// </summary>
     [ObservableProperty]
-    private bool _enable;
+    private bool? _enable;
     /// <summary>
     /// 文本
     /// </summary>
@@ -28,7 +26,7 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 加载测
     /// </summary>
-    public string Side => Obj.Side.GetName();
+    public string Side => IsGroup ? "" : Obj.Side.GetName();
     /// <summary>
     /// 名字
     /// </summary>
@@ -56,7 +54,7 @@ public partial class ModDisplayModel : ObservableObject
     /// <summary>
     /// 加载器
     /// </summary>
-    public string Loader => StringHelper.MakeString(Obj.Loaders);
+    public string Loader => IsGroup ? "" : StringHelper.MakeString(Obj.Loaders);
     /// <summary>
     /// 下载源
     /// </summary>
@@ -86,6 +84,14 @@ public partial class ModDisplayModel : ObservableObject
     /// 顶层
     /// </summary>
     private readonly GameEditModel? _top;
+
+    public readonly bool IsGroup;
+
+    public ModDisplayModel()
+    {
+        IsGroup = true;
+        Obj = new ModObj();
+    }
 
     public ModDisplayModel(ModObj obj, ModInfoObj? obj1, GameEditModel? top)
     {

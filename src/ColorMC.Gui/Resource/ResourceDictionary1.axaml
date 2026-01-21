@@ -47,4 +47,10 @@
             <TextBlock Text="{Binding Name}" />
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="ModCell1" DataType="vm:ModNodeModel">
+        <CheckBox IsChecked="{Binding Enable, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ModCell2" DataType="vm:ModNodeModel">
+        <TextBlock Text="{Binding Text, Mode=TwoWay}" />
+    </DataTemplate>
 </ResourceDictionary>

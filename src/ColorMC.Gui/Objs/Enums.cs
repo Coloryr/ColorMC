@@ -196,14 +196,6 @@ public enum ModFilterType
     /// </summary>
     Modid,
     /// <summary>
-    /// 启用状态
-    /// </summary>
-    Enabled,
-    /// <summary>
-    /// 禁用状态
-    /// </summary>
-    Disabled,
-    /// <summary>
     /// 有新版本
     /// </summary>
     Newer

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
 using Avalonia.Input;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -25,9 +25,67 @@ namespace ColorMC.Gui.UI.Model.GameEdit;
 public partial class GameEditModel
 {
     /// <summary>
-    /// 显示的模组列表
+    /// 根路径
     /// </summary>
-    public ObservableCollection<ModDisplayModel> ModList { get; init; } = [];
+    private readonly List<ModNodeModel> _root = [];
+    /// <summary>
+    /// 显示内容
+    /// </summary>
+    public HierarchicalTreeDataGridSource<ModNodeModel> ModSource { get; private set; } = new HierarchicalTreeDataGridSource<ModNodeModel>([])
+    {
+        Columns =
+        {
+            new HierarchicalExpanderColumn<ModNodeModel>(
+                new TextColumn<ModNodeModel, string?>("", x=>x.Group),
+                x => x.Children,
+                x => x.HasChildren,
+                x => x.IsExpanded),
+            new TemplateColumn<ModNodeModel>(
+                LangUtils.Get("Text.Enable"),
+                cellTemplateResourceKey: "ModCell1",
+                options: new TemplateColumnOptions<ModNodeModel>
+                {
+                    CanUserResizeColumn = false
+                }),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text15"),
+                x => x.Text),
+            new TextColumn<ModNodeModel, string>(
+                "modid",
+                x => x.Modid),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("Text.Name"),
+                x => x.Name),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("Text.Version"),
+                x => x.Version),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text11"),
+                x => x.Loader),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text14"),
+                x => x.Side),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("Text.DownloadSource"),
+                x => x.Source),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text12"),
+                x => x.PID),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text13"),
+                x => x.FID),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("Text.Path"),
+                x => x.Local),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("Text.Author"),
+                x => x.Author),
+            new TextColumn<ModNodeModel, string?>(
+                LangUtils.Get("GameEditWindow.Tab4.Text10"),
+                x => x.Url),
+        },
+    };
+
     /// <summary>
     /// 过滤器列表
     /// </summary>
@@ -36,13 +94,17 @@ public partial class GameEditModel
     /// <summary>
     /// 模组列表
     /// </summary>
-    private readonly List<ModDisplayModel> _modItems = [];
+    private readonly List<ModNodeModel> _modItems = [];
+    /// <summary>
+    /// 显示模组列表
+    /// </summary>
+    private readonly List<ModNodeModel> _displayModList = [];
 
     /// <summary>
     /// 选中的模组
     /// </summary>
     [ObservableProperty]
-    private ModDisplayModel _modItem;
+    private ModNodeModel _modItem;
 
     /// <summary>
     /// 模组筛选
@@ -267,7 +329,7 @@ public partial class GameEditModel
     /// 删除模组
     /// </summary>
     /// <param name="items">一些模组</param>
-    public async void DeleteMod(IEnumerable<ModDisplayModel> items)
+    public async void DeleteMod(IEnumerable<ModNodeModel> items)
     {
         var res = await Window.ShowChoice(
             string.Format(LangUtils.Get("GameEditWindow.Tab4.Text22"), items.Count()));
@@ -283,7 +345,7 @@ public partial class GameEditModel
             try
             {
                 GameBinding.DeleteMod(item.Obj);
-                ModList.Remove(item);
+                _displayModList.Remove(item);
             }
             catch
             {
@@ -304,7 +366,7 @@ public partial class GameEditModel
     /// 删除模组
     /// </summary>
     /// <param name="item">模组</param>
-    public async void DeleteMod(ModDisplayModel item)
+    public async void DeleteMod(ModNodeModel item)
     {
         var res = await Window.ShowChoice(
             string.Format(LangUtils.Get("GameEditWindow.Tab4.Text21"), item.Name));
@@ -322,7 +384,7 @@ public partial class GameEditModel
             Window.Show(LangUtils.Get("GameEditWindow.Tab4.Text44"));
             return;
         }
-        ModList.Remove(item);
+        _displayModList.Remove(item);
 
         Window.Notify(LangUtils.Get("Text.DeleteDone"));
     }
@@ -359,7 +421,7 @@ public partial class GameEditModel
         {
             item.LocalChange();
             item.Enable = !item.Obj.Disable;
-            if (item.Enable)
+            if (item.Enable == true)
             {
                 return;
             }
@@ -385,7 +447,7 @@ public partial class GameEditModel
             {
                 foreach (var item1 in list)
                 {
-                    if (!item1.Enable)
+                    if (item1.Enable != true)
                     {
                         continue;
                     }
@@ -403,7 +465,7 @@ public partial class GameEditModel
     /// <param name="list"></param>
     private void DisplayMod(List<string> list)
     {
-        ModList.Clear();
+        _displayModList.Clear();
         ModFilter = ModFilterType.Modid;
         var builder = new StringBuilder();
         foreach (var item in list)
@@ -431,7 +493,7 @@ public partial class GameEditModel
         res.ForEach(item =>
         {
             var obj1 = _obj.Mods.Values.FirstOrDefault(a => a.Sha1 == item.Sha1);
-            _modItems.Add(new ModDisplayModel(item, obj1, this));
+            _modItems.Add(new ModNodeModel(item, obj1, this));
         });
 
         int count = 0;
@@ -492,23 +554,12 @@ public partial class GameEditModel
     /// </summary>
     private void LoadModDisplay()
     {
-        ModList.Clear();
-        switch (ModFilter)
-        {
-            case ModFilterType.Enabled:
-                ModList.AddRange(_modItems.Where(item => item.Enable));
-                return;
-            case ModFilterType.Disabled:
-                ModList.AddRange(_modItems.Where(item => !item.Enable));
-                return;
-            case ModFilterType.Newer:
-                ModList.AddRange(_modItems.Where(item => item.IsNew));
-                return;
-        }
+        _displayModList.Clear();
         //没有筛选内容
         if (string.IsNullOrWhiteSpace(ModText))
         {
-            ModList.AddRange(_modItems);
+            _displayModList.AddRange(_modItems);
+            LoadTree();
             return;
         }
         string fil = ModText.ToLower();
@@ -527,7 +578,7 @@ public partial class GameEditModel
                         }
                         if (item.Name.Contains(item1, StringComparison.OrdinalIgnoreCase))
                         {
-                            ModList.Add(item);
+                            _displayModList.Add(item);
                             break;
                         }
                     }
@@ -544,7 +595,7 @@ public partial class GameEditModel
                         }
                         if (item.Local.Contains(item1, StringComparison.OrdinalIgnoreCase))
                         {
-                            ModList.Add(item);
+                            _displayModList.Add(item);
                             break;
                         }
                     }
@@ -561,7 +612,7 @@ public partial class GameEditModel
                         }
                         if (item.Author.Contains(item1, StringComparison.OrdinalIgnoreCase))
                         {
-                            ModList.Add(item);
+                            _displayModList.Add(item);
                             break;
                         }
                     }
@@ -578,12 +629,78 @@ public partial class GameEditModel
                         }
                         if (item.Modid.Contains(item1, StringComparison.OrdinalIgnoreCase))
                         {
-                            ModList.Add(item);
+                            _displayModList.Add(item);
                             break;
                         }
                     }
                 }
                 break;
         }
+
+        LoadTree();
+    }
+
+    private void LoadTree()
+    {
+        var fail = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text47"));
+        var enable = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text48"));
+        var disable = new ModNodeModel(LangUtils.Get("GameEditWindow.Tab4.Text49"));
+
+        var group = GameManager.GetModGroup(_obj);
+
+        var map = new Dictionary<string, string>();
+        var map1 = new Dictionary<string, ModNodeModel>();
+
+        foreach (var item in group)
+        {
+            foreach (var item1 in item.Value)
+            {
+                map.Add(item1, item.Key);
+            }
+        }
+
+        foreach (var item in _displayModList)
+        {
+            if (item.Obj.ReadFail)
+            {
+                fail.Children.Add(item);
+            }
+            else if (map.TryGetValue(item.Obj.Sha1, out var group1))
+            {
+                if (map1.TryGetValue(group1, out var group2))
+                {
+                    group2.Children.Add(item);
+                }
+                else
+                {
+                    var group3 = new ModNodeModel(group1);
+                    group3.Children.Add(item);
+                    map1.Add(group1, group3);
+                }
+            }
+            else if (item.Enable == true)
+            {
+                enable.Children.Add(item);
+            }
+            else
+            {
+                disable.Children.Add(item);
+            }
+        }
+
+        _root.Clear();
+        _root.Add(fail);
+        _root.AddRange(map1.Values);
+        _root.Add(enable);
+        _root.Add(disable);
+
+        foreach (var item in _root)
+        {
+            item.Update();
+        }
+
+        ModSource.Items = _root;
+
+        ModSource.RowSelection?.SingleSelect = false;
     }
 }

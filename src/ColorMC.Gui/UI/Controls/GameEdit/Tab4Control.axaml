@@ -45,67 +45,10 @@
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text55}" />
                 </Grid>
-                <DataGrid
-                    Name="DataGrid1"
+                <TreeDataGrid
+                    Name="TreeView1"
                     Margin="5"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    HorizontalScrollBarVisibility="Visible"
-                    ItemsSource="{Binding ModList}"
-                    SelectedItem="{Binding ModItem}"
-                    VerticalScrollBarVisibility="Visible">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn
-                            Binding="{Binding Enable}"
-                            Header="{setting:Localize Text.Enable}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn Binding="{Binding Text}" Header="{setting:Localize GameEditWindow.Tab4.Text15}" />
-                        <DataGridTextColumn
-                            Binding="{Binding Modid}"
-                            Header="modid"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Name}"
-                            Header="{setting:Localize Text.Name}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Version}"
-                            Header="{setting:Localize Text.Version}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Loader}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text11}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Side}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text14}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Source}"
-                            Header="{setting:Localize Text.DownloadSource}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding PID}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text12}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding FID}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text13}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Local}"
-                            Header="{setting:Localize Text.Path}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Author}"
-                            Header="{setting:Localize Text.Author}"
-                            IsReadOnly="True" />
-                        <DataGridTextColumn
-                            Binding="{Binding Url}"
-                            Header="{setting:Localize GameEditWindow.Tab4.Text10}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                    Source="{Binding ModSource}" />
             </DockPanel>
         </Border>
         <Panel

@@ -345,8 +345,9 @@ public partial class GameEditModel : MenuModel
         LoaderVersionList.Clear();
         GroupList.Clear();
         JvmList.Clear();
-        ModList.Clear();
+        _root.Clear();
         _modItems.Clear();
+        _displayModList.Clear();
         foreach (var item in WorldList)
         {
             item.Close();

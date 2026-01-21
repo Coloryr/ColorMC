@@ -1024,7 +1024,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="list">检测列表</param>
     /// <returns></returns>
-    public static Task<bool> ModCheckAsync(List<ModDisplayModel> list)
+    public static Task<bool> ModCheckAsync(IEnumerable<ModNodeModel> list)
     {
         return Task.Run(() =>
         {
@@ -1180,12 +1180,12 @@ public static class GameBinding
     /// <param name="item">模组</param>
     /// <param name="items">依赖的模组</param>
     /// <returns></returns>
-    public static List<ModDisplayModel> ModDisable(ModDisplayModel item, List<ModDisplayModel> items)
+    public static List<ModDisplayModel> ModDisable(ModDisplayModel item, IEnumerable<ModNodeModel> items)
     {
         var list = new List<ModDisplayModel>();
         foreach (var item1 in items)
         {
-            if (!item1.Enable || item1.Obj.ModId == item.Obj.ModId)
+            if (item1.Enable != true || item1.Obj.ModId == item.Obj.ModId)
             {
                 continue;
             }
