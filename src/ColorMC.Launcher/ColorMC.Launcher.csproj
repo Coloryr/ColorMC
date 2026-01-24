@@ -24,11 +24,13 @@
 
 	<ItemGroup>
 		<None Remove=".gitignore" />
-		<None Remove="Resources\SourceHanSansSC-Regular.otf" />
+		<None Remove="Resources\HONORSansCN-Light.ttf" />
+		<None Remove="Resources\HONORSansCN-Medium.ttf" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\SourceHanSansSC-Regular.otf" />
+	  <EmbeddedResource Include="Resources\HONORSansCN-Light.ttf" />
+	  <EmbeddedResource Include="Resources\HONORSansCN-Medium.ttf" />
 	</ItemGroup>
 	
 	<ItemGroup>

@@ -79,7 +79,7 @@ public static class ColorMCGui
     /// <summary>
     /// 默认字体
     /// </summary>
-    public const string Font = "resm:ColorMC.Launcher.Resources.SourceHanSansSC-Regular.otf?assembly=ColorMC.Launcher#Source Han Sans SC";
+    public const string Font = "resm:ColorMC.Launcher.Resources.HONORSansCN-Medium.ttf?assembly=ColorMC.Launcher#HONOR Sans CN Medium";
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
