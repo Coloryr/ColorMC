@@ -392,9 +392,4 @@
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="UI\Controls\Main\MainGameGroupControl.axaml.cs">
-      <DependentUpon>MainGameGroupControl.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
 </Project>
