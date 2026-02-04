@@ -6,7 +6,8 @@ Icon=colormc
 Categories=Game;
 MimeType=x-scheme-handler/colormc;
 Comment=A Minecraft Launcher
+Actions=colormc
 
 [Desktop Action colormc]
-Name=Handle colormc:// URI
+Name=Launch ColorMC
 Exec=ColorMC.Launcher %u
