@@ -15,7 +15,7 @@ public static class ColorMCCore
 {
     public const int VersionNum = 40;
     public const string TopVersion = "40";
-    public const string DateVersion = "20260121";
+    public const string DateVersion = "20260204";
 
     /// <summary>
     /// 版本号
