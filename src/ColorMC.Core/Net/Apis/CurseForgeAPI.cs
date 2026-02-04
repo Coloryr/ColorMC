@@ -19,6 +19,7 @@ public static class CurseForgeAPI
     public const int ClassWorld = 17;
     public const int ClassResourcepack = 12;
     public const int ClassShaderpack = 6552;
+    public const int ClassOpenLoaderDataPack = 6945;
 
     public const int CategoryIdDataPacks = 5193;
 

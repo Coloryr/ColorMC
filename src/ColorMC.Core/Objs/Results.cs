@@ -127,7 +127,7 @@ public record MakeDownloadItemsRes : BaseRes
 /// </summary>
 public record ItemPathRes
 {
-    public string File;
+    public string FilePath;
     public string Path;
     public FileType FileType;
 }

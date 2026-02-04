@@ -90,7 +90,7 @@ public static class CurseForgeHelper
         {
             Url = data.DownloadUrl,
             Name = data.DisplayName,
-            Local = Path.Combine(obj.GetGamePath(), info.File, data.FileName),
+            Local = Path.Combine(obj.GetGamePath(), info.FilePath, data.FileName),
             Sha1 = data.Hashes.Where(a => a.Algo == 1)
                     .Select(a => a.Value).FirstOrDefault()
         };
@@ -331,7 +331,7 @@ public static class CurseForgeHelper
     {
         var item1 = new ItemPathRes()
         {
-            File = game.GetModsPath(),
+            FilePath = game.GetModsPath(),
             Path = Names.NameGameModDir,
             FileType = FileType.Mod
         };
@@ -347,23 +347,30 @@ public static class CurseForgeHelper
             if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassResourcepack)
                 || info1.Data.ClassId == CurseForgeAPI.ClassResourcepack)
             {
-                item1.File = game.GetResourcepacksPath();
+                item1.FilePath = game.GetResourcepacksPath();
                 item1.Path = Names.NameGameResourcepackDir;
                 item1.FileType = FileType.Resourcepack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassShaderpack)
                 || info1.Data.ClassId == CurseForgeAPI.ClassShaderpack)
             {
-                item1.File = game.GetShaderpacksPath();
+                item1.FilePath = game.GetShaderpacksPath();
                 item1.Path = Names.NameGameShaderpackDir;
                 item1.FileType = FileType.Shaderpack;
             }
             else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassWorld)
                 || info1.Data.ClassId == CurseForgeAPI.ClassWorld)
             {
-                item1.File = game.GetSavesPath();
+                item1.FilePath = game.GetSavesPath();
                 item1.Path = Names.NameGameSavesDir;
                 item1.FileType = FileType.Save;
+            }
+            else if (info1.Data.Categories.Any(item => item.ClassId == CurseForgeAPI.ClassOpenLoaderDataPack)
+                || info1.Data.ClassId == CurseForgeAPI.ClassOpenLoaderDataPack)
+            {
+                item1.FilePath = Path.Combine(game.GetConfigPath(), Names.NameOpenLoaderDir, Names.NameDataDir);
+                item1.Path = $"{Names.NameGameConfigDir}/{Names.NameOpenLoaderDir}/{Names.NameDataDir}";
+                item1.FileType = FileType.OpenLoaderDataPack;
             }
         }
 

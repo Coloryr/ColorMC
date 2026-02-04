@@ -117,7 +117,7 @@ public enum FileType
     Modpack, Mod, Save, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, Optifine, Skin, Music,
     Text, GameIcon, Head, JavaZip, Loader, InputConfig,
-    User, Cmd, Icon, StartIcon, File
+    User, Cmd, Icon, StartIcon, File, OpenLoaderDataPack
 }
 
 /// <summary>

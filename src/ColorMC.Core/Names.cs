@@ -29,6 +29,8 @@ public static class Names
     public const string NameJavaDir = "java";
     public const string NameJsonDir = "patches";
     public const string NameDefaultDir = "default";
+    public const string NameOpenLoaderDir = "openloader";
+    public const string NameDataDir = "data";
 
     public const string NameModInfoFile = "modfileinfo.json";
     public const string NameGameFile = "game.json";

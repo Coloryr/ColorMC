@@ -62,7 +62,7 @@ public partial class Tab4Control : UserControl
         {
             if (node.IsGroup)
             {
-                model.DisableEnableMod(node.Children);
+                //model.DisableEnableMod(node.Children);
             }
             else
             {
