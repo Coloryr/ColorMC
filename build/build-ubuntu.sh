@@ -64,7 +64,7 @@ build_deb_aot()
 
     mkdir $base_dir/$dir
 
-    for line in ${files[@]}
+    for line in ${pdbs[@]}
     do
         cp $base/$line \
             $base_dir/$dir/$line
