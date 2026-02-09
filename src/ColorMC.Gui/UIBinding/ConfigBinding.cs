@@ -945,7 +945,7 @@ public static class ConfigBinding
         GuiConfigUtils.Config.Card.Online = cardOnline;
 
         GuiConfigUtils.Save();
-        WindowManager.MainWindow?.LoadDone();
+        WindowManager.MainWindow?.LoadCard();
     }
 
     /// <summary>

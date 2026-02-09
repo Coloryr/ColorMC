@@ -275,3 +275,9 @@ public record KeyRes
     public bool Positive;
     public byte Key;
 }
+
+public record SetGamesRes
+{
+    public readonly List<GameItemModel> Removes = [];
+    public readonly List<GameItemModel> Adds = [];
+}

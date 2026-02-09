@@ -242,10 +242,15 @@ public static class BlockTexUtils
             return new StringRes { State = true };
         }
 
-        var obj = await VersionPath.CheckUpdateAsync(last);
+        var obj = await CheckHelpers.CheckGameArgFileAsync(last);
         if (obj == null)
         {
-            return new StringRes { Data = LangUtils.Get("LuckBlockWindow.Text6") };
+            await VersionPath.GetFromWebAsync();
+            obj = await CheckHelpers.CheckGameArgFileAsync(last);
+            if (obj == null)
+            {
+                return new StringRes { Data = LangUtils.Get("LuckBlockWindow.Text6") };
+            }
         }
 
         //下载游戏核心
@@ -320,7 +325,7 @@ public static class BlockTexUtils
     }
 
     /// <summary>
-    /// 加载窗口位置文件
+    /// 加载幸运方块配置
     /// </summary>
     private static void LoadState()
     {

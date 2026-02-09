@@ -735,7 +735,8 @@ public static class GameArg
         //非自定义加载器
         if (obj.CustomLoader?.CustomJson != true)
         {
-            var game = await obj.CheckGameArgFileAsync();
+            var game = await obj.CheckGameArgFileAsync()
+                ?? throw new LaunchException(LaunchError.LostVersionFile);
             var v2 = obj.IsGameVersionV2();
             arg.JavaVersions.Add(game.JavaVersion!.MajorVersion);
 

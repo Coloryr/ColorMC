@@ -76,6 +76,11 @@ public partial class MainModel : ControlModel, IMutTop
     /// </summary>
     private bool _isGetNewInfo;
 
+    /// <summary>
+    /// 是否正在加载窗口设置
+    /// </summary>
+    private bool _isLoad;
+
     public MainModel(WindowModel model) : base(model)
     {
         EventManager.SkinChange += SkinChange;
@@ -169,6 +174,22 @@ public partial class MainModel : ControlModel, IMutTop
     }
 
     /// <summary>
+    /// 加载窗口设置
+    /// </summary>
+    public void Load()
+    {
+        LoadMotd();
+        LoadNews();
+        LoadMusic();
+        LoadCard();
+
+        _isLoad = true;
+        var config = GuiConfigUtils.Config.WindowState;
+        GridType = config.MainWindowState;
+        _isLoad = false;
+    }
+
+    /// <summary>
     /// 加载服务器motd
     /// </summary>
     public void LoadMotd()
@@ -200,17 +221,13 @@ public partial class MainModel : ControlModel, IMutTop
 
         LoadGameItem();
         LoadUser();
-        LoadMotd();
-        LoadNews();
-        LoadMusic();
-        LoadCard();
         LoadBlock();
     }
 
     /// <summary>
     /// 加载卡片
     /// </summary>
-    private void LoadCard()
+    public void LoadCard()
     {
         var config = GuiConfigUtils.Config.Card;
         CardNews = config.News;

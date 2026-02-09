@@ -42,22 +42,24 @@ public partial class MainModel
 
     partial void OnGameChanged(GameItemModel? value)
     {
-        GameName = Game?.Name ?? LangUtils.Get("MainWindow.Text79");
-        GameIcon = Game?.Pic ?? ImageManager.GameIcon;
-
-        if (Game == null)
+        if (value == null)
         {
+            GameName = LangUtils.Get("MainWindow.Text79");
+            GameIcon = ImageManager.GameIcon;
             HaveGame = false;
             MinMem = MaxMem = GameWidth = GameHeight = null;
             return;
         }
 
+        GameName = value.Name;
+        GameIcon = ImageManager.GetGameIcon(value.Obj) ?? ImageManager.GameIcon;
+
         var conf = ConfigLoad.Config;
-        MaxMem = Game.Obj.JvmArg?.MaxMemory ?? conf.DefaultJvmArg.MaxMemory;
-        MinMem = Game.Obj.JvmArg?.MinMemory ?? conf.DefaultJvmArg.MinMemory;
-        MaxWindow = Game.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;
-        GameWidth = Game.Obj.Window?.Width ?? conf.Window.Width;
-        GameHeight = Game.Obj.Window?.Height ?? conf.Window.Height;
+        MaxMem = value.Obj.JvmArg?.MaxMemory ?? conf.DefaultJvmArg.MaxMemory;
+        MinMem = value.Obj.JvmArg?.MinMemory ?? conf.DefaultJvmArg.MinMemory;
+        MaxWindow = value.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;
+        GameWidth = value.Obj.Window?.Width ?? conf.Window.Width;
+        GameHeight = value.Obj.Window?.Height ?? conf.Window.Height;
     }
 
     partial void OnMaxWindowChanged(bool value)

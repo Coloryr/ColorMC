@@ -249,6 +249,16 @@ public partial class MainControl : BaseUserControl
 
     public override async void Opened()
     {
+        if (DataContext is MainModel model)
+        {
+            if (ColorMCGui.IsCrash)
+            {
+                model.Window.Show(LangUtils.Get("MainWindow.Text81"));
+            }
+
+            model.Load();
+        }
+
         var config = GuiConfigUtils.Config.ServerCustom;
         if (ColorMCCore.NewStart || config.CustomStart)
         {
@@ -260,12 +270,6 @@ public partial class MainControl : BaseUserControl
             await ThemeManager.CrossFade.Start(Start, MainView, CancellationToken.None);
             Start.IsVisible = false;
             Start.Child = null;
-        }
-
-        if (ColorMCGui.IsCrash)
-        {
-            var model = (DataContext as MainModel)!;
-            model.Window.Show(LangUtils.Get("MainWindow.Text81"));
         }
     }
 
@@ -396,5 +400,16 @@ public partial class MainControl : BaseUserControl
                 model.LoadBlock();
             }
         });
+    }
+
+    /// <summary>
+    /// 加载卡片
+    /// </summary>
+    public void LoadCard()
+    {
+        if (DataContext is MainModel model)
+        {
+            model.LoadCard();
+        }
     }
 }

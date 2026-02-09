@@ -122,6 +122,11 @@ public static class GuiConfigUtils
                 Config.LauncherFunction = MakeLauncherFunctionConfig();
                 save = true;
             }
+            if (Config.WindowState == null)
+            {
+                Config.WindowState = MakeWindowStateConfig();
+                save = true;
+            }
 
             if (save)
             {
@@ -262,6 +267,14 @@ public static class GuiConfigUtils
         return new()
         {
 
+        };
+    }
+
+    public static WindowUserStateObj MakeWindowStateConfig()
+    {
+        return new()
+        {
+            MainWindowState = ItemsGridType.GridInfo
         };
     }
 }

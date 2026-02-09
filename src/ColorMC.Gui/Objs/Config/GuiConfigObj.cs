@@ -308,6 +308,17 @@ public record LauncherSetting
 }
 
 /// <summary>
+/// 界面功能设置
+/// </summary>
+public record WindowUserStateObj
+{ 
+    /// <summary>
+    /// 主窗口状态
+    /// </summary>
+    public ItemsGridType MainWindowState { get; set; }
+}
+
+/// <summary>
 /// Gui配置文件
 /// </summary>
 public record GuiConfigObj
@@ -442,5 +453,9 @@ public record GuiConfigObj
     /// 启动器功能
     /// </summary>
     public LauncherSetting LauncherFunction { get; set; }
+    /// <summary>
+    /// 启动器窗口
+    /// </summary>
+    public WindowUserStateObj WindowState { get; set; }
 }
 

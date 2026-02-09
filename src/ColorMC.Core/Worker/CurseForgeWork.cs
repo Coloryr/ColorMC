@@ -89,10 +89,10 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 
         GameVersion = _info.Minecraft.Version;
 
-        if (VersionPath.CheckUpdateAsync(GameVersion) == null)
+        if (CheckHelpers.CheckGameArgFileAsync(GameVersion) == null)
         {
             await VersionPath.GetFromWebAsync();
-            if (VersionPath.CheckUpdateAsync(GameVersion) == null)
+            if (CheckHelpers.CheckGameArgFileAsync(GameVersion) == null)
             {
                 return false;
             }

@@ -303,10 +303,10 @@ public class ModrinthWork : ModPackWork, IModPackWork
 
         GameVersion = _info.Dependencies[Names.NameMinecraftKey];
 
-        if (VersionPath.CheckUpdateAsync(GameVersion) == null)
+        if (CheckHelpers.CheckGameArgFileAsync(GameVersion) == null)
         {
             await VersionPath.GetFromWebAsync();
-            if (VersionPath.CheckUpdateAsync(GameVersion) == null)
+            if (CheckHelpers.CheckGameArgFileAsync(GameVersion) == null)
             {
                 return false;
             }

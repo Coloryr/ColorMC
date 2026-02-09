@@ -171,7 +171,10 @@
                             DockPanel.Dock="Top"
                             IPPort="{Binding Server}"
                             IsVisible="{Binding MotdDisplay}" />
-                        <DockPanel Margin="30,20,0,0" DockPanel.Dock="Top">
+                        <DockPanel
+                            Margin="30,20,0,0"
+                            DockPanel.Dock="Top"
+                            IsVisible="{Binding HaveGame}">
                             <Border
                                 Padding="3"
                                 Background="{setting:Theme RadioGroupBG}"

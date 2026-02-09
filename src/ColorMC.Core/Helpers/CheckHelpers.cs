@@ -274,9 +274,20 @@ public static partial class CheckHelpers
     /// </summary>
     /// <param name="obj">游戏实例</param>
     /// <returns></returns>
-    public static async Task<GameArgObj> CheckGameArgFileAsync(this GameSettingObj obj)
+    public static Task<GameArgObj?> CheckGameArgFileAsync(this GameSettingObj obj)
     {
-        var game = await VersionPath.CheckUpdateAsync(obj.Version);
+        return CheckGameArgFileAsync(obj.Version);
+    }
+
+    /// <summary>
+    /// 更新游戏arg文件
+    /// </summary>
+    /// <param name="ver"></param>
+    /// <returns></returns>
+    /// <exception cref="LaunchException"></exception>
+    public static async Task<GameArgObj?> CheckGameArgFileAsync(string ver)
+    {
+        var game = await VersionPath.CheckUpdateAsync(ver);
         //不存在游戏
         if (game != null)
         {
@@ -284,10 +295,12 @@ public static partial class CheckHelpers
         }
 
         var var = await VersionPath.GetVersionsAsync();
-        var version = var?.Versions.FirstOrDefault(a => a.Id == obj.Version)
-                      ?? throw new LaunchException(LaunchError.LostVersionFile);
-        return await VersionPath.AddGameAsync(version)
-            ?? throw new LaunchException(LaunchError.LostVersionFile);
+        var version = var?.Versions.FirstOrDefault(a => a.Id == ver);
+        if (version == null)
+        {
+            return null;
+        }
+        return await VersionPath.AddGameAsync(version);
     }
 
     /// <summary>

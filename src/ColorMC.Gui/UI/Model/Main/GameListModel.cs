@@ -128,6 +128,14 @@ public partial class MainModel : IDragTop
                 item.SetDrag();
             }
         }
+
+        if (_isLoad)
+        {
+            return;
+        }
+
+        GuiConfigUtils.Config.WindowState.MainWindowState = value;
+        GuiConfigUtils.Save();
     }
 
     /// <summary>
@@ -462,13 +470,27 @@ public partial class MainModel : IDragTop
                 var list1 = new List<GameGroupModel>(GameGroups);
                 foreach (var item in list1)
                 {
+                    //现在有相同的分组
                     if (list.TryGetValue(item.Key, out var value))
                     {
-                        item.SetItems(value);
+                        var res = item.SetItems(value);
+                        if (res != null)
+                        {
+                            foreach (var item1 in res.Removes)
+                            {
+                                Games.Remove(item1);
+                            }
+                            foreach (var item1 in res.Adds)
+                            {
+                                Games.Add(item1);
+                            }
+                        }
+                        //删除已处理的分组
                         list.Remove(item.Key);
                     }
                     else
                     {
+                        //删除分组
                         GameGroups.Remove(item);
                         foreach (var item1 in item.Items.Values)
                         {
@@ -476,6 +498,7 @@ public partial class MainModel : IDragTop
                         }
                     }
                 }
+                //新的分组
                 foreach (var item in list)
                 {
                     var group = new GameGroupModel(Window, this, item.Key, item.Key, item.Value);
@@ -498,6 +521,7 @@ public partial class MainModel : IDragTop
 
                 Select(last);
             }
+
             //是否有上次运行项目
             if (last != null && LastGameName == null)
             {
@@ -506,18 +530,14 @@ public partial class MainModel : IDragTop
                     HaveLast = true;
                 }
                 LastGameName = string.Format(LangUtils.Get("MainWindow.Text26"), last.Name);
-                var file = last.Obj.GetIconFile();
-                if (File.Exists(file))
+                GameImage = ImageManager.GetGameIcon(last.Obj);
+                if (GameImage == null)
                 {
-                    try
-                    {
-                        GameImage = new Bitmap(file);
-                        HaveGameImage = true;
-                    }
-                    catch
-                    {
-
-                    }
+                    HaveGameImage = false;
+                }
+                else
+                {
+                    HaveGameImage = true;
                 }
             }
         }

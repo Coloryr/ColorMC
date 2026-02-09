@@ -9,6 +9,7 @@ using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -205,7 +206,7 @@ public partial class GameGroupModel : ControlModel, IDragTop
     /// 设置游戏实例项目
     /// </summary>
     /// <param name="list"></param>
-    public void SetItems(List<GameSettingObj> list)
+    public SetGamesRes? SetItems(List<GameSettingObj> list)
     {
         var remove = new List<Guid>();
         var ins = new List<GameSettingObj>();
@@ -229,28 +230,31 @@ public partial class GameGroupModel : ControlModel, IDragTop
             remove.Add(item);
         }
 
+        //完全空的组，不会存在这样的情况
         if (GameList.Count == 0 || GameList.Count - 1 < 0)
         {
-            return;
+            return null;
         }
         GameList.RemoveAt(GameList.Count - 1);
 
+        var res = new SetGamesRes();
+
         foreach (var item in remove)
         {
-            Items.Remove(item);
-            var model = GameList.FirstOrDefault(item1 => item1.Obj.UUID == item);
-            if (model != null)
+            if (Items.Remove(item, out var item1))
             {
-                model.Close();
-                GameList.Remove(model);
+                GameList.Remove(item1);
+                res.Removes.Add(item1);
+                item1.Close();
             }
         }
 
         //筛选添加的内容
         foreach (var item in ins)
         {
-            var model1 = new GameItemModel(Window, Top, item);
-            Items.Add(item.UUID, model1);
+            var model = new GameItemModel(Window, Top, item);
+            Items.Add(item.UUID, model);
+            res.Adds.Add(model);
         }
 
         Task.Run(() =>
@@ -269,6 +273,8 @@ public partial class GameGroupModel : ControlModel, IDragTop
                 GameList.Add(_addItem);
             });
         });
+
+        return res;
     }
 
     public override void Close()
