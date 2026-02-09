@@ -26,8 +26,8 @@
             Source="{Binding BackImage}"
             Stretch="UniformToFill" />
         <DockPanel Background="{setting:Theme WindowBG}">
-            <view:HeadControl
-                Name="Head"
+            <view:TitleControl
+                Name="TitleControl"
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost

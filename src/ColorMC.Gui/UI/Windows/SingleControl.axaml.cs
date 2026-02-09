@@ -298,7 +298,6 @@ public partial class SingleControl : UserControl, IBaseWindow, IBaseControl
     public void ControlStateChange(WindowState windowState)
     {
         ICon.ControlStateChange(windowState);
-        Head.WindowStateChange(windowState);
     }
 
     public void ReloadIcon()

@@ -87,6 +87,11 @@ public partial class WindowModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private string? _headChoise1Content;
+    /// <summary>
+    /// 最大化图标
+    /// </summary>
+    [ObservableProperty]
+    private string _maxIcon = ImageManager.MaxIcon[0];
 
     /// <summary>
     /// 是否显示背景图
@@ -128,6 +133,11 @@ public partial class WindowModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _choise1Enable = true;
+    /// <summary>
+    /// 关闭按钮显示通知
+    /// </summary>
+    [ObservableProperty]
+    private bool _headCloseEnable = true;
 
     /// <summary>
     /// 背景图透明度
@@ -148,25 +158,10 @@ public partial class WindowModel : ObservableObject
     private WindowTransparencyLevel[] _hints;
 
     /// <summary>
-    /// 显示通知
+    /// 窗口状态切换
     /// </summary>
-    public readonly SelfPublisher<bool> HeadDisplayObservale = new();
-    /// <summary>
-    /// 关闭按钮显示通知
-    /// </summary>
-    public readonly SelfPublisher<bool> HeadCloseObservale = new();
+    public WindowState NextState { get; private set; }
 
-    /// <summary>
-    /// 是否显示关闭按钮
-    /// </summary>
-    public bool HeadDisplay
-    {
-        set
-        {
-            HeadCloseObservale.Notify(value);
-            HeadDisplayObservale.Notify(value);
-        }
-    }
     /// <summary>
     /// 是否启用关闭按钮
     /// </summary>
@@ -176,7 +171,7 @@ public partial class WindowModel : ObservableObject
         {
             if (!GuiConfigUtils.Config.WindowMode)
             {
-                HeadCloseObservale.Notify(value);
+                HeadCloseEnable = value;
             }
         }
     }
@@ -208,6 +203,26 @@ public partial class WindowModel : ObservableObject
     public WindowModel(string name)
     {
         WindowId = name;
+    }
+
+    [RelayCommand]
+    public void MinimizeClick()
+    {
+        NextState = WindowState.Minimized;
+        OnPropertyChanged(nameof(NextState));
+    }
+
+    [RelayCommand]
+    public void MaximizeClick()
+    {
+        NextState = WindowState.Maximized;
+        OnPropertyChanged(nameof(NextState));
+    }
+
+    [RelayCommand]
+    public void CloseClick()
+    {
+        OnPropertyChanged(nameof(CloseClick));
     }
 
     /// <summary>

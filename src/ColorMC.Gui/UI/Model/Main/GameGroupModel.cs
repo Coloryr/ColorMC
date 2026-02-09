@@ -88,33 +88,12 @@ public partial class GameGroupModel : ControlModel, IDragTop
                 }
             }
 
-            var list1 = new List<GameItemModel>();
-
-            //检查是否星标
-            foreach (var item in Items)
-            {
-                if (!GameManager.IsStar(item.Value.Obj))
-                {
-                    list1.Add(item.Value);
-                    continue;
-                }
-                Thread.Sleep(50);
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    GameList.Add(item.Value);
-                    if (res)
-                    {
-                        item.Value.Index = index++;
-                    }
-                });
-            }
-
-            bool fast = list1.Count >= 100;
+            bool fast = Items.Count >= 100;
             if (fast)
             {
                 Dispatcher.UIThread.Invoke(() =>
                 {
-                    foreach (var item in list1)
+                    foreach (var item in Items.Values)
                     {
                         GameList.Add(item);
                         if (res)
@@ -126,7 +105,7 @@ public partial class GameGroupModel : ControlModel, IDragTop
             }
             else
             {
-                foreach (var item in list1)
+                foreach (var item in Items.Values)
                 {
                     Thread.Sleep(50);
                     Dispatcher.UIThread.Invoke(() =>

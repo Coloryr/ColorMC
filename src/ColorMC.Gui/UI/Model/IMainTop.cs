@@ -36,11 +36,6 @@ public interface IMainTop
     /// <param name="model">游戏实例</param>
     void EditGroup(GameItemModel model);
     /// <summary>
-    /// 编辑一个游戏实例星标
-    /// </summary>
-    /// <param name="model">游戏实例</param>
-    void DoStar(GameItemModel model);
-    /// <summary>
     /// 关闭筛选
     /// </summary>
     void SearchClose();

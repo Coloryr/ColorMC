@@ -23,8 +23,8 @@
         Source="{Binding BackImage}"
         Stretch="UniformToFill" />
     <DockPanel Background="{setting:Theme BorderBG}">
-        <view:HeadControl
-            Name="HeadControl"
+        <view:TitleControl
+            Name="TitleControl"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
         <dialog:DialogHost

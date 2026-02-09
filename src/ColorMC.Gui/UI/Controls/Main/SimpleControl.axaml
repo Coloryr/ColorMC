@@ -29,66 +29,12 @@
                 Text="{Binding GameName}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
-            <WrapPanel IsEnabled="{Binding HaveGame}">
-                <DockPanel MinWidth="180" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
-                    <NumericUpDown
-                        Height="30"
-                        HorizontalAlignment="Stretch"
-                        FormatString="N0"
-                        IsEnabled="{Binding !MaxWindow}"
-                        Minimum="1"
-                        Value="{Binding GameWidth}" />
-                </DockPanel>
-                <DockPanel MinWidth="180" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text11}" />
-                    <NumericUpDown
-                        Height="30"
-                        HorizontalAlignment="Stretch"
-                        FormatString="N0"
-                        IsEnabled="{Binding !MaxWindow}"
-                        Minimum="1"
-                        Value="{Binding GameHeight}" />
-                </DockPanel>
-                <ToggleSwitch
-                    Margin="0,0,0,10"
-                    IsChecked="{Binding MaxWindow}"
-                    OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
-                    OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
-            </WrapPanel>
-            <WrapPanel IsEnabled="{Binding HaveGame}">
-                <DockPanel MinWidth="210" Margin="5,0,5,10">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
-                    <NumericUpDown
-                        Height="30"
-                        HorizontalAlignment="Stretch"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="{Binding MinMem}" />
-                </DockPanel>
-                <DockPanel MinWidth="210" Margin="5,0,5,0">
-                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text5}" />
-                    <NumericUpDown
-                        Height="30"
-                        HorizontalAlignment="Stretch"
-                        FormatString="N0"
-                        Minimum="1"
-                        Value="{Binding MaxMem}" />
-                </DockPanel>
-            </WrapPanel>
             <StackPanel Width="240">
                 <ComboBox
                     HorizontalAlignment="Stretch"
                     DisplayMemberBinding="{Binding Name}"
-                    ItemsSource="{Binding GameList}"
+                    ItemsSource="{Binding Games}"
                     SelectedItem="{Binding Game}" />
-                <Button
-                    Height="50"
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Stretch"
-                    Command="{Binding Launch}"
-                    Content="{setting:Localize MainWindow.Text35}"
-                    IsEnabled="{Binding HaveGame}" />
                 <UniformGrid
                     Margin="0,10,0,0"
                     Columns="2"
@@ -107,7 +53,75 @@
                         Content="{setting:Localize MainWindow.Text37}"
                         IsEnabled="{Binding HaveGame}" />
                 </UniformGrid>
+                <Button
+                    Height="50"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Stretch"
+                    Command="{Binding Launch}"
+                    Content="{setting:Localize MainWindow.Text35}"
+                    IsEnabled="{Binding HaveGame}" />
+                <CheckBox
+                    HorizontalAlignment="Right"
+                    Content="高级设定"
+                    IsChecked="{Binding EnableArg}" />
             </StackPanel>
+            <Grid
+                Margin="0,0,0,10"
+                ColumnDefinitions="auto,*,auto,*,auto"
+                IsEnabled="{Binding HaveGame}"
+                IsVisible="{Binding EnableArg}">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text10}" />
+                <NumericUpDown
+                    Grid.Column="1"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    FormatString="N0"
+                    IsEnabled="{Binding !MaxWindow}"
+                    Minimum="1"
+                    Value="{Binding GameWidth}" />
+                <TextBlock
+                    Grid.Column="2"
+                    Margin="0,0,5,0"
+                    Text="{setting:Localize SettingWindow.Tab4.Text11}" />
+                <NumericUpDown
+                    Grid.Column="3"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    FormatString="N0"
+                    IsEnabled="{Binding !MaxWindow}"
+                    Minimum="1"
+                    Value="{Binding GameHeight}" />
+                <ToggleSwitch
+                    Grid.Column="4"
+                    IsChecked="{Binding MaxWindow}"
+                    OffContent="{setting:Localize SettingWindow.Tab4.Text12}"
+                    OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
+            </Grid>
+
+            <Grid
+                Margin="0,0,0,10"
+                ColumnDefinitions="auto,*,auto,*"
+                IsEnabled="{Binding HaveGame}"
+                IsVisible="{Binding EnableArg}">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab4.Text4}" />
+                <NumericUpDown
+                    Grid.Column="1"
+                    Margin="0,0,5,0"
+                    HorizontalAlignment="Stretch"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="{Binding MinMem}" />
+                <TextBlock
+                    Grid.Column="2"
+                    Margin="0,0,5,0"
+                    Text="{setting:Localize SettingWindow.Tab4.Text5}" />
+                <NumericUpDown
+                    Grid.Column="3"
+                    HorizontalAlignment="Stretch"
+                    FormatString="N0"
+                    Minimum="1"
+                    Value="{Binding MaxMem}" />
+            </Grid>
         </StackPanel>
     </Border>
 </UserControl>

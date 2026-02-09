@@ -1,0 +1,88 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.HeadControl.WindowsHeadControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    Height="35"
+    d:DesignHeight="35"
+    d:DesignWidth="800"
+    x:DataType="model:WindowModel"
+    mc:Ignorable="d">
+    <DockPanel Name="Pandl2" RenderOptions.TextRenderingMode="Antialias">
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+            <Button
+                Name="Choise"
+                Width="80"
+                Height="35"
+                Classes="head"
+                Command="{Binding ChoiseClick}"
+                Content="{Binding HeadChoiseContent}"
+                IsEnabled="{Binding ChoiseEnable}"
+                IsVisible="{Binding HeadChoiseDisplay}" />
+            <Button
+                Width="80"
+                Height="35"
+                Classes="head"
+                Command="{Binding Choise1Click}"
+                Content="{Binding HeadChoise1Content}"
+                IsEnabled="{Binding Choise1Enable}"
+                IsVisible="{Binding HeadChoise1Display}" />
+            <Button
+                Name="ButtonMin"
+                Width="40"
+                Height="35"
+                Classes="head"
+                Command="{Binding MinimizeClick}">
+                <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Minimize.svg" />
+            </Button>
+            <Button
+                Name="ButtonMax"
+                Width="40"
+                Height="35"
+                Classes="head"
+                Command="{Binding MaximizeClick}">
+                <svg:SvgControl Width="20" Path="{Binding MaxIcon}" />
+            </Button>
+            <Button
+                Name="ButtonClose"
+                Width="40"
+                Height="35"
+                Classes="head"
+                Command="{Binding CloseClick}"
+                IsEnabled="{Binding HeadCloseEnable}">
+                <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Close.svg" />
+            </Button>
+        </StackPanel>
+        <DockPanel Margin="10,0,0,0" VerticalAlignment="Center">
+            <Button
+                Width="40"
+                Height="35"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Command="{Binding BackClick}"
+                CornerRadius="0"
+                IsEnabled="{Binding HeadBackEnable}"
+                IsVisible="{Binding HeadBack}">
+                <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Back.svg" />
+            </Button>
+            <TextBlock
+                Name="TitleShow1"
+                Margin="5,0,5,0"
+                DockPanel.Dock="Right"
+                IsHitTestVisible="False"
+                Text="{Binding SubTitle}"
+                TextTrimming="CharacterEllipsis" />
+            <TextBlock
+                Name="TitleShow"
+                Margin="5,0,5,0"
+                IsHitTestVisible="False"
+                Text="{Binding Title}"
+                TextTrimming="CharacterEllipsis" />
+        </DockPanel>
+    </DockPanel>
+</UserControl>

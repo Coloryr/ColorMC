@@ -87,19 +87,6 @@
                     </Style>
                 </Style>
             </Decorator.Styles>
-            <Button
-                Width="20"
-                Height="20"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                ClipToBounds="False"
-                Command="{Binding DoStar}"
-                CornerRadius="20"
-                IsVisible="{Binding StarVis}">
-                <svg:SvgControl Path="{Binding Star}" />
-            </Button>
         </Decorator>
         <Decorator IsVisible="{Binding !IsNew}">
             <CheckBox

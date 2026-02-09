@@ -1,0 +1,119 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.HeadControl.MacosHeadControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    Height="35"
+    d:DesignHeight="35"
+    d:DesignWidth="800"
+    x:DataType="model:WindowModel"
+    mc:Ignorable="d">
+    <Panel RenderOptions.TextRenderingMode="Antialias">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <Button
+                Name="Choise"
+                Width="80"
+                Height="35"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Command="{Binding ChoiseClick}"
+                Content="{Binding HeadChoiseContent}"
+                CornerRadius="0"
+                IsEnabled="{Binding ChoiseEnable}"
+                IsVisible="{Binding HeadChoiseDisplay}" />
+            <Button
+                Width="80"
+                Height="35"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Command="{Binding Choise1Click}"
+                Content="{Binding HeadChoise1Content}"
+                CornerRadius="0"
+                IsEnabled="{Binding Choise1Enable}"
+                IsVisible="{Binding HeadChoise1Display}" />
+            <Button
+                Width="40"
+                Height="35"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Command="{Binding BackClick}"
+                CornerRadius="0"
+                IsEnabled="{Binding HeadBackEnable}"
+                IsVisible="{Binding HeadBack}">
+                <svg:SvgControl Width="20" Path="/Resource/Icon/Back.svg" />
+            </Button>
+        </StackPanel>
+        <Panel>
+            <StackPanel>
+                <Button
+                    Name="ButtonClose"
+                    Width="13"
+                    Height="13"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Classes="none"
+                    Command="{Binding CloseClick}"
+                    CornerRadius="0"
+                    IsEnabled="{Binding HeadCloseEnable}">
+                    <svg:SvgControl Name="Img3" Path="/Resource/Icon/Head/Close.svg" />
+                </Button>
+                <Button
+                    Name="ButtonMin"
+                    Width="13"
+                    Height="13"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Classes="none"
+                    Command="{Binding MinimizeClick}"
+                    CornerRadius="0">
+                    <svg:SvgControl Name="Img1" Path="/Resource/Icon/Head/Minimize.svg" />
+                </Button>
+                <Button
+                    Name="ButtonMax"
+                    Width="13"
+                    Height="13"
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="0"
+                    Classes="none"
+                    Command="{Binding MaximizeClick}"
+                    CornerRadius="0">
+                    <svg:SvgControl Name="Img2" Path="{Binding MaxIcon}" />
+                </Button>
+            </StackPanel>
+        </Panel>
+        <DockPanel
+            MaxWidth="500"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <TextBlock
+                Name="TitleShow1"
+                Margin="5,0,5,0"
+                DockPanel.Dock="Right"
+                IsHitTestVisible="False"
+                Text="{Binding SubTitle}"
+                TextTrimming="CharacterEllipsis" />
+            <TextBlock
+                Name="TitleShow"
+                Margin="5,0,5,0"
+                IsHitTestVisible="False"
+                Text="{Binding Title}"
+                TextTrimming="CharacterEllipsis" />
+        </DockPanel>
+    </Panel>
+</UserControl>

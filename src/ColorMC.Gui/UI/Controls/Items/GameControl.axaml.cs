@@ -165,7 +165,6 @@ public partial class GameControl : UserControl
                 }
                 return;
             }
-            var select = model.IsSelect;
             model.SetSelect();
 
             point = pro.Position;

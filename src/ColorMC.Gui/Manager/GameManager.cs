@@ -293,39 +293,6 @@ public static class GameManager
     }
 
     /// <summary>
-    /// 游戏实例是否标星
-    /// </summary>
-    /// <param name="game">游戏实例</param>
-    /// <returns>是否被标星</returns>
-    public static bool IsStar(GameSettingObj game)
-    {
-        var config = ReadConfig(game);
-        return config.IsStar;
-    }
-
-    /// <summary>
-    /// 标星游戏实例
-    /// </summary>
-    /// <param name="game">游戏实例</param>
-    public static void AddStar(GameSettingObj game)
-    {
-        var config = ReadConfig(game);
-        config.IsStar = true;
-        WriteConfig(game, config);
-    }
-
-    /// <summary>
-    /// 取消标星
-    /// </summary>
-    /// <param name="game">游戏实例</param>
-    public static void RemoveStar(GameSettingObj game)
-    {
-        var config = ReadConfig(game);
-        config.IsStar = false;
-        WriteConfig(game, config);
-    }
-
-    /// <summary>
     /// 游戏实例是否在运行
     /// </summary>
     /// <param name="obj">游戏实例</param>

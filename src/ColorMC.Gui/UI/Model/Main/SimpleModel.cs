@@ -17,11 +17,6 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// </summary>
 public partial class MainModel
 {
-    /// <summary>
-    /// 游戏列表
-    /// </summary>
-    public ObservableCollection<GameItemModel> GameList { get; init; } = [];
-
     [ObservableProperty]
     private bool _maxWindow;
 
@@ -42,6 +37,28 @@ public partial class MainModel
 
     [ObservableProperty]
     private bool _haveGame;
+    [ObservableProperty]
+    private bool _enableArg;
+
+    partial void OnGameChanged(GameItemModel? value)
+    {
+        GameName = Game?.Name ?? LangUtils.Get("MainWindow.Text79");
+        GameIcon = Game?.Pic ?? ImageManager.GameIcon;
+
+        if (Game == null)
+        {
+            HaveGame = false;
+            MinMem = MaxMem = GameWidth = GameHeight = null;
+            return;
+        }
+
+        var conf = ConfigLoad.Config;
+        MaxMem = Game.Obj.JvmArg?.MaxMemory ?? conf.DefaultJvmArg.MaxMemory;
+        MinMem = Game.Obj.JvmArg?.MinMemory ?? conf.DefaultJvmArg.MinMemory;
+        MaxWindow = Game.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;
+        GameWidth = Game.Obj.Window?.Width ?? conf.Window.Width;
+        GameHeight = Game.Obj.Window?.Height ?? conf.Window.Height;
+    }
 
     partial void OnMaxWindowChanged(bool value)
     {
@@ -127,52 +144,5 @@ public partial class MainModel
         }
 
         WindowManager.ShowGameEdit(Game.Obj);
-    }
-
-    /// <summary>
-    /// 加载游戏实例
-    /// </summary>
-    private void LoadSimple()
-    {
-        GameName = Game?.Name ?? LangUtils.Get("MainWindow.Text79");
-        GameIcon = Game?.Pic ?? ImageManager.GameIcon;
-
-        if (Game == null)
-        {
-            HaveGame = false;
-            MinMem = MaxMem = GameWidth = GameHeight = null;
-            return;
-        }
-
-        var conf = ConfigLoad.Config;
-        MaxMem = Game.Obj.JvmArg?.MaxMemory ?? conf.DefaultJvmArg.MaxMemory;
-        MinMem = Game.Obj.JvmArg?.MinMemory ?? conf.DefaultJvmArg.MinMemory;
-        MaxWindow = Game.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;
-        GameWidth = Game.Obj.Window?.Width ?? conf.Window.Width;
-        GameHeight = Game.Obj.Window?.Height ?? conf.Window.Height;
-    }
-    /// <summary>
-    /// 加载游戏实例
-    /// </summary>
-    public void LoadSimpleGames()
-    {
-        var temp = Game;
-        GameList.Clear();
-        if (IsOneGame)
-        {
-            GameList.Add(OneGame!);
-            Game = OneGame;
-        }
-        else
-        {
-            foreach (var item in GameGroups)
-            {
-                GameList.AddRange(item.Items.Values);
-            }
-        }
-        if (temp != null && GameList.Contains(temp))
-        {
-            Game = temp;
-        }
     }
 }

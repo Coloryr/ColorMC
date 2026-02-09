@@ -27,8 +27,7 @@ public static class ItemAnimation
                     Setters =
                     {
                         new Setter(ScaleTransform.ScaleXProperty, 0.5),
-                        new Setter(ScaleTransform.ScaleYProperty, 0.5),
-                        new Setter(Visual.OpacityProperty, 0.3)
+                        new Setter(ScaleTransform.ScaleYProperty, 0.5)
                     }
                 },
                 new KeyFrame
@@ -37,8 +36,7 @@ public static class ItemAnimation
                     Setters =
                     {
                         new Setter(ScaleTransform.ScaleXProperty, 1.0),
-                        new Setter(ScaleTransform.ScaleYProperty, 1.0),
-                        new Setter(Visual.OpacityProperty, 1.0)
+                        new Setter(ScaleTransform.ScaleYProperty, 1.0)
                     }
                 }
             },

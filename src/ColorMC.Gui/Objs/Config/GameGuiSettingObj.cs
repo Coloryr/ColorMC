@@ -43,10 +43,6 @@ public record GameGuiSettingObj
     /// </summary>
     public GameModSettingObj Mod { get; set; }
     /// <summary>
-    /// 是否标星
-    /// </summary>
-    public bool IsStar { get; set; }
-    /// <summary>
     /// 显示方块
     /// </summary>
     public string Block { get; set; }

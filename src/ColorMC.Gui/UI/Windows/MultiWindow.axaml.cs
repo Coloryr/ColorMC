@@ -8,7 +8,7 @@ namespace ColorMC.Gui.UI.Windows;
 /// </summary>
 public partial class MultiWindow : AMultiWindow
 {
-    public override HeadControl Head => MainView.HeadControl;
+    public override TitleControl Head => MainView.TitleControl;
 
     public override int DefaultWidth => 760;
     public override int DefaultHeight => 450;

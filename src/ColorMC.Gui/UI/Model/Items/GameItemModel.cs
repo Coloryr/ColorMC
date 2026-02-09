@@ -81,16 +81,6 @@ public partial class GameItemModel : GameModel
     [ObservableProperty]
     private bool _isDisplay = true;
     /// <summary>
-    /// 是否星标
-    /// </summary>
-    [ObservableProperty]
-    private bool _isStar;
-    /// <summary>
-    /// 是否显示星标
-    /// </summary>
-    [ObservableProperty]
-    private bool _starVis;
-    /// <summary>
     /// 是否为锁定模式
     /// </summary>
     [ObservableProperty]
@@ -101,17 +91,12 @@ public partial class GameItemModel : GameModel
     /// </summary>
     [ObservableProperty]
     private string _tips;
-    /// <summary>
-    /// 星标
-    /// </summary>
-    [ObservableProperty]
-    private string _star = ImageManager.Stars[1];
 
     /// <summary>
     /// 透明度
     /// </summary>
     [ObservableProperty]
-    private double _opa = 1.0;
+    private double _opa = 1.0f;
 
     /// <summary>
     /// 字体换行
@@ -185,7 +170,6 @@ public partial class GameItemModel : GameModel
         _top = top;
         _group = obj.GroupName;
         Pic = ImageManager.GetGameIcon(Obj) ?? ImageManager.GameIcon;
-        IsStar = GameManager.IsStar(obj);
 
         EventManager.GameIconChange += EventManager_GameIconChange;
         EventManager.GameNameChange += EventManager_GameNameChange;
@@ -201,15 +185,6 @@ public partial class GameItemModel : GameModel
         OnPropertyChanged(nameof(Name));
     }
 
-    /// <summary>
-    /// 星标修改
-    /// </summary>
-    /// <param name="value"></param>
-    partial void OnIsStarChanged(bool value)
-    {
-        Star = ImageManager.Stars[value ? 0 : 1];
-        StarVis = (value || IsOver) && !IsNew;
-    }
     /// <summary>
     /// 单游戏修改
     /// </summary>
@@ -269,7 +244,6 @@ public partial class GameItemModel : GameModel
     {
         if (!ShowCheck)
         {
-            StarVis = (value || IsStar) && !IsNew;
             ButtonShow = value || IsSelect;
         }
     }
@@ -290,19 +264,6 @@ public partial class GameItemModel : GameModel
         ButtonShow = value || IsOver;
     }
 
-    /// <summary>
-    /// 标星
-    /// </summary>
-    [RelayCommand]
-    public void DoStar()
-    {
-        if (ShowCheck)
-        {
-            return;
-        }
-        _top?.DoStar(this);
-        IsOver = false;
-    }
     /// <summary>
     /// 添加游戏实例
     /// </summary>

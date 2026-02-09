@@ -22,9 +22,13 @@
     <DebugType>embedded</DebugType>
   </PropertyGroup>
   <ItemGroup>
+    <AvaloniaXaml Remove="Resource\Icon\Head\**" />
     <AvaloniaXaml Remove="Resource\Icon\ItemsGrid\**" />
+    <Compile Remove="Resource\Icon\Head\**" />
     <Compile Remove="Resource\Icon\ItemsGrid\**" />
+    <EmbeddedResource Remove="Resource\Icon\Head\**" />
     <EmbeddedResource Remove="Resource\Icon\ItemsGrid\**" />
+    <None Remove="Resource\Icon\Head\**" />
     <None Remove="Resource\Icon\ItemsGrid\**" />
   </ItemGroup>
 
@@ -43,6 +47,7 @@
     <None Remove="Resource\Icon\AddMenu\item6.svg" />
     <None Remove="Resource\Icon\AddMenu\item7.svg" />
     <None Remove="Resource\Icon\AddMenu\svg1.svg" />
+    <None Remove="Resource\Icon\Back.svg" />
     <None Remove="Resource\Icon\close.svg" />
     <None Remove="Resource\Icon\cog.svg" />
     <None Remove="Resource\Icon\collection.svg" />
@@ -76,10 +81,6 @@
     <None Remove="Resource\Icon\GameExport\item3.svg" />
     <None Remove="Resource\Icon\GameExport\item4.svg" />
     <None Remove="Resource\Icon\guide.svg" />
-    <None Remove="Resource\Icon\Head\close.svg" />
-    <None Remove="Resource\Icon\Head\max.svg" />
-    <None Remove="Resource\Icon\Head\max1.svg" />
-    <None Remove="Resource\Icon\Head\min.svg" />
     <None Remove="Resource\Icon\Input\button_a.svg" />
     <None Remove="Resource\Icon\Input\button_b.svg" />
     <None Remove="Resource\Icon\Input\button_bottom.svg" />
@@ -183,6 +184,11 @@
     <None Remove="Resource\Icon\texture.svg" />
     <None Remove="Resource\Icon\upgrade.svg" />
     <None Remove="Resource\Icon\user.svg" />
+    <None Remove="Resource\Icon\Window\Back.svg" />
+    <None Remove="Resource\Icon\Window\Close.svg" />
+    <None Remove="Resource\Icon\Window\Maximize.svg" />
+    <None Remove="Resource\Icon\Window\Minimize.svg" />
+    <None Remove="Resource\Icon\Window\Restore.svg" />
     <None Remove="Resource\Icon\zoom.svg" />
     <None Remove="Resource\Pic\1.png" />
     <None Remove="Resource\Pic\2.png" />
@@ -207,7 +213,6 @@
     <AvaloniaResource Include="Resource\Icon\AddMenu\item5.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item6.svg" />
     <AvaloniaResource Include="Resource\Icon\AddMenu\item7.svg" />
-    <AvaloniaResource Include="Resource\Icon\close.svg" />
     <AvaloniaResource Include="Resource\Icon\cog.svg" />
     <AvaloniaResource Include="Resource\Icon\counter.svg" />
     <AvaloniaResource Include="Resource\Icon\delete.svg" />
@@ -239,10 +244,6 @@
     <AvaloniaResource Include="Resource\Icon\GameExport\item3.svg" />
     <AvaloniaResource Include="Resource\Icon\GameExport\item4.svg" />
     <AvaloniaResource Include="Resource\Icon\guide.svg" />
-    <AvaloniaResource Include="Resource\Icon\Head\close.svg" />
-    <AvaloniaResource Include="Resource\Icon\Head\max.svg" />
-    <AvaloniaResource Include="Resource\Icon\Head\max1.svg" />
-    <AvaloniaResource Include="Resource\Icon\Head\min.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_a.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_b.svg" />
     <AvaloniaResource Include="Resource\Icon\Input\button_bottom.svg" />
@@ -341,6 +342,11 @@
     <AvaloniaResource Include="Resource\Icon\pause.svg" />
     <AvaloniaResource Include="Resource\Icon\starnone.svg" />
     <AvaloniaResource Include="Resource\Icon\texture.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\Back.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\Close.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\Maximize.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\Minimize.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\Restore.svg" />
     <AvaloniaResource Include="Resource\Icon\zoom.svg" />
     <EmbeddedResource Include="Resource\Pic\update.png" />
     <EmbeddedResource Include="Resource\Pic\1.png" />
@@ -391,5 +397,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="UI\Controls\TitleControl.axaml.cs">
+      <DependentUpon>TitleControl.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

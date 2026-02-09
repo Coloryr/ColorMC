@@ -730,37 +730,6 @@ public partial class MainModel : IDragTop
     }
 
     /// <summary>
-    /// 标星游戏实例
-    /// </summary>
-    /// <param name="model">游戏实例</param>
-    public void DoStar(GameItemModel model)
-    {
-        model.IsStar = !model.IsStar;
-        if (model.IsStar)
-        {
-            GameManager.AddStar(model.Obj);
-            foreach (var group in GameGroups)
-            {
-                if (group.Star(model.Obj.UUID))
-                {
-                    return;
-                }
-            }
-        }
-        else
-        {
-            GameManager.RemoveStar(model.Obj);
-            foreach (var group in GameGroups)
-            {
-                if (group.UnStar(model.Obj.UUID))
-                {
-                    return;
-                }
-            }
-        }
-    }
-
-    /// <summary>
     /// 导出启动指令
     /// </summary>
     /// <param name="obj"></param>

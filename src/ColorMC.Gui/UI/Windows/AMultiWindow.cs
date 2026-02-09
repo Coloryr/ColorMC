@@ -41,7 +41,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     /// <summary>
     /// 窗口上方控制栏
     /// </summary>
-    public abstract HeadControl Head { get; }
+    public abstract TitleControl Head { get; }
 
     /// <summary>
     /// 是否关闭
@@ -159,7 +159,17 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     {
         if (e.Property == WindowStateProperty)
         {
-            Head.WindowStateChange(WindowState);
+            if (DataContext is WindowModel model)
+            {
+                if (WindowState == WindowState.Maximized)
+                {
+                    model.MaxIcon = ImageManager.MaxIcon[1];
+                }
+                else
+                {
+                    model.MaxIcon = ImageManager.MaxIcon[0];
+                }
+            }
         }
     }
 
