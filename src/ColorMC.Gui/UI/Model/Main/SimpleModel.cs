@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Avalonia.Media.Imaging;
-using AvaloniaEdit.Utils;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;

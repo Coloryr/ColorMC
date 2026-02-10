@@ -311,7 +311,7 @@ public record LauncherSetting
 /// 界面功能设置
 /// </summary>
 public record WindowUserStateObj
-{ 
+{
     /// <summary>
     /// 主窗口状态
     /// </summary>
