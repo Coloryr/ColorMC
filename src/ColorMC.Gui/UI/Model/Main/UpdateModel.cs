@@ -17,11 +17,6 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// </summary>
 public partial class MainModel
 {
-    /// <summary>
-    /// 是否有启动器更新
-    /// </summary>
-    [ObservableProperty]
-    private bool _haveUpdate;
 #if !DEBUG
     private bool _isNewUpdate;
     private string _updateStr;
@@ -92,14 +87,14 @@ public partial class MainModel
     private async void CheckUpdate()
     {
 #if DEBUG
-        HaveUpdate = false;
+        CardUpdate = false;
 #else
         var data = await UpdateUtils.CheckMain();
         if (!data.Item1)
         {
             return;
         }
-        HaveUpdate = true;
+        CardUpdate = true;
         _isNewUpdate = data.Item2 || ColorMCGui.IsAot || ColorMCGui.IsMin;
         _updateStr = data.Item3!;
         LoadCard();

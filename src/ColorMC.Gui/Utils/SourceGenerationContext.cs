@@ -44,6 +44,7 @@ namespace ColorMC.Gui.Utils;
 [JsonSerializable(typeof(List<ColorMCCloudServerObj>))]
 [JsonSerializable(typeof(BlocksObj))]
 [JsonSerializable(typeof(BlockUnlockObj))]
+[JsonSerializable(typeof(LauncherFunctionConfigObj))]
 public partial class SourceGenerationContext : JsonSerializerContext
 {
 
@@ -85,4 +86,5 @@ public static class JsonGuiType
     public static JsonTypeInfo<List<ColorMCCloudServerObj>> ListColorMCCloudServerObj => SourceGenerationContext.Default.ListColorMCCloudServerObj;
     public static JsonTypeInfo<BlocksObj> BlocksObj => SourceGenerationContext.Default.BlocksObj;
     public static JsonTypeInfo<BlockUnlockObj> BlockUnlockObj => SourceGenerationContext.Default.BlockUnlockObj;
+    public static JsonTypeInfo<LauncherFunctionConfigObj> LauncherFunctionConfigObj => SourceGenerationContext.Default.LauncherFunctionConfigObj;
 }

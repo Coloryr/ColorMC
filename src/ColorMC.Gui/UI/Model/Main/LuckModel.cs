@@ -11,8 +11,14 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// </summary>
 public partial class MainModel
 {
+    /// <summary>
+    /// 是否已经抽了幸运方块
+    /// </summary>
     [ObservableProperty]
     private bool _isHaveLuck;
+    /// <summary>
+    /// 抽中的幸运方块
+    /// </summary>
     [ObservableProperty]
     private BlockItemModel? _luckBlockItem;
 

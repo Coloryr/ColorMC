@@ -33,9 +33,10 @@
                     <Button
                         Margin="0,12,30,12"
                         HorizontalAlignment="Right"
-                        Classes="none"
-                        Command="{Binding ShowUser}">
-                        <StackPanel Margin="5" Orientation="Horizontal">
+                        Classes="head"
+                        Command="{Binding ShowUser}"
+                        CornerRadius="5">
+                        <StackPanel Margin="10,5,10,5" Orientation="Horizontal">
                             <StackPanel Margin="0,0,10,0" VerticalAlignment="Center">
                                 <TextBlock
                                     FontSize="13"
@@ -156,12 +157,12 @@
                     Fill="{setting:Theme BorderColor}" />
                 <ScrollViewer DockPanel.Dock="Right">
                     <StackPanel Width="200" Margin="0,0,30,30">
+                        <cards:MusicControl Margin="0,20,0,0" IsVisible="{Binding CardMusic}" />
+                        <cards:UpdateControl Margin="0,20,0,0" IsVisible="{Binding CardUpdate}" />
                         <cards:NewsControl Margin="0,20,0,0" IsVisible="{Binding CardNews}" />
-                        <cards:LuckControl Margin="0,20,0,0" />
-                        <cards:MusicControl Margin="0,20,0,0" IsVisible="{Binding MusicDisplay}" />
-                        <cards:UpdateControl Margin="0,20,0,0" IsVisible="{Binding HaveUpdate}" />
-                        <cards:OnlineControl Margin="0,20,0,0" IsVisible="{Binding IsOnlineMode}" />
-                        <cards:LastControl Margin="0,20,0,0" IsVisible="{Binding HaveLast}" />
+                        <cards:LastControl Margin="0,20,0,0" IsVisible="{Binding CardLast}" />
+                        <cards:OnlineControl Margin="0,20,0,0" IsVisible="{Binding CardOnline}" />
+                        <cards:LuckControl Margin="0,20,0,0" IsVisible="{Binding CardBlock}" />
                     </StackPanel>
                 </ScrollViewer>
                 <ScrollViewer Margin="0,0,10,0">

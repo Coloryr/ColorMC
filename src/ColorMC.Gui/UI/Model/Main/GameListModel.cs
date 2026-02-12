@@ -68,11 +68,7 @@ public partial class MainModel : IDragTop
     /// </summary>
     [ObservableProperty]
     private bool _gameSearch;
-    /// <summary>
-    /// 是否有上次运行的游戏实例
-    /// </summary>
-    [ObservableProperty]
-    private bool _haveLast;
+
     /// <summary>
     /// 是否有上次运行图标
     /// </summary>
@@ -177,7 +173,7 @@ public partial class MainModel : IDragTop
     [RelayCommand]
     public void LaunchLast()
     {
-        if (!HaveLast)
+        if (!CardLast)
         {
             return;
         }
@@ -186,7 +182,7 @@ public partial class MainModel : IDragTop
         {
             Launch(Game);
         }
-        HaveLast = false;
+        CardLast = false;
     }
 
     /// <summary>
@@ -526,7 +522,7 @@ public partial class MainModel : IDragTop
             {
                 if (GuiConfigUtils.Config.Card.Last)
                 {
-                    HaveLast = true;
+                    CardLast = true;
                 }
                 LastGameName = string.Format(LangUtils.Get("MainWindow.Text26"), last.Name);
                 GameImage = ImageManager.GetGameIcon(last.Obj);
@@ -572,9 +568,9 @@ public partial class MainModel : IDragTop
     /// <param name="obj">游戏实例</param>
     public void Select(GameItemModel? obj)
     {
-        if (HaveLast == true && obj?.UUID != ConfigBinding.GetLastLaunch())
+        if (CardLast == true && obj?.UUID != ConfigBinding.GetLastLaunch())
         {
-            HaveLast = false;
+            CardLast = false;
         }
 
         Game = obj;

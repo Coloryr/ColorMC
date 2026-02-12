@@ -373,6 +373,7 @@ public static class BaseBinding
         var conf = GuiConfigUtils.Config;
         var conf1 = ConfigLoad.Config;
         var conf2 = conf.ServerCustom;
+        var conf3 = conf.LauncherFunction;
 
         if (json.TryGetProperty(nameof(BuildPackModel.UiBg), out var value)
             && value.ValueKind is JsonValueKind.Object)
@@ -441,8 +442,6 @@ public static class BaseBinding
             conf2.JoinServer = config.JoinServer;
             conf2.MotdColor = config.MotdColor;
             conf2.MotdBackColor = config.MotdBackColor;
-            conf2.AdminLaunch = config.AdminLaunch;
-            conf2.GameAdminLaunch = config.GameAdminLaunch;
         }
 
         if (json.TryGetProperty(nameof(BuildPackModel.ServerLock), out value)
@@ -480,6 +479,16 @@ public static class BaseBinding
             conf2.RunPause = config.RunPause;
         }
 
+        if (json.TryGetProperty(nameof(BuildPackModel.Function), out value)
+            && value.ValueKind is JsonValueKind.Object)
+        {
+            var config = value.Deserialize(JsonGuiType.LauncherFunctionConfigObj)!;
+            conf3.FastLaunch = config.FastLaunch;
+            conf3.FastModrinth = config.FastModrinth;
+            conf3.AdminLaunch = config.AdminLaunch;
+            conf3.GameAdminLaunch = config.GameAdminLaunch;
+        }
+
         if (json.TryGetProperty(nameof(BuildPackModel.Javas), out value) && value.ValueKind is JsonValueKind.Array)
         {
             var list = value.Deserialize(JsonGuiType.ListJvmConfigObj)!;
@@ -508,6 +517,7 @@ public static class BaseBinding
             var conf = GuiConfigUtils.Config;
             var conf1 = ConfigLoad.Config;
             var conf2 = conf.ServerCustom;
+            var conf3 = conf.LauncherFunction;
 
             var obj = new JsonObject();
 
@@ -583,8 +593,6 @@ public static class BaseBinding
                     JoinServer = conf2.JoinServer,
                     MotdColor = conf2.MotdColor,
                     MotdBackColor = conf2.MotdBackColor,
-                    AdminLaunch = conf2.AdminLaunch,
-                    GameAdminLaunch = conf2.GameAdminLaunch
                 }, JsonGuiType.ServerOptConfigObj));
             }
 
@@ -597,6 +605,17 @@ public static class BaseBinding
                     LockLogin = conf2.LockLogin,
                     LockLogins = conf2.LockLogins
                 }, JsonGuiType.ServerLockConfigObj));
+            }
+
+            if (model.Function)
+            {
+                obj.Add(nameof(BuildPackModel.Function), JsonSerializer.SerializeToNode(new LauncherFunctionConfigObj()
+                {
+                    FastLaunch = conf3.FastLaunch,
+                    FastModrinth = conf3.FastModrinth,
+                    AdminLaunch = conf3.AdminLaunch,
+                    GameAdminLaunch = conf3.GameAdminLaunch
+                }, JsonGuiType.LauncherFunctionConfigObj));
             }
 
             if (model.ServerUi)

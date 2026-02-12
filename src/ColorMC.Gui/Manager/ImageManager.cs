@@ -96,7 +96,12 @@ public static class ImageManager
     /// 最大化最小化图标
     /// </summary>
     public static readonly string[] MaxIcon = ["/Resource/Icon/Window/Maximize.svg", "/Resource/Icon/Window/Restore.svg"];
-
+    /// <summary>
+    /// 表情图标
+    /// </summary>
+    public static readonly string[] EmoticonIcon = ["/Resource/Icon/Emoticon/EmoticonHappy.svg", "/Resource/Icon/Emoticon/EmoticonConfused.svg",
+        "/Resource/Icon/Emoticon/EmoticonExcited.svg", "/Resource/Icon/Emoticon/EmoticonSad.svg", "/Resource/Icon/Emoticon/EmoticonWink.svg",
+        "/Resource/Icon/Emoticon/EmoticonFrown.svg"];
     /// <summary>
     /// 缓存路径
     /// </summary>

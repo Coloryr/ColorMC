@@ -42,11 +42,6 @@ public partial class MainModel
     [ObservableProperty]
     private bool _isHeadLoad;
     /// <summary>
-    /// 是否为正版账户
-    /// </summary>
-    [ObservableProperty]
-    private bool _isOnlineMode;
-    /// <summary>
     /// 是否有玩家
     /// </summary>
     [ObservableProperty]
@@ -70,11 +65,11 @@ public partial class MainModel
         {
             if (GuiConfigUtils.Config.Card.Online)
             {
-                IsOnlineMode = user.AuthType == AuthType.OAuth;
+                CardOnline = user.AuthType == AuthType.OAuth;
             }
             else
             {
-                IsOnlineMode = false;
+                CardOnline = false;
             }
 
             UserId = user.UserName;

@@ -136,16 +136,6 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _loop;
     /// <summary>
-    /// 是否管理员启动
-    /// </summary>
-    [ObservableProperty]
-    private bool _adminLaunch;
-    /// <summary>
-    /// 是否游戏管理员启动
-    /// </summary>
-    [ObservableProperty]
-    private bool _gameAdminLaunch;
-    /// <summary>
     /// 是否自定义图标
     /// </summary>
     [ObservableProperty]
@@ -188,27 +178,6 @@ public partial class SettingModel
     /// 配置是否加载中
     /// </summary>
     private bool _serverLoad = true;
-
-    //配置修改
-    partial void OnGameAdminLaunchChanged(bool value)
-    {
-        if (_serverLoad)
-        {
-            return;
-        }
-
-        SetAdmin();
-    }
-
-    partial void OnAdminLaunchChanged(bool value)
-    {
-        if (_serverLoad)
-        {
-            return;
-        }
-
-        SetAdmin();
-    }
 
     partial void OnLoopChanged(bool value)
     {
@@ -533,8 +502,6 @@ public partial class SettingModel
             RunPause = config.RunPause;
             SlowVolume = config.SlowVolume;
             Loop = config.MusicLoop;
-            AdminLaunch = config.AdminLaunch;
-            GameAdminLaunch = config.GameAdminLaunch;
 
             MotdFontColor = ColorManager.MotdColor.ToColor();
             MotdBackColor = ColorManager.MotdBackColor.ToColor();
@@ -625,11 +592,6 @@ public partial class SettingModel
         }
 
         ConfigBinding.SetLockGame(EnableOneGame, Game == -1 ? Guid.Empty : _uuids[Game]);
-    }
-
-    private void SetAdmin()
-    {
-        ConfigBinding.SetAdmin(AdminLaunch, GameAdminLaunch);
     }
 
     private void ShowBuildPack()

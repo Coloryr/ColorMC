@@ -156,14 +156,6 @@ public record ServerCustomSetting
     /// 登录模型实例
     /// </summary>
     public List<LockLoginSetting> LockLogins { get; set; }
-    /// <summary>
-    /// 管理员方式启动
-    /// </summary>
-    public bool AdminLaunch { get; set; }
-    /// <summary>
-    /// 游戏管理员方式启动
-    /// </summary>
-    public bool GameAdminLaunch { get; set; }
 
     /// <summary>
     /// 是否使用自定义图标
@@ -293,6 +285,10 @@ public record CardSetting
     /// 上次启动卡片
     /// </summary>
     public bool Last { get; set; }
+    /// <summary>
+    /// 幸运方块
+    /// </summary>
+    public bool Block { get; set; }
 }
 
 public record LauncherSetting
@@ -305,6 +301,14 @@ public record LauncherSetting
     /// 覆盖modrinth
     /// </summary>
     public bool FastModrinth { get; set; }
+    /// <summary>
+    /// 管理员方式启动
+    /// </summary>
+    public bool AdminLaunch { get; set; }
+    /// <summary>
+    /// 游戏管理员方式启动
+    /// </summary>
+    public bool GameAdminLaunch { get; set; }
 }
 
 /// <summary>

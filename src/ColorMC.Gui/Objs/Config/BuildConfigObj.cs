@@ -49,8 +49,6 @@ public record ServerOptConfigObj
     public bool JoinServer { get; set; }
     public string MotdColor { get; set; }
     public string MotdBackColor { get; set; }
-    public bool AdminLaunch { get; set; }
-    public bool GameAdminLaunch { get; set; }
 }
 
 public record ServerLockConfigObj
@@ -81,4 +79,12 @@ public record ServerMusicConfigObj
     public bool SlowVolume { get; set; }
     public bool MusicLoop { get; set; }
     public bool RunPause { get; set; }
+}
+
+public record LauncherFunctionConfigObj
+{
+    public bool FastLaunch { get; set; }
+    public bool FastModrinth { get; set; }
+    public bool AdminLaunch { get; set; }
+    public bool GameAdminLaunch { get; set; }
 }

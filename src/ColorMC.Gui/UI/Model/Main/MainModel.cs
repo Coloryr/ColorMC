@@ -42,11 +42,6 @@ public partial class MainModel : ControlModel, IMutTop
     [ObservableProperty]
     private bool _isGameError;
     /// <summary>
-    /// 是否显示音乐
-    /// </summary>
-    [ObservableProperty]
-    private bool _musicDisplay;
-    /// <summary>
     /// 是否显示背景图
     /// </summary>
     [ObservableProperty]
@@ -57,10 +52,35 @@ public partial class MainModel : ControlModel, IMutTop
     [ObservableProperty]
     private bool _render = true;
     /// <summary>
+    /// 是否展示上次启动
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardLast;
+    /// <summary>
+    /// 是否显示音乐
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardMusic;
+    /// <summary>
     /// 是否显示新闻卡片
     /// </summary>
     [ObservableProperty]
     private bool _cardNews;
+    /// <summary>
+    /// 幸运方块卡片
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardBlock;
+    /// <summary>
+    /// 是否有启动器更新
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardUpdate;
+    /// <summary>
+    /// 是否展示联机卡片
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardOnline;
     /// <summary>
     /// 是否有卡片
     /// </summary>
@@ -231,16 +251,18 @@ public partial class MainModel : ControlModel, IMutTop
     {
         var config = GuiConfigUtils.Config.Card;
         CardNews = config.News;
+        CardBlock = config.Block;
+
         if (!config.Online)
         {
-            IsOnlineMode = false;
+            CardOnline = false;
         }
         if (!config.Last)
         {
-            HaveLast = false;
+            CardLast = false;
         }
 
-        if (!CardNews && !IsOnlineMode && !HaveLast && !HaveUpdate)
+        if (!CardNews && !CardOnline && !CardLast && !CardUpdate && !CardBlock)
         {
             HaveCard = false;
         }

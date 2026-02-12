@@ -99,6 +99,12 @@ public partial class BuildPackModel
     /// </summary>
     private bool _isItem;
 
+    /// <summary>
+    /// 是否导出启动器功能设置
+    /// </summary>
+    [ObservableProperty]
+    private bool _function;
+
     //设置项修改
     partial void OnUiSettingChanged(bool value)
     {

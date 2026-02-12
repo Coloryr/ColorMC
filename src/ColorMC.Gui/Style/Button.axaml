@@ -30,7 +30,7 @@
 
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
-        <Setter Property="BorderBrush" Value="{setting:Theme ButtonBorder}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
         <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -43,7 +43,7 @@
         </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{setting:Theme ButtonOver}" />
-            <Setter Property="BorderBrush" Value="{setting:Theme ButtonBorder}" />
+            <Setter Property="BorderBrush" Value="{setting:Theme MainColor}" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFAAAAAA" />
@@ -141,7 +141,7 @@
     </Style>
 
     <Style Selector="Button.items">
-        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="#00FFFFFF" />
         <Setter Property="Padding" Value="10,8,15,8" />
         <Setter Property="Margin" Value="0,1,0,1" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -266,8 +266,11 @@
         <Style Selector="^:pressed">
             <Setter Property="RenderTransform" Value="scale(1)" />
         </Style>
+        <Style Selector="^:pointerover">
+            <Setter Property="Background" Value="{setting:Theme ButtonBorder}" />
+        </Style>
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="{setting:Theme ButtonOver}" />
+            <Setter Property="Background" Value="{setting:Theme ButtonBorder}" />
         </Style>
         <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#FFAAAAAA" />

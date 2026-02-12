@@ -1,0 +1,45 @@
+<UserControl
+    x:Class="ColorMC.Gui.UI.Controls.Items.MenuItemControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Items"
+    xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:MenuItemModel"
+    mc:Ignorable="d">
+    <StackPanel>
+        <ListBoxItem
+            Padding="5,5,25,5"
+            HorizontalContentAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            Classes="t1"
+            IsSelected="{Binding IsCheck}">
+            <StackPanel Orientation="Horizontal">
+                <svg:SvgControl
+                    Width="24"
+                    Height="24"
+                    Fill="{setting:Theme FontColor}"
+                    Path="{Binding Icon}" />
+                <TextBlock Margin="5,0,0,0" Text="{Binding Text}" />
+            </StackPanel>
+        </ListBoxItem>
+        <ItemsControl
+            Margin="10,0,0,0"
+            IsVisible="{Binding IsCheck}"
+            ItemsSource="{Binding SubMenu}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="model:SubMenuItemModel">
+                    <Button
+                        Classes="items1"
+                        Command="{Binding Select}"
+                        Content="{Binding Name}"
+                        IsVisible="{Binding !Hide}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

@@ -92,6 +92,28 @@
                     </WrapPanel>
                 </DockPanel>
             </Border>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/Setting/svg35.svg" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text39}" />
+                    </StackPanel>
+                    <ToggleSwitch
+                        IsChecked="{Binding AdminLaunch}"
+                        OffContent="{setting:Localize SettingWindow.Tab6.Text40}"
+                        OnContent="{setting:Localize SettingWindow.Tab6.Text40}" />
+                    <ToggleSwitch
+                        IsChecked="{Binding GameAdminLaunch}"
+                        IsEnabled="{Binding !AdminLaunch}"
+                        OffContent="{setting:Localize SettingWindow.Tab6.Text41}"
+                        OnContent="{setting:Localize SettingWindow.Tab6.Text41}" />
+                    <TextBlock Text="{setting:Localize SettingWindow.Tab6.Text42}" />
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

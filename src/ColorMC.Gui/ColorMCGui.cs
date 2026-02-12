@@ -121,7 +121,7 @@ public static class ColorMCGui
             GuiConfigUtils.Init();
 
             //以管理员方式启动
-            if (GuiConfigUtils.Config.ServerCustom.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
+            if (GuiConfigUtils.Config.LauncherFunction.AdminLaunch && !ProcessUtils.IsRunAsAdmin())
             {
                 try
                 {

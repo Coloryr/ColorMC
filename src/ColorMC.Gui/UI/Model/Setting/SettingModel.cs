@@ -56,22 +56,22 @@ public partial class SettingModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/Setting/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Guide.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text2")
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/Web.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text3")
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item3.svg",
+                Icon = "/Resource/Icon/GroupIcon/CodeBraces.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text4")
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/Java.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text5"),
                 SubMenu =
                 [
@@ -109,7 +109,7 @@ public partial class SettingModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item5.svg",
+                Icon = "/Resource/Icon/GroupIcon/Tune.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text6"),
                 SubMenu =
                 [
@@ -122,7 +122,7 @@ public partial class SettingModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item6.svg",
+                Icon = "/Resource/Icon/GroupIcon/FileEdit.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text1"),
                 SubMenu =
                 [
@@ -170,7 +170,7 @@ public partial class SettingModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item8.svg",
+                Icon = "/Resource/Icon/GroupIcon/Controller.svg",
                 Text = LangUtils.Get("MainWindow.Text56"),
                 SubMenu =
                 [
@@ -183,12 +183,12 @@ public partial class SettingModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item8.svg",
+                Icon = "/Resource/Icon/GroupIcon/TestTube.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text9")
             },
             new()
             {
-                Icon = "/Resource/Icon/Setting/item7.svg",
+                Icon = "/Resource/Icon/GroupIcon/Information.svg",
                 Text = LangUtils.Get("SettingWindow.Tabs.Text7")
             }
         ]);

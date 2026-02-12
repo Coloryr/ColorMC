@@ -924,9 +924,9 @@ public static class ConfigBinding
     /// <param name="gameAdminLaunch"></param>
     public static void SetAdmin(bool adminLaunch, bool gameAdminLaunch)
     {
-        GuiConfigUtils.Config.ServerCustom ??= new();
-        GuiConfigUtils.Config.ServerCustom.AdminLaunch = adminLaunch;
-        GuiConfigUtils.Config.ServerCustom.GameAdminLaunch = gameAdminLaunch;
+        GuiConfigUtils.Config.LauncherFunction ??= new();
+        GuiConfigUtils.Config.LauncherFunction.AdminLaunch = adminLaunch;
+        GuiConfigUtils.Config.LauncherFunction.GameAdminLaunch = gameAdminLaunch;
 
         GuiConfigUtils.Save();
     }
@@ -937,12 +937,13 @@ public static class ConfigBinding
     /// <param name="cardNews"></param>
     /// <param name="cardLast"></param>
     /// <param name="cardOnline"></param>
-    public static void SetCard(bool cardNews, bool cardLast, bool cardOnline)
+    public static void SetCard(bool cardNews, bool cardLast, bool cardOnline, bool cardBlock)
     {
         GuiConfigUtils.Config.Card ??= new();
         GuiConfigUtils.Config.Card.News = cardNews;
         GuiConfigUtils.Config.Card.Last = cardLast;
         GuiConfigUtils.Config.Card.Online = cardOnline;
+        GuiConfigUtils.Config.Card.Block = cardBlock;
 
         GuiConfigUtils.Save();
         WindowManager.MainWindow?.LoadCard();

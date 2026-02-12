@@ -116,20 +116,25 @@ public partial class SettingModel
     [ObservableProperty]
     private bool _enableAm;
     /// <summary>
-    /// 是否启用Minecraft news
+    /// 是否展示Minecraft news
     /// </summary>
     [ObservableProperty]
     private bool _cardNews;
     /// <summary>
-    /// 是否启用上次启动
+    /// 是否展示上次启动
     /// </summary>
     [ObservableProperty]
     private bool _cardLast;
     /// <summary>
-    /// 是否启用在线联机
+    /// 是否展示在线联机
     /// </summary>
     [ObservableProperty]
     private bool _cardOnline;
+    /// <summary>
+    /// 是否展示幸运方块
+    /// </summary>
+    [ObservableProperty]
+    private bool _cardBlock;
 
     /// <summary>
     /// 头像旋转
@@ -210,11 +215,16 @@ public partial class SettingModel
             var index = random.Next(200000);
             if (index == 114514)
             {
-                return $"/Resource/Icon/Setting/svg{28 + random.Next(6)}.svg";
+                return ImageManager.EmoticonIcon[random.Next(5) + 1];
             }
 
-            return "/Resource/Icon/Setting/svg27.svg";
+            return ImageManager.EmoticonIcon[0];
         }
+    }
+
+    partial void OnCardBlockChanged(bool value)
+    {
+        SetCard();
     }
 
     partial void OnCardLastChanged(bool value)
@@ -554,6 +564,7 @@ public partial class SettingModel
             CardNews = con.Card.News;
             CardLast = con.Card.Last;
             CardOnline = con.Card.Online;
+            CardBlock = con.Card.Block;
 
             HeadType = con.Head.Type;
 
@@ -639,6 +650,6 @@ public partial class SettingModel
         if (_load)
             return;
 
-        ConfigBinding.SetCard(CardNews, CardLast, CardOnline);
+        ConfigBinding.SetCard(CardNews, CardLast, CardOnline, CardBlock);
     }
 }

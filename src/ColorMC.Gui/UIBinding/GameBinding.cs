@@ -184,7 +184,7 @@ public static class GameBinding
             Auth = user,
             Gui = new LauncherGui(window, progress),
             Mixinport = port,
-            Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch
+            Admin = GuiConfigUtils.Config.LauncherFunction.GameAdminLaunch
         };
 
         //设置自动加入服务器
@@ -441,7 +441,7 @@ public static class GameBinding
             Auth = user,
             Gui = new LauncherGui(window, progress),
             Mixinport = port,
-            Admin = GuiConfigUtils.Config.ServerCustom.GameAdminLaunch,
+            Admin = GuiConfigUtils.Config.LauncherFunction.GameAdminLaunch,
             World = world
         };
 

@@ -33,12 +33,6 @@ public partial class MenuItemModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private bool _isCheck;
-
-    [RelayCommand]
-    public void Select()
-    {
-        IsCheck = true;
-    }
 }
 
 /// <summary>

@@ -43,8 +43,39 @@ public partial class SettingModel
     /// </summary>
     [ObservableProperty]
     private bool _safeLog4j;
+    /// <summary>
+    /// 是否管理员启动
+    /// </summary>
+    [ObservableProperty]
+    private bool _adminLaunch;
+    /// <summary>
+    /// 是否游戏管理员启动
+    /// </summary>
+    [ObservableProperty]
+    private bool _gameAdminLaunch;
 
     private bool _launchLoad;
+
+    //配置修改
+    partial void OnGameAdminLaunchChanged(bool value)
+    {
+        if (_serverLoad)
+        {
+            return;
+        }
+
+        SetAdmin();
+    }
+
+    partial void OnAdminLaunchChanged(bool value)
+    {
+        if (_serverLoad)
+        {
+            return;
+        }
+
+        SetAdmin();
+    }
 
     partial void OnSafeLog4jChanged(bool value)
     {
@@ -172,6 +203,11 @@ public partial class SettingModel
         ConfigBinding.SetCheck(CheckUser, CheckLoader, CheckMemory);
     }
 
+    private void SetAdmin()
+    {
+        ConfigBinding.SetAdmin(AdminLaunch, GameAdminLaunch);
+    }
+
     /// <summary>
     /// 加载启动器功能设置
     /// </summary>
@@ -184,6 +220,8 @@ public partial class SettingModel
         {
             FastEnable = con.FastLaunch;
             FastModrinth = con.FastModrinth;
+            AdminLaunch = config.AdminLaunch;
+            GameAdminLaunch = config.GameAdminLaunch;
         }
 
         var config1 = GuiConfigUtils.Config;

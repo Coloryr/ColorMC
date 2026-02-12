@@ -121,7 +121,7 @@ public partial class MainModel
         if (config?.PlayMusic == true && !string.IsNullOrWhiteSpace(config.Music))
         {
             Window.Title = "ColorMC " + LangUtils.Get("MainWindow.Text73");
-            MusicDisplay = true;
+            CardMusic = true;
 
             MusicLoopStart();
 
@@ -140,7 +140,7 @@ public partial class MainModel
         }
         else
         {
-            MusicDisplay = false;
+            CardMusic = false;
         }
     }
 

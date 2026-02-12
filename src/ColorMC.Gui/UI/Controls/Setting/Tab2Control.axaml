@@ -27,7 +27,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg1.svg" />
+                            Path="/Resource/Icon/GroupIcon/DockWindow.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text46}" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,-5" Orientation="Horizontal">
@@ -66,7 +66,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg2.svg" />
+                            Path="/Resource/Icon/GroupIcon/Translate.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text47}" />
                     </StackPanel>
                     <Grid Margin="0,0,10,5" ColumnDefinitions="auto,*,auto,*">
@@ -108,7 +108,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg3.svg" />
+                            Path="/Resource/Icon/GroupIcon/Animation.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text39}" />
                     </StackPanel>
                     <ToggleSwitch
@@ -152,7 +152,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg4.svg" />
+                            Path="/Resource/Icon/GroupIcon/Wallpaper.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text2}" />
                     </StackPanel>
                     <ToggleSwitch
@@ -165,10 +165,11 @@
                         IsEnabled="{Binding EnableBG}"
                         Text="{Binding Pic}"
                         Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
-                    <WrapPanel
+                    <StackPanel
                         Margin="0,0,10,5"
                         HorizontalAlignment="Right"
-                        IsEnabled="{Binding EnableBG}">
+                        IsEnabled="{Binding EnableBG}"
+                        Orientation="Horizontal">
                         <Button
                             Width="100"
                             Height="35"
@@ -192,10 +193,10 @@
                             Command="{Binding SetPic}"
                             Content="{setting:Localize SettingWindow.Tab2.Text61}"
                             DockPanel.Dock="Right" />
-                    </WrapPanel>
+                    </StackPanel>
                     <Grid
                         Margin="0,0,10,10"
-                        ColumnDefinitions="auto,*,auto,auto,auto,*,auto,auto"
+                        ColumnDefinitions="auto,*,auto,auto,*"
                         IsEnabled="{Binding EnableBG}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text4}" />
                         <Slider
@@ -227,12 +228,15 @@
                             Classes="top"
                             Command="{Binding SetPic}"
                             Content="{setting:Localize Text.Set}" />
-                        <TextBlock
-                            Grid.Column="4"
-                            Margin="10,0,5,0"
-                            Text="{setting:Localize SettingWindow.Tab2.Text5}" />
+
+                    </Grid>
+                    <Grid
+                        Margin="0,0,10,10"
+                        ColumnDefinitions="auto,*,auto,auto,*"
+                        IsEnabled="{Binding EnableBG}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text5}" />
                         <Slider
-                            Grid.Column="5"
+                            Grid.Column="1"
                             Height="40"
                             Margin="5,-10,5,0"
                             HorizontalAlignment="Stretch"
@@ -245,13 +249,13 @@
                             TickFrequency="1"
                             Value="{Binding PicTran}" />
                         <TextBlock
-                            Grid.Column="6"
+                            Grid.Column="2"
                             Width="40"
                             Margin="0,0,5,0"
                             DockPanel.Dock="Right"
                             Text="{Binding PicTran, StringFormat='{}{0}%', FallbackValue=100%}" />
                         <Button
-                            Grid.Column="7"
+                            Grid.Column="3"
                             Width="100"
                             Height="35"
                             Margin="-3"
@@ -313,7 +317,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg5.svg" />
+                            Path="/Resource/Icon/GroupIcon/Palette.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -361,7 +365,7 @@
                             OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     </StackPanel>
-                    <Grid ColumnDefinitions="auto,*,auto,auto,*,auto,*" IsEnabled="{Binding EnableRGB}">
+                    <Grid ColumnDefinitions="auto,*,auto,auto,*,auto" IsEnabled="{Binding EnableRGB}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                         <Slider
                             Grid.Column="1"
@@ -460,7 +464,7 @@
                     </Border>
                     <Grid
                         Margin="0,0,0,-10"
-                        ColumnDefinitions="auto,*,auto,auto,*,auto,*"
+                        ColumnDefinitions="auto,*,auto,auto,*,auto"
                         IsEnabled="{Binding HeadType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static head:HeadType.Head3D_B}}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text58}" />
                         <Slider
@@ -515,7 +519,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg36.svg" />
+                            Path="/Resource/Icon/GroupIcon/Card.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text64}" />
                     </StackPanel>
                     <WrapPanel Margin="0,0,0,-20">
@@ -537,6 +541,12 @@
                             IsChecked="{Binding CardLast}"
                             OffContent="{setting:Localize SettingWindow.Tab2.Text67}"
                             OnContent="{setting:Localize SettingWindow.Tab2.Text67}" />
+                        <ToggleSwitch
+                            Margin="0,0,10,10"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding CardBlock}"
+                            OffContent="{setting:Localize SettingWindow.Tab2.Text72}"
+                            OnContent="{setting:Localize SettingWindow.Tab2.Text72}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>

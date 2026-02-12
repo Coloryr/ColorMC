@@ -26,7 +26,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg7.svg" />
+                            Path="/Resource/Icon/GroupIcon/TrayArrowDown.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text23}" />
                     </StackPanel>
                     <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
@@ -65,7 +65,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg8.svg" />
+                            Path="/Resource/Icon/GroupIcon/Swap.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>
                     <Grid Margin="0,0,0,5" ColumnDefinitions="3*,1*">
@@ -128,7 +128,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg34.svg" />
+                            Path="/Resource/Icon/GroupIcon/Lan.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text25}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -179,7 +179,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg9.svg" />
+                            Path="/Resource/Icon/GroupIcon/Update.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text14}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -212,7 +212,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg10.svg" />
+                            Path="/Resource/Icon/GroupIcon/CloudSync.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text20}" />
                     </StackPanel>
                     <TextBlock Margin="5,0,0,5" Text="{Binding ServerInfo}" />
@@ -228,7 +228,7 @@
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,-2,-3,-2"
+                        Margin="-2,3,-3,-2"
                         HorizontalAlignment="Right"
                         Classes="top"
                         Command="{Binding GameCloudConnect}"

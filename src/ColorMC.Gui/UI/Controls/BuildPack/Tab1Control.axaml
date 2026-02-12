@@ -115,6 +115,10 @@
                     <WrapPanel>
                         <CheckBox
                             Margin="0,0,10,0"
+                            Content="{setting:Localize BuildPackWindow.Tab1.Text20}"
+                            IsChecked="{Binding Function}" />
+                        <CheckBox
+                            Margin="0,0,10,0"
                             Content="{setting:Localize BuildPackWindow.Tab1.Text17}"
                             IsChecked="{Binding PackLaunch}"
                             IsEnabled="{Binding CanPack}" />

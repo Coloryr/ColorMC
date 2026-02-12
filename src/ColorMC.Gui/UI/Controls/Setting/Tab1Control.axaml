@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Setting"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="800"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
@@ -14,7 +15,14 @@
         <StackPanel Margin="0,0,10,15">
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
-                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab1.Text14}" />
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GroupIcon/FolderEdit.svg" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab1.Text14}" />
+                    </StackPanel>
                     <StackPanel Margin="0,0,0,10">
                         <TextBox
                             Margin="0,0,0,5"
@@ -47,6 +55,18 @@
                             TextWrapping="Wrap" />
                     </StackPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize SettingWindow.Tab1.Text4}" />
+                </StackPanel>
+            </Border>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Path="/Resource/Icon/GroupIcon/Cogs.svg" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab1.Text42}" />
+                    </StackPanel>
                     <StackPanel Margin="0,0,0,10">
                         <TextBox
                             Margin="0,0,0,5"
@@ -156,7 +176,7 @@
                     </StackPanel>
                     <DockPanel Margin="0,5,0,0">
                         <Button
-                            Width="100"
+                            Width="150"
                             Height="35"
                             Margin="-2,-2,-3,-2"
                             Classes="top"
