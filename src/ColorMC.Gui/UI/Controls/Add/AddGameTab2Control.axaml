@@ -50,14 +50,7 @@
                             Text="{Binding ZipLocal}"
                             Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
                     </DockPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/AddMenu/item2.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                         <ComboBox
@@ -65,15 +58,8 @@
                             ItemsSource="{Binding PackTypeList}"
                             SelectedIndex="{Binding Type}" />
                     </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg3.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                         <ComboBox
                             Width="230"

@@ -22,7 +22,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg23.svg" />
+                            Path="/Resource/Icon/GroupIcon/Launch.svg" />
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
@@ -62,7 +62,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg23.svg" />
+                            Path="/Resource/Icon/GroupIcon/Adjust.svg" />
                         <TextBlock
                             Margin="0,0,10,0"
                             FontSize="{setting:Style FontTitle}"
@@ -99,7 +99,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg35.svg" />
+                            Path="/Resource/Icon/GroupIcon/Security.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text39}" />
                     </StackPanel>
                     <ToggleSwitch

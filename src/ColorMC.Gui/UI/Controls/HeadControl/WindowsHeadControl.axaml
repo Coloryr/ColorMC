@@ -61,11 +61,8 @@
             <Button
                 Width="40"
                 Height="35"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
+                Classes="head"
                 Command="{Binding BackClick}"
-                CornerRadius="0"
                 IsEnabled="{Binding HeadBackEnable}"
                 IsVisible="{Binding HeadBack}">
                 <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Back.svg" />

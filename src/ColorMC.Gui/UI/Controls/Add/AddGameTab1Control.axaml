@@ -27,7 +27,7 @@
                     IsEnabled="{Binding !IsLoad}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text69}" />
                 <StackPanel>
-                    <DockPanel Margin="0,0,0,10">
+                    <DockPanel Margin="0,0,10,10">
                         <ToggleSwitch
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -41,15 +41,7 @@
                             Text="{Binding Name}"
                             Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
                     </DockPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Name="test"
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg1.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize Text.GameVersion}" />
                     <Grid
                         Margin="0,0,0,10"
                         ColumnDefinitions="auto,*,auto,*,auto"
@@ -80,14 +72,7 @@
                             Content="{setting:Localize Text.ReloadVersion}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
                     </Grid>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg2.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     <Grid
                         Margin="0,0,0,10"
                         ColumnDefinitions="auto,*,auto,auto,*,auto"
@@ -159,14 +144,7 @@
                             Content="{setting:Localize Button.Select}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text127}" />
                     </Panel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg3.svg" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                     <WrapPanel>
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                         <ComboBox

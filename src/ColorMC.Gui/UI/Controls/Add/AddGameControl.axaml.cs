@@ -121,10 +121,6 @@ public partial class AddGameControl : BaseUserControl
         {
             await MainMenuOut.Start(MainMenuGrid, token);
 
-            // 动画结束后，如果不希望它挡住鼠标事件（虽然我们有 Binding Main），
-            // 可以在这里设置 IsVisible = false。
-            // 但为了保持“Zoom Back”的流畅性，保持 Visible 但 Opacity 0 也是可以的。
-            // 如果需要彻底隐藏：
             if (!token.IsCancellationRequested)
             {
                 MainMenuGrid.IsVisible = false;

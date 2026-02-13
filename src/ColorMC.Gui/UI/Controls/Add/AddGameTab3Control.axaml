@@ -64,17 +64,7 @@
                             ToolTip.Tip="{setting:Localize ToolTip.Text88}" />
                     </StackPanel>
                 </panel:WrapPanelWithStretch>
-                <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                    <svg:SvgControl
-                        Width="24"
-                        Height="24"
-                        Margin="0,0,5,0"
-                        Path="/Resource/Icon/GameEdit/svg3.svg" />
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        FontSize="{setting:Style FontTitle}"
-                        Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                </StackPanel>
+                <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
                 <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                     <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
                     <ComboBox
