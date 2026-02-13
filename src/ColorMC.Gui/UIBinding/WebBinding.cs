@@ -21,6 +21,7 @@ using ColorMC.Core.Objs.Java;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.MinecraftAPI;
 using ColorMC.Core.Objs.Modrinth;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.Objs;
@@ -1719,5 +1720,37 @@ public static class WebBinding
         }
 
         return null;
+    }
+
+    /// <summary>
+    /// 下载临时压缩包
+    /// </summary>
+    /// <param name="url"></param>
+    /// <returns></returns>
+    public static async Task<string?> DownloadTempZip(string url)
+    {
+        var name = Path.GetFileName(url);
+        if (!name.EndsWith(Names.NameZipExt) && !name.EndsWith(Names.NameMrpackExt))
+        {
+            name = FunctionUtils.NewUUID();
+        }
+
+        var file = Path.Combine(DownloadManager.DownloadDir, name);
+
+        var res = await DownloadManager.StartAsync([new FileItemObj()
+        {
+            Name = name,
+            Local = file,
+            Url = url
+        }]);
+
+        if (res)
+        {
+            return file;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

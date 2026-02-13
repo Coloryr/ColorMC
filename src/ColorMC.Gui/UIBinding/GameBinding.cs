@@ -1335,68 +1335,40 @@ public static class GameBinding
     /// </summary>
     /// <param name="local">文件位置</param>
     /// <returns>压缩包类型</returns>
-    public static async Task<PackType?> CheckTypeAsync(string local)
+    public static async Task<PackType?> CheckTypeAsync(string local, ZipArchive zip)
     {
-        Stream? stream = null;
-        try
+        if (local.EndsWith(Names.NameMrpackExt))
         {
-            if (local.StartsWith("http"))
-            {
-                using var res = await CoreHttpClient.GetAsync(local);
-                using var stream1 = await res.Content.ReadAsStreamAsync();
-                var memoryStream = new MemoryStream();
-                await stream1.CopyToAsync(memoryStream);
-                stream = memoryStream;
-            }
-            else
-            {
-                stream = PathHelper.OpenRead(local);
-            }
-
-            if (stream == null)
-            {
-                return null;
-            }
-
-            if (local.EndsWith(Names.NameMrpackExt))
-            {
-                return PackType.Modrinth;
-            }
-            if (local.EndsWith(Names.NameZipExt))
-            {
-                using var zFile = new ZipArchive(stream);
-                foreach (var item in zFile.Entries)
-                {
-                    if (item.Name == Names.NameGameFile)
-                    {
-                        return PackType.ColorMC;
-                    }
-                    else if (item.Name == Names.NameHMCLFile)
-                    {
-                        return PackType.HMCL;
-                    }
-                    else if (item.Name == Names.NameMMCCfgFile)
-                    {
-                        return PackType.MMC;
-                    }
-                    else if (item.Name == Names.NameManifestFile)
-                    {
-                        return PackType.CurseForge;
-                    }
-                }
-                foreach (var item in zFile.Entries)
-                {
-                    if (item.FullName.StartsWith(".minecraft/"))
-                    {
-                        return PackType.ZipPack;
-                    }
-                }
-            }
+            return PackType.Modrinth;
         }
-        finally
+        if (local.EndsWith(Names.NameZipExt))
         {
-            stream?.Close();
-            stream?.Dispose();
+            foreach (var item in zip.Entries)
+            {
+                if (item.Name == Names.NameGameFile)
+                {
+                    return PackType.ColorMC;
+                }
+                else if (item.Name == Names.NameHMCLFile)
+                {
+                    return PackType.HMCL;
+                }
+                else if (item.Name == Names.NameMMCCfgFile)
+                {
+                    return PackType.MMC;
+                }
+                else if (item.Name == Names.NameManifestFile)
+                {
+                    return PackType.CurseForge;
+                }
+            }
+            foreach (var item in zip.Entries)
+            {
+                if (item.FullName.StartsWith(".minecraft/"))
+                {
+                    return PackType.ZipPack;
+                }
+            }
         }
 
         return null;

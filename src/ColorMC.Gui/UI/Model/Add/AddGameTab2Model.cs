@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -21,6 +23,17 @@ public partial class AddGameModel
     public string[] PackTypeList { get; init; } = LangUtils.GetPackType();
 
     /// <summary>
+    /// 压缩包文件列表
+    /// </summary>
+    [ObservableProperty]
+    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _zipFiles;
+
+    /// <summary>
+    /// 文件列表
+    /// </summary>
+    private ZipPage? _zipFileModel;
+
+    /// <summary>
     /// 压缩包位置
     /// </summary>
     [ObservableProperty]
@@ -38,10 +51,29 @@ public partial class AddGameModel
     /// <param name="value"></param>
     async partial void OnZipLocalChanged(string? value)
     {
-        if (value != null && Type == null)
+        if (value != null)
         {
+            if (value.StartsWith("http"))
+            {
+                var res1 = await Window.ShowWait(LangUtils.Get("AddGameWindow.Tab2.Text16"));
+                if (res1 is true)
+                {
+                    var file = await WebBinding.DownloadTempZip(value);
+                    if (file != null)
+                    {
+                        ZipLocal = file;
+                    }
+                }
+                return;
+            }
+
             //测试获取压缩包类型
             var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text11"));
+            _zipFileModel = await Task.Run(() =>
+            {
+                return new ZipPage(value);
+            });
+
             var res = await GameBinding.CheckTypeAsync(value);
             Window.CloseDialog(dialog);
             if (res == null)
