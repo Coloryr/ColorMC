@@ -63,8 +63,9 @@ public partial class AddGameModel
             if (list.Count > 0)
             {
                 res = await Window.ShowChoice(string.Format(LangUtils.Get("AddGameWindow.Tab3.Text7"), list.Count));
-                if (!res)
+                if (res)
                 {
+                    Window.CloseDialog(dialog);
                     await ImportAsync(list);
                     return;
                 }

@@ -26,7 +26,7 @@ public partial class AddGameModel
     /// 压缩包文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _zipFiles;
+    private HierarchicalTreeDataGridSource<ZipTreeNodeModel>? _zipFiles;
 
     /// <summary>
     /// 文件列表
@@ -74,7 +74,9 @@ public partial class AddGameModel
                 return new ZipPage(value);
             });
 
-            var res = await GameBinding.CheckTypeAsync(value);
+            ZipFiles = _zipFileModel.Source;
+
+            var res = await GameBinding.CheckTypeAsync(value, _zipFileModel.Zip);
             Window.CloseDialog(dialog);
             if (res == null)
             {

@@ -71,4 +71,20 @@
     <DataTemplate x:Key="ModCell8" DataType="vm:ModNodeModel">
         <TextBlock Text="{Binding Text, Mode=TwoWay}" />
     </DataTemplate>
+    <DataTemplate x:Key="ZipNameCell1" DataType="vm:ZipTreeNodeModel">
+        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+    </DataTemplate>
+    <DataTemplate x:Key="ZipNameCell" DataType="vm:ZipTreeNodeModel">
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Width="30" HorizontalAlignment="Center">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{x:Static icon:IconConverter.FileIconConverter}">
+                        <Binding Path="IsDirectory" />
+                        <Binding Path="IsExpanded" />
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Text="{Binding Name}" />
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

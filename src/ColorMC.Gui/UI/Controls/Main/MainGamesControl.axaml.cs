@@ -39,16 +39,16 @@ public partial class MainGamesControl : UserControl
 
             if (pos.X > targetBorder.Bounds.Width / 2)
             {
-                vm?.PutPla(targetItem, false);
+                vm?.OneGroup.PutPla(targetItem, false);
             }
             else
             {
-                vm?.PutPla(targetItem, true);
+                vm?.OneGroup.PutPla(targetItem, true);
             }
         }
         else
         {
-            vm?.PutPla();
+            vm?.OneGroup.PutPla();
         }
     }
 
@@ -72,16 +72,16 @@ public partial class MainGamesControl : UserControl
 
             if (pos.X > targetBorder.Bounds.Width / 2)
             {
-                vm?.PutDrap(targetItem, false);
+                vm?.OneGroup.PutDrap(targetItem, false);
             }
             else
             {
-                vm?.PutDrap(targetItem, true);
+                vm?.OneGroup.PutDrap(targetItem, true);
             }
         }
         else
         {
-            vm?.PutDrap();
+            vm?.OneGroup.PutDrap();
         }
     }
 }

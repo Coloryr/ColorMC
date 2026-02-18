@@ -4,6 +4,7 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -15,79 +16,69 @@ public class ZipPage
     /// <summary>
     /// 根路径
     /// </summary>
-    private readonly FileTreeNodeModel _root;
+    private readonly ZipTreeNodeModel _root;
 
     public PackType Type;
+
+    public ZipArchive Zip { get; private set; }
 
     /// <summary>
     /// 显示内容
     /// </summary>
-    public HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; init; }
+    public HierarchicalTreeDataGridSource<ZipTreeNodeModel> Source { get; init; }
 
-    public ZipPage(string obj, bool check, List<string>? unselect = null)
+    public ZipPage(string local)
     {
-        _root = new FileTreeNodeModel(null, obj, true, check, true);
-        Source = new HierarchicalTreeDataGridSource<FileTreeNodeModel>(_root)
+        Zip = ZipArchive.Open(local);
+
+        _root = new ZipTreeNodeModel(Zip);
+        Source = new HierarchicalTreeDataGridSource<ZipTreeNodeModel>(_root)
         {
             Columns =
             {
-                new TemplateColumn<FileTreeNodeModel>(
+                new TemplateColumn<ZipTreeNodeModel>(
                     null,
-                    cellTemplateResourceKey: "FileNameCell1",
-                    options: new TemplateColumnOptions<FileTreeNodeModel>
+                    cellTemplateResourceKey: "ZipNameCell1",
+                    options: new TemplateColumnOptions<ZipTreeNodeModel>
                     {
                         CanUserResizeColumn = false
                     }),
-                new HierarchicalExpanderColumn<FileTreeNodeModel>(
-                    new TemplateColumn<FileTreeNodeModel>(
+                new HierarchicalExpanderColumn<ZipTreeNodeModel>(
+                    new TemplateColumn<ZipTreeNodeModel>(
                         LangUtils.Get("Text.FileName"),
-                        "FileNameCell",
+                        "ZipNameCell",
                         null,
                         new GridLength(1, GridUnitType.Star),
-                        new TemplateColumnOptions<FileTreeNodeModel>
+                        new TemplateColumnOptions<ZipTreeNodeModel>
                         {
-                            CompareAscending = FileTreeNodeModel.SortAscending(x => x.Name),
-                            CompareDescending = FileTreeNodeModel.SortDescending(x => x.Name),
+                            CompareAscending = ZipTreeNodeModel.SortAscending(x => x.Name),
+                            CompareDescending = ZipTreeNodeModel.SortDescending(x => x.Name),
                             IsTextSearchEnabled = true,
                             TextSearchValueSelector = x => x.Name
                         }),
                     x => x.Children,
                     x => x.HasChildren,
                     x => x.IsExpanded),
-                new TextColumn<FileTreeNodeModel, long?>(
+                new TextColumn<ZipTreeNodeModel, long?>(
                     LangUtils.Get("Text.Size"),
                     x => x.Size,
-                    options: new TextColumnOptions<FileTreeNodeModel>
+                    options: new TextColumnOptions<ZipTreeNodeModel>
                     {
-                        CompareAscending = FileTreeNodeModel.SortAscending(x => x.Size),
-                        CompareDescending = FileTreeNodeModel.SortDescending(x => x.Size),
+                        CompareAscending = ZipTreeNodeModel.SortAscending(x => x.Size),
+                        CompareDescending = ZipTreeNodeModel.SortDescending(x => x.Size),
                     }),
-                new TextColumn<FileTreeNodeModel, string?>(
-                    LangUtils.Get("GameExportWindow.Text3"),
-                    x => x.Modified,
-                    options: new TextColumnOptions<FileTreeNodeModel>
+                new TextColumn<ZipTreeNodeModel, string?>(
+                    LangUtils.Get("AddGameWindow.Tab2.Text17"),
+                    x => x.CreatedTime,
+                    options: new TextColumnOptions<ZipTreeNodeModel>
                     {
-                        CompareAscending = FileTreeNodeModel.SortAscending(x => x.Modified),
-                        CompareDescending = FileTreeNodeModel.SortDescending(x => x.Modified),
+                        CompareAscending = ZipTreeNodeModel.SortAscending(x => x.CreatedTime),
+                        CompareDescending = ZipTreeNodeModel.SortDescending(x => x.CreatedTime),
                     }),
             }
         };
 
         Source.RowSelection!.SingleSelect = false;
-
-        if (unselect != null)
-        {
-            foreach (var item in unselect)
-            {
-                foreach (var item1 in _root.Children!)
-                {
-                    if (item1.Name == item || item1.Path == item)
-                    {
-                        item1.IsChecked = false;
-                    }
-                }
-            }
-        }
     }
 
     /// <summary>

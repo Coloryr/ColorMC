@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Input;
-using Avalonia.Threading;
 using ColorMC.Core;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
@@ -76,55 +74,33 @@ public partial class GameGroupModel : ControlModel, IDragTop
         }
         _addItem = new(Window, Key == Names.NameDefaultGroup ? null : Key);
 
-        Task.Run(() =>
+        bool res = false;
+        int index = 1;
+        if (Items.Count == 5)
         {
-            bool res = false;
-            int index = 1;
-            if (Items.Count == 5)
+            var random = new Random();
+            if (random.Next(2000) == 666)
             {
-                var random = new Random();
-                if (random.Next(2000) == 666)
-                {
-                    res = true;
-                }
+                res = true;
             }
+        }
 
-            bool fast = Items.Count >= 100;
-            if (fast)
+        foreach (var item in Items.Values)
+        {
+            GameList.Add(item);
+            if (res)
             {
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    foreach (var item in Items.Values)
-                    {
-                        GameList.Add(item);
-                        if (res)
-                        {
-                            item.Index = index++;
-                        }
-                    }
-                });
+                item.Index = index++;
             }
-            else
-            {
-                foreach (var item in Items.Values)
-                {
-                    Thread.Sleep(50);
-                    Dispatcher.UIThread.Invoke(() =>
-                    {
-                        GameList.Add(item);
-                        if (res)
-                        {
-                            item.Index = index++;
-                        }
-                    });
-                }
-            }
+        }
 
-            Dispatcher.UIThread.Post(() =>
-            {
-                GameList.Add(_addItem);
-            });
-        });
+        GameList.Add(_addItem);
+    }
+
+    public GameGroupModel(WindowModel model, IMutTop top) : base(model)
+    {
+        Top = top;
+        _addItem = new(Window, Key == Names.NameDefaultGroup ? null : Key);
     }
 
     /// <summary>
@@ -257,22 +233,11 @@ public partial class GameGroupModel : ControlModel, IDragTop
             res.Adds.Add(model);
         }
 
-        Task.Run(() =>
+        foreach (var item in ins)
         {
-            foreach (var item in ins)
-            {
-                Thread.Sleep(50);
-                Dispatcher.UIThread.Invoke(() =>
-                {
-                    GameList.Add(Items[item.UUID]);
-                });
-            }
-
-            Dispatcher.UIThread.Post(() =>
-            {
-                GameList.Add(_addItem);
-            });
-        });
+            GameList.Add(Items[item.UUID]);
+        }
+        GameList.Add(_addItem);
 
         return res;
     }
@@ -460,5 +425,83 @@ public partial class GameGroupModel : ControlModel, IDragTop
         {
             item.Drag = this;
         }
+    }
+
+    public void Clear()
+    {
+        Items.Clear();
+        GameList.Clear();
+    }
+
+    public void AddRange(Dictionary<Guid, GameItemModel> list)
+    {
+        foreach (var item in list)
+        {
+            Items.Add(item.Key, item.Value);
+            GameList.Add(item.Value);
+        }
+    }
+
+    public void SetAdd()
+    {
+        GameList.Add(_addItem);
+    }
+
+    public void SetItem(SetGamesRes games)
+    {
+        Remove(games.Removes);
+        Add(games.Adds);
+    }
+
+    public void Remove(List<GameItemModel> list)
+    {
+        foreach (var item in list)
+        {
+            Items.Remove(item.UUID);
+            GameList.Remove(item);
+        }
+    }
+
+    public void Remove(Dictionary<Guid, GameItemModel> list)
+    {
+        foreach (var item in list)
+        {
+            Items.Remove(item.Key);
+            GameList.Remove(item.Value);
+        }
+    }
+
+    public void Add(List<GameItemModel> list)
+    {
+        if (GameList.Count == 0 || GameList.Count - 1 < 0)
+        {
+            return;
+        }
+        GameList.RemoveAt(GameList.Count - 1);
+
+        foreach (var item in list)
+        {
+            Items.Add(item.UUID, item);
+            GameList.Add(item);
+        }
+
+        GameList.Add(_addItem);
+    }
+
+    public void Add(Dictionary<Guid, GameItemModel> list)
+    {
+        if (GameList.Count == 0 || GameList.Count - 1 < 0)
+        {
+            return;
+        }
+        GameList.RemoveAt(GameList.Count - 1);
+
+        foreach (var item in list)
+        {
+            Items.Add(item.Key, item.Value);
+            GameList.Add(item.Value);
+        }
+
+        GameList.Add(_addItem);
     }
 }

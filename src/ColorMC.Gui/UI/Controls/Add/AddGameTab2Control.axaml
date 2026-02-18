@@ -12,65 +12,62 @@
     d:DesignWidth="800"
     x:DataType="model:AddGameModel"
     mc:Ignorable="d">
-    <ScrollViewer VerticalScrollBarVisibility="Visible">
-        <Border Margin="20,10,20,20" Classes="t2">
-            <DockPanel Margin="15,15,5,15">
-                <Button
-                    Width="100"
-                    Height="35"
-                    Margin="-2,-2,7,-2"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Classes="top"
-                    Command="{Binding AddPackGame}"
-                    Content="{setting:Localize AddGameWindow.Text1}"
-                    DockPanel.Dock="Bottom"
-                    ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
-                <StackPanel>
+    <Border Margin="20,10,20,20" Classes="t2">
+        <DockPanel Margin="15,15,5,15">
+            <Button
+                Width="100"
+                Height="35"
+                Margin="-2,-2,7,-2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Classes="top"
+                Command="{Binding AddPackGame}"
+                Content="{setting:Localize AddGameWindow.Text1}"
+                DockPanel.Dock="Bottom"
+                ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
+            <StackPanel DockPanel.Dock="Top">
+                <TextBox
+                    Margin="0,0,10,10"
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding Name}"
+                    Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                <DockPanel Margin="0,0,10,10">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Margin="-2,-2,-3,-2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Classes="top"
+                        Command="{Binding SelectPack}"
+                        Content="{setting:Localize AddGameWindow.Tab2.Text3}"
+                        DockPanel.Dock="Right"
+                        ToolTip.Tip="{setting:Localize ToolTip.Text85}" />
                     <TextBox
-                        Margin="0,0,10,10"
+                        Margin="0,0,10,0"
                         HorizontalAlignment="Stretch"
-                        Text="{Binding Name}"
-                        Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
-                    <DockPanel Margin="0,0,10,10">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-2,-2,-3,-2"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding SelectPack}"
-                            Content="{setting:Localize AddGameWindow.Tab2.Text3}"
-                            DockPanel.Dock="Right"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text85}" />
-                        <TextBox
-                            Margin="0,0,10,0"
+                        Text="{Binding ZipLocal}"
+                        Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
+                </DockPanel>
+                <Grid ColumnDefinitions="*,*">
+                    <DockPanel Margin="0,0,10,0">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
+                        <ComboBox
                             HorizontalAlignment="Stretch"
-                            Text="{Binding ZipLocal}"
-                            Watermark="{setting:Localize AddGameWindow.Tab2.Text1}" />
+                            ItemsSource="{Binding PackTypeList}"
+                            SelectedIndex="{Binding Type}" />
                     </DockPanel>
-                    <Grid ColumnDefinitions="*,*">
-                        <DockPanel Margin="0,0,10,0">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab2.Text2}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding PackTypeList}"
-                                SelectedIndex="{Binding Type}" />
-                        </DockPanel>
-                        <DockPanel Grid.Column="1" Margin="0,0,10,0">
-                            <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
-                            <ComboBox
-                                HorizontalAlignment="Stretch"
-                                IsEditable="True"
-                                ItemsSource="{Binding GroupList}"
-                                Text="{Binding Group}" />
-                        </DockPanel>
-                    </Grid>
-                    <TreeDataGrid Margin="0,0,10,0" Source="{Binding ZipFiles}" />
-
-                </StackPanel>
-            </DockPanel>
-        </Border>
-    </ScrollViewer>
+                    <DockPanel Grid.Column="1" Margin="0,0,10,0">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize AddGameWindow.Tab1.Text5}" />
+                        <ComboBox
+                            HorizontalAlignment="Stretch"
+                            IsEditable="True"
+                            ItemsSource="{Binding GroupList}"
+                            Text="{Binding Group}" />
+                    </DockPanel>
+                </Grid>
+            </StackPanel>
+            <TreeDataGrid Margin="0,10,10,10" Source="{Binding ZipFiles}" />
+        </DockPanel>
+    </Border>
 </UserControl>

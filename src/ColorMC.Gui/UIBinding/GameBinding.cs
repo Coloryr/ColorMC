@@ -2,7 +2,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -40,6 +39,7 @@ using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
+using SharpCompress.Archives.Zip;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
@@ -1345,26 +1345,26 @@ public static class GameBinding
         {
             foreach (var item in zip.Entries)
             {
-                if (item.Name == Names.NameGameFile)
+                if (item.Key == Names.NameGameFile)
                 {
                     return PackType.ColorMC;
                 }
-                else if (item.Name == Names.NameHMCLFile)
+                else if (item.Key == Names.NameHMCLFile)
                 {
                     return PackType.HMCL;
                 }
-                else if (item.Name == Names.NameMMCCfgFile)
+                else if (item.Key == Names.NameMMCCfgFile)
                 {
                     return PackType.MMC;
                 }
-                else if (item.Name == Names.NameManifestFile)
+                else if (item.Key == Names.NameManifestFile)
                 {
                     return PackType.CurseForge;
                 }
             }
             foreach (var item in zip.Entries)
             {
-                if (item.FullName.StartsWith(".minecraft/"))
+                if (item.Key?.StartsWith(".minecraft/") == true)
                 {
                     return PackType.ZipPack;
                 }
@@ -1384,7 +1384,7 @@ public static class GameBinding
     public static async Task<bool> UnZipCloudConfigAsync(GameSettingObj obj, CloudDataObj data, string local)
     {
         data.Config.Clear();
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             try
             {
@@ -1393,8 +1393,9 @@ public static class GameBinding
                 {
                     return false;
                 }
-                using var s = new ZipArchive(stream);
-                s.ExtractToDirectory(obj.GetBasePath(), true);
+
+                await new ZipProcess().UnzipAsync(obj.GetBasePath(), local, stream);
+
                 return true;
             }
             catch (Exception e)

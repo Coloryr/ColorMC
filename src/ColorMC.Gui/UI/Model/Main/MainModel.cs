@@ -198,6 +198,8 @@ public partial class MainModel : ControlModel, IMutTop
     /// </summary>
     public void Load()
     {
+        OneGroup ??= new GameGroupModel(Window, this);
+
         LoadMotd();
         LoadNews();
         LoadMusic();

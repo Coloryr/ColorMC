@@ -59,11 +59,11 @@ public partial class FileTreeNodeModel : ObservableObject
     /// <summary>
     /// 父文件夹
     /// </summary>
-    private readonly FileTreeNodeModel _par;
+    private readonly FileTreeNodeModel _parent;
 
     public FileTreeNodeModel(FileTreeNodeModel? par, string path, bool isDirectory, bool check = true, bool isRoot = false)
     {
-        _par = par ?? this;
+        _parent = par ?? this;
         _path = System.IO.Path.GetFullPath(path + (isDirectory ? "/" : ""));
         _name = isRoot ? path : System.IO.Path.GetFileName(path);
         _isExpanded = isRoot;
@@ -92,7 +92,7 @@ public partial class FileTreeNodeModel : ObservableObject
             {
                 item.IsChecked = true;
             }
-            _par.IsAllCheck();
+            _parent.IsAllCheck();
         }
         else if (IsChecked == false)
         {

@@ -22,16 +22,20 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// <summary>
 /// 主界面
 /// </summary>
-public partial class MainModel : IDragTop
+public partial class MainModel
 {
     /// <summary>
     /// 游戏实例分组列表
     /// </summary>
     public ObservableCollection<GameGroupModel> GameGroups { get; init; } = [];
     /// <summary>
-    /// 游戏实例列表
+    /// 游戏实例列表，带有添加游戏实例
     /// </summary>
-    public ObservableCollection<GameItemModel> Games { get; init; } = [];
+    public GameGroupModel OneGroup { get; private set; }
+    /// <summary>
+    /// 游戏实例列表，不带有添加游戏实例
+    /// </summary>
+    public ObservableCollection<GameItemModel> GameList { get; init; } = [];
     /// <summary>
     /// 启动项目列表
     /// </summary>
@@ -109,20 +113,7 @@ public partial class MainModel : IDragTop
     {
         OnPropertyChanged(SwitchView);
 
-        if (value == ItemsGridType.Grid)
-        {
-            foreach (var item in Games)
-            {
-                item.Drag = this;
-            }
-        }
-        else if (value == ItemsGridType.GridInfo)
-        {
-            foreach (var item in GameGroups)
-            {
-                item.SetDrag();
-            }
-        }
+        GroupSetGrid();
 
         if (_isLoad)
         {
@@ -394,6 +385,7 @@ public partial class MainModel : IDragTop
         if (config.LockGame)
         {
             GameGroups.Clear();
+            OneGroup.Clear();
             IsFirst = true;
             var game = InstancesPath.GetGame(config.GameName);
             if (game == null)
@@ -423,19 +415,19 @@ public partial class MainModel : IDragTop
             {
                 //第一次加载项目
                 IsFirst = false;
-                GameGroupModel? DefaultGroup = null;
+                GameGroupModel? defaultGroup = null;
 
-                Games.Clear();
+                GameList.Clear();
                 foreach (var item in list)
                 {
                     if (item.Key == " ")
                     {
-                        DefaultGroup = new(Window, this, " ", LangUtils.Get("MainWindow.Text68"), item.Value);
+                        defaultGroup = new(Window, this, " ", LangUtils.Get("MainWindow.Text68"), item.Value);
                         if (list.Count > 0)
                         {
-                            DefaultGroup.Expander = false;
+                            defaultGroup.Expander = false;
                         }
-                        last ??= DefaultGroup.Find(uuid);
+                        last ??= defaultGroup.Find(uuid);
                     }
                     else
                     {
@@ -449,14 +441,16 @@ public partial class MainModel : IDragTop
                     }
                 }
 
-                if (DefaultGroup != null)
+                if (defaultGroup != null)
                 {
-                    GameGroups.Add(DefaultGroup);
+                    GameGroups.Add(defaultGroup);
                 }
                 foreach (var item1 in GameGroups)
                 {
-                    Games.AddRange(item1.Items.Values);
+                    OneGroup.AddRange(item1.Items);
+                    GameList.AddRange(item1.Items.Values);
                 }
+                OneGroup.SetAdd();
                 Select(last);
             }
             else
@@ -471,13 +465,14 @@ public partial class MainModel : IDragTop
                         var res = item.SetItems(value);
                         if (res != null)
                         {
+                            OneGroup.SetItem(res);
                             foreach (var item1 in res.Removes)
                             {
-                                Games.Remove(item1);
+                                GameList.Remove(item1);
                             }
                             foreach (var item1 in res.Adds)
                             {
-                                Games.Add(item1);
+                                GameList.Add(item1);
                             }
                         }
                         //删除已处理的分组
@@ -487,9 +482,10 @@ public partial class MainModel : IDragTop
                     {
                         //删除分组
                         GameGroups.Remove(item);
+                        OneGroup.Remove(item.Items);
                         foreach (var item1 in item.Items.Values)
                         {
-                            Games.Remove(item1);
+                            GameList.Remove(item1);
                         }
                     }
                 }
@@ -503,9 +499,10 @@ public partial class MainModel : IDragTop
                         group.Expander = false;
                     }
                     last ??= group.Find(uuid);
+                    OneGroup.Add(group.Items);
                     foreach (var item1 in group.Items.Values)
                     {
-                        Games.Add(item1);
+                        GameList.Add(item1);
                     }
                 }
 
@@ -537,6 +534,7 @@ public partial class MainModel : IDragTop
             }
         }
 
+        GroupSetGrid();
         OnPropertyChanged(SwitchView);
     }
 
@@ -753,85 +751,18 @@ public partial class MainModel : IDragTop
         GameBinding.ExportCmd(obj, Window, CancellationToken.None);
     }
 
-    public void Drag(GameItemModel item)
+    private void GroupSetGrid()
     {
-        _dragItem = item;
-    }
-
-    public void PutPla()
-    {
-        if (_dragItem == null)
+        if (GridType == ItemsGridType.Grid)
         {
-            return;
+            OneGroup.SetDrag();
         }
-
-        int index1 = Games.IndexOf(_dragItem);
-        if (index1 != Games.Count - 1)
+        else if (GridType == ItemsGridType.GridInfo)
         {
-            Games.Move(index1, Games.Count - 1);
-        }
-    }
-
-    public void PutPla(GameItemModel target, bool isleft)
-    {
-        if (_dragItem == null)
-        {
-            return;
-        }
-
-        int index = Games.IndexOf(target);
-        int index1 = Games.IndexOf(_dragItem);
-        if (isleft)
-        {
-            if (index < 0)
+            foreach (var item in GameGroups)
             {
-                index = 0;
-            }
-            if (index1 == -1 || index1 != index - 1)
-            {
-                Games.Move(index1, index);
+                item.SetDrag();
             }
         }
-        else
-        {
-            if (index1 == -1 || index1 != index + 1)
-            {
-                Games.Move(index1, index);
-            }
-        }
-    }
-
-    public void PutDrap()
-    {
-        if (_dragItem == null)
-        {
-            return;
-        }
-
-        if (Games.Count > 0)
-        {
-            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(Games.Last().Obj) + 1);
-        }
-
-        _dragItem = null;
-    }
-
-    public void PutDrap(GameItemModel target, bool isleft)
-    {
-        if (_dragItem == null)
-        {
-            return;
-        }
-
-        if (isleft)
-        {
-            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) - 1);
-        }
-        else
-        {
-            GameManager.SetOrder(_dragItem.Obj, GameManager.GetOrder(target.Obj) + 1);
-        }
-
-        _dragItem = null;
     }
 }
