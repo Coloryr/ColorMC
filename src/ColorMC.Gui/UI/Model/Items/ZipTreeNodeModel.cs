@@ -42,11 +42,11 @@ public partial class ZipTreeNodeModel : ObservableObject
     private long? _size;
 
     /// <summary>
-    /// 创建时间
+    /// 占用大小
     /// </summary>
     [ObservableProperty]
-    private string? _createdTime;
-
+    private long? _compressedSize;
+    
     /// <summary>
     /// 是否有子项目
     /// </summary>
@@ -123,7 +123,6 @@ public partial class ZipTreeNodeModel : ObservableObject
         if (!IsDirectory)
         {
             Size = entry.Size;
-            _createdTime = entry.CreatedTime?.ToString("yyyy/MM/dd HH:mm:ss") ?? "未知";
             HasChildren = false;
         }
         else
@@ -261,18 +260,18 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 获取未选中的文件列表
     /// </summary>
-    public List<string> GetUnSelectItems()
+    public List<ZipArchiveEntry> GetUnSelectItems()
     {
-        var list = new List<string>();
+        var list = new List<ZipArchiveEntry>();
 
         foreach (var item in Children)
         {
             list.AddRange(item.GetUnSelectItems());
         }
 
-        if (!IsChecked && !IsDirectory)
+        if (!IsChecked && !IsDirectory && Entry !=null)
         {
-            list.Add(Path);
+            list.Add(Entry);
         }
 
         return list;
@@ -573,7 +572,7 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 是否全选
     /// </summary>
-    public void IsAllCheck()
+    private void IsAllCheck()
     {
         if (Children == null)
         {

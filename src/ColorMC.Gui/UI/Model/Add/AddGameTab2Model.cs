@@ -43,7 +43,7 @@ public partial class AddGameModel
     /// 压缩包类型
     /// </summary>
     [ObservableProperty]
-    private PackType? _type = null;
+    private PackType? _type;
 
     /// <summary>
     /// 压缩包路径修改
@@ -56,24 +56,23 @@ public partial class AddGameModel
             if (value.StartsWith("http"))
             {
                 var res1 = await Window.ShowWait(LangUtils.Get("AddGameWindow.Tab2.Text16"));
-                if (res1 is true)
+                if (res1 is not true)
                 {
-                    var file = await WebBinding.DownloadTempZip(value);
-                    if (file != null)
-                    {
-                        ZipLocal = file;
-                    }
+                    return;
+                }
+
+                var file = await WebBinding.DownloadTempZip(value);
+                if (file != null)
+                {
+                    ZipLocal = file;
                 }
                 return;
             }
 
             //测试获取压缩包类型
             var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text11"));
-            _zipFileModel = await Task.Run(() =>
-            {
-                return new ZipPage(value);
-            });
-
+            _zipFileModel?.Dispose();
+            _zipFileModel = await Task.Run(() => new ZipPage(value));
             ZipFiles = _zipFileModel.Source;
 
             var res = await GameBinding.CheckTypeAsync(value, _zipFileModel.Zip);
@@ -130,7 +129,7 @@ public partial class AddGameModel
     /// <param name="type">压缩包类型</param>
     private async void AddPack(PackType type)
     {
-        if (string.IsNullOrWhiteSpace(ZipLocal))
+        if (string.IsNullOrWhiteSpace(ZipLocal) || _zipFileModel == null)
         {
             Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text13"));
             return;
@@ -138,7 +137,8 @@ public partial class AddGameModel
         var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
         var pack = new TopModPackGui(dialog);
-        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, type, new OverGameGui(Window), pack);
+        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, _zipFileModel.Zip, type, 
+            _zipFileModel.GetUnSelectItems(), new OverGameGui(Window), pack);
         pack.Stop();
         Window.CloseDialog(dialog);
         if (!res.State)

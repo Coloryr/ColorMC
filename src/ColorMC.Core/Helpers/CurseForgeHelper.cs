@@ -482,7 +482,7 @@ public static class CurseForgeHelper
         packgui?.SetState(AddState.Unzip);
         packgui?.SetNow(2, 5);
 
-        if (!await work.Unzip())
+        if (!await work.Unzip(null))
         {
             return false;
         }

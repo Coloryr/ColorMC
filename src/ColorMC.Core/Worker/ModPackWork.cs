@@ -18,11 +18,11 @@ public abstract class ModPackWork
 
     protected CancellationToken Token;
 
-    public ModPackWork(Stream st, IOverGameGui? gui, IAddGui? packgui, CancellationToken token)
+    public ModPackWork(ZipArchive zip, IOverGameGui? gui, IAddGui? packgui, CancellationToken token)
     {
         Gui = gui;
         Packgui = packgui;
-        Zip = ZipArchive.Open(st);
+        Zip = zip;
         Token = token;
     }
 

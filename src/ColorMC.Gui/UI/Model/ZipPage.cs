@@ -67,13 +67,13 @@ public class ZipPage
                         CompareAscending = ZipTreeNodeModel.SortAscending(x => x.Size),
                         CompareDescending = ZipTreeNodeModel.SortDescending(x => x.Size),
                     }),
-                new TextColumn<ZipTreeNodeModel, string?>(
+                new TextColumn<ZipTreeNodeModel, long?>(
                     LangUtils.Get("AddGameWindow.Tab2.Text17"),
-                    x => x.CreatedTime,
+                    x => x.CompressedSize,
                     options: new TextColumnOptions<ZipTreeNodeModel>
                     {
-                        CompareAscending = ZipTreeNodeModel.SortAscending(x => x.CreatedTime),
-                        CompareDescending = ZipTreeNodeModel.SortDescending(x => x.CreatedTime),
+                        CompareAscending = ZipTreeNodeModel.SortAscending(x => x.CompressedSize),
+                        CompareDescending = ZipTreeNodeModel.SortDescending(x => x.CompressedSize),
                     }),
             }
         };
@@ -96,7 +96,7 @@ public class ZipPage
     /// 获取所有未选择的文件
     /// </summary>
     /// <returns></returns>
-    public List<string> GetUnSelectItems()
+    public List<ZipArchiveEntry> GetUnSelectItems()
     {
         return _root.GetUnSelectItems();
     }
@@ -133,5 +133,13 @@ public class ZipPage
     public void SetUnSelectItems()
     {
         _root.UnSelect();
+    }
+
+    public void Dispose()
+    {
+        if (Zip != null)
+        {
+            Zip.Dispose();
+        }
     }
 }
