@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Avalonia.Styling;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
@@ -91,7 +93,7 @@ public partial class WindowModel : ObservableObject
     /// 最大化图标
     /// </summary>
     [ObservableProperty]
-    private string _maxIcon = ImageManager.MaxIcon[0];
+    private string _maxIcon;
 
     /// <summary>
     /// 是否显示背景图
@@ -203,6 +205,15 @@ public partial class WindowModel : ObservableObject
     public WindowModel(string name)
     {
         WindowId = name;
+
+        if (SystemInfo.Os == OsType.MacOS)
+        {
+            MaxIcon = ImageManager.MaxMacosIcon[0];
+        }
+        else
+        {
+            MaxIcon = ImageManager.MaxWindowsIcon[0];
+        }
     }
 
     [RelayCommand]

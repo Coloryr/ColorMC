@@ -29,7 +29,10 @@ public partial class App : Application
             Logs.Error(temp, e.ExceptionObject as Exception);
             WindowManager.ShowError(LangUtils.Get("App.Text103"), temp, e.ExceptionObject as Exception);
         };
-        ColorMCGui.StartLock();
+        if (ColorMCGui.RunType == RunType.Program)
+        {
+            ColorMCGui.StartLock();
+        }
     }
 
     /// <summary>

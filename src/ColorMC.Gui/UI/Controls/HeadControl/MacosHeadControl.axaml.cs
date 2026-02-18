@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Threading;
 using ColorMC.Gui.Manager;
@@ -9,7 +10,7 @@ namespace ColorMC.Gui.UI.Controls.HeadControl;
 public partial class MacosHeadControl : UserControl
 {
     /// <summary>
-    /// ≤Àµ•∞¥≈•
+    /// ËèúÂçïÊåâÈíÆ
     /// </summary>
     private class ButtonBack
     {
@@ -26,14 +27,7 @@ public partial class MacosHeadControl : UserControl
 
         public void SetColor(bool hide)
         {
-            if (hide)
-            {
-                _button.Background = ThemeManager.GetColor(nameof(ThemeObj.ProgressBarBG));
-            }
-            else
-            {
-                _button.Background = _color;
-            }
+            _button.Background = hide ? ThemeManager.GetColor(nameof(ThemeObj.ProgressBarBG)) : _color;
         }
     }
 
@@ -44,16 +38,16 @@ public partial class MacosHeadControl : UserControl
         InitializeComponent();
 
         var select1 = new ButtonBack(ButtonMin, Brush.Parse("#febb2c"));
-        ButtonMin.PointerEntered += (a, b) => { Img1.IsVisible = true; };
-        ButtonMin.PointerExited += (a, b) => { Img1.IsVisible = false; };
+        ButtonMin.PointerEntered += ButtonMinOnPointerEntered;
+        ButtonMin.PointerExited += ButtonMinOnPointerExited;
 
         var select2 = new ButtonBack(ButtonMax, Brush.Parse("#29c73f"));
-        ButtonMax.PointerEntered += (a, b) => { Img2.IsVisible = true; };
-        ButtonMax.PointerExited += (a, b) => { Img2.IsVisible = false; };
+        ButtonMax.PointerEntered += ButtonMinOnPointerEntered;
+        ButtonMax.PointerExited += ButtonMinOnPointerExited;
 
         var select3 = new ButtonBack(ButtonClose, Brush.Parse("#fe5f59"));
-        ButtonClose.PointerEntered += (a, b) => { Img3.IsVisible = true; };
-        ButtonClose.PointerExited += (a, b) => { Img3.IsVisible = false; };
+        ButtonClose.PointerEntered += ButtonMinOnPointerEntered;
+        ButtonClose.PointerExited += ButtonMinOnPointerExited;
 
         PointerEntered += (a, b) =>
         {
@@ -96,5 +90,20 @@ public partial class MacosHeadControl : UserControl
                 };
             }
         });
+    }
+
+    private void ButtonMinOnPointerExited(object? sender, PointerEventArgs e)
+    {
+        Image(false);
+    }
+
+    private void ButtonMinOnPointerEntered(object? sender, PointerEventArgs e)
+    {
+        Image(true);
+    }
+
+    private void Image(bool show)
+    {
+        Img1.IsVisible = Img2.IsVisible = Img3.IsVisible = show;
     }
 }

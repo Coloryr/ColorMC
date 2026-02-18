@@ -51,7 +51,7 @@
             </Button>
         </StackPanel>
         <Panel>
-            <StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Button
                     Name="ButtonClose"
                     Width="13"
@@ -63,37 +63,37 @@
                     BorderThickness="0"
                     Classes="none"
                     Command="{Binding CloseClick}"
-                    CornerRadius="0"
+                    CornerRadius="20"
                     IsEnabled="{Binding HeadCloseEnable}">
-                    <svg:SvgControl Name="Img3" Path="/Resource/Icon/Head/Close.svg" />
+                    <svg:SvgControl IsVisible="False" Width="9"  Name="Img3" Path="/Resource/Icon/Window/Close.svg" />
                 </Button>
                 <Button
                     Name="ButtonMin"
                     Width="13"
                     Height="13"
-                    Margin="10,0,0,0"
+                    Margin="6,0,0,0"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Classes="none"
                     Command="{Binding MinimizeClick}"
-                    CornerRadius="0">
-                    <svg:SvgControl Name="Img1" Path="/Resource/Icon/Head/Minimize.svg" />
+                    CornerRadius="20">
+                    <svg:SvgControl IsVisible="False" Width="9" Name="Img1" Path="/Resource/Icon/Window/Minimize.svg" />
                 </Button>
                 <Button
                     Name="ButtonMax"
                     Width="13"
                     Height="13"
-                    Margin="10,0,0,0"
+                    Margin="6,0,0,0"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     BorderThickness="0"
                     Classes="none"
                     Command="{Binding MaximizeClick}"
-                    CornerRadius="0">
-                    <svg:SvgControl Name="Img2" Path="{Binding MaxIcon}" />
+                    CornerRadius="20">
+                    <svg:SvgControl IsVisible="False" Width="9" Name="Img2" Path="{Binding MaxIcon}" />
                 </Button>
             </StackPanel>
         </Panel>

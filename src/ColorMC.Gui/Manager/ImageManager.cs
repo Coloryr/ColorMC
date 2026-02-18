@@ -95,7 +95,11 @@ public static class ImageManager
     /// <summary>
     /// 最大化最小化图标
     /// </summary>
-    public static readonly string[] MaxIcon = ["/Resource/Icon/Window/Maximize.svg", "/Resource/Icon/Window/Restore.svg"];
+    public static readonly string[] MaxWindowsIcon = ["/Resource/Icon/Window/Maximize.svg", "/Resource/Icon/Window/Restore.svg"];
+    /// <summary>
+    /// Macos最大化最小化图标
+    /// </summary>
+    public static readonly string[] MaxMacosIcon = ["/Resource/Icon/Window/ArrowExpand.svg", "/Resource/Icon/Window/ArrowCollapse.svg"];
     /// <summary>
     /// 表情图标
     /// </summary>

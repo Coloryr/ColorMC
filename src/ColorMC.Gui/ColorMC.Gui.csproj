@@ -453,6 +453,10 @@
     <EmbeddedResource Include="Resource\Pic\launch.png" />
     <EmbeddedResource Include="Resource\Pic\load.png" />
     <EmbeddedResource Include="Resource\Pic\update1.png" />
+    <None Remove="Resource\Icon\Window\ArrowCollapse.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\ArrowCollapse.svg" />
+    <None Remove="Resource\Icon\Window\ArrowExpand.svg" />
+    <AvaloniaResource Include="Resource\Icon\Window\ArrowExpand.svg" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.

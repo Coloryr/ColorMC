@@ -8,6 +8,8 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using ColorMC.Core.Objs;
+using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Controls.Error;
@@ -157,19 +159,23 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
     /// <param name="e"></param>
     private void AMultiWindow_PropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        if (e.Property == WindowStateProperty)
+        if (e.Property != WindowStateProperty)
         {
-            if (DataContext is WindowModel model)
-            {
-                if (WindowState == WindowState.Maximized)
-                {
-                    model.MaxIcon = ImageManager.MaxIcon[1];
-                }
-                else
-                {
-                    model.MaxIcon = ImageManager.MaxIcon[0];
-                }
-            }
+            return;
+        }
+
+        if (DataContext is not WindowModel model)
+        {
+            return;
+        }
+
+        if (WindowState == WindowState.Maximized)
+        {
+            model.MaxIcon = SystemInfo.Os == OsType.MacOS ? ImageManager.MaxMacosIcon[1] : ImageManager.MaxWindowsIcon[1];
+        }
+        else
+        {
+            model.MaxIcon = SystemInfo.Os == OsType.MacOS ? ImageManager.MaxMacosIcon[0] :ImageManager.MaxWindowsIcon[0];
         }
     }
 
