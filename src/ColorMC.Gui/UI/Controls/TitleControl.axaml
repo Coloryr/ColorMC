@@ -13,7 +13,7 @@
     x:DataType="model:WindowModel"
     Background="#FFFFFF"
     mc:Ignorable="d">
-    <Panel RenderOptions.TextRenderingMode="Antialias">
+    <Panel TextOptions.TextRenderingMode="Antialias">
         <Button
             Width="35"
             Height="35"

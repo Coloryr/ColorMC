@@ -22,7 +22,7 @@
                     Classes="input2"
                     DockPanel.Dock="Top"
                     Text="{Binding Text}"
-                    Watermark="{setting:Localize ServerPackWindow.Tab1.Text6}" />
+                    PlaceholderText="{setting:Localize ServerPackWindow.Tab1.Text6}" />
             </DockPanel>
         </Border>
     </Decorator>

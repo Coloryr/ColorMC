@@ -73,26 +73,26 @@
                             Grid.Column="0"
                             Margin="0,0,10,5"
                             Text="{Binding IP}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
+                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text4}" />
                         <TextBox
                             Grid.Column="1"
                             Margin="0,0,0,5"
                             MaxLength="5"
                             Text="{Binding Port, Converter={StaticResource NumberConverter}}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
+                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text5}" />
                     </Grid>
                     <Grid Margin="0,0,0,0" ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,5"
                             Text="{Binding User}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
+                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text6}" />
                         <TextBox
                             Grid.Column="1"
                             Margin="0,0,0,5"
                             PasswordChar="*"
                             Text="{Binding Password}"
-                            Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
+                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text7}" />
                     </Grid>
                     <Button
                         Width="100"
@@ -224,7 +224,7 @@
                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                         Text="{Binding ServerKey}"
                         TextWrapping="Wrap"
-                        Watermark="{setting:Localize SettingWindow.Tab3.Text21}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab3.Text21}" />
                     <Button
                         Width="100"
                         Height="35"

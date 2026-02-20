@@ -134,7 +134,7 @@
             Foreground="{setting:Theme FontColor}"
             HorizontalScrollBarVisibility="Auto"
             IsReadOnly="True"
-            RenderOptions.TextRenderingMode="Antialias"
+            TextOptions.TextRenderingMode="Antialias"
             ShowLineNumbers="True"
             VerticalScrollBarVisibility="Visible"
             WordWrap="{Binding IsWordWrap}" />

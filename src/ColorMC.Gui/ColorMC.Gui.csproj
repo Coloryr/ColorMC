@@ -470,7 +470,7 @@
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Desktop" Version="$(AvaloniaVersion)" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.12" />
     <PackageReference Include="Avalonia.HtmlRenderer" Version="11.3.9" />
     <PackageReference Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
@@ -479,11 +479,11 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="DialogHost.Avalonia" Version="0.10.3" />
     <PackageReference Include="Markdig" Version="0.44.0" />
-    <PackageReference Include="MinecraftSkinRender" Version="1.0.0" />
-    <PackageReference Include="MinecraftSkinRender.Image" Version="1.0.0" />
-    <PackageReference Include="MinecraftSkinRender.OpenGL" Version="1.0.0" />
+    <PackageReference Include="MinecraftSkinRender" Version="$(MinecraftSkinRenderVersion)" />
+    <PackageReference Include="MinecraftSkinRender.Image" Version="$(MinecraftSkinRenderVersion)" />
+    <PackageReference Include="MinecraftSkinRender.OpenGL" Version="$(MinecraftSkinRenderVersion)" />
     <PackageReference Include="Silk.NET.SDL" Version="2.22.0" />
-    <PackageReference Include="SkiaSharp" Version="2.88.9" />
+    <PackageReference Include="SkiaSharp" Version="3.119.2" />
     <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />

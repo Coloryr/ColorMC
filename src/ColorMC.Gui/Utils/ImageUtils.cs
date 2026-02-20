@@ -93,9 +93,6 @@ public static class ImageUtils
             newHeight = height;
             newWidth = (int)(newHeight * ((float)image.Width / image.Height));
         }
-        return Task.Run(() =>
-        {
-            return image.Resize(new SKSizeI(newWidth, newHeight), SKFilterQuality.High);
-        });
+        return Task.Run(() => image.Resize(new SKSizeI(newWidth, newHeight), new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear)));
     }
 }

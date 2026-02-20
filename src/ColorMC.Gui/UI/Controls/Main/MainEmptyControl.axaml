@@ -21,12 +21,12 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="20"
-                RenderOptions.TextRenderingMode="Antialias"
+                TextOptions.TextRenderingMode="Antialias"
                 Text="{setting:Localize MainWindow.Text7}" />
             <StackPanel
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                RenderOptions.TextRenderingMode="Antialias">
+                TextOptions.TextRenderingMode="Antialias">
                 <StackPanel.Styles>
                     <Style Selector="Button">
                         <Setter Property="Background" Value="Transparent" />

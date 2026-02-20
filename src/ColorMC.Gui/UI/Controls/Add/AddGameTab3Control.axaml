@@ -31,7 +31,7 @@
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         Text="{Binding Name}"
-                        Watermark="{setting:Localize AddGameWindow.Tab1.Text2}" />
+                        PlaceholderText="{setting:Localize AddGameWindow.Tab1.Text2}" />
                 </DockPanel>
                 <panel:WrapPanelWithStretch LeftMax="True">
                     <TextBox
@@ -39,7 +39,7 @@
                         Margin="0,0,10,10"
                         HorizontalAlignment="Stretch"
                         Text="{Binding SelectPath}"
-                        Watermark="{setting:Localize AddGameWindow.Tab3.Text1}" />
+                        PlaceholderText="{setting:Localize AddGameWindow.Tab3.Text1}" />
                     <StackPanel
                         Margin="0,0,10,10"
                         HorizontalAlignment="Right"

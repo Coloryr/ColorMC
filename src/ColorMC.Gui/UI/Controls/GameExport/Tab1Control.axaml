@@ -51,22 +51,22 @@
                         Margin="0,0,0,10"
                         IsEnabled="{Binding EnableInputText}"
                         Text="{Binding Name}"
-                        Watermark="{setting:Localize GameExportWindow.Tab1.Text3}" />
+                        PlaceholderText="{setting:Localize GameExportWindow.Tab1.Text3}" />
                     <TextBox
                         Margin="0,0,0,10"
                         IsEnabled="{Binding EnableInputText}"
                         Text="{Binding Version}"
-                        Watermark="{setting:Localize GameExportWindow.Tab1.Text4}" />
+                        PlaceholderText="{setting:Localize GameExportWindow.Tab1.Text4}" />
                     <TextBox
                         Margin="0,0,0,10"
                         IsEnabled="{Binding CfEx}"
                         Text="{Binding Author}"
-                        Watermark="{setting:Localize Text.Author}" />
+                        PlaceholderText="{setting:Localize Text.Author}" />
                     <TextBox
                         Margin="0,0,0,10"
                         IsEnabled="{Binding MoEx}"
                         Text="{Binding Summary}"
-                        Watermark="{setting:Localize Text.Description}" />
+                        PlaceholderText="{setting:Localize Text.Description}" />
                 </StackPanel>
             </DockPanel>
         </Border>

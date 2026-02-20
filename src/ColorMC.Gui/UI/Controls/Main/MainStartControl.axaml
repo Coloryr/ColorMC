@@ -24,7 +24,7 @@
             Name="Grid1"
             Margin="10"
             ClipToBounds="True"
-            RenderOptions.TextRenderingMode="Antialias">
+            TextOptions.TextRenderingMode="Antialias">
             <TextBlock
                 Name="Text1"
                 HorizontalAlignment="Center"

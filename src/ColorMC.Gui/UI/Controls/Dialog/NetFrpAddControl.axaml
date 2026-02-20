@@ -21,11 +21,11 @@
             Margin="0,0,0,5"
             IsEnabled="{Binding LockName}"
             Text="{Binding Name}"
-            Watermark="{setting:Localize Text.Name}" />
+            PlaceholderText="{setting:Localize Text.Name}" />
         <TextBox
             Margin="0,0,0,5"
             Text="{Binding Ip}"
-            Watermark="{setting:Localize NetFrpWindow.Tab6.Text3}" />
+            PlaceholderText="{setting:Localize NetFrpWindow.Tab6.Text3}" />
         <DockPanel>
             <TextBlock Text="{setting:Localize Text.ServerPort}" />
             <NumericUpDown
@@ -37,15 +37,15 @@
         <TextBox
             Margin="0,0,0,5"
             Text="{Binding RName}"
-            Watermark="{setting:Localize NetFrpWindow.Tab6.Text6}" />
+            PlaceholderText="{setting:Localize NetFrpWindow.Tab6.Text6}" />
         <TextBox
             Margin="0,0,0,5"
             Text="{Binding User}"
-            Watermark="{setting:Localize NetFrpWindow.Tab6.Text5}" />
+            PlaceholderText="{setting:Localize NetFrpWindow.Tab6.Text5}" />
         <TextBox
             Margin="0,0,0,5"
             Text="{Binding Key}"
-            Watermark="{setting:Localize NetFrpWindow.Tab6.Text4}" />
+            PlaceholderText="{setting:Localize NetFrpWindow.Tab6.Text4}" />
         <DockPanel>
             <TextBlock Text="{setting:Localize NetFrpWindow.Tab1.Text12}" />
             <NumericUpDown

@@ -646,7 +646,7 @@ public static class ImageManager
                     {
                         int x = (int)(image.Width * (float)lim / 100);
                         int y = (int)(image.Height * (float)lim / 100);
-                        var img1 = image.Resize(new SKSizeI(x, y), SKFilterQuality.High);
+                        var img1 = image.Resize(new SKSizeI(x, y), new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear));
                         image.Dispose();
                         image = img1;
                     }

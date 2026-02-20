@@ -128,7 +128,7 @@ public partial class GameConfigEditControl : BaseUserControl
     {
         if (e.PropertyName == nameof(GameConfigEditModel.TurnTo))
         {
-            NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
+            // NbtViewer.Scroll!.Offset = new(0, (DataContext as GameConfigEditModel)!.TurnTo * 25);
         }
         //else if (e.PropertyName == nameof(GameConfigEditModel.File))
         //{

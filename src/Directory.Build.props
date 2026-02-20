@@ -1,6 +1,7 @@
 <Project>
 	<PropertyGroup>
-		<AvaloniaVersion>11.3.11</AvaloniaVersion>
+		<AvaloniaVersion>12.0.0-preview1</AvaloniaVersion>
 		<DotnetVersion>net10.0</DotnetVersion>
+        <MinecraftSkinRenderVersion>1.1.0</MinecraftSkinRenderVersion>
 	</PropertyGroup>
 </Project>

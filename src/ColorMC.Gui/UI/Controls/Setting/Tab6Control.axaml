@@ -46,13 +46,13 @@
                             Margin="0,0,10,0"
                             IsEnabled="{Binding EnableIP}"
                             Text="{Binding ServerIP}"
-                            Watermark="{setting:Localize Text.ServerAddress}" />
+                            PlaceholderText="{setting:Localize Text.ServerAddress}" />
                         <TextBox
                             Grid.Column="1"
                             IsEnabled="{Binding EnableIP}"
                             MaxLength="5"
                             Text="{Binding ServerPort, Converter={StaticResource NumberConverter}}"
-                            Watermark="{setting:Localize Text.ServerPort}" />
+                            PlaceholderText="{setting:Localize Text.ServerPort}" />
                     </Grid>
                     <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text6}" />
@@ -196,7 +196,7 @@
                             Margin="10,0,0,0"
                             Classes="input1"
                             Text="{Binding StartText}"
-                            Watermark="{setting:Localize SettingWindow.Tab6.Text49}" />
+                            PlaceholderText="{setting:Localize SettingWindow.Tab6.Text49}" />
                     </DockPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab6.Text50}" />
@@ -277,7 +277,7 @@
                         Classes="input1"
                         IsEnabled="{Binding EnableMusic}"
                         Text="{Binding Music}"
-                        Watermark="{setting:Localize SettingWindow.Tab6.Text17}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab6.Text17}" />
                     <Panel>
                         <Button
                             Width="100"

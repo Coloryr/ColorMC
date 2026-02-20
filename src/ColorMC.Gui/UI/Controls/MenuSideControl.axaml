@@ -16,7 +16,7 @@
         <ItemsControl
             Margin="10,10,5,10"
             ItemsSource="{Binding TabItems}"
-            RenderOptions.TextRenderingMode="Antialias">
+            TextOptions.TextRenderingMode="Antialias">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <view:MenuItemControl DataContext="{Binding}" />

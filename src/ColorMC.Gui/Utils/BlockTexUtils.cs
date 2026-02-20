@@ -450,8 +450,7 @@ public static class BlockTexUtils
         var transform = SKMatrix44.CreateIdentity();
 
         // 平移图像到原点
-        var translateToOrigin = SKMatrix44.CreateIdentity();
-        translateToOrigin.SetTranslate(-50, -50, 0);
+        var translateToOrigin = SKMatrix44.CreateTranslation(-50, -50, 0);
 
         //// 旋转矩阵
         var rotationX = CreateRotationMatrix(30, 1, 0, 0);
@@ -463,13 +462,11 @@ public static class BlockTexUtils
         transform.PreConcat(rotationY);
 
         // 缩放
-        var scale = SKMatrix44.CreateIdentity();
-        scale.SetScale(55, -55, 55);
+        var scale = SKMatrix44.CreateScale(55, -55, 55);
         transform.PreConcat(scale);
 
         // Step 4: 平移图像到画布中心
-        var translateToCenter = SKMatrix44.CreateIdentity();
-        translateToCenter.SetTranslate(3.83f, -1.63f, 0);
+        var translateToCenter = SKMatrix44.CreateTranslation(3.83f, -1.63f, 0);
         transform.PreConcat(translateToCenter);
 
         return transform;
@@ -518,7 +515,7 @@ public static class BlockTexUtils
         float[] result = new float[4];
 
         // 执行矩阵乘法
-        mat.MapScalars(vec, result);
+        ImageHelper.MapScalars(mat, vec, result);
 
         // 进行透视除法
         if (result[3] != 0)

@@ -24,7 +24,7 @@
             Text="{Binding InputText}"
             TextAlignment="Center"
             TextWrapping="Wrap"
-            Watermark="{setting:Localize SettingWindow.Tab6.Text31}" />
+            PlaceholderText="{setting:Localize SettingWindow.Tab6.Text31}" />
         <TextBox
             MinWidth="300"
             Foreground="{setting:Theme FontColor}"
@@ -32,7 +32,7 @@
             Text="{Binding InputText1}"
             TextAlignment="Center"
             TextWrapping="Wrap"
-            Watermark="{setting:Localize SettingWindow.Tab6.Text32}" />
+            PlaceholderText="{setting:Localize SettingWindow.Tab6.Text32}" />
         <StackPanel
             Margin="0,10,0,0"
             HorizontalAlignment="Center"
