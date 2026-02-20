@@ -99,7 +99,7 @@ public partial class AddJavaControlModel : ControlModel
         Window.SetChoiseContent(_useName, LangUtils.Get("Button.Refash"));
         Window.SetChoiseCall(_useName, Load);
 
-        IsMacArm = SystemInfo.Os is OsType.MacOS && SystemInfo.IsArm;
+        IsMacArm = SystemInfo.Os is OsType.MacOs && SystemInfo.IsArm;
     }
 
     /// <summary>
@@ -206,7 +206,7 @@ public partial class AddJavaControlModel : ControlModel
                         System = item;
                     }
                 }
-                else if (SystemInfo.Os == OsType.MacOS)
+                else if (SystemInfo.Os == OsType.MacOs)
                 {
                     var item = res.Os.FirstOrDefault(item => item.Equals(GuiNames.NameMacos, StringComparison.CurrentCultureIgnoreCase));
                     if (item != null)

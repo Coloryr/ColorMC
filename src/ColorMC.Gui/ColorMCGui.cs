@@ -126,6 +126,7 @@ public static class ColorMCGui
                 try
                 {
                     ProcessUtils.LaunchAdmin(args);
+                    App.Close();
                 }
                 catch
                 {
@@ -456,7 +457,7 @@ public static class ColorMCGui
                     builder.With(opt);
                     break;
                 }
-            case OsType.MacOS:
+            case OsType.MacOs:
                 {
                     var opt = new MacOSPlatformOptions()
                     {

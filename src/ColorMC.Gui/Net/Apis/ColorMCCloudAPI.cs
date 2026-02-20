@@ -874,7 +874,7 @@ public static class ColorMCCloudAPI
                 sha1 = value.LinuxAmd64;
             }
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
             if (SystemInfo.IsArm)
             {

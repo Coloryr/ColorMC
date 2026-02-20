@@ -100,7 +100,7 @@ public abstract class ABaseWindow : Window
             return;
         }
 
-        if (SystemInfo.Os == OsType.MacOS && e.KeyModifiers == KeyModifiers.Control)
+        if (SystemInfo.Os == OsType.MacOs && e.KeyModifiers == KeyModifiers.Control)
         {
             switch (e.Key)
             {

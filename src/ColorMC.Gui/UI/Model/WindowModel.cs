@@ -206,7 +206,7 @@ public partial class WindowModel : ObservableObject
     {
         WindowId = name;
 
-        if (SystemInfo.Os == OsType.MacOS)
+        if (SystemInfo.Os == OsType.MacOs)
         {
             MaxIcon = ImageManager.MaxMacosIcon[0];
         }

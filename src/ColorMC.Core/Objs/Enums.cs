@@ -415,9 +415,7 @@ public enum OsType
 {
     Windows,
     Linux,
-    MacOS,
-    Android,
-    Ios
+    MacOs,
 }
 
 /// <summary>

@@ -146,7 +146,7 @@ public static class ImageManager
         GameIcon = new Bitmap(asset);
 
         //加载程序图标
-        using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOS
+        using var asset1 = AssetLoader.Open(new Uri(SystemInfo.Os == OsType.MacOs
             ? "resm:ColorMC.Gui.macicon.ico" : "resm:ColorMC.Gui.icon.ico"));
         _windowIcon = new(asset1!);
 

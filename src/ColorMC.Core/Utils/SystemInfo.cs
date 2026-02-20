@@ -78,16 +78,7 @@ public static class SystemInfo
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            Os = OsType.MacOS;
-        }
-
-        if (OperatingSystem.IsAndroid())
-        {
-            Os = OsType.Android;
-        }
-        else if (OperatingSystem.IsIOS())
-        {
-            Os = OsType.Ios;
+            Os = OsType.MacOs;
         }
 
         SystemName = RuntimeInformation.OSDescription;

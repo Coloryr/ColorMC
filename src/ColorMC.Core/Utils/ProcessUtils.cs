@@ -26,29 +26,7 @@ public static class ProcessUtils
         else
         {
             // 检查当前用户是否是 root
-            if (Environment.UserName.Equals("root", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-            return false;
-
-            // 检查当前用户是否属于 sudo 组
-            //var process = new Process
-            //{
-            //    StartInfo = new ProcessStartInfo
-            //    {
-            //        FileName = "groups",
-            //        RedirectStandardOutput = true,
-            //        UseShellExecute = false,
-            //        CreateNoWindow = true
-            //    }
-            //};
-
-            //process.Start();
-            //string output = process.StandardOutput.ReadToEnd();
-            //process.WaitForExit();
-
-            //return output.Contains("sudo");
+            return Environment.UserName.Equals("root", StringComparison.OrdinalIgnoreCase);
         }
     }
 
@@ -62,21 +40,23 @@ public static class ProcessUtils
         if (admin && !IsRunAsAdmin())
         {
             process.StartInfo.UseShellExecute = true;
-            if (SystemInfo.Os == OsType.Windows)
+            switch (SystemInfo.Os)
             {
-                process.StartInfo.Verb = "runas";
-            }
-            else if (SystemInfo.Os == OsType.MacOS)
-            {
-                var list = new List<string>(process.StartInfo.ArgumentList);
-                list.Insert(0, process.StartInfo.FileName);
-                process.StartInfo.FileName = "sudo";
-            }
-            else
-            {
-                var list = new List<string>(process.StartInfo.ArgumentList);
-                list.Insert(0, process.StartInfo.FileName);
-                process.StartInfo.FileName = "pkexec";
+                case OsType.Windows:
+                    process.StartInfo.Verb = "runas";
+                    break;
+                case OsType.MacOs:
+                {
+                    process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
+                    process.StartInfo.FileName = "sudo";
+                    break;
+                }
+                case OsType.Linux:
+                {
+                    process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
+                    process.StartInfo.FileName = "pkexec";
+                    break;
+                }
             }
 
             process.StartInfo.RedirectStandardInput = false;
@@ -106,10 +86,11 @@ public static class ProcessUtils
             p.StartInfo.FileName = file;
             p.StartInfo.UseShellExecute = true;
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
-            p.StartInfo.ArgumentList.Add(file);
-            p.StartInfo.FileName = "sudo";
+            p.StartInfo.ArgumentList.Add("-e");
+            p.StartInfo.ArgumentList.Add($"do shell script \"{file}\" with administrator privileges");
+            p.StartInfo.FileName = "osascript";
             p.StartInfo.UseShellExecute = true;
         }
         else
@@ -124,5 +105,6 @@ public static class ProcessUtils
         }
 
         p.Start();
+        p.WaitForExit();
     }
 }

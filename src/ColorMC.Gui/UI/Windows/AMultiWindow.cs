@@ -171,11 +171,11 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
 
         if (WindowState == WindowState.Maximized)
         {
-            model.MaxIcon = SystemInfo.Os == OsType.MacOS ? ImageManager.MaxMacosIcon[1] : ImageManager.MaxWindowsIcon[1];
+            model.MaxIcon = SystemInfo.Os == OsType.MacOs ? ImageManager.MaxMacosIcon[1] : ImageManager.MaxWindowsIcon[1];
         }
         else
         {
-            model.MaxIcon = SystemInfo.Os == OsType.MacOS ? ImageManager.MaxMacosIcon[0] :ImageManager.MaxWindowsIcon[0];
+            model.MaxIcon = SystemInfo.Os == OsType.MacOs ? ImageManager.MaxMacosIcon[0] :ImageManager.MaxWindowsIcon[0];
         }
     }
 

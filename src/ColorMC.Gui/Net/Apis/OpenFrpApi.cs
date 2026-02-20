@@ -95,7 +95,7 @@ public static class OpenFrpApi
                 data1 = "frpc_linux_amd64.tar.gz";
             }
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
             if (SystemInfo.IsArm)
             {

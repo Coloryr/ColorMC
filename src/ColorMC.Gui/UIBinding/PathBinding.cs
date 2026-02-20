@@ -80,7 +80,7 @@ public static class PathBinding
             case OsType.Linux:
                 Process.Start("xdg-open", '"' + item + '"');
                 break;
-            case OsType.MacOS:
+            case OsType.MacOs:
                 Process.Start("open", '"' + item + '"');
                 break;
         }
@@ -187,7 +187,7 @@ public static class PathBinding
                         '"' + item + '"');
                 }
                 break;
-            case OsType.MacOS:
+            case OsType.MacOs:
                 var file1 = new FileInfo(item);
                 Process.Start("open", '"' + file1.Directory?.FullName + '"');
                 break;
@@ -743,7 +743,7 @@ public static class PathBinding
                 Process.Start("xdg-open",
                     '"' + screenshot + '"');
                 break;
-            case OsType.MacOS:
+            case OsType.MacOs:
                 Process.Start("open", "-a Preview " +
                     '"' + screenshot + '"');
                 break;

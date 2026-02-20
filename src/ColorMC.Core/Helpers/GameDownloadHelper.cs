@@ -473,7 +473,7 @@ public static class GameDownloadHelper
                 {
                     OsType.Windows => item1.Downloads.Classifiers.NativesWindows,
                     OsType.Linux => item1.Downloads.Classifiers.NativesLinux,
-                    OsType.MacOS => item1.Downloads.Classifiers.NativesOsx,
+                    OsType.MacOs => item1.Downloads.Classifiers.NativesOsx,
                     _ => null
                 };
 
@@ -567,7 +567,7 @@ public static class GameDownloadHelper
                 string system = SystemInfo.Os switch
                 {
                     OsType.Linux => "linux",
-                    OsType.MacOS => "macos",
+                    OsType.MacOs => "macos",
                     _ => "windows"
                 };
                 var name = item + $":{path[1]}-{path[2]}-natives-{system}-arm64";

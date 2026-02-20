@@ -30,7 +30,7 @@ public partial class TitleControl : UserControl
 
         var time = DateTime.Now;
         //macos风格
-        if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOS : SystemInfo.Os == OsType.MacOS)
+        if ((time.Day == 1 && time.Month == 4) ? SystemInfo.Os != OsType.MacOs : SystemInfo.Os == OsType.MacOs)
         {
             Content = new MacosHeadControl();
         }

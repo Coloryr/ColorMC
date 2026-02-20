@@ -10,7 +10,7 @@ public static class InnerPath
     static InnerPath()
     {
         //存在用户文件夹
-        Inner = SystemInfo.Os == OsType.MacOS ?
+        Inner = SystemInfo.Os == OsType.MacOs ?
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ColorMC") :
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ColorMC");
         if (!Directory.Exists(Inner))

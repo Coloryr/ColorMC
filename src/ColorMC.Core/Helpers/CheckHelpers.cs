@@ -68,7 +68,7 @@ public static partial class CheckHelpers
                 }
                 var os = item2.Os.Name;
 
-                if (os == "osx" && SystemInfo.Os == OsType.MacOS)
+                if (os == "osx" && SystemInfo.Os == OsType.MacOs)
                 {
                     allow = true;
                 }
@@ -100,7 +100,7 @@ public static partial class CheckHelpers
                 }
                 var os = item2.Os.Name;
 
-                if (os == "osx" && SystemInfo.Os == OsType.MacOS)
+                if (os == "osx" && SystemInfo.Os == OsType.MacOs)
                 {
                     allow = false;
                 }

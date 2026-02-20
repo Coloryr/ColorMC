@@ -140,7 +140,7 @@ public static class BaseBinding
                 Process.Start("xdg-open",
                     '"' + url + '"');
                 break;
-            case OsType.MacOS:
+            case OsType.MacOs:
                 Process.Start("open", '"' + url + '"');
                 break;
         }

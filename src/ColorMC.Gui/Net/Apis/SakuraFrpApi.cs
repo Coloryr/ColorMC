@@ -130,7 +130,7 @@ public static class SakuraFrpApi
                 data1 = data.Frpc.Archs.LinuxAmd64;
             }
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
             if (SystemInfo.IsArm)
             {

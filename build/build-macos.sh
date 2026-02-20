@@ -35,9 +35,7 @@ build_osx()
     mkdir $base/ColorMC.app
     mkdir $base_dir
 
-    files=("ColorMC.Gui.pdb" "ColorMC.Core.pdb" "ColorMC.Launcher" "ColorMC.Launcher.pdb" 
-        "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib"
-        "libSDL2-2.0.dylib" "MinecraftSkinRender.OpenGL.pdb" "MinecraftSkinRender.pdb")
+    files=("ColorMC.Launcher" "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib" "libSDL2-2.0.dylib")
 
     cp -r ./build/info/osx/* $base_dir
 
@@ -53,13 +51,13 @@ build_osx()
 
     chmod a+x $dir/ColorMC.Launcher
 
-    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+    if [$1 = 'aarch64'] && [$replace_sdl = 'true'] ;then
         build_sdl_arm64
     fi
 
     cd ./src/build_out/$1-dotnet
 
-    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+    if [$1 = 'aarch64'] && [$replace_sdl = 'true'] ;then
         rm libSDL2-2.0.dylib
         cp ../../../SDL/build/build/.libs/libSDL2-2.0.0.dylib libSDL2-2.0.dylib
     fi
@@ -88,8 +86,7 @@ build_osx_min()
     mkdir $base/ColorMC.app
     mkdir $base_dir
 
-    files=("ColorMC.Launcher" "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib"
-        "libSDL2-2.0.dylib")
+    files=("ColorMC.Launcher" "libAvaloniaNative.dylib" "libHarfBuzzSharp.dylib" "libSkiaSharp.dylib" "libSDL2-2.0.dylib")
 
     cp -r ./build/info/osx/* $base_dir
 
@@ -105,17 +102,18 @@ build_osx_min()
 
     chmod a+x $dir/ColorMC.Launcher
 
-    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+    if [$1 = 'aarch64'] && [$replace_sdl = 'true'] ;then
         build_sdl_arm64
     fi
 
     cd ./src/build_out/$1-min
 
-    if [$1 = 'aarch64'] && [replace_sdl = 'true'] ;then
+    if [$1 = 'aarch64'] && [$replace_sdl = 'true'] ;then
         rm libSDL2-2.0.dylib
         cp ../../../SDL/build/build/.libs/libSDL2-2.0.0.dylib libSDL2-2.0.dylib
     fi
 
+    codesign --force --deep --sign - ColorMC.app
     zip -r $zip_name ./ColorMC.app
     mv $zip_name ../../../build_out/$zip_name
     cd ../../../

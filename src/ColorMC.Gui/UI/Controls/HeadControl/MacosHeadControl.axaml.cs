@@ -36,18 +36,13 @@ public partial class MacosHeadControl : UserControl
     public MacosHeadControl()
     {
         InitializeComponent();
+        
+        Buttons.PointerEntered += ButtonMinOnPointerEntered;
+        Buttons.PointerExited += ButtonMinOnPointerExited;
 
         var select1 = new ButtonBack(ButtonMin, Brush.Parse("#febb2c"));
-        ButtonMin.PointerEntered += ButtonMinOnPointerEntered;
-        ButtonMin.PointerExited += ButtonMinOnPointerExited;
-
         var select2 = new ButtonBack(ButtonMax, Brush.Parse("#29c73f"));
-        ButtonMax.PointerEntered += ButtonMinOnPointerEntered;
-        ButtonMax.PointerExited += ButtonMinOnPointerExited;
-
         var select3 = new ButtonBack(ButtonClose, Brush.Parse("#fe5f59"));
-        ButtonClose.PointerEntered += ButtonMinOnPointerEntered;
-        ButtonClose.PointerExited += ButtonMinOnPointerExited;
 
         PointerEntered += (a, b) =>
         {

@@ -129,7 +129,7 @@ public static class JvmPath
         return SystemInfo.Os switch
         {
             OsType.Windows => PathHelper.GetFile(path, Names.NameJavawFile),
-            OsType.Linux or OsType.MacOS => PathHelper.GetFile(path, Names.NameJavaFile),
+            OsType.Linux or OsType.MacOs => PathHelper.GetFile(path, Names.NameJavaFile),
             _ => null,
         };
     }
@@ -172,7 +172,7 @@ public static class JvmPath
             }
         }
 
-        if (SystemInfo.Os is OsType.Linux or OsType.MacOS)
+        if (SystemInfo.Os is OsType.Linux or OsType.MacOs)
         {
             PathHelper.PerJavaChmod(java);
         }

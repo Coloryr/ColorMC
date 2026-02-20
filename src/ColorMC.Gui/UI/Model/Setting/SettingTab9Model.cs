@@ -59,7 +59,7 @@ public partial class SettingModel
     //配置修改
     partial void OnGameAdminLaunchChanged(bool value)
     {
-        if (_serverLoad)
+        if (_launchLoad)
         {
             return;
         }
@@ -69,7 +69,7 @@ public partial class SettingModel
 
     partial void OnAdminLaunchChanged(bool value)
     {
-        if (_serverLoad)
+        if (_launchLoad)
         {
             return;
         }

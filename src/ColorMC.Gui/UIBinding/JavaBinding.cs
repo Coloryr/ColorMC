@@ -139,7 +139,7 @@ public static class JavaBinding
                 else if (Directory.Exists("C:\\Program Files\\Java"))
                     return new DirectoryInfo("C:\\Program Files\\Java");
                 break;
-            case OsType.MacOS:
+            case OsType.MacOs:
                 if (Directory.Exists("/Library/Java/JavaVirtualMachines/"))
                     return new DirectoryInfo("/Library/Java/JavaVirtualMachines/");
                 break;

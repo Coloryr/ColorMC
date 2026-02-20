@@ -257,7 +257,7 @@ public static class LangUtils
         {
             OsType.Windows => Get("Type.OsType.Windows"),
             OsType.Linux => Get("Type.OsType.Linux"),
-            OsType.MacOS => Get("Type.OsType.MacOS"),
+            OsType.MacOs => Get("Type.OsType.MacOS"),
             _ => Get("Type.OsType.Other")
         };
     }

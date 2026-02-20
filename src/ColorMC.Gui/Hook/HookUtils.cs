@@ -22,7 +22,7 @@ public static class HookUtils
         {
             return Linux.GetTotalMemory() / 1024;
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
             return Macos.GetTotalMemory() / 1024 / 1024;
         }
@@ -44,7 +44,7 @@ public static class HookUtils
         {
             return Linux.GetFreeMemory() / 1024;
         }
-        else if (SystemInfo.Os == OsType.MacOS)
+        else if (SystemInfo.Os == OsType.MacOs)
         {
             return Macos.GetFreeMemory() / 1024 / 1024;
         }

@@ -15,6 +15,18 @@
     <Panel RenderOptions.TextRenderingMode="Antialias">
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
             <Button
+                Width="40"
+                Height="35"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="0"
+                Command="{Binding BackClick}"
+                CornerRadius="0"
+                IsEnabled="{Binding HeadBackEnable}"
+                IsVisible="{Binding HeadBack}">
+                <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Back.svg" />
+            </Button>
+            <Button
                 Name="Choise"
                 Width="80"
                 Height="35"
@@ -22,7 +34,7 @@
                 BorderBrush="Transparent"
                 BorderThickness="0"
                 Command="{Binding ChoiseClick}"
-                Content="{Binding HeadChoiseContent}"
+                Content="{Binding HeadChoiseContent, FallbackValue=Choise}"
                 CornerRadius="0"
                 IsEnabled="{Binding ChoiseEnable}"
                 IsVisible="{Binding HeadChoiseDisplay}" />
@@ -37,26 +49,14 @@
                 CornerRadius="0"
                 IsEnabled="{Binding Choise1Enable}"
                 IsVisible="{Binding HeadChoise1Display}" />
-            <Button
-                Width="40"
-                Height="35"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                BorderThickness="0"
-                Command="{Binding BackClick}"
-                CornerRadius="0"
-                IsEnabled="{Binding HeadBackEnable}"
-                IsVisible="{Binding HeadBack}">
-                <svg:SvgControl Width="20" Path="/Resource/Icon/Back.svg" />
-            </Button>
         </StackPanel>
         <Panel>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Name="Buttons" HorizontalAlignment="Left" Margin="5,5,0,5" Orientation="Horizontal">
                 <Button
                     Name="ButtonClose"
                     Width="13"
                     Height="13"
-                    Margin="10,0,0,0"
+                    Margin="5,0,0,0"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderBrush="Transparent"
@@ -85,7 +85,7 @@
                     Name="ButtonMax"
                     Width="13"
                     Height="13"
-                    Margin="6,0,0,0"
+                    Margin="6,0,5,0"
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderBrush="Transparent"
