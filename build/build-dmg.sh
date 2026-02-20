@@ -33,7 +33,7 @@ build() {
     local app_name="ColorMC"
     local app_path="./src/build_out/$1-dotnet/ColorMC.app"
     local background=${2:-""}  # 可选背景图
-    local output_name="colormc-macos-$version-$1"
+    local output_name="colormc-macos-$version-$2"
     
     echo "build DMG: $output_name"
     
@@ -68,7 +68,7 @@ build_min() {
     local app_name="ColorMC"
     local app_path="./src/build_out/$1-min/ColorMC.app"
     local background=${2:-""}  # 可选背景图
-    local output_name="colormc-macos-$version-min-$1"
+    local output_name="colormc-macos-$version-min-$2"
     
     echo "build DMG: $output_name"
     
@@ -106,7 +106,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-build osx-arm64
-build osx-x64
-build_min osx-arm64
-build_min osx-x64
+build osx-arm64 aarch64
+build osx-x64 x86_64
+build_min osx-arm64 aarch64
+build_min osx-x64 x86_64

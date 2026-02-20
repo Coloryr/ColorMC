@@ -21,20 +21,13 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.101
+        dotnet-version: 10.0.103
 
     - name: Read version number
       id: version
       run: |
         VERSION=$(cat ./build/version)
         echo "VERSION=$VERSION" >> $GITHUB_ENV  
-
-    # - name: 更新源码
-    #   shell: bash
-    #   working-directory: ./
-    #   run: |
-    #     chmod a+x ./build/update.sh
-    #     ./build/update.sh
 
     - name: 构建源码
       shell: bash
@@ -187,20 +180,13 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.101
+        dotnet-version: 10.0.103
 
     - name: Read version number
       id: version
       run: |
         VERSION=$(cat ./build/version)
         echo "VERSION=$VERSION" >> $GITHUB_ENV  
-
-    # - name: 更新源码
-    #   shell: bash
-    #   working-directory: ./
-    #   run: |
-    #     chmod a+x ./build/update.sh
-    #     ./build/update.sh
 
     - name: 构建
       shell: bash
@@ -233,6 +219,29 @@ jobs:
       with:
         name: "colormc-macos-min-aarch64"
         path: build_out/colormc-macos-${{ env.VERSION }}-min-aarch64.zip
+    - name: 上传 colormc-macos-x86_64-dmg
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-x86_64-dmg"
+        path: build_out/colormc-macos-${{ env.VERSION }}-x86_64.dmg
+
+    - name: 上传 colormc-macos-min-x86_64-dmg
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-min-x86_64-dmg"
+        path: build_out/colormc-macos-${{ env.VERSION }}-min-x86_64.dmg
+
+    - name: 上传 colormc-macos-aarch64-dmg
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-aarch64-dmg"
+        path: build_out/colormc-macos-${{ env.VERSION }}-aarch64.dmg
+
+    - name: 上传 colormc-macos-min-aarch64-dmg
+      uses: actions/upload-artifact@v4
+      with:
+        name: "colormc-macos-min-aarch64-dmg"
+        path: build_out/colormc-macos-${{ env.VERSION }}-min-aarch64.dmg
 
   build-windows:
     runs-on: windows-latest
@@ -251,12 +260,7 @@ jobs:
     - name: 设置.NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 10.0.101
-
-    # - name: 更新源码
-    #   shell: cmd
-    #   working-directory: ./
-    #   run: ./build/update.cmd
+        dotnet-version: 10.0.103
 
     - name: 构建 源码
       shell: cmd
