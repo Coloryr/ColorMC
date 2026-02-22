@@ -146,7 +146,6 @@
     <None Remove="Resource\Icon\Item\download.svg" />
     <None Remove="Resource\Icon\Item\DownloadFile.svg" />
     <None Remove="Resource\Icon\Item\Import.svg" />
-    <None Remove="Resource\Icon\Item\Star.svg" />
     <None Remove="Resource\Icon\Item\StarFill.svg" />
     <None Remove="Resource\Icon\LuckBlock\down.svg" />
     <None Remove="Resource\Icon\LuckBlock\Triangle.svg" />
@@ -285,7 +284,7 @@
     <AvaloniaResource Include="Resource\Icon\Item\Connection.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\DownloadFile.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\Import.svg" />
-    <AvaloniaResource Include="Resource\Icon\Item\Star.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\StarNone.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\StarFill.svg" />
     <AvaloniaResource Include="Resource\Icon\ListGrid\ListInfo.svg" />
     <AvaloniaResource Include="Resource\Icon\ListGrid\GridInfo.svg" />

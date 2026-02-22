@@ -94,7 +94,7 @@
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Item/Star.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Item/StarNone.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"

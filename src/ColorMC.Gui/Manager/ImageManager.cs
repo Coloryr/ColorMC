@@ -87,7 +87,7 @@ public static class ImageManager
     /// <summary>
     /// 星标图标
     /// </summary>
-    public static readonly string[] Stars = ["/Resource/Icon/Item/StarFill.svg", "/Resource/Icon/Item/Star.svg"];
+    public static readonly string[] Stars = ["/Resource/Icon/Item/StarFill.svg", "/Resource/Icon/Item/StarNone.svg"];
     /// <summary>
     /// 音乐播放暂停图标
     /// </summary>
