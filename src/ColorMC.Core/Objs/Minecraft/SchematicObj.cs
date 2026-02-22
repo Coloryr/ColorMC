@@ -34,6 +34,18 @@ public record SchematicObj
     /// 描述
     /// </summary>
     public string Description { get; set; }
+    /// <summary>
+    /// 方块总数
+    /// </summary>
+    public int BlockCount { get; set; }
+    /// <summary>
+    /// 方块种类
+    /// </summary>
+    public int BlockTypes { get; set; }
+    /// <summary>
+    /// 方块数量
+    /// </summary>
+    public Dictionary<string, int> Blocks;
 
     /// <summary>
     /// 是否已损坏

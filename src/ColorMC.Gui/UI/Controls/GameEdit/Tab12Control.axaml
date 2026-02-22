@@ -28,12 +28,24 @@
                         Header="{setting:Localize Text.Name}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
+                        Binding="{Binding Type}"
+                        Header="{setting:Localize Text.Type}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
                         Binding="{Binding Author}"
                         Header="{setting:Localize Text.Author}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Description}"
                         Header="{setting:Localize Text.Description}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding BlockCount}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text11}"
+                        IsReadOnly="True" />
+                    <DataGridTextColumn
+                        Binding="{Binding BlockTypes}"
+                        Header="{setting:Localize GameEditWindow.Tab12.Text12}"
                         IsReadOnly="True" />
                     <DataGridTextColumn
                         Binding="{Binding Width}"

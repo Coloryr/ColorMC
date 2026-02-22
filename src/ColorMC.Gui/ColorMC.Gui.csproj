@@ -48,6 +48,7 @@
     <None Remove="Resource\Icon\Button\AddAccount.svg" />
     <None Remove="Resource\Icon\Button\AddShape.svg" />
     <None Remove="Resource\Icon\Button\ArrowRight.svg" />
+    <None Remove="Resource\Icon\Button\Close.svg" />
     <None Remove="Resource\Icon\Button\Cog.svg" />
     <None Remove="Resource\Icon\close.svg" />
     <None Remove="Resource\Icon\cog.svg" />
@@ -146,6 +147,7 @@
     <None Remove="Resource\Icon\Item\download.svg" />
     <None Remove="Resource\Icon\Item\DownloadFile.svg" />
     <None Remove="Resource\Icon\Item\Import.svg" />
+    <None Remove="Resource\Icon\Item\Link.svg" />
     <None Remove="Resource\Icon\Item\StarFill.svg" />
     <None Remove="Resource\Icon\LuckBlock\down.svg" />
     <None Remove="Resource\Icon\LuckBlock\Triangle.svg" />
@@ -191,6 +193,7 @@
     <AvaloniaResource Include="Resource\Icon\Button\AddAccount.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\AddShape.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\ArrowRight.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\Close.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Cog.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Counter.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Delete.svg" />
@@ -284,6 +287,7 @@
     <AvaloniaResource Include="Resource\Icon\Item\Connection.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\DownloadFile.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\Import.svg" />
+    <AvaloniaResource Include="Resource\Icon\Item\Link.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\StarNone.svg" />
     <AvaloniaResource Include="Resource\Icon\Item\StarFill.svg" />
     <AvaloniaResource Include="Resource\Icon\ListGrid\ListInfo.svg" />

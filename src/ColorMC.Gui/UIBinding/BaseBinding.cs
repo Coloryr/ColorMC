@@ -809,9 +809,13 @@ public static class BaseBinding
     /// 读取语言文件
     /// </summary>
     /// <returns>语言</returns>
-    private static async Task<JsonDocument?> ReadLang()
+    public static async Task<JsonDocument?> ReadLang()
     {
         var version = BlockTexUtils.Blocks.Id;
+        if (version == null)
+        {
+            return null;
+        }
         var obj = VersionPath.GetVersion(version);
         var ass = obj?.AssetIndex?.GetIndex();
         string lang = "zh_cn.json";
@@ -855,23 +859,35 @@ public static class BaseBinding
             {
                 continue;
             }
-            if (lang.RootElement.TryGetProperty("block.minecraft." + item, out var name)
-                && name.ValueKind == JsonValueKind.String
-                )
-            {
-                list.Add(new BlockItemModel(item, name.GetString()!, item,
-                    ImageManager.GetBlockIcon(item, tex)));
-            }
-            else if (lang.RootElement.TryGetProperty("block.minecraft." + item.Replace("_powered", ""), out var name1)
-                && name.ValueKind == JsonValueKind.String
-                )
-            {
-                list.Add(new BlockItemModel(item, name1.GetString()!, item,
-                    ImageManager.GetBlockIcon(item, tex)));
-            }
+
+            list.Add(new BlockItemModel(item, GetBlockName(lang, item), item,
+                ImageManager.GetBlockIcon(item, tex), 0));
         }
 
         return list;
+    }
+
+    public static string? GetBlockName(JsonDocument? document, string key)
+    {
+        if (document == null)
+        {
+            return null;
+        }
+
+        var keys = key.Split(":");
+        var key1 = keys.Length == 2 ? keys[1] : keys[0];
+        if (document.RootElement.TryGetProperty("block.minecraft." + key1, out var name)
+                && name.ValueKind == JsonValueKind.String)
+        {
+            return name.GetString();
+        }
+        else if (document.RootElement.TryGetProperty("block.minecraft." + key1.Replace("_powered", ""), out var name1)
+            && name.ValueKind == JsonValueKind.String)
+        {
+            return name1.GetString();
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -896,22 +912,8 @@ public static class BaseBinding
         {
             return null;
         }
-        if (lang.RootElement.TryGetProperty("block.minecraft." + item, out var name)
-            && name.ValueKind == JsonValueKind.String
-            )
-        {
-            return new BlockItemModel(item, name.GetString()!, item,
-                 ImageManager.GetBlockIcon(item, tex));
-        }
-        else if (lang.RootElement.TryGetProperty("block.minecraft." + item.Replace("_powered", ""), out var name1)
-            && name.ValueKind == JsonValueKind.String
-            )
-        {
-            return new BlockItemModel(item, name1.GetString()!, item,
-                ImageManager.GetBlockIcon(item, tex));
-        }
-
-        return null;
+        return new BlockItemModel(item, GetBlockName(lang, item), item,
+                ImageManager.GetBlockIcon(item, tex), 0);
     }
 
     /// <summary>
@@ -930,18 +932,8 @@ public static class BaseBinding
 
         foreach (var item in BlockTexUtils.Blocks.Tex)
         {
-            if (lang.RootElement.TryGetProperty("block.minecraft." + item.Key, out var name)
-                && name.ValueKind == JsonValueKind.String)
-            {
-                list.Add(new BlockItemModel(item.Key, name.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
-                    ImageManager.GetBlockIcon(item.Key, item.Value)));
-            }
-            else if (lang.RootElement.TryGetProperty("block.minecraft." + item.Key.Replace("_powered", ""), out var name1)
-                && name.ValueKind == JsonValueKind.String)
-            {
-                list.Add(new BlockItemModel(item.Key, name1.GetString()!, item.Value.Replace(Names.NamePngExt, ""),
-                    ImageManager.GetBlockIcon(item.Key, item.Value)));
-            }
+            list.Add(new BlockItemModel(item.Key, GetBlockName(lang, item.Key), item.Key,
+                    ImageManager.GetBlockIcon(item.Key, item.Value), 0));
         }
 
         var random = new Random();

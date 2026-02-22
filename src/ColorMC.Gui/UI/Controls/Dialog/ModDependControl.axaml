@@ -73,7 +73,7 @@
             Classes="top"
             Command="{Binding Cancel}"
             CornerRadius="5">
-            <svg:SvgControl Path="/Resource/Icon/close.svg" />
+            <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
         </Button>
     </Panel>
 </UserControl>

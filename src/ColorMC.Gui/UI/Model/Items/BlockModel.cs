@@ -9,9 +9,9 @@ namespace ColorMC.Gui.UI.Model.Items;
 /// </summary>
 /// <param name="key">方块ID</param>
 /// <param name="name">显示名字</param>
-/// <param name="group">显示ID</param>
 /// <param name="bitmap">图片</param>
-public partial class BlockItemModel(string key, string name, string group, Bitmap? bitmap) : ObservableObject
+/// <param name="count">数量</param>
+public partial class BlockItemModel(string key, string? name, string group, Bitmap? bitmap, int count) : ObservableObject
 {
     public IBlockTop? Top;
 
@@ -20,9 +20,11 @@ public partial class BlockItemModel(string key, string name, string group, Bitma
 
     public string Key => key;
 
-    public string Name => name;
-    public string Group => group;
+    public string? Name => name;
     public Bitmap? Bitmap => bitmap;
+
+    public int Count => count;
+    public bool ShowCount => count > 1;
 
     public void Use()
     {

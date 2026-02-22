@@ -3,6 +3,9 @@ using Avalonia.Input;
 using ColorMC.Core.Game;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Model.Dialog;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -18,13 +21,13 @@ public partial class GameEditModel
     /// <summary>
     /// 结构文件列表
     /// </summary>
-    public ObservableCollection<SchematicObj> SchematicList { get; set; } = [];
+    public ObservableCollection<SchematicDisplayModel> SchematicList { get; set; } = [];
 
     /// <summary>
     /// 选中的结构文件
     /// </summary>
     [ObservableProperty]
-    private SchematicObj? _schematicItem;
+    private SchematicDisplayModel? _schematicItem;
 
     /// <summary>
     /// 是否没有结构文件
@@ -52,20 +55,54 @@ public partial class GameEditModel
         {
             if (item.Broken)
             {
-                SchematicList.Add(new SchematicObj()
-                {
-                    Name = LangUtils.Get("GameEditWindow.Tab12.Text10"),
-                    Local = item.Local,
-                });
+                item.Name = LangUtils.Get("GameEditWindow.Tab12.Text10");
             }
-            else
-            {
-                SchematicList.Add(item);
-            }
+           
+            SchematicList.Add(new SchematicDisplayModel() { Obj = item });
         }
         Window.CloseDialog(dialog);
         SchematicEmptyDisplay = SchematicList.Count == 0;
         Window.Notify(LangUtils.Get("GameEditWindow.Tab12.Text7"));
+    }
+
+    /// <summary>
+    /// 显示方块列表
+    /// </summary>
+    public async void DisplayBlocks()
+    {
+        if (SchematicItem == null || SchematicItem.Obj.BlockCount <= 0)
+        {
+            return;
+        }
+
+        var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
+        var res = await BaseBinding.StartLoadBlock();
+        Window.CloseDialog(dialog);
+        if (!res.State)
+        {
+            await Window.ShowWait(res.Data!);
+            return;
+        }
+
+        var dialog1 = new BlockListModel(Window.WindowId)
+        {
+            Text = string.Format(LangUtils.Get("GameEditWindow.Tab12.Text17"), SchematicItem.Name)
+        };
+        var lang = await BaseBinding.ReadLang();
+
+        foreach (var item in SchematicItem.Obj.Blocks)
+        {
+            if (BlockTexUtils.Blocks.Tex.TryGetValue(item.Key, out var tex))
+            {
+                dialog1.Blocks.Add(new BlockItemModel(item.Key, BaseBinding.GetBlockName(lang, item.Key), item.Key, ImageManager.GetBlockIcon(item.Key, tex), item.Value));
+            }
+            else
+            {
+                dialog1.Blocks.Add(new BlockItemModel(item.Key, BaseBinding.GetBlockName(lang, item.Key), item.Key, null, item.Value));
+            }
+        }
+
+        Window.ShowDialog(dialog1);
     }
 
     /// <summary>
@@ -130,7 +167,7 @@ public partial class GameEditModel
     {
         if (SchematicItem is { } item)
         {
-            DeleteSchematic(item);
+            DeleteSchematic(item.Obj);
         }
     }
 }

@@ -1318,7 +1318,7 @@ public static class GameBinding
                     var file1 = file.ToLower();
                     if (File.Exists(file) &&
                         (file1.EndsWith(Names.NameLitematicExt) || file1.EndsWith(Names.NameSchematicExt) ||
-                         file1.EndsWith(Names.NameSchemExt)))
+                         file1.EndsWith(Names.NameSchemExt) || file1.EndsWith(Names.NameNbtExt)))
                     {
                         list1.Add(file);
                     }

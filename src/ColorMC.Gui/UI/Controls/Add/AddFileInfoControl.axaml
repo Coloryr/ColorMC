@@ -86,7 +86,7 @@
                     VerticalAlignment="Top"
                     Classes="none2"
                     Command="{Binding CloseView}">
-                    <svg:SvgControl Path="/Resource/Icon/close.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
                 </Button>
             </Panel>
             <TabControl Padding="0" SelectedIndex="{Binding SelectIndex, FallbackValue=1}">

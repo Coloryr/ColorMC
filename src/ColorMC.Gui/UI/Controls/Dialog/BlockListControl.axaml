@@ -1,0 +1,47 @@
+<UserControl
+    x:Class="ColorMC.Gui.BlockListControl"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.Dialog"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
+    xmlns:view="clr-namespace:ColorMC.Gui.UI.Controls.Items"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="model:BlockListModel"
+    mc:Ignorable="d">
+    <DockPanel>
+        <Panel Margin="5" DockPanel.Dock="Top">
+            <TextBlock
+                VerticalAlignment="Center"
+                FontSize="14"
+                Text="{Binding Text}" />
+            <Button
+                Width="30"
+                Height="30"
+                HorizontalAlignment="Right"
+                Classes="none2"
+                Command="{Binding Cancel}">
+                <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
+            </Button>
+        </Panel>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+            <ItemsControl
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                ItemsSource="{Binding Blocks}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <view:BlockItemControl DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

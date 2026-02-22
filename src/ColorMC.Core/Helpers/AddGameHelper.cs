@@ -368,6 +368,8 @@ public static class AddGameHelper
     private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, ZipArchive zip, 
         List<ZipArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
     {
+        unselect ??= [];
+
         packgui?.SetState(AddState.ReadInfo);
         HMCLObj? obj = null;
         CurseForgePackObj? obj1 = null;

@@ -36,6 +36,7 @@ public class TemplateSelector : IDataTemplate
         _templates.Add(typeof(FrpShareModel), typeof(FrpShareControl));
         _templates.Add(typeof(AddLockLoginModel), typeof(AddLockLoginControl));
         _templates.Add(typeof(AddUserModel), typeof(AddUserControl));
+        _templates.Add(typeof(BlockListModel), typeof(BlockListControl));
     }
 
     public Control? Build(object? param)

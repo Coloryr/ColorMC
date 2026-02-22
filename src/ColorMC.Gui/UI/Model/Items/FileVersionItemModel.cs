@@ -78,7 +78,7 @@ public partial class FileVersionItemModel : SelectItemModel
         {
             Fid = data.Id,
             Pid = data.ProjectId,
-            Source = SourceType.CurseForge,
+            Source = SourceType.Modrinth,
             Type = type
         };
 

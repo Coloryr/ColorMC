@@ -21,11 +21,26 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Vertical">
-            <Image
+            <Panel
                 Width="60"
                 Height="60"
                 Margin="0,0,0,5"
-                Source="{Binding Bitmap}" />
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+                <Image
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Source="{Binding Bitmap}" />
+                <TextBlock
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    FontSize="20"
+                    Foreground="White"
+                    IsVisible="{Binding ShowCount}"
+                    Text="{Binding Count}" />
+            </Panel>
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="15"
@@ -37,7 +52,7 @@
                 HorizontalAlignment="Center"
                 FontSize="10"
                 Foreground="White"
-                Text="{Binding Group}"
+                Text="{Binding Key}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
         </StackPanel>

@@ -13,6 +13,8 @@
     <Border
         Margin="5,5,5,5"
         Background="{setting:Theme ItemBG}"
+        BorderBrush="{Binding BorderBrush}"
+        BorderThickness="1"
         BoxShadow="{Binding Border}"
         CornerRadius="5">
         <DockPanel Margin="15">

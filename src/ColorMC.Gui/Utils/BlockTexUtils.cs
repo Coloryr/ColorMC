@@ -299,7 +299,7 @@ public static class BlockTexUtils
                 continue;
             }
 
-            var id = Path.GetFileName(item.Key!).Replace(Names.NameJsonExt, "");
+            var id = "minecraft:" + Path.GetFileName(item.Key!).Replace(Names.NameJsonExt, "");
             var file = tex.Replace("minecraft:block/", "") + ".png";
             var item1 = reader.GetEntry("assets/minecraft/textures/block/" + file);
             if (item1 == null)
@@ -314,6 +314,7 @@ public static class BlockTexUtils
 
             img.Dispose();
 
+            file = "minecraft_" + file;
             block.SavePng(Path.Combine(s_local, file));
             Blocks.Tex[id] = file;
         }

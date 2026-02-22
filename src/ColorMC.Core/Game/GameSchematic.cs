@@ -156,8 +156,50 @@ public static class GameSchematic
             Width = (size[0] as NbtInt)!.ValueInt,
             Height = (size[1] as NbtInt)!.ValueInt,
             Length = (size[2] as NbtInt)!.ValueInt,
-            Type = SchematicType.Create
+            Type = SchematicType.Create,
+            Blocks = []
         };
+
+        var orderBlock = new Dictionary<int, string>();
+
+        var types = tag.TryGet<NbtList>("palette");
+        if (types != null)
+        {
+            int index = 0;
+            foreach (var item1 in types)
+            {
+                if (item1 is NbtCompound nbt1)
+                {
+                    orderBlock[index] = nbt1.TryGet<NbtString>("Name")!.Value;
+                }
+                index++;
+            }
+        }
+
+        var group = orderBlock.GroupBy(item2 => item2.Value);
+        foreach (var item1 in group)
+        {
+            item.Blocks.Add(item1.Key, 0);
+        }
+
+        var blocks = tag.TryGet<NbtList>("blocks");
+        if (blocks != null)
+        {
+            foreach (var item1 in blocks)
+            {
+                if (item1 is NbtCompound nbt1)
+                {
+                    var index = nbt1.TryGet<NbtInt>("state")!.ValueInt;
+                    if (orderBlock.TryGetValue(index, out var name))
+                    {
+                        item.Blocks[name]++;
+                    }
+                }
+            }
+        }
+
+        item.BlockCount = item.Blocks.Sum(item => item.Value);
+        item.BlockTypes = item.Blocks.Count;
 
         return item;
     }

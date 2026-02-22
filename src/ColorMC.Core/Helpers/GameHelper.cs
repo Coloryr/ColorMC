@@ -231,7 +231,7 @@ public static class GameHelper
         {
             Name = "io.github.zekerzhayard:forgewrapper:colormc-1.6.0",
             Local = Path.Combine(LibrariesPath.BaseDir, "io", "github", "zekerzhayard", "forgewrapper",
-            "colormc-1.6.0", "forgewrapper-colormc-1.6.0.jar")
+            "prism-2025-12-07", "ForgeWrapper-prism-2025-12-07.jar")
         };
         var file = new FileInfo(ForgeWrapper.Local);
         if (!file.Exists)
@@ -240,7 +240,7 @@ public static class GameHelper
             {
                 Directory.CreateDirectory(file.DirectoryName!);
             }
-            PathHelper.WriteBytes(file.FullName, Resource1.ForgeWrapper_colormc_1_6_0);
+            PathHelper.WriteBytes(file.FullName, Resource1.ForgeWrapper_prism_2025_12_07);
         }
     }
 

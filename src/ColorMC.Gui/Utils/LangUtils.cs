@@ -88,6 +88,18 @@ public static class LangUtils
         };
     }
 
+    public static string GetName(this SchematicType type)
+    {
+        return type switch
+        {
+            SchematicType.Minecraft => Get("Type.SchematicType.Item1"),
+            SchematicType.Litematic => Get("Type.SchematicType.Item2"),
+            SchematicType.WorldEdit => Get("Type.SchematicType.Item3"),
+            SchematicType.Create => Get("Type.SchematicType.Item4"),
+            _ => ""
+        };
+    }
+
     public static string GetName(this MSortingObj type)
     {
         return Get($"Type.Modrinth.SortingType.{type.Data}");

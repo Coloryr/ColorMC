@@ -16,6 +16,10 @@ public static class GameEditFlyout7
     {
         new FlyoutsControl(
         [
+            new FlyoutMenuModel(LangUtils.Get("GameEditWindow.Tab12.Text16"), model.SchematicItem!.Obj.BlockCount > 0, ()=>
+            {
+                model.DisplayBlocks();
+            }),
             new FlyoutMenuModel(LangUtils.Get("Button.OpFile"), true, ()=>
             {
                 PathBinding.OpenFileWithExplorer(model.SchematicItem!.Local);

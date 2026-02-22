@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Threading;
 using ColorMC.Gui.UI.Flyouts;
 using ColorMC.Gui.UI.Model.GameEdit;
 
@@ -54,7 +55,10 @@ public partial class Tab12Control : UserControl
         {
             return;
         }
-        GameEditFlyout7.Show(control, model);
+        Dispatcher.UIThread.Post(() =>
+        {
+            GameEditFlyout7.Show(control, model);
+        });
     }
 }
 
