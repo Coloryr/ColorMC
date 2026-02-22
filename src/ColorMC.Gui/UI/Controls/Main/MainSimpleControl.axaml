@@ -1,5 +1,5 @@
 <UserControl
-    x:Class="ColorMC.Gui.UI.Controls.Main.SimpleControl"
+    x:Class="ColorMC.Gui.UI.Controls.Main.MainSimpleControl"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -103,6 +103,7 @@
                     OnContent="{setting:Localize SettingWindow.Tab4.Text12}" />
             </Grid>
             <Grid
+                Margin="0,0,0,10"
                 ColumnDefinitions="auto,*,auto,*"
                 IsEnabled="{Binding HaveGame}"
                 IsVisible="{Binding EnableArg}">
@@ -125,6 +126,28 @@
                     Minimum="1"
                     Value="{Binding MaxMem}" />
             </Grid>
+            <StackPanel
+                Margin="0,0,0,5"
+                HorizontalAlignment="Center"
+                IsVisible="{Binding EnableArg}"
+                Orientation="Horizontal">
+                <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text22}" />
+                <ComboBox
+                    Width="230"
+                    IsEditable="True"
+                    ItemsSource="{Binding JavaList}"
+                    Text="{Binding Java}" />
+            </StackPanel>
+            <Button
+                Width="200"
+                Height="35"
+                Margin="-3,0,-3,0"
+                HorizontalAlignment="Stretch"
+                Classes="top"
+                Command="{Binding OpenGameSetting}"
+                Content="{setting:Localize MainWindow.Text97}"
+                IsEnabled="{Binding HaveGame}"
+                IsVisible="{Binding EnableArg}" />
         </StackPanel>
     </Border>
 </UserControl>

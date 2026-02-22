@@ -205,6 +205,7 @@ public static class JvmPath
         if (info != null)
         {
             Jvms.Add(name, info);
+            ColorMCCore.OnJavaChange(info, true, false);
             ConfigLoad.Config.JavaList?.Add(new JvmConfigObj
             {
                 Name = name,
@@ -223,7 +224,10 @@ public static class JvmPath
     /// <param name="name">名字</param>
     public static void Remove(string name)
     {
-        Jvms.Remove(name);
+        if (Jvms.Remove(name, out var info))
+        {
+            ColorMCCore.OnJavaChange(info, false, false);
+        }
         var item = ConfigLoad.Config.JavaList?.FirstOrDefault(a => a.Name == name);
         if (item != null && ConfigLoad.Config.JavaList?.Remove(item) == true)
         {
@@ -272,6 +276,8 @@ public static class JvmPath
                     });
                 }
             });
+
+            ColorMCCore.OnJavaChange(null, true, true);
         });
     }
 
@@ -301,6 +307,7 @@ public static class JvmPath
     public static void RemoveAll()
     {
         Jvms.Clear();
+        ColorMCCore.OnJavaChange(null, false, true);
         ConfigLoad.Config.JavaList.Clear();
         ConfigLoad.Save();
     }

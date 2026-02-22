@@ -171,7 +171,7 @@
                         <DockPanel
                             Margin="30,20,0,0"
                             DockPanel.Dock="Top"
-                            IsVisible="{Binding HaveGame}">
+                            IsVisible="{Binding !IsNotGame}">
                             <Border
                                 Padding="3"
                                 Background="{setting:Theme RadioGroupBG}"

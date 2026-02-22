@@ -673,7 +673,7 @@ public class InstanceChangeEventArgs(InstanceChangeType type, GameSettingObj? ga
 }
 
 /// <summary>
-/// 开始下载回调
+/// 开始下载事件
 /// </summary>
 public class DownloadEventArgs : EventArgs
 {
@@ -685,4 +685,23 @@ public class DownloadEventArgs : EventArgs
     /// 界面操作回调
     /// </summary>
     public IDownloadGui? GuiHandle { get; set; }
+}
+
+/// <summary>
+/// Java修改事件
+/// </summary>
+public class JavaChangeArg : EventArgs
+{ 
+    /// <summary>
+    /// 是否为添加操作
+    /// </summary>
+    public bool IsAdd { get; set; }
+    /// <summary>
+    /// 是否为批量操作
+    /// </summary>
+    public bool IsMut { get; set; }
+    /// <summary>
+    /// 修改的Java
+    /// </summary>
+    public JavaInfoObj? Java { get; set; }
 }

@@ -1,7 +1,11 @@
+using System.Collections.ObjectModel;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using ColorMC.Core.Config;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -14,6 +18,11 @@ namespace ColorMC.Gui.UI.Model.Main;
 /// </summary>
 public partial class MainModel
 {
+    /// <summary>
+    /// Java列表
+    /// </summary>
+    public ObservableCollection<string> JavaList { get; init; } = [];
+
     [ObservableProperty]
     private bool _maxWindow;
 
@@ -37,6 +46,9 @@ public partial class MainModel
     [ObservableProperty]
     private bool _enableArg;
 
+    [ObservableProperty]
+    private string _java;
+
     partial void OnGameChanged(GameItemModel? value)
     {
         if (value == null)
@@ -48,6 +60,8 @@ public partial class MainModel
             return;
         }
 
+        LoadJavaList();
+
         GameName = value.Name;
         GameIcon = ImageManager.GetGameIcon(value.Obj) ?? ImageManager.GameIcon;
 
@@ -57,6 +71,18 @@ public partial class MainModel
         MaxWindow = value.Obj.Window?.FullScreen ?? conf.Window.FullScreen ?? false;
         GameWidth = value.Obj.Window?.Width ?? conf.Window.Width;
         GameHeight = value.Obj.Window?.Height ?? conf.Window.Height;
+        Java = value.Obj.JvmLocal ?? "";
+    }
+
+    partial void OnJavaChanged(string value)
+    {
+        if (Game?.Obj is not { } obj)
+        {
+            return;
+        }
+
+        obj.JvmLocal = value;
+        obj.Save();
     }
 
     partial void OnMaxWindowChanged(bool value)
@@ -118,6 +144,17 @@ public partial class MainModel
         obj.Save();
     }
 
+    [RelayCommand]
+    public void OpenGameSetting()
+    {
+        if (Game == null)
+        {
+            return;
+        }
+
+        WindowManager.ShowGameEdit(Game.Obj, GameEditWindowType.Arg);
+    }
+
     /// <summary>
     /// 启动选中的游戏实例
     /// </summary>
@@ -143,5 +180,24 @@ public partial class MainModel
         }
 
         WindowManager.ShowGameEdit(Game.Obj);
+    }
+
+    private void LoadJavaList()
+    {
+        JavaList.Clear();
+
+        JavaList.Add("");
+
+        foreach (var item in JvmPath.Jvms)
+        {
+            JavaList.Add(item.Value.Path);
+        }
+
+        Java = Game?.Obj.JvmLocal ?? "";
+    }
+
+    private void ColorMCCore_JavaChange(JavaChangeArg obj)
+    {
+        Dispatcher.UIThread.Post(LoadJavaList);
     }
 }

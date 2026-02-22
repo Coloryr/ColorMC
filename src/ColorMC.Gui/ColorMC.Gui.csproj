@@ -358,6 +358,9 @@
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UI\Controls\Main\MainSimpleControl.axaml.cs">
+      <DependentUpon>MainSimpleControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="UI\Controls\TitleControl.axaml.cs">
       <DependentUpon>TitleControl.axaml</DependentUpon>
     </Compile>

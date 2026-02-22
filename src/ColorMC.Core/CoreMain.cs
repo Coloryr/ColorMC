@@ -48,6 +48,10 @@ public static class ColorMCCore
     /// </summary>
     public static event Action<InstanceChangeEventArgs>? InstanceChange;
     /// <summary>
+    /// Java修改
+    /// </summary>
+    public static event Action<JavaChangeArg>? JavaChange;
+    /// <summary>
     /// 是否为新运行
     /// </summary>
     public static bool NewStart { get; internal set; }
@@ -244,6 +248,19 @@ public static class ColorMCCore
     internal static void OnInstanceIconChange(GameSettingObj obj)
     {
         InstanceChange?.Invoke(new InstanceChangeEventArgs(InstanceChangeType.IconChange, obj));
+    }
+
+    /// <summary>
+    /// Java修改
+    /// </summary>
+    internal static void OnJavaChange(JavaInfoObj? java, bool add, bool mut)
+    {
+        JavaChange?.Invoke(new JavaChangeArg
+        {
+            IsAdd = add,
+            IsMut = mut,
+            Java = java
+        });
     }
 
     /// <summary>

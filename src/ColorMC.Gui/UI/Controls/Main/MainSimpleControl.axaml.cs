@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace ColorMC.Gui.UI.Controls.Main;
 
-public partial class SimpleControl : UserControl
+public partial class MainSimpleControl : UserControl
 {
-    public SimpleControl()
+    public MainSimpleControl()
     {
         InitializeComponent();
     }

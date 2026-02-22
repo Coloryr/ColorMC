@@ -152,9 +152,6 @@ public partial class SettingModel
     /// </summary>
     public async void FindJavaDir()
     {
-#if Phone
-        return;
-#endif
         var top = Window.GetTopLevel();
         if (top == null)
         {

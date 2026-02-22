@@ -42,11 +42,6 @@ public partial class MainModel
     private readonly Dictionary<Guid, GameItemModel> Launchs = [];
 
     /// <summary>
-    /// 用于
-    /// </summary>
-    private readonly Semaphore _semaphore = new(0, 2);
-
-    /// <summary>
     /// 游戏实例
     /// </summary>
     [ObservableProperty]
@@ -106,8 +101,6 @@ public partial class MainModel
     /// 是否多选
     /// </summary>
     public bool IsMut { get; private set; }
-
-    private GameItemModel? _dragItem;
 
     partial void OnGridTypeChanged(ItemsGridType value)
     {

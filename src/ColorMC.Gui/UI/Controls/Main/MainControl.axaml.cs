@@ -43,7 +43,7 @@ public partial class MainControl : BaseUserControl
     /// <summary>
     /// 简易主界面
     /// </summary>
-    private SimpleControl? _simple;
+    private MainSimpleControl? _simple;
 
     public MainControl() : base(WindowManager.GetUseName<MainControl>())
     {

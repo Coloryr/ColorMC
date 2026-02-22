@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using ColorMC.Core;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model.Dialog;
@@ -105,6 +106,7 @@ public partial class MainModel : ControlModel, IMutTop
     {
         EventManager.SkinChange += SkinChange;
         EventManager.LastUserChange += EventManager_UserChange;
+        ColorMCCore.JavaChange += ColorMCCore_JavaChange;
 
         MusicVolume = GuiConfigUtils.Config.ServerCustom.Volume;
     }
