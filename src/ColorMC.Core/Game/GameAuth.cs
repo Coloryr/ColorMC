@@ -28,6 +28,7 @@ public static class GameAuth
         {
             return null;
         }
+        gui.Close();
         //Xbox登录
         gui.LoginOAuthState(AuthState.XBox);
         var res3 = await OAuthApi.GetXBoxAsync(res2.AccessToken, token);

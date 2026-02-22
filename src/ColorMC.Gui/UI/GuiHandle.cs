@@ -44,18 +44,25 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
 {
     public CancellationToken Token => model.Token;
 
+    private InputModel _showDialog;
+
     public void LoginOAuthCode(string? url, string code)
     {
-        var dialog = new InputModel(model.Window.WindowId)
+        Close();
+        _showDialog = new InputModel(model.Window.WindowId)
         {
             Text1 = string.Format(LangUtils.Get("UserWindow.Text15"), url),
             Text2 = string.Format(LangUtils.Get("UserWindow.Text16"), code),
+            Text2Visable = true,
             TextReadonly = true,
+            CancelVisible = false,
+            CancelEnable = false,
+            ConfirmEnable = false,
             ChoiseCall = model.SetCancel,
             ChoiseText = LangUtils.Get("Button.Cancel"),
             ChoiseVisible = true
         };
-        model.Window.ShowDialog(dialog);
+        model.Window.ShowDialog(_showDialog);
         BaseBinding.OpenUrl($"{url}?otc={code}");
         var top = model.Window.GetTopLevel();
         if (top == null)
@@ -63,6 +70,14 @@ public class LoginOAuthGui(UsersModel model, ProgressModel? progress) : ILoginOA
             return;
         }
         BaseBinding.CopyTextClipboard(top, code);
+    }
+
+    public void Close()
+    {
+        if (_showDialog != null)
+        {
+            model.Window.CloseDialog(_showDialog);
+        }
     }
 
     public void LoginOAuthState(AuthState state)

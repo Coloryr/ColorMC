@@ -15,4 +15,8 @@ public interface ILoginOAuthGui
     /// </summary>
     /// <param name="state">登录状态</param>
     public void LoginOAuthState(AuthState state);
+    /// <summary>
+    /// 结束显示
+    /// </summary>
+    public void Close();
 }

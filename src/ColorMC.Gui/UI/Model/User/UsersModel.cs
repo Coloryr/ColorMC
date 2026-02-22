@@ -669,8 +669,7 @@ public partial class UsersModel : ControlModel
         {
             return;
         }
-        var obj = UserList.Where(item => item.AuthType == user.AuthType && item.UUID == user.UUID)
-            .FirstOrDefault();
+        var obj = UserList.FirstOrDefault(item => item.AuthType == user.AuthType && item.UUID == user.UUID);
         if (obj == null)
         {
             return;

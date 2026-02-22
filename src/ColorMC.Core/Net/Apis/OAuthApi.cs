@@ -26,7 +26,7 @@ public static class OAuthApi
     {
         { "client_id", ColorMCCore.CoreArg.OAuthKey },
         { "grant_type", "urn:ietf:params:oauth:grant-type:device_code" },
-        { "code", "" }
+        { "device_code", "" }
     };
 
     public static readonly Dictionary<string, string> Arg3 = new()
@@ -66,7 +66,7 @@ public static class OAuthApi
     /// </summary>
     public static async Task<OAuthGetCodeObj?> RunGetCodeAsync(OAuthGetCodeRes res, CancellationToken token)
     {
-        Arg2["code"] = res.Code;
+        Arg2["device_code"] = res.DeviceCode;
         long startTime = DateTime.Now.Ticks;
         int delay = 2;
         do
