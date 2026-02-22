@@ -35,25 +35,14 @@
     </UserControl.Styles>
 
     <ScrollViewer>
-        <StackPanel Margin="30">
-
-            <!--  第一部分：启动统计 (使用 Grid 均分列)  -->
+        <StackPanel Margin="20">
             <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
-                    <!--  标题栏  -->
-                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,10,0"
-                            Path="/Resource/Icon/GameCount/svg3.svg" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize CountWindow.Text1}" />
-                    </StackPanel>
-
-                    <!--  核心数据展示区：三列布局  -->
+                    <TextBlock
+                        Margin="0,0,0,15"
+                        VerticalAlignment="Center"
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize CountWindow.Text1}" />
                     <Grid Margin="0,0,0,15" ColumnDefinitions="*,*,*">
                         <!--  总启动  -->
                         <StackPanel Grid.Column="0" Classes="StatItem">
@@ -100,21 +89,13 @@
                 </StackPanel>
             </Border>
 
-            <!--  第二部分：时间统计  -->
             <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,15" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,10,0"
-                            Path="/Resource/Icon/GameCount/svg1.svg" />
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize CountWindow.Text8}" />
-                    </StackPanel>
-
+                    <TextBlock
+                        Margin="0,0,0,15"
+                        VerticalAlignment="Center"
+                        FontSize="{setting:Style FontTitle}"
+                        Text="{setting:Localize CountWindow.Text8}" />
                     <!--  两列布局  -->
                     <Grid Margin="0,0,0,15" ColumnDefinitions="*,*">
                         <StackPanel Grid.Column="0" Classes="StatItem">
@@ -149,34 +130,23 @@
                 </StackPanel>
             </Border>
 
-            <!--  第三部分：游戏详情  -->
             <Border Margin="0,0,0,10" Classes="t2">
                 <StackPanel Margin="15">
                     <Grid Margin="0,0,0,15" ColumnDefinitions="Auto,*">
-                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                            <svg:SvgControl
-                                Width="24"
-                                Height="24"
-                                Margin="0,0,10,0"
-                                Path="/Resource/Icon/GameCount/svg2.svg" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="{setting:Style FontTitle}"
-                                Text="{setting:Localize CountWindow.Text12}" />
-                        </StackPanel>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="{setting:Style FontTitle}"
+                            Text="{setting:Localize CountWindow.Text12}" />
 
-                        <!--  下拉框放在标题右侧或者单独一行皆可，这里优化为右侧对齐  -->
                         <ComboBox
                             Grid.Column="1"
-                            Width="200"
+                            Width="230"
                             HorizontalAlignment="Right"
                             ItemsSource="{Binding Game}"
                             PlaceholderText="{setting:Localize CountWindow.Text13}"
                             SelectedIndex="{Binding GameIndex}" />
                     </Grid>
 
-                    <!--  游戏数据：使用 Grid 规整排列  -->
-                    <!--  第一行：计数类  -->
                     <Grid Margin="0,0,0,15" ColumnDefinitions="*,*,*,*">
                         <StackPanel Grid.Column="0" Classes="StatItem">
                             <TextBlock Classes="ValueText" Text="{Binding GameCount}" />
@@ -199,7 +169,6 @@
                         </StackPanel>
                     </Grid>
 
-                    <!--  第二行：时间类  -->
                     <Grid ColumnDefinitions="*,*">
                         <StackPanel Grid.Column="0" Classes="StatItem">
                             <TextBlock Classes="ValueText" Text="{Binding GameTime}" />

@@ -7,13 +7,20 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    Height="35"
-    d:DesignHeight="35"
+    Height="36"
+    d:DesignHeight="36"
     d:DesignWidth="800"
     x:DataType="model:WindowModel"
     mc:Ignorable="d">
     <DockPanel Name="Pandl2" RenderOptions.TextRenderingMode="Antialias">
-        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+        <Rectangle
+            Height="1"
+            DockPanel.Dock="Bottom"
+            Fill="{setting:Theme BorderColor}" />
+        <StackPanel
+            Height="35"
+            DockPanel.Dock="Right"
+            Orientation="Horizontal">
             <Button
                 Name="Choise"
                 Width="80"
@@ -57,7 +64,10 @@
                 <svg:SvgControl Width="20" Path="/Resource/Icon/Window/Close.svg" />
             </Button>
         </StackPanel>
-        <DockPanel Margin="10,0,0,0" VerticalAlignment="Center">
+        <DockPanel
+            Height="35"
+            Margin="10,0,0,0"
+            VerticalAlignment="Center">
             <Button
                 Width="40"
                 Height="35"

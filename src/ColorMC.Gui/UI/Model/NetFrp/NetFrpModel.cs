@@ -21,27 +21,40 @@ public partial class NetFrpModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/VectorLink.svg",
                 Text = LangUtils.Get("NetFrpWindow.Tabs.Text4")
             },
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Sakura.svg",
                 Text = LangUtils.Get("NetFrpWindow.Tabs.Text1")
             },
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item5.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cloud.svg",
                 Text = LangUtils.Get("NetFrpWindow.Tabs.Text5")
             },
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item6.svg",
-                Text = LangUtils.Get("NetFrpWindow.Tabs.Text6")
+                Icon = "/Resource/Icon/GroupIcon/CloudPlus.svg",
+                Text = LangUtils.Get("NetFrpWindow.Tabs.Text6"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Func = LoadSelfFrp,
+                        Name = LangUtils.Get("NetFrpWindow.Tab1.Text6")
+                    },
+                    new SubMenuItemModel()
+                    {
+                        Func = AddSelfFrp,
+                        Name = LangUtils.Get("NetFrpWindow.Tab6.Text1")
+                    }
+                ]
             },
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/Lan.svg",
                 Text = LangUtils.Get("NetFrpWindow.Tabs.Text2"),
                 SubMenu =
                 [
@@ -54,7 +67,7 @@ public partial class NetFrpModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/NetFrp/item3.svg",
+                Icon = "/Resource/Icon/GroupIcon/DeveloperBoard.svg",
                 Text = LangUtils.Get("NetFrpWindow.Tabs.Text3")
             }
         ]);

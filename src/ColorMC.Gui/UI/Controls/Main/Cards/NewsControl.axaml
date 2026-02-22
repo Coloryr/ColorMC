@@ -41,7 +41,7 @@
                         Command="{Binding GetNews}"
                         CornerRadius="5"
                         IsVisible="{Binding !IsLoadNews}">
-                        <svg:SvgControl Fill="White" Path="/Resource/Icon/reload.svg" />
+                        <svg:SvgControl Fill="White" Path="/Resource/Icon/Button/Reload.svg" />
                     </Button>
                 </Panel>
                 <Panel Height="50">
@@ -62,7 +62,7 @@
                                 VerticalAlignment="Center"
                                 DockPanel.Dock="Right"
                                 Fill="White"
-                                Path="/Resource/Icon/menu.svg" />
+                                Path="/Resource/Icon/Button/ArrowRight.svg" />
                             <TextBlock
                                 Margin="5,0,0,0"
                                 Foreground="White"

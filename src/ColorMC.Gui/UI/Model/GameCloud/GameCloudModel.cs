@@ -92,17 +92,17 @@ public partial class GameCloudModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cogs.svg",
                 Text = LangUtils.Get("GameCloudWindow.Tabs.Text1")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/Tune.svg",
                 Text = LangUtils.Get("Text.Config")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/SaveCog.svg",
                 Text = LangUtils.Get("GameCloudWindow.Tabs.Text3")
             }
         ]);

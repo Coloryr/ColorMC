@@ -35,7 +35,7 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/Setting/svg15.svg"
+                            Path="/Resource/Icon/GroupIcon/AspectRatio.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text9}" />
                     </StackPanel>
@@ -84,18 +84,21 @@
                             IsEnabled="{Binding EditTitle}"
                             OffContent="{setting:Localize GameEditWindow.Tab2.Text39}"
                             OnContent="{setting:Localize GameEditWindow.Tab2.Text39}" />
+                    </DockPanel>
+                    <StackPanel Margin="0,0,10,10" Orientation="Horizontal">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab2.Text40}" />
-                        <TextBlock
-                            Margin="5,0,0,0"
-                            DockPanel.Dock="Right"
-                            Text="{setting:Localize GameEditWindow.Tab2.Text46}" />
                         <NumericUpDown
+                            Width="160"
                             FormatString="N0"
                             IsEnabled="{Binding CycTitle}"
                             Maximum="5000"
                             Minimum="100"
                             Value="{Binding TitleDelay}" />
-                    </DockPanel>
+                        <TextBlock
+                            Margin="5,0,0,0"
+                            DockPanel.Dock="Right"
+                            Text="{setting:Localize GameEditWindow.Tab2.Text46}" />
+                    </StackPanel>
                     <TextBox
                         Height="100"
                         Margin="0,0,10,5"
@@ -114,7 +117,7 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg5.svg"
+                            Path="/Resource/Icon/GroupIcon/Memory.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text24}" />
                     </StackPanel>
@@ -166,52 +169,6 @@
                     </DockPanel>
                 </StackPanel>
             </Border>
-            <!--  执行程序  -->
-            <Border Margin="10,5,10,3" Classes="t2">
-                <StackPanel Margin="15">
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/Setting/svg12.svg"
-                            Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text33}" />
-                    </StackPanel>
-                    <WrapPanel Margin="0,0,0,0">
-                        <ToggleSwitch
-                            Margin="0,0,10,0"
-                            IsChecked="{Binding PerRun}"
-                            OffContent="{setting:Localize GameEditWindow.Tab2.Text31}"
-                            OnContent="{setting:Localize GameEditWindow.Tab2.Text31}" />
-                        <ToggleSwitch
-                            IsChecked="{Binding PreRunSame}"
-                            IsEnabled="{Binding PerRun}"
-                            OffContent="{setting:Localize SettingWindow.Tab4.Text25}"
-                            OnContent="{setting:Localize SettingWindow.Tab4.Text25}" />
-                    </WrapPanel>
-                    <TextBox
-                        Height="100"
-                        Margin="0,0,0,10"
-                        AcceptsReturn="True"
-                        IsEnabled="{Binding PerRun}"
-                        Text="{Binding PerRunCmd}"
-                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-                    <ToggleSwitch
-                        IsChecked="{Binding PostRun}"
-                        OffContent="{setting:Localize GameEditWindow.Tab2.Text29}"
-                        OnContent="{setting:Localize GameEditWindow.Tab2.Text29}" />
-                    <TextBox
-                        Height="100"
-                        Margin="0,0,0,10"
-                        AcceptsReturn="True"
-                        IsEnabled="{Binding PostRun}"
-                        Text="{Binding PostRunCmd}"
-                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
-                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text43}" TextWrapping="Wrap" />
-                </StackPanel>
-            </Border>
             <!--  Jvm参数  -->
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
@@ -221,7 +178,7 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/Setting/svg14.svg"
+                            Path="/Resource/Icon/GroupIcon/Console.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab4.Text1}" />
                     </StackPanel>
@@ -292,6 +249,52 @@
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
+            <!--  执行程序  -->
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Theme FontColor}"
+                            Path="/Resource/Icon/GroupIcon/RocketLaunch.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text33}" />
+                    </StackPanel>
+                    <WrapPanel Margin="0,0,0,0">
+                        <ToggleSwitch
+                            Margin="0,0,10,0"
+                            IsChecked="{Binding PerRun}"
+                            OffContent="{setting:Localize GameEditWindow.Tab2.Text31}"
+                            OnContent="{setting:Localize GameEditWindow.Tab2.Text31}" />
+                        <ToggleSwitch
+                            IsChecked="{Binding PreRunSame}"
+                            IsEnabled="{Binding PerRun}"
+                            OffContent="{setting:Localize SettingWindow.Tab4.Text25}"
+                            OnContent="{setting:Localize SettingWindow.Tab4.Text25}" />
+                    </WrapPanel>
+                    <TextBox
+                        Height="100"
+                        Margin="0,0,0,10"
+                        AcceptsReturn="True"
+                        IsEnabled="{Binding PerRun}"
+                        Text="{Binding PerRunCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                    <ToggleSwitch
+                        IsChecked="{Binding PostRun}"
+                        OffContent="{setting:Localize GameEditWindow.Tab2.Text29}"
+                        OnContent="{setting:Localize GameEditWindow.Tab2.Text29}" />
+                    <TextBox
+                        Height="100"
+                        Margin="0,0,0,10"
+                        AcceptsReturn="True"
+                        IsEnabled="{Binding PostRun}"
+                        Text="{Binding PostRunCmd}"
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
+                    <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text43}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
             <!--  自动加入  -->
             <Border Margin="10,5,10,3" Classes="t2">
                 <StackPanel Margin="15">
@@ -300,7 +303,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/GameEdit/svg6.svg" />
+                            Path="/Resource/Icon/GroupIcon/ServerNetwork.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab6.Text4}" />
                     </StackPanel>
                     <Grid ColumnDefinitions="*,0.5*">
@@ -326,7 +329,7 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/Setting/svg8.svg"
+                            Path="/Resource/Icon/GroupIcon/Swap.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab3.Text3}" />
                     </StackPanel>

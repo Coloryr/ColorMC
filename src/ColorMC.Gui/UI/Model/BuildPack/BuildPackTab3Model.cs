@@ -1,10 +1,8 @@
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.BuildPack;
 
@@ -26,11 +24,21 @@ public partial class BuildPackModel
     private PackFileItem? _fileItem;
 
     /// <summary>
+    /// 删除自定义文件
+    /// </summary>
+    public void DeleteFile()
+    {
+        if (FileItem != null)
+        {
+            Files.Remove(FileItem);
+        }
+    }
+
+    /// <summary>
     /// 添加自定义文件
     /// </summary>
     /// <returns></returns>
-    [RelayCommand]
-    public async Task AddFile()
+    private async void AddFile()
     {
         var top = Window.GetTopLevel();
         if (top == null)
@@ -48,16 +56,5 @@ public partial class BuildPackModel
             Local = file.Path,
             File = file.FileName!
         });
-    }
-
-    /// <summary>
-    /// 删除自定义文件
-    /// </summary>
-    public void DeleteFile()
-    {
-        if (FileItem != null)
-        {
-            Files.Remove(FileItem);
-        }
     }
 }

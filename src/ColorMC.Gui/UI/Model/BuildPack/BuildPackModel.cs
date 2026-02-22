@@ -1,4 +1,5 @@
 using ColorMC.Core;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 
@@ -19,18 +20,26 @@ public partial class BuildPackModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cogs.svg",
                 Text = LangUtils.Get("BuildPackWindow.Tabs.Text1")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/List.svg",
                 Text = LangUtils.Get("BuildPackWindow.Tabs.Text2")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item3.svg",
-                Text = LangUtils.Get("BuildPackWindow.Tabs.Text3")
+                Icon = "/Resource/Icon/GroupIcon/FileCheck.svg",
+                Text = LangUtils.Get("BuildPackWindow.Tabs.Text3"),
+                SubMenu =
+                [
+                    new SubMenuItemModel()
+                    {
+                        Name = LangUtils.Get("BuildPackWindow.Tab3.Text3"),
+                        Func = AddFile
+                    }
+                ]
             }
         ]);
 

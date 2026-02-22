@@ -8,12 +8,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.LuckBlock"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:LuckBlockModel"
     mc:Ignorable="d">
     <Panel>
-        <Border Background="#252525" ClipToBounds="True">
+        <Border ClipToBounds="True">
             <DockPanel Margin="20">
                 <TextBlock
                     Margin="0,0,0,20"
@@ -63,38 +64,36 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <Svg
-                        Width="50"
-                        Height="50"
+                    <svg:SvgControl
+                        Width="40"
+                        Height="40"
                         Margin="0,0,0,200"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Path="/Resource/Icon/LuckBlock/down.svg" />
-                    <Svg
-                        Width="50"
-                        Height="50"
+                        Fill="{setting:Theme FontColor}"
+                        Path="/Resource/Icon/LuckBlock/TriangleDown.svg" />
+                    <svg:SvgControl
+                        Width="40"
+                        Height="40"
                         Margin="0,120,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Path="/Resource/Icon/LuckBlock/up.svg" />
+                        Fill="{setting:Theme FontColor}"
+                        Path="/Resource/Icon/LuckBlock/Triangle.svg" />
                 </Panel>
             </DockPanel>
         </Border>
-
-        <!--  结果显示  -->
         <Border
             Width="300"
             Padding="20"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Background="#1a1a1a"
+            Background="#dd1a1a1a"
             CornerRadius="12"
-            IsVisible="{Binding ShowResult, FallbackValue=false}"
-            Opacity="0.9">
-
+            IsVisible="{Binding ShowResult, FallbackValue=false}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock
-                    Margin="0,0,0,20"
+                    Margin="0,0,0,10"
                     HorizontalAlignment="Center"
                     FontSize="24"
                     FontWeight="Bold"
@@ -104,6 +103,7 @@
                 <Button
                     Width="120"
                     Height="40"
+                    Margin="0,10,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Background="#4CAF50"

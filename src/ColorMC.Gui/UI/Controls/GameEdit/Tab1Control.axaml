@@ -22,10 +22,12 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg1.svg"
+                            Path="/Resource/Icon/GroupIcon/Tune.svg"
                             Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize Text.GameVersion}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab2.Text47}" />
                     </StackPanel>
+
+                    <TextBlock Text="{setting:Localize Text.GameVersion}" />
                     <Grid
                         Margin="0,0,0,10"
                         ColumnDefinitions="auto,*,auto,*,*"
@@ -57,23 +59,11 @@
                             Content="{setting:Localize Text.ReloadVersion}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text81}" />
                     </Grid>
-                    <StackPanel
-                        Margin="0,0,0,5"
-                        IsVisible="{Binding !CustomJson}"
-                        Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg2.svg"
-                            Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,0,5" Text="{setting:Localize AddGameWindow.Tab1.Text4}" />
                     <Decorator IsEnabled="{Binding !IsLoad}" IsVisible="{Binding !CustomJson}">
                         <Grid
                             Margin="0,0,0,5"
-                            ColumnDefinitions="auto,*,auto,*,*"
+                            ColumnDefinitions="auto,*,auto,*,auto"
                             IsEnabled="{Binding !GameVersionEmpty}">
                             <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Type}" />
                             <ComboBox
@@ -146,56 +136,6 @@
                             <TextBlock Margin="0,0,0,5" Text="{Binding LoaderInfo}" />
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg3.svg"
-                            Stroke="{setting:Theme FontColor}" />
-                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text47}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
-                        <ComboBox
-                            Width="230"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"
-                            IsEditable="True"
-                            ItemsSource="{Binding GroupList}"
-                            Text="{Binding Group}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3,-3,-3,-3"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center"
-                            Classes="top"
-                            Command="{Binding AddGroup}"
-                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
-                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text13}" />
-                        <ComboBox
-                            Width="230"
-                            Margin="0,0,10,0"
-                            HorizontalAlignment="Stretch"
-                            IsEnabled="{Binding !IsLoad}"
-                            ItemsSource="{Binding LangList}"
-                            SelectedIndex="{Binding Lang}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Margin="-3"
-                            HorizontalAlignment="Right"
-                            Classes="top"
-                            Command="{Binding LangReload}"
-                            Content="{setting:Localize Button.Refash}"
-                            IsEnabled="{Binding !IsLoad}"
-                            ToolTip.Tip="{setting:Localize ToolTip.Text99}" />
-                    </StackPanel>
                     <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
                         <CheckBox
                             Margin="0,0,5,0"
@@ -241,7 +181,7 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg8.svg"
+                            Path="/Resource/Icon/GroupIcon/Tools.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text21}" />
                     </StackPanel>
@@ -311,7 +251,61 @@
                             Height="24"
                             Margin="0,0,5,0"
                             Fill="{setting:Theme FontColor}"
-                            Path="/Resource/Icon/GameEdit/svg7.svg"
+                            Path="/Resource/Icon/GroupIcon/TuneVertical.svg"
+                            Stroke="{setting:Theme FontColor}" />
+                        <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text47}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,0,0,10" Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Text.Group}" />
+                        <ComboBox
+                            Width="230"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            IsEditable="True"
+                            ItemsSource="{Binding GroupList}"
+                            Text="{Binding Group}" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-3,-3,-3,-3"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Classes="top"
+                            Command="{Binding AddGroup}"
+                            Content="{setting:Localize AddGameWindow.Tab1.Text9}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text84}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text13}" />
+                        <ComboBox
+                            Width="230"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Stretch"
+                            IsEnabled="{Binding !IsLoad}"
+                            ItemsSource="{Binding LangList}"
+                            SelectedIndex="{Binding Lang}" />
+                        <Button
+                            Width="100"
+                            Height="35"
+                            Margin="-3"
+                            HorizontalAlignment="Right"
+                            Classes="top"
+                            Command="{Binding LangReload}"
+                            Content="{setting:Localize Button.Refash}"
+                            IsEnabled="{Binding !IsLoad}"
+                            ToolTip.Tip="{setting:Localize ToolTip.Text99}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border Margin="10,5,10,3" Classes="t2">
+                <StackPanel Margin="15">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
+                        <svg:SvgControl
+                            Width="24"
+                            Height="24"
+                            Margin="0,0,5,0"
+                            Fill="{setting:Theme FontColor}"
+                            Path="/Resource/Icon/GroupIcon/PrinterCog.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize GameEditWindow.Tab1.Text18}" />
                     </StackPanel>

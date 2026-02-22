@@ -107,26 +107,31 @@ public partial class UsersModel : ControlModel
     /// 是否为OAuth
     /// </summary>
     private bool _isOAuth;
+    /// <summary>
+    /// 是否正在加载配置文件
+    /// </summary>
+    private bool _isLoad;
 
     private CancellationTokenSource _tokenSource;
 
     public UsersModel(WindowModel model) : base(model)
     {
+        LoadConfig();
         LoadUsers();
 
         EventManager.LockUserChange += EventManager_LockUserChange;
         EventManager.SkinChange += EventManager_SkinChange;
     }
 
-    private void EventManager_SkinChange()
+    partial void OnGridTypeChanged(ItemsGridType value)
     {
-        Dispatcher.UIThread.Post(() =>
+        if (_isLoad)
         {
-            foreach (var item in UserList)
-            {
-                item.ReloadHead();
-            }
-        });
+            return;
+        }
+
+        GuiConfigUtils.Config.WindowState.UserWindowState = value;
+        GuiConfigUtils.Save();
     }
 
     partial void OnDisplayTypeChanged(int value)
@@ -146,6 +151,17 @@ public partial class UsersModel : ControlModel
     private void EventManager_LockUserChange()
     {
         LoadUsers();
+    }
+
+    private void EventManager_SkinChange()
+    {
+        Dispatcher.UIThread.Post(() =>
+        {
+            foreach (var item in UserList)
+            {
+                item.ReloadHead();
+            }
+        });
     }
 
     /// <summary>
@@ -730,5 +746,15 @@ public partial class UsersModel : ControlModel
         _tokenSource?.Cancel();
         _tokenSource?.Dispose();
         _tokenSource = new();
+    }
+
+    private void LoadConfig()
+    {
+        _isLoad = true;
+
+        var config = GuiConfigUtils.Config.WindowState;
+        GridType = config.UserWindowState;
+
+        _isLoad = false;
     }
 }

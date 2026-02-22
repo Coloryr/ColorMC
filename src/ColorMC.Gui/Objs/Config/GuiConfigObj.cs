@@ -320,6 +320,10 @@ public record WindowUserStateObj
     /// 主窗口状态
     /// </summary>
     public ItemsGridType MainWindowState { get; set; }
+    /// <summary>
+    /// 主窗口状态
+    /// </summary>
+    public ItemsGridType UserWindowState { get; set; }
 }
 
 /// <summary>

@@ -25,7 +25,7 @@
             <Border
                 Background="#FFFFFF"
                 BorderBrush="#e5e7eb"
-                BorderThickness="0,1,0,1"
+                BorderThickness="0,0,0,1"
                 DockPanel.Dock="Top">
                 <DockPanel Margin="20,15,20,15">
                     <TextBlock
@@ -44,7 +44,7 @@
                         <StackPanel Orientation="Horizontal">
                             <svg:SvgControl
                                 Width="24"
-                                Path="/Resource/Icon/add1.svg"
+                                Path="/Resource/Icon/Button/AddShape.svg"
                                 Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" />
                             <TextBlock Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Text="{setting:Localize UserWindow.Text5}" />
                         </StackPanel>
@@ -64,7 +64,7 @@
                                     Width="16"
                                     Height="16"
                                     Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                    Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
+                                    Path="/Resource/Icon/ListGrid/GridInfo.svg" />
                             </RadioButton>
                             <RadioButton
                                 Classes="t1"
@@ -74,7 +74,7 @@
                                     Width="16"
                                     Height="16"
                                     Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                    Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
+                                    Path="/Resource/Icon/ListGrid/Grid.svg" />
                             </RadioButton>
                             <RadioButton
                                 Classes="t1"
@@ -84,7 +84,7 @@
                                     Width="16"
                                     Height="16"
                                     Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                    Path="/Resource/Icon/ListGrid/ListGrid1.svg" />
+                                    Path="/Resource/Icon/ListGrid/ListInfo.svg" />
                             </RadioButton>
                         </StackPanel>
                     </Border>
@@ -177,7 +177,7 @@
                                             Command="{Binding Refresh}"
                                             IsVisible="{Binding CanRefresh}"
                                             ToolTip.Tip="{setting:Localize ToolTip.Text134}">
-                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/reload.svg" />
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Reload.svg" />
                                         </Button>
                                         <Button
                                             Width="20"
@@ -186,7 +186,7 @@
                                             Command="{Binding Relogin}"
                                             IsVisible="{Binding CanRelogin}"
                                             ToolTip.Tip="{setting:Localize ToolTip.Text135}">
-                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/relogin.svg" />
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Relogin.svg" />
                                         </Button>
                                         <Button
                                             Width="20"
@@ -195,7 +195,7 @@
                                             Command="{Binding Edit}"
                                             IsVisible="{Binding CanEdit}"
                                             ToolTip.Tip="{setting:Localize ToolTip.Text136}">
-                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/edit.svg" />
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Pencil.svg" />
                                         </Button>
                                         <Button
                                             Width="20"
@@ -203,7 +203,7 @@
                                             Classes="none"
                                             Command="{Binding Remove}"
                                             ToolTip.Tip="{setting:Localize ToolTip.Text137}">
-                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/delete.svg" />
+                                            <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Delete.svg" />
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>

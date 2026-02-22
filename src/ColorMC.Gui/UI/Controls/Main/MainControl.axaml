@@ -25,10 +25,6 @@
     <Panel>
         <Panel Name="MainView">
             <DockPanel>
-                <Rectangle
-                    Height="1"
-                    DockPanel.Dock="Top"
-                    Fill="{setting:Theme BorderColor}" />
                 <Panel Background="{setting:Theme OverBGColor}" DockPanel.Dock="Top">
                     <Button
                         Margin="0,12,30,12"
@@ -82,7 +78,7 @@
                             IsVisible="{Binding IsHavePlayer}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text9}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/texture.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Texture.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
@@ -98,7 +94,7 @@
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/starnone.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Item/Star.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -113,7 +109,7 @@
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/guide.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Guide.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -128,7 +124,7 @@
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/counter.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Counter.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -142,7 +138,7 @@
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/cog.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Cog.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -190,7 +186,7 @@
                                             Width="16"
                                             Height="16"
                                             Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                            Path="/Resource/Icon/ListGrid/ListGrid3.svg" />
+                                            Path="/Resource/Icon/ListGrid/Grid.svg" />
                                     </RadioButton>
                                     <RadioButton
                                         Classes="t1"
@@ -200,7 +196,7 @@
                                             Width="16"
                                             Height="16"
                                             Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                            Path="/Resource/Icon/ListGrid/ListGrid2.svg" />
+                                            Path="/Resource/Icon/ListGrid/GridInfo.svg" />
                                     </RadioButton>
                                     <RadioButton
                                         Classes="t1"
@@ -210,7 +206,7 @@
                                             Width="16"
                                             Height="16"
                                             Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"
-                                            Path="/Resource/Icon/ListGrid/ListGrid1.svg" />
+                                            Path="/Resource/Icon/ListGrid/ListInfo.svg" />
                                     </RadioButton>
                                 </StackPanel>
                             </Border>

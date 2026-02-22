@@ -13,9 +13,11 @@
     x:DataType="model:CollectItemModel"
     mc:Ignorable="d">
     <Border
-        Width="350"
+        Width="358"
         Margin="10,5,10,5"
         Background="{setting:Theme ItemBG}"
+        BorderBrush="{Binding BorderBrush}"
+        BorderThickness="1"
         BoxShadow="{Binding Border}"
         CornerRadius="5">
         <Panel Margin="15">
@@ -50,7 +52,7 @@
                     Margin="-2,-8,-3,3"
                     Classes="top"
                     Command="{Binding OpenWeb}">
-                    <svg:SvgControl Path="/Resource/Icon/Item/web.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/Link.svg" />
                 </Button>
                 <Button
                     Width="35"
@@ -58,7 +60,7 @@
                     Margin="-2,-3,-3,-2"
                     Classes="top"
                     Command="{Binding Install}">
-                    <svg:SvgControl Path="/Resource/Icon/Item/download.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/DownloadFile.svg" />
                 </Button>
             </StackPanel>
             <Border Classes="t4" IsVisible="{Binding IsDownload, FallbackValue=false}">

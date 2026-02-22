@@ -21,7 +21,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg14.svg" />
+                            Path="/Resource/Icon/GroupIcon/Tune.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize BuildPackWindow.Tab1.Text1}" />
                     </StackPanel>
                     <CheckBox
@@ -34,7 +34,7 @@
                             Height="24"
                             Margin="3,-9,0,0"
                             HorizontalAlignment="Left"
-                            Path="/Resource/Icon/down.svg"
+                            Path="/Resource/Icon/GroupIcon/ArrowRightBottom.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <WrapPanel>
                             <CheckBox
@@ -62,7 +62,7 @@
                             Height="24"
                             Margin="3,-9,0,0"
                             HorizontalAlignment="Left"
-                            Path="/Resource/Icon/down.svg"
+                            Path="/Resource/Icon/GroupIcon/ArrowRightBottom.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <WrapPanel>
                             <CheckBox
@@ -89,7 +89,7 @@
                             Height="24"
                             Margin="3,-9,0,0"
                             HorizontalAlignment="Left"
-                            Path="/Resource/Icon/down.svg"
+                            Path="/Resource/Icon/GroupIcon/ArrowRightBottom.svg"
                             Stroke="{setting:Theme FontColor}" />
                         <WrapPanel>
                             <CheckBox
@@ -137,7 +137,7 @@
                             Width="24"
                             Height="24"
                             Margin="0,0,5,0"
-                            Path="/Resource/Icon/Setting/svg17.svg" />
+                            Path="/Resource/Icon/GroupIcon/Java.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize BuildPackWindow.Tab1.Text19}" />
                     </StackPanel>
                     <CheckBox

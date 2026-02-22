@@ -17,17 +17,7 @@
         <Border Margin="10,5,10,3" Classes="t2">
             <DockPanel Margin="15">
                 <WrapPanel Margin="0,0,0,10" DockPanel.Dock="Top">
-                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                        <svg:SvgControl
-                            Width="24"
-                            Height="24"
-                            Margin="0,0,5,0"
-                            Path="/Resource/Icon/AddMenu/item2.svg" />
-                        <TextBlock
-                            Margin="0,0,5,0"
-                            FontSize="{setting:Style FontTitle}"
-                            Text="{setting:Localize GameExportWindow.Tab1.Text1}" />
-                    </StackPanel>
+                    <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameExportWindow.Tab1.Text1}" />
                     <ComboBox
                         MinWidth="230"
                         HorizontalAlignment="Stretch"

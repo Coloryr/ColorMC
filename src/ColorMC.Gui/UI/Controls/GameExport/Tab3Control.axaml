@@ -9,9 +9,7 @@
     d:DesignWidth="800"
     x:DataType="model:GameExportModel"
     mc:Ignorable="d">
-    <Decorator Margin="0,0,10,15">
-        <Border Margin="10,5,10,3" Classes="t2">
-            <TreeDataGrid Margin="5" Source="{Binding Source}" />
-        </Border>
-    </Decorator>
+    <Border Margin="10,5,20,18" Classes="t2">
+        <TreeDataGrid Margin="5" Source="{Binding Source}" />
+    </Border>
 </UserControl>

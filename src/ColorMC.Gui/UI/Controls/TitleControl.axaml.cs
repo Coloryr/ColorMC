@@ -21,12 +21,8 @@ public partial class TitleControl : UserControl
         DataContextChanged += TitleControl_DataContextChanged;
 
         PointerPressed += HeadControl_PointerPressed;
-        TitleShow.PointerPressed += HeadControl_PointerPressed;
-        TitleShow.PointerPressed += HeadControl_PointerPressed;
 
         DoubleTapped += Border1_DoubleTapped;
-        TitleShow.DoubleTapped += Border1_DoubleTapped;
-        TitleShow.DoubleTapped += Border1_DoubleTapped;
 
         var time = DateTime.Now;
         //macos风格

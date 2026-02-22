@@ -44,7 +44,7 @@
                             Command="{Binding AddUser}"
                             CornerRadius="5">
                             <StackPanel>
-                                <svg:SvgControl Path="/Resource/Icon/Main/svg1.svg" />
+                                <svg:SvgControl Width="80" Path="/Resource/Icon/Button/AddAccount.svg" />
                                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text2}" />
                             </StackPanel>
                         </Button>
@@ -58,7 +58,7 @@
                             Command="{Binding SetJava}"
                             CornerRadius="5">
                             <StackPanel>
-                                <svg:SvgControl Path="/Resource/Icon/Main/svg2.svg" />
+                                <svg:SvgControl Width="80" Path="/Resource/Icon/GroupIcon/Java.svg" />
                                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text4}" />
                             </StackPanel>
                         </Button>
@@ -72,7 +72,7 @@
                             Command="{Binding AddGame}"
                             CornerRadius="5">
                             <StackPanel>
-                                <svg:SvgControl Path="/Resource/Icon/AddMenu/item1.svg" />
+                                <svg:SvgControl Width="80" Path="/Resource/Icon/Button/AddShape.svg" />
                                 <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text6}" />
                             </StackPanel>
                         </Button>

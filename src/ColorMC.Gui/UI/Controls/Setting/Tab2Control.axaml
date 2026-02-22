@@ -11,7 +11,7 @@
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     xmlns:view="clr-namespace:ColorMC.Gui.UI.Model.Items"
-    d:DesignHeight="1100"
+    d:DesignHeight="1200"
     d:DesignWidth="800"
     x:DataType="model:SettingModel"
     mc:Ignorable="d">
@@ -320,7 +320,7 @@
                             Path="/Resource/Icon/GroupIcon/Palette.svg" />
                         <TextBlock FontSize="{setting:Style FontTitle}" Text="{setting:Localize SettingWindow.Tab2.Text7}" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="0,0,0,5" Orientation="Horizontal">
                         <Border
                             Margin="0,0,10,0"
                             Padding="3"
@@ -359,12 +359,11 @@
                             Command="{Binding ColorReset}"
                             Content="{setting:Localize SettingWindow.Tab2.Text12}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text124}" />
-                        <ToggleSwitch
-                            Margin="20,0,0,0"
-                            IsChecked="{Binding EnableRGB}"
-                            OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
-                            OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     </StackPanel>
+                    <ToggleSwitch
+                        IsChecked="{Binding EnableRGB}"
+                        OffContent="{setting:Localize SettingWindow.Tab2.Text13}"
+                        OnContent="{setting:Localize SettingWindow.Tab2.Text13}" />
                     <Grid ColumnDefinitions="auto,*,auto,auto,*,auto" IsEnabled="{Binding EnableRGB}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize SettingWindow.Tab2.Text14}" />
                         <Slider

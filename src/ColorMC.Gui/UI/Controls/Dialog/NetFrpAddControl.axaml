@@ -26,7 +26,7 @@
             Margin="0,0,0,5"
             Text="{Binding Ip}"
             Watermark="{setting:Localize NetFrpWindow.Tab6.Text3}" />
-        <DockPanel>
+        <DockPanel Margin="0,0,0,5">
             <TextBlock Text="{setting:Localize Text.ServerPort}" />
             <NumericUpDown
                 Margin="5,0,0,0"

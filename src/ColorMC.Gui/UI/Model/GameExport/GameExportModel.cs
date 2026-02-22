@@ -140,22 +140,22 @@ public partial class GameExportModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cogs.svg",
                 Text = LangUtils.Get("GameExportWindow.Tabs.Text1")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/PlaylistPlus.svg",
                 Text = LangUtils.Get("GameExportWindow.Tabs.Text2")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item3.svg",
+                Icon = "/Resource/Icon/GroupIcon/FolderZip.svg",
                 Text = LangUtils.Get("GameExportWindow.Tabs.Text3")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/TrayArrowDown.svg",
                 Text = LangUtils.Get("GameExportWindow.Tabs.Text4")
             },
         ]);

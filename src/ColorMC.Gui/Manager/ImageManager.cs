@@ -87,11 +87,11 @@ public static class ImageManager
     /// <summary>
     /// 星标图标
     /// </summary>
-    public static readonly string[] Stars = ["/Resource/Icon/Item/star.svg", "/Resource/Icon/Item/star_1.svg"];
+    public static readonly string[] Stars = ["/Resource/Icon/Item/StarFill.svg", "/Resource/Icon/Item/Star.svg"];
     /// <summary>
     /// 音乐播放暂停图标
     /// </summary>
-    public static readonly string[] MusicIcons = ["/Resource/Icon/play.svg", "/Resource/Icon/pause.svg"];
+    public static readonly string[] MusicIcons = ["/Resource/Icon/Button/Play.svg", "/Resource/Icon/Button/Pause.svg"];
     /// <summary>
     /// 最大化最小化图标
     /// </summary>

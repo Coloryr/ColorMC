@@ -28,47 +28,6 @@ public partial class NetFrpModel
     private NetFrpSelfItemModel? _frpSelfItem;
 
     /// <summary>
-    /// 加载自定义映射列表
-    /// </summary>
-    [RelayCommand]
-    public void LoadSelfFrp()
-    {
-        RemoteSelfFrp.Clear();
-        foreach (var item in FrpConfigUtils.Config.SelfFrp)
-        {
-            RemoteSelfFrp.Add(new(this, item));
-        }
-
-        IsSelfFrpEmpty = RemoteSelfFrp.Count == 0;
-    }
-    /// <summary>
-    /// 添加自定义映射
-    /// </summary>
-    /// <returns></returns>
-    [RelayCommand]
-    public async Task AddSelfFrp()
-    {
-        var model = new NetFrpAddModel(Window.WindowId);
-        var res = await Window.ShowDialogWait(model);
-        if (res is not true || string.IsNullOrWhiteSpace(model.Name))
-        {
-            return;
-        }
-
-        if (FrpConfigUtils.Config.SelfFrp.Any(item => item.Name == model.Name))
-        {
-            Window.Show(LangUtils.Get("NetFrpWindow.Tab6.Text8"));
-            return;
-        }
-
-        var obj = model.Build();
-        FrpConfigUtils.AddSelfFrp(obj);
-
-        RemoteSelfFrp.Add(new(this, obj));
-        IsSelfFrpEmpty = false;
-    }
-
-    /// <summary>
     /// 编辑自定义映射
     /// </summary>
     /// <param name="model">自定义映射</param>
@@ -119,5 +78,44 @@ public partial class NetFrpModel
         _frpSelfItem?.IsSelect = false;
         model.IsSelect = true;
         _frpSelfItem = model;
+    }
+
+    /// <summary>
+    /// 加载自定义映射列表
+    /// </summary>
+    public void LoadSelfFrp()
+    {
+        RemoteSelfFrp.Clear();
+        foreach (var item in FrpConfigUtils.Config.SelfFrp)
+        {
+            RemoteSelfFrp.Add(new(this, item));
+        }
+
+        IsSelfFrpEmpty = RemoteSelfFrp.Count == 0;
+    }
+    /// <summary>
+    /// 添加自定义映射
+    /// </summary>
+    /// <returns></returns>
+    private async void AddSelfFrp()
+    {
+        var model = new NetFrpAddModel(Window.WindowId);
+        var res = await Window.ShowDialogWait(model);
+        if (res is not true || string.IsNullOrWhiteSpace(model.Name))
+        {
+            return;
+        }
+
+        if (FrpConfigUtils.Config.SelfFrp.Any(item => item.Name == model.Name))
+        {
+            Window.Show(LangUtils.Get("NetFrpWindow.Tab6.Text8"));
+            return;
+        }
+
+        var obj = model.Build();
+        FrpConfigUtils.AddSelfFrp(obj);
+
+        RemoteSelfFrp.Add(new(this, obj));
+        IsSelfFrpEmpty = false;
     }
 }

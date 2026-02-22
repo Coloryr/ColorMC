@@ -42,7 +42,7 @@
                     Command="{Binding Refresh}"
                     IsVisible="{Binding CanRefresh}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text134}">
-                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/reload.svg" />
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Reload.svg" />
                 </Button>
                 <Button
                     Width="24"
@@ -51,7 +51,7 @@
                     Command="{Binding Relogin}"
                     IsVisible="{Binding CanRelogin}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text135}">
-                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/relogin.svg" />
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Relogin.svg" />
                 </Button>
                 <Button
                     Width="24"
@@ -60,7 +60,7 @@
                     Command="{Binding Edit}"
                     IsVisible="{Binding CanEdit}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text136}">
-                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/edit.svg" />
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Pencil.svg" />
                 </Button>
                 <Button
                     Width="24"
@@ -68,7 +68,7 @@
                     Classes="none"
                     Command="{Binding Remove}"
                     ToolTip.Tip="{setting:Localize ToolTip.Text137}">
-                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/delete.svg" />
+                    <svg:SvgControl Classes="t1" Path="/Resource/Icon/Button/Delete.svg" />
                 </Button>
             </StackPanel>
             <StackPanel Margin="10,0,0,0">

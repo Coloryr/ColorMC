@@ -16,8 +16,6 @@ public partial class SelectItemModel : ObservableObject
     private BoxShadows? _border = ThemeManager.BorderShadows;
 
     [ObservableProperty]
-    private BoxShadows? _border1;
-    [ObservableProperty]
     private IBrush _borderBrush;
 
     /// <summary>
@@ -68,11 +66,11 @@ public partial class SelectItemModel : ObservableObject
 
         if (Top)
         {
-            Border1 = ThemeManager.BorderTopShadows;
+            Border = ThemeManager.BorderTopShadows;
         }
         else
         {
-            Border1 = null;
+            Border = null;
         }
     }
 }

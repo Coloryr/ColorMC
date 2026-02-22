@@ -31,7 +31,7 @@
                     CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text128}"
                     >
-                    <svg:SvgControl Path="/Resource/Icon/Item/join.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/Import.svg" />
                 </Button>
                 <Button
                     Width="40"
@@ -42,7 +42,7 @@
                     CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text129}"
                     >
-                    <svg:SvgControl Path="/Resource/Icon/Item/clipboard.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/ClipboardItem.svg" />
                 </Button>
                 <Button
                     Width="40"
@@ -53,7 +53,7 @@
                     CornerRadius="5"
                     ToolTip.Tip="{setting:Localize ToolTip.Text130}"
                     >
-                    <svg:SvgControl Path="/Resource/Icon/Item/ping.svg" />
+                    <svg:SvgControl Path="/Resource/Icon/Item/Connection.svg" />
                 </Button>
             </StackPanel>
             <StackPanel>

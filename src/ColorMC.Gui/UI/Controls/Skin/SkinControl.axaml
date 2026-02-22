@@ -15,10 +15,6 @@
     x:DataType="model:SkinModel"
     mc:Ignorable="d">
     <DockPanel>
-        <Rectangle
-            Height="1"
-            DockPanel.Dock="Top"
-            Fill="{setting:Theme BorderColor}" />
         <Border
             Background="#FFFFFF"
             BorderBrush="#e5e7eb"
@@ -99,7 +95,7 @@
                         Classes="icon"
                         Command="{Binding Load}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text138}">
-                        <svg:SvgControl Width="24" Path="/Resource/Icon/reload.svg" />
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/Button/Reload.svg" />
                     </Button>
                     <Button
                         Margin="0,0,15,0"
@@ -107,7 +103,7 @@
                         Command="{Binding ResetPos}"
                         IsEnabled="{Binding HaveSkin}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text139}">
-                        <svg:SvgControl Width="24" Path="/Resource/Icon/reset.svg" />
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/Button/Reset.svg" />
                     </Button>
                     <Rectangle
                         Width="1"
@@ -119,7 +115,7 @@
                         Classes="icon"
                         IsEnabled="{Binding HaveSkin}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text140}">
-                        <svg:SvgControl Width="24" Path="/Resource/Icon/rotate.svg" />
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/Button/Rotate.svg" />
                         <Button.Flyout>
                             <Flyout
                                 Placement="Top"
@@ -196,7 +192,7 @@
                         Classes="icon"
                         IsEnabled="{Binding HaveSkin}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text141}">
-                        <svg:SvgControl Width="24" Path="/Resource/Icon/move.svg" />
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/Button/Move.svg" />
                         <Button.Flyout>
                             <Flyout
                                 Placement="Top"
@@ -270,7 +266,7 @@
                         Classes="icon"
                         IsEnabled="{Binding HaveSkin}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text142}">
-                        <svg:SvgControl Width="24" Path="/Resource/Icon/zoom.svg" />
+                        <svg:SvgControl Width="24" Path="/Resource/Icon/Button/Zoom.svg" />
                         <Button.Flyout>
                             <Flyout
                                 Placement="Top"

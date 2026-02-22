@@ -14,53 +14,24 @@
     d:DesignWidth="800"
     x:DataType="model:NetFrpModel"
     mc:Ignorable="d">
-    <DockPanel Margin="0,0,10,15">
+    <Panel Margin="0,0,10,15">
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding RemoteSelfFrp}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <view:NetFrpSelfItemControl DataContext="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <Border
             Margin="10,5,10,3"
-            Classes="t2"
-            DockPanel.Dock="Top">
-            <panel:WrapPanelWithStretch Margin="15,15,5,5" LeftMax="True">
-                <StackPanel
-                    Margin="0,0,10,10"
-                    DockPanel.Dock="Right"
-                    Orientation="Horizontal">
-                    <Button
-                        Width="120"
-                        Height="35"
-                        Margin="-2,-2,3,-2"
-                        Classes="top"
-                        Command="{Binding LoadSelfFrp}"
-                        Content="{setting:Localize NetFrpWindow.Tab1.Text6}"
-                        DockPanel.Dock="Right" />
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-2,-3,-2"
-                        Classes="top"
-                        Command="{Binding AddSelfFrp}"
-                        Content="{setting:Localize NetFrpWindow.Tab6.Text1}" />
-                </StackPanel>
-            </panel:WrapPanelWithStretch>
+            Classes="t1"
+            IsVisible="{Binding IsSelfFrpEmpty}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
         </Border>
-        <Panel>
-            <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding RemoteSelfFrp}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <view:NetFrpSelfItemControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-            <Border
-                Margin="10,5,10,3"
-                Classes="t1"
-                IsVisible="{Binding IsSelfFrpEmpty}">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontSize="30"
-                    Text="{setting:Localize NetFrpWindow.Tab1.Text5}" />
-            </Border>
-        </Panel>
-    </DockPanel>
+    </Panel>
 </UserControl>

@@ -31,7 +31,7 @@
                     <svg:SvgControl
                         Width="65"
                         Height="65"
-                        Path="/Resource/Icon/add1.svg" />
+                        Path="/Resource/Icon/Button/AddShape.svg" />
                     <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text8}" />
                 </StackPanel>
             </Button>

@@ -47,7 +47,7 @@
                         DockPanel.Dock="Right"
                         ToolTip.Tip="{setting:Localize ToolTip.Text41}" />
                 </Grid>
-                <StackPanel Orientation="Horizontal">
+                <DockPanel>
                     <Button
                         Width="100"
                         Height="35"
@@ -80,7 +80,7 @@
                     <Button
                         Width="100"
                         Height="35"
-                        Margin="-2,-2,3,-3"
+                        Margin="-2,-2,7,-3"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         Classes="top"
@@ -88,7 +88,7 @@
                         Content="{setting:Localize ConfigEditWindow.Text2}"
                         IsEnabled="{Binding IsEdit}"
                         ToolTip.Tip="{setting:Localize ToolTip.Text40}" />
-                </StackPanel>
+                </DockPanel>
             </StackPanel>
         </Border>
         <Panel Margin="5,0,5,10">

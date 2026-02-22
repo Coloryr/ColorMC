@@ -40,7 +40,7 @@ public partial class GameEditModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cogs.svg",
                 Text = LangUtils.Get("GameEditWindow.Tabs.Text1"),
                 SubMenu =
                 [
@@ -88,7 +88,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/CodeBraces.svg",
                 Text = LangUtils.Get("MainWindow.Text64"),
                 SubMenu =
                 [
@@ -101,7 +101,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item3.svg",
+                Icon = "/Resource/Icon/GroupIcon/PlaylistPlus.svg",
                 Text = LangUtils.Get("Type.FileType.Mod"),
                 SubMenu =
                 [
@@ -149,7 +149,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/EarthBox.svg",
                 Text = LangUtils.Get("GameEditWindow.Tabs.Text5"),
                 SubMenu =
                 [
@@ -192,7 +192,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item5.svg",
+                Icon = "/Resource/Icon/GroupIcon/TextureBox.svg",
                 Text = LangUtils.Get("Type.FileType.Resourcepack"),
                 SubMenu =
                 [
@@ -220,7 +220,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item6.svg",
+                Icon = "/Resource/Icon/GroupIcon/ImageFrame.svg",
                 Text = LangUtils.Get("GameEditWindow.Tabs.Text7"),
                 SubMenu =
                 [
@@ -243,7 +243,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item7.svg",
+                Icon = "/Resource/Icon/GroupIcon/ServerNetwork.svg",
                 Text = LangUtils.Get("GameEditWindow.Tabs.Text10"),
                 SubMenu =
                 [
@@ -261,7 +261,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item8.svg",
+                Icon = "/Resource/Icon/GroupIcon/Shape.svg",
                 Text = LangUtils.Get("Type.FileType.Shaderpack"),
                 SubMenu =
                 [
@@ -289,7 +289,7 @@ public partial class GameEditModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameEdit/item9.svg",
+                Icon = "/Resource/Icon/GroupIcon/Domain.svg",
                 Text = LangUtils.Get("Text.Schematic"),
                 SubMenu =
                 [

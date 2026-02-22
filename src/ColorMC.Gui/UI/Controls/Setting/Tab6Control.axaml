@@ -105,7 +105,7 @@
                     <DataGrid
                         Name="LockLoginList"
                         Height="150"
-                        Margin="-10,0,0,-10"
+                        Margin="0,0,10,0"
                         CanUserResizeColumns="True"
                         IsEnabled="{Binding EnableOneLogin}"
                         ItemsSource="{Binding Locks}"

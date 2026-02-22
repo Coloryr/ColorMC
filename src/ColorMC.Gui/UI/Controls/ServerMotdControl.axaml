@@ -96,7 +96,7 @@
             VerticalAlignment="Top"
             Classes="top"
             IsVisible="False">
-            <svg:SvgControl Path="/Resource/Icon/reload.svg" />
+            <svg:SvgControl Path="/Resource/Icon/Button/Reload.svg" />
         </Button>
     </Panel>
 </UserControl>

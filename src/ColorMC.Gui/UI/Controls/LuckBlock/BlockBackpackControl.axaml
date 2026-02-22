@@ -13,18 +13,37 @@
     mc:Ignorable="d">
     <Panel>
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-            <ItemsControl ItemsSource="{Binding Blocks}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <con:BlockItemControl DataContext="{Binding}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <DockPanel Name="ItemsView" Margin="10">
+                <Border
+                    Margin="10,0,10,5"
+                    Classes="t2"
+                    DockPanel.Dock="Top">
+                    <StackPanel Margin="15">
+                        <Grid ColumnDefinitions="auto,*">
+                            <TextBlock
+                                Grid.Column="0"
+                                Margin="0,0,5,0"
+                                Text="{setting:Localize BlockBackpackWindow.Text5}" />
+                            <TextBox Grid.Column="1" Text="{Binding Text}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <ItemsControl
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    ItemsSource="{Binding Blocks}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <con:BlockItemControl DataContext="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </DockPanel>
         </ScrollViewer>
         <StackPanel
             HorizontalAlignment="Center"
@@ -34,7 +53,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="25"
-                Text="目前没有解锁方块" />
+                Text="{setting:Localize BlockBackpackWindow.Text3}" />
             <Button
                 Width="120"
                 Height="40"
@@ -44,7 +63,7 @@
                 Background="#4CAF50"
                 BorderThickness="0"
                 Command="{Binding OpenLuck}"
-                Content="前往获取"
+                Content="{setting:Localize BlockBackpackWindow.Text4}"
                 CornerRadius="6"
                 FontSize="16"
                 FontWeight="Bold"

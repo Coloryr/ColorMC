@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Controls;
@@ -17,6 +19,8 @@ namespace ColorMC.Gui.UI.Model.LuckBlock;
 /// </summary>
 public partial class BlockBackpackModel(WindowModel model) : ControlModel(model), IBlockTop
 {
+    private readonly List<BlockItemModel> _items = [];
+
     /// <summary>
     /// 方块列表
     /// </summary>
@@ -28,10 +32,21 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     [ObservableProperty]
     private bool _isEmpty;
 
+    /// <summary>
+    /// 方块搜索
+    /// </summary>
+    [ObservableProperty]
+    private string? _text;
+
     [RelayCommand]
     public void OpenLuck()
     {
         WindowManager.ShowLuck();
+    }
+
+    partial void OnTextChanged(string? value)
+    {
+        LoadBlock();
     }
 
     /// <summary>
@@ -39,7 +54,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     /// </summary>
     public async void Load()
     {
-        Blocks.Clear();
+        _items.Clear();
         var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
         var res = await BaseBinding.StartLoadBlock();
         Window.CloseDialog(dialog);
@@ -61,10 +76,27 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
         foreach (var item in list)
         {
             item.Top = this;
-            Blocks.Add(item);
+            _items.Add(item);
         }
 
-        IsEmpty = !Blocks.Any();
+        IsEmpty = !_items.Any();
+        if (!IsEmpty)
+        {
+            LoadBlock();
+        }
+    }
+
+    private void LoadBlock()
+    {
+        Blocks.Clear();
+        if (string.IsNullOrWhiteSpace(Text))
+        {
+            Blocks.AddRange(_items);
+        }
+        else
+        {
+            Blocks.AddRange(_items.Where(item => item.Name.Contains(Text) || item.Key.Contains(Text)));
+        }
     }
 
     public override void Close()

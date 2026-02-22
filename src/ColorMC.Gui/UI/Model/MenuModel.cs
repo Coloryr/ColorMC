@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using ColorMC.Gui.UI.Model.Items;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -12,8 +11,6 @@ namespace ColorMC.Gui.UI.Model;
 /// <param name="model">基础窗口</param>
 public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
 {
-    public const string NameSideOpen = "SideOpen";
-    public const string NameSideClose = "SideClose";
     public const string NameNowView = "NowView";
 
     /// <summary>
@@ -46,7 +43,6 @@ public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
     /// <param name="newValue"></param>
     partial void OnNowViewChanged(int oldValue, int newValue)
     {
-        CloseSide();
         if (oldValue != -1)
         {
             TabItems[oldValue].IsCheck = false;
@@ -84,23 +80,5 @@ public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
                 NowView = model.Index;
             }
         }
-    }
-
-    /// <summary>
-    /// 开启侧边栏
-    /// </summary>
-    [RelayCommand]
-    public void OpenSide()
-    {
-        OnPropertyChanged(NameSideOpen);
-    }
-
-    /// <summary>
-    /// 关闭侧边栏
-    /// </summary>
-    [RelayCommand]
-    public void CloseSide()
-    {
-        OnPropertyChanged(NameSideClose);
     }
 }

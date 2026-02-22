@@ -88,7 +88,7 @@
                 BorderThickness="0"
                 Command="{Binding LaunchAll}"
                 ToolTip.Tip="{setting:Localize ToolTip.Text132}">
-                <svg:SvgControl Path="/Resource/Icon/launch.svg" />
+                <svg:SvgControl Path="/Resource/Icon/GroupIcon/RocketLaunch.svg" />
             </Button>
         </Panel>
     </Border>

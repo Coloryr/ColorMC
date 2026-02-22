@@ -274,7 +274,8 @@ public static class GuiConfigUtils
     {
         return new()
         {
-            MainWindowState = ItemsGridType.GridInfo
+            MainWindowState = ItemsGridType.GridInfo,
+            UserWindowState = ItemsGridType.Grid
         };
     }
 }

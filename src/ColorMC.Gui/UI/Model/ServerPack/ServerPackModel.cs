@@ -29,12 +29,12 @@ public partial class ServerPackModel : MenuModel
         [
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item1.svg",
+                Icon = "/Resource/Icon/GroupIcon/Cogs.svg",
                 Text = LangUtils.Get("ServerPackWindow.Tabs.Text1")
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item2.svg",
+                Icon = "/Resource/Icon/GroupIcon/PlaylistPlus.svg",
                 Text = LangUtils.Get("Type.FileType.Mod"),
                 SubMenu =
                 [
@@ -52,7 +52,7 @@ public partial class ServerPackModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item3.svg",
+                Icon = "/Resource/Icon/GroupIcon/TextureBox.svg",
                 Text = LangUtils.Get("Type.FileType.Resourcepack"),
                 SubMenu =
                 [
@@ -70,7 +70,7 @@ public partial class ServerPackModel : MenuModel
             },
             new()
             {
-                Icon = "/Resource/Icon/GameExport/item4.svg",
+                Icon = "/Resource/Icon/GroupIcon/Tune.svg",
                 Text = LangUtils.Get("Text.Config"),
                 SubMenu =
                 [

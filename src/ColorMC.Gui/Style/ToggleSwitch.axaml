@@ -19,6 +19,9 @@
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
+    <Style Selector="ToggleSwitch:indeterminate /template/ Border#SwitchKnobBounds">
+        <Setter Property="Background" Value="{setting:Theme MainColor}" />
+    </Style>
     <Style Selector="ToggleSwitch:pointerover /template/ Border#SwitchKnobBounds">
         <Setter Property="Background" Value="{setting:Theme MainColor}" />
     </Style>

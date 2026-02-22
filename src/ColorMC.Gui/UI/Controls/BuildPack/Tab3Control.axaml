@@ -15,38 +15,24 @@
             Margin="10,5,10,3"
             Classes="t2"
             DockPanel.Dock="Top">
-            <DockPanel>
-                <Panel Margin="15,15,15,0" DockPanel.Dock="Top">
-                    <Button
-                        Width="100"
-                        Height="35"
-                        Margin="-2,-3,-2,-3"
-                        HorizontalAlignment="Right"
-                        Classes="top"
-                        Command="{Binding AddFile}"
-                        Content="{setting:Localize Button.Add}"
-                        DockPanel.Dock="Right"
-                        ToolTip.Tip="{setting:Localize ToolTip.Text114}" />
-                </Panel>
-                <DataGrid
-                    Name="DataGrid1"
-                    Margin="5"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="True"
-                    CanUserSortColumns="False"
-                    HorizontalScrollBarVisibility="Visible"
-                    ItemsSource="{Binding Files}"
-                    SelectedItem="{Binding FileItem}"
-                    VerticalScrollBarVisibility="Visible">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding File}" Header="{setting:Localize BuildPackWindow.Tab3.Text2}" />
-                        <DataGridTextColumn
-                            Binding="{Binding Local}"
-                            Header="{setting:Localize BuildPackWindow.Tab3.Text1}"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
+            <DataGrid
+                Name="DataGrid1"
+                Margin="5"
+                AutoGenerateColumns="False"
+                CanUserResizeColumns="True"
+                CanUserSortColumns="False"
+                HorizontalScrollBarVisibility="Visible"
+                ItemsSource="{Binding Files}"
+                SelectedItem="{Binding FileItem}"
+                VerticalScrollBarVisibility="Visible">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding File}" Header="{setting:Localize BuildPackWindow.Tab3.Text2}" />
+                    <DataGridTextColumn
+                        Binding="{Binding Local}"
+                        Header="{setting:Localize BuildPackWindow.Tab3.Text1}"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Border>
     </Decorator>
 </UserControl>

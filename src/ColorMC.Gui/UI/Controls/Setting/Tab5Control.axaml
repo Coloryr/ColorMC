@@ -59,7 +59,7 @@
                 </StackPanel>
                 <DataGrid
                     Name="DataGrid1"
-                    Margin="5"
+                    Margin="15"
                     AutoGenerateColumns="False"
                     CanUserResizeColumns="True"
                     CanUserSortColumns="False"
