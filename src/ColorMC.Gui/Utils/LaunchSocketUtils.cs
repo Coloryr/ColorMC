@@ -34,10 +34,6 @@ public static class LaunchSocketUtils
     private const int TypeGameMotd = 2;
     private const int TypeLaunchShow = 3;
     private const int TypeLaunchArg = 4;
-    //private const int TypeMouseXY = 5;
-    //private const int TypeMouseClick = 6;
-    //private const int TypeKeybordClick = 7;
-    //private const int TypeMouseScoll = 8;
     private const int TypeGameChannel = 9;
     private const int TypeSetTitle = 10;
     private const int TypeGameWindowSize = 11;
@@ -169,7 +165,10 @@ public static class LaunchSocketUtils
     private static async void Stop()
     {
         ColorMCCore.GameExit -= ColorMCCore_GameExit;
-        await _channel.CloseAsync();
+        if (_channel != null)
+        {
+            await _channel.CloseAsync();
+        }
         await Task.WhenAll(
                 _bossGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)),
                 _workerGroup.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)));
