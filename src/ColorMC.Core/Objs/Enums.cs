@@ -106,7 +106,8 @@ public enum SourceType
 public enum PathType
 {
     BasePath, GamePath, ModPath, ConfigPath, ShaderpacksPath, ResourcepackPath, WorldBackPath,
-    SavePath, SchematicsPath, ScreenshotsPath, RunPath, DownloadPath, JavaPath, PicPath, ServerPackPath, RunDir, JsonDir
+    SavePath, SchematicsPath, ScreenshotsPath, RunPath, DownloadPath, JavaPath, PicPath, 
+    ServerPackPath, RunDir, JsonDir, BlockPath
 }
 
 /// <summary>
@@ -117,7 +118,7 @@ public enum FileType
     Modpack, Mod, Save, Shaderpack, Resourcepack, DataPacks, Schematic,
     Java, Game, Config, AuthConfig, Pic, Optifine, Skin, Music,
     Text, GameIcon, Head, JavaZip, Loader, InputConfig,
-    User, Cmd, Icon, StartIcon, File, OpenLoaderDataPack
+    User, Cmd, Icon, StartIcon, File, OpenLoaderDataPack, Lang
 }
 
 /// <summary>

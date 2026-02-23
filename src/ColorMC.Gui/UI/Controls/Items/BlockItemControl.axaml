@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:items="clr-namespace:ColorMC.Gui.UI.Model.Items"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="120"
-    d:DesignWidth="120"
+    d:DesignHeight="140"
+    d:DesignWidth="140"
     x:DataType="items:BlockItemModel"
     mc:Ignorable="d">
     <Border
-        Width="120"
-        Height="120"
-        Margin="10"
+        Width="140"
+        Height="140"
+        Margin="5"
         Background="#2d2d2d"
         BorderBrush="#444"
         BorderThickness="2"
@@ -22,14 +22,14 @@
             VerticalAlignment="Center"
             Orientation="Vertical">
             <Panel
-                Width="60"
-                Height="60"
+                Width="64"
+                Height="64"
                 Margin="0,0,0,5"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
                 <Image
-                    Width="60"
-                    Height="60"
+                    Width="64"
+                    Height="64"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Source="{Binding Bitmap}" />

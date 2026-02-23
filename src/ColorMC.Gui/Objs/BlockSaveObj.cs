@@ -6,12 +6,8 @@ namespace ColorMC.Gui.Objs;
 /// <summary>
 /// 方块背包
 /// </summary>
-public class BlockUnlockObj
+public class BlockSaveObj
 {
-    /// <summary>
-    /// 解锁的方块列表
-    /// </summary>
-    public HashSet<string> List { get; set; }
     /// <summary>
     /// 今日幸运方块
     /// </summary>

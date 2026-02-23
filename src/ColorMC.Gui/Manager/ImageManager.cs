@@ -454,7 +454,7 @@ public static class ImageManager
     private static Bitmap? GetGameBlockIcon(GameSettingObj obj)
     {
         var block = GameManager.GetGameBlock(obj);
-        if (!string.IsNullOrWhiteSpace(block) && BlockTexUtils.Unlocks.List.Contains(block))
+        if (!string.IsNullOrWhiteSpace(block))
         {
             return GetBlockIconWithKey(block);
         }
@@ -473,7 +473,7 @@ public static class ImageManager
         {
             return image;
         }
-        var file = BlockTexUtils.GetTexWithKey(key);
+        var file = BlockListUtils.GetTexWithKey(key);
         if (file != null && File.Exists(file))
         {
             var icon = new Bitmap(file);
@@ -540,7 +540,7 @@ public static class ImageManager
         {
             return image;
         }
-        var file = BlockTexUtils.GetTex(path);
+        var file = BlockListUtils.GetTex(path);
         if (File.Exists(file))
         {
             var icon = new Bitmap(file);

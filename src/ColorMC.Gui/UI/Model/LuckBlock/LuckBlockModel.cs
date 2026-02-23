@@ -8,7 +8,6 @@ using Avalonia.Threading;
 using AvaloniaEdit.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -81,6 +80,13 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
         WindowManager.ShowBlockBackpack();
     }
 
+    [RelayCommand]
+    public void ResetBlock()
+    {
+        BlockListUtils.Reset();
+        ShowResult = false;
+    }
+
     public void StartLottery()
     {
         CanStart = false;
@@ -108,7 +114,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
     public async void LoadBlocks()
     {
         var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
-        var res = await BaseBinding.StartLoadBlock();
+        var res = await BlockListUtils.StartLoadBlock();
         Window.CloseDialog(dialog);
         if (!res.State)
         {
@@ -117,7 +123,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
             return;
         }
 
-        var list = await BaseBinding.BuildLotteryItems();
+        var list = await BlockListUtils.BuildRandomBlockList();
         if (list == null)
         {
             await Window.ShowWait(LangUtils.Get("LuckBlockWindow.Text9"));
@@ -129,11 +135,11 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
 
         Reset();
 
-        if (BlockTexUtils.IsGet())
+        if (BlockListUtils.IsGet())
         {
             CanRun = false;
 
-            var block = BlockTexUtils.Unlocks.Today;
+            var block = BlockListUtils.TodayBlock.Today;
             SelectedItem = LotteryItems.FirstOrDefault(item => item.Key == block);
             ShowResult = true;
         }
@@ -196,7 +202,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
             CanRun = false;
             if (SelectedItem != null)
             {
-                BlockTexUtils.SetToday(SelectedItem.Key);
+                BlockListUtils.SetToday(SelectedItem.Key);
             }
         }
         catch (TaskCanceledException)
@@ -220,37 +226,7 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
 
             itemVm.Left = newLeft;
         }
-        //if (CanRun)
-        //{
-        //    CheckCenterItem();
-        //}
     }
-
-    //private void CheckCenterItem()
-    //{
-    //    if (ContainerWidth <= 0) return;
-
-    //    double containerCenter = ContainerWidth / 2;
-    //    BlockItemModel? closestItem = null;
-    //    double closestDistance = double.MaxValue;
-
-    //    foreach (var itemVm in LotteryItems)
-    //    {
-    //        double itemCenter = itemVm.Left + 60; // 物品宽度的一半
-    //        double distance = Math.Abs(itemCenter - containerCenter);
-
-    //        if (distance < closestDistance)
-    //        {
-    //            closestDistance = distance;
-    //            closestItem = itemVm;
-    //        }
-    //    }
-
-    //    if (closestItem != null && closestDistance <= 10) // 容差范围
-    //    {
-    //        SelectedItem = closestItem;
-    //    }
-    //}
 
     private void EnsureCenterItemSelected()
     {

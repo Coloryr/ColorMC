@@ -755,7 +755,7 @@ public static class TestItem
         {
             new Thread(async () =>
             {
-                var res = await BaseBinding.StartLoadBlock();
+                var res = await BlockListUtils.StartLoadBlock();
             }).Start();
 
             Thread.Sleep(500);

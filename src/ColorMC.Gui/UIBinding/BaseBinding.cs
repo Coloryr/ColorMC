@@ -811,7 +811,7 @@ public static class BaseBinding
     /// <returns>语言</returns>
     public static async Task<JsonDocument?> ReadLang()
     {
-        var version = BlockTexUtils.Blocks.Id;
+        var version = BlockListUtils.Blocks.Id;
         if (version == null)
         {
             return null;
@@ -838,129 +838,5 @@ public static class BaseBinding
             return null;
         }
         return JsonDocument.Parse(stream);
-    }
-
-    /// <summary>
-    /// 获取解锁的方块列表
-    /// </summary>
-    /// <returns>方块列表</returns>
-    public static async Task<List<BlockItemModel>?> BuildUnlockItems()
-    {
-        var lang = await ReadLang();
-        if (lang == null)
-        {
-            return null;
-        }
-        var list = new List<BlockItemModel>();
-
-        foreach (var item in BlockTexUtils.Unlocks.List)
-        {
-            if (!BlockTexUtils.Blocks.Tex.TryGetValue(item, out var tex))
-            {
-                continue;
-            }
-
-            list.Add(new BlockItemModel(item, GetBlockName(lang, item), item,
-                ImageManager.GetBlockIcon(item, tex), 0));
-        }
-
-        return list;
-    }
-
-    public static string? GetBlockName(JsonDocument? document, string key)
-    {
-        if (document == null)
-        {
-            return null;
-        }
-
-        var keys = key.Split(":");
-        var key1 = keys.Length == 2 ? keys[1] : keys[0];
-        if (document.RootElement.TryGetProperty("block.minecraft." + key1, out var name)
-                && name.ValueKind == JsonValueKind.String)
-        {
-            return name.GetString();
-        }
-        else if (document.RootElement.TryGetProperty("block.minecraft." + key1.Replace("_powered", ""), out var name1)
-            && name.ValueKind == JsonValueKind.String)
-        {
-            return name1.GetString();
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// 获取今日方块
-    /// </summary>
-    /// <returns>方块</returns>
-    public static async Task<BlockItemModel?> GetBlock()
-    {
-        if (!BlockTexUtils.IsGet())
-        {
-            return null;
-        }
-
-        var lang = await ReadLang();
-        if (lang == null)
-        {
-            return null;
-        }
-        var item = BlockTexUtils.Unlocks.Today;
-
-        if (!BlockTexUtils.Blocks.Tex.TryGetValue(item, out var tex))
-        {
-            return null;
-        }
-        return new BlockItemModel(item, GetBlockName(lang, item), item,
-                ImageManager.GetBlockIcon(item, tex), 0);
-    }
-
-    /// <summary>
-    /// 生成幸运方块列表
-    /// </summary>
-    /// <returns>方块列表</returns>
-    public static async Task<List<BlockItemModel>?> BuildLotteryItems()
-    {
-        var lang = await ReadLang();
-        if (lang == null)
-        {
-            return null;
-        }
-
-        var list = new List<BlockItemModel>();
-
-        foreach (var item in BlockTexUtils.Blocks.Tex)
-        {
-            list.Add(new BlockItemModel(item.Key, GetBlockName(lang, item.Key), item.Key,
-                    ImageManager.GetBlockIcon(item.Key, item.Value), 0));
-        }
-
-        var random = new Random();
-        return [.. list.OrderBy(x => random.Next())];
-    }
-
-    /// <summary>
-    /// 开始加载方块列表
-    /// </summary>
-    /// <returns>加载结果</returns>
-    public static async Task<StringRes> StartLoadBlock()
-    {
-        var temp = TaskManager.StartMutexTask(GuiNames.NameKeyLoadBlock);
-        if (temp != null)
-        {
-            var res = await temp;
-            if (res is StringRes res1)
-            {
-                return res1;
-            }
-
-            return new StringRes();
-        }
-
-        var res2 = await BlockTexUtils.LoadNow();
-        TaskManager.StopMutexTask(GuiNames.NameKeyLoadBlock, res2);
-
-        return res2;
     }
 }

@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +14,9 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Dialog;
+using ColorMC.Gui.UI.Model.Items;
+using ColorMC.Gui.UIBinding;
 using MinecraftSkinRender.Image;
 using SharpCompress.Archives.Zip;
 using SkiaSharp;
@@ -21,7 +26,7 @@ namespace ColorMC.Gui.Utils;
 /// <summary>
 /// 幸运方块处理
 /// </summary>
-public static class BlockTexUtils
+public static class BlockListUtils
 {
     /// <summary>
     /// 运行路径
@@ -43,12 +48,14 @@ public static class BlockTexUtils
     /// <summary>
     /// 方块背包
     /// </summary>
-    public static BlockUnlockObj Unlocks { get; private set; }
+    public static BlockSaveObj TodayBlock { get; private set; }
 
     /// <summary>
     /// 随机数
     /// </summary>
     private static readonly Random s_random = new();
+
+    private static JsonDocument? s_minecraftLang;
 
     /// <summary>
     /// 贴图顶点 Vertice
@@ -172,9 +179,9 @@ public static class BlockTexUtils
     public static bool IsGet()
     {
         var time = DateTime.Now;
-        if (Unlocks.Time.Year != time.Year
-            || Unlocks.Time.Month != time.Month
-            || Unlocks.Time.Day != time.Day)
+        if (TodayBlock.Time.Year != time.Year
+            || TodayBlock.Time.Month != time.Month
+            || TodayBlock.Time.Day != time.Day)
         {
             return false;
         }
@@ -188,10 +195,9 @@ public static class BlockTexUtils
     /// <param name="key">方块ID</param>
     public static void SetToday(string key)
     {
-        Unlocks.List.Add(key);
-        Unlocks.Time = DateTime.Now;
-        Unlocks.Today = key;
-        SaveUnlock();
+        TodayBlock.Time = DateTime.Now;
+        TodayBlock.Today = key;
+        SaveData();
 
         WindowManager.BlockBackpackWindow?.Reload();
         WindowManager.MainWindow?.ReloadBlock();
@@ -350,9 +356,11 @@ public static class BlockTexUtils
         }
         Blocks ??= new()
         {
-            Tex = []
+            Tex = [],
+            Name = []
         };
         Blocks.Tex ??= [];
+        Blocks.Name ??= [];
 
         SaveState();
     }
@@ -365,31 +373,27 @@ public static class BlockTexUtils
         try
         {
             using var stream = PathHelper.OpenRead(s_unlockFile);
-            var list = JsonUtils.ToObj(stream, JsonGuiType.BlockUnlockObj);
+            var list = JsonUtils.ToObj(stream, JsonGuiType.BlockSaveObj);
             if (list == null)
             {
-                Unlocks = new()
-                {
-                    List = []
-                };
+                TodayBlock = new();
                 return;
             }
 
-            Unlocks = list;
-            Unlocks.List ??= [];
+            TodayBlock = list;
         }
         catch
         {
-            SaveUnlock();
+            SaveData();
         }
     }
 
     /// <summary>
     /// 保存
     /// </summary>
-    public static void SaveUnlock()
+    public static void SaveData()
     {
-        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameBlockFile, s_unlockFile, Unlocks, JsonGuiType.BlockUnlockObj));
+        ConfigSave.AddItem(ConfigSaveObj.Build(GuiNames.NameBlockFile, s_unlockFile, TodayBlock, JsonGuiType.BlockSaveObj));
     }
 
     /// <summary>
@@ -561,5 +565,259 @@ public static class BlockTexUtils
 
         // 绘制带纹理的面
         canvas.DrawVertices(skVertices, SKBlendMode.SrcOver, paint);
+    }
+
+    public static async Task<string?> GetBlockName(string key)
+    {
+        if (Blocks.Name.TryGetValue(key, out var name2))
+        {
+            return name2;
+        }
+
+        if (s_minecraftLang == null)
+        {
+            s_minecraftLang = await BaseBinding.ReadLang();
+            if (s_minecraftLang == null)
+            {
+                return null;
+            }
+        }
+
+        string? output = null;
+        var keys = key.Split(":");
+        var key1 = keys.Length == 2 ? keys[1] : keys[0];
+        if (s_minecraftLang.RootElement.TryGetProperty("block.minecraft." + key1, out var name)
+                && name.ValueKind == JsonValueKind.String)
+        {
+            output = name.GetString();
+        }
+        else if (s_minecraftLang.RootElement.TryGetProperty("block.minecraft." + key1.Replace("_powered", ""), out var name1)
+            && name.ValueKind == JsonValueKind.String)
+        {
+            output = name1.GetString();
+        }
+
+        if (!string.IsNullOrWhiteSpace(output))
+        {
+            Blocks.Name[key] = output;
+        }
+
+        SaveState();
+
+        return output;
+    }
+
+    /// <summary>
+    /// 获取今日方块
+    /// </summary>
+    /// <returns>方块</returns>
+    public static async Task<BlockItemModel?> GetBlock()
+    {
+        if (!IsGet())
+        {
+            return null;
+        }
+
+        var item = TodayBlock.Today;
+
+        if (!Blocks.Tex.TryGetValue(item, out var tex))
+        {
+            return null;
+        }
+        return new BlockItemModel(item, await GetBlockName(item), ImageManager.GetBlockIcon(item, tex), 0);
+    }
+
+    /// <summary>
+    /// 生成幸运方块列表
+    /// </summary>
+    /// <returns>方块列表</returns>
+    public static async Task<List<BlockItemModel>?> BuildBlockList()
+    {
+        var list = new List<BlockItemModel>();
+
+        foreach (var item in Blocks.Tex)
+        {
+            list.Add(new BlockItemModel(item.Key, await GetBlockName(item.Key), ImageManager.GetBlockIcon(item.Key, item.Value), 0));
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// 生成幸运方块列表
+    /// </summary>
+    /// <returns>方块列表</returns>
+    public static async Task<List<BlockItemModel>?> BuildRandomBlockList()
+    {
+        var list = await BuildBlockList();
+        if (list == null)
+        {
+            return null;
+        }
+        var random = new Random();
+        return [.. list.OrderBy(x => random.Next())];
+    }
+
+    /// <summary>
+    /// 开始加载方块列表
+    /// </summary>
+    /// <returns>加载结果</returns>
+    public static async Task<StringRes> StartLoadBlock()
+    {
+        var temp = TaskManager.StartMutexTask(GuiNames.NameKeyLoadBlock);
+        if (temp != null)
+        {
+            var res = await temp;
+            if (res is StringRes res1)
+            {
+                return res1;
+            }
+
+            return new StringRes();
+        }
+
+        var res2 = await LoadNow();
+        TaskManager.StopMutexTask(GuiNames.NameKeyLoadBlock, res2);
+
+        return res2;
+    }
+
+    /// <summary>
+    /// 清空今日抽奖结果
+    /// </summary>
+    public static void Reset()
+    {
+        TodayBlock.Today = "";
+    }
+
+    /// <summary>
+    /// 开始导入方块
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
+    public static async Task<bool> StartImport(string local)
+    {
+        if (!Directory.Exists(local))
+        {
+            return false;
+        }
+
+        bool error = true;
+
+        await Task.Run(() =>
+        {
+            try
+            {
+                var files = Directory.GetFiles(local);
+                foreach (var item in files)
+                {
+                    var file = Path.GetFileName(item);
+                    if (!file.EndsWith(Names.NamePngExt) || file.StartsWith("fluid"))
+                    {
+                        continue;
+                    }
+
+                    var name = file.Replace(Names.NamePngExt, "");
+                    var keys = name.Split("__");
+                    var key = name;
+                    if (keys.Length >= 2)
+                    {
+                        key = $"{keys[0]}:{keys[1]}";
+                    }
+
+                    Blocks.Tex[key] = file;
+                    PathHelper.CopyFile(item, GetTex(file));
+                }
+
+                SaveState();
+            }
+            catch(Exception e)
+            {
+                Logs.Error("", e);
+                error = false;
+            }
+        });
+
+        return error;
+    }
+
+    /// <summary>
+    /// 导入翻译
+    /// </summary>
+    /// <param name="local"></param>
+    /// <returns></returns>
+    public static async Task<bool> StartImportLang(string local)
+    {
+        if (!File.Exists(local))
+        {
+            return false;   
+        }
+
+        if (local.EndsWith(Names.NameJarExt))
+        {
+            using var zip = ZipArchive.Open(local);
+            var list = zip.Entries.Where(item => item.Key?.Contains("zh_cn.json") == true);
+            if (!list.Any())
+            {
+                list = zip.Entries.Where(item => item.Key?.Contains("en_us.json") == true);
+            }
+            foreach (var item in list)
+            {
+                using var stream = item.OpenEntryStream();
+                try
+                {
+                    var json = JsonDocument.Parse(stream);
+                    LoadLang(json.RootElement);
+                }
+                catch
+                { 
+                    
+                }
+            }
+        }
+        else if(local.EndsWith(Names.NameJsonExt))
+        {
+            using var file = PathHelper.OpenRead(local);
+            if (file == null)
+            {
+                return false;
+            }
+            try
+            {
+                var json = JsonDocument.Parse(file);
+                LoadLang(json.RootElement);
+            }
+            catch
+            { 
+                
+            }
+        }
+
+        SaveState();
+
+        return true;
+    }
+
+    /// <summary>
+    /// 读取语言文件
+    /// </summary>
+    /// <param name="doc"></param>
+    private static void LoadLang(JsonElement doc)
+    {
+        if (doc.ValueKind != JsonValueKind.Object)
+        {
+            return;
+        }
+
+        foreach (var item in doc.EnumerateObject())
+        {
+            if (item.Name.StartsWith("block.") || item.Name.StartsWith("item."))
+            {
+                var keys = item.Name.Split(".");
+                var key = $"{keys[1]}:{keys[2]}";
+
+                Blocks.Name[key] = item.Value.GetString()!;
+            }
+        }
     }
 }

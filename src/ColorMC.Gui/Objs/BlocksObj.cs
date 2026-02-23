@@ -15,4 +15,8 @@ public class BlocksObj
     /// 贴图列表
     /// </summary>
     public Dictionary<string, string> Tex { get; set; }
+    /// <summary>
+    /// 方块名字
+    /// </summary>
+    public Dictionary<string, string> Name { get; set; }
 }

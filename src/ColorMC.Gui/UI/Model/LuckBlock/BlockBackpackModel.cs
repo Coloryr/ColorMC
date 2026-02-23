@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Gui.Manager;
+using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
@@ -26,12 +27,16 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     /// </summary>
     public ObservableCollection<BlockItemModel> Blocks { get; init; } = [];
 
+    [ObservableProperty]
+    private bool _importDisplay;
+    [ObservableProperty]
+    private bool _langDisplay;
+
     /// <summary>
-    /// 是否没有方块列表
+    /// 导入路径
     /// </summary>
     [ObservableProperty]
-    private bool _isEmpty;
-
+    private string _local;
     /// <summary>
     /// 方块搜索
     /// </summary>
@@ -39,9 +44,100 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     private string? _text;
 
     [RelayCommand]
-    public void OpenLuck()
+    public void ImportBlock()
     {
-        WindowManager.ShowLuck();
+        ImportDisplay = true;
+        LangDisplay = false;
+    }
+
+    [RelayCommand]
+    public void ImportLang()
+    {
+        ImportDisplay = false;
+        LangDisplay = true;
+    }
+
+    [RelayCommand]
+    public async Task SelectBlock()
+    {
+        var top = Window.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectPathAsync(top, PathType.BlockPath);
+        if (file != null)
+        {
+            Local = file;
+        }
+    }
+
+    [RelayCommand]
+    public async Task StartBlock()
+    {
+        var dialog = new ProgressModel()
+        {
+            Text = LangUtils.Get("BlockBackpackWindow.Text10")
+        };
+        Window.ShowDialog(dialog);
+        var res = await BlockListUtils.StartImport(Local);
+        Window.CloseDialog(dialog);
+        if (res)
+        {
+            Load();
+            ImportDisplay = false;
+            Window.Notify(LangUtils.Get("BlockBackpackWindow.Text21"));
+        }
+        else
+        {
+            Window.Show(LangUtils.Get("BlockBackpackWindow.Text11"));
+        }
+    }
+
+    [RelayCommand]
+    public async Task SelectLang()
+    {
+        var top = Window.GetTopLevel();
+        if (top == null)
+        {
+            return;
+        }
+        var file = await PathBinding.SelectFileAsync(top, FileType.Lang);
+        if (file.Path != null)
+        {
+            Local = file.Path;
+        }
+    }
+
+    [RelayCommand]
+    public async Task StartLang()
+    {
+        var dialog = new ProgressModel()
+        {
+            Text = LangUtils.Get("BlockBackpackWindow.Text19")
+        };
+        Window.ShowDialog(dialog);
+        var res = await BlockListUtils.StartImportLang(Local);
+        Window.CloseDialog(dialog);
+        if (res)
+        {
+            Load();
+            LangDisplay = false;
+            Window.Notify(LangUtils.Get("BlockBackpackWindow.Text22"));
+        }
+        else
+        {
+            Window.Show(LangUtils.Get("BlockBackpackWindow.Text20"));
+        }
+    }
+
+    [RelayCommand]
+    public void CloseView()
+    {
+        ImportDisplay = false;
+        LangDisplay = false;
+
+        Local = "";
     }
 
     partial void OnTextChanged(string? value)
@@ -56,7 +152,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     {
         _items.Clear();
         var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
-        var res = await BaseBinding.StartLoadBlock();
+        var res = await BlockListUtils.StartLoadBlock();
         Window.CloseDialog(dialog);
         if (!res.State)
         {
@@ -65,7 +161,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
             return;
         }
 
-        var list = await BaseBinding.BuildUnlockItems();
+        var list = await BlockListUtils.BuildBlockList();
         if (list == null)
         {
             await Window.ShowWait(LangUtils.Get("LuckBlockWindow.Text9"));
@@ -79,11 +175,7 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
             _items.Add(item);
         }
 
-        IsEmpty = !_items.Any();
-        if (!IsEmpty)
-        {
-            LoadBlock();
-        }
+        LoadBlock();
     }
 
     private void LoadBlock()
@@ -95,7 +187,8 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
         }
         else
         {
-            Blocks.AddRange(_items.Where(item => item.Name.Contains(Text) || item.Key.Contains(Text)));
+            Blocks.AddRange(_items.Where(item => item.Name?.Contains(Text) == true
+                || item.Key.Contains(Text)));
         }
     }
 

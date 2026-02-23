@@ -57,7 +57,7 @@ public partial class GameEditModel
             {
                 item.Name = LangUtils.Get("GameEditWindow.Tab12.Text10");
             }
-           
+
             SchematicList.Add(new SchematicDisplayModel() { Obj = item });
         }
         Window.CloseDialog(dialog);
@@ -70,13 +70,13 @@ public partial class GameEditModel
     /// </summary>
     public async void DisplayBlocks()
     {
-        if (SchematicItem == null || SchematicItem.Obj.BlockCount <= 0)
+        if (SchematicItem is not { } sche || SchematicItem.Obj.BlockCount <= 0)
         {
             return;
         }
 
         var dialog = Window.ShowProgress(LangUtils.Get("LuckBlockWindow.Text5"));
-        var res = await BaseBinding.StartLoadBlock();
+        var res = await BlockListUtils.StartLoadBlock();
         Window.CloseDialog(dialog);
         if (!res.State)
         {
@@ -86,19 +86,18 @@ public partial class GameEditModel
 
         var dialog1 = new BlockListModel(Window.WindowId)
         {
-            Text = string.Format(LangUtils.Get("GameEditWindow.Tab12.Text17"), SchematicItem.Name)
+            Text = string.Format(LangUtils.Get("GameEditWindow.Tab12.Text17"), sche.Name, sche.Type)
         };
-        var lang = await BaseBinding.ReadLang();
 
-        foreach (var item in SchematicItem.Obj.Blocks)
+        foreach (var item in sche.Obj.Blocks)
         {
-            if (BlockTexUtils.Blocks.Tex.TryGetValue(item.Key, out var tex))
+            if (BlockListUtils.Blocks.Tex.TryGetValue(item.Key, out var tex))
             {
-                dialog1.Blocks.Add(new BlockItemModel(item.Key, BaseBinding.GetBlockName(lang, item.Key), item.Key, ImageManager.GetBlockIcon(item.Key, tex), item.Value));
+                dialog1.Blocks.Add(new BlockItemModel(item.Key, await BlockListUtils.GetBlockName(item.Key), ImageManager.GetBlockIcon(item.Key, tex), item.Value));
             }
             else
             {
-                dialog1.Blocks.Add(new BlockItemModel(item.Key, BaseBinding.GetBlockName(lang, item.Key), item.Key, null, item.Value));
+                dialog1.Blocks.Add(new BlockItemModel(item.Key, await BlockListUtils.GetBlockName(item.Key), null, item.Value));
             }
         }
 

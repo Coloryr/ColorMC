@@ -7,29 +7,49 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model.LuckBlock"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
+    xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:BlockBackpackModel"
     mc:Ignorable="d">
     <Panel>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-            <DockPanel Name="ItemsView" Margin="10">
-                <Border
-                    Margin="10,0,10,5"
-                    Classes="t2"
-                    DockPanel.Dock="Top">
-                    <StackPanel Margin="15">
-                        <Grid ColumnDefinitions="auto,*">
-                            <TextBlock
-                                Grid.Column="0"
-                                Margin="0,0,5,0"
-                                Text="{setting:Localize BlockBackpackWindow.Text5}" />
-                            <TextBox Grid.Column="1" Text="{Binding Text}" />
-                        </Grid>
-                    </StackPanel>
-                </Border>
+        <DockPanel>
+            <Border
+                Margin="20,10,20,5"
+                Classes="t2"
+                DockPanel.Dock="Top">
+                <StackPanel Margin="15">
+                    <DockPanel>
+                        <TextBlock
+                            Grid.Column="0"
+                            Margin="0,0,5,0"
+                            Text="{setting:Localize BlockBackpackWindow.Text5}" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding ImportBlock}"
+                            Content="{setting:Localize BlockBackpackWindow.Text6}"
+                            DockPanel.Dock="Right" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding ImportLang}"
+                            Content="{setting:Localize BlockBackpackWindow.Text7}"
+                            DockPanel.Dock="Right" />
+                        <TextBox Grid.Column="1" Text="{Binding Text}" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
                 <ItemsControl
-                    HorizontalAlignment="Stretch"
+                    Margin="5"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Stretch"
                     ItemsSource="{Binding Blocks}">
                     <ItemsControl.ItemsPanel>
@@ -43,31 +63,99 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </DockPanel>
-        </ScrollViewer>
-        <StackPanel
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            IsVisible="{Binding IsEmpty}">
-            <TextBlock
-                HorizontalAlignment="Center"
+            </ScrollViewer>
+        </DockPanel>
+        <Panel Background="{setting:Theme TopViewBG}" IsVisible="{Binding ImportDisplay}">
+            <Border
+                Margin="20"
                 VerticalAlignment="Center"
-                FontSize="25"
-                Text="{setting:Localize BlockBackpackWindow.Text3}" />
-            <Button
-                Width="120"
-                Height="40"
-                Margin="0,20,0,0"
-                HorizontalAlignment="Center"
+                Classes="t5">
+                <StackPanel Margin="15">
+                    <DockPanel Margin="0,0,0,10">
+                        <Button
+                            Width="30"
+                            Height="30"
+                            Classes="none2"
+                            Command="{Binding CloseView}"
+                            DockPanel.Dock="Right">
+                            <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
+                        </Button>
+                        <TextBlock FontSize="16" Text="{setting:Localize BlockBackpackWindow.Text6}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,20">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize BlockBackpackWindow.Text8}" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding StartBlock}"
+                            Content="{setting:Localize BlockBackpackWindow.Text9}"
+                            DockPanel.Dock="Right" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding SelectBlock}"
+                            Content="{setting:Localize BlockBackpackWindow.Text8}"
+                            DockPanel.Dock="Right" />
+                        <TextBox Text="{Binding Local}" />
+                    </DockPanel>
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text12}" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text13}" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text14}" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text15}" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text16}" TextWrapping="Wrap" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text17}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Panel>
+        <Panel Background="{setting:Theme TopViewBG}" IsVisible="{Binding LangDisplay}">
+            <Border
+                Margin="20"
                 VerticalAlignment="Center"
-                Background="#4CAF50"
-                BorderThickness="0"
-                Command="{Binding OpenLuck}"
-                Content="{setting:Localize BlockBackpackWindow.Text4}"
-                CornerRadius="6"
-                FontSize="16"
-                FontWeight="Bold"
-                Foreground="White" />
-        </StackPanel>
+                Classes="t5">
+                <StackPanel Margin="15">
+                    <DockPanel Margin="0,0,0,10">
+                        <Button
+                            Width="30"
+                            Height="30"
+                            Classes="none2"
+                            Command="{Binding CloseView}"
+                            DockPanel.Dock="Right">
+                            <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
+                        </Button>
+                        <TextBlock FontSize="16" Text="{setting:Localize BlockBackpackWindow.Text7}" />
+                    </DockPanel>
+                    <DockPanel Margin="0,0,0,20">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize Button.Select}" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding StartLang}"
+                            Content="{setting:Localize BlockBackpackWindow.Text9}"
+                            DockPanel.Dock="Right" />
+                        <Button
+                            Grid.Column="2"
+                            Width="100"
+                            Height="35"
+                            Margin="7,-2,-3,-2"
+                            Classes="top"
+                            Command="{Binding SelectLang}"
+                            Content="{setting:Localize Button.Select}"
+                            DockPanel.Dock="Right" />
+                        <TextBox Text="{Binding Local}" />
+                    </DockPanel>
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text12}" />
+                    <TextBlock Text="{setting:Localize BlockBackpackWindow.Text18}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Panel>
     </Panel>
 </UserControl>

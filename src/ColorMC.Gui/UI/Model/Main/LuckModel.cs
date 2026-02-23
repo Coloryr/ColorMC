@@ -1,6 +1,6 @@
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.UI.Model.Items;
-using ColorMC.Gui.UIBinding;
+using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -41,7 +41,7 @@ public partial class MainModel
 
     public async void LoadBlock()
     {
-        var item = await BaseBinding.GetBlock();
+        var item = await BlockListUtils.GetBlock();
 
         if (item == null)
         {

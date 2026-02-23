@@ -28,15 +28,16 @@ namespace ColorMC.Gui.UIBinding;
 /// </summary>
 public static class PathBinding
 {
-    private static readonly string[] EXE = ["*.exe"];
-    private static readonly string[] ZIP = ["*.zip", "*.tar.xz", "*.tar.gz"];
-    private static readonly string[] JSON = ["*.json"];
+    private static readonly string[] Exe = ["*.exe"];
+    private static readonly string[] Pack = ["*.zip", "*.tar.xz", "*.tar.gz"];
+    private static readonly string[] Json = ["*.json"];
     private static readonly string[] Modpack = ["*.zip", "*.mrpack"];
-    private static readonly string[] PICFILE = ["*.png", "*.jpg", "*.bmp"];
-    private static readonly string[] AUDIO = ["*.mp3", "*.wav", "*.flac"];
-    private static readonly string[] HEADFILE = ["*.png"];
-    private static readonly string[] ZIPFILE = ["*.zip"];
-    private static readonly string[] JARFILE = ["*.jar"];
+    private static readonly string[] Pic = ["*.png", "*.jpg", "*.bmp"];
+    private static readonly string[] Audio = ["*.mp3", "*.wav", "*.flac"];
+    private static readonly string[] Image = ["*.png"];
+    private static readonly string[] Zip = ["*.zip"];
+    private static readonly string[] Jar = ["*.jar"];
+    private static readonly string[] Lang = ["*.jar", "*.json"];
 
     /// <summary>
     /// 获取文件夹占用大小
@@ -208,6 +209,16 @@ public static class PathBinding
                 var res = await top.StorageProvider.OpenFolderPickerAsync(new()
                 {
                     Title = LangUtils.Get("App.Select.Text2")
+                });
+                if (res?.Any() == true)
+                {
+                    return res[0].GetPath();
+                }
+                break;
+            case PathType.BlockPath:
+                res = await top.StorageProvider.OpenFolderPickerAsync(new()
+                {
+                    Title = LangUtils.Get("App.Select.Text35")
                 });
                 if (res?.Any() == true)
                 {
@@ -451,10 +462,16 @@ public static class PathBinding
                     null,
                     LangUtils.Get("App.Select.Text34"));
                 break;
+            case FileType.Lang:
+                res = await SelectFileAsync(top,
+                    LangUtils.Get("App.Select.Text36"),
+                    Lang,
+                    LangUtils.Get("App.Select.Text37"));
+                break;
             case FileType.Java:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text20"),
-                    SystemInfo.Os == OsType.Windows ? EXE : null,
+                    SystemInfo.Os == OsType.Windows ? Exe : null,
                     LangUtils.Get("App.Select.Text21"),
                     storage: JavaBinding.GetSuggestedStartLocation());
                 if (res?.Any() == true)
@@ -477,19 +494,19 @@ public static class PathBinding
             case FileType.JavaZip:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text22"),
-                    ZIP,
+                    Pack,
                     LangUtils.Get("App.Select.Text23"));
                 break;
             case FileType.Config:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("BuildPackWindow.Tab1.Text1"),
-                    JSON,
+                    Json,
                     LangUtils.Get("Text.Config"));
                 break;
             case FileType.AuthConfig:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text24"),
-                    JSON,
+                    Json,
                     LangUtils.Get("App.Select.Text25"));
                 break;
             case FileType.Modpack:
@@ -501,49 +518,49 @@ public static class PathBinding
             case FileType.Pic:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text26"),
-                    PICFILE,
+                    Pic,
                     LangUtils.Get("App.Select.Text27"));
                 break;
             case FileType.Icon:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text29"),
-                    PICFILE,
+                    Pic,
                     LangUtils.Get("App.Select.Text30"));
                 break;
             case FileType.Music:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text10"),
-                    AUDIO,
+                    Audio,
                     LangUtils.Get("App.Select.Text11"));
                 break;
             case FileType.GameIcon:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text6"),
-                    PICFILE,
+                    Pic,
                     LangUtils.Get("App.Select.Text7"));
                 break;
             case FileType.StartIcon:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text31"),
-                    PICFILE,
+                    Pic,
                     LangUtils.Get("App.Select.Text32"));
                 break;
             case FileType.Head:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text8"),
-                    HEADFILE,
+                    Image,
                     LangUtils.Get("App.Select.Text9"));
                 break;
             case FileType.Loader:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text18"),
-                    JARFILE,
+                    Jar,
                     LangUtils.Get("App.Select.Text19"));
                 break;
             case FileType.InputConfig:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text12"),
-                    JSON,
+                    Json,
                     LangUtils.Get("SettingWindow.Tab8.Text5"));
                 break;
         }
@@ -584,7 +601,7 @@ public static class PathBinding
             case FileType.Shaderpack:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("GameEditWindow.Tab11.Text1"),
-                    ZIPFILE,
+                    Zip,
                     LangUtils.Get("Type.FileType.Shaderpack"), true);
                 if (res?.Any() == true)
                 {
@@ -594,7 +611,7 @@ public static class PathBinding
             case FileType.Mod:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text14"),
-                    JARFILE,
+                    Jar,
                     LangUtils.Get("Type.FileType.Mod"), true);
                 if (res?.Any() == true)
                 {
@@ -604,7 +621,7 @@ public static class PathBinding
             case FileType.Save:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text15"),
-                    ZIPFILE,
+                    Zip,
                     LangUtils.Get("App.Select.Text16"));
                 if (res?.Any() == true)
                 {
@@ -614,7 +631,7 @@ public static class PathBinding
             case FileType.Resourcepack:
                 res = await SelectFileAsync(top,
                     LangUtils.Get("App.Select.Text17"),
-                    ZIPFILE,
+                    Zip,
                     LangUtils.Get("Type.FileType.Resourcepack"), true);
                 if (res?.Any() == true)
                 {

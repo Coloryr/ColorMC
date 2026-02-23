@@ -89,7 +89,7 @@ public partial class App : Application
         FrpLaunchUtils.Init();
         JoystickConfig.Init();
         ToolUtils.Init();
-        BlockTexUtils.Init();
+        BlockListUtils.Init();
         Task.Run(() =>
         {
             SdlUtils.Init();
