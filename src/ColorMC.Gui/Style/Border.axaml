@@ -13,7 +13,7 @@
     </Design.PreviewWith>
 
     <Style Selector="Border.t1">
-        <Setter Property="Background" Value="{setting:Theme OverBGColor}" />
+        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
         <Setter Property="CornerRadius" Value="5" />
     </Style>
 
@@ -36,7 +36,7 @@
     </Style>
 
     <Style Selector="Border.t5">
-        <Setter Property="Background" Value="{setting:Theme OverBGColor}" />
+        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
         <Setter Property="CornerRadius" Value="5" />
         <Setter Property="BoxShadow" Value="0 0 3 1 #1A000000, 0 0 5 -1 #1A000000" />
     </Style>

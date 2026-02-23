@@ -16,7 +16,7 @@ public partial class SelectItemModel : ObservableObject
     private BoxShadows? _border = ThemeManager.BorderShadows;
 
     [ObservableProperty]
-    private IBrush _borderBrush;
+    private IBrush _borderBrush = ThemeManager.NowThemeColor.BorderColor;
 
     /// <summary>
     /// 是否选中

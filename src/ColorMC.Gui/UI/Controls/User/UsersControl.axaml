@@ -23,7 +23,7 @@
     <Panel>
         <DockPanel>
             <Border
-                Background="#FFFFFF"
+                Background="{setting:Theme ButtonBG}"
                 BorderBrush="#e5e7eb"
                 BorderThickness="0,0,0,1"
                 DockPanel.Dock="Top">
@@ -99,7 +99,7 @@
                 </DockPanel>
             </Border>
             <Border
-                Background="#FFFFFF"
+                Background="{setting:Theme ButtonBG}"
                 BorderBrush="#e5e7eb"
                 BorderThickness="0,1,0,0"
                 DockPanel.Dock="Bottom">
@@ -123,7 +123,7 @@
                         Text="{Binding ListUserCount}" />
                 </StackPanel>
             </Border>
-            <Panel Background="#f9fafb">
+            <Panel>
                 <ScrollViewer IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}, FallbackValue=true}" VerticalScrollBarVisibility="Disabled">
                     <ItemsControl Margin="20" ItemsSource="{Binding UserList}">
                         <ItemsControl.ItemTemplate>
@@ -160,7 +160,7 @@
                     IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}, FallbackValue=true}">
                     <DataGrid
                         AutoGenerateColumns="False"
-                        Background="#FFFFFF"
+                        Background="{setting:Theme ButtonBG}"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="True"
                         Classes="t1"

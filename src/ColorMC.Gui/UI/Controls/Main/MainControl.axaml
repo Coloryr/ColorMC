@@ -25,7 +25,7 @@
     <Panel>
         <Panel Name="MainView">
             <DockPanel>
-                <Panel Background="{setting:Theme OverBGColor}" DockPanel.Dock="Top">
+                <Panel Background="{setting:Theme ButtonBG}" DockPanel.Dock="Top">
                     <Button
                         Margin="0,12,30,12"
                         HorizontalAlignment="Right"
@@ -36,7 +36,6 @@
                             <StackPanel Margin="0,0,10,0" VerticalAlignment="Center">
                                 <TextBlock
                                     FontSize="13"
-                                    Foreground="Black"
                                     Text="{Binding UserId, FallbackValue=User Name}"
                                     TextWrapping="NoWrap" />
                                 <TextBlock

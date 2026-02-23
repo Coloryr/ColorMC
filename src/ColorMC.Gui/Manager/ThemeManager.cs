@@ -271,10 +271,6 @@ public static class ThemeManager
         {
             return NowThemeColor.TopGridColor;
         }
-        else if (key == nameof(ThemeObj.OverBGColor))
-        {
-            return NowThemeColor.OverBGColor;
-        }
         else if (key == nameof(ThemeObj.OverBrushColor))
         {
             return NowThemeColor.OverBrushColor;
@@ -306,6 +302,14 @@ public static class ThemeManager
         else if (key == nameof(ThemeObj.BorderBG))
         {
             return NowThemeColor.BorderBG;
+        }
+        else if (key == nameof(ThemeObj.RadioSelectBG))
+        {
+            return NowThemeColor.RadioSelectBG;
+        }
+        else if (key == nameof(ThemeObj.RadioSelect))
+        {
+            return NowThemeColor.RadioSelect;
         }
 
         return Brushes.Transparent;
@@ -558,14 +562,15 @@ public static class ThemeManager
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
             TopBGColor = Brush.Parse("#EFFFFFFF"),
             TopGridColor = Brush.Parse("#FFFFFFFF"),
-            OverBGColor = Brush.Parse("#FFFFFFFF"),
             OverBrushColor = Brush.Parse("#FFe5e5e5"),
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
             MenuBG = Brush.Parse("#FFF4F4F5"),
-            BorderColor = Brush.Parse("#e2e8f0"),
-            RadioGroupBG = Brush.Parse("#f3f4f6"),
-            BorderBG = Brush.Parse("#f8fafc")
+            BorderColor = Brush.Parse("#ffe2e8f0"),
+            RadioGroupBG = Brush.Parse("#fff3f4f6"),
+            BorderBG = Brush.Parse("#fff8fafc"),
+            RadioSelectBG = Brush.Parse("#FFFFFFFF"),
+            RadioSelect = Brush.Parse("#FF111827")
         };
 
         s_dark = new()
@@ -586,14 +591,15 @@ public static class ThemeManager
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
             TopBGColor = Brush.Parse("#EF000000"),
             TopGridColor = Brush.Parse("#FF202020"),
-            OverBGColor = Brush.Parse("#FF000000"),
             OverBrushColor = Brush.Parse("#FF1d1d1d"),
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
             MenuBG = Brush.Parse("#FF2c2c2c"),
-            BorderColor = Brush.Parse("#e2e8f0"),
-            RadioGroupBG = Brush.Parse("#f3f4f6"),
-            BorderBG = Brush.Parse("#f8fafc")
+            BorderColor = Brush.Parse("#ffe2e8f0"),
+            RadioGroupBG = Brush.Parse("#FF000000"),
+            BorderBG = Brush.Parse("#FF222222"),
+            RadioSelectBG = Brush.Parse("#FFEFEFEF"),
+            RadioSelect = Brush.Parse("#FF000000")
         };
     }
 }

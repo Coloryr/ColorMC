@@ -36,10 +36,6 @@ public record ThemeObj
     /// </summary>
     public IBrush TopGridColor;
     /// <summary>
-    /// 覆盖层带透明度背景色
-    /// </summary>
-    public IBrush OverBGColor;
-    /// <summary>
     /// 覆盖层边框颜色
     /// </summary>
     public IBrush OverBrushColor;
@@ -48,5 +44,7 @@ public record ThemeObj
     public IBrush MenuBG;
     public IBrush BorderColor;
     public IBrush RadioGroupBG;
+    public IBrush RadioSelectBG;
+    public IBrush RadioSelect;
     public IBrush BorderBG;
 }
