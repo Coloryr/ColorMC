@@ -7,16 +7,16 @@
     xmlns:model="clr-namespace:ColorMC.Gui.UI.Model"
     xmlns:setting="clr-namespace:ColorMC.Gui.UI"
     xmlns:svg="clr-namespace:ColorMC.Gui.UI.Views.Svg"
-    Height="36"
     d:DesignHeight="36"
     d:DesignWidth="800"
     x:DataType="model:WindowModel"
+    Background="{setting:Theme HeadBG}"
     mc:Ignorable="d">
     <Panel RenderOptions.TextRenderingMode="Antialias">
         <Rectangle
             Height="1"
             VerticalAlignment="Bottom"
-            Fill="{setting:Theme BorderColor}" />
+            Fill="{setting:Theme HeadFill}" />
         <StackPanel
             Height="35"
             HorizontalAlignment="Right"

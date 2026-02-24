@@ -159,7 +159,7 @@ public partial class MainModel
     /// 启动选中的游戏实例
     /// </summary>
     [RelayCommand]
-    public void Launch()
+    public void LaunchSimple()
     {
         if (Game == null)
         {

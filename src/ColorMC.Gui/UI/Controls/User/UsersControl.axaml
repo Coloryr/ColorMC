@@ -23,8 +23,8 @@
     <Panel>
         <DockPanel>
             <Border
-                Background="{setting:Theme ButtonBG}"
-                BorderBrush="#e5e7eb"
+                Background="{setting:Theme TopBG}"
+                BorderBrush="{setting:Theme HeadFill}"
                 BorderThickness="0,0,0,1"
                 DockPanel.Dock="Top">
                 <DockPanel Margin="20,15,20,15">
@@ -98,31 +98,6 @@
                         SelectedIndex="{Binding DisplayType}" />
                 </DockPanel>
             </Border>
-            <Border
-                Background="{setting:Theme ButtonBG}"
-                BorderBrush="#e5e7eb"
-                BorderThickness="0,1,0,0"
-                DockPanel.Dock="Bottom">
-                <StackPanel Margin="20,5,10,5" Orientation="Horizontal">
-                    <TextBlock
-                        Classes="t1"
-                        FontSize="12"
-                        Text="{setting:Localize UserWindow.Text39}" />
-                    <TextBlock
-                        Margin="0,0,10,0"
-                        Classes="t1"
-                        FontSize="12"
-                        Text="{Binding UserCount}" />
-                    <TextBlock
-                        Classes="t1"
-                        FontSize="12"
-                        Text="{setting:Localize UserWindow.Text40}" />
-                    <TextBlock
-                        Classes="t1"
-                        FontSize="12"
-                        Text="{Binding ListUserCount}" />
-                </StackPanel>
-            </Border>
             <Panel>
                 <ScrollViewer IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.GridInfo}, FallbackValue=true}" VerticalScrollBarVisibility="Disabled">
                     <ItemsControl Margin="20" ItemsSource="{Binding UserList}">
@@ -160,7 +135,7 @@
                     IsVisible="{Binding GridType, Converter={StaticResource EnumToBool}, ConverterParameter={x:Static enums:ItemsGridType.ListInfo}, FallbackValue=true}">
                     <DataGrid
                         AutoGenerateColumns="False"
-                        Background="{setting:Theme ButtonBG}"
+                        Background="{setting:Theme ItemBG}"
                         CanUserResizeColumns="True"
                         CanUserSortColumns="True"
                         Classes="t1"
@@ -239,9 +214,9 @@
         </DockPanel>
         <Panel
             Name="Grid2"
-            Opacity="0.9"
             Background="{setting:Theme TopGridColor}"
-            IsVisible="False">
+            IsVisible="False"
+            Opacity="0.9">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"

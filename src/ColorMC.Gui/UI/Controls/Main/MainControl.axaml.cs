@@ -64,7 +64,7 @@ public partial class MainControl : BaseUserControl
         }
 
         if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control
-                           || model.GridType == ItemsGridType.ListInfo)
+                           && model.GridType != ItemsGridType.ListInfo)
         {
             if (model.GameSearch)
             {

@@ -175,6 +175,39 @@ public static class ThemeManager
             }
             return NowThemeColor.WindowBG;
         }
+        else if (key == "HeadFill")
+        {
+            if (ImageManager.BackBitmap != null)
+            {
+                return Brushes.Transparent;
+            }
+            else
+            {
+                return NowThemeColor.BorderColor;
+            }
+        }
+        else if (key == "TopBG")
+        {
+            if (ImageManager.BackBitmap != null)
+            {
+                return Brushes.Transparent;
+            }
+            else
+            {
+                return NowThemeColor.ButtonBG;
+            }
+        }
+        else if (key == "HeadBG")
+        {
+            if (ImageManager.BackBitmap != null)
+            {
+                return NowThemeColor.ButtonBG;
+            }
+            else
+            {
+                return Brushes.Transparent;
+            }
+        }
         else if (key == nameof(ThemeObj.WindowTranColor))
         {
             if (GuiConfigUtils.Config.WindowTran)
@@ -548,12 +581,12 @@ public static class ThemeManager
         {
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FF000000"),
-            WindowBG = Brush.Parse("#FFf3f3f3"),
+            WindowBG = Brush.Parse("#fff8fafc"),
             WindowTranColor = Brush.Parse("#80FFFFFF"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
             MainGroupBG = Brush.Parse("#FFd4d4d8"),
             MainGroupBorder = Brush.Parse("#FFE0E0E0"),
-            ItemBG = Brush.Parse("#CFFFFFFF"),
+            ItemBG = Brush.Parse("#B0FFFFFF"),
             GameItemBG = Brush.Parse("#FFF2F2F2"),
             TopViewBG = Brush.Parse("#886D6D6D"),
             AllBorder = Brush.Parse("#FFe5e7eb"),
@@ -577,7 +610,7 @@ public static class ThemeManager
         {
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FFFFFFFF"),
-            WindowBG = Brush.Parse("#FF18181b"),
+            WindowBG = Brush.Parse("#FF222222"),
             WindowTranColor = Brush.Parse("#80202020"),
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
             MainGroupBG = Brush.Parse("#FF27272a"),

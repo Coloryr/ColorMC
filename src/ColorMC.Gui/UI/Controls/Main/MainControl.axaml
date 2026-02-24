@@ -25,7 +25,7 @@
     <Panel>
         <Panel Name="MainView">
             <DockPanel>
-                <Panel Background="{setting:Theme ButtonBG}" DockPanel.Dock="Top">
+                <Panel Background="{setting:Theme TopBG}" DockPanel.Dock="Top">
                     <Button
                         Margin="0,12,30,12"
                         HorizontalAlignment="Right"
@@ -149,7 +149,7 @@
                 <Rectangle
                     Height="1"
                     DockPanel.Dock="Top"
-                    Fill="{setting:Theme BorderColor}" />
+                    Fill="{setting:Theme HeadFill}" />
                 <ScrollViewer DockPanel.Dock="Right">
                     <StackPanel Width="200" Margin="0,0,30,30">
                         <cards:MusicControl Margin="0,20,0,0" IsVisible="{Binding CardMusic}" />

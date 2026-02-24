@@ -22,13 +22,12 @@
         Opacity="{Binding BgOpacity}"
         Source="{Binding BackImage}"
         Stretch="UniformToFill" />
-    <DockPanel Background="{setting:Theme BorderBG}">
+    <DockPanel Background="{setting:Theme WindowBG}">
         <view:TitleControl
             Name="TitleControl"
             DockPanel.Dock="Top"
             IsVisible="{Binding EnableHead}" />
         <dialog:DialogHost
-            Background="{setting:Theme ButtonBG}"
             DisableOpeningAnimation="True"
             Identifier="{Binding WindowId}"
             IsMultipleDialogsEnabled="True"

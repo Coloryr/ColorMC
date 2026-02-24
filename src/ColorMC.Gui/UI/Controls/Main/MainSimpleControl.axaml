@@ -62,7 +62,7 @@
                     Margin="-3,0,-3,0"
                     HorizontalAlignment="Stretch"
                     Classes="top"
-                    Command="{Binding Launch}"
+                    Command="{Binding LaunchSimple}"
                     Content="{setting:Localize MainWindow.Text35}"
                     IsEnabled="{Binding HaveGame}" />
                 <CheckBox
