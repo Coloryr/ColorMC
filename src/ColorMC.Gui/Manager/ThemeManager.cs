@@ -194,25 +194,25 @@ public static class ThemeManager
             }
             else
             {
-                return NowThemeColor.ButtonBG;
+                return NowThemeColor.ControlBG;
             }
         }
         else if (key == "HeadBG")
         {
             if (ImageManager.BackBitmap != null)
             {
-                return NowThemeColor.ButtonBG;
+                return NowThemeColor.ControlTranBG;
             }
             else
             {
                 return Brushes.Transparent;
             }
         }
-        else if (key == nameof(ThemeObj.WindowTranColor))
+        else if (key == nameof(ThemeObj.WindowTranBG))
         {
             if (GuiConfigUtils.Config.WindowTran)
             {
-                return NowThemeColor.WindowTranColor;
+                return NowThemeColor.WindowTranBG;
             }
             else if (NowTheme == PlatformThemeVariant.Light)
             {
@@ -235,50 +235,21 @@ public static class ThemeManager
         {
             return NowThemeColor.ItemBG;
         }
-        else if (key == nameof(ThemeObj.MainGroupBG))
-        {
-            if (ImageManager.BackBitmap != null)
-            {
-                return new SolidColorBrush(NowThemeColor.MainGroupBG.ToColor(), 0.75);
-            }
-            return NowThemeColor.MainGroupBG;
-        }
-        else if (key == nameof(ThemeObj.MainGroupBorder))
-        {
-            if (GuiConfigUtils.Config.WindowTran && ImageManager.BackBitmap == null)
-            {
-                return NowThemeColor.MainGroupBorder;
-            }
-
-            return Brushes.Transparent;
-        }
-        else if (key == "MainGroupItemBG")
-        {
-            if (ImageManager.BackBitmap != null)
-            {
-                return new SolidColorBrush(NowThemeColor.MainGroupBG.ToColor(), 0.75);
-            }
-            return Brushes.Transparent;
-        }
         else if (key == nameof(ThemeObj.ProgressBarBG))
         {
             return NowThemeColor.ProgressBarBG;
-        }
-        else if (key == nameof(ThemeObj.GameItemBG))
-        {
-            return NowThemeColor.GameItemBG;
         }
         else if (key == nameof(ThemeObj.TopViewBG))
         {
             return NowThemeColor.TopViewBG;
         }
-        else if (key == nameof(ThemeObj.AllBorder))
+        else if (key == nameof(ThemeObj.ControlBorder))
         {
-            return NowThemeColor.AllBorder;
+            return NowThemeColor.ControlBorder;
         }
-        else if (key == nameof(ThemeObj.ButtonBG))
+        else if (key == nameof(ThemeObj.ControlBG))
         {
-            return NowThemeColor.ButtonBG;
+            return NowThemeColor.ControlBG;
         }
         else if (key == nameof(ThemeObj.ButtonOver))
         {
@@ -296,17 +267,13 @@ public static class ThemeManager
         {
             return NowThemeColor.FontColor;
         }
-        else if (key == nameof(ThemeObj.TopBGColor))
+        else if (key == nameof(ThemeObj.ControlTranBG))
         {
-            return NowThemeColor.TopBGColor;
+            return NowThemeColor.ControlTranBG;
         }
-        else if (key == nameof(ThemeObj.TopGridColor))
+        else if (key == nameof(ThemeObj.OverGridBG))
         {
-            return NowThemeColor.TopGridColor;
-        }
-        else if (key == nameof(ThemeObj.OverBrushColor))
-        {
-            return NowThemeColor.OverBrushColor;
+            return NowThemeColor.OverGridBG;
         }
         else if (key == nameof(ThemeObj.SelectItemBG))
         {
@@ -315,10 +282,6 @@ public static class ThemeManager
         else if (key == nameof(ThemeObj.SelectItemOver))
         {
             return NowThemeColor.SelectItemOver;
-        }
-        else if (key == nameof(ThemeObj.MenuBG))
-        {
-            return NowThemeColor.MenuBG;
         }
         else if (key == "RandomColor")
         {
@@ -582,23 +545,18 @@ public static class ThemeManager
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FF000000"),
             WindowBG = Brush.Parse("#fff8fafc"),
-            WindowTranColor = Brush.Parse("#80FFFFFF"),
+            WindowTranBG = Brush.Parse("#80FFFFFF"),
             ProgressBarBG = Brush.Parse("#FFe4e4e7"),
-            MainGroupBG = Brush.Parse("#FFd4d4d8"),
-            MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#B0FFFFFF"),
-            GameItemBG = Brush.Parse("#FFF2F2F2"),
             TopViewBG = Brush.Parse("#886D6D6D"),
-            AllBorder = Brush.Parse("#FFe5e7eb"),
-            ButtonBG = Brush.Parse("#FFFFFFFF"),
+            ControlBorder = Brush.Parse("#FFe5e7eb"),
+            ControlBG = Brush.Parse("#FFFFFFFF"),
             ButtonOver = Brush.Parse("#FFFEFEFE"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
-            TopBGColor = Brush.Parse("#EFFFFFFF"),
-            TopGridColor = Brush.Parse("#FFFFFFFF"),
-            OverBrushColor = Brush.Parse("#FFe5e5e5"),
+            ControlTranBG = Brush.Parse("#EFFFFFFF"),
+            OverGridBG = Brush.Parse("#FFFFFFFF"),
             SelectItemBG = Brush.Parse("#D1E0E0E0"),
             SelectItemOver = Brush.Parse("#FFCCCCCC"),
-            MenuBG = Brush.Parse("#FFF4F4F5"),
             BorderColor = Brush.Parse("#ffe2e8f0"),
             RadioGroupBG = Brush.Parse("#fff3f4f6"),
             BorderBG = Brush.Parse("#fff8fafc"),
@@ -611,23 +569,18 @@ public static class ThemeManager
             MainColor = Brush.Parse(MainColorStr),
             FontColor = Brush.Parse("#FFFFFFFF"),
             WindowBG = Brush.Parse("#FF222222"),
-            WindowTranColor = Brush.Parse("#80202020"),
+            WindowTranBG = Brush.Parse("#80202020"),
             ProgressBarBG = Brush.Parse("#FF3f3f46"),
-            MainGroupBG = Brush.Parse("#FF27272a"),
-            MainGroupBorder = Brush.Parse("#FFE0E0E0"),
             ItemBG = Brush.Parse("#CF27272a"),
-            GameItemBG = Brush.Parse("#FFc7c7cb"),
             TopViewBG = Brush.Parse("#886D6D6D"),
-            AllBorder = Brush.Parse("#FFe5e7eb"),
-            ButtonBG = Brush.Parse("#FF000000"),
+            ControlBorder = Brush.Parse("#FFe5e7eb"),
+            ControlBG = Brush.Parse("#FF000000"),
             ButtonOver = Brush.Parse("#FF141414"),
             ButtonBorder = Brush.Parse("#FFD4D4D8"),
-            TopBGColor = Brush.Parse("#EF000000"),
-            TopGridColor = Brush.Parse("#FF202020"),
-            OverBrushColor = Brush.Parse("#FF1d1d1d"),
+            ControlTranBG = Brush.Parse("#EF000000"),
+            OverGridBG = Brush.Parse("#FF202020"),
             SelectItemBG = Brush.Parse("#FF353535"),
             SelectItemOver = Brush.Parse("#FF454545"),
-            MenuBG = Brush.Parse("#FF2c2c2c"),
             BorderColor = Brush.Parse("#FF333537"),
             RadioGroupBG = Brush.Parse("#FF000000"),
             BorderBG = Brush.Parse("#FF222222"),

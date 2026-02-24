@@ -19,7 +19,7 @@
     <Design.DataContext>
         <model:WindowModel />
     </Design.DataContext>
-    <Panel Name="BottomView" Background="{setting:Theme WindowTranColor}">
+    <Panel Name="BottomView" Background="{setting:Theme WindowTranBG}">
         <Image
             IsVisible="{Binding BgVisible}"
             Opacity="{Binding BgOpacity}"
@@ -31,7 +31,7 @@
                 DockPanel.Dock="Top"
                 IsVisible="{Binding EnableHead}" />
             <dialog:DialogHost
-                Background="{setting:Theme ButtonBG}"
+                Background="{setting:Theme ControlBG}"
                 DisableOpeningAnimation="True"
                 Identifier="{Binding WindowId}"
                 IsMultipleDialogsEnabled="True"
@@ -41,7 +41,7 @@
                     <Panel
                         Name="Grid2"
                         Opacity="0.9"
-                        Background="{setting:Theme TopGridColor}"
+                        Background="{setting:Theme OverGridBG}"
                         IsVisible="False">
                         <TextBlock
                             Name="Label1"

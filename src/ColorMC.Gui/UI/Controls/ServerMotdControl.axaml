@@ -68,7 +68,7 @@
         </Border>
         <Border
             Name="Grid1"
-            Background="{setting:Theme TopBGColor}"
+            Background="{setting:Theme ControlTranBG}"
             CornerRadius="5"
             IsVisible="False">
             <StackPanel VerticalAlignment="Center">
@@ -82,7 +82,7 @@
         </Border>
         <Border
             Name="Grid2"
-            Background="{setting:Theme TopBGColor}"
+            Background="{setting:Theme ControlTranBG}"
             CornerRadius="5"
             IsVisible="False">
             <TextBlock HorizontalAlignment="Center" Text="{setting:Localize MainWindow.Text94}" />

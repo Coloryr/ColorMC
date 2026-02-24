@@ -61,7 +61,7 @@
                 Padding="10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
-                Background="{setting:Theme ButtonBG}"
+                Background="{setting:Theme ControlBG}"
                 BoxShadow="0 20 25 -5 #1a000000, 0 8 10 -6 #1a000000"
                 CornerRadius="16">
                 <StackPanel Orientation="Horizontal">

@@ -150,7 +150,7 @@
                     Height="1"
                     DockPanel.Dock="Top"
                     Fill="{setting:Theme HeadFill}" />
-                <ScrollViewer DockPanel.Dock="Right">
+                <ScrollViewer DockPanel.Dock="Right" IsVisible="{Binding HaveCard}">
                     <StackPanel Width="200" Margin="0,0,30,30">
                         <cards:MusicControl Margin="0,20,0,0" IsVisible="{Binding CardMusic}" />
                         <cards:UpdateControl Margin="0,20,0,0" IsVisible="{Binding CardUpdate}" />
@@ -160,8 +160,8 @@
                         <cards:LuckControl Margin="0,20,0,0" IsVisible="{Binding CardBlock}" />
                     </StackPanel>
                 </ScrollViewer>
-                <ScrollViewer Margin="0,0,10,0">
-                    <DockPanel Name="ContentOut" Margin="0,0,10,0">
+                <ScrollViewer Name="ContentScroll" Margin="0,0,10,0">
+                    <DockPanel Name="ContentOut" Margin="0,0,20,0">
                         <views:ServerMotdControl
                             Margin="30,20,0,0"
                             DockPanel.Dock="Top"
@@ -225,7 +225,7 @@
             </DockPanel>
             <Border
                 Name="Grid2"
-                Background="{setting:Theme TopGridColor}"
+                Background="{setting:Theme OverGridBG}"
                 IsVisible="False"
                 Opacity="0.9">
                 <TextBlock

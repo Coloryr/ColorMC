@@ -68,7 +68,7 @@
                         Name="Grid1"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Background="{setting:Theme TopGridColor}"
+                        Background="{setting:Theme OverGridBG}"
                         IsVisible="False">
                         <TextBlock
                             HorizontalAlignment="Center"

@@ -31,7 +31,7 @@
     <Style Selector="Button">
         <Setter Property="Foreground" Value="{setting:Theme FontColor}" />
         <Setter Property="BorderBrush" Value="{setting:Theme BorderColor}" />
-        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
+        <Setter Property="Background" Value="{setting:Theme ControlBG}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="1" />

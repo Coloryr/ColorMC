@@ -12,7 +12,7 @@
     x:DataType="model:MainModel"
     mc:Ignorable="d">
     <Panel>
-        <Border Background="{setting:Theme ButtonBG}" IsVisible="{Binding IsGameError}">
+        <Border Background="{setting:Theme ControlBG}" IsVisible="{Binding IsGameError}">
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

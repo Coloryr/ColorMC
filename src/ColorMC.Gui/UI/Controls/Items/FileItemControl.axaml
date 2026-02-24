@@ -73,7 +73,7 @@
                 Margin="0,10,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Background="{setting:Theme TopBGColor}"
+                Background="{setting:Theme ControlTranBG}"
                 Foreground="{setting:Theme FontColor}"
                 IsVisible="{Binding IsDownload, FallbackValue=true}"
                 Text="{setting:Localize Text.Downloaded}" />

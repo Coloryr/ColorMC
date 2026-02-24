@@ -15,7 +15,7 @@
     </Design.PreviewWith>
 
     <Style Selector="ToggleSwitch:unchecked /template/ Border#OuterBorder">
-        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme ControlBorder}" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 

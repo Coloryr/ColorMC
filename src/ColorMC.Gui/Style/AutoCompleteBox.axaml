@@ -28,8 +28,8 @@
 
     <Style Selector="AutoCompleteBox">
         <Setter Property="MaxDropDownHeight" Value="300" />
-        <Setter Property="Background" Value="{setting:Theme ButtonBG}" />
-        <Setter Property="BorderBrush" Value="{setting:Theme AllBorder}" />
+        <Setter Property="Background" Value="{setting:Theme ControlBG}" />
+        <Setter Property="BorderBrush" Value="{setting:Theme ControlBorder}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="5" />
 

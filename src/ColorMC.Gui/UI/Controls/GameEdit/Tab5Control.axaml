@@ -50,7 +50,7 @@
         </DockPanel>
         <Panel
             Name="Grid2"
-            Background="{setting:Theme TopGridColor}"
+            Background="{setting:Theme OverGridBG}"
             IsVisible="False"
             Opacity="0.9">
             <TextBlock

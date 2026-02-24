@@ -364,11 +364,13 @@ public partial class MainControl : BaseUserControl
             {
                 if (!model.HaveCard)
                 {
-                    ContentOut.Margin = new(0, 0, 20, 0);
+                    ContentOut.Margin = new(0, 0, 30, 0);
+                    ContentScroll.Margin = new(0, 0, 0, 0);
                 }
                 else
                 {
-                    ContentOut.Margin = new(0, 0, 10, 0);
+                    ContentOut.Margin = new(0, 0, 20, 0);
+                    ContentScroll.Margin = new(0, 0, 10, 0);
                 }
             }
         }

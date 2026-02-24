@@ -99,7 +99,7 @@
         <Panel
             Name="Grid2"
             Opacity="0.9"
-            Background="{setting:Theme TopGridColor}"
+            Background="{setting:Theme OverGridBG}"
             IsVisible="False">
             <TextBlock
                 Name="Label1"
