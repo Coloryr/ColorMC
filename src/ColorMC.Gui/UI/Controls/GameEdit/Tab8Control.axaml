@@ -13,44 +13,43 @@
     DragDrop.AllowDrop="True"
     mc:Ignorable="d">
     <Panel>
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-            <DockPanel Margin="0,0,10,15">
+        <DockPanel Margin="0,0,10,15">
+            <Border
+                Margin="10,5,10,3"
+                Padding="15"
+                Classes="t2"
+                DockPanel.Dock="Top">
+                <TextBox Text="{Binding ResourceText}" Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
+            </Border>
+            <Panel>
+                <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    <ItemsControl
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        ItemsSource="{Binding ResourcePackList}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:ResourcePackControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
                 <Border
                     Margin="10,5,10,3"
-                    Padding="15"
-                    Classes="t2"
-                    DockPanel.Dock="Top">
-                    <TextBox
-                        Margin="0,0,10,0"
-                        Text="{Binding ResourceText}"
-                        Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
+                    Classes="t1"
+                    IsVisible="{Binding ResourceEmptyDisplay}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        FontSize="30"
+                        Text="{setting:Localize GameEditWindow.Tab8.Text2}" />
                 </Border>
-                <ItemsControl
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    ItemsSource="{Binding ResourcePackList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <item:ResourcePackControl DataContext="{Binding}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </DockPanel>
-        </ScrollViewer>
-        <Border
-            Margin="10,5,10,3"
-            Classes="t1"
-            IsVisible="{Binding ResourceEmptyDisplay}">
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="{setting:Localize GameEditWindow.Tab8.Text2}" />
-        </Border>
+            </Panel>
+        </DockPanel>
         <Panel
             Name="Grid2"
-            Margin="0,0,10,15"
             Background="{setting:Theme TopGridColor}"
-            IsVisible="False">
+            IsVisible="False"
+            Opacity="0.9">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"

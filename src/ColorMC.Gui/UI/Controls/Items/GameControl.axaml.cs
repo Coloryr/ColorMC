@@ -156,6 +156,16 @@ public partial class GameControl : UserControl
             }
 
             var pro = e.GetCurrentPoint(this);
+
+            if (e.KeyModifiers == KeyModifiers.Control
+                && e.Properties.IsLeftButtonPressed)
+            {
+                e.Handled = true;
+                model.StartMut();
+                model.IsCheck = true;
+                return;
+            }
+
             if (model.ShowCheck)
             {
                 if (pro.Properties.IsLeftButtonPressed)

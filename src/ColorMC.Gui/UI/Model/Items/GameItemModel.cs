@@ -524,6 +524,14 @@ public partial class GameItemModel : GameModel
         _top?.ExportCmd(Obj);
     }
 
+    /// <summary>
+    /// 开始多选
+    /// </summary>
+    public void StartMut()
+    {
+        _top?.StartMut();
+    }
+
     private void EventManager_GameIconChange(Guid uuid)
     {
         if (uuid != UUID)

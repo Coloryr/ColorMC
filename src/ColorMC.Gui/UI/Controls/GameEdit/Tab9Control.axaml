@@ -25,7 +25,6 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-
         </ScrollViewer>
         <Border
             Margin="10,5,10,3"

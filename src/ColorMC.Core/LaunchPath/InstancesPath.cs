@@ -651,6 +651,11 @@ public static class InstancesPath
                 LastPlay = new()
             };
 
+            if (SystemInfo.Os == OsType.Windows)
+            {
+                game.Encoding = LogEncoding.GBK;
+            }
+
             game.Save();
             game.SaveLaunchData();
             game.AddToGroup();
@@ -775,7 +780,8 @@ public static class InstancesPath
             PID = obj.PID,
             ModPackType = obj.ModPackType,
             GameType = obj.GameType,
-            Icon = obj.Icon
+            Icon = obj.Icon,
+            Encoding = obj.Encoding,
         };
     }
 

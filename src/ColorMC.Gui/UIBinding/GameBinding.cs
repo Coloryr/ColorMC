@@ -1368,6 +1368,10 @@ public static class GameBinding
                 {
                     return PackType.ZipPack;
                 }
+                else if (item.Key?.EndsWith(".exe") == true)
+                {
+                    return PackType.LauncherPack;
+                }
             }
         }
 

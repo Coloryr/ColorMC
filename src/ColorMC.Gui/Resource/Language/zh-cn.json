@@ -737,6 +737,7 @@
 	"AddGameWindow.Tab2.Text15": "该压缩包无法判断类型",
 	"AddGameWindow.Tab2.Text16": "是否下载压缩包",
 	"AddGameWindow.Tab2.Text17": "创建时间",
+	"AddGameWindow.Tab2.Text18": "不支持导入启动器压缩包，需要解压后导入文件夹方式导入",
 	"AddGameWindow.Tab3.Text1": "导入路径",
 	"AddGameWindow.Tab3.Text2": "选择路径",
 	"AddGameWindow.Tab3.Text3": "扫描文件",

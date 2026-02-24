@@ -16,10 +16,6 @@ public interface IMutTop : IMainTop
     /// <summary>
     /// 开始多选
     /// </summary>
-    void StartMut();
-    /// <summary>
-    /// 开始多选
-    /// </summary>
     /// <param name="model">选中的游戏分组</param>
     void StartMut(GameGroupModel model);
     /// <summary>

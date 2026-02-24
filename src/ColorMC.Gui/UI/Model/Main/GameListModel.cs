@@ -108,6 +108,11 @@ public partial class MainModel
 
         GroupSetGrid();
 
+        if (value == ItemsGridType.ListInfo)
+        {
+            SearchClose();
+        }
+
         if (_isLoad)
         {
             return;
@@ -129,6 +134,7 @@ public partial class MainModel
             {
                 item.DisplayAll();
             }
+            OneGroup.DisplayAll();
         }
         else
         {
@@ -136,6 +142,8 @@ public partial class MainModel
             {
                 item.Display(value);
             }
+
+            OneGroup.Display(value);
         }
     }
     /// <summary>
@@ -755,6 +763,32 @@ public partial class MainModel
             foreach (var item in GameGroups)
             {
                 item.SetDrag();
+            }
+        }
+    }
+
+    public void SelectAll()
+    {
+        if (GridType == ItemsGridType.ListInfo)
+        {
+            return;
+        }
+
+        if (GridType == ItemsGridType.Grid)
+        {
+            foreach (var item in OneGroup.Items.Values)
+            {
+                item.IsCheck = true;
+            }
+        }
+        else
+        {
+            foreach (var item in GameGroups)
+            {
+                foreach (var item1 in item.GameList)
+                {
+                    item1.IsCheck = true;
+                }
             }
         }
     }

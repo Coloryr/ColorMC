@@ -50,4 +50,8 @@ public interface IMainTop
     /// </summary>
     /// <param name="obj">游戏实例</param>
     void ExportCmd(GameSettingObj obj);
+    /// <summary>
+    /// 开始多选
+    /// </summary>
+    void StartMut();
 }

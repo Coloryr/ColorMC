@@ -47,14 +47,15 @@
                 </Grid>
                 <TreeDataGrid
                     Name="TreeView1"
-                    Margin="5"
+                    Margin="5,10,5,5"
                     Source="{Binding ModSource}" />
             </DockPanel>
         </Border>
         <Panel
             Name="Grid2"
             Background="{setting:Theme TopGridColor}"
-            IsVisible="False">
+            IsVisible="False"
+            Opacity="0.9">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"

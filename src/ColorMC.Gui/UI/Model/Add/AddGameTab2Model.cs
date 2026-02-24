@@ -81,6 +81,10 @@ public partial class AddGameModel
             {
                 Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text15"));
             }
+            else if (res == PackType.LauncherPack)
+            {
+                Window.Show(LangUtils.Get("AddGameWindow.Tab2.Text18"));
+            }
             else
             {
                 Type = res;

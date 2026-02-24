@@ -239,7 +239,7 @@
         </DockPanel>
         <Panel
             Name="Grid2"
-            Margin="20,10,20,20"
+            Opacity="0.9"
             Background="{setting:Theme TopGridColor}"
             IsVisible="False">
             <TextBlock

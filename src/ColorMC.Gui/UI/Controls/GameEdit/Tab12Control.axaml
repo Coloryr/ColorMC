@@ -78,7 +78,8 @@
         <Panel
             Name="Grid2"
             Background="{setting:Theme TopGridColor}"
-            IsVisible="False">
+            IsVisible="False"
+            Opacity="0.9">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontSize="30"

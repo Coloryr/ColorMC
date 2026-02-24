@@ -58,24 +58,32 @@ public partial class MainControl : BaseUserControl
 
     public override Task<bool> OnKeyDown(object? sender, KeyEventArgs e)
     {
-        if (e.Key != Key.F || e.KeyModifiers != KeyModifiers.Control
-                           || DataContext is not MainModel model
-                           || Content1.Child is not MainGameGroupControl con)
+        if (DataContext is not MainModel model)
         {
             return Task.FromResult(false);
         }
 
-        if (model.GameSearch)
+        if (e.Key == Key.F && e.KeyModifiers == KeyModifiers.Control
+                           || model.GridType == ItemsGridType.ListInfo)
         {
-            model.SearchClose();
+            if (model.GameSearch)
+            {
+                model.SearchClose();
+            }
+            else
+            {
+                model.Search();
+            }
+
+            return Task.FromResult(true);
         }
-        else
+        else if (e.Key == Key.A && e.KeyModifiers == KeyModifiers.Control)
         {
-            model.Search();
-            con.Search.Focus();
+            model.StartMut();
+            model.SelectAll();
         }
 
-        return Task.FromResult(true);
+        return Task.FromResult(false);
     }
 
     private void DragEnter(object? sender, DragEventArgs e)

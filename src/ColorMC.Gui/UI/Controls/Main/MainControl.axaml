@@ -210,22 +210,30 @@
                                 </StackPanel>
                             </Border>
                             <TextBlock FontSize="16" Text="{setting:Localize MainWindow.Text95}" />
+                            <TextBlock
+                                Margin="20,0,0,0"
+                                IsVisible="{Binding GameSearch, FallbackValue=true}"
+                                Text="{setting:Localize MainWindow.Text13}" />
+                            <TextBox
+                                Margin="0,0,20,0"
+                                IsVisible="{Binding GameSearch, FallbackValue=true}"
+                                Text="{Binding GameSearchText}" />
                         </DockPanel>
                         <Decorator Name="Content1" Margin="30,20,0,30" />
                     </DockPanel>
                 </ScrollViewer>
             </DockPanel>
-            <Panel
+            <Border
                 Name="Grid2"
-                Margin="20,10,20,20"
                 Background="{setting:Theme TopGridColor}"
-                IsVisible="False">
+                IsVisible="False"
+                Opacity="0.9">
                 <TextBlock
                     Name="Label1"
                     HorizontalAlignment="Center"
                     FontSize="30"
                     Text="test" />
-            </Panel>
+            </Border>
         </Panel>
         <Decorator Name="Start" IsVisible="False" />
     </Panel>

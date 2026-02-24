@@ -224,11 +224,8 @@ public static class Launch
         JavaInfoObj? jvm = null;
         if (!string.IsNullOrWhiteSpace(obj.JvmName))
         {
-            jvm = JvmPath.GetInfo(obj.JvmName);
-            if (jvm == null)
-            {
-                throw new LaunchException(LaunchError.SelectJavaNotFound, data: obj.JvmName);
-            }
+            jvm = JvmPath.GetInfo(obj.JvmName) 
+                ?? throw new LaunchException(LaunchError.SelectJavaNotFound, data: obj.JvmName);
         }
 
         foreach (var item in arg1.JavaVersions.OrderDescending())

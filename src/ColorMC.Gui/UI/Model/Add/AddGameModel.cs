@@ -72,42 +72,7 @@ public partial class AddGameModel : ControlModel
 
         CloudEnable = ColorMCCloudAPI.Connect;
     }
-
-    ///// <summary>
-    ///// 添加新的游戏分组
-    ///// </summary>
-    ///// <returns></returns>
-    //[RelayCommand]
-    //public async Task AddGroup()
-    //{
-    //    var dialog = new InputModel(Window.WindowId)
-    //    {
-    //        Watermark1 = LanguageUtils.Get("Text.Group")
-    //    };
-    //    var res = await Window.ShowDialogWait(dialog);
-    //    if (res is not true)
-    //    {
-    //        return;
-    //    }
-
-    //    if (string.IsNullOrWhiteSpace(dialog.Text1))
-    //    {
-    //        Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text45"));
-    //        return;
-    //    }
-
-    //    if (!GameBinding.AddGameGroup(dialog.Text1))
-    //    {
-    //        Window.Show(LanguageUtils.Get("AddGameWindow.Tab1.Text46"));
-    //        return;
-    //    }
-
-    //    Window.Notify(LanguageUtils.Get("AddGameWindow.Tab1.Text28"));
-
-
-    //    Group = dialog.Text1;
-    //}
-
+    
     /// <summary>
     /// 转到菜单
     /// </summary>
@@ -188,6 +153,10 @@ public partial class AddGameModel : ControlModel
         _fileModel = null;
         SelectPath = null;
         Files = null;
+        ZipFiles = null;
+        _fileModel = null;
+        _zipFileModel?.Dispose();
+        _zipFileModel = null;
         OnPropertyChanged("Back");
         Main = true;
     }

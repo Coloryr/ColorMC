@@ -152,6 +152,10 @@ public partial class AddGameControl : BaseUserControl
     public void AddFile(string path, bool isDir)
     {
         var model = (DataContext as AddGameModel)!;
+        if (model.Main == false)
+        {
+            model.BackMain();
+        }
         if (isDir)
         {
             model.GoTab(AddGameModel.NameTab3);

@@ -94,6 +94,8 @@ public partial class AddGameModel
     [ObservableProperty]
     private int _loaderType = -1;
 
+    private Loaders _lastLoader = Loaders.Normal;
+
     /// <summary>
     /// 加载器类型列表
     /// </summary>
@@ -220,7 +222,7 @@ public partial class AddGameModel
             return;
         }
 
-        if (IsAutoRename && Name?.StartsWith(Version) == true)
+        if (IsAutoRename && IsCanRename())
         {
             Name = Version + "-" + loader.GetName();
         }
@@ -264,6 +266,11 @@ public partial class AddGameModel
         EnableLoaderVersion = true;
         LoaderVersionList.Clear();
         LoaderVersionList.AddRange(list);
+
+        if (_lastLoader != Loaders.Normal && LoaderVersionList.Count > 0)
+        {
+            LoaderVersion = LoaderVersionList[0];
+        }
 
         Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text40"));
     }
@@ -343,6 +350,21 @@ public partial class AddGameModel
     {
         _load = true;
 
+        if (string.IsNullOrWhiteSpace(Version))
+        {
+            return;
+        }
+
+        if (IsAutoRename && IsCanRename())
+        {
+            Name = Version;
+        }
+
+        if (LoaderType > 0 && _loaderTypeList.Count > 0)
+        {
+            _lastLoader = _loaderTypeList[LoaderType];
+        }
+
         EnableLoader = false;
         EnableLoaderVersion = false;
         _loaderTypeList.Clear();
@@ -351,16 +373,6 @@ public partial class AddGameModel
 
         _loaderTypeList.Add(Loaders.Normal);
         LoaderTypeList.Add(Loaders.Normal.GetName());
-
-        if (string.IsNullOrWhiteSpace(Version))
-        {
-            return;
-        }
-
-        if (IsAutoRename && string.IsNullOrWhiteSpace(Name))
-        {
-            Name = Version;
-        }
 
         IsLoad = true;
         Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text27");
@@ -384,6 +396,11 @@ public partial class AddGameModel
         LoaderType = 0;
         _load = false;
         EnableLoader = true;
+
+        if (_lastLoader != Loaders.Normal)
+        {
+            LoaderType = _loaderTypeList.IndexOf(_lastLoader);
+        }
 
         Window.Notify(LangUtils.Get("AddGameWindow.Tab1.Text42"));
     }
@@ -434,5 +451,32 @@ public partial class AddGameModel
                 GameVersionList.AddRange(await GameHelper.GetGameVersionsAsync(GameType.Other));
                 break;
         }
+    }
+
+    private bool IsCanRename()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            return true;
+        }
+
+        var items = Name.Split('-');
+        if (items.Length == 1)
+        {
+            if (GameVersionList.Contains(items[0]))
+            {
+                return true;
+            }
+        }
+
+        if (items.Length >= 2)
+        {
+            if (GameVersionList.Contains(items[0]) && LoaderTypeList.Contains(items[1]))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
