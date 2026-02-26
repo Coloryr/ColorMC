@@ -497,6 +497,10 @@ public static class AddGameHelper
 
         if (obj.Files != null && !string.IsNullOrWhiteSpace(obj.FileApi))
         {
+            if (!obj.FileApi.EndsWith('/'))
+            {
+                obj.FileApi += "/";
+            }
             foreach (var item1 in obj.Files)
             {
                 var file1 = Path.GetFileName(item1.Path);
@@ -506,7 +510,7 @@ public static class AddGameHelper
                     Name = file1,
                     File = file1,
                     Sha1 = item1.Hash,
-                    Url = obj.Files + item1.Path
+                    Url = obj.FileApi + item1.Path
                 });
             }
             game.SaveModInfo();
