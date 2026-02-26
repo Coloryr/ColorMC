@@ -63,6 +63,7 @@ public static class Names
     public const string NameModListFile = "modlist.html";
     public const string NameLatestLogFile = "latest.log";
     public const string NameDebugLogFile = "debug.log";
+    public const string NameServerManifestFile = "server-manifest.json";
 
     public const string NameMinecraftKey = "minecraft";
     public const string NameLangKey1 = "minecraft/lang/";

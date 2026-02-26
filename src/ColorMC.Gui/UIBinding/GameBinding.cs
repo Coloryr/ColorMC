@@ -1361,6 +1361,10 @@ public static class GameBinding
                 {
                     return PackType.CurseForge;
                 }
+                else if (item.Key == Names.NameServerManifestFile)
+                {
+                    return PackType.HMCLServer;
+                }
             }
             foreach (var item in zip.Entries)
             {

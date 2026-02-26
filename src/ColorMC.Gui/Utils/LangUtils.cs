@@ -374,6 +374,7 @@ public static class LangUtils
             PackType.Modrinth => Get("Type.PackType.Modrinth"),
             PackType.MMC => Get("Type.PackType.MMC"),
             PackType.HMCL => Get("Type.PackType.HMCL"),
+            PackType.HMCLServer => Get("Type.PackType.HMCLServer"),
             PackType.ZipPack => Get("Type.PackType.ZipPack"),
             _ => Get("Type.PackType.Other")
         };
@@ -630,6 +631,7 @@ public static class LangUtils
             PackType.Modrinth.GetName(),
             PackType.MMC.GetName(),
             PackType.HMCL.GetName(),
+            PackType.HMCLServer.GetName(),
             PackType.ZipPack.GetName()
         ];
     }

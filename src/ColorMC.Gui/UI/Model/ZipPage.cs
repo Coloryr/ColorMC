@@ -18,8 +18,6 @@ public class ZipPage
     /// </summary>
     private readonly ZipTreeNodeModel _root;
 
-    public PackType Type;
-
     public ZipArchive Zip { get; private set; }
 
     /// <summary>

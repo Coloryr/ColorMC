@@ -451,6 +451,99 @@ public static class AddGameHelper
     }
 
     /// <summary>
+    /// 导入HMCL压缩包
+    /// </summary>
+    /// <param name="arg">导入参数</param>
+    /// <param name="st">输入流</param>
+    /// <returns>导入结果</returns>
+    private static async Task<GameRes> HMCLServerAsync(string? name, string? group, string file, ZipArchive zip,
+        List<ZipArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
+    {
+        unselect ??= [];
+
+        packgui?.SetState(AddState.ReadInfo);
+        HMCLServerObj? obj = null;
+        if (zip.Entries.FirstOrDefault(item => item.Key == Names.NameServerManifestFile) is { } item)
+        {
+            using var stream = item.OpenEntryStream();
+            obj = JsonUtils.ToObj(stream, JsonType.HMCLServerObj);
+        }
+
+        if (obj == null)
+        {
+            return new GameRes();
+        }
+
+        var game = obj.ToColorMC();
+        if (!string.IsNullOrWhiteSpace(name))
+        {
+            game.Name = name;
+        }
+        if (!string.IsNullOrWhiteSpace(group))
+        {
+            game.GroupName = group;
+        }
+        if (string.IsNullOrWhiteSpace(game.Name))
+        {
+            game.Name = Path.GetFileName(file);
+        }
+
+        game = await InstancesPath.CreateGameAsync(game, gui);
+
+        if (game == null)
+        {
+            return new GameRes();
+        }
+
+        if (obj.Files != null && !string.IsNullOrWhiteSpace(obj.FileApi))
+        {
+            foreach (var item1 in obj.Files)
+            {
+                var file1 = Path.GetFileName(item1.Path);
+                game.Mods.Add(item1.Path, new ModInfoObj()
+                {
+                    Path = item1.Path.Replace(file1, ""),
+                    Name = file1,
+                    File = file1,
+                    Sha1 = item1.Hash,
+                    Url = obj.Files + item1.Path
+                });
+            }
+            game.SaveModInfo();
+        }
+
+        string overrides = Names.NameOverrideDir;
+
+        var size = zip.Entries.Count;
+        var index = 0;
+
+        packgui?.SetState(AddState.Unzip);
+        packgui?.SetNowSub(index, size);
+
+        foreach (var e in zip.Entries)
+        {
+            if (unselect.Contains(e) || !FunctionUtils.IsFile(e))
+            {
+                index++;
+                continue;
+            }
+            if (e.Key!.StartsWith(overrides))
+            {
+                packgui?.SetNowSub(index, size);
+                packgui?.SetSubText(e.Key);
+                index++;
+                string file1 = Path.GetFullPath(game.GetGamePath() + e.Key[overrides.Length..]);
+                using var stream = e.OpenEntryStream();
+                await PathHelper.WriteBytesAsync(file1, stream);
+            }
+        }
+
+        packgui?.SetState(AddState.Done);
+
+        return new GameRes { State = true, Game = game };
+    }
+
+    /// <summary>
     /// 直接解压压缩包
     /// </summary>
     /// <param name="st">输入流</param>
@@ -618,6 +711,7 @@ public static class AddGameHelper
                 PackType.CurseForge or PackType.Modrinth => await ModPackAsync(type, group, zip, unselects, gui, packgui, token),
                 PackType.MMC => await MMCAsync(name, group, file, zip, unselects, gui, packgui),
                 PackType.HMCL => await HMCLAsync(name, group, file, zip, unselects, gui, packgui),
+                PackType.HMCLServer => await HMCLServerAsync(name, group, file, zip, unselects, gui, packgui),
                 PackType.ZipPack => await UnzipAsync(name, group, file, zip, unselects, gui, packgui),
                 _ => null
             };

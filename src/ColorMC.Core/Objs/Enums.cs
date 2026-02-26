@@ -126,7 +126,7 @@ public enum FileType
 /// </summary>
 public enum PackType
 {
-    ColorMC, CurseForge, Modrinth, MMC, HMCL, ZipPack, LauncherPack
+    ColorMC, CurseForge, Modrinth, MMC, HMCL, HMCLServer, ZipPack, LauncherPack
 }
 
 /// <summary>

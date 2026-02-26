@@ -132,6 +132,7 @@ public class JsonStringGuidConverter : JsonConverter<Guid>
 [JsonSerializable(typeof(Dictionary<string, MavenItemObj>))]
 [JsonSerializable(typeof(ServerPackObj))]
 [JsonSerializable(typeof(List<ModrinthTeamObj>))]
+[JsonSerializable(typeof(HMCLServerObj))]
 public partial class SourceGenerationContext : JsonSerializerContext
 {
 
@@ -217,4 +218,5 @@ public static class JsonType
     public static JsonTypeInfo<ServerPackObj> ServerPackObj => SourceGenerationContext.Default.ServerPackObj;
     public static JsonTypeInfo<GameArgObj.GameArgumentsObj.GameJvmObj> GameJvmObj => SourceGenerationContext.Default.GameJvmObj;
     public static JsonTypeInfo<List<ModrinthTeamObj>> ListModrinthTeamObj => SourceGenerationContext.Default.ListModrinthTeamObj;
+    public static JsonTypeInfo<HMCLServerObj> HMCLServerObj => SourceGenerationContext.Default.HMCLServerObj;
 }

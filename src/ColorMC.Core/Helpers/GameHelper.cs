@@ -1111,4 +1111,57 @@ public static class GameHelper
 
         return null;
     }
+
+    /// <summary>
+    /// HMCL配置转ColorMC
+    /// </summary>
+    /// <param name="obj">HMCL储存</param>
+    /// <returns>游戏实例</returns>
+    public static GameSettingObj ToColorMC(this HMCLServerObj obj)
+    {
+        var game = new GameSettingObj()
+        {
+            Name = obj.Name,
+            Loader = Loaders.Normal,
+            Modpack = true
+        };
+
+        if (!string.IsNullOrWhiteSpace(obj.Author))
+        {
+            game.Name += "-" + obj.Author;
+        }
+        if (!string.IsNullOrWhiteSpace(obj.Version))
+        {
+            game.Name += "-" + obj.Version;
+        }
+        foreach (var item in obj.Addons)
+        {
+            if (item.Id == "game")
+            {
+                game.Version = item.Version;
+            }
+            else if (item.Id == "forge")
+            {
+                game.Loader = Loaders.Forge;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "neoforge")
+            {
+                game.Loader = Loaders.NeoForge;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "fabric")
+            {
+                game.Loader = Loaders.Fabric;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "quilt")
+            {
+                game.Loader = Loaders.Quilt;
+                game.LoaderVersion = item.Version;
+            }
+        }
+
+        return game;
+    }
 }

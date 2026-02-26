@@ -1496,6 +1496,7 @@
 	"Type.PackType.Modrinth": "Modrinth整合包",
 	"Type.PackType.MMC": "MMC压缩包",
 	"Type.PackType.HMCL": "HMCL压缩包",
+	"Type.PackType.HMCLServer": "HMCLServer压缩包",
 	"Type.PackType.ZipPack": "直接解压压缩包",
 	"Type.FileType.Modpack": "整合包",
 	"Type.FileType.Mod": "模组",
