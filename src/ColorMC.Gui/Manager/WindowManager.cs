@@ -554,8 +554,8 @@ public static class WindowManager
         else
         {
             AddModPackWindow = new();
-            AddModPackWindow.SetGroup(group);
             AWindow(AddModPackWindow);
+            AddModPackWindow.SetGroup(group);
         }
     }
 

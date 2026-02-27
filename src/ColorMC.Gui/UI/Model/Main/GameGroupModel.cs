@@ -341,7 +341,7 @@ public partial class GameGroupModel : ControlModel, IDragTop
         }
 
         int index1 = GameList.IndexOf(_dragItem);
-        if (index1 != GameList.Count - 2)
+        if (index1 != -1 && index1 != GameList.Count - 2)
         {
             GameList.Move(index1, GameList.Count - 2);
         }

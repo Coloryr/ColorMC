@@ -458,6 +458,7 @@ public partial class MainModel
             {
                 //过滤新旧项目
                 var list1 = new List<GameGroupModel>(GameGroups);
+                var res1 = new SetGamesRes();
                 foreach (var item in list1)
                 {
                     //现在有相同的分组
@@ -466,7 +467,8 @@ public partial class MainModel
                         var res = item.SetItems(value);
                         if (res != null)
                         {
-                            OneGroup.SetItem(res);
+                            res1.Adds.AddRange(res.Adds);
+                            res1.Removes.AddRange(res.Removes);
                             foreach (var item1 in res.Removes)
                             {
                                 GameList.Remove(item1);
@@ -490,6 +492,18 @@ public partial class MainModel
                         }
                     }
                 }
+
+                
+                foreach (var item1 in res1.Adds.ToArray())
+                {
+                    if (res1.Removes.Contains(item1))
+                    {
+                        res1.Adds.Remove(item1);
+                        res1.Removes.Remove(item1);
+                    }
+                }
+                OneGroup.SetItem(res1);
+
                 //新的分组
                 foreach (var item in list)
                 {
