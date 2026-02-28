@@ -5,62 +5,62 @@
 ![](https://img.shields.io/github/contributors/Coloryr/ColorMC)
 ![](https://img.shields.io/github/commit-activity/y/Coloryr/ColorMC)
 
-**Warning: the following content is translated by ChatGPT**
+A cross-platform Minecraft PC launcher
 
-A cross-platform Minecraft PC launcher.
-
-Built with .NET8, UI use the XAML with MVVM, and C# as the backend language.
+Built with .NET 10 as the runtime environment, XAML as the frontend language using MVVM pattern, and C# as the backend language
 
 QQ Group: 571239090
 
-More Languages: [Chinese](README_EN.md)
+More Languages: [中文](README.md)
 
-[User Manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/Main.md) -  
-[Changelog](log.md) -  
-[Join Translation Efforts](https://crowdin.com/project/colormc) (Need Help!)
+[User Manual](https://github.com/Coloryr/ColorMC_Pic/blob/master/guide/README.md) -
+[Changelog](log.md) -
+[Join Multi-language Translation](https://crowdin.com/project/colormc)(Please help)
 
 ## Window Screenshots 🪟
-![](/docs/images/run.png)
+![](/docs/images/image.png)  
 
 **Demo Animation**
 
-![](/docs/images/GIF.gif)
+https://github.com/user-attachments/assets/4b3b1207-58a9-46e8-a99c-b9f1a64761be
 
 ## Supported Platforms
-- Linux (deb, pkg, rpm, also can be install with [spark-store](https://www.spark-app.store/)or[AUR](https://aur.archlinux.org/))
-- Windows
-- macOS
+- Windows (zip)
+- Linux (provides deb, pkg, rpm packages, also available on [Spark Store](https://www.spark-app.store/) or [AUR](https://aur.archlinux.org/))
+- macOS (zip, dmg)
 
-**Note: ARM64 platform compatibility is not guaranteed.  
-Due to the complexity of Linux distributions, compatibility varies between devices. If it doesn’t work, you may need to troubleshoot it yourself. I have only tested the launcher in my own virtual machine. Driver compatibility issues are not within my scope of support.**
+**Note: ARM64 platform compatibility is not guaranteed  
+Due to the complexity of Linux distributions, compatibility varies across different computers. If the launcher fails to start, you may need to resolve issues yourself. I only test startup in my own virtual machine, and driver compatibility issues are beyond my consideration scope.**
 
 ## Installation
-Download the pre-built compressed files/installers from [Releases](https://github.com/Coloryr/ColorMC/releases) or [Actions-Beta](https://github.com/Coloryr/ColorMC/actions).  
-Extract (zip)/Install (msi, deb, pkg)/or run directly (appimage).
+Download the pre-built packages/installers from [Releases - Official Releases](https://github.com/Coloryr/ColorMC/releases) or [Actions - Beta Releases](https://github.com/Coloryr/ColorMC/actions)  
+Extract (zip) / Install (msi, deb, pkg) / or run directly (appimage)
 
-## Launch
+## Launching
 
-- After installation:  
-  On Windows/macOS, double-click the extracted file to run.  
-  On Linux, double-click to run, or use this command in terminal:
+- Launch after installation  
+On Windows/MacOS, extract and double-click to launch  
+On Linux, after installation, you can double-click to launch or use the terminal command:
 ```
 $ ColorMC.Launcher
 ```
 
-- Run from source (requires .NET8 SDK):
+- Launch from source code (requires .NET 10 SDK installation)
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
-$ cd ColorMC/src/ColorMC.Launcher
+$ cd ColorMC
+$ git submodule update --init --recursive
+$ cd src/ColorMC.Launcher
 $ dotnet run
 ```
 
-## Build from Source
+## Building from Source
 
-You can build ColorMC from the source code and run it.
-After the construction is completed, all binary files can be obtained in the `built_out` folder
+You can build ColorMC from source code and run it  
+After building, you can get all binary files in the `built_out` folder
 
-### Build Windows Binary
-**Must be built on Windows with git and dotnet-8-sdk installed.**
+### Building `windows` binaries  
+**Requires Windows system with git and dotnet-10-sdk installed**
 
 ```
 git clone https://github.com/Coloryr/ColorMC.git
@@ -69,12 +69,12 @@ cd ColorMC
 @REM Update source code
 .\build\update.cmd
 
-@REM Build binary
+@REM Build
 .\build\build-windows.cmd
 ```
 
-### Build Linux Binary
-**Must be built on Linux with git and dotnet-8-sdk installed.**
+### Building `linux` binaries  
+**Requires Linux system with git and dotnet-10-sdk installed**
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
 $ cd ColorMC
@@ -83,36 +83,36 @@ $ chmod a+x ./build/build-linux.sh
 ```
 Update source code
 ```
-./build/update.sh
+$ ./build/update.sh
 ```
-Build binary
+Build
 ```
-./build/build-linux.sh
+$ ./build/build-linux.sh
 ```
 
-### Package Linux Images
+### Packaging Linux-related installation images
 
-- Packaging Ubuntu Images  
-**Need to operate on Ubuntu system**
+- Package Ubuntu image  
+**Requires Ubuntu system**
 ```
 $ chmod a+x ./build/build-ubuntu.sh
 $ ./build/build-ubuntu.sh
 ```
-- Packaging RPM Images  
-**Need to operate on Ubuntu system**
+- Package rpm image  
+**Requires Ubuntu system**
 ```
 $ chmod a+x ./build/build-rpm.sh
 $ ./build/build-rpm.sh
 ```
-- Packaging Arch Images  
-**Need to operate on Arch system**
+- Package Arch image  
+**Requires Arch system**
 ```
 $ chmod a+x ./build/build-arch.sh
 $ ./build/build-arch.sh
 ```
 
-### Build macOS Binary
-**Must be built on Ubuntu or macOS with git and dotnet-8-sdk installed.**
+### Building `macos` binaries  
+**Requires macOS system with git and dotnet-10-sdk installed**
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
 $ cd ColorMC
@@ -121,58 +121,64 @@ $ chmod a+x ./build/build-macos.sh
 ```
 Update source code
 ```
-./build/update.sh
+$ ./build/update.sh
 ```
-Build binary
+Build
 ```
-./build/build-macos.sh
+$ ./build/build-macos.sh
+```
+- Package Dmg image
+**Requires macOS system**
+```
+$ ./build/build-dmg.sh
 ```
 
-## Development
+## Secondary Development
 
-Clone the repository:
+First clone the code
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
 $ git submodule update --init --recursive
 ```
 
-The main solution file is `./src/ColorMC.sln`.
+`./src/ColorMC.sln` is the root project
 
 ### Using ColorMC Launcher Core
 
-[How to develop your own launcher using ColorMC Core](Core.md)
+[Use ColorMC Launcher Core to develop your own launcher](docs/Core.md)
 
-### Project Modules Overview
-| Module            | Description                                 |
-|-------------------|---------------------------------------------|
-| ColorMC.Core      | Launcher core                               |
-| ColorMC.CustomGui | Custom launcher UI [Tutorial](CustomGui.md) |
-| ColorMC.Cmd       | Command-line mode (Deprecated)              |
-| ColorMC.Gui       | GUI mode                                    |
-| ColorMC.Launcher  | Launcher main application                   |
-| ColorMC.Test      | For launcher testing                        |
-| ColorMC.Setup     | For building Windows msi installer          |
+### Project Description
+| Module               | Description                          |
+|----------------------|--------------------------------------|
+| ColorMC.Core         | Launcher core                        |
+| ColorMC.CustomGui    | Custom launcher interface [Tutorial](docs/CustomGui.md) |
+| ColorMC.Cmd          | Command line mode (deprecated)       |
+| ColorMC.Gui          | GUI mode                            |
+| ColorMC.Launcher     | Launcher main program                |
+| ColorMC.Test         | For launcher testing                 |
+| ColorMC.Setup.Wix    | For building Windows msi installer   |
 
 ## Dependencies/Referenced Projects
-| 名称                    | 描述              | 链接                                                             |
-|-----------------------|-----------------|----------------------------------------------------------------|
-| AvaloniaUI            | .NET UI          | [GitHub](https://github.com/AvaloniaUI/Avalonia)               |
-| DialogHost.Avalonia   | AvaloniaUI dialog control             | [GitHub](https://github.com/AvaloniaUtils/DialogHost.Avalonia) |
-| CommunityToolkit.Mvvm | .NET Community Toolkit          | [GitHub](https://github.com/CommunityToolkit/dotnet)           |
-| Svg.Skia              | An SVG rendering library         | [GitHub](https://github.com/wieslawsoltes/Svg.Skia)            |
-| SkiaSharp             | 2D graphics API         | [GitHub](https://github.com/mono/SkiaSharp)                    |
-| Silk.NET              | bindings library        | [GitHub](https://github.com/dotnet/Silk.NET)                   |              |
-| HtmlAgilityPack       | HTML parser         | [GitHub](https://github.com/zzzprojects/html-agility-pack)                           |
-| Jint                  | Javascript Interpreter for .NET         | [GitHub](https://github.com/sebastienros/jint)                 |
-| DotNetty              | a port of netty          | [GitHub](https://github.com/Azure/DotNetty)                    |
-| Newtonsoft.Json       | JSON framework for .NET         | [GitHub](https://github.com/JamesNK/Newtonsoft.Json)                          |
-| SharpZipLib           | Zip Tool           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
-| Tomlyn                | TOML parser         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
-| ForgeWrapper          | Forge Launcher for Minecraft       | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |         |
-| OptifineWrapper       | Optifine Launcher for Minecraft     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
-| ColorMCASM            | ColorMC with game channel | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
-| K4os.Compression.LZ4  | LZ4/LH4HC compression           | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4)  |
-| Ae.Dns                | DNS clients           | [GitHub](https://github.com/alanedwardes/Ae.Dns)  |
+| Name                    | Description           | Link                                                             |
+|-------------------------|-----------------------|------------------------------------------------------------------|
+| AvaloniaUI              | Cross-platform UI framework | [GitHub](https://github.com/AvaloniaUI/Avalonia)               |
+| Ae.Dns                  | DNS client            | [GitHub](https://github.com/alanedwardes/Ae.Dns)                |
+| HtmlAgilityPack         | HTML parser           | [GitHub](https://github.com/zzzprojects/html-agility-pack)      |
+| Jint                    | JS parser/executor    | [GitHub](https://github.com/sebastienros/jint)                  |
+| DialogHost.Avalonia     | Dialog library        | [GitHub](https://github.com/AvaloniaUtils/DialogHost.Avalonia)  |
+| CommunityToolkit.Mvvm   | MVVM tools            | [GitHub](https://github.com/CommunityToolkit/dotnet)            |
+| Svg.Skia                | Svg image display     | [GitHub](https://github.com/wieslawsoltes/Svg.Skia)             |
+| SkiaSharp               | Skia image library    | [GitHub](https://github.com/mono/SkiaSharp)                     |
+| Silk.NET                | High-performance low-level library interface | [GitHub](https://github.com/dotnet/Silk.NET) |
+| DotNetty                | Asynchronous communication framework | [GitHub](https://github.com/Azure/DotNetty) |
+| Tomlyn                  | TOML parser           | [GitHub](https://github.com/xoofx/Tomlyn)                       |
+| ForgeWrapper            | Forge launcher        | [GitHub](https://github.com/PrismLauncher/ForgeWrapper)         |
+| OptifineWrapper         | Optifine launcher     | [GitHub](https://github.com/coloryr/OptifineWrapper)            |
+| ColorMCASM              | For ColorMC to communicate with in-game | [GitHub](https://github.com/Coloryr/ColorMCASM) |
+| K4os.Compression.LZ4    | LZ4 decompression     | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4) |
+| sharpcompress           | Archive decompression | [GitHub](https://github.com/adamhathcock/sharpcompress)         |
+| Markdig                 | MarkDown processing tool | [GitHub](https://github.com/xoofx/markdig)                   |
+| MinecraftSkinRender     | Minecraft skin renderer | [GitHub](https://github.com/Coloryr/MinecraftSkinRender)      |
 
 ## Open Source License
 Apache 2.0  
@@ -193,7 +199,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-### Development Tools
+Subsidiary open source licenses: MIT, BSD
+
+## IDE Development Tools Used
 - [Visual Studio Code](https://code.visualstudio.com/)  
 - [Visual Studio 2022](https://visualstudio.microsoft.com/)  
 - ![dotMemory logo](https://resources.jetbrains.com/storage/products/company/brand/logos/dotMemory_icon.svg)

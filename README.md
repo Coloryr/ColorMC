@@ -7,7 +7,7 @@
 
 一个全平台Minecraft PC启动器
 
-使用.NET8作为运行环境，XAML作为前端语言，使用MVVM模式，C#作为后端语言
+使用.NET10作为运行环境，XAML作为前端语言，使用MVVM模式，C#作为后端语言
 
 QQ交流群: 571239090
 
@@ -27,7 +27,7 @@ https://github.com/user-attachments/assets/4b3b1207-58a9-46e8-a99c-b9f1a64761be
 ## 支持平台
 - Windows(zip)
 - Linux(提供deb pkg rpm，同时可以在[星火商店](https://www.spark-app.store/)或者[AUR](https://aur.archlinux.org/)上安装)
-- macOs(zip)
+- macOs(zip dmg)
 
 **注意：ARM64平台不能保证其兼容性  
 由于Linux发行版过于复杂，每个人的电脑兼容性都不一样，如果打不开可以需要自行解决，我只在自己的虚拟机内测试启动，若有驱动兼容性问题不在我的考虑范围内**
@@ -45,10 +45,12 @@ Linux下安装后可以双击启动，也可以控制台输入指令
 $ ColorMC.Launcher
 ```
 
-- 从源码启动（需要安装.NET8 SDK）
+- 从源码启动（需要安装.NET10 SDK）
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
-$ cd ColorMC/src/ColorMC.Launcher
+$ cd ColorMC
+$ git submodule update --init --recursive
+$ cd src/ColorMC.Launcher
 $ dotnet run
 ```
 
@@ -58,7 +60,7 @@ $ dotnet run
 构建完成后可以在`built_out`文件夹获取所有二进制文件
 
 ### 构建`windows`的二进制文件  
-**需要在Windows系统中构建，并安装git与dotnet-8-sdk**
+**需要在Windows系统中构建，并安装git与dotnet-10-sdk**
 
 ```
 git clone https://github.com/Coloryr/ColorMC.git
@@ -72,7 +74,7 @@ cd ColorMC
 ```
 
 ### 构建`linux`的二进制文件  
-**需要在Linux系统中构建，并安装git与dotnet-8-sdk**
+**需要在Linux系统中构建，并安装git与dotnet-10-sdk**
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
 $ cd ColorMC
@@ -110,7 +112,7 @@ $ ./build/build-arch.sh
 ```
 
 ### 构建`macos`的二进制文件  
-**需要在Ubuntu系统或MacOS系统中构建，并安装git与dotnet-8-sdk**
+**需要在MacOS系统中构建，并安装git与dotnet-10-sdk**
 ```
 $ git clone https://github.com/Coloryr/ColorMC.git
 $ cd ColorMC
@@ -124,6 +126,11 @@ $ ./build/update.sh
 构建
 ```
 $ ./build/build-macos.sh
+```
+- 打包Dmg镜像
+**需要在MacOS系统中操作**
+```
+$ ./build/build-dmg.sh
 ```
 
 ## 二次开发
@@ -149,28 +156,29 @@ $ git submodule update --init --recursive
 | ColorMC.Gui       | Gui模式                            |
 | ColorMC.Launcher  | 启动器本体                            |
 | ColorMC.Test      | 用于启动器测试                          |
-| ColorMC.Setup     | 用于构建windows的msi安装包               |
+| ColorMC.Setup.Wix | 用于构建windows的msi安装包               |
 
 ## 依赖/引用的项目
 | 名称                    | 描述              | 链接                                                             |
 |-----------------------|-----------------|----------------------------------------------------------------|
 | AvaloniaUI            | 跨平台UI框架         | [GitHub](https://github.com/AvaloniaUI/Avalonia)               |
+| Ae.Dns                | DNS客户端           | [GitHub](https://github.com/alanedwardes/Ae.Dns)  |
+| HtmlAgilityPack       | HTML解析器         | [GitHub](https://github.com/zzzprojects/html-agility-pack)               |
+| Jint                  | JS解析执行器         | [GitHub](https://github.com/sebastienros/jint)                 |
 | DialogHost.Avalonia   | 弹窗库             | [GitHub](https://github.com/AvaloniaUtils/DialogHost.Avalonia) |
 | CommunityToolkit.Mvvm | MVVM工具          | [GitHub](https://github.com/CommunityToolkit/dotnet)           |
 | Svg.Skia              | Svg图像显示         | [GitHub](https://github.com/wieslawsoltes/Svg.Skia)            |
 | SkiaSharp             | Skia图像库         | [GitHub](https://github.com/mono/SkiaSharp)                    |
 | Silk.NET              | 高性能底层库接口        | [GitHub](https://github.com/dotnet/Silk.NET)                   |              |
-| HtmlAgilityPack       | HTML解析器         | [GitHub](https://github.com/zzzprojects/html-agility-pack)                           |
-| Jint                  | JS解析执行器         | [GitHub](https://github.com/sebastienros/jint)                 |
 | DotNetty              | 异步通信框架          | [GitHub](https://github.com/Azure/DotNetty)                    |
-| Newtonsoft.Json       | JSON解析器         | [GitHub](https://github.com/JamesNK/Newtonsoft.Json)                          |
-| SharpZipLib           | 压缩包处理           | [GitHub](https://github.com/icsharpcode/SharpZipLib)           |
 | Tomlyn                | TOML解析器         | [GitHub](https://github.com/xoofx/Tomlyn)                      |
-| ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/Coloryr/ForgeWrapper)              |      |
+| ForgeWrapper          | Forge启动器        | [GitHub](https://github.com/PrismLauncher/ForgeWrapper)              |      |
 | OptifineWrapper       | Optifine启动器     | [GitHub](https://github.com/coloryr/OptifineWrapper)           |
 | ColorMCASM            | 用于ColorMC与游戏内通信 | [GitHub](https://github.com/Coloryr/ColorMCASM)                |
 | K4os.Compression.LZ4  | LZ4解压缩           | [GitHub](https://github.com/MiloszKrajewski/K4os.Compression.LZ4)  |
-| Ae.Dns                | DNS客户端           | [GitHub](https://github.com/alanedwardes/Ae.Dns)  |
+| sharpcompress         | 压缩包解压处理   | [GitHub](https://github.com/adamhathcock/sharpcompress)                |
+| Markdig               | MarkDown处理工具   | [GitHub](https://github.com/xoofx/markdig)                |
+| MinecraftSkinRender   | Minecraft皮肤渲染器   | [GitHub](https://github.com/Coloryr/MinecraftSkinRender)                |
 
 ## 开源协议
 Apache 2.0  
