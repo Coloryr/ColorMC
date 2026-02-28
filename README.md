@@ -20,10 +20,6 @@ More Languages: [English](README_EN.md)
 ## 窗口截图 🪟
 ![](/docs/images/image.png)  
 
-**演示动画**
-
-https://github.com/user-attachments/assets/4b3b1207-58a9-46e8-a99c-b9f1a64761be
-
 ## 支持平台
 - Windows(zip)
 - Linux(提供deb pkg rpm，同时可以在[星火商店](https://www.spark-app.store/)或者[AUR](https://aur.archlinux.org/)上安装)

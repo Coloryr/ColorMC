@@ -20,10 +20,6 @@ More Languages: [中文](README.md)
 ## Window Screenshots 🪟
 ![](/docs/images/image.png)  
 
-**Demo Animation**
-
-https://github.com/user-attachments/assets/4b3b1207-58a9-46e8-a99c-b9f1a64761be
-
 ## Supported Platforms
 - Windows (zip)
 - Linux (provides deb, pkg, rpm packages, also available on [Spark Store](https://www.spark-app.store/) or [AUR](https://aur.archlinux.org/))
