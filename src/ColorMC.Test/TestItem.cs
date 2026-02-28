@@ -746,7 +746,7 @@ public static class TestItem
 
     public static void Item44()
     {
-        using var temp = ZipArchive.Open("H:\\2025年7月30号_版本0.3.4_客户端导入包.zip");
+        using var temp = ZipArchive.OpenArchive("H:\\2025年7月30号_版本0.3.4_客户端导入包.zip");
     }
 
     public static void Item45()

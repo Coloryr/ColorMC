@@ -5,7 +5,9 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Worker;
 
@@ -13,7 +15,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
 {
     private ModrinthPackObj? _info;
 
-    public ModrinthWork(ZipArchive zip, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(zip, gui, packgui, token)
+    public ModrinthWork(IWritableArchive<ZipWriterOptions> zip, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(zip, gui, packgui, token)
     {
 
     }
@@ -316,7 +318,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
         return true;
     }
 
-    public async Task<bool> Unzip(List<ZipArchiveEntry>? unselect)
+    public async Task<bool> Unzip(List<IArchiveEntry>? unselect)
     {
         if (_info == null || Game == null)
         {
@@ -328,7 +330,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
         int length = Names.NameOverrideDir.Length;
         string dir = Names.NameOverrideDir;
 
-        var size = Zip.Entries.Count;
+        var size = Zip.Entries.Count();
         var index = 0;
 
         Packgui?.SetNowSub(0, size);

@@ -9,6 +9,7 @@ using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Net.Apis;
+using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Model;
 
 namespace ColorMC.Gui.Utils;
@@ -57,11 +58,11 @@ public static class UpdateUtils
     /// 检查更新
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool, bool, string?)> CheckMain()
+    public static async Task<LaunchCheckRes> CheckMain()
     {
         if (ColorMCGui.BaseSha1 == null)
         {
-            return (false, false, null);
+            return new LaunchCheckRes();
         }
 
         try
@@ -69,29 +70,30 @@ public static class UpdateUtils
             var obj = await ColorMCCloudAPI.GetMainIndexAsync();
             if (obj == null)
             {
-                UpdateCheckFail();
-                return (false, false, null);
+                return new LaunchCheckRes();
             }
             var json = obj.RootElement;
 
-            if (json.TryGetProperty("Version", out var temp)
+            if (json.TryGetProperty("version", out var temp)
                 && ColorMCCore.TopVersion != temp.GetString())
             {
-                return (true, true, json.GetProperty("Text").GetString());
+                return new LaunchCheckRes
+                {
+                    IsOk = true,
+                    HaveUpdate = true,
+                    NewVersion = true,
+                    Text = json.GetProperty("text").GetString(),
+                    Version = json.GetProperty("version").GetString(),
+                };
             }
-            var data1 = await CheckNowVersion();
-            if (data1.Item1 == true)
-            {
-                return (true, false, data1.Item2!);
-            }
+            return await CheckNowVersion();
         }
         catch (Exception e)
         {
-            UpdateCheckFail();
             Logs.Error(LangUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
-        return (false, false, null);
+        return new LaunchCheckRes();
     }
 
     /// <summary>
@@ -240,11 +242,11 @@ public static class UpdateUtils
     /// 检测更新
     /// </summary>
     /// <returns></returns>
-    public static async Task<(bool?, string?)> CheckNowVersion()
+    public static async Task<LaunchCheckRes> CheckNowVersion()
     {
         if (ColorMCGui.BaseSha1 == null)
         {
-            return (false, null);
+            return new LaunchCheckRes();
         }
 
         try
@@ -253,17 +255,12 @@ public static class UpdateUtils
             if (obj == null)
             {
                 WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab3.Text38"), "Json Error");
-                return (false, null);
+                return new LaunchCheckRes();
             }
             var json = obj.RootElement;
-            if (!json.TryGetProperty("index", out var index)
-                || index.ValueKind is not JsonValueKind.Object)
-            {
-                return (false, null);
-            }
 
-            WebSha1s[0] = index.GetProperty("core").GetString()!;
-            WebSha1s[1] = index.GetProperty("gui").GetString()!;
+            WebSha1s[0] = json.GetProperty("core.dll").GetString()!;
+            WebSha1s[1] = json.GetProperty("gui.dll").GetString()!;
 
             Logs.Info($"ColorMC.Core.dll:{LocalSha1s[0]} Web:{WebSha1s[0]}");
             Logs.Info($"ColorMC.Gui.dll:{LocalSha1s[1]} Web:{WebSha1s[1]}");
@@ -272,32 +269,27 @@ public static class UpdateUtils
             {
                 if (WebSha1s[a] != LocalSha1s[a])
                 {
-                    index.TryGetProperty("info", out var data1);
-                    return (true, data1.GetString() ?? LangUtils.Get("App.Text81"));
+                    return new LaunchCheckRes
+                    {
+                        IsOk = true,
+                        HaveUpdate = true,
+                        Text = json.GetProperty("text").GetString(),
+                        Version = json.GetProperty("version").GetString()
+                    };
                 }
             }
 
-            return (false, null);
+            return new LaunchCheckRes
+            {
+                IsOk = true
+            };
         }
         catch (Exception e)
         {
             WindowManager.ShowError(LangUtils.Get("SettingWindow.Tab3.Text38"), e);
         }
 
-        return (null, null);
-    }
-
-    /// <summary>
-    /// 检测更新失败
-    /// </summary>
-    private static void UpdateCheckFail()
-    {
-        var window = WindowManager.GetMainWindow();
-        if (window == null)
-        {
-            return;
-        }
-        window.Model.Notify(LangUtils.Get("SettingWindow.Tab3.Text38"));
+        return new LaunchCheckRes();
     }
 
     //private static async Task<bool> StartPatch(string file, List<string> files)

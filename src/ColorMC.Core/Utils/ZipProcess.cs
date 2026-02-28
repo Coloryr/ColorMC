@@ -122,8 +122,8 @@ public class ZipProcess(IZipGui? gui = null)
         }
         else
         {
-            using var s = ZipArchive.Open(stream);
-            _size = s.Entries.Count;
+            using var s = ZipArchive.OpenArchive(stream);
+            _size = s.Entries.Count();
             foreach (var e in s.Entries)
             {
                 _now++;

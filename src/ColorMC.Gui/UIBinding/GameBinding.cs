@@ -39,7 +39,9 @@ using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 using SkiaSharp;
 
 namespace ColorMC.Gui.UIBinding;
@@ -1335,7 +1337,7 @@ public static class GameBinding
     /// </summary>
     /// <param name="local">文件位置</param>
     /// <returns>压缩包类型</returns>
-    public static async Task<PackType?> CheckTypeAsync(string local, ZipArchive zip)
+    public static async Task<PackType?> CheckTypeAsync(string local, IWritableArchive<ZipWriterOptions> zip)
     {
         if (local.EndsWith(Names.NameMrpackExt))
         {

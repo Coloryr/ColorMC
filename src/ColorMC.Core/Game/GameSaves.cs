@@ -69,7 +69,7 @@ public static class GameSaves
         {
             try
             {
-                using var zFile = ZipArchive.Open(file);
+                using var zFile = ZipArchive.OpenArchive(file);
                 var dir1 = "";
                 var find = false;
                 foreach (var e in zFile.Entries)

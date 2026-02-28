@@ -8,7 +8,9 @@ using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Objs.OtherLaunch;
 using ColorMC.Core.Utils;
 using ColorMC.Core.Worker;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Helpers;
 
@@ -127,7 +129,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ModPackAsync(PackType type, string? group, ZipArchive zip, List<ZipArchiveEntry> unselects,
+    private static async Task<GameRes> ModPackAsync(PackType type, string? group, IWritableArchive<ZipWriterOptions> zip, List<IArchiveEntry> unselects,
         IOverGameGui? gui, IAddGui? packgui, CancellationToken token)
     {
         packgui?.SetState(AddState.ReadInfo);
@@ -198,7 +200,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> ColorMCAsync(ZipArchive zip, List<ZipArchiveEntry> unselect, IOverGameGui? gui,
+    private static async Task<GameRes> ColorMCAsync(IWritableArchive<ZipWriterOptions> zip, List<IArchiveEntry> unselect, IOverGameGui? gui,
         IAddGui? packgui)
     {
         packgui?.SetState(AddState.ReadInfo);
@@ -224,7 +226,7 @@ public static class AddGameHelper
         }
 
         //复制文件
-        var size = zip.Entries.Count;
+        var size = zip.Entries.Count();
         var index = 0;
 
         packgui?.SetState(AddState.Unzip);
@@ -259,7 +261,7 @@ public static class AddGameHelper
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
     private static async Task<GameRes> MMCAsync(string? name, string? group, string file,
-        ZipArchive zip, List<ZipArchiveEntry> unselect, IOverGameGui? gui, IAddGui? packgui)
+        IWritableArchive<ZipWriterOptions> zip, List<IArchiveEntry> unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         packgui?.SetState(AddState.ReadInfo);
         string path = "";
@@ -321,7 +323,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        var size = zip.Entries.Count;
+        var size = zip.Entries.Count();
         var index = 0;
 
         packgui?.SetState(AddState.Unzip);
@@ -365,8 +367,8 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, ZipArchive zip, 
-        List<ZipArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
+    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip, 
+        List<IArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         unselect ??= [];
 
@@ -417,7 +419,7 @@ public static class AddGameHelper
             overrides = obj1.Overrides;
         }
 
-        var size = zip.Entries.Count;
+        var size = zip.Entries.Count();
         var index = 0;
 
         packgui?.SetState(AddState.Unzip);
@@ -456,8 +458,8 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> HMCLServerAsync(string? name, string? group, string file, ZipArchive zip,
-        List<ZipArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
+    private static async Task<GameRes> HMCLServerAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip,
+        List<IArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         unselect ??= [];
 
@@ -518,7 +520,7 @@ public static class AddGameHelper
 
         string overrides = Names.NameOverrideDir;
 
-        var size = zip.Entries.Count;
+        var size = zip.Entries.Count();
         var index = 0;
 
         packgui?.SetState(AddState.Unzip);
@@ -552,8 +554,8 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, ZipArchive zip, 
-        List<ZipArchiveEntry> unselect, IOverGameGui? gui, IAddGui? packgui)
+    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip, 
+        List<IArchiveEntry> unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         packgui?.SetState(AddState.ReadInfo);
 
@@ -573,7 +575,7 @@ public static class AddGameHelper
             return new GameRes();
         }
 
-        var size = zip.Entries.Count;
+        var size = zip.Entries.Count();
         var index = 0;
 
         packgui?.SetState(AddState.Unzip);
@@ -647,7 +649,7 @@ public static class AddGameHelper
     /// </summary>
     /// <returns>导入结果</returns>
     public static async Task<GameRes> InstallZip(string? name, string? group, string file,
-        PackType type, List<ZipArchiveEntry> unselects, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
+        PackType type, List<IArchiveEntry> unselects, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
     {
         GameRes? res1 = null;
         Stream? st = null;
@@ -678,7 +680,7 @@ public static class AddGameHelper
             {
                 return new GameRes();
             }
-            using var zip = ZipArchive.Open(st);
+            using var zip = ZipArchive.OpenArchive(st);
 
             return await InstallZip(name, group, file, zip, type, unselects, gui, packgui, token);
         }
@@ -703,8 +705,8 @@ public static class AddGameHelper
     /// 导入整合包
     /// </summary>
     /// <returns>导入结果</returns>
-    public static async Task<GameRes> InstallZip(string? name, string? group, string file, ZipArchive zip,
-        PackType type, List<ZipArchiveEntry> unselects, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
+    public static async Task<GameRes> InstallZip(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip,
+        PackType type, List<IArchiveEntry> unselects, IOverGameGui? gui, IAddGui? packgui, CancellationToken token = default)
     {
         GameRes? res1 = null;
         try

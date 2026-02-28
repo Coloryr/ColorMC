@@ -1,6 +1,8 @@
 using ColorMC.Core.Objs;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 using SharpCompress.Common.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Utils;
 
@@ -180,7 +182,7 @@ public static class FunctionUtils
     /// </summary>
     /// <param name="entry"></param>
     /// <returns></returns>
-    public static bool IsFile(ZipEntry entry)
+    public static bool IsFile(IArchiveEntry entry)
     {
         return entry.Key != null && !entry.IsDirectory && (entry.Size != 0 || entry.CompressedSize != 0);
     }
@@ -191,7 +193,7 @@ public static class FunctionUtils
     /// <param name="archive"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static ZipArchiveEntry? GetEntry(this ZipArchive archive, string name)
+    public static IArchiveEntry? GetEntry(this IWritableArchive<ZipWriterOptions> archive, string name)
     {
         return archive.Entries.FirstOrDefault(item => item.Key == name);
     }

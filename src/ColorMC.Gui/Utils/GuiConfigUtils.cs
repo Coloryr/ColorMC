@@ -237,7 +237,8 @@ public static class GuiConfigUtils
             Card = MakeCardConfig(),
             LaunchCheck = MakeLaunchCheckConfig(),
             LauncherFunction = MakeLauncherFunctionConfig(),
-            CheckUpdate = true
+            CheckUpdate = true,
+            WindowState = MakeWindowStateConfig()
         };
     }
 

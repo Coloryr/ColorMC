@@ -6,7 +6,9 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 using Tomlyn;
 using Tomlyn.Model;
 
@@ -127,7 +129,7 @@ public static class GameMods
             }
             sha1 = await HashHelper.GenSha1Async(stream);
             stream.Seek(0, SeekOrigin.Begin);
-            using var zFile = ZipArchive.Open(stream);
+            using var zFile = ZipArchive.OpenArchive(stream);
             var mod = await ReadModAsync(game, item.FullName, zFile);
             if (mod != null)
             {
@@ -183,10 +185,7 @@ public static class GameMods
 
         var info = new FileInfo(file);
         var mod1 = await ReadModAsync(obj, info, false);
-        if (mod1 != null)
-        {
-            mod1.Game = obj;
-        }
+        mod1?.Game = obj;
         return mod1;
     }
 
@@ -322,7 +321,7 @@ public static class GameMods
     /// </summary>
     /// <param name="obj">游戏Mod</param>
     /// <param name="zFile">Mod压缩包</param>
-    private static async Task CheckJarInJarAsync(GameSettingObj game, ModObj obj, ZipArchive zFile)
+    private static async Task CheckJarInJarAsync(GameSettingObj game, ModObj obj, IWritableArchive<ZipWriterOptions> zFile)
     {
         obj.InJar ??= [];
         foreach (var item3 in zFile.Entries)
@@ -335,7 +334,7 @@ public static class GameMods
             using var stream = item3.OpenEntryStream();
             using var stream1 = new MemoryStream();
             await stream.CopyToAsync(stream1);
-            using var zFile1 = ZipArchive.Open(stream1);
+            using var zFile1 = ZipArchive.OpenArchive(stream1);
             var inmod = await ReadModAsync(game, obj.Local, zFile1);
             if (inmod != null)
             {
@@ -350,7 +349,7 @@ public static class GameMods
     /// <param name="path">Mod路径</param>
     /// <param name="zFile">Mod压缩包</param>
     /// <returns>游戏Mod</returns>
-    private static async Task<ModObj?> ReadModAsync(GameSettingObj game, string path, ZipArchive zFile)
+    private static async Task<ModObj?> ReadModAsync(GameSettingObj game, string path, IWritableArchive<ZipWriterOptions> zFile)
     {
         bool istest = false;
         var mod = new ModObj
@@ -623,7 +622,7 @@ public static class GameMods
         }
 
         //forge 1.13以下
-        var item1 = zFile.GetEntry(Names.NameMcModInfoFile);
+        var item1 = zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameMcModInfoFile);
         if (item1 != null)
         {
             try
@@ -655,13 +654,13 @@ public static class GameMods
 
         //forge 1.13及以上
         bool neoforge = false;
-        item1 = zFile.GetEntry(Names.NameMcModTomlFile);
+        item1 = zFile.Entries.FirstOrDefault(item => item.Key == Names.NameMcModTomlFile);
         if (item1 == null)
         {
             //neoforge 1.20.5及以上
-            item1 = zFile.GetEntry(Names.NameNeoTomlFile);
+            item1 = zFile.Entries.FirstOrDefault(item => item.Key == Names.NameNeoTomlFile);
             neoforge = true;
-            item1 ??= zFile.GetEntry(Names.NameNeoToml1File);
+            item1 ??= zFile.Entries.FirstOrDefault(item => item.Key == Names.NameNeoToml1File);
         }
         if (item1 != null)
         {
@@ -686,7 +685,7 @@ public static class GameMods
         }
 
         //fabric
-        item1 = zFile.GetEntry("fabric.mod.json");
+        item1 = zFile.Entries.FirstOrDefault(item => item.Key == "fabric.mod.json");
         if (item1 != null)
         {
             mod.Loaders.Add(Loaders.Fabric);
@@ -706,7 +705,7 @@ public static class GameMods
         }
 
         //quilt
-        item1 = zFile.GetEntry("quilt.mod.json");
+        item1 = zFile.Entries.FirstOrDefault(item => item.Key == "quilt.mod.json");
         if (item1 != null)
         {
             mod.Loaders.Add(Loaders.Quilt);
@@ -732,10 +731,10 @@ public static class GameMods
         try
         {
             //core mod
-            item1 = zFile.GetEntry("META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
-            var item5 = zFile.GetEntry("META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
-            var item7 = zFile.GetEntry("META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
-            var item6 = zFile.GetEntry("META-INF/MANIFEST.MF");
+            item1 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
+            var item5 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
+            var item7 = zFile.Entries.FirstOrDefault(item=>item.Key == "META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
+            var item6 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/MANIFEST.MF");
             if (item6 != null)
             {
                 using var stream = item6.OpenEntryStream();
@@ -806,7 +805,7 @@ public static class GameMods
                 }
             }
 
-            item1 = zFile.GetEntry("META-INF/fml_cache_annotation.json");
+            item1 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/fml_cache_annotation.json");
             //forge coremod
             if (item1 != null)
             {
@@ -871,7 +870,7 @@ public static class GameMods
                 }
 
                 using var stream = item3.OpenEntryStream();
-                using var zFile1 = ZipArchive.Open(stream);
+                using var zFile1 = ZipArchive.OpenArchive(stream);
                 var inmod = await ReadModAsync(game, path, zFile1);
                 if (inmod != null && !string.IsNullOrWhiteSpace(inmod.Name)
                                   && !string.IsNullOrWhiteSpace(inmod.ModId) && !inmod.CoreMod)

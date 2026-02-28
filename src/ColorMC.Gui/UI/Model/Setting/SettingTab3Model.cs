@@ -234,17 +234,17 @@ public partial class SettingModel
         var dialog = Window.ShowProgress(LangUtils.Get("SettingWindow.Tab3.Text33"));
         var res = await UpdateUtils.CheckNowVersion();
         Window.CloseDialog(dialog);
-        if (res.Item1 == null)
+        if (!res.IsOk)
         {
             Window.Show(LangUtils.Get("SettingWindow.Tab3.Text38"));
             return;
         }
-        else if (res.Item1 == true)
+        else if (res.HaveUpdate)
         {
             var dialog1 = new LongTextModel(Window.WindowId)
             {
-                Text1 = LangUtils.Get("SettingWindow.Tab3.Text34"),
-                Text2 = res.Item2!
+                Text1 = string.Format(LangUtils.Get("SettingWindow.Tab3.Text34"), res.Version),
+                Text2 = res.Text ?? ""
             };
             var res1 = await Window.ShowDialogWait(dialog1);
             if (res1 is true)

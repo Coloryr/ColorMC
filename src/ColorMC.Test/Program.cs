@@ -4,6 +4,8 @@ using ColorMC.Gui.Utils;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ColorMC.Test;
 
@@ -37,9 +39,9 @@ internal class Program
 
         //ColorMCCore.GameLog += Log;
 
-        TestItem.Item45();
+        //TestItem.Item45();
 
-        //GetSha1();
+        GetSha1();
 
         Console.ReadLine();
     }
@@ -49,26 +51,26 @@ internal class Program
         var text = File.Exists("tmp/sha1.json")
             ? File.ReadAllText("tmp/sha1.json") : "{\"text\":\"\"}";
         var dir = AppContext.BaseDirectory;
-        //var obj = JObject.Parse(text);
-        //{
-        //    using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.dll");
-        //    var sha1 = GenSha1(file); ;
-        //    if (!obj.TryAdd("core.dll", sha1))
-        //    {
-        //        obj["core.dll"] = sha1;
-        //    }
-        //    Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
-        //}
-        //{
-        //    using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
-        //    var sha1 = GenSha1(file); ;
-        //    if (!obj.TryAdd("gui.dll", sha1))
-        //    {
-        //        obj["gui.dll"] = sha1;
-        //    }
-        //    Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
-        //}
-        //File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString(Formatting.Indented));
+        var obj = JsonNode.Parse(text)!.AsObject();
+        {
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Core.dll");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("core.dll", sha1))
+            {
+                obj["core.dll"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Core.dll:{obj["core.dll"]}");
+        }
+        {
+            using var file = File.OpenRead($"{dir}tmp/ColorMC.Gui.dll");
+            var sha1 = GenSha1(file); ;
+            if (!obj.TryAdd("gui.dll", sha1))
+            {
+                obj["gui.dll"] = sha1;
+            }
+            Console.WriteLine($"ColorMC.Gui.dll:{obj["gui.dll"]}");
+        }
+        File.WriteAllText($"{dir}tmp/sha1.json", obj.ToString());
     }
 
     public static string GenSha1(Stream stream)

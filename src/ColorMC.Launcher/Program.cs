@@ -53,8 +53,8 @@ public static class Program
 
     public static readonly string[] BaseSha1 =
     [
-        "7013a74e7a0f5cc1bd6c4290a9308bcbd9c7d4cf",
-        "bb148c225508ca2f8ca01e714b9dd94f4aea691e"
+        "f6e6852010b0d9a1c29a98fb35d25fc614e1b832",
+        "516fa3f4b2d60fec735d15920d7b85d021e87f47"
     ];
 
     public delegate void IN(string[] args);

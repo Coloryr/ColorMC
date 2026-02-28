@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using ColorMC.Gui.Net.Apis;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.Utils;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 #if !DEBUG
@@ -18,8 +17,8 @@ namespace ColorMC.Gui.UI.Model.Main;
 public partial class MainModel
 {
 #if !DEBUG
+    private LaunchCheckRes _updateRes;
     private bool _isNewUpdate;
-    private string _updateStr;
 #endif
 
     /// <summary>
@@ -63,8 +62,8 @@ public partial class MainModel
 #if !DEBUG
         var dialog = new LongTextModel(Window.WindowId)
         {
-            Text1 = LangUtils.Get("App.Text35"),
-            Text2 = _updateStr
+            Text1 = string.Format(LangUtils.Get("App.Text35"), _updateRes.Version),
+            Text2 = _updateRes.Text ?? ""
         };
         var res = await Window.ShowDialogWait(dialog);
         if (res is true)
@@ -89,14 +88,14 @@ public partial class MainModel
 #if DEBUG
         CardUpdate = false;
 #else
-        var data = await UpdateUtils.CheckMain();
-        if (!data.Item1)
+        _updateRes = await UpdateUtils.CheckMain();
+        if (!_updateRes.IsOk)
         {
+            Window.Notify(LangUtils.Get("SettingWindow.Tab3.Text38"));
             return;
         }
-        CardUpdate = true;
-        _isNewUpdate = data.Item2 || ColorMCGui.IsAot || ColorMCGui.IsMin;
-        _updateStr = data.Item3!;
+        CardUpdate = _updateRes.HaveUpdate;
+        _isNewUpdate = _updateRes.NewVersion || ColorMCGui.IsAot || ColorMCGui.IsMin;
         LoadCard();
 #endif
     }

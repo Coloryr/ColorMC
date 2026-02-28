@@ -1,5 +1,5 @@
 ﻿using ColorMC.Core.Objs;
-using SharpCompress.Archives.Zip;
+using SharpCompress.Archives;
 
 namespace ColorMC.Core.Worker;
 
@@ -25,7 +25,7 @@ public interface IModPackWork : IDisposable
     /// 解压文件
     /// </summary>
     /// <returns></returns>
-    Task<bool> Unzip(List<ZipArchiveEntry>? unselect);
+    Task<bool> Unzip(List<IArchiveEntry>? unselect);
     /// <summary>
     /// 获取Mod信息
     /// </summary>

@@ -98,7 +98,7 @@ public static class ColorMCCloudAPI
     {
         try
         {
-            string url = ColorMCAPI.BaseWebUrl + "colormc/update/log";
+            string url = ColorMCAPI.BaseWebUrl + "colormc/update/log.md";
             return await ColorMCAPI.GetStringAsync(url);
         }
         catch (Exception e)
@@ -114,7 +114,7 @@ public static class ColorMCCloudAPI
     /// <returns></returns>
     public static async Task<JsonDocument?> GetMainIndexAsync()
     {
-        string url = ColorMCAPI.BaseUrl + "colormc/update/index.json";
+        string url = ColorMCAPI.BaseWebUrl + "colormc/update/index.json";
         using var stream = await ColorMCAPI.GetStreamAsync(url);
         if (stream == null)
         {
@@ -129,7 +129,7 @@ public static class ColorMCCloudAPI
     /// <returns></returns>
     public static async Task<JsonDocument?> GetUpdateIndexAsync()
     {
-        string url = UpdateUrl + "index.json";
+        string url = UpdateUrl + "sha1.json";
         using var stream = await ColorMCAPI.GetStreamAsync(url);
         if (stream == null)
         {

@@ -97,7 +97,7 @@ public partial class SettingModel
     [RelayCommand]
     public void OpenUrl9()
     {
-        WebBinding.OpenWeb(WebType.SourceHanSanc);
+        WebBinding.OpenWeb(WebType.HONORSans);
     }
 
     [RelayCommand]

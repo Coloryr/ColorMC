@@ -7,6 +7,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
 
 namespace ColorMC.Core.Helpers;
@@ -667,14 +668,14 @@ public static class GameDownloadHelper
         {
             return null;
         }
-        using var zFile = ZipArchive.Open(stream1);
-        ZipArchiveEntry? versionfile = null;
-        ZipArchiveEntry? installfile = null;
-        if (zFile.GetEntry(Names.NameVersionFile) is { } item)
+        using var zFile = ZipArchive.OpenArchive(stream1);
+        IArchiveEntry? versionfile = null;
+        IArchiveEntry? installfile = null;
+        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameVersionFile) is { } item)
         {
             versionfile = item;
         }
-        if (zFile.GetEntry(Names.NameForgeInstallFile) is { } item1)
+        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameForgeInstallFile) is { } item1)
         {
             installfile = item1;
         }
@@ -991,17 +992,17 @@ public static class GameDownloadHelper
         {
             return new();
         }
-        using var zFile = ZipArchive.Open(stream1);
+        using var zFile = ZipArchive.OpenArchive(stream1);
 
         ForgeLaunchObj? obj1 = null;
         ForgeInstallObj? obj2 = null;
 
-        if (zFile.GetEntry(Names.NameVersionFile) is { } item)
+        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameVersionFile) is { } item)
         {
             using var stream = item.OpenEntryStream();
             obj1 = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
         }
-        if (zFile.GetEntry(Names.NameForgeInstallFile) is { } item1)
+        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameForgeInstallFile) is { } item1)
         {
             using var stream = item1.OpenEntryStream();
             obj2 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
@@ -1041,7 +1042,7 @@ public static class GameDownloadHelper
             else
             {
                 //在压缩包里面的文件
-                var item1 = zFile.GetEntry($"maven/{item.Downloads.Artifact.Path}");
+                var item1 = zFile.Entries.FirstOrDefault(item2=>item2.Key == $"maven/{item.Downloads.Artifact.Path}");
                 if (item1 == null)
                 {
                     return;

@@ -137,8 +137,8 @@ public static class GameResourcepacks
     /// <returns>材质包</returns>
     private static async Task<ResourcepackObj?> ReadResourcepackAsync(Stream stream1, CancellationToken cancel)
     {
-        using var zFile = ZipArchive.Open(stream1);
-        var item1 = zFile.GetEntry(Names.NamePackMetaFile);
+        using var zFile = ZipArchive.OpenArchive(stream1);
+        var item1 = zFile.Entries.FirstOrDefault(item => item.Key == Names.NamePackMetaFile);
         if (item1 == null)
         {
             return null;
@@ -168,7 +168,7 @@ public static class GameResourcepacks
                 }
             }
         }
-        item1 = zFile.GetEntry(Names.NamePackIconFile);
+        item1 = zFile.Entries.FirstOrDefault(item=>item.Key == Names.NamePackIconFile);
         if (item1 != null)
         {
             using var stream2 = item1.OpenEntryStream();

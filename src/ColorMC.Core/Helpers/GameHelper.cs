@@ -293,7 +293,7 @@ public static class GameHelper
     /// <param name="stream">文件流</param>
     public static void UnpackNative(string native, Stream stream)
     {
-        using var zFile = ZipArchive.Open(stream);
+        using var zFile = ZipArchive.OpenArchive(stream);
         foreach (var e in zFile.Entries)
         {
             if (!FunctionUtils.IsFile(e))

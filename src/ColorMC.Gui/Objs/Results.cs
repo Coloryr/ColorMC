@@ -281,3 +281,12 @@ public record SetGamesRes
     public readonly List<GameItemModel> Removes = [];
     public readonly List<GameItemModel> Adds = [];
 }
+
+public record LaunchCheckRes
+{
+    public bool IsOk;
+    public bool HaveUpdate;
+    public bool NewVersion;
+    public string? Text;
+    public string? Version;
+}

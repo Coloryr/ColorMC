@@ -276,7 +276,7 @@ public static class BlockListUtils
         }
 
         //提取贴图
-        using var reader = ZipArchive.Open(stream);
+        using var reader = ZipArchive.OpenArchive(stream);
         foreach (var item in reader.Entries)
         {
             if (!FunctionUtils.IsFile(item))
@@ -755,7 +755,7 @@ public static class BlockListUtils
 
         if (local.EndsWith(Names.NameJarExt))
         {
-            using var zip = ZipArchive.Open(local);
+            using var zip = ZipArchive.OpenArchive(local);
             var list = zip.Entries.Where(item => item.Key?.Contains("zh_cn.json") == true);
             if (!list.Any())
             {

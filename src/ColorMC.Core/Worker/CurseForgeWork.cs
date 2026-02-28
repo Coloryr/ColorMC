@@ -6,7 +6,9 @@ using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Worker;
 
@@ -14,7 +16,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 {
     private CurseForgePackObj? _info;
 
-    public CurseForgeWork(ZipArchive zip, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(zip, gui, packgui, token)
+    public CurseForgeWork(IWritableArchive<ZipWriterOptions> zip, IOverGameGui? gui, IAddGui? packgui, CancellationToken token) : base(zip, gui, packgui, token)
     {
 
     }
@@ -140,7 +142,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
     /// 解压文件
     /// </summary>
     /// <returns></returns>
-    public async Task<bool> Unzip(List<ZipArchiveEntry>? unselect)
+    public async Task<bool> Unzip(List<IArchiveEntry>? unselect)
     {
         if (_info == null || Game == null)
         {
@@ -149,7 +151,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
 
         unselect ??= [];
         
-        var size = Zip.Entries.Count;
+        var size = Zip.Entries.Count();
         var index = 0;
 
         Packgui?.SetNowSub(0, size);

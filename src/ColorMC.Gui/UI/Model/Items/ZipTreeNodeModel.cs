@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Gui.UI.Model.Items;
 
@@ -73,7 +75,7 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 原始ZIP条目
     /// </summary>
-    public readonly ZipArchiveEntry? Entry;
+    public readonly IArchiveEntry? Entry;
 
     /// <summary>
     /// 构造函数（用于创建根节点）
@@ -92,7 +94,7 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 构造函数（从ZIP条目创建节点）
     /// </summary>
-    private ZipTreeNodeModel(ZipTreeNodeModel? parent, ZipArchiveEntry entry, bool isChecked = true)
+    private ZipTreeNodeModel(ZipTreeNodeModel? parent, IArchiveEntry entry, bool isChecked = true)
     {
         _parent = parent ?? this;
         Entry = entry;
@@ -155,7 +157,7 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 从ZIP存档创建树结构
     /// </summary>
-    public ZipTreeNodeModel(ZipArchive archive, bool defaultChecked = true)
+    public ZipTreeNodeModel(IWritableArchive<ZipWriterOptions> archive, bool defaultChecked = true)
     {
         _parent = this;
         _name = "";
@@ -163,7 +165,7 @@ public partial class ZipTreeNodeModel : ObservableObject
         _isExpanded = true;
         IsDirectory = true;
         _isChecked = true;
-        HasChildren = archive.Entries.Count != 0;
+        HasChildren = archive.Entries.Any();
 
         var pathDictionary = new Dictionary<string, ZipTreeNodeModel>(StringComparer.OrdinalIgnoreCase);
 
@@ -214,7 +216,7 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// 处理单个ZIP条目
     /// </summary>
     private static void ProcessEntry(
-        ZipArchiveEntry entry,
+        IArchiveEntry entry,
         ZipTreeNodeModel rootNode,
         Dictionary<string, ZipTreeNodeModel> pathDictionary,
         bool defaultChecked)
@@ -260,9 +262,9 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// <summary>
     /// 获取未选中的文件列表
     /// </summary>
-    public List<ZipArchiveEntry> GetUnSelectItems()
+    public List<IArchiveEntry> GetUnSelectItems()
     {
-        var list = new List<ZipArchiveEntry>();
+        var list = new List<IArchiveEntry>();
 
         foreach (var item in Children)
         {

@@ -4,7 +4,9 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Gui.UI.Model;
 
@@ -18,7 +20,7 @@ public class ZipPage
     /// </summary>
     private readonly ZipTreeNodeModel _root;
 
-    public ZipArchive Zip { get; private set; }
+    public IWritableArchive<ZipWriterOptions> Zip { get; private set; }
 
     /// <summary>
     /// 显示内容
@@ -27,7 +29,7 @@ public class ZipPage
 
     public ZipPage(string local)
     {
-        Zip = ZipArchive.Open(local);
+        Zip = ZipArchive.OpenArchive(local);
 
         _root = new ZipTreeNodeModel(Zip);
         Source = new HierarchicalTreeDataGridSource<ZipTreeNodeModel>(_root)
@@ -94,7 +96,7 @@ public class ZipPage
     /// 获取所有未选择的文件
     /// </summary>
     /// <returns></returns>
-    public List<ZipArchiveEntry> GetUnSelectItems()
+    public List<IArchiveEntry> GetUnSelectItems()
     {
         return _root.GetUnSelectItems();
     }

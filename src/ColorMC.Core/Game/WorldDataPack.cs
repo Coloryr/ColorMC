@@ -70,7 +70,7 @@ public static class WorldDataPack
                 {
                     return;
                 }
-                using var zip = ZipArchive.Open(stream);
+                using var zip = ZipArchive.OpenArchive(stream);
                 var ent = zip.GetEntry(Names.NamePackMetaFile);
                 if (ent == null)
                 {
