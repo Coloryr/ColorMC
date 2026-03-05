@@ -1,0 +1,61 @@
+name: 发布到GitHub Release
+
+on:
+  push:
+    tags:
+      - '**'
+      - '!debug**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: 检查是否为debug标签
+      run: |
+        echo "当前标签: ${{ github.ref }}"
+        if [[ "${{ github.ref }}" == refs/tags/debug* ]]; then
+          echo "这是debug标签，跳过发布"
+          exit 0
+        fi
+    
+    - name: 下载所有构建产物
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+        pattern: '*'
+        merge-multiple: true
+    
+    - name: 列出所有下载的产物
+      run: |
+        echo "下载的构建产物:"
+        find artifacts/ -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.zip" -o -name "*.dmg" -o -name "*.msi" -o -name "*.pkg.tar.zst" \) | while read file; do
+          echo "  - $(basename "$file")"
+        done
+    
+    - name: 创建GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        body: |
+          ColorMC 构建产物 - ${{ github.ref_name }}
+          
+          包含以下平台的构建：
+          - Linux (.deb, .rpm, .AppImage, .pkg.tar.zst)
+          - macOS (.zip, .dmg)
+          - Windows (.msi, 可执行文件)
+          
+          构建时间: ${{ github.event.head_commit.timestamp }}
+        files: |
+          artifacts/**/*.deb
+          artifacts/**/*.rpm
+          artifacts/**/*.AppImage
+          artifacts/**/*.zip
+          artifacts/**/*.dmg
+          artifacts/**/*.msi
+          artifacts/**/*.pkg.tar.zst
+        draft: false
+        prerelease: false
