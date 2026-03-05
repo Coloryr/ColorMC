@@ -24,7 +24,7 @@ dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1
 
 mkdir .\build_out\%1-dotnet
 
-move .\src\build_out\%1-dotnet\ColorMC.Launcher.exe .\build_out\%1-dotnet\colormc-win-%version%-%1.exe
+copy .\src\build_out\%1-dotnet\ColorMC.Launcher.exe .\build_out\%1-dotnet\colormc-win-%version%-%1.exe
 
 echo colormc-win-%version%-%1.exe build done
 goto :eof
@@ -36,7 +36,7 @@ dotnet publish .\src\ColorMC.Launcher -p:PublishProfile=%1-min
 
 mkdir .\build_out\%1-min
 
-move .\src\build_out\%1-min\ColorMC.Launcher.exe .\build_out\%1-min\colormc-win-%version%-min-%1.exe
+copy .\src\build_out\%1-min\ColorMC.Launcher.exe .\build_out\%1-min\colormc-win-%version%-min-%1.exe
 
 echo colormc-win-%version%-min-%1.exe build done
 goto :eof
