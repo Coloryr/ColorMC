@@ -97,7 +97,7 @@ public enum CustomLoaderType
 /// </summary>
 public enum SourceType
 {
-    CurseForge, Modrinth, McMod, ColorMC
+    CurseForge, Modrinth, McMod, ServerPack
 }
 
 /// <summary>

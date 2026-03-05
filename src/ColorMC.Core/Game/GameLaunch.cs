@@ -68,7 +68,7 @@ public static class Launch
     /// <exception cref="LaunchException"></exception>
     private static async Task PackUpdateAsync(GameSettingObj obj, GameLaunchArg larg, CancellationToken token)
     {
-        if (obj.ModPackType != SourceType.ColorMC || string.IsNullOrWhiteSpace(obj.ServerUrl))
+        if (obj.ModPackType != SourceType.ServerPack || string.IsNullOrWhiteSpace(obj.ServerUrl))
         {
             return;
         }

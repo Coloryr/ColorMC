@@ -101,8 +101,6 @@ public partial class AddGameModel : ControlModel
     [RelayCommand]
     public void GoCloud()
     {
-        Main = false;
-        Window.PushBack(BackMain);
         GameCloudDownload();
     }
 
@@ -112,8 +110,6 @@ public partial class AddGameModel : ControlModel
     [RelayCommand]
     public void GoServer()
     {
-        Main = false;
-        Window.PushBack(BackMain);
         ServerPackDownload();
     }
 
@@ -312,14 +308,9 @@ public partial class AddGameModel : ControlModel
 
         string url = dialog.Text1;
 
-        if (!url.EndsWith('/'))
-        {
-            url += '/';
-        }
         //下载服务器包
         var dialog1 = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab1.Text36"));
-        var res1 = await GameBinding.DownloadServerPackAsync(Window, dialog1, Name, Group, url,
-            new OverGameGui(Window));
+        var res1 = await GameBinding.DownloadServerPackAsync(dialog1, Group, url, new OverGameGui(Window));
         Window.CloseDialog(dialog1);
         if (!res1.State)
         {

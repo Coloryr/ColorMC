@@ -18,6 +18,10 @@ public record ConfigPackObj
     /// </summary>
     public string Sha256 { get; set; }
     /// <summary>
+    /// 校验
+    /// </summary>
+    public string Sha1 { get; set; }
+    /// <summary>
     /// 是否为压缩包打包
     /// </summary>
     public bool IsZip { get; set; }

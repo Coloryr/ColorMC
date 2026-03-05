@@ -50,6 +50,8 @@
     <None Remove="Resource\Icon\Button\ArrowRight.svg" />
     <None Remove="Resource\Icon\Button\Close.svg" />
     <None Remove="Resource\Icon\Button\Cog.svg" />
+    <None Remove="Resource\Icon\Button\Pause.svg" />
+    <None Remove="Resource\Icon\Button\Play.svg" />
     <None Remove="Resource\Icon\close.svg" />
     <None Remove="Resource\Icon\cog.svg" />
     <None Remove="Resource\Icon\collection.svg" />
@@ -197,7 +199,9 @@
     <AvaloniaResource Include="Resource\Icon\Button\Cog.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Counter.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Delete.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\Pause.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Pencil.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\Play.svg" />
     <AvaloniaResource Include="Resource\Icon\Emoticon\EmoticonFrown.svg" />
     <AvaloniaResource Include="Resource\Icon\GroupIcon\Adjust.svg" />
     <AvaloniaResource Include="Resource\Icon\GroupIcon\Animation.svg" />

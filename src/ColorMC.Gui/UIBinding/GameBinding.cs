@@ -27,6 +27,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -1520,67 +1521,134 @@ public static class GameBinding
         return res;
     }
 
+    private static async Task<StringRes> DownloadHMCLServerPack(string text, string? group, ProgressModel progress, IOverGameGui gui)
+    {
+        var data = await CoreHttpClient.GetStringAsync(text);
+        if (data == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text68") };
+        }
+        var obj = JsonUtils.ToObj(data, JsonType.HMCLServerObj);
+        if (obj == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text69") };
+        }
+
+        var game = obj.ToColorMC();
+
+        if (!string.IsNullOrWhiteSpace(group))
+        {
+            game.GroupName = group;
+        }
+
+        game.ServerUrl = text;
+        game.ModPackType = SourceType.ServerPack;
+        game = await InstancesPath.CreateGameAsync(game, gui);
+
+        if (game == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text66") };
+        }
+
+        var obj1 = obj.ToServerPack();
+        obj1.Game = game;
+
+        var res1 = await obj1.UpdateAsync(new UpdateLaunchGui(progress), CancellationToken.None);
+        if (!res1)
+        {
+            await game.RemoveAsync();
+
+            return new StringRes()
+            {
+                Data = LangUtils.Get("App.Text67")
+            };
+        }
+
+        PathHelper.WriteText(game.GetServerPackFile(), data);
+
+        return new StringRes { State = true, Data = game.UUID.ToString() };
+    }
+
+    private static async Task<StringRes> DownloadColorMCServerPack(string text, string? group, ProgressModel progress, IOverGameGui gui)
+    {
+        if (!text.EndsWith('/'))
+        {
+            text += '/';
+        }
+
+        var data = await CoreHttpClient.GetStringAsync(text + "server.json");
+        if (data == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text68") };
+        }
+        var obj = JsonUtils.ToObj(data, JsonType.ServerPackObj);
+        if (obj == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text69") };
+        }
+
+        var game = new GameSettingObj
+        { 
+            Name = obj.Name,
+            Loader = obj.Loader,
+            LoaderVersion = obj.LoaderVersion,
+            Version = obj.Version,
+            GameType = obj.GameType,
+            JvmArg = obj.JvmArg,
+            Window = obj.Window,
+            StartServer = obj.StartServer,
+            AdvanceJvm = obj.AdvanceJvm
+        };
+        if (!string.IsNullOrWhiteSpace(group))
+        {
+            game.GroupName = group;
+        }
+
+        game.ServerUrl = text;
+        game.ModPackType = SourceType.ServerPack;
+        game = await InstancesPath.CreateGameAsync(game, gui);
+
+        if (game == null)
+        {
+            return new StringRes { Data = LangUtils.Get("App.Text66") };
+        }
+
+        obj.Game = game;
+
+        var res1 = await obj.UpdateAsync(new UpdateLaunchGui(progress), CancellationToken.None);
+        if (!res1)
+        {
+            await game.RemoveAsync();
+
+            return new StringRes()
+            {
+                Data = LangUtils.Get("App.Text67")
+            };
+        }
+
+        PathHelper.WriteText(game.GetServerPackFile(), data);
+
+        return new StringRes { State = true, Data = game.UUID.ToString() };
+    }
+
     /// <summary>
     /// 下载服务器包
     /// </summary>
-    /// <param name="window"></param>
-    /// <param name="name"></param>
     /// <param name="group"></param>
     /// <param name="text"></param>
     /// <returns></returns>
-    public static async Task<StringRes> DownloadServerPackAsync(WindowModel window, ProgressModel progress,
-        string? name, string? group, string text, IOverGameGui gui)
+    public static async Task<StringRes> DownloadServerPackAsync(ProgressModel progress, string? group, string text, IOverGameGui gui)
     {
         try
         {
-            var data = await CoreHttpClient.GetStringAsync(text + "server.json");
-            if (data == null)
+            if (text.EndsWith(Names.NameServerManifestFile))
             {
-                return new StringRes { Data = LangUtils.Get("App.Text68") };
+                return await DownloadHMCLServerPack(text, group, progress, gui);
             }
-            var obj = JsonUtils.ToObj(data, JsonType.ServerPackObj);
-            if (obj == null)
+            else
             {
-                return new StringRes { Data = LangUtils.Get("App.Text69") };
+                return await DownloadColorMCServerPack(text, group, progress, gui);
             }
-
-            var game = obj.Game;
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                game.Name = name;
-            }
-            if (!string.IsNullOrWhiteSpace(group))
-            {
-                game.GroupName = group;
-            }
-            game.UUID = Guid.Empty;
-            game.LaunchData = null!;
-            game.ServerUrl = text;
-            game.ModPackType = SourceType.ColorMC;
-            game = await InstancesPath.CreateGameAsync(game, gui);
-
-            if (game == null)
-            {
-                return new StringRes { Data = LangUtils.Get("App.Text66") };
-            }
-
-            var dialog = window.ShowProgress(LangUtils.Get("App.Text51"));
-
-            var res1 = await obj.UpdateAsync(new UpdateLaunchGui(progress), CancellationToken.None);
-            if (!res1)
-            {
-                window.CloseDialog(dialog);
-                dialog = window.ShowProgress(LangUtils.Get("App.Text67"));
-                await game.RemoveAsync();
-                window.CloseDialog(dialog);
-                window.Show(LangUtils.Get("App.Text67"));
-
-                return new StringRes();
-            }
-
-            PathHelper.WriteText(game.GetServerPackFile(), data);
-
-            return new StringRes { State = true, Data = game.UUID.ToString() };
         }
         catch (Exception e)
         {

@@ -96,6 +96,11 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private string? _loaderInfo;
+    /// <summary>
+    /// 服务器包网址
+    /// </summary>
+    [ObservableProperty]
+    private string? _serverPackUrl;
 
     /// <summary>
     /// 版本类型
@@ -168,11 +173,45 @@ public partial class GameEditModel
     /// </summary>
     [ObservableProperty]
     private bool _customJson;
+    /// <summary>
+    /// 是否为服务器在线包
+    /// </summary>
+    [ObservableProperty]
+    private bool _serverPack;
 
     /// <summary>
     /// 游戏配置是否在加载
     /// </summary>
     private bool _gameLoad;
+
+    partial void OnServerPackChanged(bool value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        if (value)
+        {
+            _obj.ModPackType = SourceType.ServerPack;
+        }
+        else
+        {
+            _obj.ModPackType = GameDownloadHelper.TestSourceType(PID, FID);
+        }
+        _obj.Save();
+    }
+
+    partial void OnServerPackUrlChanged(string? value)
+    {
+        if (_gameLoad)
+        {
+            return;
+        }
+
+        _obj.ServerUrl = value ?? "";
+        _obj.Save();
+    }
 
     partial void OnCustomJsonChanged(bool value)
     {
@@ -1018,6 +1057,9 @@ public partial class GameEditModel
         OffLib = _obj.CustomLoader?.OffLib ?? false;
         RemoveLib = _obj.CustomLoader?.RemoveLib ?? false;
         CustomJson = _obj.CustomLoader?.CustomJson ?? false;
+
+        ServerPack = _obj.ModPackType == SourceType.ServerPack;
+        ServerPackUrl = _obj.ServerUrl;
 
         JsonList.Clear();
         foreach (var item in _obj.CustomJson)

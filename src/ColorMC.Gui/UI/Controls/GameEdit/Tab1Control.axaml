@@ -141,6 +141,11 @@
                             Margin="0,0,5,0"
                             Content="{setting:Localize GameEditWindow.Tab1.Text3}"
                             IsChecked="{Binding Modpack}" />
+                        <CheckBox
+                            Margin="0,0,5,0"
+                            Content="{setting:Localize GameEditWindow.Tab1.Text48}"
+                            IsChecked="{Binding ServerPack}"
+                            IsEnabled="{Binding Modpack}" />
                         <Button
                             Width="100"
                             Height="35"
@@ -152,7 +157,10 @@
                             IsEnabled="{Binding Modpack}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text51}" />
                     </StackPanel>
-                    <Grid ColumnDefinitions="auto,*,auto,*">
+                    <Grid
+                        ColumnDefinitions="auto,*,auto,*"
+                        IsEnabled="{Binding Modpack}"
+                        IsVisible="{Binding !ServerPack}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         <TextBox
                             Grid.Column="1"
@@ -171,6 +179,10 @@
                             Text="{Binding FID}"
                             Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
                     </Grid>
+                    <DockPanel IsEnabled="{Binding Modpack}" IsVisible="{Binding ServerPack}">
+                        <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text49}" />
+                        <TextBox Text="{Binding ServerPackUrl}" />
+                    </DockPanel>
                 </StackPanel>
             </Border>
             <Border Margin="10,5,10,3" Classes="t2">

@@ -480,6 +480,8 @@
 	"GameEditWindow.Tab1.Text45": "版本读取失败",
 	"GameEditWindow.Tab1.Text46": "游戏实例正在下载资源，无法删除",
 	"GameEditWindow.Tab1.Text47": "其他设置",
+	"GameEditWindow.Tab1.Text48": "服务器包",
+	"GameEditWindow.Tab1.Text49": "服务器包地址",
 	"GameEditWindow.Tab2.Text13": "以下设定只应用于游戏实例 {0}",
 	"GameEditWindow.Tab2.Text22": "设置启动使用的Java",
 	"GameEditWindow.Tab2.Text23": "指定Java路径",

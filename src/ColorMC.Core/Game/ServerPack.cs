@@ -101,7 +101,7 @@ public static class ServerPack
                         Name = item.File,
                         Local = Path.Combine(path, item.File),
                         Sha256 = item.Sha256,
-                        Url = obj.Game.ServerUrl + item.Url
+                        Url = item.Url
                     });
                 }
                 else
@@ -142,7 +142,7 @@ public static class ServerPack
                     Name = item.File,
                     Local = Path.Combine(path, item.File),
                     Sha256 = item.Sha256,
-                    Url = obj.Game.ServerUrl + item.Url
+                    Url = item.Url
                 });
             }
         }, token);
@@ -162,7 +162,8 @@ public static class ServerPack
                         Name = item.FileName,
                         Local = Path.Combine(path1, item.FileName),
                         Sha256 = item.Sha256,
-                        Url = obj.Game.ServerUrl + item.Url,
+                        Sha1 = item.Sha1,
+                        Url = item.Url,
                         Overwrite = true,
                         Later = (stream) =>
                         {
@@ -184,8 +185,9 @@ public static class ServerPack
                         Name = item.Group + item.FileName,
                         Local = Path.GetFullPath(path + "/" + item.Group + item.FileName),
                         Sha256 = item.Sha256,
+                        Sha1 = item.Sha1,
                         Overwrite = true,
-                        Url = obj.Game.ServerUrl + item.Url
+                        Url = item.Url
                     });
                 }
             }

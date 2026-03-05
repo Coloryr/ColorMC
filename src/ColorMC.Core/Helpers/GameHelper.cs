@@ -6,6 +6,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Loader;
 using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Core.Objs.OtherLaunch;
+using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives.Zip;
 
@@ -1126,14 +1127,14 @@ public static class GameHelper
             Modpack = true
         };
 
-        if (!string.IsNullOrWhiteSpace(obj.Author))
-        {
-            game.Name += "-" + obj.Author;
-        }
-        if (!string.IsNullOrWhiteSpace(obj.Version))
-        {
-            game.Name += "-" + obj.Version;
-        }
+        //if (!string.IsNullOrWhiteSpace(obj.Author))
+        //{
+        //    game.Name += "-" + obj.Author;
+        //}
+        //if (!string.IsNullOrWhiteSpace(obj.Version))
+        //{
+        //    game.Name += "-" + obj.Version;
+        //}
         foreach (var item in obj.Addons)
         {
             if (item.Id == "game")
@@ -1160,6 +1161,80 @@ public static class GameHelper
                 game.Loader = Loaders.Quilt;
                 game.LoaderVersion = item.Version;
             }
+        }
+
+        return game;
+    }
+
+    /// <summary>
+    /// HMCL配置转ColorMC
+    /// </summary>
+    /// <param name="obj">HMCL储存</param>
+    /// <returns>游戏实例</returns>
+    public static ServerPackObj ToServerPack(this HMCLServerObj obj)
+    {
+        var game = new ServerPackObj()
+        {
+            Name = obj.Name,
+            Loader = Loaders.Normal,
+            PackVersion = obj.Version,
+            Mod = [],
+            Resourcepack = [],
+            Config = []
+        };
+
+        //if (!string.IsNullOrWhiteSpace(obj.Author))
+        //{
+        //    game.Name += "-" + obj.Author;
+        //}
+        //if (!string.IsNullOrWhiteSpace(obj.Version))
+        //{
+        //    game.Name += "-" + obj.Version;
+        //}
+        foreach (var item in obj.Addons)
+        {
+            if (item.Id == "game")
+            {
+                game.Version = item.Version;
+            }
+            else if (item.Id == "forge")
+            {
+                game.Loader = Loaders.Forge;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "neoforge")
+            {
+                game.Loader = Loaders.NeoForge;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "fabric")
+            {
+                game.Loader = Loaders.Fabric;
+                game.LoaderVersion = item.Version;
+            }
+            else if (item.Id == "quilt")
+            {
+                game.Loader = Loaders.Quilt;
+                game.LoaderVersion = item.Version;
+            }
+        }
+
+        var url = obj.FileApi;
+        if (!url.EndsWith('/'))
+        {
+            url += '/';
+        }
+
+        foreach (var item in obj.Files)
+        {
+            var file1 = Path.GetFileName(item.Path);
+            game.Config.Add(new ConfigPackObj
+            {
+                Group = item.Path.Replace(file1, ""),
+                FileName = file1,
+                Sha1 = item.Hash,
+                Url = url + Names.NameOverrideDir + "/" + item.Path
+            });
         }
 
         return game;
