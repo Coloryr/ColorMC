@@ -42,41 +42,6 @@ build_deb()
     echo "$deb build done"
 }
 
-build_deb_aot() 
-{
-    deb=colormc-linux-$version-aot-$2.deb
-
-    echo "build $deb"
-
-    base=./src/build_out/$1-aot
-    base_dir="$base/colormc_deb"
-
-    mkdir $base_dir
-
-    pdbs=("ColorMC.Launcher" "libHarfBuzzSharp.so" "libSDL2-2.0.so" "libSkiaSharp.so")
-
-    cp -r ./build/info/linux/* $base_dir
-    cp -r ./build/info/$1/* $base_dir
-
-    sed -i "s/%version%/$version/g" $base_dir/DEBIAN/control
-
-    dir=usr/share/ColorMC
-
-    mkdir $base_dir/$dir
-
-    for line in ${pdbs[@]}
-    do
-        cp $base/$line \
-            $base_dir/$dir/$line
-    done
-
-    chmod -R 775 $base_dir/DEBIAN/postinst
-
-    dpkg -b $base_dir ./build_out/$deb
-
-    echo "$deb build done"
-}
-
 build_deb_min() 
 {
     deb=colormc-linux-$version-min-$2.deb
@@ -114,8 +79,6 @@ build_deb_min()
 
 build_deb linux-x64 amd64
 build_deb linux-arm64 arm64
-build_deb_aot linux-x64 amd64
-# build_deb_aot linux-arm64 arm64
 build_deb_min linux-x64 amd64
 build_deb_min linux-arm64 arm64
 
@@ -160,34 +123,6 @@ build_appimage()
     echo "$appimg build done"
 }
 
-build_appimage_aot()
-{
-    appimg=colormc-linux-$version-aot-$2.AppImage
-    
-    build_dir=$build_run/$1-aot
-    
-    mkdir $build_dir
-
-    echo "build $appimg"
-
-    cp ./build/info/appimg.json $build_dir/appimg.json
-
-    arch=amd64
-    deb_name=colormc-linux-$version-aot-$1.deb
-
-    sed -i "s/%version%/$version/g" $build_dir/appimg.json
-    sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
-    sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
-
-    sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
-
-    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
-    chmod a+x build_out/colormc-$version-$2.AppImage
-    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
-
-    echo "$appimg build done"
-}
-
 build_appimage_min()
 {
     appimg=colormc-linux-$version-min-$2.AppImage
@@ -217,5 +152,4 @@ build_appimage_min()
 }
 
 build_appimage amd64 x86_64
-build_appimage_aot amd64 x86_64
 build_appimage_min amd64 x86_64
