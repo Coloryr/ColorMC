@@ -85,12 +85,6 @@ jobs:
         name: "colormc-linux-aarch64-rpm"
         path: build_out/colormc-linux-${{ env.VERSION }}-1.aarch64.rpm
 
-    # - name: 上传 colormc-linux-aot-aarch64-rpm
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-linux-aot-aarch64-rpm"
-    #     path: build_out/colormc-linux-${{ env.VERSION }}-1-aot.aarch64.rpm
-
     - name: 上传 colormc-linux-min-aarch64-rpm
       uses: actions/upload-artifact@v4
       with:
@@ -138,12 +132,6 @@ jobs:
       with:
         name: "colormc-linux-aarch64-deb"
         path: build_out/colormc-linux-${{ env.VERSION }}-arm64.deb
-
-    # - name: 上传 colormc-linux-aot-aarch64-deb
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: "colormc-linux-aot-aarch64-deb"
-    #     path: build_out/colormc-linux-${{ env.VERSION }}-aot-arm64.deb
 
     - name: 上传 colormc-linux-min-aarch64-deb
       uses: actions/upload-artifact@v4
@@ -277,12 +265,6 @@ jobs:
         name: "colormc-windows-x64-msi"
         path: src/ColorMC.Setup.Wix/colormc-windows-${{ env.VERSION }}-x64.msi
 
-    - name: 上传 colormc-windows-x64-aot-msi
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-windows-x64-aot-msi"
-        path: src/ColorMC.Setup.Wix/colormc-windows-${{ env.VERSION }}-aot-x64.msi
-
     - name: 上传 colormc-windows-x64-min-msi
       uses: actions/upload-artifact@v4
       with:
@@ -293,43 +275,31 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x86_64"
-        path: src/build_out/win-x64-dotnet/colormc/**
-    
-    - name: 上传 colormc-windows-aot-x86_64
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-windows-aot-x86_64"
-        path: src/build_out/win-x64-aot/colormc/**
+        path: build_out/win-x64-dotnet/**
 
     - name: 上传 colormc-windows-min-x86_64
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-min-x86_64"
-        path: src/build_out/win-x64-min/colormc/**
+        path: build_out/win-x64-min/**
 
     - name: 上传 colormc-windows-x86
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-x86"
-        path: src/build_out/win-x86-dotnet/colormc/**
+        path: build_out/win-x86-dotnet/**
 
     - name: 上传 colormc-windows-arm64
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-arm64"
-        path: src/build_out/win-arm64-dotnet/colormc/**
-
-    - name: 上传 colormc-windows-aot-arm64
-      uses: actions/upload-artifact@v4
-      with:
-        name: "colormc-windows-aot-arm64"
-        path: src/build_out/win-arm64-aot/colormc/**
+        path: build_out/win-arm64-dotnet/**
 
     - name: 上传 colormc-windows-min-arm64
       uses: actions/upload-artifact@v4
       with:
         name: "colormc-windows-min-arm64"
-        path: src/build_out/win-arm64-min/colormc/**
+        path: build_out/win-arm64-min/**
 
   release:
     if: startsWith(github.ref, 'refs/tags/') && !startsWith(github.ref_name, 'debug')

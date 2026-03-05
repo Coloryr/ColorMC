@@ -21,17 +21,17 @@ namespace ColorMC.Setup.Wix
                             new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
         }
 
-        private static Dir BuildX64AOT()
-        {
-            return new Dir(@"%ProgramFiles%\ColorMC",
-                            new File(@"..\build_out\win-x64-aot\ColorMC.Launcher.exe",
-                                new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
-                            new File(@"..\build_out\win-x64-aot\av_libglesv2.dll"),
-                            new File(@"..\build_out\win-x64-aot\libHarfBuzzSharp.dll"),
-                            new File(@"..\build_out\win-x64-aot\libSkiaSharp.dll"),
-                            new File(@"..\build_out\win-x64-aot\SDL2.dll"),
-                            new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
-        }
+        // private static Dir BuildX64AOT()
+        // {
+        //     return new Dir(@"%ProgramFiles%\ColorMC",
+        //                     new File(@"..\build_out\win-x64-aot\ColorMC.Launcher.exe",
+        //                         new FileShortcut("ColorMC") { WorkingDirectory = "[INSTALLDIR]" }),
+        //                     new File(@"..\build_out\win-x64-aot\av_libglesv2.dll"),
+        //                     new File(@"..\build_out\win-x64-aot\libHarfBuzzSharp.dll"),
+        //                     new File(@"..\build_out\win-x64-aot\libSkiaSharp.dll"),
+        //                     new File(@"..\build_out\win-x64-aot\SDL2.dll"),
+        //                     new ExeFileShortcut("ColorMC Setting", "[System64Folder]msiexec.exe", "/i [ProductCode]"));
+        // }
 
         //private static Dir BuildArm64()
         //{
@@ -77,7 +77,7 @@ namespace ColorMC.Setup.Wix
                 Platform = platform,
                 BannerImage = "game.png",
                 BackgroundImage = "game.png",
-                Version = new Version(1, 36),
+                Version = new Version(1, 40),
                 Description = "A Minecraft Launcher",
                 OutFileName = file,
                 Scope = InstallScope.perUser
@@ -109,7 +109,7 @@ namespace ColorMC.Setup.Wix
         static void Main()
         {
             Build(BuildX64(), "colormc-x64", Platform.x64);
-            Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
+            // Build(BuildX64AOT(), "colormc-x64-aot", Platform.x64);
             Build(BuildX64Min(), "colormc-x64-min", Platform.x64);
             //Build(BuildArm64(), "colormc-arm64", Platform.arm64);
             //Build(BuildArm64AOT(), "colormc-arm64-aot", Platform.arm64);
