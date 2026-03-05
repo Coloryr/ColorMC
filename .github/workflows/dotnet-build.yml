@@ -1,4 +1,4 @@
-name: ColorMC构建
+name: ColorMC构建与发布
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
       - 'releases/**'
     # Sequence of patterns matched against refs/tags
     tags:        
-      - '*'
+      - '**'
 
 jobs:
   build-linux:
@@ -330,3 +330,54 @@ jobs:
       with:
         name: "colormc-windows-min-arm64"
         path: src/build_out/win-arm64-min/colormc/**
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/') && !startsWith(github.ref_name, 'debug')
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - name: 检查是否为debug标签
+      run: |
+        echo "当前标签: ${{ github.ref_name }}"
+        echo "这不是debug标签，继续发布流程"
+    
+    - name: 下载所有构建产物
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+    
+    - name: 列出所有下载的产物
+      run: |
+        echo "下载的构建产物:"
+        find artifacts/ -type f \( -name "*.deb" -o -name "*.rpm" -o -name "*.AppImage" -o -name "*.zip" -o -name "*.dmg" -o -name "*.msi" -o -name "*.pkg.tar.zst" -o -name "*.exe" \) | while read file; do
+          echo "  - $(basename "$file")"
+        done
+    
+    - name: 创建GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ github.ref_name }}
+        name: Release ${{ github.ref_name }}
+        body: |
+          ColorMC 构建产物 - ${{ github.ref_name }}
+          
+          包含以下平台的构建：
+          - Linux (.deb, .rpm, .AppImage, .pkg.tar.zst)
+          - macOS (.zip, .dmg)
+          - Windows (.msi, 可执行文件)
+          
+          构建时间: ${{ github.event.head_commit.timestamp }}
+        files: |
+          artifacts/**/*.deb
+          artifacts/**/*.rpm
+          artifacts/**/*.AppImage
+          artifacts/**/*.zip
+          artifacts/**/*.dmg
+          artifacts/**/*.msi
+          artifacts/**/*.pkg.tar.zst
+          artifacts/**/*.exe
+        draft: false
+        prerelease: false
