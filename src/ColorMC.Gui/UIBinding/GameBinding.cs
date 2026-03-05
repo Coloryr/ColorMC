@@ -1368,6 +1368,10 @@ public static class GameBinding
                 {
                     return PackType.HMCLServer;
                 }
+                else if (item.Key == Names.NameModrinthFile)
+                {
+                    return PackType.Modrinth;
+                }
             }
             foreach (var item in zip.Entries)
             {

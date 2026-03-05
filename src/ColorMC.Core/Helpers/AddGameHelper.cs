@@ -592,7 +592,7 @@ public static class AddGameHelper
             packgui?.SetNowSub(index, size);
             packgui?.SetSubText(e.Key);
             index++;
-            string file1 = Path.GetFullPath(game.GetGamePath() + e.Key);
+            string file1 = Path.GetFullPath(game.GetGamePath() + Path.DirectorySeparatorChar + e.Key);
             if (e.Key!.EndsWith(Names.NameIconFile))
             {
                 file1 = game.GetIconFile();
