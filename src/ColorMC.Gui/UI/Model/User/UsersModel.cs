@@ -753,6 +753,10 @@ public partial class UsersModel : ControlModel
 
         var config = GuiConfigUtils.Config.WindowState;
         GridType = config.UserWindowState;
+        if (GridType == ItemsGridType.List)
+        {
+            GridType = ItemsGridType.GridInfo;
+        }
 
         _isLoad = false;
     }

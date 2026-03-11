@@ -210,6 +210,10 @@ public partial class MainModel : ControlModel, IMutTop
         _isLoad = true;
         var config = GuiConfigUtils.Config.WindowState;
         GridType = config.MainWindowState;
+        if (GridType == ItemsGridType.List)
+        {
+            GridType = ItemsGridType.Grid;
+        }
         _isLoad = false;
     }
 

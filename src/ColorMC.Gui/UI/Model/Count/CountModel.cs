@@ -147,7 +147,7 @@ public partial class CountModel : ControlModel
                     }
                 }
             }
-            _timeDate = _timeToday = temp.ToString();
+            _timeDate = _timeToday = $"{temp.TotalHours:0}:{temp.Minutes}:{temp.Seconds}";
             var list = InstancesPath.Games;
             foreach (var item in list)
             {

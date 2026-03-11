@@ -69,9 +69,8 @@
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
                         <Button
-                            Margin="0,0,8,0"
                             Padding="12,6,12,6"
-                            Classes="icon"
+                            Classes="top"
                             Command="{Binding ShowSkin}"
                             CornerRadius="8"
                             IsVisible="{Binding IsHavePlayer}"
@@ -86,9 +85,8 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Margin="0,0,8,0"
                             Padding="12,6,12,6"
-                            Classes="icon"
+                            Classes="top"
                             Command="{Binding OpenCollect}"
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
@@ -101,9 +99,8 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Margin="0,0,8,0"
                             Padding="12,6,12,6"
-                            Classes="icon"
+                            Classes="top"
                             Command="{Binding OpenGuide}"
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}">
@@ -116,9 +113,8 @@
                             </StackPanel>
                         </Button>
                         <Button
-                            Margin="0,0,8,0"
                             Padding="12,6,12,6"
-                            Classes="icon"
+                            Classes="top"
                             Command="{Binding ShowCount}"
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text92}">
@@ -132,7 +128,7 @@
                         </Button>
                         <Button
                             Padding="12,6,12,6"
-                            Classes="icon"
+                            Classes="top"
                             Command="{Binding ShowSetting}"
                             CornerRadius="8"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}">
