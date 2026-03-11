@@ -75,6 +75,8 @@ public partial class AddBaseModel : IAddFileControl
     [ObservableProperty]
     private bool _haveLastVersionPage;
 
+    protected Loaders GameLoader = Loaders.Normal;
+
     partial void OnSelectIndexChanged(int value)
     {
         if (_load)
@@ -199,7 +201,7 @@ public partial class AddBaseModel : IAddFileControl
         page--;
         var res = await WebBinding.GetFileListAsync(type,
                pid, page,
-                GameVersionDownload, Loaders.Normal);
+                GameVersionDownload, GameLoader);
         MaxPageVersion = res.Count / 50;
         list = res.List;
         var title = res.Name;
