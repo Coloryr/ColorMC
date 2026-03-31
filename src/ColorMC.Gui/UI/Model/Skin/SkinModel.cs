@@ -40,92 +40,103 @@ public partial class SkinModel(WindowModel model) : ControlModel(model)
     /// 皮肤类型
     /// </summary>
     [ObservableProperty]
-    private int _type;
+    public partial int Type { get; set; }
+
     /// <summary>
     /// 旋转类型
     /// </summary>
     [ObservableProperty]
-    private int _rotateType;
+    public partial int RotateType { get; set; }
 
     /// <summary>
     /// 渲染器信息
     /// </summary>
     [ObservableProperty]
-    private string _info;
+    public partial string Info { get; set; }
+
     /// <summary>
     /// 当前Fps
     /// </summary>
     [ObservableProperty]
-    private string _nowFps;
+    public partial string NowFps { get; set; }
 
     /// <summary>
     /// 是否有皮肤文件
     /// </summary>
     [ObservableProperty]
-    private bool _haveSkin;
+    public partial bool HaveSkin { get; set; }
+
     /// <summary>
     /// 是否启用披风
     /// </summary>
     [ObservableProperty]
-    private bool _enableCape = true;
+    public partial bool EnableCape { get; set; } = true;
+
     /// <summary>
     /// 是否启用第二层
     /// </summary>
     [ObservableProperty]
-    private bool _enableTop = true;
+    public partial bool EnableTop { get; set; } = true;
+
     /// <summary>
     /// 是否允许Z轴
     /// </summary>
     [ObservableProperty]
-    private bool _enableZ;
+    public partial bool EnableZ { get; set; }
+
     /// <summary>
     /// 是否启用FXAA
     /// </summary>
     [ObservableProperty]
-    private bool _enableFXAA = false;
+    public partial bool EnableFXAA { get; set; } = false;
 
     /// <summary>
     /// 皮肤类型
     /// </summary>
     [ObservableProperty]
-    private SkinType _steveModelType;
+    public partial SkinType SteveModelType { get; set; }
+
     /// <summary>
     /// 角色动画
     /// </summary>
     [ObservableProperty]
-    private SkinAnimationType _skinAnimation;
+    public partial SkinAnimationType SkinAnimation { get; set; }
 
     /// <summary>
     /// X轴旋转
     /// </summary>
     [ObservableProperty]
-    private float _rotateX;
+    public partial float RotateX { get; set; }
+
     /// <summary>
     /// Y轴旋转
     /// </summary>
     [ObservableProperty]
-    private float _rotateY;
+    public partial float RotateY { get; set; }
+
     /// <summary>
     /// Z轴旋转
     /// </summary>
     [ObservableProperty]
-    private float _rotateZ;
+    public partial float RotateZ { get; set; }
 
     /// <summary>
     /// 最小值
     /// </summary>
     [ObservableProperty]
-    private float _minX;
+    public partial float MinX { get; set; }
+
     /// <summary>
     /// 最小值
     /// </summary>
     [ObservableProperty]
-    private float _minY = -360;
+    public partial float MinY { get; set; } = -360;
+
     /// <summary>
     /// 最小值
     /// </summary>
     [ObservableProperty]
-    private float _minZ;
+    public partial float MinZ { get; set; }
 
     //旋转
     public Vector3 ArmRotate;

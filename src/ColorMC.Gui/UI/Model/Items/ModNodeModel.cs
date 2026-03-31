@@ -21,12 +21,13 @@ public partial class ModNodeModel : ModDisplayModel
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _isExpanded;
+    public partial bool IsExpanded { get; set; }
+
     /// <summary>
     /// 分组名字
     /// </summary>
     [ObservableProperty]
-    private string _group;
+    public partial string Group { get; set; }
 
     public ModNodeModel(ModObj obj, ModInfoObj? obj1, GameEditModel? top) : base(obj, obj1, top)
     {
@@ -39,7 +40,7 @@ public partial class ModNodeModel : ModDisplayModel
     /// <param name="group"></param>
     public ModNodeModel(string group) : base()
     {
-        _group = group;
+        Group = group;
     }
 
     /// <summary>

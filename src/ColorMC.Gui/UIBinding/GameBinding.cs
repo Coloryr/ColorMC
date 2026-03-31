@@ -27,7 +27,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Chunk;
 using ColorMC.Core.Objs.Login;
 using ColorMC.Core.Objs.Minecraft;
-using ColorMC.Core.Objs.ServerPack;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.MusicPlayer;
@@ -41,7 +40,6 @@ using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.Utils;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 using SkiaSharp;
 
@@ -1592,7 +1590,7 @@ public static class GameBinding
         }
 
         var game = new GameSettingObj
-        { 
+        {
             Name = obj.Name,
             Loader = obj.Loader,
             LoaderVersion = obj.LoaderVersion,

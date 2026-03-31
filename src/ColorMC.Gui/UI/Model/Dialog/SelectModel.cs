@@ -13,23 +13,25 @@ public partial class SelectModel(string name) : BaseDialogModel(name)
     /// 显示文本
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
+
     /// <summary>
     /// 选择项
     /// </summary>
     [ObservableProperty]
-    private string? _select;
+    public partial string? Select { get; set; }
+
     /// <summary>
     /// 选择项
     /// </summary>
     [ObservableProperty]
-    private int _index;
+    public partial int Index { get; set; }
 
     [ObservableProperty]
-    private string? _selectText;
+    public partial string? SelectText { get; set; }
 
     [ObservableProperty]
-    private bool _isEdit;
+    public partial bool IsEdit { get; set; }
 
     /// <summary>
     /// 项目列表

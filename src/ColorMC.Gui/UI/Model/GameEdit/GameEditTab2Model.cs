@@ -29,180 +29,211 @@ public partial class GameEditModel
     /// 标题
     /// </summary>
     [ObservableProperty]
-    private string _titleText;
+    public partial string TitleText { get; set; }
+
     /// <summary>
     /// Java路径
     /// </summary>
     [ObservableProperty]
-    private string? _jvmLocal;
+    public partial string? JvmLocal { get; set; }
+
     /// <summary>
     /// 选择的Java
     /// </summary>
     [ObservableProperty]
-    private string? _jvmName;
+    public partial string? JvmName { get; set; }
+
     /// <summary>
     /// 启动前执行
     /// </summary>
     [ObservableProperty]
-    private string? _perRunCmd;
+    public partial string? PerRunCmd { get; set; }
+
     /// <summary>
     /// 启动后执行
     /// </summary>
     [ObservableProperty]
-    private string? _postRunCmd;
+    public partial string? PostRunCmd { get; set; }
+
     /// <summary>
     /// Java启动参数
     /// </summary>
     [ObservableProperty]
-    private string? _jvmArg;
+    public partial string? JvmArg { get; set; }
+
     /// <summary>
     /// 游戏启动参数
     /// </summary>
     [ObservableProperty]
-    private string? _gameArg;
+    public partial string? GameArg { get; set; }
+
     /// <summary>
     /// 自定义Classpath
     /// </summary>
     [ObservableProperty]
-    private string? _classPath;
+    public partial string? ClassPath { get; set; }
+
     /// <summary>
     /// 自定义主类
     /// </summary>
     [ObservableProperty]
-    private string? _mainClass;
+    public partial string? MainClass { get; set; }
+
     /// <summary>
     /// 加入服务器地址
     /// </summary>
     [ObservableProperty]
-    private string? _iP;
+    public partial string? IP { get; set; }
+
     /// <summary>
     /// 代理地址
     /// </summary>
     [ObservableProperty]
-    private string? _proxyIP;
+    public partial string? ProxyIP { get; set; }
+
     /// <summary>
     /// 代理用户
     /// </summary>
     [ObservableProperty]
-    private string? _proxyUser;
+    public partial string? ProxyUser { get; set; }
+
     /// <summary>
     /// 代理密码
     /// </summary>
     [ObservableProperty]
-    private string? _proxyPassword;
+    public partial string? ProxyPassword { get; set; }
+
     /// <summary>
     /// 自定义环境变量
     /// </summary>
     [ObservableProperty]
-    private string? _jvmEnv;
+    public partial string? JvmEnv { get; set; }
+
     /// <summary>
     /// 自定义游戏标题
     /// </summary>
     [ObservableProperty]
-    private string? _gameTitle;
+    public partial string? GameTitle { get; set; }
 
     /// <summary>
     /// 代理端口
     /// </summary>
     [ObservableProperty]
-    private ushort? _proxyPort;
+    public partial ushort? ProxyPort { get; set; }
+
     /// <summary>
     /// 服务器端口
     /// </summary>
     [ObservableProperty]
-    private ushort? _port;
+    public partial ushort? Port { get; set; }
+
     /// <summary>
     /// GC类型
     /// </summary>
     [ObservableProperty]
-    private GCType? _gc;
+    public partial GCType? Gc { get; set; }
+
     /// <summary>
     /// 最小内存
     /// </summary>
     [ObservableProperty]
-    private uint? _minMem;
+    public partial uint? MinMem { get; set; }
+
     /// <summary>
     /// 最大内存
     /// </summary>
     [ObservableProperty]
-    private uint? _maxMem;
+    public partial uint? MaxMem { get; set; }
+
     /// <summary>
     /// 游戏窗口宽度
     /// </summary>
     [ObservableProperty]
-    private uint? _width;
+    public partial uint? Width { get; set; }
+
     /// <summary>
     /// 游戏窗口高度
     /// </summary>
     [ObservableProperty]
-    private uint? _height;
+    public partial uint? Height { get; set; }
+
     /// <summary>
     /// 自定义标题变换间隔
     /// </summary>
     [ObservableProperty]
-    private int _titleDelay;
+    public partial int TitleDelay { get; set; }
 
     /// <summary>
     /// 是否启用自定义Java
     /// </summary>
     [ObservableProperty]
-    private bool _enableJvmName;
+    public partial bool EnableJvmName { get; set; }
+
     /// <summary>
     /// 是否启用启动前运行
     /// </summary>
     [ObservableProperty]
-    private bool _perRun;
+    public partial bool PerRun { get; set; }
+
     /// <summary>
     /// 是否启用启动后运行
     /// </summary>
     [ObservableProperty]
-    private bool _postRun;
+    public partial bool PostRun { get; set; }
+
     /// <summary>
     /// 是否最大化游戏窗口
     /// </summary>
     [ObservableProperty]
-    private bool? _maxWindow;
+    public partial bool? MaxWindow { get; set; }
+
     /// <summary>
     /// 是否删除原来的Java参数
     /// </summary>
     [ObservableProperty]
-    private bool _removeJvmArg;
+    public partial bool RemoveJvmArg { get; set; }
+
     /// <summary>
     /// 是否删除游戏启动参数
     /// </summary>
     [ObservableProperty]
-    private bool _removeGameArg;
+    public partial bool RemoveGameArg { get; set; }
+
     /// <summary>
     /// 是否启用随机标题
     /// </summary>
     [ObservableProperty]
-    private bool _randomTitle;
+    public partial bool RandomTitle { get; set; }
+
     /// <summary>
     /// 是否启用标题循环
     /// </summary>
     [ObservableProperty]
-    private bool _cycTitle;
+    public partial bool CycTitle { get; set; }
+
     /// <summary>
     /// 是否在游戏启动时同时执行启动前
     /// </summary>
     [ObservableProperty]
-    private bool _preRunSame;
+    public partial bool PreRunSame { get; set; }
+
     /// <summary>
     /// 是否禁用ColorMC ASM
     /// </summary>
     [ObservableProperty]
-    private bool _colorASM;
+    public partial bool ColorASM { get; set; }
+
     /// <summary>
     /// 是否使用自定义标题
     /// </summary>
     [ObservableProperty]
-    private bool _editTitle;
+    public partial bool EditTitle { get; set; }
 
     /// <summary>
     /// 当前内存大小
     /// </summary>
     [ObservableProperty]
-    private string _memory;
+    public partial string Memory { get; set; }
 
     /// <summary>
     /// 是否在加载配置文件

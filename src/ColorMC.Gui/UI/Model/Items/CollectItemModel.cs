@@ -49,12 +49,13 @@ public partial class CollectItemModel(CollectItemObj obj) : SelectItemModel
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isCheck;
+    public partial bool IsCheck { get; set; }
+
     /// <summary>
     /// 是否在下载中
     /// </summary>
     [ObservableProperty]
-    private bool _isDownload;
+    public partial bool IsDownload { get; set; }
 
     /// <summary>
     /// 收藏

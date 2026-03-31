@@ -47,17 +47,19 @@ public partial class GameFileTreeNodeModel : ObservableObject
     /// 是否有子项目
     /// </summary>
     [ObservableProperty]
-    private bool _hasChildren = true;
+    public partial bool HasChildren { get; set; } = true;
+
     /// <summary>
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _isExpanded;
+    public partial bool IsExpanded { get; set; }
+
     /// <summary>
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isChecked;
+    public partial bool IsChecked { get; set; }
 
     /// <summary>
     /// 是否为游戏实例主体
@@ -103,7 +105,7 @@ public partial class GameFileTreeNodeModel : ObservableObject
             if (path == null)
             {
                 Name = LangUtils.Get("BuildPackWindow.Tab2.Text1");
-                _isExpanded = true;
+                IsExpanded = true;
                 foreach (var item in InstancesPath.Games)
                 {
                     Children.Add(new GameFileTreeNodeModel(this, item.Name, true, item.GetBasePath(), true));

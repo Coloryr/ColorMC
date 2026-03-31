@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ColorMC.Core.Objs.Minecraft;
+﻿using ColorMC.Core.Objs.Minecraft;
 using ColorMC.Gui.Utils;
 
 namespace ColorMC.Gui.UI.Model.Items;

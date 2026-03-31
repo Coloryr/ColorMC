@@ -15,12 +15,13 @@ public partial class MainModel
     /// 是否已经抽了幸运方块
     /// </summary>
     [ObservableProperty]
-    private bool _isHaveLuck;
+    public partial bool IsHaveLuck { get; set; }
+
     /// <summary>
     /// 抽中的幸运方块
     /// </summary>
     [ObservableProperty]
-    private BlockItemModel? _luckBlockItem;
+    public partial BlockItemModel? LuckBlockItem { get; set; }
 
     /// <summary>
     /// 打开幸运方块窗口

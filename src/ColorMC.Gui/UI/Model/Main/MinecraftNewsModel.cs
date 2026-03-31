@@ -19,24 +19,25 @@ public partial class MainModel
     /// 显示的Minecraft news
     /// </summary>
     [ObservableProperty]
-    private string? _displayNews;
+    public partial string? DisplayNews { get; set; }
 
     /// <summary>
     /// 是否加载news
     /// </summary>
     [ObservableProperty]
-    private bool _isLoadNews;
+    public partial bool IsLoadNews { get; set; }
+
     /// <summary>
     /// 是否有news
     /// </summary>
     [ObservableProperty]
-    private bool _isHaveNews;
+    public partial bool IsHaveNews { get; set; }
 
     /// <summary>
     /// news图片
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _newsImage;
+    public partial Bitmap? NewsImage { get; set; }
 
     /// <summary>
     /// 获取news

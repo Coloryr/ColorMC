@@ -14,22 +14,25 @@ public partial class InputAxisButtonModel(SettingModel setting) : InputButtonMod
     /// 死区开始
     /// </summary>
     [ObservableProperty]
-    private short? _start;
+    public partial short? Start { get; set; }
+
     /// <summary>
     /// 死区结束
     /// </summary>
     [ObservableProperty]
-    private short? _end;
+    public partial short? End { get; set; }
+
     /// <summary>
     /// 当前数值
     /// </summary>
     [ObservableProperty]
-    private short _nowValue;
+    public partial short NowValue { get; set; }
+
     /// <summary>
     /// 是否启用回弹取消
     /// </summary>
     [ObservableProperty]
-    private bool _backCancel;
+    public partial bool BackCancel { get; set; }
 
     /// <summary>
     /// 图标

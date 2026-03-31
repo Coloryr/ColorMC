@@ -45,57 +45,61 @@ public partial class MainModel
     /// 游戏实例
     /// </summary>
     [ObservableProperty]
-    private GameItemModel? _game;
+    public partial GameItemModel? Game { get; set; }
+
     /// <summary>
     /// 锁定游戏实例
     /// </summary>
     [ObservableProperty]
-    private GameItemModel? _oneGame;
+    public partial GameItemModel? OneGame { get; set; }
 
     /// <summary>
     /// 是否锁定游戏实例
     /// </summary>
     [ObservableProperty]
-    private bool _isOneGame;
+    public partial bool IsOneGame { get; set; }
+
     /// <summary>
     /// 是否没有游戏实例
     /// </summary>
     [ObservableProperty]
-    private bool _isNotGame;
+    public partial bool IsNotGame { get; set; }
+
     /// <summary>
     /// 是否在搜索
     /// </summary>
     [ObservableProperty]
-    private bool _gameSearch;
+    public partial bool GameSearch { get; set; }
 
     /// <summary>
     /// 是否有上次运行图标
     /// </summary>
     [ObservableProperty]
-    private bool _haveGameImage;
+    public partial bool HaveGameImage { get; set; }
 
     /// <summary>
     /// 实例搜索名字
     /// </summary>
     [ObservableProperty]
-    private string _gameSearchText;
+    public partial string GameSearchText { get; set; }
+
     /// <summary>
     /// 上次运行的游戏实例名字
     /// </summary>
     [ObservableProperty]
-    private string _lastGameName;
+    public partial string LastGameName { get; set; }
 
     /// <summary>
     /// 上次运行游戏图标
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _gameImage;
+    public partial Bitmap? GameImage { get; set; }
 
     /// <summary>
     /// 分组方式
     /// </summary>
     [ObservableProperty]
-    private ItemsGridType _gridType = ItemsGridType.GridInfo;
+    public partial ItemsGridType GridType { get; set; } = ItemsGridType.GridInfo;
 
     /// <summary>
     /// 是否多选
@@ -493,7 +497,7 @@ public partial class MainModel
                     }
                 }
 
-                
+
                 foreach (var item1 in res1.Adds.ToArray())
                 {
                     if (res1.Removes.Contains(item1))

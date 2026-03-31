@@ -1,7 +1,5 @@
 using ColorMC.Core.Objs;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
-using SharpCompress.Common.Zip;
 using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Utils;

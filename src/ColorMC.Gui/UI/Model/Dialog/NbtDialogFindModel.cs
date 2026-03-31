@@ -12,42 +12,49 @@ public partial class NbtDialogFindModel : BaseDialogModel
     /// 查找名字
     /// </summary>
     [ObservableProperty]
-    private string _posName;
+    public partial string PosName { get; set; }
+
     /// <summary>
     /// 区块
     /// </summary>
     [ObservableProperty]
-    private string _chunk;
+    public partial string Chunk { get; set; }
+
     /// <summary>
     /// 区块文件
     /// </summary>
     [ObservableProperty]
-    private string _chunkFile;
+    public partial string ChunkFile { get; set; }
+
     /// <summary>
     /// 方块X坐标
     /// </summary>
     [ObservableProperty]
-    private int? _posX = 0;
+    public partial int? PosX { get; set; } = 0;
+
     /// <summary>
     /// 方块Y坐标
     /// </summary>
     [ObservableProperty]
-    private int? _posY = 0;
+    public partial int? PosY { get; set; } = 0;
+
     /// <summary>
     /// 方块Z坐标
     /// </summary>
     [ObservableProperty]
-    private int? _posZ = 0;
+    public partial int? PosZ { get; set; } = 0;
+
     /// <summary>
     /// 显示文本1
     /// </summary>
     [ObservableProperty]
-    private string _findText1;
+    public partial string FindText1 { get; set; }
+
     /// <summary>
     /// 显示文本2
     /// </summary>
     [ObservableProperty]
-    private string _findText2;
+    public partial string FindText2 { get; set; }
 
     /// <summary>
     /// 是否为实体

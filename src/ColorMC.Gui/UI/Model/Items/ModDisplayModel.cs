@@ -16,12 +16,13 @@ public partial class ModDisplayModel : ObservableObject
     /// 是否启用
     /// </summary>
     [ObservableProperty]
-    private bool? _enable;
+    public partial bool? Enable { get; set; }
+
     /// <summary>
     /// 文本
     /// </summary>
     [ObservableProperty]
-    private string? _text;
+    public partial string? Text { get; set; }
 
     /// <summary>
     /// 加载测
@@ -59,7 +60,8 @@ public partial class ModDisplayModel : ObservableObject
     /// 下载源
     /// </summary>
     [ObservableProperty]
-    private string _source;
+    public partial string Source { get; set; }
+
     /// <summary>
     /// 项目ID
     /// </summary>

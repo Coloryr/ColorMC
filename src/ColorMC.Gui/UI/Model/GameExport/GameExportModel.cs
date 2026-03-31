@@ -32,7 +32,7 @@ public partial class GameExportModel : MenuModel
     /// 文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
+    public partial HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; set; }
 
     /// <summary>
     /// 导出类型列表
@@ -57,66 +57,73 @@ public partial class GameExportModel : MenuModel
     /// 导出类型
     /// </summary>
     [ObservableProperty]
-    private PackType _type;
+    public partial PackType Type { get; set; }
 
     /// <summary>
     /// 选中的模组
     /// </summary>
     [ObservableProperty]
-    private ModExportModel? _selectMod;
+    public partial ModExportModel? SelectMod { get; set; }
+
     /// <summary>
     /// 选中的文件
     /// </summary>
     [ObservableProperty]
-    private ModExport1Model? _selectFile;
+    public partial ModExport1Model? SelectFile { get; set; }
 
     /// <summary>
     /// 文本
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
+
     /// <summary>
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
+
     /// <summary>
     /// 版本
     /// </summary>
     [ObservableProperty]
-    private string _version;
+    public partial string Version { get; set; }
+
     /// <summary>
     /// 作者
     /// </summary>
     [ObservableProperty]
-    private string _author;
+    public partial string Author { get; set; }
+
     /// <summary>
     /// 描述
     /// </summary>
     [ObservableProperty]
-    private string _summary;
+    public partial string Summary { get; set; }
+
     /// <summary>
     /// 自定义导出文件
     /// </summary>
     [ObservableProperty]
-    private string _fileName;
+    public partial string FileName { get; set; }
 
     /// <summary>
     /// 是否有额外文件
     /// </summary>
     [ObservableProperty]
-    private bool _cfEx;
+    public partial bool CfEx { get; set; }
+
     /// <summary>
     /// 是否有额外文件
     /// </summary>
     [ObservableProperty]
-    private bool _moEx;
+    public partial bool MoEx { get; set; }
 
     /// <summary>
     /// 导出选择
     /// </summary>
     [ObservableProperty]
-    private bool _enableInputText;
+    public partial bool EnableInputText { get; set; }
 
     /// <summary>
     /// 导出模组列表

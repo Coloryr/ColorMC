@@ -23,49 +23,55 @@ public partial class AddUserModel(string name) : BaseDialogModel(name)
     /// 选中的账户类型
     /// </summary>
     [ObservableProperty]
-    private int _type = -1;
+    public partial int Type { get; set; } = -1;
 
     /// <summary>
     /// 是否允许输入名字
     /// </summary>
     [ObservableProperty]
-    private bool _enableName;
+    public partial bool EnableName { get; set; }
+
     /// <summary>
     /// 是否允许输入用户名
     /// </summary>
     [ObservableProperty]
-    private bool _enableUser;
+    public partial bool EnableUser { get; set; }
+
     /// <summary>
     /// 是否允许输入密码
     /// </summary>
     [ObservableProperty]
-    private bool _enablePassword;
+    public partial bool EnablePassword { get; set; }
+
     /// <summary>
     /// 是否允许注册
     /// </summary>
     [ObservableProperty]
-    private bool _canRegister;
+    public partial bool CanRegister { get; set; }
 
     /// <summary>
     /// 提示名字
     /// </summary>
     [ObservableProperty]
-    private string _watermarkName;
+    public partial string WatermarkName { get; set; }
+
     /// <summary>
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string? _name;
+    public partial string? Name { get; set; }
+
     /// <summary>
     /// 用户名
     /// </summary>
     [ObservableProperty]
-    private string? _user;
+    public partial string? User { get; set; }
+
     /// <summary>
     /// 密码
     /// </summary>
     [ObservableProperty]
-    private string? _password;
+    public partial string? Password { get; set; }
 
     /// <summary>
     /// 是否为锁定登录

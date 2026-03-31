@@ -10,7 +10,7 @@ public partial class ServerPackModel
     /// 自定义文本
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
 
     /// <summary>
     /// 是否在加载配置信息

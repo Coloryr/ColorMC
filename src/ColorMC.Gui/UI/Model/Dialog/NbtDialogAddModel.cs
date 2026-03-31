@@ -19,25 +19,29 @@ public partial class NbtDialogAddModel(string name) : BaseDialogModel(name)
     /// 标题1
     /// </summary>
     [ObservableProperty]
-    private string _title;
+    public partial string Title { get; set; }
+
     /// <summary>
     /// 标题2
     /// </summary>
     [ObservableProperty]
-    private string _title1;
+    public partial string Title1 { get; set; }
+
     /// <summary>
     /// 输入的键
     /// </summary>
     [ObservableProperty]
-    private string? _key;
+    public partial string? Key { get; set; }
+
     /// <summary>
     /// 是否显示类型
     /// </summary>
     [ObservableProperty]
-    private bool _displayType;
+    public partial bool DisplayType { get; set; }
+
     /// <summary>
     /// 当前Nbt类型
     /// </summary>
     [ObservableProperty]
-    private NbtType _type = NbtType.NbtString;
+    public partial NbtType Type { get; set; } = NbtType.NbtString;
 }

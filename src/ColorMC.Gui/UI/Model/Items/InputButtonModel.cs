@@ -16,7 +16,7 @@ public partial class InputButtonModel(SettingModel setting) : ObservableObject
     /// 按钮
     /// </summary>
     [ObservableProperty]
-    private byte _inputKey;
+    public partial byte InputKey { get; set; }
 
     /// <summary>
     /// 显示绑定的按钮

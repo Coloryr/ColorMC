@@ -367,7 +367,7 @@ public static class AddGameHelper
     /// <param name="arg">导入参数</param>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip, 
+    private static async Task<GameRes> HMCLAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip,
         List<IArchiveEntry>? unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         unselect ??= [];
@@ -554,7 +554,7 @@ public static class AddGameHelper
     /// </summary>
     /// <param name="st">输入流</param>
     /// <returns>导入结果</returns>
-    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip, 
+    private static async Task<GameRes> UnzipAsync(string? name, string? group, string file, IWritableArchive<ZipWriterOptions> zip,
         List<IArchiveEntry> unselect, IOverGameGui? gui, IAddGui? packgui)
     {
         packgui?.SetState(AddState.ReadInfo);
@@ -643,7 +643,7 @@ public static class AddGameHelper
 
         return new GameRes { State = true, Game = game };
     }
-    
+
     /// <summary>
     /// 导入整合包
     /// </summary>
@@ -700,7 +700,7 @@ public static class AddGameHelper
 
         return new GameRes();
     }
-    
+
     /// <summary>
     /// 导入整合包
     /// </summary>

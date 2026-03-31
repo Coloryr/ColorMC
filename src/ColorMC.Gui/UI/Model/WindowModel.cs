@@ -62,102 +62,115 @@ public partial class WindowModel : ObservableObject
     /// 窗口图标
     /// </summary>
     [ObservableProperty]
-    private Bitmap _icon = ImageManager.GameIcon;
+    public partial Bitmap Icon { get; set; } = ImageManager.GameIcon;
+
     /// <summary>
     /// 背景图
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _backImage;
+    public partial Bitmap? BackImage { get; set; }
 
     /// <summary>
     /// 主标题
     /// </summary>
     [ObservableProperty]
-    private string? _title;
+    public partial string? Title { get; set; }
+
     /// <summary>
     /// 副标题
     /// </summary>
     [ObservableProperty]
-    private string? _subTitle;
+    public partial string? SubTitle { get; set; }
+
     /// <summary>
     /// 选择按钮1显示
     /// </summary>
     [ObservableProperty]
-    private string? _headChoiseContent;
+    public partial string? HeadChoiseContent { get; set; }
+
     /// <summary>
     /// 选择按钮2显示
     /// </summary>
     [ObservableProperty]
-    private string? _headChoise1Content;
+    public partial string? HeadChoise1Content { get; set; }
+
     /// <summary>
     /// 最大化图标
     /// </summary>
     [ObservableProperty]
-    private string _maxIcon;
+    public partial string MaxIcon { get; set; }
 
     /// <summary>
     /// 是否显示背景图
     /// </summary>
     [ObservableProperty]
-    private bool _bgVisible;
+    public partial bool BgVisible { get; set; }
+
     /// <summary>
     /// 是否显示窗口关闭按钮
     /// </summary>
     [ObservableProperty]
-    private bool _enableHead = true;
+    public partial bool EnableHead { get; set; } = true;
+
     /// <summary>
     /// 是否显示选择按钮1
     /// </summary>
     [ObservableProperty]
-    private bool _headChoiseDisplay;
+    public partial bool HeadChoiseDisplay { get; set; }
+
     /// <summary>
     /// 是否显示选择按钮2
     /// </summary>
     [ObservableProperty]
-    private bool _headChoise1Display;
+    public partial bool HeadChoise1Display { get; set; }
+
     /// <summary>
     /// 是否显示返回按钮
     /// </summary>
     [ObservableProperty]
-    private bool _headBack;
+    public partial bool HeadBack { get; set; }
+
     /// <summary>
     /// 是否启动返回按钮
     /// </summary>
     [ObservableProperty]
-    private bool _headBackEnable = true;
+    public partial bool HeadBackEnable { get; set; } = true;
+
     /// <summary>
     /// 是否启用选择按钮1
     /// </summary>
     [ObservableProperty]
-    private bool _choiseEnable = true;
+    public partial bool ChoiseEnable { get; set; } = true;
+
     /// <summary>
     /// 是否启用选择按钮2
     /// </summary>
     [ObservableProperty]
-    private bool _choise1Enable = true;
+    public partial bool Choise1Enable { get; set; } = true;
+
     /// <summary>
     /// 关闭按钮显示通知
     /// </summary>
     [ObservableProperty]
-    private bool _headCloseEnable = true;
+    public partial bool HeadCloseEnable { get; set; } = true;
 
     /// <summary>
     /// 背景图透明度
     /// </summary>
     [ObservableProperty]
-    private double _bgOpacity;
+    public partial double BgOpacity { get; set; }
 
     /// <summary>
     /// 当前主题
     /// </summary>
     [ObservableProperty]
-    private ThemeVariant _theme;
+    public partial ThemeVariant Theme { get; set; }
 
     /// <summary>
     /// 当前窗口透明
     /// </summary>
     [ObservableProperty]
-    private WindowTransparencyLevel[] _hints;
+    public partial WindowTransparencyLevel[] Hints { get; set; }
 
     /// <summary>
     /// 窗口状态切换

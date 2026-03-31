@@ -49,63 +49,73 @@ public partial class GameLogModel : GameModel
     /// 文本
     /// </summary>
     [ObservableProperty]
-    private TextDocument _text;
+    public partial TextDocument Text { get; set; }
 
     /// <summary>
     /// 游戏是否在运行
     /// </summary>
     [ObservableProperty]
-    private bool _isGameRun;
+    public partial bool IsGameRun { get; set; }
+
     /// <summary>
     /// 是否自动换行
     /// </summary>
     [ObservableProperty]
-    private bool _isWordWrap;
+    public partial bool IsWordWrap { get; set; }
+
     /// <summary>
     /// 是否自动下拉
     /// </summary>
     [ObservableProperty]
-    private bool _isAuto;
+    public partial bool IsAuto { get; set; }
+
     /// <summary>
     /// 选择的文件名
     /// </summary>
     [ObservableProperty]
-    private string? _file;
+    public partial string? File { get; set; }
+
     /// <summary>
     /// 选择的线程
     /// </summary>
     [ObservableProperty]
-    private string? _selectThread;
+    public partial string? SelectThread { get; set; }
+
     /// <summary>
     /// 选择的分类
     /// </summary>
     [ObservableProperty]
-    private string? _selectCategory;
+    public partial string? SelectCategory { get; set; }
+
     /// <summary>
     /// 是否启用其他日志
     /// </summary>
     [ObservableProperty]
-    private bool _enableNone;
+    public partial bool EnableNone { get; set; }
+
     /// <summary>
     /// 是否启用信息日志
     /// </summary>
     [ObservableProperty]
-    private bool _enableInfo;
+    public partial bool EnableInfo { get; set; }
+
     /// <summary>
     /// 是否启用警告日志
     /// </summary>
     [ObservableProperty]
-    private bool _enableWarn;
+    public partial bool EnableWarn { get; set; }
+
     /// <summary>
     /// 是否启用错误日志
     /// </summary>
     [ObservableProperty]
-    private bool _enableError;
+    public partial bool EnableError { get; set; }
+
     /// <summary>
     /// 是否启启用调试日志
     /// </summary>
     [ObservableProperty]
-    private bool _enableDebug;
+    public partial bool EnableDebug { get; set; }
 
     /// <summary>
     /// 日志
@@ -147,7 +157,7 @@ public partial class GameLogModel : GameModel
 
     public GameLogModel(WindowModel model, GameSettingObj obj) : base(model, obj)
     {
-        _text = new();
+        Text = new();
 
         _timer = new(() =>
         {
@@ -162,13 +172,13 @@ public partial class GameLogModel : GameModel
 
         //读取设置
         _setting = GameManager.ReadConfig(obj);
-        _enableDebug = _setting.Log.EnableDebug;
-        _enableError = _setting.Log.EnableError;
-        _enableInfo = _setting.Log.EnableInfo;
-        _enableNone = _setting.Log.EnableNone;
-        _enableWarn = _setting.Log.EnableWarn;
-        _isAuto = _setting.Log.Auto;
-        _isWordWrap = _setting.Log.WordWrap;
+        EnableDebug = _setting.Log.EnableDebug;
+        EnableError = _setting.Log.EnableError;
+        EnableInfo = _setting.Log.EnableInfo;
+        EnableNone = _setting.Log.EnableNone;
+        EnableWarn = _setting.Log.EnableWarn;
+        IsAuto = _setting.Log.Auto;
+        IsWordWrap = _setting.Log.WordWrap;
     }
 
     /// <summary>

@@ -33,17 +33,19 @@ public partial class NetFrpModel
     /// 是否运行中
     /// </summary>
     [ObservableProperty]
-    private bool _isRuning;
+    public partial bool IsRuning { get; set; }
+
     /// <summary>
     /// 是否成功启动
     /// </summary>
     [ObservableProperty]
-    private bool _isOk;
+    public partial bool IsOk { get; set; }
+
     /// <summary>
     /// 进程日志
     /// </summary>
     [ObservableProperty]
-    private TextDocument _text = new();
+    public partial TextDocument Text { get; set; } = new();
 
     /// <summary>
     /// 日志缓存

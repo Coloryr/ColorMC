@@ -28,20 +28,22 @@ public partial class BlockBackpackModel(WindowModel model) : ControlModel(model)
     public ObservableCollection<BlockItemModel> Blocks { get; init; } = [];
 
     [ObservableProperty]
-    private bool _importDisplay;
+    public partial bool ImportDisplay { get; set; }
+
     [ObservableProperty]
-    private bool _langDisplay;
+    public partial bool LangDisplay { get; set; }
 
     /// <summary>
     /// 导入路径
     /// </summary>
     [ObservableProperty]
-    private string _local;
+    public partial string Local { get; set; }
+
     /// <summary>
     /// 方块搜索
     /// </summary>
     [ObservableProperty]
-    private string? _text;
+    public partial string? Text { get; set; }
 
     [RelayCommand]
     public void ImportBlock()

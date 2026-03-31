@@ -24,86 +24,97 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
     /// 下载源
     /// </summary>
     [ObservableProperty]
-    private int _source = -1;
+    public partial int Source { get; set; } = -1;
+
     /// <summary>
     /// 是否下载源加载数据
     /// </summary>
     [ObservableProperty]
-    private bool _sourceLoad;
+    public partial bool SourceLoad { get; set; }
+
     /// <summary>
     /// 是否没有项目
     /// </summary>
     [ObservableProperty]
-    private bool _emptyDisplay = true;
+    public partial bool EmptyDisplay { get; set; } = true;
+
     /// <summary>
     /// 是否选择了项目
     /// </summary>
     [ObservableProperty]
-    private bool _isSelect;
+    public partial bool IsSelect { get; set; }
 
     /// <summary>
     /// 项目列表是否有下一页
     /// </summary>
     [ObservableProperty]
-    private bool _nextPage;
+    public partial bool NextPage { get; set; }
+
     /// <summary>
     /// 是否有上一页
     /// </summary>
     [ObservableProperty]
-    private bool _lastPage;
+    public partial bool LastPage { get; set; }
 
     /// <summary>
     /// 排序类型
     /// </summary>
     [ObservableProperty]
-    private int _sortType = -1;
+    public partial int SortType { get; set; } = -1;
+
     /// <summary>
     /// 分类
     /// </summary>
     [ObservableProperty]
-    private int _categorie;
+    public partial int Categorie { get; set; }
+
     /// <summary>
     /// 项目当前页数
     /// </summary>
     [ObservableProperty]
-    private int? _page = 1;
+    public partial int? Page { get; set; } = 1;
+
     /// <summary>
     /// 项目最大页数
     /// </summary>
     [ObservableProperty]
-    private int _maxPage;
+    public partial int MaxPage { get; set; }
 
     /// <summary>
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string? _gameVersion;
+    public partial string? GameVersion { get; set; }
+
     /// <summary>
     /// 搜索文本
     /// </summary>
     [ObservableProperty]
-    private string? _text;
+    public partial string? Text { get; set; }
+
     /// <summary>
     /// 下载文本
     /// </summary>
     [ObservableProperty]
-    private string? _downloadText;
+    public partial string? DownloadText { get; set; }
+
     /// <summary>
     /// 是否显示下载文本
     /// </summary>
     [ObservableProperty]
-    private string? _displayText;
+    public partial string? DisplayText { get; set; }
 
     /// <summary>
     /// 是否显示下载列表
     /// </summary>
     [ObservableProperty]
-    private bool _displayDownload = false;
+    public partial bool DisplayDownload { get; set; } = false;
+
     /// <summary>
     /// 是否有下载项目
     /// </summary>
     [ObservableProperty]
-    private bool _haveDownload = false;
+    public partial bool HaveDownload { get; set; } = false;
 
     /// <summary>
     /// 是否已经显示

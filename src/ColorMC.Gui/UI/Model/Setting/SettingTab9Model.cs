@@ -12,47 +12,55 @@ public partial class SettingModel
     /// 启用URI支持
     /// </summary>
     [ObservableProperty]
-    private bool _fastEnable;
+    public partial bool FastEnable { get; set; }
+
     /// <summary>
     /// 启用Modrinth复写
     /// </summary>
     [ObservableProperty]
-    private bool _fastModrinth;
+    public partial bool FastModrinth { get; set; }
+
     /// <summary>
     /// 是否检测用户是否占用
     /// </summary>
     [ObservableProperty]
-    private bool _checkUser;
+    public partial bool CheckUser { get; set; }
+
     /// <summary>
     /// 是否检测加载器是否启用
     /// </summary>
     [ObservableProperty]
-    private bool _checkLoader;
+    public partial bool CheckLoader { get; set; }
+
     /// <summary>
     /// 是否检测内存分配
     /// </summary>
     [ObservableProperty]
-    private bool _checkMemory;
+    public partial bool CheckMemory { get; set; }
+
     /// <summary>
     /// 是否启动后关闭启动器
     /// </summary>
     [ObservableProperty]
-    private bool _closeBefore;
+    public partial bool CloseBefore { get; set; }
+
     /// <summary>
     /// 是否启用安全Log4j
     /// </summary>
     [ObservableProperty]
-    private bool _safeLog4j;
+    public partial bool SafeLog4j { get; set; }
+
     /// <summary>
     /// 是否管理员启动
     /// </summary>
     [ObservableProperty]
-    private bool _adminLaunch;
+    public partial bool AdminLaunch { get; set; }
+
     /// <summary>
     /// 是否游戏管理员启动
     /// </summary>
     [ObservableProperty]
-    private bool _gameAdminLaunch;
+    public partial bool GameAdminLaunch { get; set; }
 
     private bool _launchLoad;
 

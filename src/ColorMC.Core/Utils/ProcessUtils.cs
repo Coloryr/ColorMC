@@ -46,17 +46,17 @@ public static class ProcessUtils
                     process.StartInfo.Verb = "runas";
                     break;
                 case OsType.MacOs:
-                {
-                    process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
-                    process.StartInfo.FileName = "sudo";
-                    break;
-                }
+                    {
+                        process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
+                        process.StartInfo.FileName = "sudo";
+                        break;
+                    }
                 case OsType.Linux:
-                {
-                    process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
-                    process.StartInfo.FileName = "pkexec";
-                    break;
-                }
+                    {
+                        process.StartInfo.ArgumentList.Insert(0, process.StartInfo.FileName);
+                        process.StartInfo.FileName = "pkexec";
+                        break;
+                    }
             }
 
             process.StartInfo.RedirectStandardInput = false;

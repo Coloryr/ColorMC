@@ -16,22 +16,25 @@ public partial class FrpShareModel(string name) : BaseDialogModel(name)
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string _version;
+    public partial string Version { get; set; }
+
     /// <summary>
     /// 附加信息
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
+
     /// <summary>
     /// 是否又加载器
     /// </summary>
     [ObservableProperty]
-    private bool _isLoader;
+    public partial bool IsLoader { get; set; }
+
     /// <summary>
     /// 加载器类型
     /// </summary>
     [ObservableProperty]
-    public int _loader = -1;
+    public partial int Loader { get; set; } = -1;
 
     /// <summary>
     /// 加载器列表

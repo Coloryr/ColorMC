@@ -12,17 +12,19 @@ public partial class ModExport1Model : ObservableObject
     /// 校验
     /// </summary>
     [ObservableProperty]
-    private string _sha1;
+    public partial string Sha1 { get; set; }
+
     /// <summary>
     /// 校验
     /// </summary>
     [ObservableProperty]
-    private string _sha512;
+    public partial string Sha512 { get; set; }
+
     /// <summary>
     /// 下载网址
     /// </summary>
     [ObservableProperty]
-    private string _url;
+    public partial string Url { get; set; }
 
     /// <summary>
     /// 地址

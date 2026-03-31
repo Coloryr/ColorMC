@@ -168,7 +168,7 @@ public static class GameResourcepacks
                 }
             }
         }
-        item1 = zFile.Entries.FirstOrDefault(item=>item.Key == Names.NamePackIconFile);
+        item1 = zFile.Entries.FirstOrDefault(item => item.Key == Names.NamePackIconFile);
         if (item1 != null)
         {
             using var stream2 = item1.OpenEntryStream();

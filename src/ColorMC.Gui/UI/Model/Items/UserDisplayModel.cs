@@ -52,15 +52,16 @@ public partial class UserDisplayModel : SelectItemModel
     /// 是否有皮肤文件
     /// </summary>
     [ObservableProperty]
-    private bool _haveSkin;
+    public partial bool HaveSkin { get; set; }
+
     /// <summary>
     /// 是否有披风文件
     /// </summary>
     [ObservableProperty]
-    private bool _haveCape;
+    public partial bool HaveCape { get; set; }
 
     [ObservableProperty]
-    private bool _emptyTex;
+    public partial bool EmptyTex { get; set; }
 
     /// <summary>
     /// 账户类型
@@ -79,7 +80,7 @@ public partial class UserDisplayModel : SelectItemModel
     /// <summary>
     /// 能否重新登录
     /// </summary>
-    public bool CanRelogin => _obj.AuthType is not AuthType.Offline or AuthType.OAuth;
+    public bool CanRelogin => _obj.AuthType is not (AuthType.Offline or AuthType.OAuth);
     /// <summary>
     /// 能否编辑
     /// </summary>
@@ -89,17 +90,19 @@ public partial class UserDisplayModel : SelectItemModel
     /// 头像
     /// </summary>
     [ObservableProperty]
-    public Bitmap? image = ImageManager.LoadBitmap;
+    public partial Bitmap? Image { get; set; } = ImageManager.LoadBitmap;
+
     /// <summary>
     /// 皮肤
     /// </summary>
     [ObservableProperty]
-    public Bitmap? _skin = ImageManager.LoadBitmap;
+    public partial Bitmap? Skin { get; set; } = ImageManager.LoadBitmap;
+
     /// <summary>
     /// 披风
     /// </summary>
     [ObservableProperty]
-    public Bitmap? _cape = ImageManager.LoadBitmap;
+    public partial Bitmap? Cape { get; set; } = ImageManager.LoadBitmap;
 
     /// <summary>
     /// 头像 皮肤 披风

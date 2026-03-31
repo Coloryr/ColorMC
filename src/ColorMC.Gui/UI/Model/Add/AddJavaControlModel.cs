@@ -48,37 +48,44 @@ public partial class AddJavaControlModel : ControlModel
     /// 选中的Java类型
     /// </summary>
     [ObservableProperty]
-    private string _javaType;
+    public partial string JavaType { get; set; }
+
     /// <summary>
     /// 选中的操作系统
     /// </summary>
     [ObservableProperty]
-    private string _system;
+    public partial string System { get; set; }
+
     /// <summary>
     /// 选中的主版本
     /// </summary>
     [ObservableProperty]
-    private string _version;
+    public partial string Version { get; set; }
+
     /// <summary>
     /// 选中的进制
     /// </summary>
     [ObservableProperty]
-    private string _arch;
+    public partial string Arch { get; set; }
+
     /// <summary>
     /// Java类型
     /// </summary>
     [ObservableProperty]
-    private int _typeIndex = -1;
+    public partial int TypeIndex { get; set; } = -1;
+
     /// <summary>
     /// 进制类型
     /// </summary>
     [ObservableProperty]
-    private int _archIndex = -1;
+    public partial int ArchIndex { get; set; } = -1;
+
     /// <summary>
     /// 是否有文件可以显示
     /// </summary>
     [ObservableProperty]
-    private bool _display = false;
+    public partial bool Display { get; set; } = false;
+
     /// <summary>
     /// 是否正在加载
     /// </summary>

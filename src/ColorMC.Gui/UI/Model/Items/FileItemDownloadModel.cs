@@ -19,27 +19,31 @@ public partial class FileItemDownloadModel : ObservableObject
     /// 当前信息
     /// </summary>
     [ObservableProperty]
-    private string? _info;
+    public partial string? Info { get; set; }
+
     /// <summary>
     /// 当前信息
     /// </summary>
     [ObservableProperty]
-    private string? _subInfo;
+    public partial string? SubInfo { get; set; }
+
     /// <summary>
     /// 进度
     /// </summary>
     [ObservableProperty]
-    private double _now;
+    public partial double Now { get; set; }
+
     /// <summary>
     /// 子进度
     /// </summary>
     [ObservableProperty]
-    private double _nowSub;
+    public partial double NowSub { get; set; }
+
     /// <summary>
     /// 是否显示子进度条
     /// </summary>
     [ObservableProperty]
-    private bool _showSub;
+    public partial bool ShowSub { get; set; }
 
     public CancellationToken Token => _cancel.Token;
 

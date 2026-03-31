@@ -17,7 +17,7 @@ public partial class BuildPackModel
     /// 文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<GameFileTreeNodeModel> _games;
+    public partial HierarchicalTreeDataGridSource<GameFileTreeNodeModel> Games { get; set; }
 
     /// <summary>
     /// 游戏实例列表

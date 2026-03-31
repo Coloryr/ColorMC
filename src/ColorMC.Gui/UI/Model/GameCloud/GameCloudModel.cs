@@ -27,7 +27,7 @@ public partial class GameCloudModel : MenuModel
     /// 显示过滤
     /// </summary>
     [ObservableProperty]
-    private bool _displayFilter = true;
+    public partial bool DisplayFilter { get; set; } = true;
 
     /// <summary>
     /// 导出的文件列表
@@ -38,23 +38,25 @@ public partial class GameCloudModel : MenuModel
     /// 文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel> _source;
+    public partial HierarchicalTreeDataGridSource<FileTreeNodeModel> Source { get; set; }
 
     /// <summary>
     /// 是否开启了云同步
     /// </summary>
     [ObservableProperty]
-    private bool _enable;
+    public partial bool Enable { get; set; }
+
     /// <summary>
     /// 上次配置文件同步时间
     /// </summary>
     [ObservableProperty]
-    private string _configTime;
+    public partial string ConfigTime { get; set; }
+
     /// <summary>
     /// 本地配置文件同步时间
     /// </summary>
     [ObservableProperty]
-    private string _localConfigTime;
+    public partial string LocalConfigTime { get; set; }
 
     /// <summary>
     /// 选择的存档

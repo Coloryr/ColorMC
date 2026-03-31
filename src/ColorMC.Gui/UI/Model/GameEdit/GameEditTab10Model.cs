@@ -22,18 +22,19 @@ public partial class GameEditModel
     /// 服务器项目
     /// </summary>
     [ObservableProperty]
-    private ServerInfoObj? _serverItem;
+    public partial ServerInfoObj? ServerItem { get; set; }
+
     /// <summary>
     /// 查看Motd的地址
     /// </summary>
     [ObservableProperty]
-    private (string?, ushort) _iPPort;
+    public partial (string?, ushort) IPPort { get; set; }
 
     /// <summary>
     /// 是否没有服务器地址
     /// </summary>
     [ObservableProperty]
-    private bool _serverEmptyDisplay;
+    public partial bool ServerEmptyDisplay { get; set; }
 
     partial void OnServerItemChanged(ServerInfoObj? value)
     {

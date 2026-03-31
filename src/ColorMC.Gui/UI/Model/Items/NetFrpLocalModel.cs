@@ -25,7 +25,7 @@ public partial class NetFrpLocalModel(NetFrpModel top, string motd, string port)
     /// 是否启动
     /// </summary>
     [ObservableProperty]
-    private bool _isStart;
+    public partial bool IsStart { get; set; }
 
     /// <summary>
     /// 启动映射

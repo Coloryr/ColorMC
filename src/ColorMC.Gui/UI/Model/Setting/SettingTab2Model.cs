@@ -37,167 +37,193 @@ public partial class SettingModel
     /// 字体
     /// </summary>
     [ObservableProperty]
-    private FontDisplayModel? _fontItem;
+    public partial FontDisplayModel? FontItem { get; set; }
 
     /// <summary>
     /// 主要颜色
     /// </summary>
     [ObservableProperty]
-    private Color _mainColor;
+    public partial Color MainColor { get; set; }
+
     /// <summary>
     /// 警告颜色
     /// </summary>
     [ObservableProperty]
-    private Color _warnColor;
+    public partial Color WarnColor { get; set; }
+
     /// <summary>
     /// 错误颜色
     /// </summary>
     [ObservableProperty]
-    private Color _errorColor;
+    public partial Color ErrorColor { get; set; }
+
     /// <summary>
     /// 调试颜色
     /// </summary>
     [ObservableProperty]
-    private Color _debugColor;
+    public partial Color DebugColor { get; set; }
 
     /// <summary>
     /// 是否启用单窗口模式
     /// </summary>
     [ObservableProperty]
-    private bool _windowMode;
+    public partial bool WindowMode { get; set; }
+
     /// <summary>
     /// 是否使用自定义字体
     /// </summary>
     [ObservableProperty]
-    private bool _isCutsomFont;
+    public partial bool IsCutsomFont { get; set; }
+
     /// <summary>
     /// 是否启用背景图分辨率缩放
     /// </summary>
     [ObservableProperty]
-    private bool _enablePicResize;
+    public partial bool EnablePicResize { get; set; }
+
     /// <summary>
     /// 是否启动自动主题
     /// </summary>
     [ObservableProperty]
-    private bool _isAutoColor;
+    public partial bool IsAutoColor { get; set; }
+
     /// <summary>
     /// 是否启用亮主题
     /// </summary>
     [ObservableProperty]
-    private bool _isLightColor;
+    public partial bool IsLightColor { get; set; }
+
     /// <summary>
     /// 是否启用暗主题
     /// </summary>
     [ObservableProperty]
-    private bool _isDarkColor;
+    public partial bool IsDarkColor { get; set; }
+
     /// <summary>
     /// 是否启用RGB模式
     /// </summary>
     [ObservableProperty]
-    private bool _enableRGB;
+    public partial bool EnableRGB { get; set; }
+
     /// <summary>
     /// 是否启用窗口透明
     /// </summary>
     [ObservableProperty]
-    private bool _enableWindowTran;
+    public partial bool EnableWindowTran { get; set; }
+
     /// <summary>
     /// 是否启用动画虚化
     /// </summary>
     [ObservableProperty]
-    private bool _amFade;
+    public partial bool AmFade { get; set; }
+
     /// <summary>
     /// 是否启用自定义背景图
     /// </summary>
     [ObservableProperty]
-    private bool _enableBG;
+    public partial bool EnableBG { get; set; }
+
     /// <summary>
     /// 是否启用动画
     /// </summary>
     [ObservableProperty]
-    private bool _enableAm;
+    public partial bool EnableAm { get; set; }
+
     /// <summary>
     /// 是否展示Minecraft news
     /// </summary>
     [ObservableProperty]
-    private bool _cardNews;
+    public partial bool CardNews { get; set; }
+
     /// <summary>
     /// 是否展示上次启动
     /// </summary>
     [ObservableProperty]
-    private bool _cardLast;
+    public partial bool CardLast { get; set; }
+
     /// <summary>
     /// 是否展示在线联机
     /// </summary>
     [ObservableProperty]
-    private bool _cardOnline;
+    public partial bool CardOnline { get; set; }
+
     /// <summary>
     /// 是否展示幸运方块
     /// </summary>
     [ObservableProperty]
-    private bool _cardBlock;
+    public partial bool CardBlock { get; set; }
 
     /// <summary>
     /// 头像旋转
     /// </summary>
     [ObservableProperty]
-    private int _headX;
+    public partial int HeadX { get; set; }
+
     /// <summary>
     /// 头像旋转
     /// </summary>
     [ObservableProperty]
-    private int _headY;
+    public partial int HeadY { get; set; }
+
     /// <summary>
     /// 选中的语言
     /// </summary>
     [ObservableProperty]
-    private LanguageType _language;
+    public partial LanguageType Language { get; set; }
+
     /// <summary>
     /// 背景图虚化
     /// </summary>
     [ObservableProperty]
-    private int _picEffect;
+    public partial int PicEffect { get; set; }
+
     /// <summary>
     /// 背景图透明
     /// </summary>
     [ObservableProperty]
-    private int _picTran;
+    public partial int PicTran { get; set; }
+
     /// <summary>
     /// 背景图缩小分辨率
     /// </summary>
     [ObservableProperty]
-    private int _picResize;
+    public partial int PicResize { get; set; }
+
     /// <summary>
     /// 窗口透明模式
     /// </summary>
     [ObservableProperty]
-    private int _windowTranType;
+    public partial int WindowTranType { get; set; }
+
     /// <summary>
     /// RGB
     /// </summary>
     [ObservableProperty]
-    private int _rgbV1;
+    public partial int RgbV1 { get; set; }
+
     /// <summary>
     /// RGB
     /// </summary>
     [ObservableProperty]
-    private int _rgbV2;
+    public partial int RgbV2 { get; set; }
+
     /// <summary>
     /// 动画时间
     /// </summary>
     [ObservableProperty]
-    private int _amTime;
+    public partial int AmTime { get; set; }
 
     /// <summary>
     /// 背景图位置
     /// </summary>
     [ObservableProperty]
-    private string? _pic;
+    public partial string? Pic { get; set; }
 
     /// <summary>
     /// 头像模式
     /// </summary>
     [ObservableProperty]
-    private HeadType _headType;
+    public partial HeadType HeadType { get; set; }
 
     /// <summary>
     /// 是否在加载中

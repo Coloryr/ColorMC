@@ -17,22 +17,25 @@ public partial class DownloadItemModel(int index) : ObservableObject
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
+
     /// <summary>
     /// 当前状态
     /// </summary>
     [ObservableProperty]
-    private string _state = LangUtils.Get("DownloadWindow.Text12");
+    public partial string State { get; set; } = LangUtils.Get("DownloadWindow.Text12");
+
     /// <summary>
     /// 错误次数
     /// </summary
     [ObservableProperty]
-    private int _errorTime;
+    public partial int ErrorTime { get; set; }
+
     /// <summary>
     /// 是否没有总大小
     /// </summary>
     [ObservableProperty]
-    private bool _isNotSize;
+    public partial bool IsNotSize { get; set; }
 
     /// <summary>
     /// 当前进度

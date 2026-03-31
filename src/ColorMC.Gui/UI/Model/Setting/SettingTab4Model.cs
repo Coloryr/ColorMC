@@ -20,126 +20,145 @@ public partial class SettingModel
     /// 启动前命令
     /// </summary>
     [ObservableProperty]
-    private string? _preCmd;
+    public partial string? PreCmd { get; set; }
+
     /// <summary>
     /// 启动后命令
     /// </summary>
     [ObservableProperty]
-    private string? _postCmd;
+    public partial string? PostCmd { get; set; }
+
     /// <summary>
     /// Java参数
     /// </summary>
     [ObservableProperty]
-    private string? _jvmArg;
+    public partial string? JvmArg { get; set; }
+
     /// <summary>
     /// 游戏参数
     /// </summary>
     [ObservableProperty]
-    private string? _gameArg;
+    public partial string? GameArg { get; set; }
+
     /// <summary>
     /// Java环境变量
     /// </summary>
     [ObservableProperty]
-    private string? _jvmEnv;
+    public partial string? JvmEnv { get; set; }
 
     /// <summary>
     /// 是否检测游戏文件
     /// </summary>
     [ObservableProperty]
-    private bool _checkCore;
+    public partial bool CheckCore { get; set; }
+
     /// <summary>
     /// 是否检测资源文件
     /// </summary>
     [ObservableProperty]
-    private bool _checkAssets;
+    public partial bool CheckAssets { get; set; }
+
     /// <summary>
     /// 是否检测运行库
     /// </summary>
     [ObservableProperty]
-    private bool _checkLib;
+    public partial bool CheckLib { get; set; }
+
     /// <summary>
     /// 是否检测模组
     /// </summary>
     [ObservableProperty]
-    private bool _checkMod;
+    public partial bool CheckMod { get; set; }
+
     /// <summary>
     /// 是否检测游戏文件完整性
     /// </summary>
     [ObservableProperty]
-    private bool _checkCoreSha1;
+    public partial bool CheckCoreSha1 { get; set; }
+
     /// <summary>
     /// 是否检测资源文件完整性
     /// </summary>
     [ObservableProperty]
-    private bool _checkAssetsSha1;
+    public partial bool CheckAssetsSha1 { get; set; }
+
     /// <summary>
     /// 是否检测运行库完整性
     /// </summary>
     [ObservableProperty]
-    private bool _checkLibSha1;
+    public partial bool CheckLibSha1 { get; set; }
+
     /// <summary>
     /// 是否检测模组完整性
     /// </summary>
     [ObservableProperty]
-    private bool _checkModSha1;
+    public partial bool CheckModSha1 { get; set; }
+
     /// <summary>
     /// 是否启动前运行
     /// </summary>
     [ObservableProperty]
-    private bool _preRun;
+    public partial bool PreRun { get; set; }
+
     /// <summary>
     /// 是否启动后运行
     /// </summary>
     [ObservableProperty]
-    private bool _postRun;
+    public partial bool PostRun { get; set; }
+
     /// <summary>
     /// 是否全屏显示
     /// </summary>
     [ObservableProperty]
-    private bool _fullScreen;
+    public partial bool FullScreen { get; set; }
+
     /// <summary>
     /// 是否同时启动游戏
     /// </summary>
     [ObservableProperty]
-    private bool _preRunSame;
+    public partial bool PreRunSame { get; set; }
+
     /// <summary>
     /// 是否禁用ColorMC ASM
     /// </summary>
     [ObservableProperty]
-    private bool _colorASM;
+    public partial bool ColorASM { get; set; }
 
     /// <summary>
     /// GC类型
     /// </summary>
     [ObservableProperty]
-    private GCType _gC;
+    public partial GCType GC { get; set; }
 
     /// <summary>
     /// 最小内存
     /// </summary>
     [ObservableProperty]
-    private uint? _minMemory;
+    public partial uint? MinMemory { get; set; }
+
     /// <summary>
     /// 最大内存
     /// </summary>
     [ObservableProperty]
-    private uint? _maxMemory;
+    public partial uint? MaxMemory { get; set; }
+
     /// <summary>
     /// 窗口宽度
     /// </summary>
     [ObservableProperty]
-    private uint? _width;
+    public partial uint? Width { get; set; }
+
     /// <summary>
     /// 窗口高度
     /// </summary>
     [ObservableProperty]
-    private uint? _height;
+    public partial uint? Height { get; set; }
 
     /// <summary>
     /// 内存信息
     /// </summary>
     [ObservableProperty]
-    private string _memory;
+    public partial string Memory { get; set; }
 
     /// <summary>
     /// 是否在加载配置

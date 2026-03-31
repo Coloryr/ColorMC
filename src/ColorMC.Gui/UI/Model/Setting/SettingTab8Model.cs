@@ -53,133 +53,151 @@ public partial class SettingModel
     /// 选中的按钮
     /// </summary>
     [ObservableProperty]
-    private InputButtonModel _inputItem;
+    public partial InputButtonModel InputItem { get; set; }
+
     /// <summary>
     /// 选中的摇杆
     /// </summary>
     [ObservableProperty]
-    private InputAxisButtonModel _inputAxisItem;
+    public partial InputAxisButtonModel InputAxisItem { get; set; }
 
     /// <summary>
     /// 是否初始化了手柄输入
     /// </summary>
     [ObservableProperty]
-    private bool _inputInit;
+    public partial bool InputInit { get; set; }
+
     /// <summary>
     /// 是否存在手柄
     /// </summary>
     [ObservableProperty]
-    private bool _inputExist;
+    public partial bool InputExist { get; set; }
+
     /// <summary>
     /// 是否启用手柄映射
     /// </summary>
     [ObservableProperty]
-    private bool _inputEnable;
+    public partial bool InputEnable { get; set; }
+
     /// <summary>
     /// 是否启用物品循环
     /// </summary>
     [ObservableProperty]
-    private bool _itemCycle;
+    public partial bool ItemCycle { get; set; }
+
     /// <summary>
     /// 是否启用物品循环
     /// </summary>
     [ObservableProperty]
-    private bool _inputDisable;
+    public partial bool InputDisable { get; set; }
 
     /// <summary>
     /// 手柄数量
     /// </summary>
     [ObservableProperty]
-    private int _inputNum;
+    public partial int InputNum { get; set; }
+
     /// <summary>
     /// 选中的手柄
     /// </summary>
     [ObservableProperty]
-    private int _inputIndex = -1;
+    public partial int InputIndex { get; set; } = -1;
+
     /// <summary>
     /// 选中的摇杆
     /// </summary>
     [ObservableProperty]
-    private int _inputRotateAxis = 0;
+    public partial int InputRotateAxis { get; set; } = 0;
+
     /// <summary>
     /// 光标摇杆死区大小
     /// </summary>
     [ObservableProperty]
-    private int _cursorDeath;
+    public partial int CursorDeath { get; set; }
+
     /// <summary>
     /// 移动摇杆死区大小
     /// </summary>
     [ObservableProperty]
-    private int _rotateDeath;
+    public partial int RotateDeath { get; set; }
+
     /// <summary>
     /// 光标摇杆
     /// </summary>
     [ObservableProperty]
-    private int _inputCursorAxis = 0;
+    public partial int InputCursorAxis { get; set; } = 0;
+
     /// <summary>
     /// 回滚值
     /// </summary>
     [ObservableProperty]
-    private int _toBackValue;
+    public partial int ToBackValue { get; set; }
 
     /// <summary>
     /// 当前配置
     /// </summary>
     [ObservableProperty]
-    private int _nowConfig = -1;
+    public partial int NowConfig { get; set; } = -1;
+
     /// <summary>
     /// 选中的配置
     /// </summary>
     [ObservableProperty]
-    private int _selectConfig = -1;
+    public partial int SelectConfig { get; set; } = -1;
+
     /// <summary>
     /// 选中的摇杆
     /// </summary>
     [ObservableProperty]
-    private int _nowAxis1;
+    public partial int NowAxis1 { get; set; }
+
     /// <summary>
     /// 选中的摇杆
     /// </summary>
     [ObservableProperty]
-    private int _nowAxis2;
+    public partial int NowAxis2 { get; set; }
 
     /// <summary>
     /// 物品循环按钮
     /// </summary>
     [ObservableProperty]
-    private byte _itemCycleLeft;
+    public partial byte ItemCycleLeft { get; set; }
+
     /// <summary>
     /// 物品循环按钮
     /// </summary>
     [ObservableProperty]
-    private byte _itemCycleRight;
+    public partial byte ItemCycleRight { get; set; }
 
     /// <summary>
     /// 物品循环图标
     /// </summary>
     [ObservableProperty]
-    private string _cycleLeftIcon;
+    public partial string CycleLeftIcon { get; set; }
+
     /// <summary>
     /// 物品循环图标
     /// </summary>
     [ObservableProperty]
-    private string _cycleRightIcon;
+    public partial string CycleRightIcon { get; set; }
 
     /// <summary>
     /// 移动倍率
     /// </summary>
     [ObservableProperty]
-    private float _rotateRate;
+    public partial float RotateRate { get; set; }
+
     /// <summary>
     /// 光标倍率
     /// </summary>
     [ObservableProperty]
-    private float _cursorRate;
+    public partial float CursorRate { get; set; }
+
     /// <summary>
     /// 降速
     /// </summary>
     [ObservableProperty]
-    private float _downRate;
+    public partial float DownRate { get; set; }
 
     /// <summary>
     /// 控制器列表

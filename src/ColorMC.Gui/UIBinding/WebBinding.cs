@@ -12,7 +12,6 @@ using ColorMC.Core.Game;
 using ColorMC.Core.GuiHandle;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
-using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.ColorMC;
@@ -939,55 +938,18 @@ public static class WebBinding
     }
 
     /// <summary>
-    /// 获取Forge版本
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <returns></returns>
-    public static Task<List<string>?> GetForgeVersionAsync(string version)
-    {
-        return ForgeAPI.GetVersionListAsync(false, version, CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取Fabric版本
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <returns></returns>
-    public static Task<List<string>?> GetFabricVersionAsync(string version)
-    {
-        return FabricAPI.GetLoadersAsync(version, CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取Quilt版本
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <returns></returns>
-    public static Task<List<string>?> GetQuiltVersionAsync(string version)
-    {
-        return QuiltAPI.GetLoadersAsync(version, CoreHttpClient.Source);
-    }
-    /// <summary>
-    /// 获取NeoForge版本
-    /// </summary>
-    /// <param name="version">游戏版本</param>
-    /// <returns></returns>
-    public static Task<List<string>?> GetNeoForgeVersionAsync(string version)
-    {
-        return ForgeAPI.GetVersionListAsync(true, version, CoreHttpClient.Source);
-    }
-
-    /// <summary>
     /// 获取Optifine版本
     /// </summary>
     /// <param name="version">游戏版本</param>
     /// <returns></returns>
-    public static async Task<List<string>?> GetOptifineVersionAsync(string version)
+    public static async Task<HashSet<string>?> GetOptifineVersionAsync(string version)
     {
         var list = await OptifineAPI.GetOptifineVersionAsync();
         if (list == null)
         {
             return null;
         }
-        var list1 = new List<string>();
+        var list1 = new HashSet<string>();
         foreach (var item in list)
         {
             if (item.MCVersion == version)

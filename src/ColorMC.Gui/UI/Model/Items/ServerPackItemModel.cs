@@ -15,32 +15,37 @@ public partial class ServerPackItemModel : ObservableObject
     /// 下载地址
     /// </summary>
     [ObservableProperty]
-    private string _url;
+    public partial string Url { get; set; }
+
     /// <summary>
     /// 项目ID
     /// </summary>
     [ObservableProperty]
-    private string? _pID;
+    public partial string? PID { get; set; }
+
     /// <summary>
     /// 文件ID
     /// </summary>
     [ObservableProperty]
-    private string? _fID;
+    public partial string? FID { get; set; }
+
     /// <summary>
     /// 校验
     /// </summary>
     [ObservableProperty]
-    public string _sha256;
+    public partial string Sha256 { get; set; }
+
     /// <summary>
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    public bool _check;
+    public partial bool Check { get; set; }
+
     /// <summary>
     /// 文件名
     /// </summary>
     [ObservableProperty]
-    public string _fileName;
+    public partial string FileName { get; set; }
 
     /// <summary>
     /// 下载源名字

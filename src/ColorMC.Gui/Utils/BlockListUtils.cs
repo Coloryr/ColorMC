@@ -14,7 +14,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
-using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using MinecraftSkinRender.Image;
@@ -731,7 +730,7 @@ public static class BlockListUtils
 
                 SaveState();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logs.Error("", e);
                 error = false;
@@ -750,7 +749,7 @@ public static class BlockListUtils
     {
         if (!File.Exists(local))
         {
-            return false;   
+            return false;
         }
 
         if (local.EndsWith(Names.NameJarExt))
@@ -770,12 +769,12 @@ public static class BlockListUtils
                     LoadLang(json.RootElement);
                 }
                 catch
-                { 
-                    
+                {
+
                 }
             }
         }
-        else if(local.EndsWith(Names.NameJsonExt))
+        else if (local.EndsWith(Names.NameJsonExt))
         {
             using var file = PathHelper.OpenRead(local);
             if (file == null)
@@ -788,8 +787,8 @@ public static class BlockListUtils
                 LoadLang(json.RootElement);
             }
             catch
-            { 
-                
+            {
+
             }
         }
 

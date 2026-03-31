@@ -28,32 +28,37 @@ public partial class LuckBlockModel(WindowModel model) : ControlModel(model)
     /// 是否在循环动画
     /// </summary>
     [ObservableProperty]
-    private bool _isAnimating;
+    public partial bool IsAnimating { get; set; }
+
     /// <summary>
     /// 动画移动速度
     /// </summary>
     [ObservableProperty]
-    private double _scrollSpeed = 5;
+    public partial double ScrollSpeed { get; set; } = 5;
+
     /// <summary>
     /// 是否在展示结果
     /// </summary>
     [ObservableProperty]
-    private bool _showResult;
+    public partial bool ShowResult { get; set; }
+
     /// <summary>
     /// 是否可以抽取
     /// </summary>
     [ObservableProperty]
-    private bool _canRun;
+    public partial bool CanRun { get; set; }
+
     /// <summary>
     /// 是否可以开始抽取
     /// </summary>
     [ObservableProperty]
-    private bool _canStart;
+    public partial bool CanStart { get; set; }
+
     /// <summary>
     /// 抽中的项目
     /// </summary>
     [ObservableProperty]
-    private BlockItemModel? _selectedItem;
+    public partial BlockItemModel? SelectedItem { get; set; }
 
     /// <summary>
     /// 方块列表

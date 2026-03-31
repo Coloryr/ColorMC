@@ -106,13 +106,13 @@ public partial class GameEditModel
     /// 模组筛选
     /// </summary>
     [ObservableProperty]
-    private string _modText;
+    public partial string ModText { get; set; }
 
     /// <summary>
     /// 选中的模组过滤器
     /// </summary>
     [ObservableProperty]
-    private ModFilterType _modFilter;
+    public partial ModFilterType ModFilter { get; set; }
 
     /// <summary>
     /// 是否在模组标记模式中

@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Gui.UI.Model.Items;
@@ -29,43 +27,43 @@ public partial class ZipTreeNodeModel : ObservableObject
     /// 路径（ZIP内的相对路径）
     /// </summary>
     [ObservableProperty]
-    private string _path;
+    public partial string Path { get; set; }
 
     /// <summary>
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
 
     /// <summary>
     /// 占用大小
     /// </summary>
     [ObservableProperty]
-    private long? _size;
+    public partial long? Size { get; set; }
 
     /// <summary>
     /// 占用大小
     /// </summary>
     [ObservableProperty]
-    private long? _compressedSize;
-    
+    public partial long? CompressedSize { get; set; }
+
     /// <summary>
     /// 是否有子项目
     /// </summary>
     [ObservableProperty]
-    private bool _hasChildren = true;
+    public partial bool HasChildren { get; set; } = true;
 
     /// <summary>
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _isExpanded;
+    public partial bool IsExpanded { get; set; }
 
     /// <summary>
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isChecked;
+    public partial bool IsChecked { get; set; }
 
     /// <summary>
     /// 父文件夹
@@ -83,10 +81,10 @@ public partial class ZipTreeNodeModel : ObservableObject
     public ZipTreeNodeModel()
     {
         _parent = this;
-        _path = "/";
-        _name = "/";
-        _isChecked = true;
-        _isExpanded = true;
+        Path = "/";
+        Name = "/";
+        IsChecked = true;
+        IsExpanded = true;
         IsDirectory = true;
         HasChildren = false;
     }
@@ -103,23 +101,21 @@ public partial class ZipTreeNodeModel : ObservableObject
         {
             // 处理路径
             string fullPath = entry.Key.Replace('\\', '/').Trim('/');
-            _path = string.IsNullOrEmpty(fullPath) ? "/" : "/" + fullPath;
+            Path = string.IsNullOrEmpty(fullPath) ? "/" : "/" + fullPath;
 
             // 判断是否为目录（ZIP条目中目录通常以/结尾）
             IsDirectory = entry.IsDirectory || entry.Key.EndsWith('/');
-
-            // 获取名称
-            _name = IsDirectory
+            Name = IsDirectory
                 ? System.IO.Path.GetFileName(fullPath.TrimEnd('/'))
                 : System.IO.Path.GetFileName(fullPath);
         }
-        if (string.IsNullOrEmpty(_name))
+        if (string.IsNullOrEmpty(Name))
         {
-            _name = "";
+            Name = "";
         }
 
-        _isChecked = isChecked;
-        _isExpanded = false;
+        IsChecked = isChecked;
+        IsExpanded = false;
 
         // 设置文件属性
         if (!IsDirectory)
@@ -140,17 +136,17 @@ public partial class ZipTreeNodeModel : ObservableObject
     private ZipTreeNodeModel(ZipTreeNodeModel? parent, string path, bool isDirectory, bool isChecked = true)
     {
         _parent = parent ?? this;
-        _path = path.StartsWith('/') ? path : "/" + path;
+        Path = path.StartsWith('/') ? path : "/" + path;
         IsDirectory = isDirectory;
-        _name = System.IO.Path.GetFileName(_path.TrimEnd('/'));
+        Name = System.IO.Path.GetFileName(Path.TrimEnd('/'));
 
-        if (string.IsNullOrEmpty(_name))
+        if (string.IsNullOrEmpty(Name))
         {
-            _name = "";
+            Name = "";
         }
 
-        _isChecked = isChecked;
-        _isExpanded = false;
+        IsChecked = isChecked;
+        IsExpanded = false;
         HasChildren = isDirectory;
     }
 
@@ -160,11 +156,11 @@ public partial class ZipTreeNodeModel : ObservableObject
     public ZipTreeNodeModel(IWritableArchive<ZipWriterOptions> archive, bool defaultChecked = true)
     {
         _parent = this;
-        _name = "";
-        _path = "/";
-        _isExpanded = true;
+        Name = "";
+        Path = "/";
+        IsExpanded = true;
         IsDirectory = true;
-        _isChecked = true;
+        IsChecked = true;
         HasChildren = archive.Entries.Any();
 
         var pathDictionary = new Dictionary<string, ZipTreeNodeModel>(StringComparer.OrdinalIgnoreCase);
@@ -271,7 +267,7 @@ public partial class ZipTreeNodeModel : ObservableObject
             list.AddRange(item.GetUnSelectItems());
         }
 
-        if (!IsChecked && !IsDirectory && Entry !=null)
+        if (!IsChecked && !IsDirectory && Entry != null)
         {
             list.Add(Entry);
         }

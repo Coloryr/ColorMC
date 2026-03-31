@@ -19,7 +19,7 @@ public partial class ErrorModel : ControlModel
     /// 显示的文本
     /// </summary>
     [ObservableProperty]
-    private TextDocument _text;
+    public partial TextDocument Text { get; set; }
 
     /// <summary>
     /// 是否需要同时关闭启动器
@@ -47,14 +47,15 @@ public partial class ErrorModel : ControlModel
         {
             builder.Append(e.ToString());
         }
-        _text = new TextDocument(builder.ToString());
+
+        Text = new TextDocument(builder.ToString());
 
         NeedClose = close;
     }
 
     public ErrorModel(WindowModel model, string log, bool close) : this(model)
     {
-        _text = new TextDocument(log);
+        Text = new TextDocument(log);
 
         NeedClose = close;
     }

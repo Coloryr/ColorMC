@@ -30,68 +30,80 @@ public partial class MainModel : ControlModel, IMutTop
     /// Motd地址
     /// </summary>
     [ObservableProperty]
-    private (string, ushort) _server;
+    public partial (string, ushort) Server { get; set; }
 
     /// <summary>
     /// 是否显示服务器信息
     /// </summary>
     [ObservableProperty]
-    private bool _motdDisplay;
+    public partial bool MotdDisplay { get; set; }
+
     /// <summary>
     /// 是否有游戏错误
     /// </summary>
     [ObservableProperty]
-    private bool _isGameError;
+    public partial bool IsGameError { get; set; }
+
     /// <summary>
     /// 是否显示背景图
     /// </summary>
     [ObservableProperty]
-    private bool _backDisplay;
+    public partial bool BackDisplay { get; set; }
+
     /// <summary>
     /// 是否渲染
     /// </summary>
     [ObservableProperty]
-    private bool _render = true;
+    public partial bool Render { get; set; } = true;
+
     /// <summary>
     /// 是否展示上次启动
     /// </summary>
     [ObservableProperty]
-    private bool _cardLast;
+    public partial bool CardLast { get; set; }
+
     /// <summary>
     /// 是否显示音乐
     /// </summary>
     [ObservableProperty]
-    private bool _cardMusic;
+    public partial bool CardMusic { get; set; }
+
     /// <summary>
     /// 是否显示新闻卡片
     /// </summary>
     [ObservableProperty]
-    private bool _cardNews;
+    public partial bool CardNews { get; set; }
+
     /// <summary>
     /// 幸运方块卡片
     /// </summary>
     [ObservableProperty]
-    private bool _cardBlock;
+    public partial bool CardBlock { get; set; }
+
     /// <summary>
     /// 是否有启动器更新
     /// </summary>
     [ObservableProperty]
-    private bool _cardUpdate;
+    public partial bool CardUpdate { get; set; }
+
     /// <summary>
     /// 是否展示联机卡片
     /// </summary>
     [ObservableProperty]
-    private bool _cardOnline;
+    public partial bool CardOnline { get; set; }
+
     /// <summary>
     /// 是否有卡片
     /// </summary>
     [ObservableProperty]
-    private bool _haveCard = true;
+    public partial bool HaveCard { get; set; } = true;
+
     /// <summary>
     /// 音频按钮
     /// </summary>
     [ObservableProperty]
-    private string _audioIcon = ImageManager.MusicIcons[1];
+    public partial string AudioIcon { get; set; } = ImageManager.MusicIcons[1];
+
     /// <summary>
     /// 是否获取新的数据
     /// </summary>

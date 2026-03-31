@@ -175,7 +175,7 @@ public abstract class AMultiWindow : ABaseWindow, IBaseWindow
         }
         else
         {
-            model.MaxIcon = SystemInfo.Os == OsType.MacOs ? ImageManager.MaxMacosIcon[0] :ImageManager.MaxWindowsIcon[0];
+            model.MaxIcon = SystemInfo.Os == OsType.MacOs ? ImageManager.MaxMacosIcon[0] : ImageManager.MaxWindowsIcon[0];
         }
     }
 

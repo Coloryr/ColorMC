@@ -20,5 +20,5 @@ public partial class GroupEditModel(WindowModel window, string? group) : BaseDia
     /// 选择的群组
     /// </summary>
     [ObservableProperty]
-    private string? _groupItem = group;
+    public partial string? GroupItem { get; set; } = group;
 }

@@ -25,7 +25,7 @@ public partial class SettingModel : MenuModel
     /// 
     /// </summary>
     [ObservableProperty]
-    private bool _enableWindowMode = true;
+    public partial bool EnableWindowMode { get; set; } = true;
 
     /// <summary>
     /// 更新定制器

@@ -19,13 +19,13 @@ public partial class AddResourceControlModel
     /// 下载的模组
     /// </summary>
     [ObservableProperty]
-    private FileModVersionModel? _mod;
+    public partial FileModVersionModel? Mod { get; set; }
 
     /// <summary>
     /// 文件列表是否显示下一页
     /// </summary>
     [ObservableProperty]
-    private bool _nextPageDisplay;
+    public partial bool NextPageDisplay { get; set; }
 
     /// <summary>
     /// 下载一个列表的模组

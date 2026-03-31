@@ -36,7 +36,7 @@ public partial class MacosHeadControl : UserControl
     public MacosHeadControl()
     {
         InitializeComponent();
-        
+
         Buttons.PointerEntered += ButtonMinOnPointerEntered;
         Buttons.PointerExited += ButtonMinOnPointerExited;
 

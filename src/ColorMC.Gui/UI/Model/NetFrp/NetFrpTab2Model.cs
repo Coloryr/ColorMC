@@ -26,7 +26,7 @@ public partial class NetFrpModel
     /// 是否没有本地游戏列表
     /// </summary>
     [ObservableProperty]
-    private bool _isLocalEmpty = true;
+    public partial bool IsLocalEmpty { get; set; } = true;
 
     /// <summary>
     /// 本地游戏列表

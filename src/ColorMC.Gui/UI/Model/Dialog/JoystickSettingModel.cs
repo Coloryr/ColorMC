@@ -24,12 +24,13 @@ public partial class JoystickSettingModel : BaseDialogModel
     /// 选择的手柄
     /// </summary>
     [ObservableProperty]
-    private int _controlIndex = -1;
+    public partial int ControlIndex { get; set; } = -1;
+
     /// <summary>
     /// 选择的配置
     /// </summary>
     [ObservableProperty]
-    private int _configUUID = -1;
+    public partial int ConfigUUID { get; set; } = -1;
 
     /// <summary>
     /// 配置列表

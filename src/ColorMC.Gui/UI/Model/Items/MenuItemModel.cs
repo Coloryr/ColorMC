@@ -32,7 +32,7 @@ public partial class MenuItemModel : ObservableObject
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isCheck;
+    public partial bool IsCheck { get; set; }
 }
 
 /// <summary>

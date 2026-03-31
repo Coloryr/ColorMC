@@ -27,30 +27,31 @@ public partial class MainModel
     /// 音乐音量
     /// </summary>
     [ObservableProperty]
-    private int _musicVolume;
+    public partial int MusicVolume { get; set; }
 
     /// <summary>
     /// 音乐名字
     /// </summary>
     [ObservableProperty]
-    private string _musicName;
+    public partial string MusicName { get; set; }
+
     /// <summary>
     /// 当前播放进度
     /// </summary>
     [ObservableProperty]
-    private string _musicNow;
+    public partial string MusicNow { get; set; }
 
     /// <summary>
     /// 音乐背景图
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _musicImage;
+    public partial Bitmap? MusicImage { get; set; }
 
     /// <summary>
     /// 是否有音乐背景图
     /// </summary>
     [ObservableProperty]
-    private bool _haveMusicImage;
+    public partial bool HaveMusicImage { get; set; }
 
     /// <summary>
     /// 是否循环播放

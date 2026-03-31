@@ -17,22 +17,25 @@ public partial class AddLockLoginModel(string name) : BaseDialogModel(name)
     /// 选中项目
     /// </summary>
     [ObservableProperty]
-    private int _index;
+    public partial int Index { get; set; }
+
     /// <summary>
     /// 是否启用文本
     /// </summary>
     [ObservableProperty]
-    private bool _enableInput;
+    public partial bool EnableInput { get; set; }
+
     /// <summary>
     /// 输入文本
     /// </summary>
     [ObservableProperty]
-    private string _inputText;
+    public partial string InputText { get; set; }
+
     /// <summary>
     /// 输入文本
     /// </summary>
     [ObservableProperty]
-    private string _inputText1;
+    public partial string InputText1 { get; set; }
 
     partial void OnIndexChanged(int value)
     {

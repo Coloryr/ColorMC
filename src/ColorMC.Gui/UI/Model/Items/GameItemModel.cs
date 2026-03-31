@@ -29,85 +29,97 @@ public partial class GameItemModel : GameModel
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isSelect;
+    public partial bool IsSelect { get; set; }
+
     /// <summary>
     /// 是否已启动
     /// </summary>
     [ObservableProperty]
-    private bool _isLaunch;
+    public partial bool IsLaunch { get; set; }
+
     /// <summary>
     /// 是否在启动中
     /// </summary>
     [ObservableProperty]
-    private bool _isLaunching;
+    public partial bool IsLaunching { get; set; }
+
     /// <summary>
     /// 是否已经加载
     /// </summary>
     [ObservableProperty]
-    private bool _isLoad;
+    public partial bool IsLoad { get; set; }
+
     /// <summary>
     /// 是否拖拽
     /// </summary>
     [ObservableProperty]
-    private bool _isDrop;
+    public partial bool IsDrop { get; set; }
+
     /// <summary>
     /// 是否鼠标在上面
     /// </summary>
     [ObservableProperty]
-    private bool _isOver;
+    public partial bool IsOver { get; set; }
+
     /// <summary>
     /// 是否为新建实例
     /// </summary>
     [ObservableProperty]
-    private bool _isNew;
+    public partial bool IsNew { get; set; }
+
     /// <summary>
     /// 是否勾选
     /// </summary>
     [ObservableProperty]
-    private bool _isCheck;
+    public partial bool IsCheck { get; set; }
+
     /// <summary>
     /// 是否显示按钮
     /// </summary>
     [ObservableProperty]
-    private bool _buttonShow;
+    public partial bool ButtonShow { get; set; }
+
     /// <summary>
     /// 是否显示勾选
     /// </summary>
     [ObservableProperty]
-    private bool _showCheck;
+    public partial bool ShowCheck { get; set; }
+
     /// <summary>
     /// 是否显示
     /// </summary>
     [ObservableProperty]
-    private bool _isDisplay = true;
+    public partial bool IsDisplay { get; set; } = true;
+
     /// <summary>
     /// 是否为锁定模式
     /// </summary>
     [ObservableProperty]
-    private bool _oneGame;
+    public partial bool OneGame { get; set; }
 
     /// <summary>
     /// 悬浮提示
     /// </summary>
     [ObservableProperty]
-    private string _tips;
+    public partial string Tips { get; set; }
 
     /// <summary>
     /// 透明度
     /// </summary>
     [ObservableProperty]
-    private double _opa = 1.0f;
+    public partial double Opa { get; set; } = 1.0f;
 
     /// <summary>
     /// 字体换行
     /// </summary>
     [ObservableProperty]
-    private TextWrapping _wrap = TextWrapping.NoWrap;
+    public partial TextWrapping Wrap { get; set; } = TextWrapping.NoWrap;
+
     /// <summary>
     /// 字体裁剪
     /// </summary>
     [ObservableProperty]
-    private TextTrimming _trim = TextTrimming.CharacterEllipsis;
+    public partial TextTrimming Trim { get; set; } = TextTrimming.CharacterEllipsis;
 
     /// <summary>
     /// 主窗口
@@ -127,7 +139,7 @@ public partial class GameItemModel : GameModel
     /// 图标
     /// </summary>
     [ObservableProperty]
-    private Bitmap _pic;
+    public partial Bitmap Pic { get; set; }
 
     /// <summary>
     /// 游戏分组
@@ -162,7 +174,7 @@ public partial class GameItemModel : GameModel
     public GameItemModel(WindowModel model, string? group) : base(model, new() { })
     {
         _group = group;
-        _isNew = true;
+        IsNew = true;
     }
 
     public GameItemModel(WindowModel model, IMainTop? top, GameSettingObj obj) : base(model, obj)

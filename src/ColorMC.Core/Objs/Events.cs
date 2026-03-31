@@ -691,7 +691,7 @@ public class DownloadEventArgs : EventArgs
 /// Java修改事件
 /// </summary>
 public class JavaChangeArg : EventArgs
-{ 
+{
     /// <summary>
     /// 是否为添加操作
     /// </summary>

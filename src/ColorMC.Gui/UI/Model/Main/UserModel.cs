@@ -17,35 +17,37 @@ public partial class MainModel
     /// 用户名字
     /// </summary>
     [ObservableProperty]
-    private string _userId;
+    public partial string UserId { get; set; }
+
     /// <summary>
     /// 用户类型
     /// </summary>
     [ObservableProperty]
-    private string _userType;
+    public partial string UserType { get; set; }
 
     /// <summary>
     /// 头像
     /// </summary>
     [ObservableProperty]
-    private Bitmap _head = ImageManager.LoadBitmap;
+    public partial Bitmap Head { get; set; } = ImageManager.LoadBitmap;
 
     /// <summary>
     /// 账户类型颜色
     /// </summary>
     [ObservableProperty]
-    private IBrush _authColor = Brushes.Black;
+    public partial IBrush AuthColor { get; set; } = Brushes.Black;
 
     /// <summary>
     /// 是否有头像
     /// </summary>
     [ObservableProperty]
-    private bool _isHeadLoad;
+    public partial bool IsHeadLoad { get; set; }
+
     /// <summary>
     /// 是否有玩家
     /// </summary>
     [ObservableProperty]
-    private bool _isHavePlayer;
+    public partial bool IsHavePlayer { get; set; }
 
     /// <summary>
     /// 加载用户信息

@@ -63,31 +63,34 @@ public partial class UsersModel : ControlModel
     /// 选中的账户
     /// </summary>
     [ObservableProperty]
-    private UserDisplayModel? _item;
+    public partial UserDisplayModel? Item { get; set; }
+
     /// <summary>
     /// 用户展示类型
     /// </summary>
     [ObservableProperty]
-    private ItemsGridType _gridType = ItemsGridType.Grid;
+    public partial ItemsGridType GridType { get; set; } = ItemsGridType.Grid;
 
     /// <summary>
     /// 账户类型
     /// </summary>
     [ObservableProperty]
-    private int _displayType;
+    public partial int DisplayType { get; set; }
+
     /// <summary>
     /// 所有账户数量
     /// </summary>
     [ObservableProperty]
-    private int _userCount;
+    public partial int UserCount { get; set; }
+
     /// <summary>
     /// 当前分类账户数量
     /// </summary>
     [ObservableProperty]
-    private int _listUserCount;
+    public partial int ListUserCount { get; set; }
 
     [ObservableProperty]
-    private int _gridCount;
+    public partial int GridCount { get; set; }
 
     /// <summary>
     /// 账户类型列表

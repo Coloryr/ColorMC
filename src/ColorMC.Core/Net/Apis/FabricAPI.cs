@@ -18,9 +18,11 @@ public static class FabricAPI
     /// <summary>
     /// 获取元数据
     /// </summary>
-    public static async Task<FabricMetaObj?> GetMetaAsync(SourceLocal? local = null)
+    public static async Task<FabricMetaObj?> GetMetaAsync(SourceLocal? source = null)
     {
-        string url = UrlHelper.GetFabricMeta(local);
+        source ??= CoreHttpClient.Source;
+
+        string url = UrlHelper.GetFabricMeta(source);
         try
         {
             using var stream = await CoreHttpClient.GetStreamAsync(url);
@@ -38,9 +40,11 @@ public static class FabricAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<GetFabricLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
+    public static async Task<GetFabricLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? source = null)
     {
-        string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}/{version}/profile/json";
+        source ??= CoreHttpClient.Source;
+
+        string url = $"{UrlHelper.GetFabricMeta(source)}/loader/{mc}/{version}/profile/json";
         try
         {
             using var stream = await CoreHttpClient.GetStreamAsync(url);
@@ -70,9 +74,11 @@ public static class FabricAPI
     /// 获取加载器版本
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static async Task<HashSet<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetLoadersAsync(string mc, SourceLocal? source = null)
     {
-        string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
+        source ??= CoreHttpClient.Source;
+
+        string url = $"{UrlHelper.GetFabricMeta(source)}/loader/{mc}";
         try
         {
             using var stream = await CoreHttpClient.GetStreamAsync(url);
@@ -102,14 +108,16 @@ public static class FabricAPI
     /// <summary>
     /// 获取支持的版本
     /// </summary>
-    public static async Task<HashSet<string>?> GetSupportVersionAsync(SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetSupportVersionAsync(SourceLocal? source = null)
     {
         if (s_supportVersion.Count != 0)
         {
             return s_supportVersion;
         }
 
-        string url = $"{UrlHelper.GetFabricMeta(local)}/game";
+        source ??= CoreHttpClient.Source;
+
+        string url = $"{UrlHelper.GetFabricMeta(source)}/game";
 
         try
         {

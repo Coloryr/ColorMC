@@ -34,7 +34,7 @@ public partial class GameEditModel : MenuModel
         //加载设置
         _setting = GameManager.ReadConfig(_obj);
 
-        _titleText = string.Format(LangUtils.Get("GameEditWindow.Tab2.Text13"), _obj.Name);
+        TitleText = string.Format(LangUtils.Get("GameEditWindow.Tab2.Text13"), _obj.Name);
 
         SetMenu(
         [

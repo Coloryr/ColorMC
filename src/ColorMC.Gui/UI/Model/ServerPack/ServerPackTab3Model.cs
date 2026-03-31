@@ -22,7 +22,7 @@ public partial class ServerPackModel
     /// 选中的资源包
     /// </summary>
     [ObservableProperty]
-    private ServerPackItemModel _resourceItem;
+    public partial ServerPackItemModel ResourceItem { get; set; }
 
     /// <summary>
     /// 选中所有资源

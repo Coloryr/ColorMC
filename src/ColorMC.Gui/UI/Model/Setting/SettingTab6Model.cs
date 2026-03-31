@@ -50,129 +50,145 @@ public partial class SettingModel
     /// 选中的锁定类型
     /// </summary>
     [ObservableProperty]
-    private LockLoginModel _lockSelect;
+    public partial LockLoginModel LockSelect { get; set; }
 
     /// <summary>
     /// Motd字体颜色
     /// </summary>
     [ObservableProperty]
-    private Color _motdFontColor;
+    public partial Color MotdFontColor { get; set; }
+
     /// <summary>
     /// Motd背景颜色
     /// </summary>
     [ObservableProperty]
-    private Color _motdBackColor;
+    public partial Color MotdBackColor { get; set; }
 
     /// <summary>
     /// 服务器地址
     /// </summary>
     [ObservableProperty]
-    private string _serverIP;
+    public partial string ServerIP { get; set; }
+
     /// <summary>
     /// 服务器背景音乐
     /// </summary>
     [ObservableProperty]
-    private string? _music;
+    public partial string? Music { get; set; }
+
     /// <summary>
     /// 自定义启动页面文本
     /// </summary>
     [ObservableProperty]
-    private string? _startText;
+    public partial string? StartText { get; set; }
 
     /// <summary>
     /// 服务器端口
     /// </summary>
     [ObservableProperty]
-    private ushort? _serverPort;
+    public partial ushort? ServerPort { get; set; }
 
     /// <summary>
     /// 是否启用Motd
     /// </summary>
     [ObservableProperty]
-    private bool _enableMotd;
+    public partial bool EnableMotd { get; set; }
+
     /// <summary>
     /// 是否自动加入服务器
     /// </summary>
     [ObservableProperty]
-    private bool _enableJoin;
+    public partial bool EnableJoin { get; set; }
+
     /// <summary>
     /// 是否启用服务器
     /// </summary>
     [ObservableProperty]
-    private bool _enableIP;
+    public partial bool EnableIP { get; set; }
+
     /// <summary>
     /// 是否是锁定游戏实例
     /// </summary>
     [ObservableProperty]
-    private bool _enableOneGame;
+    public partial bool EnableOneGame { get; set; }
+
     /// <summary>
     /// 是否锁定登录账户类型
     /// </summary>
     [ObservableProperty]
-    private bool _enableOneLogin;
+    public partial bool EnableOneLogin { get; set; }
+
     /// <summary>
     /// 是否启用背景音乐
     /// </summary>
     [ObservableProperty]
-    private bool _enableMusic;
+    public partial bool EnableMusic { get; set; }
+
     /// <summary>
     /// 缓慢加载音乐
     /// </summary>
     [ObservableProperty]
-    private bool _slowVolume;
+    public partial bool SlowVolume { get; set; }
+
     /// <summary>
     /// 是否启动游戏后暂停背景音乐
     /// </summary>
     [ObservableProperty]
-    private bool _runPause;
+    public partial bool RunPause { get; set; }
+
     /// <summary>
     /// 是否启用自定义UI
     /// </summary>
     [ObservableProperty]
-    private bool _enableUI;
+    public partial bool EnableUI { get; set; }
+
     /// <summary>
     /// 是否启用背景音乐循环
     /// </summary>
     [ObservableProperty]
-    private bool _loop;
+    public partial bool Loop { get; set; }
+
     /// <summary>
     /// 是否自定义图标
     /// </summary>
     [ObservableProperty]
-    private bool _customIcon;
+    public partial bool CustomIcon { get; set; }
+
     /// <summary>
     /// 是否自定义启动图标
     /// </summary>
     [ObservableProperty]
-    private bool _customStart;
+    public partial bool CustomStart { get; set; }
 
     /// <summary>
     /// 选中的游戏实例
     /// </summary>
     [ObservableProperty]
-    private int _game = -1;
+    public partial int Game { get; set; } = -1;
+
     /// <summary>
     /// 背景音乐音量
     /// </summary>
     [ObservableProperty]
-    private int _volume;
+    public partial int Volume { get; set; }
 
     /// <summary>
     /// 图标图片
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _iconImage;
+    public partial Bitmap? IconImage { get; set; }
+
     /// <summary>
     /// 开始启动页面图片
     /// </summary>
     [ObservableProperty]
-    private Bitmap? _startImage;
+    public partial Bitmap? StartImage { get; set; }
 
     /// <summary>
     /// 启动页面动画类型
     /// </summary>
     [ObservableProperty]
-    private DisplayType _displayType;
+    public partial DisplayType DisplayType { get; set; }
 
     /// <summary>
     /// 配置是否加载中

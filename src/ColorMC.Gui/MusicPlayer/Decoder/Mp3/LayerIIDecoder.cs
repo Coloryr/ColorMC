@@ -494,11 +494,11 @@ public class LayerIIDecoder(BitStream stream0, Mp3Header header0, SynthesisFilte
                 else
                     // tables 3-B.2a or 3-B.2b
                     if (Subbandnumber <= 10)
-                    return 4;
-                else if (Subbandnumber <= 22)
-                    return 3;
-                else
-                    return 2;
+                        return 4;
+                    else if (Subbandnumber <= 22)
+                        return 3;
+                    else
+                        return 2;
             }
             else
             { // MPEG-2 LSF -- Jeff

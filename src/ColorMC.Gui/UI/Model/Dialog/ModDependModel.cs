@@ -41,7 +41,7 @@ public partial class ModDependModel : ObservableObject
     /// 展示所有附属模组
     /// </summary>
     [ObservableProperty]
-    private bool _loadMoreMod;
+    public partial bool LoadMoreMod { get; set; }
 
     /// <summary>
     /// 下载的模组项目

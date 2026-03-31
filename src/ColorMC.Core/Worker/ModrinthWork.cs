@@ -6,7 +6,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.Modrinth;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Worker;
@@ -326,7 +325,7 @@ public class ModrinthWork : ModPackWork, IModPackWork
         }
 
         unselect ??= [];
-        
+
         int length = Names.NameOverrideDir.Length;
         string dir = Names.NameOverrideDir;
 

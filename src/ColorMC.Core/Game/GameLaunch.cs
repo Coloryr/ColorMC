@@ -224,7 +224,7 @@ public static class Launch
         JavaInfoObj? jvm = null;
         if (!string.IsNullOrWhiteSpace(obj.JvmName))
         {
-            jvm = JvmPath.GetInfo(obj.JvmName) 
+            jvm = JvmPath.GetInfo(obj.JvmName)
                 ?? throw new LaunchException(LaunchError.SelectJavaNotFound, data: obj.JvmName);
         }
 

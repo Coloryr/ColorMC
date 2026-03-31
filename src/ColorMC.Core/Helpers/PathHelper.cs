@@ -110,67 +110,67 @@ public static class PathHelper
                     case OsType.Windows:
                         return Win32.MoveToTrash(dir);
                     case OsType.Linux:
-                    {
-                        string trashFilesPath = GetTrashFilesPath();
-                        string trashInfoPath = GetTrashInfoPath();
-
-                        string fileName = Path.GetFileName(dir);
-                        string destPath = Path.Combine(trashFilesPath, fileName);
-                        string trashInfoFile = Path.Combine(trashInfoPath, fileName + ".trashinfo");
-
-                        // 处理文件名冲突
-                        int counter = 1;
-                        while (File.Exists(destPath) || Directory.Exists(destPath))
                         {
-                            string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-                            string ext = Path.GetExtension(fileName);
-                            destPath = Path.Combine(trashFilesPath, $"{nameWithoutExt}_{counter}{ext}");
-                            trashInfoFile = Path.Combine(trashInfoPath, $"{nameWithoutExt}_{counter}{ext}.trashinfo");
-                            counter++;
-                        }
+                            string trashFilesPath = GetTrashFilesPath();
+                            string trashInfoPath = GetTrashInfoPath();
 
-                        // 创建 .trashinfo 文件
-                        string trashInfoContent = GenerateTrashInfoContent(dir, DateTime.Now);
-                        File.WriteAllText(trashInfoFile, trashInfoContent);
+                            string fileName = Path.GetFileName(dir);
+                            string destPath = Path.Combine(trashFilesPath, fileName);
+                            string trashInfoFile = Path.Combine(trashInfoPath, fileName + ".trashinfo");
 
-                        if (File.Exists(dir))
-                        {
-                            File.Move(dir, destPath);
-                        }
-                        else if (Directory.Exists(dir))
-                        {
-                            Directory.Move(dir, destPath);
-                        }
+                            // 处理文件名冲突
+                            int counter = 1;
+                            while (File.Exists(destPath) || Directory.Exists(destPath))
+                            {
+                                string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                                string ext = Path.GetExtension(fileName);
+                                destPath = Path.Combine(trashFilesPath, $"{nameWithoutExt}_{counter}{ext}");
+                                trashInfoFile = Path.Combine(trashInfoPath, $"{nameWithoutExt}_{counter}{ext}.trashinfo");
+                                counter++;
+                            }
 
-                        return true;
-                    }
+                            // 创建 .trashinfo 文件
+                            string trashInfoContent = GenerateTrashInfoContent(dir, DateTime.Now);
+                            File.WriteAllText(trashInfoFile, trashInfoContent);
+
+                            if (File.Exists(dir))
+                            {
+                                File.Move(dir, destPath);
+                            }
+                            else if (Directory.Exists(dir))
+                            {
+                                Directory.Move(dir, destPath);
+                            }
+
+                            return true;
+                        }
                     case OsType.MacOs:
-                    {
-                        dir = dir.Replace("\\", @"\\")
-                            .Replace("\"", "\\\"")
-                            .Replace("\n", "\\n")
-                            .Replace("\r", "\\r")
-                            .Replace("\t", "\\t");
-                    
-                        // AppleScript命令
-                        string appleScriptCommand = $"tell application \"Finder\" to delete POSIX file \"{dir}\"";
-
-                        // 使用bash执行AppleScript
-                        var processInfo = new ProcessStartInfo("osascript", ["-e", appleScriptCommand])
                         {
-                            RedirectStandardOutput = true,
-                            RedirectStandardError = true,
-                            CreateNoWindow = true
-                        };
+                            dir = dir.Replace("\\", @"\\")
+                                .Replace("\"", "\\\"")
+                                .Replace("\n", "\\n")
+                                .Replace("\r", "\\r")
+                                .Replace("\t", "\\t");
 
-                        using var process = new Process { StartInfo = processInfo };
-                        process.Start();
-                        string output = process.StandardOutput.ReadToEnd();
-                        string error = process.StandardError.ReadToEnd();
-                        process.WaitForExit();
+                            // AppleScript命令
+                            string appleScriptCommand = $"tell application \"Finder\" to delete POSIX file \"{dir}\"";
 
-                        return process.ExitCode == 0;
-                    }
+                            // 使用bash执行AppleScript
+                            var processInfo = new ProcessStartInfo("osascript", ["-e", appleScriptCommand])
+                            {
+                                RedirectStandardOutput = true,
+                                RedirectStandardError = true,
+                                CreateNoWindow = true
+                            };
+
+                            using var process = new Process { StartInfo = processInfo };
+                            process.Start();
+                            string output = process.StandardOutput.ReadToEnd();
+                            string error = process.StandardError.ReadToEnd();
+                            process.WaitForExit();
+
+                            return process.ExitCode == 0;
+                        }
                 }
             }
             catch

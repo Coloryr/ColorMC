@@ -85,6 +85,8 @@ public static class ForgeAPI
     /// <returns>版本列表</returns>
     public static async Task<HashSet<string>?> GetVersionListAsync(bool neo, string mc, SourceLocal? source = null)
     {
+        source ??= CoreHttpClient.Source;
+
         if (source == SourceLocal.BMCLAPI)
         {
             string url = neo

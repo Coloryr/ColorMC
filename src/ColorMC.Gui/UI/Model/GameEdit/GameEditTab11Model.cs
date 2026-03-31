@@ -25,13 +25,13 @@ public partial class GameEditModel
     /// 选中的光影包
     /// </summary>
     [ObservableProperty]
-    private ShaderpackObj? _shaderpackItem;
+    public partial ShaderpackObj? ShaderpackItem { get; set; }
 
     /// <summary>
     /// 是否没有光影包
     /// </summary>
     [ObservableProperty]
-    private bool _shaderpackEmptyDisplay;
+    public partial bool ShaderpackEmptyDisplay { get; set; }
 
     /// <summary>
     /// 打开光影包路径

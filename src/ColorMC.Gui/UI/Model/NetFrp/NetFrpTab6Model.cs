@@ -1,11 +1,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using ColorMC.Gui.UI.Model.Dialog;
 using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 
 namespace ColorMC.Gui.UI.Model.NetFrp;
 
@@ -15,7 +13,7 @@ public partial class NetFrpModel
     /// 是否没有自定义映射
     /// </summary>
     [ObservableProperty]
-    private bool _isSelfFrpEmpty;
+    public partial bool IsSelfFrpEmpty { get; set; }
 
     /// <summary>
     /// 自定义映射列表

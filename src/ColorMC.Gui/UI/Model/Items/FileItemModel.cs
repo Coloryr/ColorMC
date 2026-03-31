@@ -49,12 +49,14 @@ public partial class FileItemModel : SelectItemModel
     /// 简介
     /// </summary>
     [ObservableProperty]
-    public string _summary;
+    public partial string Summary { get; set; }
+
     /// <summary>
     /// 简介
     /// </summary>
     [ObservableProperty]
-    public string _summaryHtml;
+    public partial string SummaryHtml { get; set; }
+
     /// <summary>
     /// 作者
     /// </summary>
@@ -101,28 +103,31 @@ public partial class FileItemModel : SelectItemModel
     /// 星的图标
     /// </summary>
     [ObservableProperty]
-    private string _star = ImageManager.Stars[1];
+    public partial string Star { get; set; } = ImageManager.Stars[1];
+
     /// <summary>
     /// 是否标星
     /// </summary>
     [ObservableProperty]
-    private bool _isStar;
+    public partial bool IsStar { get; set; }
+
     /// <summary>
     /// 是否显示星
     /// </summary>
     [ObservableProperty]
-    private bool _starVis;
+    public partial bool StarVis { get; set; }
 
     /// <summary>
     /// 是否已下载
     /// </summary>
     [ObservableProperty]
-    private bool _isDownload = false;
+    public partial bool IsDownload { get; set; } = false;
+
     /// <summary>
     /// 是否正在下载
     /// </summary>
     [ObservableProperty]
-    private bool _nowDownload = false;
+    public partial bool NowDownload { get; set; } = false;
 
     /// <summary>
     /// 网址

@@ -27,7 +27,7 @@ public partial class GameEditModel
     /// 是否没有截图
     /// </summary>
     [ObservableProperty]
-    private bool _screenshotEmptyDisplay;
+    public partial bool ScreenshotEmptyDisplay { get; set; }
 
     /// <summary>
     /// 加载截图列表

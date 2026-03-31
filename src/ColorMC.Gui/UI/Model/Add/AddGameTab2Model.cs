@@ -26,7 +26,7 @@ public partial class AddGameModel
     /// 压缩包文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<ZipTreeNodeModel>? _zipFiles;
+    public partial HierarchicalTreeDataGridSource<ZipTreeNodeModel>? ZipFiles { get; set; }
 
     /// <summary>
     /// 文件列表
@@ -37,13 +37,13 @@ public partial class AddGameModel
     /// 压缩包位置
     /// </summary>
     [ObservableProperty]
-    private string? _zipLocal;
+    public partial string? ZipLocal { get; set; }
 
     /// <summary>
     /// 压缩包类型
     /// </summary>
     [ObservableProperty]
-    private PackType? _type;
+    public partial PackType? Type { get; set; }
 
     /// <summary>
     /// 压缩包路径修改
@@ -141,7 +141,7 @@ public partial class AddGameModel
         var dialog = Window.ShowProgress(LangUtils.Get("AddGameWindow.Tab2.Text9"));
         //开始导入压缩包
         var pack = new TopModPackGui(dialog);
-        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, _zipFileModel.Zip, type, 
+        var res = await AddGameHelper.InstallZip(Name, Group, ZipLocal, _zipFileModel.Zip, type,
             _zipFileModel.GetUnSelectItems(), new OverGameGui(Window), pack);
         pack.Stop();
         Window.CloseDialog(dialog);

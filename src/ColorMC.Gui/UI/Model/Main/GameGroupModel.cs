@@ -39,7 +39,7 @@ public partial class GameGroupModel : ControlModel, IDragTop
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _expander = true;
+    public partial bool Expander { get; set; } = true;
 
     /// <summary>
     /// 游戏分组操作

@@ -27,13 +27,13 @@ public partial class GameEditModel
     /// 选中的结构文件
     /// </summary>
     [ObservableProperty]
-    private SchematicDisplayModel? _schematicItem;
+    public partial SchematicDisplayModel? SchematicItem { get; set; }
 
     /// <summary>
     /// 是否没有结构文件
     /// </summary>
     [ObservableProperty]
-    private bool _schematicEmptyDisplay;
+    public partial bool SchematicEmptyDisplay { get; set; }
 
     /// <summary>
     /// 打开结构文件文件夹

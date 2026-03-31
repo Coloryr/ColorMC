@@ -76,7 +76,7 @@ public static class QuiltAPI
     /// 获取加载器版本
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static async Task<List<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
     {
         string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}";
 
@@ -89,7 +89,7 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list1 = new List<string>();
+            var list1 = new HashSet<string>();
             foreach (var item in list)
             {
                 list1.Add(item.Loader.Version);
@@ -108,9 +108,11 @@ public static class QuiltAPI
     /// </summary>
     /// <param name="mc">游戏版本</param>
     /// <param name="version">fabric版本</param>
-    public static async Task<GetQuiltLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? local = null)
+    public static async Task<GetQuiltLoaderRes?> GetLoaderAsync(string mc, string version, SourceLocal? source = null)
     {
-        string url = $"{UrlHelper.GetQuiltMeta(local)}/loader/{mc}/{version}/profile/json";
+        source ??= CoreHttpClient.Source;
+
+        string url = $"{UrlHelper.GetQuiltMeta(source)}/loader/{mc}/{version}/profile/json";
         try
         {
             var stream = await CoreHttpClient.GetStreamAsync(url);

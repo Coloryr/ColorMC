@@ -47,7 +47,7 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// 下载类型
     /// </summary>
     [ObservableProperty]
-    private int _type = -1;
+    public partial int Type { get; set; } = -1;
 
     /// <summary>
     /// 当前文件类型

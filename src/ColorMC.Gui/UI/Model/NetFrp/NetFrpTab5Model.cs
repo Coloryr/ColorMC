@@ -15,13 +15,14 @@ public partial class NetFrpModel
     /// Openfrp Key
     /// </summary>
     [ObservableProperty]
-    private string _keyOpenFrp;
+    public partial string KeyOpenFrp { get; set; }
 
     /// <summary>
     /// 是否没有openfrp映射
     /// </summary>
     [ObservableProperty]
-    private bool _isOpenFrpEmpty = true;
+    public partial bool IsOpenFrpEmpty { get; set; } = true;
+
     /// <summary>
     /// 是否在获取openfrp映射
     /// </summary>

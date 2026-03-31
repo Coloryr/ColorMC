@@ -11,15 +11,17 @@ public partial class ProgressModel : ObservableObject
     /// 显示的文本
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
+
     /// <summary>
     /// 进度数值
     /// </summary>
     [ObservableProperty]
-    private double _value;
+    public partial double Value { get; set; }
+
     /// <summary>
     /// 是否为循环滚动
     /// </summary>
     [ObservableProperty]
-    private bool _indeterminate = true;
+    public partial bool Indeterminate { get; set; } = true;
 }

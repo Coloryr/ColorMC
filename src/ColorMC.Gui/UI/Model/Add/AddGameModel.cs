@@ -32,23 +32,25 @@ public partial class AddGameModel : ControlModel
     /// 实例名字
     /// </summary>
     [ObservableProperty]
-    private string? _name;
+    public partial string? Name { get; set; }
+
     /// <summary>
     /// 实例组
     /// </summary>
     [ObservableProperty]
-    private string? _group;
+    public partial string? Group { get; set; }
 
     /// <summary>
     /// 云同步启用
     /// </summary>
     [ObservableProperty]
-    private bool _cloudEnable;
+    public partial bool CloudEnable { get; set; }
+
     /// <summary>
     /// 是否为主界面
     /// </summary>
     [ObservableProperty]
-    private bool _main = true;
+    public partial bool Main { get; set; } = true;
 
     /// <summary>
     /// 添加到的分组
@@ -72,7 +74,7 @@ public partial class AddGameModel : ControlModel
 
         CloudEnable = ColorMCCloudAPI.Connect;
     }
-    
+
     /// <summary>
     /// 转到菜单
     /// </summary>

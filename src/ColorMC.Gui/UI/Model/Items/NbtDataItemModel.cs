@@ -13,12 +13,13 @@ public partial class NbtDataItemModel : ObservableObject
     /// 键
     /// </summary>
     [ObservableProperty]
-    private int _key;
+    public partial int Key { get; set; }
+
     /// <summary>
     /// 值
     /// </summary>
     [ObservableProperty]
-    private object _value;
+    public partial object Value { get; set; }
 
     /// <summary>
     /// 实际数据
@@ -36,7 +37,7 @@ public partial class NbtDataItemModel : ObservableObject
 
     public NbtDataItemModel(int key, object value, bool hex)
     {
-        _key = key;
+        Key = key;
         _valueSave = value;
         _hex = hex;
         _init = true;

@@ -13,7 +13,7 @@ public partial class FileModVersionModel : SelectItemModel
     /// 是否下载
     /// </summary>
     [ObservableProperty]
-    private bool _download;
+    public partial bool Download { get; set; }
 
     /// <summary>
     /// 名字

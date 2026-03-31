@@ -40,12 +40,13 @@ public partial class GameEditModel
     /// 是否没有存档
     /// </summary>
     [ObservableProperty]
-    private bool _worldEmptyDisplay;
+    public partial bool WorldEmptyDisplay { get; set; }
+
     /// <summary>
     /// 存档筛选
     /// </summary>
     [ObservableProperty]
-    private string _worldText;
+    public partial string WorldText { get; set; }
 
     partial void OnWorldTextChanged(string value)
     {

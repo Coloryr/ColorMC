@@ -21,7 +21,7 @@ public partial class MainModel
     /// 选择语言
     /// </summary>
     [ObservableProperty]
-    private LanguageType _language;
+    public partial LanguageType Language { get; set; }
 
     /// <summary>
     /// 是否没有游戏实例

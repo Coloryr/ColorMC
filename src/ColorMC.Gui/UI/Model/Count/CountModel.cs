@@ -18,84 +18,97 @@ public partial class CountModel : ControlModel
     /// 累计启动次数
     /// </summary>
     [ObservableProperty]
-    private long _count;
+    public partial long Count { get; set; }
+
     /// <summary>
     /// 累计启动成功次数
     /// </summary>
     [ObservableProperty]
-    private long _countDone;
+    public partial long CountDone { get; set; }
+
     /// <summary>
     /// 累计启动失败次数
     /// </summary>
     [ObservableProperty]
-    private long _countError;
+    public partial long CountError { get; set; }
+
     /// <summary>
     /// 选中的时间
     /// </summary>
     [ObservableProperty]
-    private DateTime _date;
+    public partial DateTime Date { get; set; }
+
     /// <summary>
     /// 今日统计时间
     /// </summary>
     [ObservableProperty]
-    private int _dateCount;
+    public partial int DateCount { get; set; }
 
     /// <summary>
     /// 累计游玩时长
     /// </summary>
     [ObservableProperty]
-    private string _time;
+    public partial string Time { get; set; }
+
     /// <summary>
     /// 今日游玩时长
     /// </summary>
     [ObservableProperty]
-    private string _timeToday;
+    public partial string TimeToday { get; set; }
+
     /// <summary>
     /// 选中的时间
     /// </summary>
     [ObservableProperty]
-    private DateTime _date1;
+    public partial DateTime Date1 { get; set; }
+
     /// <summary>
     /// 选中时间的游玩时常
     /// </summary>
     [ObservableProperty]
-    private string _timeDate;
+    public partial string TimeDate { get; set; }
 
     /// <summary>
     /// 选中的游戏实例
     /// </summary>
     [ObservableProperty]
-    private int _gameIndex = -1;
+    public partial int GameIndex { get; set; } = -1;
+
     /// <summary>
     /// 游戏实例启动累计
     /// </summary>
     [ObservableProperty]
-    private int _gameCount;
+    public partial int GameCount { get; set; }
+
     /// <summary>
     /// 游戏实例启动成功累计
     /// </summary>
     [ObservableProperty]
-    private int _gameCountDone;
+    public partial int GameCountDone { get; set; }
+
     /// <summary>
     /// 游戏实例启动失败累计
     /// </summary>
     [ObservableProperty]
-    private int _gameCountError;
+    public partial int GameCountError { get; set; }
+
     /// <summary>
     /// 游戏实例启动今日累计
     /// </summary>
     [ObservableProperty]
-    private int _gameCountToday;
+    public partial int GameCountToday { get; set; }
+
     /// <summary>
     /// 游戏实例游戏时间
     /// </summary>
     [ObservableProperty]
-    private string _gameTime;
+    public partial string GameTime { get; set; }
+
     /// <summary>
     /// 游戏实例上次游戏时间
     /// </summary>
     [ObservableProperty]
-    private string _gameTime1;
+    public partial string GameTime1 { get; set; }
 
     /// <summary>
     /// 游戏实例列表
@@ -109,29 +122,28 @@ public partial class CountModel : ControlModel
 
     public CountModel(WindowModel model) : base(model)
     {
-        _date1 = _date = DateTime.Now;
+        Date1 = Date = DateTime.Now;
         var data = GameCountUtils.Count;
         if (data == null)
         {
-            _count = 0;
-            _countDone = 0;
-            _countError = 0;
-            _time = "";
-            _timeToday = "";
+            Count = 0;
+            CountDone = 0;
+            CountError = 0;
+            Time = "";
+            TimeToday = "";
         }
         else
         {
-            //加载统计数据
-            _count = data.LaunchCount;
-            _countDone = data.LaunchDoneCount;
-            _countError = data.LaunchErrorCount;
-            _dateCount = (from item in data.LaunchLogs.Values
+            Count = data.LaunchCount;
+            CountDone = data.LaunchDoneCount;
+            CountError = data.LaunchErrorCount;
+            DateCount = (from item in data.LaunchLogs.Values
                           from item1 in item
-                          where item1.Time.Year == _date.Year &&
-                          item1.Time.Month == _date.Month &&
-                          item1.Time.Day == _date.Day
+                          where item1.Time.Year == Date.Year &&
+                          item1.Time.Month == Date.Month &&
+                          item1.Time.Day == Date.Day
                           select item).Count();
-            _time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
+            Time = $"{data.AllTime.TotalHours:0}:{data.AllTime.Minutes}:{data.AllTime.Seconds}";
             TimeSpan temp = TimeSpan.Zero;
             //累计统计时间
             foreach (var item in data.GameRuns)
@@ -139,15 +151,16 @@ public partial class CountModel : ControlModel
                 foreach (var item1 in item.Value)
                 {
                     if (item1.StopTime.Ticks != 0
-                        && item1.StartTime.Year == _date.Year
-                        && item1.StartTime.Month == _date.Month
-                        && item1.StartTime.Day == _date.Day)
+                        && item1.StartTime.Year == Date.Year
+                        && item1.StartTime.Month == Date.Month
+                        && item1.StartTime.Day == Date.Day)
                     {
                         temp += item1.StopTime - item1.StartTime;
                     }
                 }
             }
-            _timeDate = _timeToday = $"{temp.TotalHours:0}:{temp.Minutes}:{temp.Seconds}";
+
+            TimeDate = TimeToday = $"{temp.TotalHours:0}:{temp.Minutes}:{temp.Seconds}";
             var list = InstancesPath.Games;
             foreach (var item in list)
             {
@@ -156,8 +169,8 @@ public partial class CountModel : ControlModel
             }
         }
 
-        _gameCount = _gameCountDone = _gameCountError = _gameCountToday = 0;
-        _gameTime = _gameTime1 = "0";
+        GameCount = GameCountDone = GameCountError = GameCountToday = 0;
+        GameTime = GameTime1 = "0";
     }
 
     /// <summary>

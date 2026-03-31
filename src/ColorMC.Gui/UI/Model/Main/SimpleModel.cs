@@ -24,30 +24,34 @@ public partial class MainModel
     public ObservableCollection<string> JavaList { get; init; } = [];
 
     [ObservableProperty]
-    private bool _maxWindow;
+    public partial bool MaxWindow { get; set; }
 
     [ObservableProperty]
-    private uint? _gameWidth;
-    [ObservableProperty]
-    private uint? _gameHeight;
-    [ObservableProperty]
-    private uint? _minMem;
-    [ObservableProperty]
-    private uint? _maxMem;
+    public partial uint? GameWidth { get; set; }
 
     [ObservableProperty]
-    private string _gameName;
+    public partial uint? GameHeight { get; set; }
 
     [ObservableProperty]
-    private Bitmap _gameIcon;
+    public partial uint? MinMem { get; set; }
 
     [ObservableProperty]
-    private bool _haveGame;
-    [ObservableProperty]
-    private bool _enableArg;
+    public partial uint? MaxMem { get; set; }
 
     [ObservableProperty]
-    private string _java;
+    public partial string GameName { get; set; }
+
+    [ObservableProperty]
+    public partial Bitmap GameIcon { get; set; }
+
+    [ObservableProperty]
+    public partial bool HaveGame { get; set; }
+
+    [ObservableProperty]
+    public partial bool EnableArg { get; set; }
+
+    [ObservableProperty]
+    public partial string Java { get; set; }
 
     partial void OnGameChanged(GameItemModel? value)
     {

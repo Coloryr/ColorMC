@@ -36,12 +36,13 @@ public partial class GameEditModel
     /// 资源筛选
     /// </summary>
     [ObservableProperty]
-    private string _resourceText;
+    public partial string ResourceText { get; set; }
+
     /// <summary>
     /// 是否没有资源文件
     /// </summary>
     [ObservableProperty]
-    private bool _resourceEmptyDisplay;
+    public partial bool ResourceEmptyDisplay { get; set; }
 
     partial void OnResourceTextChanged(string value)
     {

@@ -21,27 +21,31 @@ public partial class SettingModel
     /// 配置文件本地位置
     /// </summary>
     [ObservableProperty]
-    private string? _local1;
+    public partial string? Local1 { get; set; }
+
     /// <summary>
     /// 账户文件本地位置
     /// </summary>
     [ObservableProperty]
-    private string? _local2;
+    public partial string? Local2 { get; set; }
+
     /// <summary>
     /// 配置文件本地位置
     /// </summary>
     [ObservableProperty]
-    private string? _local3;
+    public partial string? Local3 { get; set; }
+
     /// <summary>
     /// 配置文件本地位置
     /// </summary>
     [ObservableProperty]
-    private string? _local4;
+    public partial string? Local4 { get; set; }
+
     /// <summary>
     /// 缓存大小
     /// </summary>
     [ObservableProperty]
-    private string _tempSize;
+    public partial string TempSize { get; set; }
 
     /// <summary>
     /// 运行路径

@@ -671,11 +671,11 @@ public static class GameDownloadHelper
         using var zFile = ZipArchive.OpenArchive(stream1);
         IArchiveEntry? versionfile = null;
         IArchiveEntry? installfile = null;
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameVersionFile) is { } item)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameVersionFile) is { } item)
         {
             versionfile = item;
         }
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameForgeInstallFile) is { } item1)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameForgeInstallFile) is { } item1)
         {
             installfile = item1;
         }
@@ -997,12 +997,12 @@ public static class GameDownloadHelper
         ForgeLaunchObj? obj1 = null;
         ForgeInstallObj? obj2 = null;
 
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameVersionFile) is { } item)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameVersionFile) is { } item)
         {
             using var stream = item.OpenEntryStream();
             obj1 = JsonUtils.ToObj(stream, JsonType.ForgeLaunchObj);
         }
-        if (zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameForgeInstallFile) is { } item1)
+        if (zFile.Entries.FirstOrDefault(item => item.Key == Names.NameForgeInstallFile) is { } item1)
         {
             using var stream = item1.OpenEntryStream();
             obj2 = JsonUtils.ToObj(stream, JsonType.ForgeInstallObj);
@@ -1042,7 +1042,7 @@ public static class GameDownloadHelper
             else
             {
                 //在压缩包里面的文件
-                var item1 = zFile.Entries.FirstOrDefault(item2=>item2.Key == $"maven/{item.Downloads.Artifact.Path}");
+                var item1 = zFile.Entries.FirstOrDefault(item2 => item2.Key == $"maven/{item.Downloads.Artifact.Path}");
                 if (item1 == null)
                 {
                     return;

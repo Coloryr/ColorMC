@@ -13,26 +13,28 @@ public partial class SelectItemModel : ObservableObject
     /// 选中框颜色
     /// </summary>
     [ObservableProperty]
-    private BoxShadows? _border = ThemeManager.BorderShadows;
+    public partial BoxShadows? Border { get; set; } = ThemeManager.BorderShadows;
 
     [ObservableProperty]
-    private IBrush _borderBrush = ThemeManager.NowThemeColor.BorderColor;
+    public partial IBrush BorderBrush { get; set; } = ThemeManager.NowThemeColor.BorderColor;
 
     /// <summary>
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isSelect;
+    public partial bool IsSelect { get; set; }
+
     /// <summary>
     /// 是否鼠标在上面
     /// </summary>
     [ObservableProperty]
-    private bool _top;
+    public partial bool Top { get; set; }
+
     /// <summary>
     /// 是否启用按钮
     /// </summary>
     [ObservableProperty]
-    private bool _enableButton;
+    public partial bool EnableButton { get; set; }
 
     protected virtual void OnTopChange() { }
 

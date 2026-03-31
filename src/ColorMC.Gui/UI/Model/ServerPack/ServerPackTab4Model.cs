@@ -31,17 +31,19 @@ public partial class ServerPackModel
     /// 选中的文件
     /// </summary>
     [ObservableProperty]
-    private ServerPackConfigModel _fileItem;
+    public partial ServerPackConfigModel FileItem { get; set; }
+
     /// <summary>
     /// 选中的打包方式
     /// </summary>
     [ObservableProperty]
-    private int _funtion;
+    public partial int Funtion { get; set; }
+
     /// <summary>
     /// 文件夹
     /// </summary>
     [ObservableProperty]
-    private string? _group;
+    public partial string? Group { get; set; }
 
     /// <summary>
     /// 添加文件

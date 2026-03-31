@@ -11,7 +11,6 @@ using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 using Tomlyn;
 using Tomlyn.Model;
-using Tomlyn.Parsing;
 
 namespace ColorMC.Core.Game;
 
@@ -623,7 +622,7 @@ public static class GameMods
         }
 
         //forge 1.13以下
-        var item1 = zFile.Entries.FirstOrDefault(item=>item.Key == Names.NameMcModInfoFile);
+        var item1 = zFile.Entries.FirstOrDefault(item => item.Key == Names.NameMcModInfoFile);
         if (item1 != null)
         {
             try
@@ -734,7 +733,7 @@ public static class GameMods
             //core mod
             item1 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/services/cpw.mods.modlauncher.api.ITransformationService");
             var item5 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/services/net.minecraftforge.forgespi.language.IModLanguageProvider");
-            var item7 = zFile.Entries.FirstOrDefault(item=>item.Key == "META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
+            var item7 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/services/net.neoforged.neoforgespi.language.IModLanguageLoader");
             var item6 = zFile.Entries.FirstOrDefault(item => item.Key == "META-INF/MANIFEST.MF");
             if (item6 != null)
             {

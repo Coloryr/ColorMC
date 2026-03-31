@@ -15,13 +15,13 @@ public partial class NetFrpModel
     /// Sakura映射Key
     /// </summary>
     [ObservableProperty]
-    private string _keySakura;
+    public partial string KeySakura { get; set; }
 
     /// <summary>
     /// 是否不存在Sakura映射项目
     /// </summary>
     [ObservableProperty]
-    private bool _isSakuraEmpty = true;
+    public partial bool IsSakuraEmpty { get; set; } = true;
 
     /// <summary>
     /// 是否在加载Sakura映射列表

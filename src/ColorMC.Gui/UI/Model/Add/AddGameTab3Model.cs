@@ -23,7 +23,7 @@ public partial class AddGameModel
     /// 文件列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<FileTreeNodeModel>? _files;
+    public partial HierarchicalTreeDataGridSource<FileTreeNodeModel>? Files { get; set; }
 
     /// <summary>
     /// 文件列表
@@ -34,13 +34,13 @@ public partial class AddGameModel
     /// 文件夹路径
     /// </summary>
     [ObservableProperty]
-    private string? _selectPath;
+    public partial string? SelectPath { get; set; }
 
     /// <summary>
     /// 可以导入
     /// </summary>
     [ObservableProperty]
-    private bool _canInput;
+    public partial bool CanInput { get; set; }
 
     /// <summary>
     /// 刷新文件列表

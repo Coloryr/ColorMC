@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UI.Controls;
 using ColorMC.Gui.UI.Model.Items;
@@ -24,57 +21,61 @@ public partial class AddBaseModel : IAddFileControl
     /// 选中的项目
     /// </summary>
     [ObservableProperty]
-    private FileItemModel _last;
+    public partial FileItemModel Last { get; set; }
 
     /// <summary>
     /// 文件列表当前页数
     /// </summary>
     [ObservableProperty]
-    private int? _pageVersion = 1;
+    public partial int? PageVersion { get; set; } = 1;
+
     /// <summary>
     /// 文件列表最大页数
     /// </summary>
     [ObservableProperty]
-    private int _maxPageVersion;
+    public partial int MaxPageVersion { get; set; }
+
     /// <summary>
     /// 文件列表游戏版本
     /// </summary>
     [ObservableProperty]
-    private string? _gameVersionDownload;
+    public partial string? GameVersionDownload { get; set; }
 
     /// <summary>
     /// 是否没有版本
     /// </summary>
     [ObservableProperty]
-    private bool _emptyVersionDisplay;
+    public partial bool EmptyVersionDisplay { get; set; }
+
     /// <summary>
     /// 是否显示项目详情
     /// </summary>
     [ObservableProperty]
-    private bool _displayItemInfo;
+    public partial bool DisplayItemInfo { get; set; }
 
     /// <summary>
     /// 选中的文件
     /// </summary>
     [ObservableProperty]
-    private FileVersionItemModel _item;
+    public partial FileVersionItemModel Item { get; set; }
+
     /// <summary>
     /// 在那个状态栏中
     /// </summary>
     [ObservableProperty]
-    private int _selectIndex = 1;
+    public partial int SelectIndex { get; set; } = 1;
 
     /// <summary>
     /// 项目列表是否有下一页
     /// </summary>
     [ObservableProperty]
-    private bool _haveNextVersionPage;
+    public partial bool HaveNextVersionPage { get; set; }
+
     /// <summary>
     /// 是否有上一页
     /// </summary>
     [ObservableProperty]
-    private bool _haveLastVersionPage;
-
+    public partial bool HaveLastVersionPage { get; set; }
     protected abstract Loaders GameLoader { get; }
 
     partial void OnSelectIndexChanged(int value)

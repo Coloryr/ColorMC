@@ -6,6 +6,7 @@ using ColorMC.Core;
 using ColorMC.Core.Game;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net;
 using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
@@ -70,114 +71,133 @@ public partial class GameEditModel
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string _gameVersion;
+    public partial string GameVersion { get; set; }
+
     /// <summary>
     /// 加载器版本
     /// </summary>
     [ObservableProperty]
-    private string? _loaderVersion;
+    public partial string? LoaderVersion { get; set; }
+
     /// <summary>
     /// 游戏分组
     /// </summary>
     [ObservableProperty]
-    private string? _group;
+    public partial string? Group { get; set; }
+
     /// <summary>
     /// 整合包PID
     /// </summary>
     [ObservableProperty]
-    private string? _pID;
+    public partial string? PID { get; set; }
+
     /// <summary>
     /// 整合包FID
     /// </summary>
     [ObservableProperty]
-    private string? _fID;
+    public partial string? FID { get; set; }
+
     /// <summary>
     /// 自定义加载器信息
     /// </summary>
     [ObservableProperty]
-    private string? _loaderInfo;
+    public partial string? LoaderInfo { get; set; }
+
     /// <summary>
     /// 服务器包网址
     /// </summary>
     [ObservableProperty]
-    private string? _serverPackUrl;
+    public partial string? ServerPackUrl { get; set; }
 
     /// <summary>
     /// 版本类型
     /// </summary>
     [ObservableProperty]
-    private int _versionType = -1;
+    public partial int VersionType { get; set; } = -1;
+
     /// <summary>
     /// 加载器类型
     /// </summary>
     [ObservableProperty]
-    private int _loaderType = -1;
+    public partial int LoaderType { get; set; } = -1;
+
     /// <summary>
     /// 语言
     /// </summary>
     [ObservableProperty]
-    private int _lang = -1;
+    public partial int Lang { get; set; } = -1;
+
     /// <summary>
     /// 编码类型
     /// </summary>
     [ObservableProperty]
-    private int _encoding = 0;
+    public partial int Encoding { get; set; } = 0;
 
     /// <summary>
     /// 是否为整合包
     /// </summary>
     [ObservableProperty]
-    private bool _modpack;
+    public partial bool Modpack { get; set; }
+
     /// <summary>
     /// 游戏是否在运行中
     /// </summary>
     [ObservableProperty]
-    private bool _gameRun;
+    public partial bool GameRun { get; set; }
+
     /// <summary>
     /// 是否启用加载器
     /// </summary>
     [ObservableProperty]
-    private bool _enableLoader;
+    public partial bool EnableLoader { get; set; }
+
     /// <summary>
     /// 是否是自定义加载器
     /// </summary>
     [ObservableProperty]
-    private bool _customLoader;
+    public partial bool CustomLoader { get; set; }
+
     /// <summary>
     /// 是否后加入运行库
     /// </summary>
     [ObservableProperty]
-    private bool _offLib;
+    public partial bool OffLib { get; set; }
+
     /// <summary>
     /// 是否后删除原版运行库
     /// </summary>
     [ObservableProperty]
-    private bool _removeLib;
+    public partial bool RemoveLib { get; set; }
+
     /// <summary>
     /// 是否在加载信息中
     /// </summary>
     [ObservableProperty]
-    private bool _isLoad;
+    public partial bool IsLoad { get; set; }
+
     /// <summary>
     /// 是否没有游戏版本
     /// </summary>
     [ObservableProperty]
-    private bool _gameVersionEmpty;
+    public partial bool GameVersionEmpty { get; set; }
+
     /// <summary>
     /// 是否让日志窗口自动显示
     /// </summary>
     [ObservableProperty]
-    private bool _logAutoShow;
+    public partial bool LogAutoShow { get; set; }
+
     /// <summary>
     /// 是否启用自定义启动配置
     /// </summary>
     [ObservableProperty]
-    private bool _customJson;
+    public partial bool CustomJson { get; set; }
+
     /// <summary>
     /// 是否为服务器在线包
     /// </summary>
     [ObservableProperty]
-    private bool _serverPack;
+    public partial bool ServerPack { get; set; }
 
     /// <summary>
     /// 游戏配置是否在加载
@@ -690,9 +710,9 @@ public partial class GameEditModel
         var list = loader switch
         {
             Loaders.Forge => await FabricAPI.GetLoadersAsync(_obj.Version, CoreHttpClient.Source),
-            Loaders.NeoForge => await WebBinding.GetNeoForgeVersionAsync(_obj.Version),
-            Loaders.Fabric => await WebBinding.GetFabricVersionAsync(_obj.Version),
-            Loaders.Quilt => await WebBinding.GetQuiltVersionAsync(_obj.Version),
+            Loaders.NeoForge => await ForgeAPI.GetVersionListAsync(true, _obj.Version),
+            Loaders.Fabric => await FabricAPI.GetLoadersAsync(_obj.Version),
+            Loaders.Quilt => await QuiltAPI.GetLoadersAsync(_obj.Version),
             Loaders.OptiFine => await WebBinding.GetOptifineVersionAsync(_obj.Version),
             _ => null
         };

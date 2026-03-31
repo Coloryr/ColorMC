@@ -53,72 +53,79 @@ public partial class CollectModel : ControlModel, ICollectControl
     /// 是否显示模组
     /// </summary>
     [ObservableProperty]
-    private bool _mod;
+    public partial bool Mod { get; set; }
+
     /// <summary>
     /// 是否显示整合包
     /// </summary>
     [ObservableProperty]
-    private bool _modpack;
+    public partial bool Modpack { get; set; }
+
     /// <summary>
     /// 是否显示资源包
     /// </summary>
     [ObservableProperty]
-    private bool _resourcepack;
+    public partial bool Resourcepack { get; set; }
+
     /// <summary>
     /// 是否显示光影包
     /// </summary>
     [ObservableProperty]
-    private bool _shaderpack;
+    public partial bool Shaderpack { get; set; }
 
     /// <summary>
     /// 是否允许删除分组
     /// </summary>
     [ObservableProperty]
-    private bool _groupDelete;
+    public partial bool GroupDelete { get; set; }
+
     /// <summary>
     /// 是否没有收藏内容
     /// </summary>
     [ObservableProperty]
-    private bool _emptyDisplay;
+    public partial bool EmptyDisplay { get; set; }
 
     /// <summary>
     /// 是否选中项目
     /// </summary>
     [ObservableProperty]
-    private bool _haveChoise;
+    public partial bool HaveChoise { get; set; }
 
     /// <summary>
     /// 选中的收藏分组
     /// </summary>
     [ObservableProperty]
-    private string _group;
+    public partial string Group { get; set; }
+
     /// <summary>
     /// 选中的分组序号
     /// </summary>
     [ObservableProperty]
-    private int _index;
+    public partial int Index { get; set; }
 
     /// <summary>
     /// 下载文本
     /// </summary>
     [ObservableProperty]
-    private string? _downloadText;
+    public partial string? DownloadText { get; set; }
+
     /// <summary>
     /// 是否显示下载文本
     /// </summary>
     [ObservableProperty]
-    private string? _displayText;
+    public partial string? DisplayText { get; set; }
 
     /// <summary>
     /// 是否显示下载列表
     /// </summary>
     [ObservableProperty]
-    private bool _displayDownload = false;
+    public partial bool DisplayDownload { get; set; } = false;
+
     /// <summary>
     /// 是否有下载项目
     /// </summary>
     [ObservableProperty]
-    private bool _haveDownload = false;
+    public partial bool HaveDownload { get; set; } = false;
 
     /// <summary>
     /// 选中的收藏
@@ -133,11 +140,10 @@ public partial class CollectModel : ControlModel, ICollectControl
     public CollectModel(WindowModel model) : base(model)
     {
         var conf = CollectUtils.Collect;
-
-        _mod = conf.Mod;
-        _modpack = conf.Modpack;
-        _resourcepack = conf.ResourcePack;
-        _shaderpack = conf.Shaderpack;
+        Mod = conf.Mod;
+        Modpack = conf.Modpack;
+        Resourcepack = conf.ResourcePack;
+        Shaderpack = conf.Shaderpack;
 
         EventManager.ModpackInstall += EventManager_ModpackInstall;
         EventManager.ModpackStop += EventManager_ModpackStop;

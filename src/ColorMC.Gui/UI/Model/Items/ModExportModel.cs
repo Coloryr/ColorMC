@@ -46,17 +46,19 @@ public partial class ModExportModel : ObservableObject
     /// 导出
     /// </summary>
     [ObservableProperty]
-    private bool _export;
+    public partial bool Export { get; set; }
+
     /// <summary>
     /// 项目ID
     /// </summary>
     [ObservableProperty]
-    private string? _pID;
+    public partial string? PID { get; set; }
+
     /// <summary>
     /// 文件ID
     /// </summary>
     [ObservableProperty]
-    private string? _fID;
+    public partial string? FID { get; set; }
 
     /// <summary>
     /// 名字
@@ -82,8 +84,8 @@ public partial class ModExportModel : ObservableObject
 
     public ModExportModel(WindowModel model, string? pid, string? fid)
     {
-        _pID = pid;
-        _fID = fid;
+        PID = pid;
+        FID = fid;
         _model = model;
 
         if (string.IsNullOrWhiteSpace(PID) || string.IsNullOrWhiteSpace(FID))

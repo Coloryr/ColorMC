@@ -22,19 +22,19 @@ public abstract partial class MenuModel(WindowModel model) : ControlModel(model)
     /// 显示的标题
     /// </summary>
     [ObservableProperty]
-    private string _title;
+    public partial string Title { get; set; }
 
     /// <summary>
     /// 切换目标视图
     /// </summary>
     [ObservableProperty]
-    private int _nowView = -1;
+    public partial int NowView { get; set; } = -1;
 
     /// <summary>
     /// 是否切换到侧边栏模式
     /// </summary>
     [ObservableProperty]
-    private bool _topSide;
+    public partial bool TopSide { get; set; }
 
     /// <summary>
     /// 菜单项切换

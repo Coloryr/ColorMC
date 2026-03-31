@@ -53,44 +53,49 @@ public partial class GameConfigEditModel : GameModel
     /// NBT列表
     /// </summary>
     [ObservableProperty]
-    private HierarchicalTreeDataGridSource<NbtNodeModel> _source;
+    public partial HierarchicalTreeDataGridSource<NbtNodeModel> Source { get; set; }
 
     /// <summary>
     /// 选择的文件
     /// </summary>
     [ObservableProperty]
-    private int _select = -1;
+    public partial int Select { get; set; } = -1;
+
     /// <summary>
     /// 选择的文件
     /// </summary>
     [ObservableProperty]
-    private string _file;
+    public partial string File { get; set; }
+
     /// <summary>
     /// 是否是NBT
     /// </summary>
     [ObservableProperty]
-    private bool _nbtEnable;
+    public partial bool NbtEnable { get; set; }
+
     /// <summary>
     /// 筛选内容
     /// </summary>
     [ObservableProperty]
-    private string? _name;
+    public partial string? Name { get; set; }
+
     /// <summary>
     /// 文本编辑器
     /// </summary>
     [ObservableProperty]
-    private TextDocument _text;
+    public partial TextDocument Text { get; set; }
 
     /// <summary>
     /// 是否为存档
     /// </summary>
     [ObservableProperty]
-    private bool _isWorld;
+    public partial bool IsWorld { get; set; }
+
     /// <summary>
     /// 文件是否被修改了
     /// </summary>
     [ObservableProperty]
-    private bool _isEdit;
+    public partial bool IsEdit { get; set; }
 
     /// <summary>
     /// 上一个选中的文件
@@ -115,10 +120,8 @@ public partial class GameConfigEditModel : GameModel
         _useName = HashHelper.GenSha1((ToString() ?? "GameConfigEditModel") + ":"
             + obj?.UUID + ":" + world?.LevelName);
         World = world;
-
-        _isWorld = World != null;
-
-        _text = new();
+        IsWorld = World != null;
+        Text = new();
 
         Window.SetChoiseCall(_useName, Save);
         Window.SetChoiseContent(_useName, LangUtils.Get("ConfigEditWindow.Text2"));

@@ -32,12 +32,13 @@ public partial class WorldModel : SelectItemModel
     /// 数据包是否为空
     /// </summary>
     [ObservableProperty]
-    private bool _empty;
+    public partial bool Empty { get; set; }
+
     /// <summary>
     /// 选择的数据包
     /// </summary>
     [ObservableProperty]
-    private DataPackModel _dataPack;
+    public partial DataPackModel DataPack { get; set; }
 
     /// <summary>
     /// 存档名字

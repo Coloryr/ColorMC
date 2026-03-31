@@ -7,7 +7,6 @@ using ColorMC.Core.Objs;
 using ColorMC.Core.Objs.CurseForge;
 using ColorMC.Core.Utils;
 using SharpCompress.Archives;
-using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 
 namespace ColorMC.Core.Worker;
@@ -150,7 +149,7 @@ public class CurseForgeWork : ModPackWork, IModPackWork
         }
 
         unselect ??= [];
-        
+
         var size = Zip.Entries.Count();
         var index = 0;
 

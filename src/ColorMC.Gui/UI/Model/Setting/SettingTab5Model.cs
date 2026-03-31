@@ -27,24 +27,25 @@ public partial class SettingModel
     /// Java名字
     /// </summary>
     [ObservableProperty]
-    private string? _javaName;
+    public partial string? JavaName { get; set; }
+
     /// <summary>
     /// Java路径
     /// </summary>
     [ObservableProperty]
-    private string? _javaLocal;
+    public partial string? JavaLocal { get; set; }
 
     /// <summary>
     /// 选中的Java
     /// </summary>
     [ObservableProperty]
-    private JavaDisplayModel _javaItem;
+    public partial JavaDisplayModel JavaItem { get; set; }
 
     /// <summary>
     /// 是否在搜索Java
     /// </summary>
     [ObservableProperty]
-    private bool _javaFinding;
+    public partial bool JavaFinding { get; set; }
 
     /// <summary>
     /// Java是否在加载

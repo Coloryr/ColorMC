@@ -24,37 +24,43 @@ public partial class FileTreeNodeModel : ObservableObject
     /// 路径
     /// </summary>
     [ObservableProperty]
-    private string _path;
+    public partial string Path { get; set; }
+
     /// <summary>
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
+
     /// <summary>
     /// 占用大小
     /// </summary>
     [ObservableProperty]
-    private long? _size;
+    public partial long? Size { get; set; }
+
     /// <summary>
     /// 编辑
     /// </summary>
     [ObservableProperty]
-    private string? _modified;
+    public partial string? Modified { get; set; }
+
     /// <summary>
     /// 是否有子项目
     /// </summary>
     [ObservableProperty]
-    private bool _hasChildren = true;
+    public partial bool HasChildren { get; set; } = true;
+
     /// <summary>
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _isExpanded;
+    public partial bool IsExpanded { get; set; }
+
     /// <summary>
     /// 是否选中
     /// </summary>
     [ObservableProperty]
-    private bool _isChecked;
+    public partial bool IsChecked { get; set; }
 
     /// <summary>
     /// 父文件夹
@@ -64,10 +70,10 @@ public partial class FileTreeNodeModel : ObservableObject
     public FileTreeNodeModel(FileTreeNodeModel? par, string path, bool isDirectory, bool check = true, bool isRoot = false)
     {
         _parent = par ?? this;
-        _path = System.IO.Path.GetFullPath(path + (isDirectory ? "/" : ""));
-        _name = isRoot ? path : System.IO.Path.GetFileName(path);
-        _isExpanded = isRoot;
-        _isChecked = check;
+        Path = System.IO.Path.GetFullPath(path + (isDirectory ? "/" : ""));
+        Name = isRoot ? path : System.IO.Path.GetFileName(path);
+        IsExpanded = isRoot;
+        IsChecked = check;
         IsDirectory = isDirectory;
         HasChildren = isDirectory;
 
@@ -75,7 +81,7 @@ public partial class FileTreeNodeModel : ObservableObject
         {
             var info = new FileInfo(path);
             Size = info.Length;
-            _modified = info.LastWriteTimeUtc.ToString("yyyy/MM/dd HH:mm:ss");
+            Modified = info.LastWriteTimeUtc.ToString("yyyy/MM/dd HH:mm:ss");
         }
         else
         {

@@ -21,7 +21,7 @@ public partial class BuildPackModel
     /// 选中的自定义文件
     /// </summary>
     [ObservableProperty]
-    private PackFileItem? _fileItem;
+    public partial PackFileItem? FileItem { get; set; }
 
     /// <summary>
     /// 删除自定义文件

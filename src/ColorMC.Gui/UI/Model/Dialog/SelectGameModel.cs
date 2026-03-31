@@ -39,12 +39,13 @@ public partial class SelectGameModel : BaseDialogModel
     /// 显示文本
     /// </summary>
     [ObservableProperty]
-    private string _text;
+    public partial string Text { get; set; }
+
     /// <summary>
     /// 选择项
     /// </summary>
     [ObservableProperty]
-    private SelectGameNode? _select;
+    public partial SelectGameNode? Select { get; set; }
 
     /// <summary>
     /// 项目列表

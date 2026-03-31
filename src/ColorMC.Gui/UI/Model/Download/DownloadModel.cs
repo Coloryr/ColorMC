@@ -42,27 +42,31 @@ public partial class DownloadModel : ControlModel, IDownloadGui
     /// 当前下载速度
     /// </summary>
     [ObservableProperty]
-    private string _speed;
+    public partial string Speed { get; set; }
+
     /// <summary>
     /// 下载完成数量
     /// </summary>
     [ObservableProperty]
-    private string _now;
+    public partial string Now { get; set; }
+
     /// <summary>
     /// 下载进度
     /// </summary>
     [ObservableProperty]
-    private double _value;
+    public partial double Value { get; set; }
+
     /// <summary>
     /// 总计下载任务数量
     /// </summary>
     [ObservableProperty]
-    private int _size;
+    public partial int Size { get; set; }
+
     /// <summary>
     /// 是否暂停下载
     /// </summary>
     [ObservableProperty]
-    private bool _isPause;
+    public partial bool IsPause { get; set; }
 
     /// <summary>
     /// 已下载数量

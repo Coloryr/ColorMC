@@ -24,75 +24,94 @@ public partial class BuildPackModel
     /// 是否导出界面设置
     /// </summary>
     [ObservableProperty]
-    private bool _uiSetting;
+    public partial bool UiSetting { get; set; }
+
     [ObservableProperty]
-    private bool _uiBg;
+    public partial bool UiBg { get; set; }
+
     [ObservableProperty]
-    private bool _uiColor;
+    public partial bool UiColor { get; set; }
+
     [ObservableProperty]
-    private bool _uiOther;
+    public partial bool UiOther { get; set; }
+
     /// <summary>
     /// 是否导出启动设置
     /// </summary>
     [ObservableProperty]
-    private bool _launchSetting;
+    public partial bool LaunchSetting { get; set; }
+
     [ObservableProperty]
-    private bool _launchCheck;
+    public partial bool LaunchCheck { get; set; }
+
     [ObservableProperty]
-    private bool _launchArg;
+    public partial bool LaunchArg { get; set; }
+
     [ObservableProperty]
-    private bool _launchWindow;
+    public partial bool LaunchWindow { get; set; }
+
     /// <summary>
     /// 是否导出服务器设置
     /// </summary>
     [ObservableProperty]
-    private bool _serverSetting;
+    public partial bool ServerSetting { get; set; }
+
     [ObservableProperty]
-    private bool _serverOpt;
+    public partial bool ServerOpt { get; set; }
+
     [ObservableProperty]
-    private bool _serverLock;
+    public partial bool ServerLock { get; set; }
+
     [ObservableProperty]
-    private bool _serverUi;
+    public partial bool ServerUi { get; set; }
+
     [ObservableProperty]
-    private bool _serverMusic;
+    public partial bool ServerMusic { get; set; }
+
     /// <summary>
     /// 是否导出内置Java
     /// </summary>
     [ObservableProperty]
-    private bool _java;
+    public partial bool Java { get; set; }
+
     /// <summary>
     /// 是否导出启动器
     /// </summary>
     [ObservableProperty]
-    private bool _packLaunch;
+    public partial bool PackLaunch { get; set; }
+
     [ObservableProperty]
-    private bool _packUpdate;
+    public partial bool PackUpdate { get; set; }
 
     /// <summary>
     /// 是否可以选择背景界面
     /// </summary>
     [ObservableProperty]
-    private bool _canBg;
+    public partial bool CanBg { get; set; }
+
     /// <summary>
     /// 是否可以选择自定义UI
     /// </summary>
     [ObservableProperty]
-    private bool _canUi;
+    public partial bool CanUi { get; set; }
+
     /// <summary>
     /// 是否可以选择背景音乐
     /// </summary>
     [ObservableProperty]
-    private bool _canMusic;
+    public partial bool CanMusic { get; set; }
+
     /// <summary>
     /// 是否可以打包启动器
     /// </summary>
     [ObservableProperty]
-    private bool _canPack;
+    public partial bool CanPack { get; set; }
+
     /// <summary>
     /// 是否可以打包启动器升级
     /// </summary>
     [ObservableProperty]
-    private bool _canUpdate;
+    public partial bool CanUpdate { get; set; }
 
     /// <summary>
     /// 是否在切换状态
@@ -103,7 +122,7 @@ public partial class BuildPackModel
     /// 是否导出启动器功能设置
     /// </summary>
     [ObservableProperty]
-    private bool _function;
+    public partial bool Function { get; set; }
 
     //设置项修改
     partial void OnUiSettingChanged(bool value)

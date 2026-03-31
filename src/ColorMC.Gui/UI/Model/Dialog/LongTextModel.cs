@@ -12,16 +12,17 @@ public partial class LongTextModel(string name) : BaseDialogModel(name)
     /// 文本1
     /// </summary>
     [ObservableProperty]
-    private string _text1;
+    public partial string Text1 { get; set; }
+
     /// <summary>
     /// 文本2
     /// </summary>
     [ObservableProperty]
-    private string _text2;
+    public partial string Text2 { get; set; }
 
     /// <summary>
     /// 是否启用取消
     /// </summary>
     [ObservableProperty]
-    private bool _cancelEnable;
+    public partial bool CancelEnable { get; set; }
 }

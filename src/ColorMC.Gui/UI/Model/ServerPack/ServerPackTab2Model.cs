@@ -24,7 +24,7 @@ public partial class ServerPackModel
     /// 选中的模组项目
     /// </summary>
     [ObservableProperty]
-    private ServerPackItemModel _modItem;
+    public partial ServerPackItemModel ModItem { get; set; }
 
     /// <summary>
     /// 选中所有模组

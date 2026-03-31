@@ -51,7 +51,7 @@ public partial class WorldCloudModel : SelectItemModel
     /// 存档图片
     /// </summary>
     [ObservableProperty]
-    private Bitmap _pic;
+    public partial Bitmap Pic { get; set; }
 
     /// <summary>
     /// 是否有云端存档
@@ -70,7 +70,7 @@ public partial class WorldCloudModel : SelectItemModel
 
         if (world.Icon != null && File.Exists(world.Icon))
         {
-            _pic = new(world.Icon);
+            Pic = new(world.Icon);
         }
 
         HaveCloud = true;
@@ -84,7 +84,7 @@ public partial class WorldCloudModel : SelectItemModel
 
         if (world.Icon != null && File.Exists(world.Icon))
         {
-            _pic = new(world.Icon);
+            Pic = new(world.Icon);
         }
 
         HaveCloud = false;
@@ -99,7 +99,7 @@ public partial class WorldCloudModel : SelectItemModel
         var data = Convert.FromBase64String(cloud.Icon);
         using var stream = new MemoryStream(data);
         stream.Seek(0, SeekOrigin.Begin);
-        _pic = new(stream);
+        Pic = new(stream);
 
         HaveCloud = true;
         HaveLocal = false;

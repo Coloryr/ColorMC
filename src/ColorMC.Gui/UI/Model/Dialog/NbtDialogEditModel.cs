@@ -18,22 +18,25 @@ public partial class NbtDialogEditModel(WindowModel window) : ObservableObject
     /// 是否显示修改
     /// </summary>
     [ObservableProperty]
-    private bool _displayEdit;
+    public partial bool DisplayEdit { get; set; }
+
     /// <summary>
     /// 数据类型
     /// </summary>
     [ObservableProperty]
-    private string _dataType;
+    public partial string DataType { get; set; }
+
     /// <summary>
     /// Nbt项目
     /// </summary>
     [ObservableProperty]
-    private NbtDataItemModel _dataItem;
+    public partial NbtDataItemModel DataItem { get; set; }
+
     /// <summary>
     /// 是否为Hex修改
     /// </summary>
     [ObservableProperty]
-    private bool _hexEdit;
+    public partial bool HexEdit { get; set; }
 
     /// <summary>
     /// 数据列表

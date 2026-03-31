@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AvaloniaEdit.Utils;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.LaunchPath;
+using ColorMC.Core.Net.Apis;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -40,59 +41,67 @@ public partial class AddGameModel
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string? _version;
+    public partial string? Version { get; set; }
+
     /// <summary>
     /// 加载器版本
     /// </summary>
     [ObservableProperty]
-    private string? _loaderVersion;
+    public partial string? LoaderVersion { get; set; }
+
     /// <summary>
     /// 自定义加载器位置
     /// </summary>
     [ObservableProperty]
-    private string? _loaderLocal;
+    public partial string? LoaderLocal { get; set; }
 
     /// <summary>
     /// 启用加载器
     /// </summary>
     [ObservableProperty]
-    private bool _enableLoader;
+    public partial bool EnableLoader { get; set; }
+
     /// <summary>
     /// 启用加载器
     /// </summary>
     [ObservableProperty]
-    private bool _enableLoaderVersion;
+    public partial bool EnableLoaderVersion { get; set; }
+
     /// <summary>
     /// 后加载原版运行库
     /// </summary>
     [ObservableProperty]
-    private bool _offLib;
+    public partial bool OffLib { get; set; }
+
     /// <summary>
     /// 自定义加载器
     /// </summary>
     [ObservableProperty]
-    private bool _customLoader;
+    public partial bool CustomLoader { get; set; }
+
     /// <summary>
     /// 是否正在加载中
     /// </summary>
     [ObservableProperty]
-    private bool _isLoad;
+    public partial bool IsLoad { get; set; }
+
     /// <summary>
     /// 是否自动修改实例名字
     /// </summary>
     [ObservableProperty]
-    private bool _isAutoRename = true;
+    public partial bool IsAutoRename { get; set; } = true;
 
     /// <summary>
     /// 版本类型
     /// </summary>
     [ObservableProperty]
-    private int _versionType;
+    public partial int VersionType { get; set; }
+
     /// <summary>
     /// 加载器类型
     /// </summary>
     [ObservableProperty]
-    private int _loaderType = -1;
+    public partial int LoaderType { get; set; } = -1;
 
     private Loaders _lastLoader = Loaders.Normal;
 
@@ -228,25 +237,25 @@ public partial class AddGameModel
         }
 
         //根据加载器类型获取版本信息
-        List<string>? list = null;
+        HashSet<string>? list = null;
         IsLoad = true;
         switch (loader)
         {
             case Loaders.Forge:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text24");
-                list = await WebBinding.GetForgeVersionAsync(Version);
+                list = await ForgeAPI.GetVersionListAsync(false, Version);
                 break;
             case Loaders.NeoForge:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text38");
-                list = await WebBinding.GetNeoForgeVersionAsync(Version);
+                list = await QuiltAPI.GetLoadersAsync(Version);
                 break;
             case Loaders.Fabric:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text25");
-                list = await WebBinding.GetFabricVersionAsync(Version);
+                list = await ForgeAPI.GetVersionListAsync(true, Version);
                 break;
             case Loaders.Quilt:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text26");
-                list = await WebBinding.GetQuiltVersionAsync(Version);
+                list = await QuiltAPI.GetLoadersAsync(Version);
                 break;
             case Loaders.OptiFine:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text37");

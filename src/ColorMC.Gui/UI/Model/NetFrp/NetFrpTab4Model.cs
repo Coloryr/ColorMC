@@ -24,19 +24,19 @@ public partial class NetFrpModel
     /// 是否没有服务器映射
     /// </summary>
     [ObservableProperty]
-    private bool _isCloudEmpty = true;
+    public partial bool IsCloudEmpty { get; set; } = true;
 
     /// <summary>
     /// 游戏版本
     /// </summary>
     [ObservableProperty]
-    private string _version;
+    public partial string Version { get; set; }
 
     /// <summary>
     /// 显示信息的地址
     /// </summary>
     [ObservableProperty]
-    private (string?, ushort) _iPPort;
+    public partial (string?, ushort) IPPort { get; set; }
 
     /// <summary>
     /// 游戏版本列表

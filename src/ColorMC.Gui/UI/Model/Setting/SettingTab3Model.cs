@@ -37,89 +37,103 @@ public partial class SettingModel
     /// 下载源
     /// </summary>
     [ObservableProperty]
-    private SourceLocal _source;
+    public partial SourceLocal Source { get; set; }
+
     /// <summary>
     /// 下载线程
     /// </summary>
     [ObservableProperty]
-    private int? _thread = 5;
+    public partial int? Thread { get; set; } = 5;
+
     /// <summary>
     /// 选中的Dns项目
     /// </summary>
     [ObservableProperty]
-    private DnsItemModel _dnsItem;
+    public partial DnsItemModel DnsItem { get; set; }
 
     /// <summary>
     /// 代理地址
     /// </summary>
     [ObservableProperty]
-    private string _iP;
+    public partial string IP { get; set; }
+
     /// <summary>
     /// 代理端口
     /// </summary>
     [ObservableProperty]
-    private ushort? _port = 1080;
+    public partial ushort? Port { get; set; } = 1080;
+
     /// <summary>
     /// 代理用户
     /// </summary>
     [ObservableProperty]
-    private string _user;
+    public partial string User { get; set; }
+
     /// <summary>
     /// 代理密码
     /// </summary>
     [ObservableProperty]
-    private string _password;
+    public partial string Password { get; set; }
+
     /// <summary>
     /// 云同步密钥
     /// </summary>
     [ObservableProperty]
-    private string _serverKey;
+    public partial string ServerKey { get; set; }
+
     /// <summary>
     /// 云同步信息
     /// </summary>
     [ObservableProperty]
-    private string _serverInfo;
+    public partial string ServerInfo { get; set; }
 
     /// <summary>
     /// 是否代理登录过程
     /// </summary>
     [ObservableProperty]
-    private bool _loginProxy;
+    public partial bool LoginProxy { get; set; }
+
     /// <summary>
     /// 是否代理下载过程
     /// </summary>
     [ObservableProperty]
-    private bool _downloadProxy;
+    public partial bool DownloadProxy { get; set; }
+
     /// <summary>
     /// 是否代理游戏
     /// </summary>
     [ObservableProperty]
-    private bool _gameProxy;
+    public partial bool GameProxy { get; set; }
+
     /// <summary>
     /// 是否检测下载文件完整性
     /// </summary>
     [ObservableProperty]
-    private bool _checkFile;
+    public partial bool CheckFile { get; set; }
+
     /// <summary>
     /// 是否检测启动器更新
     /// </summary>
     [ObservableProperty]
-    private bool _checkUpdate;
+    public partial bool CheckUpdate { get; set; }
+
     /// <summary>
     /// 是否自动更新启动器
     /// </summary>
     [ObservableProperty]
-    private bool _autoDownload;
+    public partial bool AutoDownload { get; set; }
+
     /// <summary>
     /// 是否启用自定义DNS
     /// </summary>
     [ObservableProperty]
-    private bool _dnsEnable;
+    public partial bool DnsEnable { get; set; }
+
     /// <summary>
     /// 代理是否启用自定义DNS
     /// </summary>
     [ObservableProperty]
-    private bool _dnsProxy;
+    public partial bool DnsProxy { get; set; }
 
     //设置修改
     partial void OnServerKeyChanged(string value)

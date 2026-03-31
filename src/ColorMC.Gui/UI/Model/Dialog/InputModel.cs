@@ -19,67 +19,79 @@ public partial class InputModel(string window) : BaseDialogModel(window)
     /// 显示文本1
     /// </summary>
     [ObservableProperty]
-    private string _text1;
+    public partial string Text1 { get; set; }
+
     /// <summary>
     /// 显示文本2
     /// </summary>
     [ObservableProperty]
-    private string _text2;
+    public partial string Text2 { get; set; }
+
     /// <summary>
     /// 提示文本1
     /// </summary>
     [ObservableProperty]
-    private string _watermark1;
+    public partial string Watermark1 { get; set; }
+
     /// <summary>
     /// 提示文本2
     /// </summary>
     [ObservableProperty]
-    private string _watermark2;
+    public partial string Watermark2 { get; set; }
+
     /// <summary>
     /// 是否启用确认
     /// </summary>
     [ObservableProperty]
-    private bool _confirmEnable = true;
+    public partial bool ConfirmEnable { get; set; } = true;
+
     /// <summary>
     /// 是否启用取消
     /// </summary>
     [ObservableProperty]
-    private bool _cancelEnable = true;
+    public partial bool CancelEnable { get; set; } = true;
+
     /// <summary>
     /// 是否显示取消
     /// </summary>
     [ObservableProperty]
-    private bool _cancelVisible = true;
+    public partial bool CancelVisible { get; set; } = true;
+
     /// <summary>
     /// 文本是否只读
     /// </summary>
     [ObservableProperty]
-    private bool _textReadonly;
+    public partial bool TextReadonly { get; set; }
+
     /// <summary>
     /// 文本2是否显示
     /// </summary>
     [ObservableProperty]
-    private bool _text2Visable;
+    public partial bool Text2Visable { get; set; }
+
     /// <summary>
     /// 进度条是否显示
     /// </summary>
     [ObservableProperty]
-    private bool _valueVisable;
+    public partial bool ValueVisable { get; set; }
+
     /// <summary>
     /// 是否密码
     /// </summary>
     [ObservableProperty]
-    private char? _password;
+    public partial char? Password { get; set; }
+
     /// <summary>
     /// 选择按钮是否显示
     /// </summary>
     [ObservableProperty]
-    private bool _choiseVisible;
+    public partial bool ChoiseVisible { get; set; }
+
     /// <summary>
     /// 选择按钮文本
     /// </summary>
     [ObservableProperty]
-    private string _choiseText;
+    public partial string ChoiseText { get; set; }
 
     /// <summary>
     /// 选择按钮

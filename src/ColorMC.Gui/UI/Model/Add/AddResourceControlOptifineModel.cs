@@ -32,24 +32,25 @@ public partial class AddResourceControlModel : IAddOptifineControl
     /// 高清修复项目
     /// </summary>
     [ObservableProperty]
-    private OptifineVersionItemModel? _optifineItem;
+    public partial OptifineVersionItemModel? OptifineItem { get; set; }
 
     /// <summary>
     /// 高清修复列表显示
     /// </summary>
     [ObservableProperty]
-    private bool _optifineDisplay;
+    public partial bool OptifineDisplay { get; set; }
+
     /// <summary>
     /// 是否没有Optifine项目
     /// </summary>
     [ObservableProperty]
-    private bool _emptyOptifineDisplay;
+    public partial bool EmptyOptifineDisplay { get; set; }
 
     /// <summary>
     /// 高清修复游戏版本
     /// </summary>
     [ObservableProperty]
-    private string? _gameVersionOptifine;
+    public partial string? GameVersionOptifine { get; set; }
 
     /// <summary>
     /// 高清修复显示

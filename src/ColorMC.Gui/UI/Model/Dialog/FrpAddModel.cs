@@ -13,44 +13,49 @@ public partial class NetFrpAddModel : BaseDialogModel
     /// 锁定名字
     /// </summary>
     [ObservableProperty]
-    private bool _lockName = true;
+    public partial bool LockName { get; set; } = true;
 
     /// <summary>
     /// 名字
     /// </summary>
     [ObservableProperty]
-    private string _name;
+    public partial string Name { get; set; }
+
     /// <summary>
     /// 远程服务器地址
     /// </summary>
     [ObservableProperty]
-    private string _ip;
+    public partial string Ip { get; set; }
+
     /// <summary>
     /// 远程服务器用户
     /// </summary>
     [ObservableProperty]
-    private string _user;
+    public partial string User { get; set; }
+
     /// <summary>
     /// 远程服务器密钥
     /// </summary>
     [ObservableProperty]
-    private string _key;
+    public partial string Key { get; set; }
+
     /// <summary>
     /// 映射名字
     /// </summary>
     [ObservableProperty]
-    private string _rName;
+    public partial string RName { get; set; }
 
     /// <summary>
     /// 映射端口
     /// </summary>
     [ObservableProperty]
-    private int? _netPort = 25565;
+    public partial int? NetPort { get; set; } = 25565;
+
     /// <summary>
     /// 映射端口
     /// </summary>
     [ObservableProperty]
-    private int? _port = 7000;
+    public partial int? Port { get; set; } = 7000;
 
     public NetFrpAddModel(string name) : base(name)
     {
@@ -59,7 +64,7 @@ public partial class NetFrpAddModel : BaseDialogModel
 
     public NetFrpAddModel(string name, NetFrpSelfItemModel model) : base(name)
     {
-        _lockName = false;
+        LockName = false;
         Ip = model.Obj.IP;
         Name = model.Obj.Name;
         Key = model.Obj.Key;

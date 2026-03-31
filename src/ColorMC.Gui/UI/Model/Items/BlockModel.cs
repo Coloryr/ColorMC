@@ -16,7 +16,7 @@ public partial class BlockItemModel(string key, string? name, Bitmap? bitmap, in
     public IBlockTop? Top;
 
     [ObservableProperty]
-    private double _left;
+    public partial double Left { get; set; }
 
     public string Key => key;
 

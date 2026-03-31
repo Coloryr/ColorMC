@@ -38,17 +38,19 @@ public partial class NbtNodeModel : ObservableObject
     /// 是否展开
     /// </summary>
     [ObservableProperty]
-    private bool _isExpanded;
+    public partial bool IsExpanded { get; set; }
+
     /// <summary>
     /// 长度
     /// </summary>
     [ObservableProperty]
-    private long? _size;
+    public partial long? Size { get; set; }
+
     /// <summary>
     /// 是否有子标签
     /// </summary>
     [ObservableProperty]
-    private bool _hasChildren;
+    public partial bool HasChildren { get; set; }
 
     /// <summary>
     /// 父标签
