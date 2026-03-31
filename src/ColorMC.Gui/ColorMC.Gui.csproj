@@ -349,9 +349,9 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
 	<PackageReference Include="Avalonia.AvaloniaEdit" Version="11.4.1" />
     <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.1.1" />
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="DialogHost.Avalonia" Version="0.10.4" />
-    <PackageReference Include="Markdig" Version="1.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="DialogHost.Avalonia" Version="0.11.0" />
+    <PackageReference Include="Markdig" Version="1.1.2" />
     <PackageReference Include="MinecraftSkinRender" Version="1.0.0" />
     <PackageReference Include="MinecraftSkinRender.Image" Version="1.0.0" />
     <PackageReference Include="MinecraftSkinRender.OpenGL" Version="1.0.0" />
@@ -360,7 +360,7 @@
     <PackageReference Include="DotNetty.Buffers" Version="0.7.6" />
     <PackageReference Include="DotNetty.Common" Version="0.7.6" />
     <PackageReference Include="DotNetty.Handlers" Version="0.7.6" />
-    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.9.2" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.9.5" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ColorMC.Core\ColorMC.Core.csproj" />

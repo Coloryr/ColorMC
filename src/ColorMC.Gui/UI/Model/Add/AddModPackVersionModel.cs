@@ -22,7 +22,7 @@ public partial class AddModPackControlModel
         SetSelect(item);
         var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text19"));
         var res = await WebBinding.GetFileListAsync(item.Obj.Source,
-               item.Obj.Pid, 0, null, Loaders.Normal);
+               item.Obj.Pid, 0, null, Loaders.Normal, FileType.Modpack);
         Window.CloseDialog(dialog);
         if (res == null || res.List == null || res.List.Count == 0)
         {

@@ -319,6 +319,8 @@ public abstract partial class AddBaseModel(WindowModel model) : ControlModel(mod
         {
             Last = _lastSelect;
             DisplayItemInfo = true;
+            Window.PushBack(CloseView);
+            LoadInfoVersion();
         }
     }
 

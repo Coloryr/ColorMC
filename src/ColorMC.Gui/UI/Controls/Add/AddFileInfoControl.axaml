@@ -16,84 +16,80 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:DataType="model:AddBaseModel"
-    Background="{setting:Theme TopViewBG}"
     mc:Ignorable="d">
-    <Border Margin="20" Classes="t5">
-        <DockPanel>
-            <Panel Margin="15" DockPanel.Dock="Top">
-                <Panel DataContext="{Binding Last}">
-                    <Border
-                        Width="90"
-                        Height="90"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        CornerRadius="5">
-                        <Border.Background>
-                            <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
-                        </Border.Background>
-                    </Border>
-                    <StackPanel Margin="105,0,0,0">
-                        <TextBlock
-                            DockPanel.Dock="Top"
-                            FontSize="16"
-                            Foreground="{setting:Theme MainColor}"
-                            Text="{Binding Name, FallbackValue=1234}" />
-                        <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <item:AutherItemControl DataContext="{Binding}" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                        <WrapPanel Margin="0,20,10,0">
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
-                            <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
-                            <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
-                            <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
-                        </WrapPanel>
-                    </StackPanel>
-                    <StackPanel
-                        Margin="0,0,-3,-3"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom"
-                        Orientation="Horizontal">
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding OpenWeb}"
-                            Content="{setting:Localize AddModPackWindow.Text31}"
-                            IsVisible="{Binding EnableButton}" />
-                        <Button
-                            Width="100"
-                            Height="35"
-                            Classes="top"
-                            Command="{Binding Install}"
-                            Content="{setting:Localize AddModPackWindow.Text32}"
-                            IsEnabled="{Binding HaveDownload}"
-                            IsVisible="{Binding EnableButton, FallbackValue=true}" />
-                    </StackPanel>
-                </Panel>
-                <Button
-                    Width="30"
-                    Height="30"
+    <DockPanel>
+        <Border
+            Margin="20,10,20,10"
+            Classes="t2"
+            DockPanel.Dock="Top">
+            <Panel Margin="15" DataContext="{Binding Last}">
+                <Border
+                    Width="90"
+                    Height="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    CornerRadius="5">
+                    <Border.Background>
+                        <ImageBrush Source="{Binding Image^, FallbackValue={x:Static app:ImageManager.LoadBitmap}}" Stretch="UniformToFill" />
+                    </Border.Background>
+                </Border>
+                <StackPanel Margin="105,0,0,0">
+                    <TextBlock
+                        DockPanel.Dock="Top"
+                        FontSize="16"
+                        Foreground="{setting:Theme MainColor}"
+                        Text="{Binding Name, FallbackValue=1234}" />
+                    <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding Authors}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <item:AutherItemControl DataContext="{Binding}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <WrapPanel Margin="0,20,10,0">
+                        <TextBlock Text="{setting:Localize AddModPackWindow.Text28}" />
+                        <TextBlock Margin="0,0,10,0" Text="{Binding DownloadCount}" />
+                        <TextBlock Text="{setting:Localize AddModPackWindow.Text29}" />
+                        <TextBlock Text="{Binding ModifiedDate}" TextTrimming="CharacterEllipsis" />
+                    </WrapPanel>
+                </StackPanel>
+                <StackPanel
+                    Margin="0,0,-3,-3"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Classes="none2"
-                    Command="{Binding CloseView}">
-                    <svg:SvgControl Path="/Resource/Icon/Button/Close.svg" />
-                </Button>
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding OpenWeb}"
+                        Content="{setting:Localize AddModPackWindow.Text31}"
+                        IsVisible="{Binding EnableButton}" />
+                    <Button
+                        Width="100"
+                        Height="35"
+                        Classes="top"
+                        Command="{Binding Install}"
+                        Content="{setting:Localize AddModPackWindow.Text32}"
+                        IsEnabled="{Binding HaveDownload}"
+                        IsVisible="{Binding EnableButton, FallbackValue=true}" />
+                </StackPanel>
             </Panel>
+        </Border>
+        <Border
+            Margin="20,0,20,15"
+            Classes="t1"
+            DockPanel.Dock="Top">
             <TabControl Padding="0" SelectedIndex="{Binding SelectIndex, FallbackValue=1}">
                 <TabItem Header="{setting:Localize AddModPackWindow.Text36}">
                     <ScrollViewer Name="ScrollViewer1" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel Margin="20,10,20,0" DataContext="{Binding Last}">
-                            <ItemsControl ItemsSource="{Binding Tags}">
+                        <StackPanel Margin="10" DataContext="{Binding Last}">
+                            <ItemsControl Margin="5,0,5,0" ItemsSource="{Binding Tags}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapPanel />
@@ -106,22 +102,13 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <TextBlock
-                                Margin="0,20,0,0"
-                                IsVisible="{Binding HaveMcmod}"
-                                Text="{setting:Localize AddModPackWindow.Text33}" />
-                            <html:HtmlPanel
-                                Margin="10,20,10,20"
-                                IsVisible="{Binding HaveMcmod}"
-                                Text="{Binding McModHtml}" />
-                            <TextBlock IsVisible="{Binding HaveMcmod}" Text="{setting:Localize AddModPackWindow.Text34}" />
-                            <html:HtmlPanel Margin="10,20,10,20" Text="{Binding SummaryOld}" />
+                            <html:HtmlPanel Margin="10,20,10,20" Text="{Binding SummaryHtml}" />
                         </StackPanel>
                     </ScrollViewer>
                 </TabItem>
                 <TabItem Header="{setting:Localize AddModPackWindow.Text35}">
                     <ScrollViewer Name="ScrollViewer2" HorizontalScrollBarVisibility="Disabled">
-                        <DockPanel Name="ModPackFiles" Margin="20,10,20,10">
+                        <DockPanel Name="ModPackFiles" Margin="10">
                             <Grid
                                 Margin="5,0,5,10"
                                 ColumnDefinitions="auto,*,auto,auto"
@@ -242,6 +229,6 @@
                     </Panel>
                 </TabItem>
             </TabControl>
-        </DockPanel>
-    </Border>
+        </Border>
+    </DockPanel>
 </UserControl>

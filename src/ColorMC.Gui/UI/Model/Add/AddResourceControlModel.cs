@@ -10,6 +10,7 @@ using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
 using ColorMC.Gui.UI.Controls;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -39,6 +40,8 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
     /// 显示的下载类型列表
     /// </summary>
     public string[] TypeList { get; init; } = [.. s_types.Select(item => item.GetName())];
+
+    protected override Loaders GameLoader => _obj.Loader;
 
     /// <summary>
     /// 下载类型
@@ -447,5 +450,15 @@ public partial class AddResourceControlModel : AddBaseModel, IAddControl
         _optifineList.Clear();
         DownloadOptifineList.Clear();
         FileList.Clear();
+    }
+
+    protected override bool CheckVersionDownload(FileVersionItemModel model)
+    {
+        if (_obj.Mods.Any(item1 => item1.Value.ModId == model.Obj.Pid && item1.Value.FileId == model.Obj.Fid))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

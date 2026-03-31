@@ -10,6 +10,7 @@ using ColorMC.Core.LaunchPath;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
 using ColorMC.Gui.Objs;
+using ColorMC.Gui.UI.Model.Items;
 using ColorMC.Gui.UI.Model.Main;
 using ColorMC.Gui.UIBinding;
 using ColorMC.Gui.Utils;
@@ -37,6 +38,8 @@ public partial class AddModPackControlModel : AddBaseModel
     private string? _group;
 
     private readonly string _useName;
+
+    protected override Loaders GameLoader => Loaders.Normal;
 
     public AddModPackControlModel(WindowModel model) : base(model)
     {
@@ -313,5 +316,17 @@ public partial class AddModPackControlModel : AddBaseModel
     public void SetGroup(string? group)
     {
         _group = group;
+    }
+
+    protected override bool CheckVersionDownload(FileVersionItemModel model)
+    {
+        var games = InstancesPath.Games;
+        if (games.Any(item1 => item1.Modpack && item1.ModPackType == model.Obj.Source
+            && item1.PID == model.Obj.Pid && item1.FID == model.Obj.Fid))
+        {
+            return true;
+        }
+
+        return false;
     }
 }

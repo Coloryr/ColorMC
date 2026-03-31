@@ -11,6 +11,7 @@ using SharpCompress.Archives.Zip;
 using SharpCompress.Writers.Zip;
 using Tomlyn;
 using Tomlyn.Model;
+using Tomlyn.Parsing;
 
 namespace ColorMC.Core.Game;
 
@@ -671,7 +672,7 @@ public static class GameMods
                 {
                     using var stream1 = item1.OpenEntryStream();
                     var data = await StringHelper.GetStringAsync(stream1);
-                    var model = Toml.Parse(data).ToModel();
+                    var model = TomlSerializer.Deserialize<TomlTable>(data);
                     if (model != null)
                     {
                         await ForgeNewAsync(model);

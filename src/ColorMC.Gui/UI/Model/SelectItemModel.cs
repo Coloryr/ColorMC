@@ -34,6 +34,8 @@ public partial class SelectItemModel : ObservableObject
     [ObservableProperty]
     private bool _enableButton;
 
+    protected virtual void OnTopChange() { }
+
     partial void OnIsSelectChanged(bool value)
     {
         IsSelectChanged(value);
@@ -46,6 +48,7 @@ public partial class SelectItemModel : ObservableObject
         EnableButton = Top || IsSelect;
 
         ChangeBorder();
+        OnTopChange();
     }
 
     protected virtual void IsSelectChanged(bool value)

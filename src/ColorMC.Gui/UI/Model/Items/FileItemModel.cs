@@ -48,16 +48,13 @@ public partial class FileItemModel : SelectItemModel
     /// <summary>
     /// 简介
     /// </summary>
-    public string Summary { get; init; }
+    [ObservableProperty]
+    public string _summary;
     /// <summary>
     /// 简介
     /// </summary>
     [ObservableProperty]
-    private string _summaryOld;
-    /// <summary>
-    /// 百科显示内容
-    /// </summary>
-    public string McModHtml { get; init; }
+    public string _summaryHtml;
     /// <summary>
     /// 作者
     /// </summary>
@@ -126,21 +123,6 @@ public partial class FileItemModel : SelectItemModel
     /// </summary>
     [ObservableProperty]
     private bool _nowDownload = false;
-    /// <summary>
-    /// 是否鼠标在上面
-    /// </summary>
-    [ObservableProperty]
-    private bool _top;
-    /// <summary>
-    /// 是否启用按钮
-    /// </summary>
-    [ObservableProperty]
-    private bool _enableButton;
-    /// <summary>
-    /// 是否启用按钮
-    /// </summary>
-    [ObservableProperty]
-    private bool _isMarkdown;
 
     /// <summary>
     /// 网址
@@ -176,9 +158,9 @@ public partial class FileItemModel : SelectItemModel
             Source = SourceType.CurseForge
         };
         Name = mcmod?.McmodName ?? data.Name;
-        SummaryOld = Markdown.ToHtml(data.Summary, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
-        Summary = mcmod?.McmodText ?? data.Summary;
-        McModHtml = mcmod?.McmodHtml ?? Summary;
+        SummaryHtml = Markdown.ToHtml(data.Summary, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+        Summary = data.Summary;
+
         foreach (var item in data.Authors)
         {
             if (Authors.Count > 5)
@@ -230,7 +212,8 @@ public partial class FileItemModel : SelectItemModel
             {
                 if (project != null)
                 {
-                    SummaryOld = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+                    SummaryHtml = Markdown.ToHtml(project.Body, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+                    Summary = project.Body;
                     Tags.Clear();
                     foreach (var item in project.Loaders)
                     {
@@ -281,11 +264,10 @@ public partial class FileItemModel : SelectItemModel
         };
 
         Name = mcmod?.McmodName ?? data.Title;
-        Summary = mcmod?.McmodText ?? data.Description;
-        McModHtml = mcmod?.McmodHtml ?? Summary;
+        Summary = data.Description;
+        SummaryHtml = Markdown.ToHtml(data.Description, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
 
         Authors.Add(new AuthorModel(data.Author, null));
-        SummaryOld = data.Description;
         foreach (var item in data.Categories)
         {
             if (cap?.FirstOrDefault(item1 => item1.Name == item) is { } capitem)
@@ -327,7 +309,7 @@ public partial class FileItemModel : SelectItemModel
 
         Name = data.Title;
         Summary = data.Description;
-        McModHtml = mcmod?.McmodHtml ?? mcmod?.McmodText ?? data.Description;
+        SummaryHtml = Markdown.ToHtml(data.Description, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
         //Author = data.Author;
         DownloadCount = UIUtils.MakeDownload(data.Downloads);
         ModifiedDate = DateTime.Parse(data.Updated);
@@ -350,9 +332,6 @@ public partial class FileItemModel : SelectItemModel
 
         Logo = data.McmodIcon.StartsWith("//") ? "https:" + data.McmodIcon : data.McmodIcon;
         Name = data.McmodName;
-        Summary = data.McmodText;
-        SummaryOld = data.McmodText;
-        McModHtml = data.McmodHtml ?? data.McmodText ?? "";
         Authors.Add(new AuthorModel(data.McmodAuthor, null));
 
         Obj = new SourceItemObj
@@ -380,11 +359,11 @@ public partial class FileItemModel : SelectItemModel
         EnableButton = Top || IsSelect;
     }
 
-    partial void OnTopChanged(bool value)
+    protected override void OnTopChange()
     {
         if (ShowStar)
         {
-            StarVis = (value || IsStar);
+            StarVis = Top || IsStar;
         }
 
         EnableButton = Top || IsSelect;
@@ -448,7 +427,7 @@ public partial class FileItemModel : SelectItemModel
         }
         if (_img != null)
         {
-            return _img;
+            //return _img;
         }
         try
         {

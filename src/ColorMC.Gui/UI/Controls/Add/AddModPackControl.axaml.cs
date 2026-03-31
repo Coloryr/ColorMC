@@ -63,10 +63,12 @@ public partial class AddModPackControl : BaseUserControl
             if ((DataContext as AddBaseModel)!.DisplayItemInfo)
             {
                 ThemeManager.CrossFade.Start(null, ItemInfo);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
                 ThemeManager.CrossFade.Start(ItemInfo, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
     }

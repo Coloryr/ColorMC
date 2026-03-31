@@ -6,6 +6,7 @@ using Avalonia.Input;
 using Avalonia.Media.Imaging;
 using ColorMC.Core.Objs;
 using ColorMC.Gui.Manager;
+using ColorMC.Gui.UI.Animations;
 using ColorMC.Gui.UI.Model;
 using ColorMC.Gui.UI.Model.Add;
 using ColorMC.Gui.UI.Model.Items;
@@ -122,7 +123,7 @@ public partial class AddResourceControl : BaseUserControl
         (DataContext as AddResourceControlModel)?.GoFile(type, pid);
     }
 
-    private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private async void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         var model = (DataContext as AddResourceControlModel)!;
         if (e.PropertyName == nameof(AddResourceControlModel.OptifineDisplay))
@@ -143,10 +144,12 @@ public partial class AddResourceControl : BaseUserControl
             if ((DataContext as AddBaseModel)!.DisplayItemInfo)
             {
                 ThemeManager.CrossFade.Start(null, ItemInfo);
+                ThemeManager.CrossFade.Start(ScrollViewer1, null);
             }
             else
             {
                 ThemeManager.CrossFade.Start(ItemInfo, null);
+                ThemeManager.CrossFade.Start(null, ScrollViewer1);
             }
         }
         else if (e.PropertyName == nameof(AddBaseModel.DisplayList))

@@ -214,7 +214,7 @@ public static class WebBinding
     /// <param name="type1"></param>
     /// <returns></returns>
     public static async Task<FileListRes> GetFileListAsync(SourceType type, string id,
-        int page, string? mc, Loaders loader, FileType type1 = FileType.Modpack)
+        int page, string? mc, Loaders loader, FileType type1)
     {
         if (type == SourceType.CurseForge)
         {

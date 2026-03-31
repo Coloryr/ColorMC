@@ -62,7 +62,7 @@ public partial class AddBaseModel : IAddFileControl
     /// 在那个状态栏中
     /// </summary>
     [ObservableProperty]
-    private int _selectIndex = 0;
+    private int _selectIndex = 1;
 
     /// <summary>
     /// 项目列表是否有下一页
@@ -75,7 +75,7 @@ public partial class AddBaseModel : IAddFileControl
     [ObservableProperty]
     private bool _haveLastVersionPage;
 
-    protected Loaders GameLoader = Loaders.Normal;
+    protected abstract Loaders GameLoader { get; }
 
     partial void OnSelectIndexChanged(int value)
     {
@@ -173,23 +173,21 @@ public partial class AddBaseModel : IAddFileControl
         }
     }
 
-    [RelayCommand]
     public void CloseView()
     {
         DisplayItemInfo = false;
         FileList.Clear();
-        SelectIndex = 0;
+        SelectIndex = 1;
     }
 
     /// <summary>
     /// 加载项目文件版本列表
     /// </summary>
-    public async void LoadVersion(SourceType type, string pid)
+    public async void LoadVersion(SourceType type, string pid, FileType type1)
     {
         _load = true;
         FileList.Clear();
         var dialog = Window.ShowProgress(LangUtils.Get("AddModPackWindow.Text19"));
-        List<FileVersionItemModel>? list = null;
         var page = 1;
         PageVersion ??= 1;
 
@@ -199,12 +197,9 @@ public partial class AddBaseModel : IAddFileControl
         }
 
         page--;
-        var res = await WebBinding.GetFileListAsync(type,
-               pid, page,
-                GameVersionDownload, GameLoader);
+        var res = await WebBinding.GetFileListAsync(type, pid, page, GameVersionDownload, GameLoader, type1);
         MaxPageVersion = res.Count / 50;
-        list = res.List;
-        var title = res.Name;
+        var list = res.List;
 
         //curseforge只有50个项目
         if (type == SourceType.CurseForge)
@@ -233,12 +228,7 @@ public partial class AddBaseModel : IAddFileControl
             var item = list[a];
             item.Add = this;
             item.AddFile = this;
-            var games = InstancesPath.Games;
-            if (games.Any(item1 => item1.Modpack && item1.ModPackType == type
-                && item1.PID == item.Obj.Pid && item1.FID == item.Obj.Fid))
-            {
-                item.IsDownload = true;
-            }
+            item.IsDownload = CheckVersionDownload(item);
             FileList.Add(item);
         }
 
@@ -268,6 +258,8 @@ public partial class AddBaseModel : IAddFileControl
 
     protected void LoadInfoVersion()
     {
-        LoadVersion(Last.Obj.Source, Last.Obj.Pid);
+        LoadVersion(Last.Obj.Source, Last.Obj.Pid, Last.Obj.Type);
     }
+
+    protected abstract bool CheckVersionDownload(FileVersionItemModel model);
 }
