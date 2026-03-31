@@ -16,7 +16,7 @@ public static class OptifineAPI
     /// <summary>
     /// optifine支持的游戏版本
     /// </summary>
-    private static List<string> s_OptifneMcVersion;
+    private static HashSet<string> s_OptifneMcVersion;
 
     /// <summary>
     /// 获取高清修复版本
@@ -192,7 +192,7 @@ public static class OptifineAPI
     /// 获取支持的游戏版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetSupportVersionAsync()
+    public static async Task<HashSet<string>?> GetSupportVersionAsync()
     {
         if (s_OptifneMcVersion != null)
         {
@@ -203,7 +203,7 @@ public static class OptifineAPI
         {
             return null;
         }
-        var list1 = new List<string>();
+        var list1 = new HashSet<string>();
         var list2 = list.GroupBy(item => item.MCVersion);
         foreach (var item in list2)
         {

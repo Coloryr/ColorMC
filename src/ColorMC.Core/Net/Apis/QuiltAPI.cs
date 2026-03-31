@@ -13,14 +13,14 @@ public static class QuiltAPI
     /// <summary>
     /// 支持的游戏版本
     /// </summary>
-    private static List<string>? s_supportVersion;
+    private static readonly HashSet<string> s_supportVersion = [];
 
     /// <summary>
     /// 获取支持的版本
     /// </summary>
-    public static async Task<List<string>?> GetSupportVersionAsync(SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetSupportVersionAsync(SourceLocal? local = null)
     {
-        if (s_supportVersion != null)
+        if (s_supportVersion.Count != 0)
         {
             return s_supportVersion;
         }
@@ -39,15 +39,12 @@ public static class QuiltAPI
                 return null;
             }
 
-            var list1 = new List<string>();
             foreach (var item in list)
             {
-                list1.Add(item.Version);
+                s_supportVersion.Add(item.Version);
             }
 
-            s_supportVersion = list1;
-
-            return list1;
+            return s_supportVersion;
         }
         catch (Exception e)
         {

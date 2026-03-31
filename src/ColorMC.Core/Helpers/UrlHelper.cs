@@ -416,27 +416,15 @@ public static class UrlHelper
     /// NeoForge版本地址
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    /// <param name="v222">是否为新版本</param>
     /// <param name="source">下载源</param>
     /// <returns>下载地址</returns>
-    public static string NeoForgeVersions(string mc, bool v222, SourceLocal? source)
+    public static string NeoForgeVersions(string mc, SourceLocal? source)
     {
-        if (v222)
+        return source switch
         {
-            return source switch
-            {
-                SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-                _ => $"{NeoForge}net/neoforged/neoforge/maven-metadata.xml"
-            };
-        }
-        else
-        {
-            return source switch
-            {
-                SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
-                _ => $"{NeoForge}net/neoforged/forge/maven-metadata.xml"
-            };
-        }
+            SourceLocal.BMCLAPI => $"{BMCLAPI}neoforge/list/{mc}",
+            _ => $"https://maven.neoforged.net/api/maven/versions/releases/net%2Fneoforged%2Fneoforge"
+        };
     }
 
     /// <summary>

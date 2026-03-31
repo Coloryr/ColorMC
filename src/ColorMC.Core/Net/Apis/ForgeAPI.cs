@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Xml;
 using ColorMC.Core.Helpers;
 using ColorMC.Core.Objs;
@@ -11,71 +12,68 @@ namespace ColorMC.Core.Net.Apis;
 public static class ForgeAPI
 {
     //支持的版本与加载器版本
-    private static List<string>? s_supportVersion;
-    private static readonly Dictionary<string, List<string>> s_forgeVersion = [];
+    private static readonly HashSet<string> s_forgeSupportVersion = [];
+    private static readonly Dictionary<string, HashSet<string>> s_forgeVersion = [];
 
-    private static List<string>? s_neoSupportVersion;
-    private static readonly Dictionary<string, List<string>> s_neoForgeVersion = [];
+    private static readonly HashSet<string> s_neoSupportVersion = [];
+    private static readonly Dictionary<string, HashSet<string>> s_neoForgeVersion = [];
 
     /// <summary>
     /// 获取支持的版本
     /// </summary>
     /// <returns></returns>
-    public static async Task<List<string>?> GetSupportVersionAsync(bool neo, SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetSupportVersionAsync(bool neo, SourceLocal? local = null)
     {
-        if ((neo ? s_neoSupportVersion : s_supportVersion) != null)
+        if ((neo ? s_neoSupportVersion.Count != 0 : s_forgeSupportVersion.Count != 0))
         {
-            return neo ? s_neoSupportVersion : s_supportVersion;
+            return neo ? s_neoSupportVersion : s_forgeSupportVersion;
         }
 
         if (local == SourceLocal.BMCLAPI)
         {
-            if (neo)
+            if (neo ? await LoadFromSourceAsync(true) : await GetSupportVersionBmclAsync(local) != true)
             {
-                if (s_neoSupportVersion == null)
-                {
-                    await LoadFromSourceAsync(true);
-                }
-                return s_neoSupportVersion;
-            }
-            else
-            {
-                return await GetSupportVersionBmclAsync(neo, local);
+                return null;
             }
         }
         else
         {
-            await LoadFromSourceAsync(neo);
-
-            return neo ? s_neoSupportVersion : s_supportVersion;
+            if (await LoadFromSourceAsync(neo) != true)
+            {
+                return null;
+            }
         }
+
+        return neo ? s_neoSupportVersion : s_forgeSupportVersion;
     }
 
-    private static async Task<List<string>?> GetSupportVersionBmclAsync(bool neo, SourceLocal? local = null)
+    private static async Task<bool> GetSupportVersionBmclAsync(SourceLocal? local = null)
     {
         string url = UrlHelper.ForgeVersion(local);
         try
         {
             using var stream = await CoreHttpClient.GetStreamAsync(url);
-            var obj = JsonUtils.ToObj(stream, JsonType.ListString);
+            var obj = JsonUtils.ToObj(stream, JsonType.HashSetString);
             if (obj == null)
             {
-                return null;
+                return false;
             }
+
+            s_forgeSupportVersion.Clear();
 
             StringHelper.VersionSort(obj);
 
-            if (neo)
-                s_neoSupportVersion = obj;
-            else
-                s_supportVersion = obj;
+            foreach (var item in obj)
+            {
+                s_forgeSupportVersion.Add(item);
+            }
 
-            return obj;
+            return true;
         }
         catch (Exception e)
         {
             ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
-            return null;
+            return false;
         }
     }
 
@@ -85,19 +83,18 @@ public static class ForgeAPI
     /// <param name="mc">游戏版本</param>
     /// <param name="source">下载源</param>
     /// <returns>版本列表</returns>
-    public static async Task<List<string>?> GetVersionListAsync(bool neo, string mc, SourceLocal? source = null)
+    public static async Task<HashSet<string>?> GetVersionListAsync(bool neo, string mc, SourceLocal? source = null)
     {
-        bool v222 = CheckHelpers.IsGameVersion1202(mc);
         if (source == SourceLocal.BMCLAPI)
         {
             string url = neo
-                    ? UrlHelper.NeoForgeVersions(mc, v222, source)
+                    ? UrlHelper.NeoForgeVersions(mc, source)
                     : UrlHelper.ForgeVersions(mc, source);
             try
             {
                 using var stream = await CoreHttpClient.GetStreamAsync(url);
 
-                var list1 = new List<string>();
+                var list1 = new HashSet<string>();
                 if (neo)
                 {
                     var obj = JsonUtils.ToObj(stream, JsonType.ListNeoForgeVersionBmclApiObj);
@@ -135,7 +132,7 @@ public static class ForgeAPI
         {
             if (!neo && s_forgeVersion.TryGetValue(mc, out var list1))
             {
-                var list2 = new List<string>();
+                var list2 = new HashSet<string>();
                 foreach (var item in list1)
                 {
                     list2.Add(item.ToString());
@@ -144,7 +141,7 @@ public static class ForgeAPI
             }
             else if (neo && s_neoForgeVersion.TryGetValue(mc, out list1))
             {
-                var list2 = new List<string>();
+                var list2 = new HashSet<string>();
                 foreach (var item in list1)
                 {
                     list2.Add(item.ToString());
@@ -158,7 +155,7 @@ public static class ForgeAPI
             {
                 if (s_neoForgeVersion.TryGetValue(mc, out var list4))
                 {
-                    var list2 = new List<string>();
+                    var list2 = new HashSet<string>();
                     foreach (var item in list4)
                     {
                         list2.Add(item.ToString());
@@ -170,7 +167,7 @@ public static class ForgeAPI
             {
                 if (s_forgeVersion.TryGetValue(mc, out var list4))
                 {
-                    var list2 = new List<string>();
+                    var list2 = new HashSet<string>();
                     foreach (var item in list4)
                     {
                         list2.Add(item.ToString());
@@ -187,145 +184,126 @@ public static class ForgeAPI
     /// </summary>
     /// <param name="neo">是否为NeoForge</param>
     /// <returns></returns>
-    private static async Task LoadFromSourceAsync(bool neo)
+    private static async Task<bool> LoadFromSourceAsync(bool neo)
     {
-        var url = neo ? UrlHelper.NeoForgeVersions("", false, SourceLocal.Offical) :
+        var url = neo ? UrlHelper.NeoForgeVersions("", SourceLocal.Offical) :
                     UrlHelper.ForgeVersion(SourceLocal.Offical);
         //旧版neoforge与forge
         try
         {
-            using var stream = await CoreHttpClient.GetStreamAsync(url);
-            if (stream == null)
+            if (!neo)
             {
-                return;
-            }
-            var xml = new XmlDocument();
-            xml.Load(stream);
+                using var stream = await CoreHttpClient.GetStreamAsync(url);
+                if (stream == null)
+                {
+                    return false;
+                }
+                var xml = new XmlDocument();
+                xml.Load(stream);
 
-            var list = new List<string>();
+                var node = xml.SelectNodes("//metadata/versioning/versions/version");
+                if (node == null)
+                {
+                    return false;
+                }
 
-            var node = xml.SelectNodes("//metadata/versioning/versions/version");
-            if (node == null)
-            {
-                return;
-            }
-
-            if (neo)
-            {
-                s_neoForgeVersion.Clear();
-            }
-            else
-            {
+                s_forgeSupportVersion.Clear();
                 s_forgeVersion.Clear();
-            }
-            foreach (XmlNode item in node)
-            {
-                var str = item.InnerText;
-                var args = str.Split('-');
-                if (args.Length < 2)
+                foreach (XmlNode item in node)
                 {
-                    continue;
-                }
-                var mc1 = args[0];
-                var version = args[1];
-
-                if (!list.Contains(mc1))
-                {
-                    list.Add(mc1);
-                }
-
-                if (neo)
-                {
-                    if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
+                    var str = item.InnerText;
+                    var args = str.Split('-');
+                    if (args.Length < 2)
                     {
-                        list2.Add(new(version));
+                        continue;
                     }
-                    else
-                    {
-                        var list3 = new List<string>() { version };
-                        s_neoForgeVersion.Add(mc1, list3);
-                    }
-                }
-                else
-                {
+                    var mc1 = args[0];
+                    var version = args[1];
+
+                    s_forgeSupportVersion.Add(mc1);
+
                     if (s_forgeVersion.TryGetValue(mc1, out var list2))
                     {
                         list2.Add(new(version));
                     }
                     else
                     {
-                        var list3 = new List<string>() { version };
+                        var list3 = new HashSet<string>() { version };
                         s_forgeVersion.Add(mc1, list3);
                     }
                 }
-            }
-            if (neo)
-            {
-                foreach (var item in s_neoForgeVersion.Values)
-                {
-                    StringHelper.VersionSort(item);
-                }
-            }
-            else
-            {
                 foreach (var item in s_forgeVersion.Values)
                 {
                     StringHelper.VersionSort(item);
                 }
-            }
 
-            if (neo)
-            {
-                s_neoSupportVersion = list;
+                return true;
             }
             else
-            {
-                s_supportVersion = list;
-            }
-        }
-        catch (Exception e)
-        {
-            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
-        }
-
-        //新版neoforge
-        if (neo)
-        {
-            url = UrlHelper.NeoForgeVersions("", true, SourceLocal.Offical);
-            try
             {
                 using var stream1 = await CoreHttpClient.GetStreamAsync(url);
                 if (stream1 == null)
                 {
-                    return;
+                    return false;
                 }
 
-                var xml = new XmlDocument();
-                xml.Load(stream1);
+                var json = await JsonDocument.ParseAsync(stream1);
 
-                var node = xml.SelectNodes("//metadata/versioning/versions/version");
-                if (node?.Count > 0)
+                if (json.RootElement.TryGetProperty("versions", out var versions) && versions.ValueKind == JsonValueKind.Array)
                 {
-                    foreach (XmlNode item in node)
+                    s_neoForgeVersion.Clear();
+                    s_neoSupportVersion.Clear();
+
+                    string GetFirstTwoVersionNumbers(string versionString)
                     {
-                        var str = item.InnerText;
-                        var args = str.Split('.');
-                        var mc1 = "1." + args[0] + (args[1] == "0" ? "" : "." + args[1]);
-                        var version = str;
+                        var splitVersion = versionString.Split('.');
+                        return $"{splitVersion[0]}.{splitVersion[1]}";
+                    }
 
-                        if (!s_neoSupportVersion!.Contains(mc1))
+                    string GetMcVersionFromNeoForgeVersion(string versionString)
+                    {
+                        var spl = versionString.Split('.');
+                        // Handle the new versioning scheme first
+                        if (int.Parse(spl[0]) >= 26)
                         {
-                            s_neoSupportVersion.Add(mc1);
+                            // 26.1.0.X -> 26.1
+                            var mcVersion = spl[0] + '.' + spl[1];
+                            // 26.1.1.X -> 26.1.1
+                            if (spl[2] != "0")
+                            {
+                                mcVersion += '.' + spl[2];
+                            }
+
+                            // 26.1.0.0-alpha+snapshot-1
+                            var splitBySnapshotIdentifier = versionString.Split('+');
+                            if (splitBySnapshotIdentifier.Length == 2)
+                            {
+                                mcVersion += '-' + splitBySnapshotIdentifier[1];
+                            }
+                            return mcVersion;
                         }
+                        return "1." + GetFirstTwoVersionNumbers(versionString);
+                    }
 
-                        if (s_neoForgeVersion.TryGetValue(mc1, out var list2))
+                    foreach (var item in versions.EnumerateArray())
+                    {
+                        var neoVersion = item.GetString() ?? "";
+                        var mcVersion = GetMcVersionFromNeoForgeVersion(neoVersion);
+
+                        // Remove 0.25w14craftmine and other april fools versions
+                        if (neoVersion.StartsWith('0')) continue;
+
+                        // Get and push version lists
+                        s_neoSupportVersion.Add(mcVersion);
+
+                        if (s_neoForgeVersion.TryGetValue(mcVersion, out var list2))
                         {
-                            list2.Add(version);
+                            list2.Add(neoVersion);
                         }
                         else
                         {
-                            var list3 = new List<string>() { version };
-                            s_neoForgeVersion.Add(mc1, list3);
+                            var list3 = new HashSet<string>() { neoVersion };
+                            s_neoForgeVersion.Add(mcVersion, list3);
                         }
                     }
 
@@ -334,11 +312,14 @@ public static class ForgeAPI
                         StringHelper.VersionSort(item);
                     }
                 }
+
+                return true;
             }
-            catch (Exception e)
-            {
-                ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
-            }
+        }
+        catch (Exception e)
+        {
+            ColorMCCore.OnError(new ApiRequestErrorEventArgs(url, e));
+            return false;
         }
     }
 }

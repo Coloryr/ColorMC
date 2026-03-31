@@ -13,7 +13,7 @@ public static class FabricAPI
     /// <summary>
     /// 支持的游戏版本
     /// </summary>
-    private static List<string>? s_supportVersion;
+    private static readonly HashSet<string> s_supportVersion = [];
 
     /// <summary>
     /// 获取元数据
@@ -70,7 +70,7 @@ public static class FabricAPI
     /// 获取加载器版本
     /// </summary>
     /// <param name="mc">游戏版本</param>
-    public static async Task<List<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetLoadersAsync(string mc, SourceLocal? local = null)
     {
         string url = $"{UrlHelper.GetFabricMeta(local)}/loader/{mc}";
         try
@@ -82,7 +82,7 @@ public static class FabricAPI
                 return null;
             }
 
-            var list1 = new List<string>();
+            var list1 = new HashSet<string>();
             foreach (var item in list)
             {
                 list1.Add(item.Loader.Version);
@@ -102,9 +102,9 @@ public static class FabricAPI
     /// <summary>
     /// 获取支持的版本
     /// </summary>
-    public static async Task<List<string>?> GetSupportVersionAsync(SourceLocal? local = null)
+    public static async Task<HashSet<string>?> GetSupportVersionAsync(SourceLocal? local = null)
     {
-        if (s_supportVersion != null)
+        if (s_supportVersion.Count != 0)
         {
             return s_supportVersion;
         }
@@ -120,15 +120,13 @@ public static class FabricAPI
                 return null;
             }
 
-            var list1 = new List<string>();
+            s_supportVersion.Clear();
             foreach (var item in list)
             {
-                list1.Add(item.Version);
+                s_supportVersion.Add(item.Version);
             }
 
-            s_supportVersion = list1;
-
-            return list1;
+            return s_supportVersion;
         }
         catch (Exception e)
         {

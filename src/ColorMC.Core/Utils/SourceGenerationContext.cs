@@ -57,6 +57,7 @@ public class JsonStringGuidConverter : JsonConverter<Guid>
 [JsonSerializable(typeof(ConfigObj))]
 [JsonSerializable(typeof(GameArgObj))]
 [JsonSerializable(typeof(List<string>))]
+[JsonSerializable(typeof(HashSet<string>))]
 [JsonSerializable(typeof(string))]
 [JsonSerializable(typeof(GameArgObj.GameArgumentsObj.GameJvmObj))]
 [JsonSerializable(typeof(LangObj))]
@@ -219,4 +220,5 @@ public static class JsonType
     public static JsonTypeInfo<GameArgObj.GameArgumentsObj.GameJvmObj> GameJvmObj => SourceGenerationContext.Default.GameJvmObj;
     public static JsonTypeInfo<List<ModrinthTeamObj>> ListModrinthTeamObj => SourceGenerationContext.Default.ListModrinthTeamObj;
     public static JsonTypeInfo<HMCLServerObj> HMCLServerObj => SourceGenerationContext.Default.HMCLServerObj;
+    public static JsonTypeInfo<HashSet<string>> HashSetString => SourceGenerationContext.Default.HashSetString;
 }

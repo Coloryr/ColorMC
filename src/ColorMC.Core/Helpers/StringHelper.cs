@@ -203,7 +203,7 @@ public static partial class StringHelper
     /// 版本号排序
     /// </summary>
     /// <param name="list">序号</param>
-    public static void VersionSort(List<string> list)
+    public static void VersionSort(HashSet<string> list)
     {
         var regex = VersionRegex();
         var list1 = new List<VersionStrObj>();
