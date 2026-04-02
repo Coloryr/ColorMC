@@ -78,7 +78,7 @@
                             Padding="12,6,12,6"
                             Classes="top"
                             Command="{Binding ShowSkin}"
-                            CornerRadius="5"
+                            CornerRadius="0"
                             IsVisible="{Binding IsHavePlayer}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text9}">
                             <StackPanel Orientation="Horizontal">
@@ -94,7 +94,7 @@
                             Padding="12,6,12,6"
                             Classes="top"
                             Command="{Binding OpenCollect}"
-                            CornerRadius="5"
+                            CornerRadius="0"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                             <StackPanel Orientation="Horizontal">
                                 <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McStar.svg" />
@@ -108,7 +108,7 @@
                             Padding="12,6,12,6"
                             Classes="top"
                             Command="{Binding OpenGuide}"
-                            CornerRadius="5"
+                            CornerRadius="0"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                             <StackPanel Orientation="Horizontal">
                                 <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McHandbook.svg" />
@@ -122,7 +122,7 @@
                             Padding="12,6,12,6"
                             Classes="top"
                             Command="{Binding ShowCount}"
-                            CornerRadius="5"
+                            CornerRadius="0"
                             ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                             <StackPanel Orientation="Horizontal">
                                 <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McCounter.svg" />
@@ -136,7 +136,7 @@
                             Padding="12,6,12,6"
                             Classes="top"
                             Command="{Binding ShowSetting}"
-                            CornerRadius="5"
+                            CornerRadius="0"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                             <StackPanel Orientation="Horizontal">
                                 <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McCog.svg" />
