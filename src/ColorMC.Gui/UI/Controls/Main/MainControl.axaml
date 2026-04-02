@@ -26,6 +26,10 @@
         <Panel Name="MainView">
             <DockPanel>
                 <Panel Background="{setting:Theme TopBG}" DockPanel.Dock="Top">
+					<StackPanel Orientation="Horizontal">
+						<svg:SvgControl Height="70" Path="/Resource/Icon/Patterns/BarLeftPattern.svg" />
+					</StackPanel>
+						
                     <Button
                         Margin="0,12,30,12"
                         HorizontalAlignment="Right"
@@ -63,8 +67,10 @@
                             </Panel>
                         </StackPanel>
                     </Button>
+					
+					<!--主界面：顶部功能按钮-->
                     <StackPanel
-                        Margin="30,0,0,0"
+                        Margin="26.5,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Orientation="Horizontal">
@@ -76,7 +82,7 @@
                             IsVisible="{Binding IsHavePlayer}"
                             ToolTip.Tip="{setting:Localize ToolTip.Text9}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Texture.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McTexture.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     VerticalAlignment="Center"
@@ -91,7 +97,7 @@
                             CornerRadius="5"
                             ToolTip.Tip="{setting:Localize ToolTip.Text133}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Item/StarNone.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McStar.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -105,7 +111,7 @@
                             CornerRadius="5"
                             ToolTip.Tip="{setting:Localize ToolTip.Text70}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Guide.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McHandbook.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -119,7 +125,7 @@
                             CornerRadius="5"
                             ToolTip.Tip="{setting:Localize ToolTip.Text92}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Counter.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McCounter.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -133,7 +139,7 @@
                             CornerRadius="5"
                             ToolTip.Tip="{setting:Localize ToolTip.Text13}">
                             <StackPanel Orientation="Horizontal">
-                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/Cog.svg" />
+                                <svg:SvgControl Height="20" Path="/Resource/Icon/Button/McCog.svg" />
                                 <TextBlock
                                     Margin="5,0,0,0"
                                     FontSize="13"
@@ -141,6 +147,7 @@
                             </StackPanel>
                         </Button>
                     </StackPanel>
+					
                 </Panel>
                 <Rectangle
                     Height="1"

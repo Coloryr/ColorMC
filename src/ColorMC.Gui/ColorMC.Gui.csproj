@@ -50,6 +50,12 @@
     <None Remove="Resource\Icon\Button\ArrowRight.svg" />
     <None Remove="Resource\Icon\Button\Close.svg" />
     <None Remove="Resource\Icon\Button\Cog.svg" />
+    <None Remove="Resource\Icon\Button\McCog.svg" />
+    <None Remove="Resource\Icon\Button\McCounter.svg" />
+    <None Remove="Resource\Icon\Button\McCreeper.svg" />
+    <None Remove="Resource\Icon\Button\McHandbook.svg" />
+    <None Remove="Resource\Icon\Button\McStar.svg" />
+    <None Remove="Resource\Icon\Button\McTexture.svg" />
     <None Remove="Resource\Icon\Button\Pause.svg" />
     <None Remove="Resource\Icon\Button\Play.svg" />
     <None Remove="Resource\Icon\close.svg" />
@@ -157,6 +163,7 @@
     <None Remove="Resource\Icon\LuckBlock\up.svg" />
     <None Remove="Resource\Icon\move.svg" />
     <None Remove="Resource\Icon\new.svg" />
+    <None Remove="Resource\Icon\Patterns\BarLeftPattern.svg" />
     <None Remove="Resource\Icon\reload.svg" />
     <None Remove="Resource\Icon\relogin.svg" />
     <None Remove="Resource\Icon\reset.svg" />
@@ -199,6 +206,12 @@
     <AvaloniaResource Include="Resource\Icon\Button\Cog.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Counter.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Delete.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McCog.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McCounter.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McCreeper.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McHandbook.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McStar.svg" />
+    <AvaloniaResource Include="Resource\Icon\Button\McTexture.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Pause.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Pencil.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Play.svg" />
@@ -305,6 +318,7 @@
     <AvaloniaResource Include="Resource\Icon\Button\Reset.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Rotate.svg" />
     <AvaloniaResource Include="Resource\Icon\Button\Texture.svg" />
+    <AvaloniaResource Include="Resource\Icon\Patterns\BarLeftPattern.svg" />
     <AvaloniaResource Include="Resource\Icon\Window\Back.svg" />
     <AvaloniaResource Include="Resource\Icon\Window\Close.svg" />
     <AvaloniaResource Include="Resource\Icon\Window\Maximize.svg" />
