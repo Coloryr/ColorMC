@@ -33,7 +33,7 @@
                         Grid.Column="2"
                         Margin="10,0,10,0"
                         Text="{Binding ModText}"
-                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                        PlaceholderText="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     <Button
                         Grid.Column="3"
                         Width="100"

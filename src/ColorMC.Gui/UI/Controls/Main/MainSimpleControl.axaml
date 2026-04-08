@@ -16,7 +16,7 @@
             Margin="20"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            RenderOptions.TextRenderingMode="Antialias">
+            TextOptions.TextRenderingMode="Antialias">
             <Image
                 Width="100"
                 Height="100"

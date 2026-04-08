@@ -27,7 +27,7 @@
                         HorizontalAlignment="Stretch"
                         DockPanel.Dock="Right"
                         Text="{Binding Name}"
-                        Watermark="{setting:Localize GameEditWindow.Tab4.Text2}" />
+                        PlaceholderText="{setting:Localize GameEditWindow.Tab4.Text2}" />
                     <ComboBox
                         Grid.Column="1"
                         Margin="0,0,10,0"
@@ -100,14 +100,14 @@
                 Foreground="{setting:Theme FontColor}"
                 HorizontalScrollBarVisibility="Auto"
                 IsVisible="{Binding !NbtEnable}"
-                RenderOptions.TextRenderingMode="Antialias"
+                TextOptions.TextRenderingMode="Antialias"
                 ShowLineNumbers="True"
                 VerticalScrollBarVisibility="Visible"
                 WordWrap="True" />
             <TreeDataGrid
                 Name="NbtViewer"
                 IsVisible="{Binding NbtEnable}"
-                RenderOptions.TextRenderingMode="Antialias"
+                TextOptions.TextRenderingMode="Antialias"
                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 Source="{Binding Source}" />

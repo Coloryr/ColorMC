@@ -40,9 +40,9 @@
                     <Decorator Name="Controls" />
                     <Panel
                         Name="Grid2"
-                        Opacity="0.9"
                         Background="{setting:Theme OverGridBG}"
-                        IsVisible="False">
+                        IsVisible="False"
+                        Opacity="0.9">
                         <TextBlock
                             Name="Label1"
                             HorizontalAlignment="Center"

@@ -110,7 +110,7 @@ public partial class WindowModel : ObservableObject
     /// 是否显示窗口关闭按钮
     /// </summary>
     [ObservableProperty]
-    public partial bool EnableHead { get; set; } = true;
+    public partial bool EnableHead { get; set; } = false;
 
     /// <summary>
     /// 是否显示选择按钮1

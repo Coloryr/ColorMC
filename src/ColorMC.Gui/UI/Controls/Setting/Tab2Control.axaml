@@ -164,7 +164,7 @@
                         Margin="0,0,10,5"
                         IsEnabled="{Binding EnableBG}"
                         Text="{Binding Pic}"
-                        Watermark="{setting:Localize SettingWindow.Tab2.Text3}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab2.Text3}" />
                     <StackPanel
                         Margin="0,0,10,5"
                         HorizontalAlignment="Right"

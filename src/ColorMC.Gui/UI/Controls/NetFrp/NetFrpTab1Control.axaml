@@ -23,7 +23,7 @@
                         Margin="0,0,10,0"
                         PasswordChar="*"
                         Text="{Binding KeySakura}"
-                        Watermark="{setting:Localize NetFrpWindow.Tab1.Text1}" />
+                        PlaceholderText="{setting:Localize NetFrpWindow.Tab1.Text1}" />
                     <Button
                         Grid.Column="1"
                         Width="120"

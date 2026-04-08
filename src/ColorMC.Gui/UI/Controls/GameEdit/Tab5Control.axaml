@@ -22,7 +22,7 @@
                 Classes="t2"
                 DockPanel.Dock="Top"
                 IsEnabled="{Binding !WorldEmptyDisplay}">
-                <TextBox Text="{Binding WorldText}" Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
+                <TextBox Text="{Binding WorldText}" PlaceholderText="{setting:Localize GameEditWindow.Tab5.Text6}" />
             </Border>
             <Panel>
                 <ScrollViewer VerticalScrollBarVisibility="Visible">

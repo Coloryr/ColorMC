@@ -27,7 +27,7 @@
                         Margin="0,0,0,5"
                         IsEnabled="False"
                         Text="{Binding RunDir}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text14}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab1.Text14}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
@@ -68,7 +68,7 @@
                     <TextBox
                         Margin="0,0,0,5"
                         Text="{Binding Local1}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text5}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab1.Text5}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
@@ -93,7 +93,7 @@
                     <TextBox
                         Margin="0,0,0,5"
                         Text="{Binding Local2}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text7}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab1.Text7}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
@@ -118,7 +118,7 @@
                     <TextBox
                         Margin="0,0,0,5"
                         Text="{Binding Local3}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text9}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab1.Text9}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"
@@ -143,7 +143,7 @@
                     <TextBox
                         Margin="0,0,0,5"
                         Text="{Binding Local4}"
-                        Watermark="{setting:Localize SettingWindow.Tab1.Text11}" />
+                        PlaceholderText="{setting:Localize SettingWindow.Tab1.Text11}" />
                     <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                         <Button
                             Width="100"

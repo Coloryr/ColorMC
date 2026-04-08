@@ -21,7 +21,7 @@ public partial class TestWindow : Window
 
         string htmlContent = Markdown.ToHtml(Mk, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
 
-        Web1.Text = Html1;
-        Web2.Text = htmlContent;
+        //Web1.Text = Html1;
+        //Web2.Text = htmlContent;
     }
 }

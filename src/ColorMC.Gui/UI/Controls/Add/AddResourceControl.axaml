@@ -86,7 +86,7 @@
                                 Margin="0,0,7,0"
                                 HorizontalAlignment="Stretch"
                                 Text="{Binding Text}"
-                                Watermark="{setting:Localize AddModPackWindow.Text44}">
+                                PlaceholderText="{setting:Localize AddModPackWindow.Text44}">
                                 <TextBox.KeyBindings>
                                     <KeyBinding Command="{Binding GetNameList}" Gesture="Enter" />
                                 </TextBox.KeyBindings>

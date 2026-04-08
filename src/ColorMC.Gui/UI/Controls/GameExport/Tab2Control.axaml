@@ -22,7 +22,7 @@
                         MinWidth="230"
                         Margin="0,0,10,10"
                         Text="{Binding Text}"
-                        Watermark="{setting:Localize GameEditWindow.Tab4.Text1}" />
+                        PlaceholderText="{setting:Localize GameEditWindow.Tab4.Text1}" />
                     <StackPanel
                         Margin="0,0,10,10"
                         HorizontalAlignment="Right"

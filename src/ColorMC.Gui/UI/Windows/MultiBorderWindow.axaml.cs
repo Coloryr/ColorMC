@@ -29,7 +29,7 @@ public partial class MultiBorderWindow : AMultiWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            SystemDecorations = SystemDecorations.BorderOnly;
+            WindowDecorations = WindowDecorations.BorderOnly;
         }
 
         InitMultiWindow(con);

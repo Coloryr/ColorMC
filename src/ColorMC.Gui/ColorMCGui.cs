@@ -98,7 +98,7 @@ public static class ColorMCGui
 
         TaskScheduler.UnobservedTaskException += (sender, e) =>
         {
-            if (e.Exception.InnerException is DBusException)
+            if (e.Exception.InnerException is DBusErrorReplyException)
             {
                 return;
             }

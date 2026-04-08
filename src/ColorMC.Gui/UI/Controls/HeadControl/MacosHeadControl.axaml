@@ -12,7 +12,7 @@
     x:DataType="model:WindowModel"
     Background="{setting:Theme HeadBG}"
     mc:Ignorable="d">
-    <Panel RenderOptions.TextRenderingMode="Antialias">
+    <Panel TextOptions.TextRenderingMode="Antialias">
         <Rectangle
             Height="1"
             VerticalAlignment="Bottom"

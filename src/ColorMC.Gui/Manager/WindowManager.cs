@@ -1111,7 +1111,7 @@ public static class WindowManager
         if (ConfigBinding.WindowMode())
         {
             MainWindow?.Show();
-            if (AllWindow?.GetVisualRoot() is Window window)
+            if (AllWindow?.GetPresentationSource()?.RootVisual is Window window)
             {
                 window.Show();
                 window.WindowState = WindowState.Normal;
@@ -1121,13 +1121,13 @@ public static class WindowManager
         else
         {
             MainWindow?.Show();
-            if (MainWindow?.GetVisualRoot() is Window window)
+            if (MainWindow?.GetPresentationSource()?.RootVisual is Window window)
             {
                 window.Show();
                 window.WindowState = WindowState.Normal;
                 window.Activate();
             }
-            else if (CustomWindow?.Icon.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Icon.GetPresentationSource()?.RootVisual is Window window1)
             {
                 window1.Show();
                 window1.WindowState = WindowState.Normal;
@@ -1144,7 +1144,7 @@ public static class WindowManager
         if (ConfigBinding.WindowMode())
         {
             MainWindow?.Hide();
-            if (AllWindow?.GetVisualRoot() is Window window)
+            if (AllWindow?.GetPresentationSource()?.RootVisual is Window window)
             {
                 window.Hide();
             }
@@ -1152,12 +1152,12 @@ public static class WindowManager
         else
         {
             MainWindow?.Hide();
-            if (MainWindow?.GetVisualRoot() is Window window)
+            if (MainWindow?.GetPresentationSource()?.RootVisual is Window window)
             {
                 window.Hide();
-                (CustomWindow?.Icon.GetVisualRoot() as Window)?.Close();
+                (CustomWindow?.Icon.GetPresentationSource()?.RootVisual as Window)?.Close();
             }
-            else if (CustomWindow?.Icon.GetVisualRoot() is Window window1)
+            else if (CustomWindow?.Icon.GetPresentationSource()?.RootVisual is Window window1)
             {
                 window1.Hide();
             }

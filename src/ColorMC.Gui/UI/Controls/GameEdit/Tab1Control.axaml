@@ -167,7 +167,7 @@
                             Margin="0,0,10,0"
                             IsEnabled="{Binding Modpack}"
                             Text="{Binding PID}"
-                            Watermark="{setting:Localize GameEditWindow.Tab1.Text8}" />
+                            PlaceholderText="{setting:Localize GameEditWindow.Tab1.Text8}" />
                         <TextBlock
                             Grid.Column="2"
                             Margin="0,0,5,0"
@@ -177,7 +177,7 @@
                             Margin="0,0,10,0"
                             IsEnabled="{Binding Modpack}"
                             Text="{Binding FID}"
-                            Watermark="{setting:Localize GameEditWindow.Tab1.Text9}" />
+                            PlaceholderText="{setting:Localize GameEditWindow.Tab1.Text9}" />
                     </Grid>
                     <DockPanel IsEnabled="{Binding Modpack}" IsVisible="{Binding ServerPack}">
                         <TextBlock Margin="0,0,5,0" Text="{setting:Localize GameEditWindow.Tab1.Text49}" />

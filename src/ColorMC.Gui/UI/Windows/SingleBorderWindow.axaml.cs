@@ -30,7 +30,7 @@ public partial class SingleBorderWindow : ABaseWindow
 
         if (SystemInfo.Os == OsType.Linux)
         {
-            SystemDecorations = SystemDecorations.BorderOnly;
+            WindowDecorations = WindowDecorations.BorderOnly;
         }
 
         InitBaseWindow();
