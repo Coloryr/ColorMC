@@ -369,7 +369,7 @@ public static class VersionPath
         {
             return null;
         }
-        var data = ver.Versions.Where(a => a.Id == version).FirstOrDefault();
+        var data = ver.Versions.FirstOrDefault(a => a.Id == version);
         if (data != null)
         {
             var file = Path.Combine(BaseDir, $"{version}.json");

@@ -245,11 +245,11 @@ public partial class AddGameModel
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text24");
                 list = await ForgeAPI.GetVersionListAsync(false, Version);
                 break;
-            case Loaders.NeoForge:
+            case Loaders.Fabric:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text38");
                 list = await QuiltAPI.GetLoadersAsync(Version);
                 break;
-            case Loaders.Fabric:
+            case Loaders.NeoForge:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text25");
                 list = await ForgeAPI.GetVersionListAsync(true, Version);
                 break;
