@@ -247,7 +247,7 @@ public partial class AddGameModel
                 break;
             case Loaders.Fabric:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text38");
-                list = await QuiltAPI.GetLoadersAsync(Version);
+                list = await FabricAPI.GetLoadersAsync(Version);
                 break;
             case Loaders.NeoForge:
                 Window.SubTitle = LangUtils.Get("AddGameWindow.Tab1.Text25");
