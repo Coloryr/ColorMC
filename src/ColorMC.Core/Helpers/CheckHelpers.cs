@@ -162,7 +162,7 @@ public static partial class CheckHelpers
         try
         {
             var version1 = new Version(version);
-            return version1.Minor >= 17;
+            return version1.Major >= 26 || version1.Minor >= 17;
         }
         catch
         {
@@ -200,7 +200,7 @@ public static partial class CheckHelpers
         try
         {
             var version1 = new Version(version);
-            if (version1.Minor > 20)
+            if (version1.Major >= 26 || version1.Minor > 20)
             {
                 return true;
             }

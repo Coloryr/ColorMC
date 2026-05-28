@@ -290,15 +290,15 @@ public static class GameBinding
         if (exception is LaunchException e1)
         {
             var log = e1.GetName(obj, login);
-            if (e1.Inner != null)
-            {
-                Logs.Error(log, e1.Inner);
-                WindowManager.ShowError(title, log, e1.Inner);
-            }
-            else
+            if (e1.Inner == null)
             {
                 Logs.Error(log);
             }
+            else
+            {
+                Logs.Error(log, e1.Inner);
+            }
+            WindowManager.ShowError(title, log, e1.Inner);
             state = e1.State;
         }
         else
