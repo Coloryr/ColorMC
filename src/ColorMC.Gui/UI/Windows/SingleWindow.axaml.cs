@@ -23,6 +23,10 @@ public partial class SingleWindow : ABaseWindow
 
         DataContext = Win.DataContext;
 
+        WindowDecorations = WindowDecorations.BorderOnly;
+        ExtendClientAreaToDecorationsHint = true;
+        ExtendClientAreaTitleBarHeightHint = -1;
+
         InitBaseWindow();
         SetWindowState();
     }

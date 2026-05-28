@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.LogicalTree;
+using Avalonia.VisualTree;
 using ColorMC.Core.Objs;
 using ColorMC.Core.Utils;
 using ColorMC.Gui.UI.Controls.HeadControl;
@@ -47,7 +49,7 @@ public partial class TitleControl : UserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (VisualRoot is not Window window)
+        if (TopLevel.GetTopLevel(this) is not Window window)
         {
             return;
         }
@@ -79,7 +81,7 @@ public partial class TitleControl : UserControl
 
     private void WindowMax()
     {
-        if (VisualRoot is not Window window)
+        if (TopLevel.GetTopLevel(this) is not Window window)
         {
             return;
         }
@@ -96,6 +98,7 @@ public partial class TitleControl : UserControl
 
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        (VisualRoot as Window)?.BeginMoveDrag(e);
+        var windows = TopLevel.GetTopLevel(this) as Window;
+        windows?.BeginMoveDrag(e);
     }
 }

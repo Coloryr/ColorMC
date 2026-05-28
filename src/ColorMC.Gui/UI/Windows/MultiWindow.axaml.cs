@@ -23,6 +23,10 @@ public partial class MultiWindow : AMultiWindow
         InitializeComponent();
 
         InitMultiWindow(con);
+
+        WindowDecorations = WindowDecorations.BorderOnly;
+        ExtendClientAreaToDecorationsHint = true;
+        ExtendClientAreaTitleBarHeightHint = -1;
     }
 
     protected override void SetChild(Control control)

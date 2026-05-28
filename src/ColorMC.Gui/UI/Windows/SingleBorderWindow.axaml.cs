@@ -28,10 +28,9 @@ public partial class SingleBorderWindow : ABaseWindow
 
         DataContext = Win.DataContext;
 
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            WindowDecorations = WindowDecorations.BorderOnly;
-        }
+        WindowDecorations = WindowDecorations.BorderOnly;
+        ExtendClientAreaToDecorationsHint = true;
+        ExtendClientAreaTitleBarHeightHint = -1;
 
         InitBaseWindow();
         SetWindowState();

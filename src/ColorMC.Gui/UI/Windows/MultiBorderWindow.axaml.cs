@@ -27,10 +27,9 @@ public partial class MultiBorderWindow : AMultiWindow
 
         PropertyChanged += OnPropertyChanged;
 
-        if (SystemInfo.Os == OsType.Linux)
-        {
-            WindowDecorations = WindowDecorations.BorderOnly;
-        }
+        WindowDecorations = WindowDecorations.BorderOnly;
+        ExtendClientAreaToDecorationsHint = true;
+        ExtendClientAreaTitleBarHeightHint = -1;
 
         InitMultiWindow(con);
     }
