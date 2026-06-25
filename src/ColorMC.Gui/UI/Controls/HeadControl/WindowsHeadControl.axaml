@@ -12,7 +12,7 @@
     x:DataType="model:WindowModel"
     Background="{setting:Theme HeadBG}"
     mc:Ignorable="d">
-    <DockPanel Name="Pandl2" TextOptions.TextRenderingMode="Antialias">
+    <DockPanel Name="Pandl2" RenderOptions.TextRenderingMode="Antialias">
         <Rectangle
             Height="1"
             DockPanel.Dock="Bottom"

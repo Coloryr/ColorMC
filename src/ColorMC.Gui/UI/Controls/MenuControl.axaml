@@ -20,7 +20,7 @@
             VerticalAlignment="Center"
             DockPanel.Dock="Top"
             FontSize="20"
-            TextOptions.TextRenderingMode="Antialias"
+            RenderOptions.TextRenderingMode="Antialias"
             Text="{Binding Title, FallbackValue=Title}" />
         <Panel ClipToBounds="True">
             <Decorator Name="Content1" />

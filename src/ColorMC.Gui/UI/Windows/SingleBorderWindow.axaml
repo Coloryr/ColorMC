@@ -16,6 +16,7 @@
     d:DesignWidth="770"
     x:DataType="model:WindowModel"
     Background="Transparent"
+    ExtendClientAreaChromeHints="NoChrome"
     ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
     FontFamily="{setting:Font}"

@@ -21,7 +21,7 @@
             HorizontalAlignment="Stretch"
             Foreground="{setting:Theme FontColor}"
             Text="{Binding Key}"
-            PlaceholderText="{Binding Title1}" />
+            Watermark="{Binding Title1}" />
         <ComboBox
             Margin="0,5,0,0"
             HorizontalAlignment="Stretch"

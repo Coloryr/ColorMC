@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -450,20 +449,63 @@ public static class BlockListUtils
     /// 创建3D变换矩阵
     /// </summary>
     /// <returns></returns>
-    private static Matrix4x4 CreateTransformMatrix()
+    private static SKMatrix44 CreateTransformMatrix()
     {
-        var rotY = Matrix4x4.CreateRotationY(45f * MathF.PI / 180f);
-        var rotX = Matrix4x4.CreateRotationX(-30f * MathF.PI / 180f);
+        var transform = SKMatrix44.CreateIdentity();
 
-        // Flip Y axis (screen Y is down, 3D Y is up) and scale to fit canvas
-        var scale = Matrix4x4.CreateScale(100f, -100f, 100f);
+        // 平移图像到原点
+        var translateToOrigin = SKMatrix44.CreateIdentity();
+        translateToOrigin.SetTranslate(-50, -50, 0);
 
-        // Translate to center of 400x400 canvas
-        var translate = Matrix4x4.CreateTranslation(200f, 200f, 0f);
+        //// 旋转矩阵
+        var rotationX = CreateRotationMatrix(30, 1, 0, 0);
+        var rotationY = CreateRotationMatrix(45, 0, 1, 0);
 
-        var translateToCenter = Matrix4x4.CreateTranslation(3.83f, -1.63f, 0);
+        // 将旋转矩阵相乘
+        transform.PreConcat(translateToOrigin);
+        transform.PreConcat(rotationX);
+        transform.PreConcat(rotationY);
 
-        return rotY * rotX * scale * translate * translateToCenter;
+        // 缩放
+        var scale = SKMatrix44.CreateIdentity();
+        scale.SetScale(55, -55, 55);
+        transform.PreConcat(scale);
+
+        // Step 4: 平移图像到画布中心
+        var translateToCenter = SKMatrix44.CreateIdentity();
+        translateToCenter.SetTranslate(3.83f, -1.63f, 0);
+        transform.PreConcat(translateToCenter);
+
+        return transform;
+    }
+
+    /// <summary>
+    /// 创建旋转矩阵
+    /// </summary>
+    /// <param name="degrees"></param>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
+    private static SKMatrix44 CreateRotationMatrix(float degrees, float x, float y, float z)
+    {
+        var radians = degrees * (float)Math.PI / 180.0f;
+        var cos = (float)Math.Cos(radians);
+        var sin = (float)Math.Sin(radians);
+        var oneMinusCos = 1.0f - cos;
+
+        var rotation = SKMatrix44.CreateIdentity();
+        rotation[0, 0] = cos + x * x * oneMinusCos;
+        rotation[0, 1] = x * y * oneMinusCos - z * sin;
+        rotation[0, 2] = x * z * oneMinusCos + y * sin;
+        rotation[1, 0] = y * x * oneMinusCos + z * sin;
+        rotation[1, 1] = cos + y * y * oneMinusCos;
+        rotation[1, 2] = y * z * oneMinusCos - x * sin;
+        rotation[2, 0] = z * x * oneMinusCos - y * sin;
+        rotation[2, 1] = z * y * oneMinusCos + x * sin;
+        rotation[2, 2] = cos + z * z * oneMinusCos;
+
+        return rotation;
     }
 
     /// <summary>
@@ -472,19 +514,24 @@ public static class BlockListUtils
     /// <param name="mat"></param>
     /// <param name="v"></param>
     /// <returns></returns>
-    private static SKPoint Project(Matrix4x4 mat, SKPoint3 v)
+    private static SKPoint Project(SKMatrix44 mat, SKPoint3 v)
     {
-        // Vector4.Transform computes v * M (row-vector convention), which matches Matrix4x4
-        var result = Vector4.Transform(new Vector4(v.X, v.Y, v.Z, 1f), mat);
+        // 创建一个4D向量
+        float[] vec = [v.X, v.Y, v.Z, 1];
+        float[] result = new float[4];
 
-        // Perspective divide (W will be 1 for affine transforms, but kept for correctness)
-        if (result.W != 0f)
+        // 执行矩阵乘法
+        mat.MapScalars(vec, result);
+
+        // 进行透视除法
+        if (result[3] != 0)
         {
-            result.X /= result.W;
-            result.Y /= result.W;
+            result[0] /= result[3];
+            result[1] /= result[3];
+            result[2] /= result[3];
         }
 
-        return new SKPoint(result.X, result.Y);
+        return new SKPoint(result[0], result[1]);
     }
 
     /// <summary>

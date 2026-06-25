@@ -373,7 +373,7 @@ public partial class GameItemModel : GameModel
     /// </summary>
     /// <param name="top"></param>
     /// <param name="e"></param>
-    public async void Move(TopLevel top, PointerPressedEventArgs e)
+    public async void Move(TopLevel top, PointerEventArgs e)
     {
         if (ShowCheck)
         {

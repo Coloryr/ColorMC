@@ -212,14 +212,14 @@
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding JvmArg}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text7}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,10,10"
                         AcceptsReturn="True"
                         Classes="input"
                         Text="{Binding GameArg}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text8}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,10,10"
@@ -227,7 +227,7 @@
                         Classes="input"
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
-                        PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text34}" />
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
                     <TextBlock
                         Margin="0,0,10,0"
                         Text="{setting:Localize GameEditWindow.Tab2.Text35}"
@@ -266,7 +266,7 @@
                         Classes="input2"
                         IsEnabled="{Binding PreRun}"
                         Text="{Binding PreCmd}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text21}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                     <ToggleSwitch
                         IsChecked="{Binding PostRun}"
                         OffContent="{setting:Localize SettingWindow.Tab4.Text20}"
@@ -278,7 +278,7 @@
                         Classes="input2"
                         IsEnabled="{Binding PostRun}"
                         Text="{Binding PostCmd}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text21}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                 </StackPanel>
             </Border>
         </StackPanel>

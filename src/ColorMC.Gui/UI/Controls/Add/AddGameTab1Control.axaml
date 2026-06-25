@@ -38,7 +38,7 @@
                         <TextBox
                             Margin="0,0,10,0"
                             HorizontalAlignment="Stretch"
-                            PlaceholderText="{setting:Localize AddGameWindow.Tab1.Text2}"
+                            Watermark="{setting:Localize AddGameWindow.Tab1.Text2}"
                             Text="{Binding Name}" />
                     </DockPanel>
                     <TextBlock Margin="0,0,0,5" Text="{setting:Localize Text.GameVersion}" />
@@ -125,7 +125,7 @@
                         IsEnabled="{Binding CustomLoader}"
                         IsVisible="{Binding CustomLoader}"
                         Text="{Binding LoaderLocal}"
-                        PlaceholderText="{setting:Localize AddGameWindow.Tab1.Text15}" />
+                        Watermark="{setting:Localize AddGameWindow.Tab1.Text15}" />
                     <Panel
                         Margin="0,0,0,5"
                         IsEnabled="{Binding CustomLoader}"

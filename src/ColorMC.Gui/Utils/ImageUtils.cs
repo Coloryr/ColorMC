@@ -95,7 +95,7 @@ public static class ImageUtils
         }
         return Task.Run(() =>
         {
-            return image.Resize(new SKSizeI(newWidth, newHeight), new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear));
+            return image.Resize(new SKSizeI(newWidth, newHeight), SKFilterQuality.High);
         });
     }
 }

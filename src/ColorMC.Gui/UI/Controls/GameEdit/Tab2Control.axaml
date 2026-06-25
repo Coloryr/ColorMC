@@ -23,7 +23,7 @@
                 HorizontalAlignment="Center"
                 FontSize="15"
                 Foreground="{setting:Theme MainColor}"
-                TextOptions.TextRenderingMode="Antialias"
+                RenderOptions.TextRenderingMode="Antialias"
                 Text="{Binding TitleText, FallbackValue=123}"
                 TextTrimming="CharacterEllipsis" />
             <!--  分辨率  -->
@@ -104,7 +104,7 @@
                         Margin="0,0,10,5"
                         AcceptsReturn="True"
                         Text="{Binding GameTitle}"
-                        PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text42}" />
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text42}" />
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text38}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
@@ -165,7 +165,7 @@
                         <TextBox
                             Margin="0,0,10,0"
                             Text="{Binding JvmLocal}"
-                            PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text23}" />
+                            Watermark="{setting:Localize GameEditWindow.Tab2.Text23}" />
                     </DockPanel>
                 </StackPanel>
             </Border>
@@ -217,35 +217,35 @@
                     <TextBox
                         Margin="0,0,0,10"
                         Text="{Binding MainClass}"
-                        PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text27}" />
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text27}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,10"
                         AcceptsReturn="True"
                         Text="{Binding JvmArg}"
                         TextWrapping="Wrap"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text7}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text7}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,10"
                         AcceptsReturn="True"
                         Text="{Binding GameArg}"
                         TextWrapping="Wrap"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text8}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text8}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,10"
                         AcceptsReturn="True"
                         Text="{Binding ClassPath}"
                         TextWrapping="Wrap"
-                        PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text32}" />
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text32}" />
                     <TextBox
                         Height="100"
                         Margin="0,0,0,5"
                         AcceptsReturn="True"
                         Text="{Binding JvmEnv}"
                         TextWrapping="Wrap"
-                        PlaceholderText="{setting:Localize GameEditWindow.Tab2.Text34}" />
+                        Watermark="{setting:Localize GameEditWindow.Tab2.Text34}" />
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text35}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
@@ -280,7 +280,7 @@
                         AcceptsReturn="True"
                         IsEnabled="{Binding PerRun}"
                         Text="{Binding PerRunCmd}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text21}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                     <ToggleSwitch
                         IsChecked="{Binding PostRun}"
                         OffContent="{setting:Localize GameEditWindow.Tab2.Text29}"
@@ -291,7 +291,7 @@
                         AcceptsReturn="True"
                         IsEnabled="{Binding PostRun}"
                         Text="{Binding PostRunCmd}"
-                        PlaceholderText="{setting:Localize SettingWindow.Tab4.Text21}" />
+                        Watermark="{setting:Localize SettingWindow.Tab4.Text21}" />
                     <TextBlock Text="{setting:Localize GameEditWindow.Tab2.Text43}" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
@@ -311,12 +311,12 @@
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding IP}"
-                            PlaceholderText="{setting:Localize Text.ServerAddress}" />
+                            Watermark="{setting:Localize Text.ServerAddress}" />
                         <TextBox
                             Grid.Column="1"
                             MaxLength="5"
                             Text="{Binding Port, Converter={StaticResource NumberConverter}}"
-                            PlaceholderText="{setting:Localize Text.ServerPort}" />
+                            Watermark="{setting:Localize Text.ServerPort}" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -338,24 +338,24 @@
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding ProxyIP}"
-                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text4}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text4}" />
                         <TextBox
                             Grid.Column="1"
                             MaxLength="5"
                             Text="{Binding ProxyPort, Converter={StaticResource NumberConverter}}"
-                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text5}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text5}" />
                     </Grid>
                     <Grid ColumnDefinitions="*,*">
                         <TextBox
                             Grid.Column="0"
                             Margin="0,0,10,0"
                             Text="{Binding ProxyUser}"
-                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text6}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text6}" />
                         <TextBox
                             Grid.Column="1"
                             PasswordChar="*"
                             Text="{Binding ProxyPassword}"
-                            PlaceholderText="{setting:Localize SettingWindow.Tab3.Text7}" />
+                            Watermark="{setting:Localize SettingWindow.Tab3.Text7}" />
                     </Grid>
                 </StackPanel>
             </Border>

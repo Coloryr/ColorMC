@@ -49,7 +49,7 @@ public partial class TitleControl : UserControl
 
     private void Model_PropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
+        if (VisualRoot is not Window window)
         {
             return;
         }
@@ -81,7 +81,7 @@ public partial class TitleControl : UserControl
 
     private void WindowMax()
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
+        if (VisualRoot is not Window window)
         {
             return;
         }
@@ -98,7 +98,6 @@ public partial class TitleControl : UserControl
 
     private void HeadControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        var windows = TopLevel.GetTopLevel(this) as Window;
-        windows?.BeginMoveDrag(e);
+        (VisualRoot as Window)?.BeginMoveDrag(e);
     }
 }

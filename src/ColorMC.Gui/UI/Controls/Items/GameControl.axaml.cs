@@ -21,7 +21,7 @@ public partial class GameControl : UserControl
     /// <summary>
     /// 是否处于按下状态
     /// </summary>
-    private PointerPressedEventArgs? press;
+    private bool press;
     /// <summary>
     /// 按下的位置
     /// </summary>
@@ -104,7 +104,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerMoved(object? sender, PointerEventArgs e)
     {
-        if (press == null)
+        if (!press)
         {
             return;
         }
@@ -118,7 +118,7 @@ public partial class GameControl : UserControl
                 var top = TopLevel.GetTopLevel(this);
                 if (top != null)
                 {
-                    model.Move(top, press!);
+                    model.Move(top, e);
                 }
 
                 e.Handled = true;
@@ -128,7 +128,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
-        press = null;
+        press = false;
 
         if (DataContext is GameItemModel model)
         {
@@ -147,7 +147,7 @@ public partial class GameControl : UserControl
 
     private void GameControl_PointerPressed(object? sender, PointerPressedEventArgs e)
     {
-        press = e;
+        press = true;
         if (DataContext is GameItemModel model)
         {
             if (model.IsNew)

@@ -25,20 +25,20 @@
             AcceptsReturn="True"
             IsEnabled="{Binding EnableName}"
             Text="{Binding Name}"
-            PlaceholderText="{Binding WatermarkName}" />
+            Watermark="{Binding WatermarkName}" />
         <TextBox
             Margin="5"
             AcceptsReturn="True"
             IsEnabled="{Binding EnableUser}"
             Text="{Binding User}"
-            PlaceholderText="{setting:Localize UserWindow.Text10}" />
+            Watermark="{setting:Localize UserWindow.Text10}" />
         <TextBox
             Margin="5,5,5,10"
             AcceptsReturn="True"
             IsEnabled="{Binding EnablePassword}"
             PasswordChar="*"
             Text="{Binding Password}"
-            PlaceholderText="{setting:Localize UserWindow.Text2}" />
+            Watermark="{setting:Localize UserWindow.Text2}" />
         <DockPanel HorizontalAlignment="Stretch">
             <Button
                 Width="100"

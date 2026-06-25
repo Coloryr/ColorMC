@@ -19,7 +19,7 @@
                 Padding="15"
                 Classes="t2"
                 DockPanel.Dock="Top">
-                <TextBox Text="{Binding ResourceText}" PlaceholderText="{setting:Localize GameEditWindow.Tab5.Text6}" />
+                <TextBox Text="{Binding ResourceText}" Watermark="{setting:Localize GameEditWindow.Tab5.Text6}" />
             </Border>
             <Panel>
                 <ScrollViewer VerticalScrollBarVisibility="Visible">

@@ -85,10 +85,10 @@ public class SvgControl : Control
         set => SetValue(FillProperty, value);
     }
 
-    ///// <summary>
-    ///// Gets svg drawable.
-    ///// </summary>
-    //public SKDrawable? Drawable => _svg?.Drawable;
+    /// <summary>
+    /// Gets svg drawable.
+    /// </summary>
+    public SKDrawable? Drawable => _svg?.Drawable;
 
     /// <summary>
     /// Gets svg model.
