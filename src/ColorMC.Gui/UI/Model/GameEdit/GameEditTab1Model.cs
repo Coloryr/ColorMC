@@ -709,7 +709,7 @@ public partial class GameEditModel
         };
         var list = loader switch
         {
-            Loaders.Forge => await FabricAPI.GetLoadersAsync(_obj.Version, CoreHttpClient.Source),
+            Loaders.Forge => await ForgeAPI.GetVersionListAsync(false, _obj.Version),
             Loaders.NeoForge => await ForgeAPI.GetVersionListAsync(true, _obj.Version),
             Loaders.Fabric => await FabricAPI.GetLoadersAsync(_obj.Version),
             Loaders.Quilt => await QuiltAPI.GetLoadersAsync(_obj.Version),

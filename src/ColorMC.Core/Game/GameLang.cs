@@ -126,21 +126,28 @@ public static class GameLang
                     {
                         continue;
                     }
-                    using var stream = AssetsPath.ReadAssets(item.Value.Hash);
-                    if (stream == null)
+                    var text = AssetsPath.ReadAssetsText(item.Value.Hash);
+                    if (text == null)
                     {
                         continue;
                     }
-                    var data = JsonUtils.ToObj(stream, JsonType.LangObj);
-                    if (data == null)
+                    if (text.StartsWith('{'))
                     {
-                        continue;
+                        var data = JsonUtils.ToObj(text, JsonType.LangObj);
+                        if (data == null)
+                        {
+                            continue;
+                        }
+                        return new LangRes
+                        {
+                            Key = item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
+                            Name = data.Name + "-" + data.Region
+                        };
                     }
-                    return new LangRes
-                    {
-                        Key = item.Key.Replace(Names.NameLangKey1, "").Replace(".json", ""),
-                        Name = data.Name + "-" + data.Region
-                    };
+                    else
+                    { 
+                        
+                    }
                 }
                 catch (Exception e)
                 {
