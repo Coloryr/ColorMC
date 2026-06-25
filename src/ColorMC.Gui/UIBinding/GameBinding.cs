@@ -1951,6 +1951,7 @@ public static class GameBinding
             }
 
             var res2 = await PathBinding.SaveFileAsync(top, FileType.Cmd, args);
+            window.CloseDialog(dialog);
             if (res2 == false)
             {
                 window.Show(LangUtils.Get("App.Text101"));
