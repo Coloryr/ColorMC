@@ -292,14 +292,6 @@ public static class JavaHelper
                             list.Add(info);
                         }
                     }
-                    foreach (var item in GetAdoptiumJavaInstallPath(@"SOFTWARE\Eclipse Adoptium\JDK\"))
-                    {
-                        var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
-                        if (info != null)
-                        {
-                            list.Add(info);
-                        }
-                    }
                     foreach (var item in GetZuluJavaInstallPath(@"SOFTWARE\Azul Systems\Zulu\"))
                     {
                         var info = GetJavaInfo(Path.Combine(item, "bin", "javaw.exe"));
