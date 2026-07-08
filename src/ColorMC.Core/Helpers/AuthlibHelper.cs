@@ -72,7 +72,7 @@ public static class AuthlibHelper
             ?? throw new LaunchException(LaunchError.LoginCoreError);
         var obj = JsonUtils.ReadObj(data)
             ?? throw new LaunchException(LaunchError.LoginCoreError);
-        var sha1 = obj.GetString("jarHash")!;
+        var sha1 = obj.GetString("jarHash")!.ToLower();
         var item = BuildNide8Item(obj.GetString("jarVersion")!);
         NowNide8Injector = item.Local;
 
