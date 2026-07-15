@@ -1172,6 +1172,10 @@ public static class WindowManager
     {
         foreach (var item in _windows)
         {
+            if (item is ABaseWindow window && window.ICon is MainControl)
+            {
+                return;
+            }
             item.Close();
         }
     }

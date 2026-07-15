@@ -184,6 +184,7 @@ public static class ColorMCGui
         }
         finally
         {
+            Logs.Stop();
             s_lock?.Close();
             s_lock?.Dispose();
         }

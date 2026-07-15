@@ -43,8 +43,6 @@ public static class Logs
     /// </summary>
     public static void Init()
     {
-        App.OnClose += Stop;
-
         s_local = ColorMCGui.BaseDir;
         try
         {
@@ -86,7 +84,7 @@ public static class Logs
     /// <summary>
     /// 停止
     /// </summary>
-    private static void Stop()
+    public static void Stop()
     {
         s_run = false;
         lock (s_bags)
