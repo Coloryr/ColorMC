@@ -438,22 +438,14 @@ public static class CurseForgeHelper
             ids.Add(item.ModId);
 
             //获取依赖的依赖
-            foreach (var item3 in data.Dependencies)
+            foreach (var item5 in await GetModDependenciesAsync(res1.Data[0], mc, loader, ids))
             {
-                if (ids.Contains(item3.ModId))
+                if (ids.Contains(item5.ModId))
                 {
                     continue;
                 }
-
-                foreach (var item5 in await GetModDependenciesAsync(res1.Data[0], mc, loader, ids))
-                {
-                    if (ids.Contains(item5.ModId))
-                    {
-                        continue;
-                    }
-                    list.Add(item5);
-                    ids.Add(item5.ModId);
-                }
+                list.Add(item5);
+                ids.Add(item5.ModId);
             }
         });
 
