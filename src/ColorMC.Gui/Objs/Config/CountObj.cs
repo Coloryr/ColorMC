@@ -43,6 +43,11 @@ public record CountObj
     }
 
     /// <summary>
+    /// 实例名字存储
+    /// </summary>
+    public Dictionary<Guid, string> GameNames { get; set; }
+
+    /// <summary>
     /// 游戏运行统计列表
     /// 键为游戏UUID
     /// 值为所有游戏运行统计

@@ -170,8 +170,6 @@ public static class AddGameHelper
         }
 
         packgui?.SetSubText(null);
-        packgui?.SetNowSub(0, 0);
-
         packgui?.SetState(AddState.GetInfo);
         packgui?.SetNow(3, 5);
         packgui?.SetNowSub(0, 1);

@@ -63,7 +63,8 @@ public static class GameCountUtils
             Count = new()
             {
                 GameRuns = [],
-                LaunchLogs = []
+                LaunchLogs = [],
+                GameNames = []
             };
             await SaveAsync();
             return;
@@ -79,7 +80,8 @@ public static class GameCountUtils
                     LaunchErrorCount = nbt.TryGet<NbtLong>("LaunchErrorCount")!.ValueLong,
                     AllTime = TimeSpan.FromTicks(nbt.TryGet<NbtLong>("AllTime")!.ValueLong),
                     GameRuns = [],
-                    LaunchLogs = []
+                    LaunchLogs = [],
+                    GameNames = []
                 };
 
                 var list = nbt.TryGet<NbtList>("GameRuns")!;
@@ -121,6 +123,19 @@ public static class GameCountUtils
                     }
                     Count.LaunchLogs.Add(uuid, list2);
                 }
+
+                var names = nbt.TryGet<NbtCompound>("GameNames");
+                if (names != null)
+                {
+                    foreach (var item in names)
+                    {
+                        if (item.Value is NbtString str)
+                        {
+                            var uuid = Guid.Parse(item.Key);
+                            Count.GameNames.Add(uuid, str.Value);
+                        }
+                    }
+                }
             }
         }
         catch (Exception e)
@@ -133,9 +148,18 @@ public static class GameCountUtils
             Count = new()
             {
                 GameRuns = [],
-                LaunchLogs = []
+                LaunchLogs = [],
+                GameNames = []
             };
         }
+
+        foreach (var item in InstancesPath.Games)
+        {
+            Count.GameNames.Remove(item.UUID);
+            Count.GameNames.Add(item.UUID, item.Name);
+        }
+
+        await SaveAsync();
     }
 
     /// <summary>
@@ -254,6 +278,15 @@ public static class GameCountUtils
             list.Add(com);
         }
         nbt.Add("LaunchLogs", list);
+
+        var names = new NbtCompound();
+
+        foreach (var item in Count.GameNames)
+        {
+            names.Add(item.Key.ToString(), new NbtString() { Value = item.Value });
+        }
+
+        nbt.Add("GameNames", names);
 
         nbt.ZipType = ZipType.GZip;
 
