@@ -391,7 +391,7 @@ public static class GameHelper
         if (list.TryGetValue("MinMemAlloc", out item1)
              && uint.TryParse(item1, out item2))
         {
-            game.JvmArg.MaxMemory = item2;
+            game.JvmArg.MinMemory = item2;
         }
         if (list.TryGetValue("MinecraftWinHeight", out item1)
             && uint.TryParse(item1, out item2))
