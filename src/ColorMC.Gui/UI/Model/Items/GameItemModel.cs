@@ -363,9 +363,9 @@ public partial class GameItemModel : GameModel
             time1.Ticks == 0 ? "" : time1.ToString(),
             time2.Ticks == 0 ? "" : time2.ToString(),
             time3.Ticks == 0 ? "" :
-            $"{time3.TotalHours:#}:{time3.Minutes:00}:{time3.Seconds:00}",
+            $"{time3.Days * 24 + time3.Hours:#}:{time3.Minutes:00}:{time3.Seconds:00}",
             time4.Ticks == 0 ? "" :
-            $"{time4.TotalHours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
+            $"{time4.Days * 24 + time4.Hours:#}:{time4.Minutes:00}:{time4.Seconds:00}");
     }
 
     /// <summary>
