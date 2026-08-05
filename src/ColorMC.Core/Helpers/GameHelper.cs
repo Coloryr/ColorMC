@@ -523,7 +523,7 @@ public static class GameHelper
             {
                 foreach (var item in obj.LaunchInfo.LaunchArgument)
                 {
-                    data += item + " ";
+                    data += item + "\n";
                 }
             }
             if (!string.IsNullOrWhiteSpace(data))
@@ -540,7 +540,7 @@ public static class GameHelper
             {
                 foreach (var item in obj.LaunchInfo.JavaArgument)
                 {
-                    data += item + " ";
+                    data += item + "\n";
                 }
             }
             if (!string.IsNullOrWhiteSpace(data))
