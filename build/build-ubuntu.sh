@@ -123,12 +123,9 @@ build_appimage()
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
-    chmod a+x build_out/colormc-$version-$2.AppImage
-    #deb2appimage输出名固定为colormc-$version-$2.AppImage,与目标不同名时才重命名
-    if [ "build_out/colormc-$version-$2.AppImage" != "build_out/$appimg" ]; then
-        mv build_out/colormc-$version-$2.AppImage build_out/$appimg
-    fi
+    #deb2appimage输出名就是colormc-$version-$2.AppImage,与$appimg同名,无需重命名
+    sudo chown $USER:$USER build_out/$appimg
+    chmod a+x build_out/$appimg
 
     #用新版appimagetool重打包,新的runtime不再依赖libfuse2
     cd ./build_out
@@ -159,15 +156,14 @@ build_appimage_min()
     sed -i "s/%version%/$version/g" $build_dir/appimg.json
     sed -i "s/%arch%/$arch/g" $build_dir/appimg.json
     sed -i "s/%deb_name%/$deb_name/g" $build_dir/appimg.json
+    #deb2appimage输出名基于name字段,min构建改为colormc-min,避免覆盖非min的AppImage
+    sed -i "s/\"name\": \"colormc\"/\"name\": \"colormc-min\"/g" $build_dir/appimg.json
 
     sudo $build_run/deb2appimage.AppImage -j $build_dir/appimg.json -o ./build_out
 
-    sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
-    chmod a+x build_out/colormc-$version-$2.AppImage
-    #deb2appimage输出名固定为colormc-$version-$2.AppImage,与目标不同名时才重命名
-    if [ "build_out/colormc-$version-$2.AppImage" != "build_out/$appimg" ]; then
-        mv build_out/colormc-$version-$2.AppImage build_out/$appimg
-    fi
+    sudo chown $USER:$USER build_out/colormc-min-$version-$2.AppImage
+    chmod a+x build_out/colormc-min-$version-$2.AppImage
+    mv build_out/colormc-min-$version-$2.AppImage build_out/$appimg
 
     #用新版appimagetool重打包,新的runtime不再依赖libfuse2
     cd ./build_out
