@@ -1,0 +1,114 @@
+name: AppImage测试
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'releases/**'
+    tags:
+      - 'appimage-test*'
+
+jobs:
+  test-appimage:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: 设置.NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.103
+
+    - name: Read version number
+      run: |
+        VERSION=$(cat ./build/version)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: 构建AppImage
+      shell: bash
+      run: |
+        chmod a+x ./build/build-ubuntu.sh
+        ./build/build-ubuntu.sh
+
+    - name: 检查文件名(不能包含linux)
+      run: |
+        app="build_out/colormc-$VERSION-x86_64.AppImage"
+        if [ ! -f "$app" ]; then
+          echo "缺少 $app"
+          ls -la build_out/
+          exit 1
+        fi
+        case "$app" in
+          *linux*)
+            echo "AppImage文件名不应该包含linux: $app"
+            exit 1
+            ;;
+        esac
+        test -f "build_out/colormc-$VERSION-min-x86_64.AppImage"
+        echo "文件名检查通过: $app"
+
+    - name: 检查AppImage结构
+      run: |
+        cd build_out
+        ./colormc-$VERSION-x86_64.AppImage --appimage-extract >/dev/null
+        test -f squashfs-root/AppRun
+        find squashfs-root -maxdepth 1 -name "*.desktop" | grep -q . || {
+          echo "squashfs-root缺少desktop文件"
+          ls -la squashfs-root/
+          exit 1
+        }
+        echo "结构检查通过"
+
+    - name: 移除libfuse2(测试新runtime是否免FUSE)
+      run: |
+        sudo apt-get remove -y libfuse2 libfuse2t64 || true
+
+    - name: 安装测试依赖
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y xvfb imagemagick fonts-dejavu-core libfontconfig1
+
+    - name: 启动测试(C locale下运行)
+      run: |
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1280x800x24 &
+        sleep 2
+        export LANG=C LC_ALL=C
+        export LIBGL_ALWAYS_SOFTWARE=1
+        ./build_out/colormc-$VERSION-x86_64.AppImage > app.log 2>&1 &
+        sleep 40
+        if ! pgrep -f "ColorMC" > /dev/null; then
+          echo "AppImage启动失败"
+          cat app.log
+          exit 1
+        fi
+        import -window root screenshot.png || true
+        pkill -f ColorMC || true
+        echo "启动测试通过"
+
+    - name: 检查默认语言(非中文系统应为英语)
+      run: |
+        if [ ! -f ~/.ColorMC/gui.json ]; then
+          echo "未找到配置文件 ~/.ColorMC/gui.json"
+          cat app.log
+          exit 1
+        fi
+        cat ~/.ColorMC/gui.json
+        grep -q '"Language": 1' ~/.ColorMC/gui.json || {
+          echo "默认语言不是en_us,应该是1"
+          exit 1
+        }
+        echo "默认语言检查通过"
+
+    - name: 上传测试截图
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: appimage-test-result
+        path: |
+          screenshot.png
+          app.log
+        if-no-files-found: ignore
