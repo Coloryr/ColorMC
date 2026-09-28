@@ -3,11 +3,11 @@ name: ColorMC构建与发布
 on:
   push:
     # Sequence of patterns matched against refs/heads
-    branches:    
+    branches:
       - 'releases/**'
     # Sequence of patterns matched against refs/tags
-    tags:        
-      - '**'
+    tags:
+      - 'version-*'
 
 jobs:
   build-linux:
