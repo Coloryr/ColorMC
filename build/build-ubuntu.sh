@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 version=""
 
@@ -124,7 +125,10 @@ build_appimage()
 
     sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
     chmod a+x build_out/colormc-$version-$2.AppImage
-    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
+    #deb2appimage输出名固定为colormc-$version-$2.AppImage,与目标不同名时才重命名
+    if [ "build_out/colormc-$version-$2.AppImage" != "build_out/$appimg" ]; then
+        mv build_out/colormc-$version-$2.AppImage build_out/$appimg
+    fi
 
     #用新版appimagetool重打包,新的runtime不再依赖libfuse2
     cd ./build_out
@@ -160,7 +164,10 @@ build_appimage_min()
 
     sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
     chmod a+x build_out/colormc-$version-$2.AppImage
-    mv build_out/colormc-$version-$2.AppImage build_out/$appimg
+    #deb2appimage输出名固定为colormc-$version-$2.AppImage,与目标不同名时才重命名
+    if [ "build_out/colormc-$version-$2.AppImage" != "build_out/$appimg" ]; then
+        mv build_out/colormc-$version-$2.AppImage build_out/$appimg
+    fi
 
     #用新版appimagetool重打包,新的runtime不再依赖libfuse2
     cd ./build_out
