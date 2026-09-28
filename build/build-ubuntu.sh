@@ -93,11 +93,17 @@ fi
 
 chmod a+x $build_run/deb2appimage.AppImage
 
+if [ ! -f "$build_run/appimagetool.AppImage" ];then
+    wget -O $build_run/appimagetool.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+fi
+
+chmod a+x $build_run/appimagetool.AppImage
+
 sudo apt-get install libfuse2 curl -y
 
 build_appimage()
 {
-    appimg=colormc-linux-$version-$2.AppImage
+    appimg=colormc-$version-$2.AppImage
     
     build_dir=$build_run/$1
     
@@ -120,12 +126,20 @@ build_appimage()
     chmod a+x build_out/colormc-$version-$2.AppImage
     mv build_out/colormc-$version-$2.AppImage build_out/$appimg
 
+    #用新版appimagetool重打包,新的runtime不再依赖libfuse2
+    cd ./build_out
+    ./$appimg --appimage-extract >/dev/null
+    cd - >/dev/null
+    $build_run/appimagetool.AppImage --no-appstream ./build_out/squashfs-root ./build_out/$appimg
+    chmod a+x build_out/$appimg
+    rm -rf ./build_out/squashfs-root
+
     echo "$appimg build done"
 }
 
 build_appimage_min()
 {
-    appimg=colormc-linux-$version-min-$2.AppImage
+    appimg=colormc-$version-min-$2.AppImage
     
     build_dir=$build_run/$1-min
 
@@ -147,6 +161,14 @@ build_appimage_min()
     sudo chown $USER:$USER ./build_out/colormc-$version-$2.AppImage
     chmod a+x build_out/colormc-$version-$2.AppImage
     mv build_out/colormc-$version-$2.AppImage build_out/$appimg
+
+    #用新版appimagetool重打包,新的runtime不再依赖libfuse2
+    cd ./build_out
+    ./$appimg --appimage-extract >/dev/null
+    cd - >/dev/null
+    $build_run/appimagetool.AppImage --no-appstream ./build_out/squashfs-root ./build_out/$appimg
+    chmod a+x build_out/$appimg
+    rm -rf ./build_out/squashfs-root
 
     echo "$appimg build done"
 }

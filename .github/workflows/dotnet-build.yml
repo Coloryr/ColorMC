@@ -121,17 +121,17 @@ jobs:
         name: "colormc-linux-min-aarch64-deb"
         path: build_out/colormc-linux-${{ env.VERSION }}-min-arm64.deb
     
-    - name: 上传 colormc-linux-x86_64-appimage
+    - name: 上传 colormc-x86_64-appimage
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-linux-x86_64-appimage"
-        path: build_out/colormc-linux-${{ env.VERSION }}-x86_64.AppImage
+        name: "colormc-x86_64-appimage"
+        path: build_out/colormc-${{ env.VERSION }}-x86_64.AppImage
 
-    - name: 上传 colormc-linux-min-x86_64-appimage
+    - name: 上传 colormc-min-x86_64-appimage
       uses: actions/upload-artifact@v4
       with:
-        name: "colormc-linux-min-x86_64-appimage"
-        path: build_out/colormc-linux-${{ env.VERSION }}-min-x86_64.AppImage
+        name: "colormc-min-x86_64-appimage"
+        path: build_out/colormc-${{ env.VERSION }}-min-x86_64.AppImage
 
   build-macos:
     runs-on: macos-latest

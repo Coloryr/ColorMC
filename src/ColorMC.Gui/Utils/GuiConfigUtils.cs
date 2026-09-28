@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.IO;
 using ColorMC.Core.Config;
 using ColorMC.Core.Helpers;
@@ -219,8 +220,13 @@ public static class GuiConfigUtils
 
     public static GuiConfigObj MakeDefaultConfig()
     {
+        //默认语言跟随系统语言,非中文系统默认使用英语
+        var language = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "zh"
+            ? LanguageType.zh_cn
+            : LanguageType.en_us;
         return new()
         {
+            Language = language,
             ColorMain = ThemeManager.MainColorStr,
             RGBS = 100,
             RGBV = 100,
