@@ -5,6 +5,8 @@
 ![](https://img.shields.io/github/contributors/Coloryr/ColorMC)
 ![](https://img.shields.io/github/commit-activity/y/Coloryr/ColorMC)
 
+**本项目停止添加新功能，新功能将会在迭代产品[ModernMinecraftLauncher](https://github.com/Coloryr/ModernMinecraftLauncher)中添加**
+
 一个全平台Minecraft PC启动器
 
 使用.NET10作为运行环境，XAML作为前端语言，使用MVVM模式，C#作为后端语言
